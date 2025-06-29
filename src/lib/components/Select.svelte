@@ -1,0 +1,260 @@
+<!-- Select.svelte -->
+
+<script lang="ts">
+	import Icon from './Icon.svelte';
+
+	let {
+		name,
+		value = $bindable(),
+		options = [],
+		customStyle = '',
+		theme = 'light',
+		focusStyle = 'border',
+		placeholder = '',
+		fullWidth = false,
+		disabled = false,
+		readonly = false,
+		required = false,
+		id = null,
+		tabindex = null,
+		size = null,
+		rounded = false,
+		onchange = (value: string | number | null | undefined) => {},
+		onfocus = () => {},
+		onblur = () => {}
+	}: {
+		name?: string;
+		value: string | number | null | undefined;
+		options: any[];
+		customStyle?: string;
+		theme?: 'light' | 'dark';
+		focusStyle?: 'background' | 'border' | 'none';
+		placeholder?: string;
+		fullWidth?: boolean;
+		disabled?: boolean;
+		readonly?: boolean;
+		required?: boolean;
+		id?: string | null;
+		tabindex?: number | null;
+		size?: number | null;
+		rounded?: boolean;
+		onchange?: (value: string | number | null | undefined) => void;
+		onfocus?: Function;
+		onblur?: Function;
+	} = $props();
+
+	let isFocused: boolean = $state(false);
+	const handleFocus = () => {
+		isFocused = true;
+		onfocus?.();
+	};
+	const handleBlur = () => {
+		isFocused = false;
+		onblur?.();
+	};
+	const handleChange = () => {
+		onchange?.(value);
+	};
+</script>
+
+<div
+	class="select
+{theme === 'dark' ? 'dark-theme' : 'light-theme'}
+focus-style-{focusStyle}"
+	class:full-width={fullWidth}
+	class:disabled
+	class:readonly
+	class:is-focused={isFocused}
+	class:rounded
+>
+	<select
+		{id}
+		{name}
+		bind:value
+		{disabled}
+		{required}
+		{tabindex}
+		{size}
+		style={customStyle}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onchange={handleChange}
+	>
+		<!-- プレースホルダーオプション -->
+		{#if placeholder}
+			<option value="" disabled selected={value === undefined || value === null}>
+				{placeholder}
+			</option>
+		{/if}
+		<!-- 通常のオプション -->
+		{#each options as option (option.value)}
+			<option value={option.value} disabled={option.disabled || readonly}>
+				{option.label}
+			</option>
+		{/each}
+	</select>
+	<!-- ドロップダウンアイコン -->
+	<div class="dropdown-icon" aria-hidden="true">
+		<Icon>arrow_drop_down</Icon>
+	</div>
+</div>
+
+<style>
+	/* =============================================
+ * 基本構造・レイアウト
+ * ============================================= */
+	.select {
+		display: inline-block;
+		position: relative;
+		width: auto;
+		max-width: 100%;
+	}
+
+	/* =============================================
+ * 基本コンポーネント
+ * ============================================= */
+	select {
+		width: 100%;
+		min-height: var(--svelte-ui-select-height);
+		padding: var(--svelte-ui-select-padding);
+		background: transparent;
+		border: none;
+		border-radius: 0;
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
+		line-height: inherit;
+		text-align: inherit;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+
+		&:focus,
+		&:focus-visible {
+			outline: none;
+		}
+	}
+
+	.dropdown-icon {
+		position: absolute;
+		top: 50%;
+		right: var(--svelte-ui-select-icon-right);
+		transform: translateY(-50%);
+		font-size: var(--svelte-ui-select-dropdown-size);
+		color: var(--svelte-ui-select-icon-color);
+		pointer-events: none;
+	}
+
+	/* =============================================
+ * レイアウトバリエーション
+ * ============================================= */
+	.select.full-width {
+		width: 100%;
+	}
+
+	/* =============================================
+ * プレースホルダー・オプション表示
+ * ============================================= */
+	option[value=''] {
+		color: var(--svelte-ui-text-placeholder);
+	}
+
+	/* =============================================
+ * フォーカス効果バリエーション
+ * ============================================= */
+	.focus-style-border select:focus {
+		box-shadow: var(--svelte-ui-input-focus-shadow);
+	}
+
+	.focus-style-background select:focus {
+		background: var(--svelte-ui-hover-overlay);
+	}
+
+	/* =============================================
+ * 状態管理（disabled, readonly等）
+ * ============================================= */
+	.disabled {
+		opacity: var(--svelte-ui-input-disabled-opacity);
+		pointer-events: none;
+
+		.dropdown-icon {
+			opacity: var(--svelte-ui-button-disabled-opacity);
+		}
+	}
+
+	.readonly {
+		pointer-events: none;
+
+		select {
+			background-color: var(--svelte-ui-input-readonly-bg);
+			cursor: default;
+		}
+
+		.dropdown-icon {
+			opacity: var(--svelte-ui-button-disabled-opacity);
+		}
+	}
+
+	select:disabled {
+		opacity: var(--svelte-ui-button-disabled-opacity);
+		cursor: not-allowed;
+	}
+
+	/* =============================================
+ * テーマバリエーション
+ * ============================================= */
+	.dark-theme {
+		.dropdown-icon {
+			color: var(--svelte-ui-select-icon-color-dark);
+		}
+
+		option[value=''] {
+			color: var(--svelte-ui-text-placeholder);
+		}
+
+		select {
+			color: var(--svelte-ui-text-dark);
+			background-color: var(--svelte-ui-select-bg-dark);
+			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
+				var(--svelte-ui-select-border-color-dark);
+		}
+
+		&.focus-style-background select:focus {
+			background: var(--svelte-ui-hover-overlay-dark);
+		}
+	}
+
+	.dark-theme.readonly select {
+		background-color: var(--svelte-ui-input-readonly-bg-dark);
+	}
+
+	/* =============================================
+ * デザインバリアント：default
+ * ============================================= */
+	.select {
+		select {
+			min-height: var(--svelte-ui-select-height);
+			padding: var(--svelte-ui-select-padding);
+			background-color: var(--svelte-ui-select-bg);
+			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-select-border-color);
+			border: none;
+			border-radius: var(--svelte-ui-select-border-radius);
+			font-size: 1rem;
+			color: var(--svelte-ui-text);
+			line-height: var(--svelte-ui-select-height);
+		}
+
+		.dropdown-icon {
+			right: var(--svelte-ui-select-icon-right);
+		}
+	}
+
+	/* =============================================
+ * デザインバリアント：rounded
+ * ============================================= */
+	.select.rounded {
+		select {
+			border-radius: var(--svelte-ui-select-border-radius-rounded);
+		}
+	}
+</style>

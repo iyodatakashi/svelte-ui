@@ -1,0 +1,372 @@
+<!-- Radio.svelte -->
+
+<script lang="ts">
+	import { type Snippet } from 'svelte';
+
+	let {
+		name = '',
+		value = '',
+		currentValue = $bindable(null),
+		children,
+		disabled = false,
+		required = false,
+		readonly = false,
+		error = null,
+		success = null,
+		size = 'medium',
+		reducedMotion = false,
+		onfocus = undefined,
+		onblur = undefined,
+		onchange = undefined,
+		...restProps
+	}: {
+		name: string;
+		value: string | number | boolean;
+		currentValue: string | number | boolean | null;
+		children?: Snippet;
+		disabled?: boolean;
+		required?: boolean;
+		readonly?: boolean;
+		error?: string | null;
+		success?: string | null;
+		size?: 'small' | 'medium' | 'large';
+		reducedMotion?: boolean;
+		onfocus?: ((event: FocusEvent) => void) | undefined;
+		onblur?: ((event: FocusEvent) => void) | undefined;
+		onchange?: ((value: string | number | boolean, event: Event) => void) | undefined;
+		[key: string]: any;
+	} = $props();
+
+	const generateId = (): string => {
+		return 'radio-' + Math.random().toString(36).substring(2, 15);
+	};
+
+	const id: string = generateId();
+	const isChecked: boolean = $derived(currentValue === value);
+
+	const handleFocus = (event: FocusEvent) => {
+		if (onfocus) onfocus(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		if (onblur) onblur(event);
+	};
+
+	const handleChange = (event: Event) => {
+		if (readonly || disabled) return;
+
+		const target = event.target as HTMLInputElement;
+		if (target.checked) {
+			currentValue = value;
+			if (onchange) onchange(value, event);
+		}
+	};
+
+	const handleKeydown = (event: KeyboardEvent) => {
+		if (disabled || readonly) return;
+
+		// Arrow key navigation for radio group
+		if (
+			event.key === 'ArrowUp' ||
+			event.key === 'ArrowDown' ||
+			event.key === 'ArrowLeft' ||
+			event.key === 'ArrowRight'
+		) {
+			const radioInputs = document.querySelectorAll(`input[type="radio"][name="${name}"]`);
+			const currentIndex = Array.from(radioInputs).findIndex((input) => input === event.target);
+
+			if (currentIndex !== -1) {
+				event.preventDefault();
+				let nextIndex;
+
+				if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
+					nextIndex = currentIndex > 0 ? currentIndex - 1 : radioInputs.length - 1;
+				} else {
+					nextIndex = currentIndex < radioInputs.length - 1 ? currentIndex + 1 : 0;
+				}
+
+				const nextInput = radioInputs[nextIndex] as HTMLInputElement;
+				if (nextInput && !nextInput.disabled) {
+					nextInput.focus();
+					nextInput.click();
+				}
+			}
+		}
+	};
+
+	// CSS classes based on state
+	const containerClasses = $derived(
+		[
+			'radio-container',
+			`radio-container--${size}`,
+			disabled && 'radio-container--disabled',
+			error && 'radio-container--error',
+			success && 'radio-container--success',
+			reducedMotion && 'radio-container--no-motion'
+		]
+			.filter(Boolean)
+			.join(' ')
+	);
+</script>
+
+<div class={containerClasses} data-testid="radio-container">
+	<input
+		type="radio"
+		checked={isChecked}
+		{id}
+		{name}
+		{value}
+		{disabled}
+		{required}
+		{readonly}
+		aria-describedby={error ? `${id}-error` : success ? `${id}-success` : undefined}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onchange={handleChange}
+		onkeydown={handleKeydown}
+		{...restProps}
+	/>
+	<label for={id} class={`radio-label ${!!children ? 'with-label' : 'no-label'}`}>
+		{#if children}
+			{@render children()}
+		{/if}
+	</label>
+	{#if error}
+		<div id="{id}-error" class="radio-message radio-message--error" role="alert">
+			{error}
+		</div>
+	{/if}
+	{#if success}
+		<div id="{id}-success" class="radio-message radio-message--success">
+			{success}
+		</div>
+	{/if}
+</div>
+
+<style>
+	.radio-container {
+		display: flex;
+		flex-direction: column;
+		gap: 4px;
+	}
+
+	.radio-container input[type='radio'] {
+		position: absolute;
+		width: 16px;
+		height: 16px;
+		margin: 0;
+		line-height: 1px;
+		opacity: 0;
+		cursor: pointer;
+	}
+
+	.radio-container--disabled input[type='radio'] {
+		cursor: not-allowed;
+	}
+
+	.radio-label {
+		position: relative;
+		display: flex;
+		align-items: center;
+		padding: var(--svelte-ui-radio-padding);
+		white-space: nowrap;
+		font-size: inherit;
+		cursor: pointer;
+		min-height: var(--svelte-ui-radio-min-height);
+	}
+
+	.radio-label.no-label {
+		padding-left: 20px;
+		min-height: 16px;
+	}
+
+	/* Mobile touch targets */
+	@media (hover: none) and (pointer: coarse) {
+		.radio-label {
+			min-height: var(--svelte-ui-touch-target);
+		}
+	}
+
+	.radio-container--disabled .radio-label {
+		opacity: var(--svelte-ui-button-disabled-opacity);
+		cursor: not-allowed;
+	}
+
+	.radio-label::before,
+	.radio-label::after {
+		position: absolute;
+		content: '';
+		display: block;
+		top: 50%;
+		transform: translateY(-50%);
+	}
+
+	/* Radio button outer circle */
+	.radio-label::after {
+		left: 0;
+		width: var(--svelte-ui-radio-size);
+		height: var(--svelte-ui-radio-size);
+		border: var(--svelte-ui-radio-border-width) solid var(--svelte-ui-radio-border-color);
+		border-radius: var(--svelte-ui-radio-border-radius);
+		background-color: transparent;
+		transition-property: border-color, background-color;
+		transition-duration: var(--svelte-ui-transition-duration);
+	}
+
+	/* Radio button inner dot */
+	.radio-label::before {
+		left: calc(var(--svelte-ui-radio-size) / 2 + 2px);
+		width: 0;
+		height: 0;
+		background-color: var(--svelte-ui-radio-bg-checked);
+		border-radius: var(--svelte-ui-radio-border-radius);
+		transition-property: left, top, width, height;
+		transition-duration: var(--svelte-ui-transition-duration);
+	}
+
+	/* Checked state */
+	input[type='radio']:checked + .radio-label::before {
+		left: calc((var(--svelte-ui-radio-size) - var(--svelte-ui-radio-dot-size)) / 2 + 2px);
+		width: var(--svelte-ui-radio-dot-size);
+		height: var(--svelte-ui-radio-dot-size);
+	}
+
+	/* Hover and focus states */
+	.radio-label:hover::after,
+	input[type='radio']:checked + .radio-label::after {
+		border-color: var(--svelte-ui-primary-color);
+	}
+
+	/* Focus state */
+	input[type='radio']:focus-visible + .radio-label::after {
+		border-color: var(--svelte-ui-radio-focus-strong-color);
+		box-shadow: var(--svelte-ui-radio-focus-shadow);
+	}
+
+	/* Size variants */
+	.radio-container--small {
+		font-size: var(--svelte-ui-font-size-sm);
+	}
+
+	.radio-container--small .radio-label {
+		padding: var(--svelte-ui-radio-padding-sm);
+		min-height: var(--svelte-ui-radio-min-height-sm);
+	}
+
+	.radio-container--small .radio-label.no-label {
+		padding-left: 16px;
+		min-height: 12px;
+	}
+
+	.radio-container--small .radio-label::after {
+		width: var(--svelte-ui-radio-size-sm);
+		height: var(--svelte-ui-radio-size-sm);
+	}
+
+	.radio-container--small .radio-label::before {
+		left: calc(var(--svelte-ui-radio-size-sm) / 2 + 2px);
+	}
+
+	.radio-container--small input[type='radio']:checked + .radio-label::before {
+		left: calc((var(--svelte-ui-radio-size-sm) - var(--svelte-ui-radio-dot-size-sm)) / 2 + 2px);
+		width: var(--svelte-ui-radio-dot-size-sm);
+		height: var(--svelte-ui-radio-dot-size-sm);
+	}
+
+	/* Mobile touch targets for small */
+	@media (hover: none) and (pointer: coarse) {
+		.radio-container--small .radio-label {
+			min-height: var(--svelte-ui-touch-target-sm);
+		}
+	}
+
+	.radio-container--large {
+		font-size: var(--svelte-ui-font-size-lg);
+	}
+
+	.radio-container--large .radio-label {
+		padding: var(--svelte-ui-radio-padding-lg);
+		min-height: var(--svelte-ui-radio-min-height-lg);
+	}
+
+	.radio-container--large .radio-label.no-label {
+		padding-left: 24px;
+		min-height: 20px;
+	}
+
+	.radio-container--large .radio-label::after {
+		width: var(--svelte-ui-radio-size-lg);
+		height: var(--svelte-ui-radio-size-lg);
+	}
+
+	.radio-container--large .radio-label::before {
+		left: calc(var(--svelte-ui-radio-size-lg) / 2 + 2px);
+	}
+
+	.radio-container--large input[type='radio']:checked + .radio-label::before {
+		left: calc((var(--svelte-ui-radio-size-lg) - var(--svelte-ui-radio-dot-size-lg)) / 2 + 2px);
+		width: var(--svelte-ui-radio-dot-size-lg);
+		height: var(--svelte-ui-radio-dot-size-lg);
+	}
+
+	/* Mobile touch targets for large */
+	@media (hover: none) and (pointer: coarse) {
+		.radio-container--large .radio-label {
+			min-height: var(--svelte-ui-touch-target-lg);
+		}
+	}
+
+	/* Error state */
+	.radio-container--error .radio-label::after {
+		border-color: var(--svelte-ui-error-color);
+	}
+
+	.radio-container--error input[type='radio']:checked + .radio-label::before {
+		background-color: var(--svelte-ui-error-color);
+	}
+
+	/* Success state */
+	.radio-container--success .radio-label::after {
+		border-color: var(--svelte-ui-success-color);
+	}
+
+	.radio-container--success input[type='radio']:checked + .radio-label::before {
+		background-color: var(--svelte-ui-success-color);
+	}
+
+	/* Message styles */
+	.radio-message {
+		font-size: var(--svelte-ui-font-size-xs);
+		margin-top: 2px;
+		margin-left: var(--svelte-ui-checkbox-message-offset);
+	}
+
+	.radio-message--error {
+		color: var(--svelte-ui-error-color);
+	}
+
+	.radio-message--success {
+		color: var(--svelte-ui-success-color);
+	}
+
+	/* Reduced motion */
+	.radio-container--no-motion .radio-label::before,
+	.radio-container--no-motion .radio-label::after {
+		transition-duration: 0.01s;
+	}
+
+	/* Prefers reduced motion */
+	@media (prefers-reduced-motion: reduce) {
+		.radio-label::before,
+		.radio-label::after {
+			transition-duration: 0.01s;
+		}
+	}
+
+	/* High contrast mode support */
+	@media (prefers-contrast: high) {
+		.radio-label::after {
+			border-width: 3px;
+		}
+	}
+</style>
