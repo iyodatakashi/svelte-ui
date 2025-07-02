@@ -256,7 +256,7 @@
 	/* ColorPicker用の変数 */
 	--svelte-ui-colorpicker-size: 28px;
 	--svelte-ui-colorpicker-input-padding-left: 40px;
-	--svelte-ui-colorpicker-border-radius: calc(var(--svelte-ui-border-radius - 1px));
+	--svelte-ui-colorpicker-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
 	--svelte-ui-colorpicker-border-style: dashed;
 	--svelte-ui-colorpicker-border-width: 1px;
 	--svelte-ui-colorpicker-offset: 4px;
@@ -368,7 +368,7 @@
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text: var(--white-800-transparent);
 	--svelte-ui-text-subtle: var(--white-500-transparent);
-	--svelte-ui-text-on-filled: var(--base-900);
+	--svelte-ui-text-on-filled: var(--white);
 	--svelte-ui-text-reverse: var(--base-800-transparent);
 	--svelte-ui-text-reverse-subtle: var(--base-600-transparent);
 	--svelte-ui-text-placeholder: var(--white-400-transparent);

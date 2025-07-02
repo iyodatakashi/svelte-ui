@@ -5,6 +5,7 @@
 	import Select from '$lib/components/Select.svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Radio from '$lib/components/Radio.svelte';
+	import Combobox from '$lib/components/Combobox.svelte';
 
 	let theme = $state('light');
 
@@ -31,6 +32,7 @@
 	let selectValue = $state('');
 	let checkboxValue = $state(false);
 	let radioValue = $state('');
+	let comboboxValue = $state('');
 </script>
 
 <div

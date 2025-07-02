@@ -69,7 +69,7 @@
 	};
 
 	const textColors = {
-		filled: 'var(--svelte-ui-text-reverse)',
+		filled: 'var(--svelte-ui-button-text-filled)',
 		outlined: color,
 		text: color
 	};

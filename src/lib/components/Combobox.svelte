@@ -61,10 +61,21 @@
 	let searchTerm = $state('');
 	let inputElement = $state<HTMLInputElement>();
 	let listElement = $state<HTMLUListElement>();
+	let comboboxElement = $state<HTMLDivElement>();
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
+	let inputValue = $state('');
 	const comboboxId = id || `combobox-${Math.random().toString(36).substr(2, 9)}`;
 	const listboxId = `listbox-${Math.random().toString(36).substr(2, 9)}`;
+
+	// inputValueとvalueの同期
+	$effect(() => {
+		if (isOpen && filterable && searchTerm !== '') {
+			inputValue = searchTerm;
+		} else {
+			inputValue = value !== null && value !== undefined ? String(value) : '';
+		}
+	});
 	// フィルタリングされたオプション
 	const filteredOptions = $derived.by(() => {
 		if (!filterable || !searchTerm) return options;
@@ -72,13 +83,15 @@
 			option === null ? false : String(option).toLowerCase().includes(searchTerm.toLowerCase())
 		);
 	});
-	// 表示用のテキスト
+	// inline variant用の表示テキスト
 	const displayText = $derived.by(() => {
-		return isOpen && searchTerm !== ''
-			? searchTerm
-			: value !== null && value !== undefined
-				? String(value)
-				: '';
+		if (variant === 'inline') {
+			if (isOpen && filterable && searchTerm !== '') {
+				return searchTerm;
+			}
+			return value !== null && value !== undefined ? String(value) : '';
+		}
+		return '';
 	});
 	// オプションを選択
 	const selectOption = (option: string | number | null) => {
@@ -86,6 +99,11 @@
 		searchTerm = '';
 		isOpen = false;
 		highlightedIndex = -1;
+		isFocused = false;
+
+		// inputValueも更新
+		inputValue = option !== null && option !== undefined ? String(option) : '';
+
 		onchange?.(option);
 	};
 	// input要素のフォーカス/クリック時
@@ -101,8 +119,11 @@
 	};
 	// コンボボックスを閉じる
 	const closeComboBox = (event: FocusEvent) => {
+		// 選択された値がある場合は検索語をリセット
+		if (value !== null && value !== undefined) {
+			searchTerm = '';
+		}
 		isOpen = false;
-		searchTerm = '';
 		highlightedIndex = -1;
 		isFocused = false;
 		onblur(event);
@@ -111,13 +132,16 @@
 	const handleInput = (event: Event) => {
 		if (readonly) return;
 		const target = event.target as HTMLInputElement;
+		const currentInputValue = target.value;
+
 		if (filterable) {
-			searchTerm = target.value;
+			searchTerm = currentInputValue;
 		}
+
 		// 数値として解析を試行し、失敗した場合は文字列として扱う
-		const inputValue = target.value;
-		const numericValue = Number(inputValue);
-		value = !isNaN(numericValue) && inputValue !== '' ? numericValue : inputValue;
+		const numericValue = Number(currentInputValue);
+		value = !isNaN(numericValue) && currentInputValue !== '' ? numericValue : currentInputValue;
+
 		highlightedIndex = -1;
 		if (!isOpen) {
 			isOpen = true;
@@ -154,17 +178,24 @@
 	};
 	const handleClickOutside = (event: MouseEvent) => {
 		const target = event.target as Node;
-		if (
-			inputElement &&
-			!inputElement.contains(target) &&
-			listElement &&
-			!listElement.contains(target)
-		) {
+		// コンボボックス全体（input + 候補リスト）の外側のクリックのみを外部クリックと判定
+		if (comboboxElement && !comboboxElement.contains(target)) {
 			closeComboBox(event as unknown as FocusEvent);
 		}
 	};
 	$effect(() => {
-		document.addEventListener('click', handleClickOutside);
+		if (isOpen) {
+			// 次のマイクロタスクでイベントリスナーを追加
+			const timeoutId = setTimeout(() => {
+				document.addEventListener('click', handleClickOutside);
+			}, 0);
+
+			return () => {
+				clearTimeout(timeoutId);
+				document.removeEventListener('click', handleClickOutside);
+			};
+		}
+
 		return () => {
 			document.removeEventListener('click', handleClickOutside);
 		};
@@ -172,6 +203,7 @@
 </script>
 
 <div
+	bind:this={comboboxElement}
 	class="combobox
 focus-style-{focusStyle}"
 	class:inline={variant === 'inline'}
@@ -198,11 +230,11 @@ focus-style-{focusStyle}"
 		{/if}
 		<input
 			bind:this={inputElement}
+			bind:value={inputValue}
 			type="text"
 			{name}
 			id={comboboxId}
 			class="combobox-input"
-			value={displayText}
 			{placeholder}
 			{disabled}
 			{required}
@@ -248,7 +280,11 @@ focus-style-{focusStyle}"
 						class:selected={option === value}
 						role="option"
 						aria-selected={option === value}
-						onclick={() => selectOption(option)}
+						onmousedown={(event) => {
+							event.preventDefault();
+							event.stopPropagation();
+							selectOption(option);
+						}}
 						onmouseenter={() => (highlightedIndex = index)}
 					>
 						{option ?? '（空の値）'}
@@ -374,7 +410,7 @@ focus-style-{focusStyle}"
 		text-align: left;
 		cursor: pointer;
 		font-size: inherit;
-		color: inherit;
+		color: var(--svelte-ui-text);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		&:hover,

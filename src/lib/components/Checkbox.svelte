@@ -152,6 +152,7 @@
 		padding: var(--svelte-ui-checkbox-padding);
 		white-space: nowrap;
 		font-size: inherit;
+		color: var(--svelte-ui-checkbox-text-color);
 		cursor: pointer;
 		min-height: var(--svelte-ui-checkbox-min-height);
 	}
