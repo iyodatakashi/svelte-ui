@@ -146,7 +146,7 @@
    * ==================================== */
 
 	/* 基本テキスト色の定義 */
-	--svelte-ui-text-main: var(--base-800);
+	--svelte-ui-text: var(--base-800);
 	--svelte-ui-text-subtle: var(--base-500);
 	--svelte-ui-text-on-filled: var(--white);
 	--svelte-ui-text-reverse: var(--white-800-transparent);
@@ -247,7 +247,7 @@
 	--svelte-ui-radio-padding: 0 0 0 24px;
 	--svelte-ui-radio-padding-sm: 0 0 0 20px;
 	--svelte-ui-radio-padding-lg: 0 0 0 28px;
-	--svelte-ui-checkbox-focus-shadow: 0 0 0 2px var(--base-200-transparent);
+	--svelte-ui-radio-focus-shadow: 0 0 0 2px var(--base-200-transparent);
 
 	/* IconButton用の変数 */
 	--svelte-ui-iconbutton-border-radius: var(--svelte-ui-border-radius);
@@ -327,7 +327,7 @@
 	/* Checkbox用の色変数 */
 	--svelte-ui-checkbox-border-color: var(--svelte-ui-border-weak);
 	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-primary-color);
-	--svelte-ui-checkbox-text-color: var(--svelte-ui-text-main);
+	--svelte-ui-checkbox-text-color: var(--svelte-ui-text);
 	--svelte-ui-checkbox-text-color-subtle: var(--svelte-ui-text-subtle);
 	--svelte-ui-checkbox-icon-color: var(--svelte-ui-text-on-filled);
 
@@ -366,7 +366,7 @@
    * ==================================== */
 
 	/* 基本テキスト色の定義 */
-	--svelte-ui-text-main: var(--white-800-transparent);
+	--svelte-ui-text: var(--white-800-transparent);
 	--svelte-ui-text-subtle: var(--white-500-transparent);
 	--svelte-ui-text-on-filled: var(--base-900);
 	--svelte-ui-text-reverse: var(--base-800-transparent);
@@ -424,7 +424,7 @@
 	/* Checkbox用の色変数 */
 	--svelte-ui-checkbox-border-color: var(--svelte-ui-border-weak);
 	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-primary-color);
-	--svelte-ui-checkbox-text-color: var(--svelte-ui-text-main);
+	--svelte-ui-checkbox-text-color: var(--svelte-ui-text);
 	--svelte-ui-checkbox-text-color-subtle: var(--svelte-ui-text-subtle);
 	--svelte-ui-checkbox-icon-color: var(--svelte-ui-text-on-filled);
 

@@ -265,7 +265,7 @@
 		color: var(--badge-text-color);
 		line-height: 1;
 		text-align: center;
-		border-radius: var(--svelte-ui-border-radius-full);
+		border-radius: var(--svelte-ui-border-radius-rounded);
 		z-index: 2;
 	}
 

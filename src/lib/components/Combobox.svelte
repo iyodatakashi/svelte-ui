@@ -375,8 +375,7 @@ focus-style-{focusStyle}"
 		cursor: pointer;
 		font-size: inherit;
 		color: inherit;
-		transition: background-color var(--svelte-ui-transition-normal)
-			var(--svelte-ui-transition-timing);
+		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		&:hover,
 		&.highlighted {
@@ -400,7 +399,7 @@ focus-style-{focusStyle}"
 	.no-options {
 		padding: var(--svelte-ui-combobox-option-padding);
 		font-size: inherit;
-		color: var(--svelte-ui-text-secondary);
+		color: var(--svelte-ui-text-subtle);
 		font-style: italic;
 		list-style: none;
 	}

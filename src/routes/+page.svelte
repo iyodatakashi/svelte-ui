@@ -55,8 +55,8 @@
 				メインテキスト色 (--svelte-ui-text)
 			</p>
 
-			<p style="color: var(--svelte-ui-text-light); margin-bottom: 10px;">
-				サブテキスト色 (--svelte-ui-text-light)
+			<p style="color: var(--svelte-ui-text-subtle); margin-bottom: 10px;">
+				サブテキスト色 (--svelte-ui-text-subtle)
 			</p>
 
 			<p style="color: var(--svelte-ui-text-placeholder); margin-bottom: 20px;">
@@ -111,8 +111,8 @@
 		>
 			<h3 style="color: var(--svelte-ui-text); margin-bottom: 10px;">デバッグ情報</h3>
 			<div style="font-family: monospace; font-size: 0.9em;">
-				<div style="color: var(--svelte-ui-text-light);">現在のテーマ: {theme}</div>
-				<div style="color: var(--svelte-ui-text-light);">body[data-theme]: {theme}</div>
+				<div style="color: var(--svelte-ui-text-subtle);">現在のテーマ: {theme}</div>
+				<div style="color: var(--svelte-ui-text-subtle);">body[data-theme]: {theme}</div>
 			</div>
 		</div>
 	</div>
@@ -124,6 +124,5 @@
 		padding: 20px;
 		border: 1px solid var(--svelte-ui-border-color);
 		border-radius: 8px;
-		background: var(--svelte-ui-bg-light);
 	}
 </style>

@@ -325,11 +325,11 @@
 		}
 
 		.color-display {
-			border-radius: var(--svelte-ui-border-radius-full);
+			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
 
 		.custom-color-picker::before {
-			border-radius: var(--svelte-ui-border-radius-full);
+			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
 
 		&.clearable .text-input {

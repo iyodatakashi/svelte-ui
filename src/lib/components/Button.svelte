@@ -69,7 +69,7 @@
 	};
 
 	const textColors = {
-		filled: 'var(--svelte-ui-text-white)',
+		filled: 'var(--svelte-ui-text-reverse)',
 		outlined: color,
 		text: color
 	};

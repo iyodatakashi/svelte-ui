@@ -140,7 +140,7 @@
 		line-height: inherit;
 		transition-property: color, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
-		transition-timing-function: var(--svelte-ui-transition-timing);
+		transition-timing-function: ease;
 	}
 
 	.material-symbols-filled {
@@ -164,7 +164,7 @@
 		color: inherit;
 		transition-property: color, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
-		transition-timing-function: var(--svelte-ui-transition-timing);
+		transition-timing-function: ease;
 	}
 
 	/* Reduced motion */
