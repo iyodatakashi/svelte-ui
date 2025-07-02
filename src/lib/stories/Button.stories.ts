@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Button from '../components/Button.svelte';
@@ -8,7 +8,7 @@ interface ButtonArgs {
 	children: Snippet;
 	type?: 'button' | 'submit' | 'reset';
 	customStyle?: string;
-	theme?: 'light' | 'dark';
+
 	disabled?: boolean;
 	loading?: boolean;
 	tabindex?: number | null;
@@ -30,7 +30,7 @@ interface ButtonArgs {
 
 const meta: Meta<ButtonArgs> = {
 	title: 'Forms/Button',
-	component: Button as any,
+	component: Button,
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -62,11 +62,7 @@ const meta: Meta<ButtonArgs> = {
 			options: ['small', 'medium', 'large'],
 			description: 'Size variant of the button'
 		},
-		theme: {
-			control: 'select',
-			options: ['light', 'dark'],
-			description: 'Theme variant'
-		},
+
 		disabled: {
 			control: 'boolean',
 			description: 'Whether the button is disabled'
@@ -149,7 +145,7 @@ const createChildrenSnippet = (text: string) =>
 		render: () => text
 	}));
 
-// Default button
+// Default (text variant, medium)
 export const Default: Story = {
 	args: {
 		variant: 'text',
@@ -158,7 +154,7 @@ export const Default: Story = {
 	}
 };
 
-// Variant examples
+// Filled variant
 export const Filled: Story = {
 	args: {
 		variant: 'filled',
@@ -167,19 +163,12 @@ export const Filled: Story = {
 	}
 };
 
+// Outlined variant
 export const Outlined: Story = {
 	args: {
 		variant: 'outlined',
 		size: 'medium',
 		children: createChildrenSnippet('Outlined Button')
-	}
-};
-
-export const TextButton: Story = {
-	args: {
-		variant: 'text',
-		size: 'medium',
-		children: createChildrenSnippet('Text Button')
 	}
 };
 
@@ -191,15 +180,6 @@ export const Small: Story = {
 		children: createChildrenSnippet('Small Button')
 	}
 };
-
-export const Medium: Story = {
-	args: {
-		variant: 'filled',
-		size: 'medium',
-		children: createChildrenSnippet('Medium Button')
-	}
-};
-
 export const Large: Story = {
 	args: {
 		variant: 'filled',
@@ -208,63 +188,49 @@ export const Large: Story = {
 	}
 };
 
-// State examples
+// Disabled
 export const Disabled: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		disabled: true,
 		children: createChildrenSnippet('Disabled Button')
 	}
 };
 
+// Loading
 export const Loading: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		loading: true,
 		children: createChildrenSnippet('Loading Button')
 	}
 };
 
-// With icons
+// With icon
 export const WithIcon: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		icon: 'add',
 		children: createChildrenSnippet('Add Item')
 	}
 };
 
+// Icon only
 export const IconOnly: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		icon: 'edit',
 		ariaLabel: 'Edit item',
 		children: createChildrenSnippet('')
 	}
 };
 
-export const WithFilledIcon: Story = {
+// Custom color
+export const CustomColor: Story = {
 	args: {
-		variant: 'outlined',
-		size: 'medium',
-		icon: 'favorite',
-		iconFill: true,
-		children: createChildrenSnippet('Like')
-	}
-};
-
-// Popup button
-export const PopupButton: Story = {
-	args: {
-		variant: 'outlined',
-		size: 'medium',
-		popup: true,
-		ariaExpanded: false,
-		children: createChildrenSnippet('Options')
+		variant: 'filled',
+		color: '#e91e63',
+		children: createChildrenSnippet('Custom Color')
 	}
 };
 
@@ -272,7 +238,6 @@ export const PopupButton: Story = {
 export const FullWidth: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		fullWidth: true,
 		children: createChildrenSnippet('Full Width Button')
 	},
@@ -281,77 +246,32 @@ export const FullWidth: Story = {
 	}
 };
 
-// Rounded button
+// Rounded
 export const Rounded: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		rounded: true,
 		children: createChildrenSnippet('Rounded Button')
 	}
 };
 
-// Custom color
-export const CustomColor: Story = {
+// Popup
+export const Popup: Story = {
 	args: {
-		variant: 'filled',
-		size: 'medium',
-		color: '#e91e63',
-		children: createChildrenSnippet('Custom Color')
-	}
-};
-
-// Dark theme
-export const DarkTheme: Story = {
-	args: {
-		variant: 'filled',
-		size: 'medium',
-		theme: 'dark',
-		children: createChildrenSnippet('Dark Theme')
-	},
-	parameters: {
-		backgrounds: { default: 'dark' }
-	}
-};
-
-// Button types
-export const SubmitButton: Story = {
-	args: {
-		type: 'submit',
-		variant: 'filled',
-		size: 'medium',
-		children: createChildrenSnippet('Submit Form')
-	}
-};
-
-export const ResetButton: Story = {
-	args: {
-		type: 'reset',
 		variant: 'outlined',
-		size: 'medium',
-		children: createChildrenSnippet('Reset Form')
+		popup: true,
+		ariaExpanded: false,
+		children: createChildrenSnippet('Options')
 	}
 };
 
-// Accessibility examples
-export const AccessibleButton: Story = {
+// Accessibility example
+export const Accessible: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		ariaLabel: 'Save document as PDF',
 		icon: 'download',
 		children: createChildrenSnippet('Download PDF')
-	}
-};
-
-export const ExpandableButton: Story = {
-	args: {
-		variant: 'outlined',
-		size: 'medium',
-		popup: true,
-		ariaExpanded: false,
-		ariaLabel: 'More options menu',
-		children: createChildrenSnippet('More')
 	}
 };
 
@@ -359,48 +279,18 @@ export const ExpandableButton: Story = {
 export const ReducedMotion: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		reducedMotion: true,
 		children: createChildrenSnippet('No Animation')
 	}
 };
 
-// Complex examples
-export const IconLoadingButton: Story = {
-	args: {
-		variant: 'filled',
-		size: 'large',
-		icon: 'send',
-		loading: true,
-		children: createChildrenSnippet('Sending Message')
-	}
-};
-
-export const MinWidthButton: Story = {
-	args: {
-		variant: 'outlined',
-		size: 'medium',
-		minWidth: 120,
-		children: createChildrenSnippet('OK')
-	}
-};
-
-// Button group example (simplified)
-export const ButtonGroupExample: Story = {
-	args: {
-		variant: 'outlined',
-		size: 'medium',
-		children: createChildrenSnippet('Cancel')
-	}
-};
-
-// Interactive playground
+// Playground (全props操作用)
 export const Playground: Story = {
 	args: {
 		type: 'button',
 		variant: 'filled',
 		size: 'medium',
-		theme: 'light',
+
 		disabled: false,
 		loading: false,
 		fullWidth: false,

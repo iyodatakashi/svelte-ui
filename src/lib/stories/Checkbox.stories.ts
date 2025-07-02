@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Checkbox from '../components/Checkbox.svelte';
@@ -23,7 +23,7 @@ interface CheckboxArgs {
 
 const meta: Meta<CheckboxArgs> = {
 	title: 'Forms/Checkbox',
-	component: Checkbox as any, // 型キャストで互換性確保
+	component: Checkbox,
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -111,15 +111,7 @@ const createChildrenSnippet = (text: string) =>
 		render: () => text
 	}));
 
-// Custom render function to handle bindable props properly
-const renderCheckbox = (args: CheckboxArgs) => {
-	return {
-		Component: Checkbox,
-		props: args
-	};
-};
-
-// Default story
+// Default (unchecked)
 export const Default: Story = {
 	args: {
 		value: false,
@@ -127,20 +119,20 @@ export const Default: Story = {
 	}
 };
 
-// Checked state
+// Checked
 export const Checked: Story = {
 	args: {
 		value: true,
-		children: createChildrenSnippet('I agree to the terms and conditions')
+		children: createChildrenSnippet('Checked')
 	}
 };
 
-// Indeterminate state
+// Indeterminate
 export const Indeterminate: Story = {
 	args: {
 		value: false,
 		indeterminate: true,
-		children: createChildrenSnippet('Select all items (some selected)')
+		children: createChildrenSnippet('Indeterminate')
 	}
 };
 
@@ -149,87 +141,60 @@ export const Small: Story = {
 	args: {
 		value: false,
 		size: 'small',
-		children: createChildrenSnippet('Small checkbox')
+		children: createChildrenSnippet('Small')
 	}
 };
-
-export const Medium: Story = {
-	args: {
-		value: false,
-		size: 'medium',
-		children: createChildrenSnippet('Medium checkbox (default)')
-	}
-};
-
 export const Large: Story = {
 	args: {
 		value: false,
 		size: 'large',
-		children: createChildrenSnippet('Large checkbox')
+		children: createChildrenSnippet('Large')
 	}
 };
 
-// Error state
+// Disabled
+export const Disabled: Story = {
+	args: {
+		value: false,
+		disabled: true,
+		children: createChildrenSnippet('Disabled')
+	}
+};
+
+// Error
 export const WithError: Story = {
 	args: {
 		value: false,
-		required: true,
-		error: 'You must agree to the terms and conditions',
-		children: createChildrenSnippet('I agree to the terms and conditions')
+		error: 'You must agree',
+		children: createChildrenSnippet('With error')
 	}
 };
 
-// Success state
+// Success
 export const WithSuccess: Story = {
 	args: {
 		value: true,
-		success: 'Email verification completed',
-		children: createChildrenSnippet('Verify email address')
+		success: 'Success!',
+		children: createChildrenSnippet('With success')
 	}
 };
 
-// Disabled states
-export const DisabledUnchecked: Story = {
-	args: {
-		value: false,
-		disabled: true,
-		children: createChildrenSnippet('Disabled unchecked')
-	}
-};
-
-export const DisabledChecked: Story = {
-	args: {
-		value: true,
-		disabled: true,
-		children: createChildrenSnippet('Disabled checked')
-	}
-};
-
-export const DisabledIndeterminate: Story = {
-	args: {
-		value: false,
-		indeterminate: true,
-		disabled: true,
-		children: createChildrenSnippet('Disabled indeterminate')
-	}
-};
-
-// Required field
-export const RequiredField: Story = {
+// Required
+export const Required: Story = {
 	args: {
 		value: false,
 		required: true,
 		error: 'This field is required',
-		children: createChildrenSnippet('I agree to the terms and conditions *')
+		children: createChildrenSnippet('Required *')
 	}
 };
 
-// Parent selection (indeterminate)
-export const ParentSelection: Story = {
+// Readonly
+export const ReadOnly: Story = {
 	args: {
-		value: false,
-		indeterminate: true,
-		children: createChildrenSnippet('Select All (2/4 items selected)')
+		value: true,
+		readonly: true,
+		children: createChildrenSnippet('Readonly')
 	}
 };
 
@@ -238,20 +203,11 @@ export const ReducedMotion: Story = {
 	args: {
 		reducedMotion: true,
 		value: false,
-		children: createChildrenSnippet('Checkbox with reduced motion')
+		children: createChildrenSnippet('Reduced motion')
 	}
 };
 
-// Readonly state
-export const ReadOnly: Story = {
-	args: {
-		value: true,
-		readonly: true,
-		children: createChildrenSnippet('Readonly checkbox (cannot be changed)')
-	}
-};
-
-// Interactive playground
+// Playground (全props操作用)
 export const Playground: Story = {
 	args: {
 		value: false,

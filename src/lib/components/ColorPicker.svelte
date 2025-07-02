@@ -10,24 +10,28 @@
 		fullWidth = false,
 		rounded = false,
 		clearable = false,
-		theme = 'light',
 		focusStyle = 'border',
 		customStyle = '',
-		onchange = () => {},
-		onfocus = () => {},
-		onblur = () => {}
+		onchange = (value: string) => {},
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onclick = (event: MouseEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
+		...restProps
 	}: {
 		value?: string;
 		disabled?: boolean;
 		fullWidth?: boolean;
 		rounded?: boolean;
 		clearable?: boolean;
-		theme?: 'light' | 'dark';
 		focusStyle?: 'background' | 'border' | 'none';
 		customStyle?: string;
-		onchange?: () => void;
-		onfocus?: () => void;
-		onblur?: () => void;
+		onchange?: (value: string) => void;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onclick?: (event: MouseEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
+		[key: string]: any;
 	} = $props();
 
 	let localValue: string = $state(value);
@@ -50,7 +54,7 @@
 		handleChange();
 	};
 
-	const handleChange = (): void => {
+	const handleChange = (event?: Event): void => {
 		if (!localValue.startsWith('#')) {
 			localValue = '#' + localValue;
 		}
@@ -58,30 +62,32 @@
 		if (value !== prevValue || localValue !== prevValue) {
 			value = localValue;
 			prevValue = value;
-			onchange();
+			onchange(value);
 		}
 	};
 
-	const handleFocus = (event: globalThis.FocusEvent): void => {
+	const handleFocus = (event: FocusEvent): void => {
 		isFocused = true;
-		onfocus();
+		onfocus(event);
 	};
 
-	const handleBlur = (event: globalThis.FocusEvent): void => {
+	const handleBlur = (event: FocusEvent): void => {
 		isFocused = false;
-		onblur();
+		onblur(event);
 	};
 
 	const clear = (): void => {
 		if (disabled) return;
 		value = '';
-		onchange();
+		onchange(value);
 	};
+
+	const handleClick = (event: MouseEvent) => onclick(event);
+	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
 </script>
 
 <div
 	class="color-picker
-	{theme === 'dark' ? 'dark-theme' : 'light-theme'}
 	focus-style-{focusStyle}"
 	class:full-width={fullWidth}
 	class:rounded
@@ -98,7 +104,10 @@
 			onchange={handleChange}
 			onfocus={handleFocus}
 			onblur={handleBlur}
+			onclick={handleClick}
+			onkeydown={handleKeydown}
 			{disabled}
+			{...restProps}
 		/>
 		<!-- クリアボタン -->
 		{#if clearable && !disabled}
@@ -122,8 +131,11 @@
 			onchange={handleChange}
 			onfocus={handleFocus}
 			onblur={handleBlur}
+			onclick={handleClick}
+			onkeydown={handleKeydown}
 			{disabled}
 			class="color-input"
+			{...restProps}
 		/>
 		<div class="color-display" style="background-color: {value};"></div>
 	</div>
@@ -159,11 +171,11 @@
 	.text-input {
 		width: 100%;
 		min-width: 1em;
-		padding: 0 12px 0 var(--svelte-ui-colorpalette-input-padding-left);
+		padding: 0 12px 0 var(--svelte-ui-colorpicker-input-padding-left);
 		background: transparent;
 		border: none;
-		background-color: var(--svelte-ui-colorpalette-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-colorpalette-border-color);
+		background-color: var(--svelte-ui-colorpicker-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-colorpicker-border-color);
 		border-radius: var(--svelte-ui-input-border-radius);
 		font-size: inherit;
 		font-weight: inherit;
@@ -180,10 +192,10 @@
 
 	.custom-color-picker {
 		position: absolute;
-		left: var(--svelte-ui-colorpalette-offset);
+		left: var(--svelte-ui-colorpicker-offset);
 		display: inline-block;
-		width: var(--svelte-ui-colorpalette-size);
-		height: var(--svelte-ui-colorpalette-size);
+		width: var(--svelte-ui-colorpicker-size);
+		height: var(--svelte-ui-colorpicker-size);
 
 		&::before {
 			content: '';
@@ -191,9 +203,9 @@
 			position: absolute;
 			width: calc(100% - 2px);
 			height: calc(100% - 2px);
-			border: var(--svelte-ui-colorpalette-border-style) var(--svelte-ui-colorpalette-border-width)
-				var(--svelte-ui-colorpalette-border-color);
-			border-radius: var(--svelte-ui-colorpalette-border-radius);
+			border: var(--svelte-ui-colorpicker-border-style) var(--svelte-ui-colorpicker-border-width)
+				var(--svelte-ui-colorpicker-border-color);
+			border-radius: var(--svelte-ui-colorpicker-border-radius);
 		}
 	}
 
@@ -213,7 +225,7 @@
 		height: 100%;
 		cursor: pointer;
 		position: relative;
-		border-radius: var(--svelte-ui-colorpalette-border-radius);
+		border-radius: var(--svelte-ui-colorpicker-border-radius);
 		z-index: 1;
 	}
 
@@ -289,38 +301,18 @@
 	}
 
 	/* =============================================
- * テーマバリエーション
- * ============================================= */
-	.dark-theme {
-		.text-input {
-			background-color: var(--svelte-ui-colorpalette-bg-dark);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
-				var(--svelte-ui-colorpalette-border-color-dark);
-			color: var(--svelte-ui-text-dark);
-		}
-
-		.custom-color-picker::before {
-			border-color: var(--svelte-ui-colorpalette-border-color-dark);
-		}
-
-		&.focus-style-background .text-input:focus-visible {
-			background: var(--svelte-ui-hover-overlay-dark);
-		}
-	}
-
-	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.color-picker {
 		.text-input {
-			background-color: var(--svelte-ui-colorpalette-bg);
+			background-color: var(--svelte-ui-colorpicker-bg);
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
-				var(--svelte-ui-colorpalette-border-color);
+				var(--svelte-ui-colorpicker-border-color);
 			color: var(--svelte-ui-text);
 		}
 
 		.custom-color-picker::before {
-			border-color: var(--svelte-ui-colorpalette-border-color);
+			border-color: var(--svelte-ui-colorpicker-border-color);
 		}
 	}
 

@@ -8,7 +8,7 @@
 		value = $bindable(),
 		options = [],
 		customStyle = '',
-		theme = 'light',
+
 		focusStyle = 'border',
 		placeholder = '',
 		fullWidth = false,
@@ -20,14 +20,17 @@
 		size = null,
 		rounded = false,
 		onchange = (value: string | number | null | undefined) => {},
-		onfocus = () => {},
-		onblur = () => {}
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onclick = (event: MouseEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
+		...restProps
 	}: {
 		name?: string;
 		value: string | number | null | undefined;
 		options: any[];
 		customStyle?: string;
-		theme?: 'light' | 'dark';
+
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -39,27 +42,32 @@
 		size?: number | null;
 		rounded?: boolean;
 		onchange?: (value: string | number | null | undefined) => void;
-		onfocus?: Function;
-		onblur?: Function;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onclick?: (event: MouseEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
+		[key: string]: any;
 	} = $props();
 
 	let isFocused: boolean = $state(false);
-	const handleFocus = () => {
+
+	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
-		onfocus?.();
+		onfocus(event);
 	};
-	const handleBlur = () => {
+	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
-		onblur?.();
+		onblur(event);
 	};
 	const handleChange = () => {
 		onchange?.(value);
 	};
+	const handleClick = (event: MouseEvent) => onclick(event);
+	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
 </script>
 
 <div
 	class="select
-{theme === 'dark' ? 'dark-theme' : 'light-theme'}
 focus-style-{focusStyle}"
 	class:full-width={fullWidth}
 	class:disabled
@@ -79,6 +87,9 @@ focus-style-{focusStyle}"
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onchange={handleChange}
+		onclick={handleClick}
+		onkeydown={handleKeydown}
+		{...restProps}
 	>
 		<!-- プレースホルダーオプション -->
 		{#if placeholder}
@@ -198,34 +209,6 @@ focus-style-{focusStyle}"
 	select:disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
-	}
-
-	/* =============================================
- * テーマバリエーション
- * ============================================= */
-	.dark-theme {
-		.dropdown-icon {
-			color: var(--svelte-ui-select-icon-color-dark);
-		}
-
-		option[value=''] {
-			color: var(--svelte-ui-text-placeholder);
-		}
-
-		select {
-			color: var(--svelte-ui-text-dark);
-			background-color: var(--svelte-ui-select-bg-dark);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
-				var(--svelte-ui-select-border-color-dark);
-		}
-
-		&.focus-style-background select:focus {
-			background: var(--svelte-ui-hover-overlay-dark);
-		}
-	}
-
-	.dark-theme.readonly select {
-		background-color: var(--svelte-ui-input-readonly-bg-dark);
 	}
 
 	/* =============================================

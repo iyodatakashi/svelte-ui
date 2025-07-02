@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Icon from '../components/Icon.svelte';
@@ -23,7 +23,7 @@ interface IconArgs {
 
 const meta: Meta<IconArgs> = {
 	title: 'UI/Icon',
-	component: Icon as any,
+	component: Icon,
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -111,53 +111,54 @@ const createChildrenSnippet = (iconName: string) =>
 		render: () => iconName
 	}));
 
-// Default icon
+// Default (outlined, medium)
 export const Default: Story = {
 	args: {
 		size: 24,
+		variant: 'outlined',
 		children: createChildrenSnippet('search')
 	}
 };
 
-// Size variants
+// Variant examples
+export const Filled: Story = {
+	args: {
+		size: 24,
+		variant: 'filled',
+		children: createChildrenSnippet('search')
+	}
+};
+export const Rounded: Story = {
+	args: {
+		size: 24,
+		variant: 'rounded',
+		children: createChildrenSnippet('search')
+	}
+};
+export const Sharp: Story = {
+	args: {
+		size: 24,
+		variant: 'sharp',
+		children: createChildrenSnippet('search')
+	}
+};
+
+// Size examples
 export const Small: Story = {
 	args: {
 		size: 16,
 		children: createChildrenSnippet('search')
 	}
 };
-
-export const Medium: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('search')
-	}
-};
-
 export const Large: Story = {
-	args: {
-		size: 32,
-		children: createChildrenSnippet('search')
-	}
-};
-
-export const ExtraLarge: Story = {
 	args: {
 		size: 48,
 		children: createChildrenSnippet('search')
 	}
 };
 
-// Fill variants
-export const Outlined: Story = {
-	args: {
-		size: 32,
-		fill: false,
-		children: createChildrenSnippet('favorite')
-	}
-};
-
-export const Filled: Story = {
+// Fill
+export const FilledIcon: Story = {
 	args: {
 		size: 32,
 		fill: true,
@@ -165,56 +166,16 @@ export const Filled: Story = {
 	}
 };
 
-// Material Symbols variants
-export const VariantOutlined: Story = {
+// Color
+export const CustomColor: Story = {
 	args: {
 		size: 32,
-		variant: 'outlined',
-		children: createChildrenSnippet('home')
+		color: '#e91e63',
+		children: createChildrenSnippet('palette')
 	}
 };
 
-export const VariantFilled: Story = {
-	args: {
-		size: 32,
-		variant: 'filled',
-		children: createChildrenSnippet('home')
-	}
-};
-
-export const VariantRounded: Story = {
-	args: {
-		size: 32,
-		variant: 'rounded',
-		children: createChildrenSnippet('home')
-	}
-};
-
-export const VariantSharp: Story = {
-	args: {
-		size: 32,
-		variant: 'sharp',
-		children: createChildrenSnippet('home')
-	}
-};
-
-// Weight variants
-export const WeightLight: Story = {
-	args: {
-		size: 32,
-		weight: 200,
-		children: createChildrenSnippet('settings')
-	}
-};
-
-export const WeightRegular: Story = {
-	args: {
-		size: 32,
-		weight: 400,
-		children: createChildrenSnippet('settings')
-	}
-};
-
+// Weight
 export const WeightBold: Story = {
 	args: {
 		size: 32,
@@ -223,23 +184,7 @@ export const WeightBold: Story = {
 	}
 };
 
-// Grade examples
-export const GradeLight: Story = {
-	args: {
-		size: 32,
-		grade: -25,
-		children: createChildrenSnippet('brightness_high')
-	}
-};
-
-export const GradeNormal: Story = {
-	args: {
-		size: 32,
-		grade: 0,
-		children: createChildrenSnippet('brightness_high')
-	}
-};
-
+// Grade
 export const GradeHeavy: Story = {
 	args: {
 		size: 32,
@@ -248,15 +193,7 @@ export const GradeHeavy: Story = {
 	}
 };
 
-// Optical size examples
-export const OpticalSizeSmall: Story = {
-	args: {
-		size: 16,
-		opticalSize: 20,
-		children: createChildrenSnippet('visibility')
-	}
-};
-
+// Optical size
 export const OpticalSizeLarge: Story = {
 	args: {
 		size: 48,
@@ -265,31 +202,7 @@ export const OpticalSizeLarge: Story = {
 	}
 };
 
-// Color examples
-export const ColorDefault: Story = {
-	args: {
-		size: 32,
-		children: createChildrenSnippet('palette')
-	}
-};
-
-export const ColorCustom: Story = {
-	args: {
-		size: 32,
-		color: '#e91e63',
-		children: createChildrenSnippet('palette')
-	}
-};
-
-export const ColorCSS: Story = {
-	args: {
-		size: 32,
-		color: 'var(--primary-color)',
-		children: createChildrenSnippet('palette')
-	}
-};
-
-// Accessibility examples
+// Decorative
 export const Decorative: Story = {
 	args: {
 		size: 24,
@@ -298,121 +211,12 @@ export const Decorative: Story = {
 	}
 };
 
-export const Semantic: Story = {
+// Accessibility example
+export const Accessible: Story = {
 	args: {
 		size: 24,
-		decorative: false,
 		ariaLabel: '検索',
 		children: createChildrenSnippet('search')
-	}
-};
-
-export const WithTooltip: Story = {
-	args: {
-		size: 24,
-		title: 'このアイコンにマウスオーバーしてください',
-		children: createChildrenSnippet('info')
-	}
-};
-
-// Fallback examples
-export const WithFallback: Story = {
-	args: {
-		size: 24,
-		fallbackText: '❤️',
-		children: createChildrenSnippet('favorite')
-	}
-};
-
-export const FallbackUnicode: Story = {
-	args: {
-		size: 24,
-		fallbackText: '✓',
-		children: createChildrenSnippet('check')
-	}
-};
-
-// Common icon examples
-export const NavigationHome: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('home')
-	}
-};
-
-export const NavigationSearch: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('search')
-	}
-};
-
-export const NavigationMenu: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('menu')
-	}
-};
-
-export const NavigationBack: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('arrow_back')
-	}
-};
-
-export const NavigationClose: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('close')
-	}
-};
-
-export const ActionIcons: Story = {
-	args: {
-		size: 24,
-		children: createChildrenSnippet('edit')
-	}
-};
-
-export const StatusIcons: Story = {
-	args: {
-		size: 24,
-		color: '#4caf50',
-		children: createChildrenSnippet('check_circle')
-	}
-};
-
-// Complex examples
-export const AdvancedConfiguration: Story = {
-	args: {
-		size: 40,
-		variant: 'rounded',
-		weight: 500,
-		grade: 25,
-		opticalSize: 40,
-		color: '#2196f3',
-		children: createChildrenSnippet('tune')
-	}
-};
-
-export const SmallOptimized: Story = {
-	args: {
-		size: 16,
-		weight: 500,
-		grade: 25,
-		opticalSize: 20,
-		children: createChildrenSnippet('notifications')
-	}
-};
-
-export const LargeOptimized: Story = {
-	args: {
-		size: 64,
-		weight: 300,
-		grade: -25,
-		opticalSize: 48,
-		children: createChildrenSnippet('emoji_emotions')
 	}
 };
 
@@ -425,7 +229,7 @@ export const ReducedMotion: Story = {
 	}
 };
 
-// Interactive playground
+// Playground (全props操作用)
 export const Playground: Story = {
 	args: {
 		size: 24,

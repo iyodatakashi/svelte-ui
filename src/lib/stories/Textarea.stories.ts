@@ -87,214 +87,165 @@ const meta = {
 
 export default meta;
 
-// 基本パターン
+// Default
 export const Default = {
 	args: {
 		value: '',
 		placeholder: '複数行のテキストを入力してください',
 		rows: 3,
 		autoResize: true
+	}
+};
+
+// Dark theme
+export const DarkTheme = {
+	args: {
+		placeholder: 'ダークテーマのテキストエリア',
+		value: 'ダークモード\n複数行テキスト'
+	}
+};
+
+// Rounded
+export const Rounded = {
+	args: {
+		rounded: true,
+		placeholder: '角丸デザインのテキストエリア',
+		rows: 4
+	}
+};
+
+// Full width
+export const FullWidth = {
+	args: {
+		fullWidth: true,
+		placeholder: '幅100%のテキストエリア',
+		rows: 3
+	}
+};
+
+// Focus style: background
+export const FocusStyleBackground = {
+	args: {
+		focusStyle: 'background',
+		placeholder: 'フォーカス時に背景色変更'
+	}
+};
+
+// Focus style: border
+export const FocusStyleBorder = {
+	args: {
+		focusStyle: 'border',
+		placeholder: 'フォーカス時にボーダー表示'
+	}
+};
+
+// Focus style: none
+export const FocusStyleNone = {
+	args: {
+		focusStyle: 'none',
+		placeholder: 'フォーカススタイルなし'
+	}
+};
+
+// Auto resize
+export const AutoResize = {
+	args: {
+		autoResize: true,
+		placeholder: '自動リサイズ',
+		rows: 2
+	}
+};
+
+// Resizable
+export const Resizable = {
+	args: {
+		resizable: true,
+		placeholder: 'リサイズ可能',
+		rows: 3
+	}
+};
+
+// Clearable
+export const Clearable = {
+	args: {
+		clearable: true,
+		placeholder: 'クリアボタン付き',
+		value: 'このテキストをクリアできます\n複数行対応'
+	}
+};
+
+// Disabled
+export const Disabled = {
+	args: {
+		disabled: true,
+		value: '無効状態のテキスト\n操作できません'
+	}
+};
+
+// Readonly
+export const ReadOnly = {
+	args: {
+		readonly: true,
+		value: '読み取り専用のテキスト\n編集できません'
+	}
+};
+
+// Required
+export const Required = {
+	args: {
+		required: true,
+		placeholder: '必須項目'
+	}
+};
+
+// With minHeight
+export const WithMinHeight = {
+	args: {
+		minHeight: 100,
+		placeholder: '最小高さ100px',
+		rows: 2
+	}
+};
+
+// With maxlength
+export const WithMaxlength = {
+	args: {
+		maxlength: 50,
+		placeholder: '最大50文字まで',
+		rows: 2
+	}
+};
+
+// Playground (全props操作用)
+export const Playground = {
+	args: {
+		value: '',
+		variant: 'default',
+		theme: 'light',
+		focusStyle: 'background',
+		placeholder: 'Playground',
+		fullWidth: false,
+		autoResize: false,
+		resizable: false,
+		clearable: false,
+		rounded: false,
+		disabled: false,
+		readonly: false,
+		required: false,
+		rows: 3,
+		minHeight: null,
+		maxlength: null
 	},
-	render: (args: any) => ({
+	render: (args: Record<string, unknown>) => ({
 		Component: Textarea,
 		props: {
 			...args,
-			onchange: (value: any) => console.log('Changed:', value),
-			oninput: (value: any) => console.log('Input:', value)
-		}
-	})
-};
-
-// 自動リサイズのデモ
-export const AutoResize = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			value:
-				'この文章は自動的に高さが調整されます。\n改行を入れると高さが変わることを確認できます。\n\n複数行に渡って長いテキストを入力すると、テキストエリアの高さが自動的に調整されます。',
-			placeholder: '文章を入力すると高さが自動調整されます',
-			autoResize: true,
-			minHeight: 60
-		}
-	})
-};
-
-// パスワード入力
-export const Password = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: 'パスワードやシークレット情報',
-			rows: 2
-		}
-	})
-};
-
-// 数値入力
-export const Number = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: '数値データや計算結果',
-			rows: 4,
-			value: '1000\n2000\n3000\n合計: 6000'
-		}
-	})
-};
-
-// インラインバリアント
-export const Inline = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			variant: 'inline',
-			value: 'インライン編集可能なテキスト\n複数行対応',
-			placeholder: 'クリックして編集'
-		}
-	})
-};
-
-// フォーカススタイル
-export const FocusStyles = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: 'フォーカス時に背景色変更',
-			focusStyle: 'background'
-		}
-	})
-};
-
-// 状態バリエーション
-export const States = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: '通常の状態',
-			value: '編集可能なテキスト\n複数行'
-		}
-	})
-};
-
-// ダークテーマ
-export const DarkTheme = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			theme: 'dark',
-			placeholder: 'ダークテーマのテキストエリア',
-			value: 'ダークモード\n複数行テキスト'
-		}
-	})
-};
-
-// 角丸
-export const Rounded = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: '角丸デザインのテキストエリア',
-			rounded: true,
-			rows: 4
-		}
-	})
-};
-
-// フルWidth
-export const FullWidth = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: '幅100%のテキストエリア',
-			fullWidth: true,
-			rows: 3
-		}
-	})
-};
-
-// クリアボタン付き
-export const WithClearButton = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: 'クリアボタン付き',
-			clearable: true,
-			value: 'このテキストをクリアできます\n複数行対応'
-		}
-	})
-};
-
-// 読み取り専用
-export const ReadOnly = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			value: '読み取り専用のテキスト\n編集できません',
-			readonly: true
-		}
-	})
-};
-
-// 無効状態
-export const Disabled = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			value: '無効状態のテキスト\n操作できません',
-			disabled: true
-		}
-	})
-};
-
-// リサイズ可能
-export const Resizable = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: 'ユーザーがリサイズできます（右下をドラッグ）',
-			autoResize: false,
-			resizable: true,
-			rows: 4
-		}
-	})
-};
-
-// 文字数制限
-export const WithMaxLength = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: '最大100文字まで入力可能',
-			maxlength: 100,
-			value: '文字数制限のテスト'
-		}
-	})
-};
-
-// 高さ制限
-export const WithMinHeight = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: '最小高さ120px',
-			minHeight: 120,
-			autoResize: true
-		}
-	})
-};
-
-// イベントハンドラー
-export const WithEvents = {
-	render: () => ({
-		Component: Textarea,
-		props: {
-			placeholder: 'イベントを確認（コンソールをチェック）',
-			onchange: (value: any) => console.log('onChange:', value),
-			oninput: (value: any) => console.log('onInput:', value),
-			onfocus: () => console.log('フォーカスされました'),
-			onblur: () => console.log('フォーカスが外れました'),
-			onclick: () => console.log('クリックされました'),
-			onkeydown: (event: any) => console.log('キーが押されました:', event?.key)
+			onchange: (value: string | number | undefined) => {
+				console.log('onChange:', value);
+			},
+			oninput: (value: string | number | undefined) => {
+				console.log('onInput:', value);
+			}
 		}
 	})
 };

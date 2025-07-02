@@ -8,7 +8,7 @@
 		options = [],
 		customStyle = '',
 		variant = 'default',
-		theme = 'light',
+
 		focusStyle = 'border',
 		placeholder = '選択してください',
 		fullWidth = false,
@@ -24,17 +24,18 @@
 		rounded = false,
 		onchange = (value: string | number | null | undefined) => {},
 		oninput = (value: string | number | null | undefined) => {},
-		onfocus = () => {},
-		onblur = () => {},
-		onclick = () => {},
-		onkeydown = () => {}
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onclick = (event: MouseEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
+		...restProps
 	}: {
 		name?: string;
 		value: string | number | null | undefined;
 		options: (string | number | null)[];
 		customStyle?: string;
 		variant?: 'default' | 'inline';
-		theme?: 'light' | 'dark';
+
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -50,10 +51,11 @@
 		rounded?: boolean;
 		onchange?: (value: string | number | null | undefined) => void;
 		oninput?: (value: string | number | null | undefined) => void;
-		onfocus?: Function;
-		onblur?: Function;
-		onclick?: Function;
-		onkeydown?: Function;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onclick?: (event: MouseEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
+		[key: string]: any;
 	} = $props();
 	let isOpen = $state(false);
 	let searchTerm = $state('');
@@ -87,7 +89,7 @@
 		onchange?.(option);
 	};
 	// input要素のフォーカス/クリック時
-	const handleInputFocus = () => {
+	const handleInputFocus = (event: FocusEvent) => {
 		if (disabled || readonly) return;
 		isFocused = true;
 		isOpen = true;
@@ -95,15 +97,15 @@
 			searchTerm = value !== null && value !== undefined ? String(value) : '';
 		}
 		highlightedIndex = -1;
-		onfocus?.();
+		onfocus(event);
 	};
 	// コンボボックスを閉じる
-	const closeComboBox = () => {
+	const closeComboBox = (event: FocusEvent) => {
 		isOpen = false;
 		searchTerm = '';
 		highlightedIndex = -1;
 		isFocused = false;
-		onblur?.();
+		onblur(event);
 	};
 	// 入力変更ハンドラー
 	const handleInput = (event: Event) => {
@@ -138,14 +140,14 @@
 		onchange?.(value);
 		inputElement?.blur();
 	};
-	const handleClick = () => {
+	const handleClick = (event: MouseEvent) => {
 		if (!disabled && !readonly) {
-			handleInputFocus();
+			handleInputFocus(event as unknown as FocusEvent);
 		}
-		onclick?.();
+		onclick(event);
 	};
 	const handleKeydown = (event: KeyboardEvent) => {
-		onkeydown?.();
+		onkeydown(event);
 		if (disabled || readonly) return;
 		// TODO: キーボードナビゲーション実装
 		// ArrowDown, ArrowUp, Enter, Escape等の処理
@@ -158,7 +160,7 @@
 			listElement &&
 			!listElement.contains(target)
 		) {
-			closeComboBox();
+			closeComboBox(event as unknown as FocusEvent);
 		}
 	};
 	$effect(() => {
@@ -171,7 +173,6 @@
 
 <div
 	class="combobox
-{theme === 'dark' ? 'dark-theme' : 'light-theme'}
 focus-style-{focusStyle}"
 	class:inline={variant === 'inline'}
 	class:auto-resize={variant === 'inline'}
@@ -212,12 +213,14 @@ focus-style-{focusStyle}"
 			onclick={handleClick}
 			oninput={handleInput}
 			onchange={handleChange}
+			onblur={closeComboBox}
 			onkeydown={handleKeydown}
 			role="combobox"
 			aria-expanded={isOpen}
 			aria-controls={listboxId}
 			aria-haspopup="listbox"
 			aria-autocomplete="list"
+			{...restProps}
 		/>
 	</form>
 	<!-- ドロップダウンアイコン -->
@@ -467,51 +470,6 @@ focus-style-{focusStyle}"
 	}
 
 	/* =============================================
- * テーマバリエーション
- * ============================================= */
-	.dark-theme {
-		.dropdown-icon {
-			color: var(--svelte-ui-combobox-icon-color-dark);
-		}
-
-		.plain-text.is-placeholder {
-			color: var(--svelte-ui-text-placeholder);
-		}
-
-		.options-list {
-			background: var(--svelte-ui-combobox-bg-dark);
-			border-color: var(--svelte-ui-combobox-border-color-dark);
-		}
-
-		.no-options {
-			color: var(--svelte-ui-text-dark-secondary);
-		}
-
-		.option {
-			&:hover,
-			&.highlighted {
-				background-color: var(--svelte-ui-combobox-option-hover-bg-dark);
-			}
-
-			&.selected {
-				background-color: var(--svelte-ui-combobox-option-selected-bg-dark);
-			}
-
-			&.selected.highlighted {
-				background-color: var(--svelte-ui-combobox-option-selected-bg-dark);
-			}
-		}
-
-		&.focus-style-background .combobox-input:focus {
-			background: var(--svelte-ui-hover-overlay-dark);
-		}
-	}
-
-	.dark-theme.readonly .combobox-input {
-		background-color: var(--svelte-ui-input-readonly-bg-dark);
-	}
-
-	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.combobox:not(.inline) {
@@ -533,12 +491,6 @@ focus-style-{focusStyle}"
 			border-bottom-left-radius: 0;
 			border-bottom-right-radius: 0;
 		}
-	}
-
-	.dark-theme.combobox:not(.inline) .combobox-input {
-		background-color: var(--svelte-ui-input-bg-dark);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color-dark);
-		color: var(--svelte-ui-combobox-text-color-dark);
 	}
 
 	/* =============================================
@@ -592,10 +544,6 @@ focus-style-{focusStyle}"
 				opacity: 0;
 				visibility: hidden;
 			}
-		}
-
-		&.dark-theme .options-list {
-			border-color: var(--svelte-ui-combobox-border-color-dark);
 		}
 	}
 </style>

@@ -15,9 +15,11 @@
 		success = null,
 		size = 'medium',
 		reducedMotion = false,
-		onfocus = undefined,
-		onblur = undefined,
-		onchange = undefined,
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onchange = (checked: boolean) => {},
+		onclick = (event: MouseEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
 		...restProps
 	}: {
 		name?: string;
@@ -31,9 +33,11 @@
 		success?: string | null;
 		size?: 'small' | 'medium' | 'large';
 		reducedMotion?: boolean;
-		onfocus?: ((event: FocusEvent) => void) | undefined;
-		onblur?: ((event: FocusEvent) => void) | undefined;
-		onchange?: ((checked: boolean, event: Event) => void) | undefined;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onchange?: (checked: boolean) => void;
+		onclick?: (event: MouseEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
 
@@ -44,25 +48,28 @@
 	const id: string = generateId();
 
 	const handleFocus = (event: FocusEvent) => {
-		if (onfocus) onfocus(event);
+		onfocus(event);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
-		if (onblur) onblur(event);
+		onblur(event);
 	};
 
 	const handleChange = (event: Event) => {
 		if (readonly) return;
-		if (onchange) onchange(value, event);
+		onchange(value);
 	};
+
+	const handleClick = (event: MouseEvent) => onclick(event);
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (disabled || readonly) return;
 		if (event.key === ' ' || event.key === 'Enter') {
 			event.preventDefault();
 			value = !value;
-			if (onchange) onchange(value, event);
+			onchange(value);
 		}
+		onkeydown(event);
 	};
 
 	// CSS classes based on state
@@ -96,6 +103,7 @@
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onchange={handleChange}
+		onclick={handleClick}
 		onkeydown={handleKeydown}
 		{...restProps}
 	/>
@@ -191,7 +199,7 @@
 		font-family: 'Material Symbols Outlined';
 		font-weight: bold;
 		font-style: normal;
-		color: var(--svelte-ui-checkbox-text-color);
+		color: var(--svelte-ui-checkbox-icon-color);
 		text-align: center;
 		line-height: 1;
 		letter-spacing: normal;
@@ -223,6 +231,20 @@
 	input[type='checkbox']:checked + .checkbox-label::before,
 	input[type='checkbox']:indeterminate + .checkbox-label::before {
 		border-color: var(--svelte-ui-primary-color);
+	}
+
+	/* Error state hover override */
+	.checkbox-container--error .checkbox-label:hover::before,
+	.checkbox-container--error input[type='checkbox']:checked + .checkbox-label::before,
+	.checkbox-container--error input[type='checkbox']:indeterminate + .checkbox-label::before {
+		border-color: var(--svelte-ui-error-color);
+	}
+
+	/* Success state hover override */
+	.checkbox-container--success .checkbox-label:hover::before,
+	.checkbox-container--success input[type='checkbox']:checked + .checkbox-label::before,
+	.checkbox-container--success input[type='checkbox']:indeterminate + .checkbox-label::before {
+		border-color: var(--svelte-ui-success-color);
 	}
 
 	/* Focus states */

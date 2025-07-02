@@ -11,7 +11,6 @@
 		buttonAttributes,
 		type = 'button',
 		customStyle,
-		theme = 'light',
 		disabled = false,
 		loading = false,
 		tabindex = null,
@@ -29,13 +28,15 @@
 		ariaDescribedby,
 		ariaExpanded,
 		onclick,
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
 		...restProps
 	}: {
 		children: Snippet;
 		buttonAttributes?: HTMLButtonAttributes | undefined;
 		type?: HTMLButtonAttributes['type'];
 		customStyle?: HTMLButtonAttributes['style'];
-		theme?: 'light' | 'dark';
 		disabled?: boolean;
 		loading?: boolean;
 		tabindex?: number | null;
@@ -53,14 +54,16 @@
 		ariaDescribedby?: string;
 		ariaExpanded?: boolean;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
 
 	const isDisabled = $derived(disabled || loading);
 
 	const backgroundColors = {
-		filled:
-			color === 'var(--primary-color)' && theme === 'dark' ? 'var(--primary-color-dark)' : color,
+		filled: color,
 		outlined: 'transparent',
 		text: 'transparent'
 	};
@@ -80,7 +83,6 @@
 			popup && 'button--popup',
 			rounded && 'button--rounded',
 			fullWidth && 'button--full-width',
-			theme === 'dark' && 'button--dark-theme',
 			loading && 'button--loading',
 			reducedMotion && 'button--no-motion'
 		]
@@ -92,6 +94,10 @@
 		if (isDisabled) return;
 		if (onclick) onclick(event);
 	};
+
+	const handleFocus = (event: FocusEvent) => onfocus(event);
+	const handleBlur = (event: FocusEvent) => onblur(event);
+	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
 </script>
 
 <button
@@ -103,6 +109,9 @@
 		min-width: {minWidth}px; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
+	onfocus={handleFocus}
+	onblur={handleBlur}
+	onkeydown={handleKeydown}
 	{tabindex}
 	aria-label={ariaLabel}
 	aria-describedby={ariaDescribedby}
@@ -215,10 +224,6 @@
 		transition-property: opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
 		z-index: 0;
-	}
-
-	.button--dark-theme:before {
-		background-color: var(--svelte-ui-button-hover-overlay-dark);
 	}
 
 	.button:hover:before {

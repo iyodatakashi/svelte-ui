@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Radio from '../components/Radio.svelte';
@@ -23,7 +23,7 @@ interface RadioArgs {
 
 const meta: Meta<RadioArgs> = {
 	title: 'Forms/Radio',
-	component: Radio as any, // 型キャストで互換性確保
+	component: Radio,
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -111,7 +111,7 @@ const createChildrenSnippet = (text: string) =>
 		render: () => text
 	}));
 
-// Default story
+// Default (unchecked)
 export const Default: Story = {
 	args: {
 		name: 'default-group',
@@ -121,13 +121,13 @@ export const Default: Story = {
 	}
 };
 
-// Selected state
-export const Selected: Story = {
+// Checked
+export const Checked: Story = {
 	args: {
-		name: 'selected-group',
+		name: 'checked-group',
 		value: 'option1',
 		currentValue: 'option1',
-		children: createChildrenSnippet('Selected Option')
+		children: createChildrenSnippet('Checked')
 	}
 };
 
@@ -138,94 +138,72 @@ export const Small: Story = {
 		value: 'small',
 		currentValue: null,
 		size: 'small',
-		children: createChildrenSnippet('Small radio')
+		children: createChildrenSnippet('Small')
 	}
 };
-
-export const Medium: Story = {
-	args: {
-		name: 'size-group',
-		value: 'medium',
-		currentValue: null,
-		size: 'medium',
-		children: createChildrenSnippet('Medium radio (default)')
-	}
-};
-
 export const Large: Story = {
 	args: {
 		name: 'size-group',
 		value: 'large',
 		currentValue: null,
 		size: 'large',
-		children: createChildrenSnippet('Large radio')
+		children: createChildrenSnippet('Large')
 	}
 };
 
-// Error state
+// Disabled
+export const Disabled: Story = {
+	args: {
+		name: 'disabled-group',
+		value: 'option1',
+		currentValue: null,
+		disabled: true,
+		children: createChildrenSnippet('Disabled')
+	}
+};
+
+// Error
 export const WithError: Story = {
 	args: {
 		name: 'error-group',
 		value: 'option1',
 		currentValue: null,
-		required: true,
 		error: 'Please select an option',
-		children: createChildrenSnippet('Option with error')
+		children: createChildrenSnippet('With error')
 	}
 };
 
-// Success state
+// Success
 export const WithSuccess: Story = {
 	args: {
 		name: 'success-group',
 		value: 'option1',
 		currentValue: 'option1',
 		success: 'Selection confirmed',
-		children: createChildrenSnippet('Option with success')
+		children: createChildrenSnippet('With success')
 	}
 };
 
-// Disabled states
-export const DisabledUnselected: Story = {
-	args: {
-		name: 'disabled-group',
-		value: 'option1',
-		currentValue: null,
-		disabled: true,
-		children: createChildrenSnippet('Disabled unselected')
-	}
-};
-
-export const DisabledSelected: Story = {
-	args: {
-		name: 'disabled-group',
-		value: 'option1',
-		currentValue: 'option1',
-		disabled: true,
-		children: createChildrenSnippet('Disabled selected')
-	}
-};
-
-// Required field
-export const RequiredField: Story = {
+// Required
+export const Required: Story = {
 	args: {
 		name: 'required-group',
 		value: 'option1',
 		currentValue: null,
 		required: true,
 		error: 'This field is required',
-		children: createChildrenSnippet('Required option *')
+		children: createChildrenSnippet('Required *')
 	}
 };
 
-// Readonly state
+// Readonly
 export const ReadOnly: Story = {
 	args: {
 		name: 'readonly-group',
 		value: 'option1',
 		currentValue: 'option1',
 		readonly: true,
-		children: createChildrenSnippet('Readonly radio (cannot be changed)')
+		children: createChildrenSnippet('Readonly')
 	}
 };
 
@@ -236,94 +214,39 @@ export const ReducedMotion: Story = {
 		value: 'option1',
 		currentValue: null,
 		reducedMotion: true,
-		children: createChildrenSnippet('Radio with reduced motion')
+		children: createChildrenSnippet('Reduced motion')
 	}
 };
 
-// Radio group example - Option 1
-export const RadioGroupOption1: Story = {
-	args: {
-		name: 'group-example',
-		value: 'option1',
-		currentValue: null,
-		children: createChildrenSnippet('オプション 1')
-	}
-};
-
-// Radio group example - Option 2
-export const RadioGroupOption2: Story = {
-	args: {
-		name: 'group-example',
-		value: 'option2',
-		currentValue: null,
-		children: createChildrenSnippet('オプション 2')
-	}
-};
-
-// Radio group example - Option 3
-export const RadioGroupOption3: Story = {
-	args: {
-		name: 'group-example',
-		value: 'option3',
-		currentValue: null,
-		children: createChildrenSnippet('オプション 3')
-	}
-};
-
-// Form example - Gender selection
-export const FormGenderExample: Story = {
-	args: {
-		name: 'gender',
-		value: 'male',
-		currentValue: null,
-		required: true,
-		error: '性別の選択が必要です',
-		children: createChildrenSnippet('男性')
-	}
-};
-
-// Notification settings example
-export const NotificationSettings: Story = {
-	args: {
-		name: 'notifications',
-		value: 'email',
-		currentValue: 'email',
-		success: '設定が保存されました',
-		children: createChildrenSnippet('メール通知のみ')
-	}
-};
-
-// String value example
-export const StringValueExample: Story = {
+// String value
+export const StringValue: Story = {
 	args: {
 		name: 'string-values',
 		value: 'medium',
 		currentValue: 'medium',
-		children: createChildrenSnippet('Medium (selected)')
+		children: createChildrenSnippet('String value')
 	}
 };
-
-// Number value example
-export const NumberValueExample: Story = {
+// Number value
+export const NumberValue: Story = {
 	args: {
 		name: 'number-values',
 		value: 5,
-		currentValue: null,
-		children: createChildrenSnippet('5個')
+		currentValue: 5,
+		children: createChildrenSnippet('Number value')
 	}
 };
-
-// Boolean value example
-export const BooleanValueExample: Story = {
+// Boolean value
+export const BooleanValue: Story = {
 	args: {
 		name: 'boolean-values',
 		value: true,
 		currentValue: true,
-		children: createChildrenSnippet('有効 (selected)')
+		children: createChildrenSnippet('Boolean value')
 	}
 };
 
-// Interactive playground
+// Playground (全props操作用)
 export const Playground: Story = {
 	args: {
 		name: 'playground',

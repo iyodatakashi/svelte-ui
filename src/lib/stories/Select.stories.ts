@@ -83,20 +83,137 @@ const numberOptions = [
 	{ value: 20, label: '20個' }
 ];
 
-// 基本パターン
+// Default
 export const Default = {
 	args: {
 		value: '',
 		options: basicOptions,
 		placeholder: '選択してください'
+	}
+};
+
+// Dark theme
+export const DarkTheme = {
+	args: {
+		options: basicOptions,
+
+		placeholder: 'ダークテーマのセレクト'
+	}
+};
+
+// Rounded
+export const Rounded = {
+	args: {
+		options: basicOptions,
+		rounded: true,
+		placeholder: '角丸セレクト'
+	}
+};
+
+// Full width
+export const FullWidth = {
+	args: {
+		options: basicOptions,
+		fullWidth: true,
+		placeholder: '幅100%のセレクト'
+	}
+};
+
+// Focus style: background
+export const FocusStyleBackground = {
+	args: {
+		options: basicOptions,
+		focusStyle: 'background',
+		placeholder: 'フォーカス時に背景色変更'
+	}
+};
+
+// Focus style: border
+export const FocusStyleBorder = {
+	args: {
+		options: basicOptions,
+		focusStyle: 'border',
+		placeholder: 'フォーカス時にボーダー表示'
+	}
+};
+
+// Focus style: none
+export const FocusStyleNone = {
+	args: {
+		options: basicOptions,
+		focusStyle: 'none',
+		placeholder: 'フォーカススタイルなし'
+	}
+};
+
+// Disabled
+export const Disabled = {
+	args: {
+		options: basicOptions,
+		disabled: true,
+		placeholder: '無効な状態'
+	}
+};
+
+// Readonly
+export const ReadOnly = {
+	args: {
+		options: basicOptions,
+		readonly: true,
+		placeholder: '読み取り専用'
+	}
+};
+
+// Required
+export const Required = {
+	args: {
+		options: basicOptions,
+		required: true,
+		placeholder: '必須項目'
+	}
+};
+
+// With custom style
+export const WithCustomStyle = {
+	args: {
+		options: basicOptions,
+		customStyle: 'font-weight: bold; color: #007bff;',
+		placeholder: 'カスタムスタイル'
+	}
+};
+
+// Multiple size
+export const MultipleSize = {
+	args: {
+		options: basicOptions,
+		size: 3,
+		placeholder: '複数選択可能'
+	}
+};
+
+// Playground (全props操作用)
+export const Playground = {
+	args: {
+		value: '',
+		options: basicOptions,
+		theme: 'light',
+		focusStyle: 'background',
+		placeholder: 'Playground',
+		fullWidth: false,
+		rounded: false,
+		disabled: false,
+		readonly: false,
+		required: false,
+		customStyle: '',
+		size: 1
 	},
-	render: (args: any) => ({
+	render: (args: Record<string, unknown>) => ({
 		Component: Select,
 		props: {
 			...args,
-			onchange: (value: any) => console.log('Changed:', value),
-			onfocus: () => console.log('フォーカスされました'),
-			onblur: () => console.log('フォーカスが外れました')
+			onchange: (value: string | number | undefined) => {
+				console.log('onChange:', value);
+			}
 		}
 	})
 };
@@ -135,20 +252,8 @@ export const NumberSelect = {
 	})
 };
 
-// 角丸デザイン
-export const Rounded = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: basicOptions,
-			placeholder: '角丸セレクト',
-			rounded: true
-		}
-	})
-};
-
 // フルWidth
-export const FullWidth = {
+export const FullWidthCountry = {
 	render: () => ({
 		Component: Select,
 		props: {
@@ -159,86 +264,26 @@ export const FullWidth = {
 	})
 };
 
-// Background Focus
-export const BackgroundFocus = {
-	render: () => ({
+// イベントハンドラーのデモ
+export const WithEvents = {
+	args: {
+		options: basicOptions,
+		placeholder: 'イベントを確認（コンソールをチェック）',
+		value: ''
+	},
+	render: (args: Record<string, unknown>) => ({
 		Component: Select,
 		props: {
-			options: basicOptions,
-			placeholder: 'フォーカス時に背景色変更',
-			focusStyle: 'background'
-		}
-	})
-};
-
-// Border Focus
-export const BorderFocus = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: basicOptions,
-			placeholder: 'フォーカス時にボーダー表示',
-			focusStyle: 'border'
-		}
-	})
-};
-
-// No Focus Style
-export const NoFocusStyle = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: basicOptions,
-			placeholder: 'フォーカススタイルなし',
-			focusStyle: 'none'
-		}
-	})
-};
-
-// 無効状態
-export const Disabled = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: basicOptions,
-			placeholder: '無効な状態',
-			disabled: true
-		}
-	})
-};
-
-// 読み取り専用
-export const ReadOnly = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: countryOptions,
-			value: 'jp',
-			readonly: true
-		}
-	})
-};
-
-// 必須項目
-export const Required = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: basicOptions,
-			placeholder: '必須項目',
-			required: true
-		}
-	})
-};
-
-// ダークテーマ
-export const DarkTheme = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: countryOptions,
-			placeholder: 'ダークテーマのセレクト',
-			theme: 'dark'
+			...args,
+			onchange: (value: string | number | undefined) => {
+				console.log('onChange:', value);
+			},
+			onfocus: () => {
+				console.log('フォーカスされました');
+			},
+			onblur: () => {
+				console.log('フォーカスが外れました');
+			}
 		}
 	})
 };
@@ -347,72 +392,6 @@ export const EmptyOptions = {
 		props: {
 			options: [],
 			placeholder: 'オプションがありません'
-		}
-	})
-};
-
-// イベントハンドラーのデモ
-export const WithEvents = {
-	args: {
-		options: basicOptions,
-		placeholder: 'イベントを確認（コンソールをチェック）',
-		value: ''
-	},
-	render: (args: any) => ({
-		Component: Select,
-		props: {
-			...args,
-			onchange: (value: any) => {
-				console.log('onChange:', value);
-			},
-			onfocus: () => {
-				console.log('フォーカスされました');
-			},
-			onblur: () => {
-				console.log('フォーカスが外れました');
-			}
-		}
-	})
-};
-
-// カスタムスタイル
-export const WithCustomStyle = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: countryOptions,
-			placeholder: 'カスタムスタイル',
-			customStyle: 'font-weight: bold; color: #007bff;'
-		}
-	})
-};
-
-// 複数のサイズ
-export const MultipleSize = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: basicOptions,
-			placeholder: '複数選択可能',
-			size: 3
-		}
-	})
-};
-
-// フォーム統合例
-export const FormExample = {
-	render: () => ({
-		Component: Select,
-		props: {
-			options: [
-				{ value: 'male', label: '男性' },
-				{ value: 'female', label: '女性' },
-				{ value: 'other', label: 'その他' },
-				{ value: 'not-specified', label: '回答しない' }
-			],
-			placeholder: '性別を選択',
-			fullWidth: true,
-			required: true
 		}
 	})
 };

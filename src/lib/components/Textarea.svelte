@@ -7,7 +7,7 @@
 		value = $bindable(),
 		customStyle = '',
 		variant = 'default',
-		theme = 'light',
+
 		focusStyle = 'background',
 		placeholder = '',
 		fullWidth = false,
@@ -25,16 +25,17 @@
 		tabindex = null,
 		onchange = (value: string | undefined) => {},
 		oninput = (value: string | undefined) => {},
-		onfocus = () => {},
-		onblur = () => {},
-		onclick = () => {},
-		onkeydown = () => {}
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onclick = (event: MouseEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
+		...restProps
 	}: {
 		name?: string;
 		value: string | undefined;
 		customStyle?: string;
 		variant?: 'default' | 'inline';
-		theme?: 'light' | 'dark';
+
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -52,13 +53,15 @@
 		tabindex?: number | null;
 		onchange?: (value: string | undefined) => void;
 		oninput?: (value: string | undefined) => void;
-		onfocus?: Function;
-		onblur?: Function;
-		onclick?: Function;
-		onkeydown?: Function;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onclick?: (event: MouseEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
+		[key: string]: any;
 	} = $props();
 	let ref: HTMLTextAreaElement | null = null;
 	let isFocused: boolean = $state(false);
+
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
 		if (typeof value === 'string' && value !== '') {
@@ -91,21 +94,20 @@
 	};
 	const handleChange = () => onchange?.(value);
 	const handleInput = () => oninput?.(value);
-	const handleFocus = () => {
+	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
-		onfocus?.();
+		onfocus(event);
 	};
-	const handleBlur = () => {
+	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
-		onblur?.();
+		onblur(event);
 	};
-	const handleClick = () => onclick?.();
-	const handleKeydown = () => onkeydown?.();
+	const handleClick = (event: MouseEvent) => onclick(event);
+	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
 </script>
 
 <div
 	class="textarea
-	{theme === 'dark' ? 'dark-theme' : 'light-theme'} 
 	focus-style-{focusStyle}"
 	class:inline={variant === 'inline'}
 	class:full-width={fullWidth}
@@ -145,6 +147,7 @@
 			onblur={handleBlur}
 			onclick={handleClick}
 			onkeydown={handleKeydown}
+			{...restProps}
 		></textarea>
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
@@ -308,11 +311,11 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.focus-style-border textarea:focus {
+	.textarea.focus-style-border textarea:focus {
 		box-shadow: var(--svelte-ui-input-focus-shadow);
 	}
 
-	.focus-style-background textarea:focus {
+	.textarea.focus-style-background textarea:focus {
 		background: var(--svelte-ui-hover-overlay);
 	}
 
@@ -355,24 +358,6 @@
 	}
 
 	/* =============================================
- * テーマバリエーション
- * ============================================= */
-	.dark-theme {
-		textarea::placeholder,
-		.plain-text:empty::before {
-			color: var(--svelte-ui-text-placeholder);
-		}
-
-		&.focus-style-background textarea:focus {
-			background: var(--svelte-ui-hover-overlay-dark);
-		}
-	}
-
-	.dark-theme textarea[readonly] {
-		background-color: var(--svelte-ui-input-readonly-bg-dark);
-	}
-
-	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.textarea:not(.inline) {
@@ -388,15 +373,6 @@
 			border: none;
 			border-radius: var(--svelte-ui-textarea-border-radius);
 			color: var(--svelte-ui-text);
-		}
-	}
-
-	.dark-theme.textarea:not(.inline) {
-		textarea {
-			background-color: var(--svelte-ui-textarea-bg-dark);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
-				var(--svelte-ui-textarea-border-color-dark);
-			color: var(--svelte-ui-text-dark);
 		}
 	}
 

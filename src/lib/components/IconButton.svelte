@@ -12,7 +12,6 @@
 		fontSize = size * 0.75,
 		variant = 'text',
 		color,
-		theme = 'light',
 		disabled = false,
 		loading = false,
 		tabindex = null,
@@ -31,6 +30,9 @@
 		ariaPressed,
 		children,
 		onclick,
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+		onkeydown = (event: KeyboardEvent) => {},
 		...restProps
 	}: {
 		type?: 'button' | 'submit' | 'reset' | null | undefined;
@@ -38,7 +40,6 @@
 		fontSize?: number;
 		variant?: 'filled' | 'outlined' | 'text';
 		color?: string;
-		theme?: 'light' | 'dark';
 		disabled?: boolean;
 		loading?: boolean;
 		tabindex?: number | null;
@@ -57,6 +58,9 @@
 		ariaPressed?: boolean;
 		children: Snippet;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
 
@@ -89,7 +93,6 @@
 		[
 			'iconbutton',
 			`iconbutton--${variant}`,
-			theme === 'dark' && 'iconbutton--dark-theme',
 			rounded && 'iconbutton--rounded',
 			pressed && 'iconbutton--pressed',
 			loading && 'iconbutton--loading',
@@ -195,10 +198,6 @@
 		transition-property: opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
 		z-index: 0;
-	}
-
-	.iconbutton--dark-theme:before {
-		background-color: var(--svelte-ui-iconbutton-hover-overlay-dark);
 	}
 
 	.iconbutton:hover:before {

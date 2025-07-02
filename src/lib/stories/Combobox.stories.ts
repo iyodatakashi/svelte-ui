@@ -126,22 +126,35 @@ const programmingLanguages = [
 	'Lua'
 ];
 
-// 基本パターン
-export const Default = {
+// Playground (全props操作用)
+export const Playground = {
 	args: {
 		value: '',
 		options: basicOptions,
-		placeholder: '選択または入力してください',
-		filterable: true
+		variant: 'default',
+		theme: 'light',
+		focusStyle: 'background',
+		fullWidth: false,
+		rounded: false,
+		filterable: true,
+		disabled: false,
+		readonly: false,
+		required: false,
+		minWidth: null,
+		maxWidth: null,
+		maxlength: 0,
+		placeholder: 'Playground'
 	},
-	render: (args: any) => ({
+	render: (args: Record<string, unknown>) => ({
 		Component: Combobox,
 		props: {
 			...args,
-			onchange: (value: any) => console.log('Changed:', value),
-			oninput: (value: any) => console.log('Input:', value),
-			onfocus: () => console.log('フォーカスされました'),
-			onblur: () => console.log('フォーカスが外れました')
+			onchange: (value: string | number | null | undefined) => {
+				console.log('onChange:', value);
+			},
+			oninput: (value: string | number | null | undefined) => {
+				console.log('onInput:', value);
+			}
 		}
 	})
 };
@@ -312,45 +325,6 @@ export const InlineEmpty = {
 	})
 };
 
-// 無効状態
-export const Disabled = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: basicOptions,
-			placeholder: '無効な状態',
-			disabled: true,
-			filterable: true
-		}
-	})
-};
-
-// 読み取り専用
-export const ReadOnly = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: countryOptions,
-			value: '日本',
-			readonly: true,
-			filterable: true
-		}
-	})
-};
-
-// 必須項目
-export const Required = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: basicOptions,
-			placeholder: '必須項目',
-			required: true,
-			filterable: true
-		}
-	})
-};
-
 // ダークテーマ
 export const DarkTheme = {
 	render: () => ({
@@ -358,7 +332,7 @@ export const DarkTheme = {
 		props: {
 			options: programmingLanguages,
 			placeholder: 'ダークテーマのコンボボックス',
-			theme: 'dark',
+
 			filterable: true
 		}
 	})
@@ -567,14 +541,14 @@ export const WithEvents = {
 		value: '',
 		filterable: true
 	},
-	render: (args: any) => ({
+	render: (args: Record<string, unknown>) => ({
 		Component: Combobox,
 		props: {
 			...args,
-			onchange: (value: any) => {
+			onchange: (value: string | number | null | undefined) => {
 				console.log('onChange:', value);
 			},
-			oninput: (value: any) => {
+			oninput: (value: string | number | null | undefined) => {
 				console.log('onInput:', value);
 			},
 			onfocus: () => {

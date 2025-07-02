@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import IconButton from '../components/IconButton.svelte';
@@ -11,7 +11,7 @@ interface IconButtonArgs {
 	fontSize?: number;
 	variant?: 'filled' | 'outlined' | 'text';
 	color?: string;
-	theme?: 'light' | 'dark';
+
 	disabled?: boolean;
 	loading?: boolean;
 	tabindex?: number | null;
@@ -33,7 +33,7 @@ interface IconButtonArgs {
 
 const meta: Meta<IconButtonArgs> = {
 	title: 'Forms/IconButton',
-	component: IconButton as any,
+	component: IconButton,
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -68,11 +68,7 @@ const meta: Meta<IconButtonArgs> = {
 			control: 'number',
 			description: 'Font size of the icon (defaults to size * 0.75)'
 		},
-		theme: {
-			control: 'select',
-			options: ['light', 'dark'],
-			description: 'Theme variant'
-		},
+
 		disabled: {
 			control: 'boolean',
 			description: 'Whether the button is disabled'
@@ -164,7 +160,7 @@ const createChildrenSnippet = (iconName: string) =>
 		render: () => iconName
 	}));
 
-// Default icon button
+// Default (text, medium)
 export const Default: Story = {
 	args: {
 		variant: 'text',
@@ -174,30 +170,22 @@ export const Default: Story = {
 	}
 };
 
-// Variant examples
+// Filled variant
 export const Filled: Story = {
 	args: {
 		variant: 'filled',
 		size: 32,
-		ariaLabel: 'Filled star button',
+		ariaLabel: 'Filled icon button',
 		children: createChildrenSnippet('search')
 	}
 };
 
+// Outlined variant
 export const Outlined: Story = {
 	args: {
 		variant: 'outlined',
 		size: 32,
-		ariaLabel: 'Outlined star button',
-		children: createChildrenSnippet('search')
-	}
-};
-
-export const TextVariant: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		ariaLabel: 'Text star button',
+		ariaLabel: 'Outlined icon button',
 		children: createChildrenSnippet('search')
 	}
 };
@@ -207,107 +195,53 @@ export const Small: Story = {
 	args: {
 		variant: 'filled',
 		size: 24,
-		ariaLabel: 'Small star button',
+		ariaLabel: 'Small icon button',
 		children: createChildrenSnippet('search')
 	}
 };
-
-export const Medium: Story = {
-	args: {
-		variant: 'filled',
-		size: 32,
-		ariaLabel: 'Medium star button',
-		children: createChildrenSnippet('search')
-	}
-};
-
 export const Large: Story = {
 	args: {
 		variant: 'filled',
 		size: 40,
-		ariaLabel: 'Large star button',
+		ariaLabel: 'Large icon button',
 		children: createChildrenSnippet('search')
 	}
 };
 
-// State examples
+// Disabled
 export const Disabled: Story = {
 	args: {
 		variant: 'filled',
-		size: 32,
 		disabled: true,
-		ariaLabel: 'Disabled star button',
+		ariaLabel: 'Disabled icon button',
 		children: createChildrenSnippet('search')
 	}
 };
 
+// Loading
 export const Loading: Story = {
 	args: {
 		variant: 'filled',
-		size: 32,
 		loading: true,
-		ariaLabel: 'Loading star button',
+		ariaLabel: 'Loading icon button',
 		children: createChildrenSnippet('search')
 	}
 };
 
-export const Pressed: Story = {
-	args: {
-		variant: 'filled',
-		size: 32,
-		pressed: true,
-		ariaLabel: 'Pressed star button',
-		children: createChildrenSnippet('search')
-	}
-};
-
-// Shape variants
-export const Circular: Story = {
-	args: {
-		variant: 'filled',
-		size: 32,
-		rounded: true,
-		ariaLabel: 'Circular star button',
-		children: createChildrenSnippet('search')
-	}
-};
-
-export const RoundedRectangle: Story = {
-	args: {
-		variant: 'filled',
-		size: 32,
-		rounded: false,
-		ariaLabel: 'Rounded rectangle star button',
-		children: createChildrenSnippet('search')
-	}
-};
-
-// Icon variants
+// Icon fill
 export const FilledIcon: Story = {
 	args: {
 		variant: 'text',
-		size: 32,
 		iconFill: true,
 		ariaLabel: 'Filled heart button',
 		children: createChildrenSnippet('favorite')
 	}
 };
 
-export const OutlinedIcon: Story = {
+// Badge
+export const WithBadge: Story = {
 	args: {
 		variant: 'text',
-		size: 32,
-		iconFill: false,
-		ariaLabel: 'Outlined heart button',
-		children: createChildrenSnippet('favorite')
-	}
-};
-
-// Badge examples
-export const WithBadgeCount: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
 		showBadge: true,
 		badgeCount: 5,
 		badgeVariant: 'count',
@@ -316,160 +250,43 @@ export const WithBadgeCount: Story = {
 	}
 };
 
-export const WithBadgeDot: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		showBadge: true,
-		badgeVariant: 'dot',
-		ariaLabel: 'Notifications (new)',
-		children: createChildrenSnippet('notifications')
-	}
-};
-
-export const BadgeOverflow: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		showBadge: true,
-		badgeCount: 150,
-		badgeMax: 99,
-		badgeVariant: 'count',
-		ariaLabel: 'Messages (99+ unread)',
-		children: createChildrenSnippet('mail')
-	}
-};
-
-export const CustomBadgeColor: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		showBadge: true,
-		badgeCount: 3,
-		badgeVariant: 'count',
-		badgeColor: '#ff4444',
-		ariaLabel: 'Errors (3 items)',
-		children: createChildrenSnippet('error')
-	}
-};
-
-// Custom colors
+// Custom color
 export const CustomColor: Story = {
 	args: {
 		variant: 'filled',
-		size: 32,
 		color: '#e91e63',
 		ariaLabel: 'Pink heart button',
 		children: createChildrenSnippet('favorite')
 	}
 };
 
-// Dark theme
-export const DarkTheme: Story = {
+// Rounded
+export const Rounded: Story = {
 	args: {
 		variant: 'filled',
-		size: 32,
-		theme: 'dark',
-		ariaLabel: 'Dark theme star button',
+		rounded: true,
+		ariaLabel: 'Rounded icon button',
 		children: createChildrenSnippet('search')
-	},
-	parameters: {
-		backgrounds: { default: 'dark' }
 	}
 };
 
-// Common use cases
-export const LikeButton: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		iconFill: false,
-		ariaLabel: 'いいね',
-		children: createChildrenSnippet('favorite')
-	}
-};
-
-export const ShareButton: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		ariaLabel: '共有',
-		children: createChildrenSnippet('share')
-	}
-};
-
-export const MoreOptionsButton: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		ariaLabel: 'その他のオプション',
-		children: createChildrenSnippet('more_vert')
-	}
-};
-
-export const CloseButton: Story = {
-	args: {
-		variant: 'text',
-		size: 24,
-		ariaLabel: '閉じる',
-		children: createChildrenSnippet('close')
-	}
-};
-
-export const EditButton: Story = {
-	args: {
-		variant: 'outlined',
-		size: 32,
-		ariaLabel: '編集',
-		children: createChildrenSnippet('edit')
-	}
-};
-
-export const DeleteButton: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		color: '#dc3545',
-		ariaLabel: '削除',
-		children: createChildrenSnippet('delete')
-	}
-};
-
-// Accessibility examples
-export const ToggleButton: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		pressed: false,
-		ariaPressed: false,
-		ariaLabel: 'お気に入りに追加/削除',
-		children: createChildrenSnippet('favorite')
-	}
-};
-
-export const NotificationButton: Story = {
-	args: {
-		variant: 'text',
-		size: 32,
-		showBadge: true,
-		badgeCount: 12,
-		badgeVariant: 'count',
-		ariaLabel: '通知 (12件の未読メッセージ)',
-		children: createChildrenSnippet('notifications')
-	}
-};
-
-// Complex examples
-export const LoadingWithBadge: Story = {
+// Pressed
+export const Pressed: Story = {
 	args: {
 		variant: 'filled',
-		size: 32,
-		loading: true,
-		showBadge: true,
-		badgeCount: 3,
-		badgeVariant: 'count',
-		ariaLabel: '同期中 (3件の更新)',
-		children: createChildrenSnippet('sync')
+		pressed: true,
+		ariaLabel: 'Pressed icon button',
+		children: createChildrenSnippet('search')
+	}
+};
+
+// Accessibility example
+export const Accessible: Story = {
+	args: {
+		variant: 'text',
+		ariaLabel: 'お気に入りに追加/削除',
+		ariaPressed: false,
+		children: createChildrenSnippet('favorite')
 	}
 };
 
@@ -477,21 +294,20 @@ export const LoadingWithBadge: Story = {
 export const ReducedMotion: Story = {
 	args: {
 		variant: 'filled',
-		size: 32,
 		reducedMotion: true,
-		ariaLabel: 'アニメーションなし',
+		ariaLabel: 'No animation',
 		children: createChildrenSnippet('search')
 	}
 };
 
-// Playground用のargsも標準サイズ32に修正
+// Playground (全props操作用)
 export const Playground: Story = {
 	args: {
 		type: 'button',
 		variant: 'filled',
 		size: 32,
-		fontSize: 24, // デフォルトのsize * 0.75
-		theme: 'light',
+		fontSize: 24,
+
 		disabled: false,
 		loading: false,
 		rounded: true,

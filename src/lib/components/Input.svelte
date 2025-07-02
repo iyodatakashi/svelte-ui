@@ -8,7 +8,7 @@
 		type = 'text',
 		customStyle = '',
 		variant = 'default',
-		theme = 'light',
+
 		focusStyle = 'background',
 		placeholder = '',
 		fullWidth = false,
@@ -40,7 +40,7 @@
 		type?: 'text' | 'password' | 'number';
 		customStyle?: string;
 		variant?: 'default' | 'inline';
-		theme?: 'light' | 'dark';
+
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -117,7 +117,6 @@
 
 <div
 	class="input
-	{theme === 'dark' ? 'dark-theme' : 'light-theme'}
 	focus-style-{focusStyle}
 	{type}"
 	class:inline={variant === 'inline'}
@@ -353,24 +352,6 @@
 	}
 
 	/* =============================================
- * テーマバリエーション
- * ============================================= */
-	.dark-theme {
-		input::placeholder,
-		.plain-text:empty::before {
-			color: var(--svelte-ui-text-placeholder);
-		}
-
-		input[readonly] {
-			background-color: var(--svelte-ui-input-readonly-bg-dark);
-		}
-
-		&.focus-style-background input:focus {
-			background: var(--svelte-ui-hover-overlay-dark);
-		}
-	}
-
-	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.input:not(.inline) {
@@ -397,14 +378,6 @@
 			input {
 				padding-right: var(--svelte-ui-clear-button-padding-adjustment);
 			}
-		}
-	}
-
-	.dark-theme.input:not(.inline) {
-		input {
-			background-color: var(--svelte-ui-input-bg-dark);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color-dark);
-			color: var(--svelte-ui-text-dark);
 		}
 	}
 
