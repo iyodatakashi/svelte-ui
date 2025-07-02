@@ -364,7 +364,6 @@ focus-style-{focusStyle}"
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		box-shadow: var(--svelte-ui-combobox-shadow);
 	}
 
 	.option {

@@ -252,7 +252,7 @@
 		position: absolute;
 		top: var(--svelte-ui-clear-button-top-textarea);
 		right: var(--svelte-ui-clear-button-right-textarea);
-		opacity: var(--svelte-ui-clear-button-opacity-hidden);
+		opacity: 0;
 		transition: var(--svelte-ui-clear-button-transition);
 	}
 
@@ -296,7 +296,7 @@
 	}
 
 	:hover .clear-button-block {
-		opacity: var(--svelte-ui-clear-button-opacity-visible);
+		opacity: 1;
 		pointer-events: all;
 	}
 

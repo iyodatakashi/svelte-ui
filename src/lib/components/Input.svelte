@@ -278,7 +278,7 @@
 		top: 50%;
 		right: 0;
 		transform: translate(0, -50%);
-		opacity: var(--svelte-ui-clear-button-opacity-hidden);
+		opacity: 0;
 		transition: var(--svelte-ui-clear-button-transition);
 	}
 
@@ -304,7 +304,7 @@
 	}
 
 	:hover .clear-button-block {
-		opacity: var(--svelte-ui-clear-button-opacity-visible);
+		opacity: 1;
 		pointer-events: all;
 	}
 

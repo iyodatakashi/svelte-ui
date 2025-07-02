@@ -249,7 +249,6 @@
 
 	/* Focus states */
 	input[type='checkbox']:focus-visible + .checkbox-label::before {
-		border-color: var(--svelte-ui-focus-color);
 		box-shadow: var(--svelte-ui-checkbox-focus-shadow);
 	}
 

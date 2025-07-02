@@ -235,7 +235,7 @@
 		right: 8px;
 		height: fit-content;
 		transform: translate(0, -50%);
-		opacity: var(--svelte-ui-clear-button-opacity-hidden);
+		opacity: 0;
 		transition: var(--svelte-ui-clear-button-transition);
 	}
 
@@ -260,7 +260,7 @@
 	}
 
 	.color-picker:hover .clear-button-block {
-		opacity: var(--svelte-ui-clear-button-opacity-visible);
+		opacity: 1;
 		pointer-events: all;
 	}
 

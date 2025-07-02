@@ -248,7 +248,6 @@
 
 	/* Focus state */
 	input[type='radio']:focus-visible + .radio-label::after {
-		border-color: var(--svelte-ui-radio-focus-strong-color);
 		box-shadow: var(--svelte-ui-radio-focus-shadow);
 	}
 
