@@ -9,7 +9,10 @@
 		menuItems,
 		ariaLabel = 'Menu',
 		disabled = false,
-		position = 'bottom'
+		position = 'bottom',
+		mobileFullscreen = true,
+		enableSwipeToClose = true,
+		mobileBehavior = 'auto'
 	}: {
 		children?: Snippet;
 		menuItems: (MenuItem | 'separator')[];
@@ -33,6 +36,9 @@
 			| 'right-center'
 			| 'right-bottom'
 			| 'auto';
+		mobileFullscreen?: boolean;
+		enableSwipeToClose?: boolean;
+		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 	} = $props();
 
 	let anchorRef: HTMLElement | undefined = $state();
@@ -91,7 +97,16 @@
 	</IconButton>
 </div>
 
-<PopupMenu bind:this={popupMenuRef} {menuItems} anchorElement={anchorRef} {ariaLabel} {position} />
+<PopupMenu
+	bind:this={popupMenuRef}
+	{menuItems}
+	anchorElement={anchorRef}
+	{ariaLabel}
+	{position}
+	{mobileFullscreen}
+	{enableSwipeToClose}
+	{mobileBehavior}
+/>
 
 <style lang="scss">
 	.button-block {

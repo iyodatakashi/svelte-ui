@@ -1,18 +1,27 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import { onDestroy, tick } from 'svelte';
+	import { onDestroy, tick, onMount } from 'svelte';
+	import {
+		isMobileDevice,
+		createSwipeGestureDetector,
+		disableBodyScroll,
+		getViewportSize
+	} from '$lib/utils/mobile';
 
 	let {
 		anchorElement,
 		position = 'bottom',
 		children,
-		role = 'dialog',
+		role = 'menu',
 		ariaLabel,
 		ariaLabelledby,
 		ariaDescribedby,
 		focusTrap = true,
 		onOpen,
-		onClose
+		onClose,
+		mobileFullscreen = false,
+		enableSwipeToClose = true,
+		mobileBehavior = 'auto' // 'auto' | 'fullscreen' | 'popup'
 	}: {
 		anchorElement: HTMLElement;
 		position?:
@@ -34,13 +43,16 @@
 			| 'right-bottom'
 			| 'auto';
 		children: Snippet;
-		role?: 'dialog' | 'menu' | 'tooltip' | 'listbox';
+		role?: 'menu' | 'tooltip' | 'listbox';
 		ariaLabel?: string;
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
 		focusTrap?: boolean;
 		onOpen?: () => void;
 		onClose?: () => void;
+		mobileFullscreen?: boolean;
+		enableSwipeToClose?: boolean;
+		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 	} = $props();
 
 	let isOpen: boolean = $state(false);
@@ -48,9 +60,30 @@
 	let previousActiveElement: Element | null = $state(null);
 	let popupId: string = $state(`popup-${Math.random().toString(36).substr(2, 9)}`);
 
+	// モバイル関連の状態
+	let isMobile: boolean = $state(false);
+	let shouldUseFullscreen: boolean = $state(false);
+	let swipeCleanup: (() => void) | undefined = $state();
+	let bodyScrollCleanup: (() => void) | undefined = $state();
+
+	onMount(() => {
+		// モバイルデバイス検出
+		isMobile = isMobileDevice();
+
+		// モバイル表示モードの決定
+		if (mobileBehavior === 'auto') {
+			shouldUseFullscreen = isMobile;
+		} else if (mobileBehavior === 'fullscreen') {
+			shouldUseFullscreen = true;
+		} else {
+			shouldUseFullscreen = mobileFullscreen;
+		}
+	});
+
 	onDestroy(() => {
 		removeEventListenersToClose();
 		removeKeyboardListener();
+		cleanupMobileFeatures();
 	});
 
 	const handleKeyDown = (event: KeyboardEvent) => {
@@ -62,7 +95,7 @@
 				close();
 				break;
 			case 'Tab':
-				if (focusTrap && role === 'dialog') {
+				if (focusTrap) {
 					handleTabKey(event);
 				}
 				break;
@@ -108,15 +141,23 @@
 		setTimeout(async () => {
 			popupRef?.removeEventListener('animationend', closeEnd);
 			popupRef?.showPopover();
-			setPosition();
+
+			// モバイルでフルスクリーンでない場合のみpositionを設定
+			if (!shouldUseFullscreen) {
+				setPosition();
+			}
+
 			isOpen = true;
 			addEventListenersToClose();
 			addKeyboardListener();
 
 			await tick();
 
+			// モバイル機能の設定
+			setupMobileFeatures();
+
 			// Set focus to the popup or first focusable element
-			if (focusTrap && role === 'dialog') {
+			if (focusTrap) {
 				focusFirstElement();
 			}
 
@@ -131,6 +172,10 @@
 		isOpen = false;
 		removeEventListenersToClose();
 		removeKeyboardListener();
+
+		// モバイル機能のクリーンアップ
+		cleanupMobileFeatures();
+
 		popupRef?.addEventListener('animationend', closeEnd, { once: true });
 
 		// Restore focus to the element that opened the popup
@@ -356,23 +401,75 @@
 			}
 		};
 	};
+
+	// モバイル機能の管理
+	const setupMobileFeatures = () => {
+		if (!popupRef || !isMobile) return;
+
+		// スワイプジェスチャーの設定
+		if (enableSwipeToClose) {
+			swipeCleanup = createSwipeGestureDetector(
+				popupRef,
+				(result) => {
+					// 下方向のスワイプで閉じる
+					if (result.direction === 'down' && result.distance > 80) {
+						close();
+					}
+				},
+				{
+					threshold: 50,
+					restraint: 120,
+					allowedTime: 500
+				}
+			);
+		}
+
+		// フルスクリーンモードでボディスクロールを無効化
+		if (shouldUseFullscreen) {
+			bodyScrollCleanup = disableBodyScroll();
+		}
+	};
+
+	const cleanupMobileFeatures = () => {
+		if (swipeCleanup) {
+			swipeCleanup();
+			swipeCleanup = undefined;
+		}
+		if (bodyScrollCleanup) {
+			bodyScrollCleanup();
+			bodyScrollCleanup = undefined;
+		}
+	};
 </script>
 
 <div
 	popover="manual"
 	bind:this={popupRef}
 	class:fade-out={!isOpen}
+	class:mobile={isMobile}
+	class:fullscreen={shouldUseFullscreen}
 	{role}
 	aria-label={ariaLabel}
 	aria-labelledby={ariaLabelledby}
 	aria-describedby={ariaDescribedby}
-	aria-modal={role === 'dialog' ? 'true' : undefined}
+	aria-modal={undefined}
 	id={popupId}
 	use:clickOutside={() => {
 		close();
 	}}
 >
-	{@render children()}
+	{#if shouldUseFullscreen}
+		<div class="mobile-container">
+			{#if enableSwipeToClose}
+				<div class="swipe-indicator"></div>
+			{/if}
+			<div class="mobile-content">
+				{@render children()}
+			</div>
+		</div>
+	{:else}
+		{@render children()}
+	{/if}
 </div>
 
 <style lang="scss">
@@ -445,6 +542,111 @@
 
 		:popover-open:focus-visible {
 			outline-width: 3px;
+		}
+	}
+
+	/* =============================================
+	 * Mobile-specific styles
+	 * ============================================= */
+	:popover-open.mobile {
+		position: fixed;
+		inset: 0;
+		width: 100%;
+		height: 100%;
+		margin: 0;
+		border: none;
+		border-radius: 0;
+		box-shadow: none;
+		background: transparent;
+		z-index: var(--svelte-ui-z-modal);
+	}
+
+	:popover-open.mobile.fullscreen {
+		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
+			env(safe-area-inset-left);
+	}
+
+	.mobile-container {
+		position: absolute;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		background: var(--svelte-ui-surface-color);
+		border-top-left-radius: var(--svelte-ui-popup-mobile-border-radius);
+		border-top-right-radius: var(--svelte-ui-popup-mobile-border-radius);
+		max-height: 90vh;
+		overflow: hidden;
+		animation: slideUpMobile 300ms ease-out;
+		box-shadow:
+			0 -4px 6px -1px rgb(0 0 0 / 10%),
+			0 -2px 4px -1px rgb(0 0 0 / 6%);
+	}
+
+	.swipe-indicator {
+		width: 36px;
+		height: 4px;
+		background: var(--svelte-ui-border-color);
+		border-radius: 2px;
+		margin: 8px auto;
+		opacity: 0.6;
+	}
+
+	.mobile-content {
+		padding: var(--svelte-ui-popup-mobile-margin);
+		max-height: calc(90vh - 60px);
+		overflow-y: auto;
+	}
+
+	/* Mobile animations */
+	@keyframes slideUpMobile {
+		from {
+			transform: translateY(100%);
+		}
+		to {
+			transform: translateY(0);
+		}
+	}
+
+	:popover-open.mobile.fullscreen.fade-out .mobile-container {
+		animation: slideDownMobile 300ms ease-in;
+	}
+
+	@keyframes slideDownMobile {
+		from {
+			transform: translateY(0);
+		}
+		to {
+			transform: translateY(100%);
+		}
+	}
+
+	/* Touch target optimization */
+	@media (max-width: 768px) {
+		button,
+		[role='button'],
+		[role='menuitem'] {
+			min-height: var(--svelte-ui-touch-target);
+			min-width: var(--svelte-ui-touch-target);
+		}
+
+		/* Increase tap targets in mobile popups */
+		:popover-open.mobile button,
+		:popover-open.mobile [role='button'],
+		:popover-open.mobile [role='menuitem'] {
+			min-height: var(--svelte-ui-touch-target-lg);
+			padding: 12px 16px;
+		}
+	}
+
+	/* Responsive design adjustments */
+	@media (max-width: 480px) {
+		.mobile-container {
+			border-radius: 0;
+			max-height: 100vh;
+		}
+
+		.mobile-content {
+			max-height: calc(100vh - 60px);
 		}
 	}
 

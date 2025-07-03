@@ -10,7 +10,10 @@
 		anchorElement,
 		position = 'bottom',
 		menuItems,
-		ariaLabel = 'Menu'
+		ariaLabel = 'Menu',
+		mobileFullscreen = true,
+		enableSwipeToClose = true,
+		mobileBehavior = 'auto'
 	}: {
 		anchorElement: HTMLElement;
 		position?:
@@ -33,6 +36,9 @@
 			| 'auto';
 		menuItems: (MenuItem | 'separator')[];
 		ariaLabel?: string;
+		mobileFullscreen?: boolean;
+		enableSwipeToClose?: boolean;
+		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 	} = $props();
 
 	// 変数定義
@@ -217,6 +223,10 @@
 	{position}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}
+	role="menu"
+	{mobileFullscreen}
+	{enableSwipeToClose}
+	{mobileBehavior}
 >
 	<div
 		class="menu-container"
@@ -350,5 +360,41 @@
 		.menu-button {
 			transition: none;
 		}
+	}
+
+	/* Mobile touch target optimization */
+	@media (max-width: 768px) {
+		.menu-button {
+			min-height: var(--svelte-ui-touch-target);
+			padding: 12px 16px;
+		}
+	}
+
+	/* Enhanced mobile menu styles */
+	:global(.mobile .menu-container) {
+		border-radius: 0;
+		box-shadow: none;
+		background: transparent;
+		width: 100%;
+		max-width: none;
+		min-width: auto;
+	}
+
+	:global(.mobile.fullscreen .menu-container) {
+		background: var(--svelte-ui-surface-color);
+		border-radius: var(--svelte-ui-popup-mobile-border-radius);
+		box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 10%);
+		margin: 0;
+		padding: 0;
+	}
+
+	:global(.mobile.fullscreen .menu-list) {
+		padding: 16px 0;
+	}
+
+	:global(.mobile.fullscreen .menu-button) {
+		padding: 16px 24px;
+		font-size: 1.1rem;
+		min-height: var(--svelte-ui-touch-target-lg);
 	}
 </style>
