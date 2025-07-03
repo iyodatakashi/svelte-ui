@@ -57,7 +57,6 @@
 
 	let isOpen: boolean = $state(false);
 	let popupRef: HTMLDivElement | undefined = $state();
-	let previousActiveElement: Element | null = $state(null);
 	let popupId: string = $state(`popup-${Math.random().toString(36).substr(2, 9)}`);
 
 	// モバイル関連の状態
@@ -135,9 +134,6 @@
 	};
 
 	export const open = async () => {
-		// Store the currently focused element
-		previousActiveElement = document.activeElement;
-
 		setTimeout(async () => {
 			popupRef?.removeEventListener('animationend', closeEnd);
 			popupRef?.showPopover();
@@ -178,9 +174,6 @@
 
 		popupRef?.addEventListener('animationend', closeEnd, { once: true });
 
-		// Restore focus to the element that opened the popup
-		restoreFocus();
-
 		// Notify parent component
 		onClose?.();
 	};
@@ -200,14 +193,6 @@
 			focusableElement.focus();
 		} else {
 			popupRef.focus();
-		}
-	};
-
-	const restoreFocus = () => {
-		if (previousActiveElement instanceof HTMLElement) {
-			previousActiveElement.focus();
-		} else if (anchorElement) {
-			anchorElement.focus();
 		}
 	};
 
@@ -385,8 +370,16 @@
 
 	const clickOutside = (element: HTMLElement, callbackFunction: Function) => {
 		function onClick(event: MouseEvent) {
-			if (event.target instanceof Node && !element.contains(event.target)) {
+			if (!(event.target instanceof Node)) return;
+
+			// Popup要素とanchorElement両方をチェック
+			const isInsidePopup = element.contains(event.target);
+			const isInsideAnchor = anchorElement && anchorElement.contains(event.target);
+			const isOutside = !isInsidePopup && !isInsideAnchor;
+
+			if (isOutside) {
 				callbackFunction();
+				event.stopPropagation(); // イベント伝播を止める
 			}
 		}
 		setTimeout(() => {

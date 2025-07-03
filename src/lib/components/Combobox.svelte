@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import Popup from './Popup.svelte';
 	let {
 		name,
 		value = $bindable(),
@@ -57,11 +58,12 @@
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
-	let isOpen = $state(false);
+
 	let searchTerm = $state('');
 	let inputElement = $state<HTMLInputElement>();
-	let listElement = $state<HTMLUListElement>();
+	let listElement = $state<HTMLDivElement>();
 	let comboboxElement = $state<HTMLDivElement>();
+	let popupRef = $state<any>();
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 	let inputValue = $state('');
@@ -70,7 +72,7 @@
 
 	// inputValueとvalueの同期
 	$effect(() => {
-		if (isOpen && filterable && searchTerm !== '') {
+		if (searchTerm !== '') {
 			inputValue = searchTerm;
 		} else {
 			inputValue = value !== null && value !== undefined ? String(value) : '';
@@ -86,7 +88,7 @@
 	// inline variant用の表示テキスト
 	const displayText = $derived.by(() => {
 		if (variant === 'inline') {
-			if (isOpen && filterable && searchTerm !== '') {
+			if (searchTerm !== '') {
 				return searchTerm;
 			}
 			return value !== null && value !== undefined ? String(value) : '';
@@ -97,7 +99,7 @@
 	const selectOption = (option: string | number | null) => {
 		value = option;
 		searchTerm = '';
-		isOpen = false;
+		popupRef?.close();
 		highlightedIndex = -1;
 		isFocused = false;
 
@@ -109,25 +111,16 @@
 	// input要素のフォーカス/クリック時
 	const handleInputFocus = (event: FocusEvent) => {
 		if (disabled || readonly) return;
+
 		isFocused = true;
-		isOpen = true;
+		popupRef?.open();
 		if (filterable) {
 			searchTerm = value !== null && value !== undefined ? String(value) : '';
 		}
 		highlightedIndex = -1;
 		onfocus(event);
 	};
-	// コンボボックスを閉じる
-	const closeComboBox = (event: FocusEvent) => {
-		// 選択された値がある場合は検索語をリセット
-		if (value !== null && value !== undefined) {
-			searchTerm = '';
-		}
-		isOpen = false;
-		highlightedIndex = -1;
-		isFocused = false;
-		onblur(event);
-	};
+
 	// 入力変更ハンドラー
 	const handleInput = (event: Event) => {
 		if (readonly) return;
@@ -143,9 +136,7 @@
 		value = !isNaN(numericValue) && currentInputValue !== '' ? numericValue : currentInputValue;
 
 		highlightedIndex = -1;
-		if (!isOpen) {
-			isOpen = true;
-		}
+		popupRef?.open();
 		oninput?.(value);
 	};
 	// 値確定ハンドラー
@@ -159,7 +150,7 @@
 	// フォーム送信ハンドラー
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
-		isOpen = false;
+		popupRef?.close();
 		highlightedIndex = -1;
 		onchange?.(value);
 		inputElement?.blur();
@@ -176,30 +167,16 @@
 		// TODO: キーボードナビゲーション実装
 		// ArrowDown, ArrowUp, Enter, Escape等の処理
 	};
-	const handleClickOutside = (event: MouseEvent) => {
-		const target = event.target as Node;
-		// コンボボックス全体（input + 候補リスト）の外側のクリックのみを外部クリックと判定
-		if (comboboxElement && !comboboxElement.contains(target)) {
-			closeComboBox(event as unknown as FocusEvent);
+
+	// Popup が閉じられたときの処理
+	const handlePopupClose = () => {
+		isFocused = false;
+		highlightedIndex = -1;
+		// 検索語をリセット
+		if (value !== null && value !== undefined) {
+			searchTerm = '';
 		}
 	};
-	$effect(() => {
-		if (isOpen) {
-			// 次のマイクロタスクでイベントリスナーを追加
-			const timeoutId = setTimeout(() => {
-				document.addEventListener('click', handleClickOutside);
-			}, 0);
-
-			return () => {
-				clearTimeout(timeoutId);
-				document.removeEventListener('click', handleClickOutside);
-			};
-		}
-
-		return () => {
-			document.removeEventListener('click', handleClickOutside);
-		};
-	});
 </script>
 
 <div
@@ -211,7 +188,6 @@ focus-style-{focusStyle}"
 	class:full-width={fullWidth}
 	class:disabled
 	class:readonly
-	class:is-open={isOpen}
 	class:is-focused={isFocused}
 	class:rounded
 	style="max-width: {maxWidth}px; min-width: {minWidth}px"
@@ -245,10 +221,9 @@ focus-style-{focusStyle}"
 			onclick={handleClick}
 			oninput={handleInput}
 			onchange={handleChange}
-			onblur={closeComboBox}
+			{onblur}
 			onkeydown={handleKeydown}
 			role="combobox"
-			aria-expanded={isOpen}
 			aria-controls={listboxId}
 			aria-haspopup="listbox"
 			aria-autocomplete="list"
@@ -262,8 +237,15 @@ focus-style-{focusStyle}"
 		</div>
 	{/if}
 	<!-- オプションリスト -->
-	{#if isOpen}
-		<ul
+	<Popup
+		bind:this={popupRef}
+		anchorElement={comboboxElement}
+		position="bottom"
+		role="listbox"
+		focusTrap={false}
+		onClose={handlePopupClose}
+	>
+		<div
 			bind:this={listElement}
 			id={listboxId}
 			class="options-list"
@@ -272,7 +254,7 @@ focus-style-{focusStyle}"
 			aria-labelledby={comboboxId}
 		>
 			{#each filteredOptions as option, index}
-				<li role="presentation">
+				<div role="presentation">
 					<button
 						type="button"
 						class="option"
@@ -289,12 +271,12 @@ focus-style-{focusStyle}"
 					>
 						{option ?? '（空の値）'}
 					</button>
-				</li>
+				</div>
 			{:else}
-				<li class="no-options">該当するオプションがありません</li>
+				<div class="no-options">該当するオプションがありません</div>
 			{/each}
-		</ul>
-	{/if}
+		</div>
+	</Popup>
 </div>
 
 <style>
@@ -383,21 +365,14 @@ focus-style-{focusStyle}"
  * オプションリスト
  * ============================================= */
 	.options-list {
-		position: absolute;
-		top: 100%;
-		left: 0;
-		z-index: var(--svelte-ui-z-dropdown);
 		min-width: var(--svelte-ui-combobox-min-width);
 		width: max-content;
 		max-width: var(--svelte-ui-combobox-max-width);
 		background: var(--svelte-ui-combobox-bg);
 		border: var(--svelte-ui-border-width) solid var(--svelte-ui-combobox-border-color);
-		border-top: none;
-		border-bottom-left-radius: var(--svelte-ui-combobox-border-radius);
-		border-bottom-right-radius: var(--svelte-ui-combobox-border-radius);
+		border-radius: var(--svelte-ui-combobox-border-radius);
 		max-height: var(--svelte-ui-combobox-options-max-height);
 		overflow-y: auto;
-		list-style: none;
 		margin: 0;
 		padding: 0;
 	}
