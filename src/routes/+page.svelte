@@ -152,53 +152,108 @@
 
 			<!-- Popup Components Test -->
 			<div style="margin-bottom: 15px;">
-				<h3 style="color: var(--svelte-ui-text); margin-bottom: 10px;">Popup Components</h3>
+				<h3 style="color: var(--svelte-ui-text); margin-bottom: 10px;">
+					Popup Components with Accessibility ✨
+				</h3>
+
+				<div
+					style="margin-bottom: 16px; padding: 12px; background: var(--svelte-ui-surface); border: 1px solid var(--svelte-ui-border-color); border-radius: 4px;"
+				>
+					<h4 style="color: var(--svelte-ui-text); margin: 0 0 8px 0; font-size: 0.9em;">
+						🎯 Test these accessibility features:
+					</h4>
+					<ul
+						style="color: var(--svelte-ui-text-subtle); font-size: 0.8em; margin: 0; padding-left: 20px;"
+					>
+						<li>Use <kbd>Tab</kbd> to navigate between buttons</li>
+						<li>Use <kbd>Enter</kbd> or <kbd>Space</kbd> to open menus</li>
+						<li>Use <kbd>↑</kbd>/<kbd>↓</kbd> arrows to navigate menu items</li>
+						<li>Use <kbd>Enter</kbd> to select menu items</li>
+						<li>Use <kbd>Escape</kbd> to close popups/menus</li>
+						<li>Screen reader announcements when opening menus</li>
+					</ul>
+				</div>
 
 				<div style="display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px;">
 					<!-- PopupMenuButton -->
 					<div>
-						<p style="color: var(--svelte-ui-text); margin-bottom: 8px;">PopupMenuButton:</p>
-						<PopupMenuButton {menuItems} />
+						<p style="color: var(--svelte-ui-text); margin-bottom: 8px; font-weight: 500;">
+							PopupMenuButton (Full Accessibility):
+						</p>
+						<PopupMenuButton {menuItems} ariaLabel="Action menu" />
+						<p style="color: var(--svelte-ui-text-subtle); font-size: 0.7em; margin-top: 4px;">
+							Tab → Enter → Arrows → Enter → Escape
+						</p>
 					</div>
 
 					<!-- Custom PopupMenu -->
 					<div>
-						<p style="color: var(--svelte-ui-text); margin-bottom: 8px;">PopupMenu:</p>
+						<p style="color: var(--svelte-ui-text); margin-bottom: 8px; font-weight: 500;">
+							PopupMenu:
+						</p>
 						<button
 							bind:this={popupAnchorRef}
 							onclick={openPopupMenu}
+							aria-haspopup="menu"
 							style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
 						>
 							Open Menu
 						</button>
-						<PopupMenu bind:this={popupMenuRef} anchorElement={popupAnchorRef} {menuItems} />
+						<PopupMenu
+							bind:this={popupMenuRef}
+							anchorElement={popupAnchorRef}
+							{menuItems}
+							ariaLabel="Context menu"
+						/>
+						<p style="color: var(--svelte-ui-text-subtle); font-size: 0.7em; margin-top: 4px;">
+							Tab → Click → Arrows → Enter
+						</p>
 					</div>
 
 					<!-- Basic Popup -->
 					<div>
-						<p style="color: var(--svelte-ui-text); margin-bottom: 8px;">Basic Popup:</p>
+						<p style="color: var(--svelte-ui-text); margin-bottom: 8px; font-weight: 500;">
+							Dialog Popup:
+						</p>
 						<button
 							onclick={openPopup}
+							aria-haspopup="dialog"
 							style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
 						>
-							Open Popup
+							Open Dialog
 						</button>
-						<Popup bind:this={popupRef} anchorElement={popupAnchorRef}>
+						<Popup
+							bind:this={popupRef}
+							anchorElement={popupAnchorRef}
+							role="dialog"
+							ariaLabel="Settings dialog"
+							focusTrap={true}
+						>
 							<div
-								style="padding: 16px; background: white; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); min-width: 200px;"
+								style="padding: 16px; background: white; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); min-width: 250px;"
 							>
-								<h4 style="margin: 0 0 8px 0; color: var(--svelte-ui-text);">Custom Popup</h4>
-								<p style="margin: 0; color: var(--svelte-ui-text-subtle);">
-									This is a custom popup with your own content.
+								<h4 style="margin: 0 0 12px 0; color: var(--svelte-ui-text);">Settings Dialog</h4>
+								<p style="margin: 0 0 12px 0; color: var(--svelte-ui-text-subtle);">
+									Focus trap and Escape key support.
 								</p>
-								<button
-									onclick={() => popupRef?.close()}
-									style="margin-top: 8px; padding: 4px 8px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 2px; cursor: pointer;"
-								>
-									Close
-								</button>
+								<div style="display: flex; gap: 8px;">
+									<button
+										style="padding: 6px 12px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 2px; cursor: pointer;"
+									>
+										Save
+									</button>
+									<button
+										onclick={() => popupRef?.close()}
+										style="padding: 6px 12px; background: var(--svelte-ui-border-color); color: var(--svelte-ui-text); border: none; border-radius: 2px; cursor: pointer;"
+									>
+										Cancel
+									</button>
+								</div>
 							</div>
 						</Popup>
+						<p style="color: var(--svelte-ui-text-subtle); font-size: 0.7em; margin-top: 4px;">
+							Tab → Click → Tab inside → Escape
+						</p>
 					</div>
 				</div>
 			</div>
