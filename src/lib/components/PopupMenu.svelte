@@ -13,7 +13,24 @@
 		ariaLabel = 'Menu'
 	}: {
 		anchorElement: HTMLElement;
-		position?: 'top' | 'bottom' | 'left' | 'right';
+		position?:
+			| 'top'
+			| 'bottom'
+			| 'left'
+			| 'right'
+			| 'top-left'
+			| 'top-center'
+			| 'top-right'
+			| 'bottom-left'
+			| 'bottom-center'
+			| 'bottom-right'
+			| 'left-top'
+			| 'left-center'
+			| 'left-bottom'
+			| 'right-top'
+			| 'right-center'
+			| 'right-bottom'
+			| 'auto';
 		menuItems: (MenuItem | 'separator')[];
 		ariaLabel?: string;
 	} = $props();
@@ -248,7 +265,7 @@
 
 <style lang="scss">
 	.menu-container {
-		background-color: var(--svelte-ui-surface);
+		background-color: var(--svelte-ui-surface-color);
 		border-radius: 4px;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 		outline: none;
@@ -274,7 +291,7 @@
 		background: transparent;
 		border: none;
 		font-size: 1rem;
-		color: var(--svelte-ui-text);
+		color: var(--svelte-ui-text-color);
 		text-align: left;
 		white-space: nowrap;
 		cursor: pointer;

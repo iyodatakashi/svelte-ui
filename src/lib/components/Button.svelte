@@ -155,7 +155,7 @@
 		border-radius: var(--svelte-ui-button-border-radius);
 		font-size: inherit;
 		font-family: inherit;
-		color: var(--svelte-ui-text);
+		color: var(--svelte-ui-text-color);
 		line-height: normal;
 		overflow: hidden;
 		cursor: pointer;

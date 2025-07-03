@@ -77,7 +77,7 @@
 	style="background: {theme === 'dark' ? '#232220' : '#fafafa'}; min-height: 100vh; padding: 20px;"
 >
 	<div class="content" style="max-width: 800px; margin: 0 auto;">
-		<h1 style="color: var(--svelte-ui-text); margin-bottom: 20px;">
+		<h1 style="color: var(--svelte-ui-text-color); margin-bottom: 20px;">
 			テーマカラーテスト - {theme === 'light' ? 'ライト' : 'ダーク'}テーマ
 		</h1>
 
@@ -88,28 +88,28 @@
 		</div>
 
 		<div class="test-section">
-			<h2 style="color: var(--svelte-ui-text); margin-bottom: 15px;">テキスト色テスト</h2>
+			<h2 style="color: var(--svelte-ui-text-color); margin-bottom: 15px;">テキスト色テスト</h2>
 
-			<p style="color: var(--svelte-ui-text); margin-bottom: 10px;">
-				メインテキスト色 (--svelte-ui-text)
+			<p style="color: var(--svelte-ui-text-color); margin-bottom: 10px;">
+				メインテキスト色 (--svelte-ui-text-color)
 			</p>
 
-			<p style="color: var(--svelte-ui-text-subtle); margin-bottom: 10px;">
-				サブテキスト色 (--svelte-ui-text-subtle)
+			<p style="color: var(--svelte-ui-text-subtle-color); margin-bottom: 10px;">
+				サブテキスト色 (--svelte-ui-text-subtle-color)
 			</p>
 
-			<p style="color: var(--svelte-ui-text-placeholder); margin-bottom: 20px;">
-				プレースホルダー色 (--svelte-ui-text-placeholder)
+			<p style="color: var(--svelte-ui-text-placeholder-color); margin-bottom: 20px;">
+				プレースホルダー色 (--svelte-ui-text-placeholder-color)
 			</p>
 		</div>
 
 		<div class="test-section">
-			<h2 style="color: var(--svelte-ui-text); margin-bottom: 15px;">コンポーネントテスト</h2>
+			<h2 style="color: var(--svelte-ui-text-color); margin-bottom: 15px;">コンポーネントテスト</h2>
 
 			<div style="margin-bottom: 15px;">
 				<label
 					for="input-demo"
-					style="color: var(--svelte-ui-text); display: block; margin-bottom: 5px;"
+					style="color: var(--svelte-ui-text-color); display: block; margin-bottom: 5px;"
 				>
 					Input:
 				</label>
@@ -119,7 +119,7 @@
 			<div style="margin-bottom: 15px;">
 				<label
 					for="select-demo"
-					style="color: var(--svelte-ui-text); display: block; margin-bottom: 5px;"
+					style="color: var(--svelte-ui-text-color); display: block; margin-bottom: 5px;"
 				>
 					Select:
 				</label>
@@ -152,18 +152,18 @@
 
 			<!-- Popup Components Test -->
 			<div style="margin-bottom: 15px;">
-				<h3 style="color: var(--svelte-ui-text); margin-bottom: 10px;">
+				<h3 style="color: var(--svelte-ui-text-color); margin-bottom: 10px;">
 					Popup Components with Accessibility ✨
 				</h3>
 
 				<div
-					style="margin-bottom: 16px; padding: 12px; background: var(--svelte-ui-surface); border: 1px solid var(--svelte-ui-border-color); border-radius: 4px;"
+					style="margin-bottom: 16px; padding: 12px; background: var(--svelte-ui-surface-color); border: 1px solid var(--svelte-ui-border-color); border-radius: 4px;"
 				>
-					<h4 style="color: var(--svelte-ui-text); margin: 0 0 8px 0; font-size: 0.9em;">
+					<h4 style="color: var(--svelte-ui-text-color); margin: 0 0 8px 0; font-size: 0.9em;">
 						🎯 Test these accessibility features:
 					</h4>
 					<ul
-						style="color: var(--svelte-ui-text-subtle); font-size: 0.8em; margin: 0; padding-left: 20px;"
+						style="color: var(--svelte-ui-text-subtle-color); font-size: 0.8em; margin: 0; padding-left: 20px;"
 					>
 						<li>Use <kbd>Tab</kbd> to navigate between buttons</li>
 						<li>Use <kbd>Enter</kbd> or <kbd>Space</kbd> to open menus</li>
@@ -177,18 +177,20 @@
 				<div style="display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px;">
 					<!-- PopupMenuButton -->
 					<div>
-						<p style="color: var(--svelte-ui-text); margin-bottom: 8px; font-weight: 500;">
+						<p style="color: var(--svelte-ui-text-color); margin-bottom: 8px; font-weight: 500;">
 							PopupMenuButton (Full Accessibility):
 						</p>
 						<PopupMenuButton {menuItems} ariaLabel="Action menu" />
-						<p style="color: var(--svelte-ui-text-subtle); font-size: 0.7em; margin-top: 4px;">
+						<p
+							style="color: var(--svelte-ui-text-subtle-color); font-size: 0.7em; margin-top: 4px;"
+						>
 							Tab → Enter → Arrows → Enter → Escape
 						</p>
 					</div>
 
 					<!-- Custom PopupMenu -->
 					<div>
-						<p style="color: var(--svelte-ui-text); margin-bottom: 8px; font-weight: 500;">
+						<p style="color: var(--svelte-ui-text-color); margin-bottom: 8px; font-weight: 500;">
 							PopupMenu:
 						</p>
 						<button
@@ -205,14 +207,16 @@
 							{menuItems}
 							ariaLabel="Context menu"
 						/>
-						<p style="color: var(--svelte-ui-text-subtle); font-size: 0.7em; margin-top: 4px;">
+						<p
+							style="color: var(--svelte-ui-text-subtle-color); font-size: 0.7em; margin-top: 4px;"
+						>
 							Tab → Click → Arrows → Enter
 						</p>
 					</div>
 
 					<!-- Basic Popup -->
 					<div>
-						<p style="color: var(--svelte-ui-text); margin-bottom: 8px; font-weight: 500;">
+						<p style="color: var(--svelte-ui-text-color); margin-bottom: 8px; font-weight: 500;">
 							Dialog Popup:
 						</p>
 						<button
@@ -232,8 +236,10 @@
 							<div
 								style="padding: 16px; background: white; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); min-width: 250px;"
 							>
-								<h4 style="margin: 0 0 12px 0; color: var(--svelte-ui-text);">Settings Dialog</h4>
-								<p style="margin: 0 0 12px 0; color: var(--svelte-ui-text-subtle);">
+								<h4 style="margin: 0 0 12px 0; color: var(--svelte-ui-text-color);">
+									Settings Dialog
+								</h4>
+								<p style="margin: 0 0 12px 0; color: var(--svelte-ui-text-subtle-color);">
 									Focus trap and Escape key support.
 								</p>
 								<div style="display: flex; gap: 8px;">
@@ -244,14 +250,16 @@
 									</button>
 									<button
 										onclick={() => popupRef?.close()}
-										style="padding: 6px 12px; background: var(--svelte-ui-border-color); color: var(--svelte-ui-text); border: none; border-radius: 2px; cursor: pointer;"
+										style="padding: 6px 12px; background: var(--svelte-ui-border-color); color: var(--svelte-ui-text-color); border: none; border-radius: 2px; cursor: pointer;"
 									>
 										Cancel
 									</button>
 								</div>
 							</div>
 						</Popup>
-						<p style="color: var(--svelte-ui-text-subtle); font-size: 0.7em; margin-top: 4px;">
+						<p
+							style="color: var(--svelte-ui-text-subtle-color); font-size: 0.7em; margin-top: 4px;"
+						>
 							Tab → Click → Tab inside → Escape
 						</p>
 					</div>
@@ -263,10 +271,10 @@
 			class="debug-info"
 			style="margin-top: 30px; padding: 15px; border: 1px solid var(--svelte-ui-border-color); border-radius: 8px;"
 		>
-			<h3 style="color: var(--svelte-ui-text); margin-bottom: 10px;">デバッグ情報</h3>
+			<h3 style="color: var(--svelte-ui-text-color); margin-bottom: 10px;">デバッグ情報</h3>
 			<div style="font-family: monospace; font-size: 0.9em;">
-				<div style="color: var(--svelte-ui-text-subtle);">現在のテーマ: {theme}</div>
-				<div style="color: var(--svelte-ui-text-subtle);">body[data-theme]: {theme}</div>
+				<div style="color: var(--svelte-ui-text-subtle-color);">現在のテーマ: {theme}</div>
+				<div style="color: var(--svelte-ui-text-subtle-color);">body[data-theme]: {theme}</div>
 			</div>
 		</div>
 	</div>

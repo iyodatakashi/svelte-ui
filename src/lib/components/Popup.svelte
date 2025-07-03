@@ -15,7 +15,24 @@
 		onClose
 	}: {
 		anchorElement: HTMLElement;
-		position?: 'top' | 'bottom' | 'left' | 'right';
+		position?:
+			| 'top'
+			| 'bottom'
+			| 'left'
+			| 'right'
+			| 'top-left'
+			| 'top-center'
+			| 'top-right'
+			| 'bottom-left'
+			| 'bottom-center'
+			| 'bottom-right'
+			| 'left-top'
+			| 'left-center'
+			| 'left-bottom'
+			| 'right-top'
+			| 'right-center'
+			| 'right-bottom'
+			| 'auto';
 		children: Snippet;
 		role?: 'dialog' | 'menu' | 'tooltip' | 'listbox';
 		ariaLabel?: string;
@@ -168,46 +185,135 @@
 
 	const setPosition = (): void => {
 		if (anchorElement && popupRef) {
-			let x: number = 0;
-			let y: number = 0;
-			const anchorPosition = anchorElement.getBoundingClientRect();
-			const popupPosition = popupRef.getBoundingClientRect();
-			const windowSize = { width: window.innerWidth, height: window.innerHeight };
-			const positionX: 'center' | 'left' | 'right' =
-				position === 'top' || position === 'bottom' ? 'center' : (position as 'left' | 'right');
-			const positionY: 'center' | 'top' | 'bottom' =
-				position === 'left' || position === 'right' ? 'center' : (position as 'top' | 'bottom');
-			switch (positionX) {
-				case 'center':
-					x = Math.min(
-						Math.max(anchorPosition.left + (anchorPosition.width - popupPosition.width) / 2, 4),
-						windowSize.width - popupPosition.width - 4
-					);
-					break;
-				case 'left':
-					x = Math.max(anchorPosition.left - anchorPosition.width, 4);
-					break;
-				case 'right':
-					x = Math.min(anchorPosition.right, windowSize.width - popupPosition.width - 4);
-					break;
+			const anchorRect = anchorElement.getBoundingClientRect();
+			const popupRect = popupRef.getBoundingClientRect();
+			const viewport = {
+				width: window.innerWidth,
+				height: window.innerHeight
+			};
+			const margin = 8; // マージン
+
+			let actualPosition = position;
+
+			// Auto positioning: 最適なポジションを自動選択
+			if (position === 'auto') {
+				actualPosition = getBestPosition(anchorRect, popupRect, viewport, margin);
 			}
-			switch (positionY) {
-				case 'center':
-					y = Math.min(
-						Math.max(anchorPosition.top + (anchorPosition.height - popupPosition.height) / 2, 4),
-						windowSize.height - popupPosition.height - 4
-					);
-					break;
-				case 'top':
-					y = Math.max(anchorPosition.top - popupPosition.height, 4);
-					break;
-				case 'bottom':
-					y = Math.min(anchorPosition.bottom, windowSize.height - popupPosition.height - 4);
-					break;
-			}
-			popupRef.style.left = x + 'px';
-			popupRef.style.top = y + 'px';
+
+			const coords = calculatePosition(actualPosition, anchorRect, popupRect, viewport, margin);
+
+			popupRef.style.left = coords.x + 'px';
+			popupRef.style.top = coords.y + 'px';
 		}
+	};
+
+	const getBestPosition = (
+		anchorRect: DOMRect,
+		popupRect: DOMRect,
+		viewport: { width: number; height: number },
+		margin: number
+	): typeof position => {
+		// スペースの計算
+		const spaceAbove = anchorRect.top;
+		const spaceBelow = viewport.height - anchorRect.bottom;
+		const spaceLeft = anchorRect.left;
+		const spaceRight = viewport.width - anchorRect.right;
+
+		// 必要なスペース
+		const needHeight = popupRect.height + margin;
+		const needWidth = popupRect.width + margin;
+
+		// 各方向の候補をスコアリング
+		const candidates = [
+			{ position: 'bottom-center' as const, score: spaceBelow >= needHeight ? spaceBelow : 0 },
+			{ position: 'top-center' as const, score: spaceAbove >= needHeight ? spaceAbove : 0 },
+			{ position: 'right-center' as const, score: spaceRight >= needWidth ? spaceRight : 0 },
+			{ position: 'left-center' as const, score: spaceLeft >= needWidth ? spaceLeft : 0 }
+		];
+
+		// 最も良いポジションを選択
+		const best = candidates.reduce((a, b) => (a.score > b.score ? a : b));
+		return best.score > 0 ? best.position : 'bottom-center'; // フォールバック
+	};
+
+	const calculatePosition = (
+		pos: typeof position,
+		anchorRect: DOMRect,
+		popupRect: DOMRect,
+		viewport: { width: number; height: number },
+		margin: number
+	): { x: number; y: number } => {
+		let x = 0;
+		let y = 0;
+
+		// 基本ポジション計算
+		switch (pos) {
+			// Top positions
+			case 'top':
+			case 'top-center':
+				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
+				y = anchorRect.top - popupRect.height - margin;
+				break;
+			case 'top-left':
+				x = anchorRect.left;
+				y = anchorRect.top - popupRect.height - margin;
+				break;
+			case 'top-right':
+				x = anchorRect.right - popupRect.width;
+				y = anchorRect.top - popupRect.height - margin;
+				break;
+
+			// Bottom positions
+			case 'bottom':
+			case 'bottom-center':
+				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
+				y = anchorRect.bottom + margin;
+				break;
+			case 'bottom-left':
+				x = anchorRect.left;
+				y = anchorRect.bottom + margin;
+				break;
+			case 'bottom-right':
+				x = anchorRect.right - popupRect.width;
+				y = anchorRect.bottom + margin;
+				break;
+
+			// Left positions
+			case 'left':
+			case 'left-center':
+				x = anchorRect.left - popupRect.width - margin;
+				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
+				break;
+			case 'left-top':
+				x = anchorRect.left - popupRect.width - margin;
+				y = anchorRect.top;
+				break;
+			case 'left-bottom':
+				x = anchorRect.left - popupRect.width - margin;
+				y = anchorRect.bottom - popupRect.height;
+				break;
+
+			// Right positions
+			case 'right':
+			case 'right-center':
+				x = anchorRect.right + margin;
+				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
+				break;
+			case 'right-top':
+				x = anchorRect.right + margin;
+				y = anchorRect.top;
+				break;
+			case 'right-bottom':
+				x = anchorRect.right + margin;
+				y = anchorRect.bottom - popupRect.height;
+				break;
+		}
+
+		// 画面端での調整
+		x = Math.max(margin, Math.min(x, viewport.width - popupRect.width - margin));
+		y = Math.max(margin, Math.min(y, viewport.height - popupRect.height - margin));
+
+		return { x, y };
 	};
 
 	const addEventListenersToClose = () => {
@@ -271,13 +377,14 @@
 
 <style lang="scss">
 	:popover-open {
-		border: solid 1px var(--svelte-ui-border-weak);
+		border: solid 1px var(--svelte-ui-border-weak-color);
 		border-radius: 4px;
 		box-shadow:
 			0 11px 15px -7px rgb(0 0 0 / 20%),
 			0 24px 38px 3px rgb(0 0 0 / 14%),
 			0 9px 46px 8px rgb(0 0 0 / 12%);
-		background: var(--svelte-ui-surface);
+		background: var(--svelte-ui-surface-color);
+		z-index: 1000; /* Popupを最前面に表示 */
 	}
 
 	:popover-open:focus-visible {

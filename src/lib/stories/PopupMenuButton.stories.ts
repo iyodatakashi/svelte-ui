@@ -8,6 +8,24 @@ import PopupMenuButton from '../components/PopupMenuButton.svelte';
 interface PopupMenuButtonArgs {
 	children?: Snippet;
 	menuItems: (MenuItem | 'separator')[];
+	position?:
+		| 'top'
+		| 'bottom'
+		| 'left'
+		| 'right'
+		| 'top-left'
+		| 'top-center'
+		| 'top-right'
+		| 'bottom-left'
+		| 'bottom-center'
+		| 'bottom-right'
+		| 'left-top'
+		| 'left-center'
+		| 'left-bottom'
+		| 'right-top'
+		| 'right-center'
+		| 'right-bottom'
+		| 'auto';
 }
 
 const meta: Meta<PopupMenuButtonArgs> = {
@@ -31,6 +49,29 @@ const meta: Meta<PopupMenuButtonArgs> = {
 		menuItems: {
 			control: 'object',
 			description: 'Array of menu items or separators'
+		},
+		position: {
+			control: 'select',
+			options: [
+				'auto',
+				'top',
+				'bottom',
+				'left',
+				'right',
+				'top-left',
+				'top-center',
+				'top-right',
+				'bottom-left',
+				'bottom-center',
+				'bottom-right',
+				'left-top',
+				'left-center',
+				'left-bottom',
+				'right-top',
+				'right-center',
+				'right-bottom'
+			],
+			description: 'Position of popup menu relative to button. Use "auto" for optimal positioning.'
 		},
 		// Snippetはコントロールから除外
 		children: {
@@ -245,5 +286,165 @@ export const WithoutIcons: Story = {
 				callback: () => alert('Option C')
 			}
 		]
+	}
+};
+
+// === NEW POSITIONING FEATURES ===
+
+// Auto positioning demo
+export const AutoPositioning: Story = {
+	args: {
+		position: 'auto',
+		children: createChildrenSnippet('auto_fix_high'),
+		menuItems: [
+			{
+				title: '🤖 Auto Position',
+				icon: 'auto_fix_high',
+				callback: () => alert('Auto positioning finds the best spot!')
+			},
+			{
+				title: 'Smart Placement',
+				icon: 'psychology',
+				callback: () => alert('Automatically adjusts to viewport')
+			},
+			'separator',
+			{
+				title: 'Try moving to screen edges',
+				icon: 'info',
+				callback: () =>
+					alert('Position this button near screen edges to see auto positioning in action')
+			}
+		]
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Auto positioning automatically selects the best position based on available viewport space. Try moving this button to different screen edges!'
+			}
+		}
+	}
+};
+
+// Corner positioning examples
+export const TopLeftPosition: Story = {
+	args: {
+		position: 'top-left',
+		children: createChildrenSnippet('north_west'),
+		menuItems: [
+			{
+				title: '📍 Top-Left',
+				icon: 'north_west',
+				callback: () => alert('Top-Left aligned')
+			},
+			{
+				title: 'Corner alignment',
+				callback: () => alert('Aligned to top-left corner')
+			}
+		]
+	}
+};
+
+export const BottomRightPosition: Story = {
+	args: {
+		position: 'bottom-right',
+		children: createChildrenSnippet('south_east'),
+		menuItems: [
+			{
+				title: '📍 Bottom-Right',
+				icon: 'south_east',
+				callback: () => alert('Bottom-Right aligned')
+			},
+			{
+				title: 'Corner alignment',
+				callback: () => alert('Aligned to bottom-right corner')
+			}
+		]
+	}
+};
+
+// Side positioning examples
+export const LeftTopPosition: Story = {
+	args: {
+		position: 'left-top',
+		children: createChildrenSnippet('keyboard_arrow_left'),
+		menuItems: [
+			{
+				title: '← Left-Top',
+				icon: 'keyboard_arrow_left',
+				callback: () => alert('Left side, top aligned')
+			},
+			{
+				title: 'Side placement',
+				callback: () => alert('Perfect for toolbar buttons')
+			}
+		]
+	}
+};
+
+export const RightBottomPosition: Story = {
+	args: {
+		position: 'right-bottom',
+		children: createChildrenSnippet('keyboard_arrow_right'),
+		menuItems: [
+			{
+				title: 'Right-Bottom →',
+				icon: 'keyboard_arrow_right',
+				callback: () => alert('Right side, bottom aligned')
+			},
+			{
+				title: 'Side placement',
+				callback: () => alert('Great for contextual menus')
+			}
+		]
+	}
+};
+
+// Position testing playground
+export const PositionPlayground: Story = {
+	args: {
+		position: 'bottom',
+		children: createChildrenSnippet('tune'),
+		menuItems: [
+			{
+				title: '🎯 Position Test',
+				icon: 'tune',
+				callback: () => alert('Use the position control above to test different placements!')
+			},
+			'separator',
+			{
+				title: 'Available Positions:',
+				icon: 'list'
+			},
+			{
+				title: '• auto (smart)',
+				callback: () => alert('Auto selects best position')
+			},
+			{
+				title: '• 4 basic (top/bottom/left/right)',
+				callback: () => alert('Traditional positioning')
+			},
+			{
+				title: '• 12 detailed positions',
+				callback: () => alert('Precise corner & side alignment')
+			},
+			'separator',
+			{
+				title: 'Test Instructions',
+				icon: 'help',
+				callback: () =>
+					alert(
+						'1. Use position control above\n2. Try all 17 positions\n3. Move to screen edges\n4. Test auto positioning'
+					)
+			}
+		]
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Interactive playground for testing all positioning options. Use the position control in the Controls panel to test different placements.'
+			}
+		}
 	}
 };

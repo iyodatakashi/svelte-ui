@@ -6,7 +6,24 @@ import Popup from '../components/Popup.svelte';
 // 型安全性のための明示的な型定義
 interface PopupArgs {
 	anchorElement: HTMLElement;
-	position?: 'top' | 'bottom' | 'left' | 'right';
+	position?:
+		| 'top'
+		| 'bottom'
+		| 'left'
+		| 'right'
+		| 'top-left'
+		| 'top-center'
+		| 'top-right'
+		| 'bottom-left'
+		| 'bottom-center'
+		| 'bottom-right'
+		| 'left-top'
+		| 'left-center'
+		| 'left-bottom'
+		| 'right-top'
+		| 'right-center'
+		| 'right-bottom'
+		| 'auto';
 	children: Snippet;
 }
 
@@ -30,8 +47,27 @@ const meta: Meta<PopupArgs> = {
 	argTypes: {
 		position: {
 			control: 'select',
-			options: ['top', 'bottom', 'left', 'right'],
-			description: 'Position of popup relative to anchor element'
+			options: [
+				'auto',
+				'top',
+				'bottom',
+				'left',
+				'right',
+				'top-left',
+				'top-center',
+				'top-right',
+				'bottom-left',
+				'bottom-center',
+				'bottom-right',
+				'left-top',
+				'left-center',
+				'left-bottom',
+				'right-top',
+				'right-center',
+				'right-bottom'
+			],
+			description:
+				'Position of popup relative to anchor element. Use "auto" for optimal positioning.'
 		},
 		// SnippetとanchorElementはコントロールから除外
 		children: {
@@ -120,6 +156,145 @@ export const Right: Story = {
 				<p style="margin: 0;">This popup appears to the right of the anchor.</p>
 			</div>
 		`)
+	}
+};
+
+// Auto positioning (智能定位)
+export const AutoPositioning: Story = {
+	args: {
+		position: 'auto',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 16px; background: white; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1);">
+				<h3 style="margin: 0 0 8px 0;">🤖 Auto Positioning</h3>
+				<p style="margin: 0;">This popup automatically finds the best position based on available space!</p>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Auto positioning automatically selects the best position based on available viewport space.'
+			}
+		}
+	}
+};
+
+// Detailed positioning examples
+export const TopLeft: Story = {
+	args: {
+		position: 'top-left',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 12px; background: #e3f2fd; border-radius: 4px; border-left: 4px solid #2196f3;">
+				<strong>Top-Left</strong><br/>Aligned to top-left corner
+			</div>
+		`)
+	}
+};
+
+export const TopRight: Story = {
+	args: {
+		position: 'top-right',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 12px; background: #f3e5f5; border-radius: 4px; border-left: 4px solid #9c27b0;">
+				<strong>Top-Right</strong><br/>Aligned to top-right corner
+			</div>
+		`)
+	}
+};
+
+export const BottomLeft: Story = {
+	args: {
+		position: 'bottom-left',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 12px; background: #e8f5e8; border-radius: 4px; border-left: 4px solid #4caf50;">
+				<strong>Bottom-Left</strong><br/>Aligned to bottom-left corner
+			</div>
+		`)
+	}
+};
+
+export const BottomRight: Story = {
+	args: {
+		position: 'bottom-right',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 12px; background: #fff3e0; border-radius: 4px; border-left: 4px solid #ff9800;">
+				<strong>Bottom-Right</strong><br/>Aligned to bottom-right corner
+			</div>
+		`)
+	}
+};
+
+export const LeftTop: Story = {
+	args: {
+		position: 'left-top',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 12px; background: #fce4ec; border-radius: 4px; border-left: 4px solid #e91e63;">
+				<strong>Left-Top</strong><br/>Left side, top aligned
+			</div>
+		`)
+	}
+};
+
+export const RightBottom: Story = {
+	args: {
+		position: 'right-bottom',
+		anchorElement: createMockAnchorElement(),
+		children: createChildrenSnippet(`
+			<div style="padding: 12px; background: #e0f2f1; border-radius: 4px; border-left: 4px solid #009688;">
+				<strong>Right-Bottom</strong><br/>Right side, bottom aligned
+			</div>
+		`)
+	}
+};
+
+// Position Matrix Demo
+export const PositionMatrix: Story = {
+	render: () => ({
+		Component: Popup,
+		props: {
+			anchorElement: createMockAnchorElement(),
+			position: 'bottom',
+			children: createChildrenSnippet(`
+				<div style="padding: 20px; background: white; border-radius: 8px; box-shadow: 0 4px 16px rgba(0,0,0,0.1); max-width: 400px;">
+					<h3 style="margin: 0 0 16px 0; text-align: center;">📍 Available Positions</h3>
+					<div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 8px; margin-bottom: 16px;">
+						<div style="padding: 8px; background: #e3f2fd; border-radius: 4px; text-align: center; font-size: 12px;">top-left</div>
+						<div style="padding: 8px; background: #e3f2fd; border-radius: 4px; text-align: center; font-size: 12px;">top-center</div>
+						<div style="padding: 8px; background: #e3f2fd; border-radius: 4px; text-align: center; font-size: 12px;">top-right</div>
+						<div style="padding: 8px; background: #f3e5f5; border-radius: 4px; text-align: center; font-size: 12px;">left-top</div>
+						<div style="padding: 8px; background: #fff3e0; border-radius: 4px; text-align: center; font-size: 12px; font-weight: bold;">🎯 ANCHOR</div>
+						<div style="padding: 8px; background: #e8f5e8; border-radius: 4px; text-align: center; font-size: 12px;">right-top</div>
+						<div style="padding: 8px; background: #f3e5f5; border-radius: 4px; text-align: center; font-size: 12px;">left-center</div>
+						<div style="padding: 8px; background: #ffebee; border-radius: 4px; text-align: center; font-size: 12px;">AUTO</div>
+						<div style="padding: 8px; background: #e8f5e8; border-radius: 4px; text-align: center; font-size: 12px;">right-center</div>
+						<div style="padding: 8px; background: #f3e5f5; border-radius: 4px; text-align: center; font-size: 12px;">left-bottom</div>
+						<div style="padding: 8px; background: #e0f2f1; border-radius: 4px; text-align: center; font-size: 12px;">bottom-center</div>
+						<div style="padding: 8px; background: #e8f5e8; border-radius: 4px; text-align: center; font-size: 12px;">right-bottom</div>
+						<div style="padding: 8px; background: #e0f2f1; border-radius: 4px; text-align: center; font-size: 12px;">bottom-left</div>
+						<div style="padding: 8px; background: #e0f2f1; border-radius: 4px; text-align: center; font-size: 12px;">bottom-center</div>
+						<div style="padding: 8px; background: #e0f2f1; border-radius: 4px; text-align: center; font-size: 12px;">bottom-right</div>
+					</div>
+					<p style="margin: 0; font-size: 14px; color: #666; text-align: center;">
+						Use the position control above to test different placements!
+					</p>
+				</div>
+			`)
+		}
+	}),
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Visual guide showing all available positioning options. Use the position control to test different placements.'
+			}
+		}
 	}
 };
 

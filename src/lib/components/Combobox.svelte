@@ -410,7 +410,7 @@ focus-style-{focusStyle}"
 		text-align: left;
 		cursor: pointer;
 		font-size: inherit;
-		color: var(--svelte-ui-text);
+		color: var(--svelte-ui-text-color);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		&:hover,
@@ -435,7 +435,7 @@ focus-style-{focusStyle}"
 	.no-options {
 		padding: var(--svelte-ui-combobox-option-padding);
 		font-size: inherit;
-		color: var(--svelte-ui-text-subtle);
+		color: var(--svelte-ui-text-subtle-color);
 		font-style: italic;
 		list-style: none;
 	}
@@ -455,11 +455,11 @@ focus-style-{focusStyle}"
  * プレースホルダー・テキスト表示
  * ============================================= */
 	input::placeholder {
-		color: var(--svelte-ui-text-placeholder);
+		color: var(--svelte-ui-text-placeholder-color);
 	}
 
 	.plain-text.is-placeholder {
-		color: var(--svelte-ui-text-placeholder);
+		color: var(--svelte-ui-text-placeholder-color);
 	}
 
 	/* =============================================

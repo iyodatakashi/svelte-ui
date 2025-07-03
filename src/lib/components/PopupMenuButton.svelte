@@ -8,12 +8,31 @@
 		children,
 		menuItems,
 		ariaLabel = 'Menu',
-		disabled = false
+		disabled = false,
+		position = 'bottom'
 	}: {
 		children?: Snippet;
 		menuItems: (MenuItem | 'separator')[];
 		ariaLabel?: string;
 		disabled?: boolean;
+		position?:
+			| 'top'
+			| 'bottom'
+			| 'left'
+			| 'right'
+			| 'top-left'
+			| 'top-center'
+			| 'top-right'
+			| 'bottom-left'
+			| 'bottom-center'
+			| 'bottom-right'
+			| 'left-top'
+			| 'left-center'
+			| 'left-bottom'
+			| 'right-top'
+			| 'right-center'
+			| 'right-bottom'
+			| 'auto';
 	} = $props();
 
 	let anchorRef: HTMLElement | undefined = $state();
@@ -72,12 +91,11 @@
 	</IconButton>
 </div>
 
-<PopupMenu bind:this={popupMenuRef} {menuItems} anchorElement={anchorRef} {ariaLabel} />
+<PopupMenu bind:this={popupMenuRef} {menuItems} anchorElement={anchorRef} {ariaLabel} {position} />
 
 <style lang="scss">
 	.button-block {
 		width: fit-content;
-		position: relative;
 	}
 
 	/* Screen reader only content */

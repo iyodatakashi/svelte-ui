@@ -167,7 +167,7 @@ focus-style-{focusStyle}"
  * プレースホルダー・オプション表示
  * ============================================= */
 	option[value=''] {
-		color: var(--svelte-ui-text-placeholder);
+		color: var(--svelte-ui-text-placeholder-color);
 	}
 
 	/* =============================================
@@ -223,7 +223,7 @@ focus-style-{focusStyle}"
 			border: none;
 			border-radius: var(--svelte-ui-select-border-radius);
 			font-size: 1rem;
-			color: var(--svelte-ui-text);
+			color: var(--svelte-ui-text-color);
 			line-height: var(--svelte-ui-select-height);
 		}
 
