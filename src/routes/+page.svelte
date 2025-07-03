@@ -1,4 +1,4 @@
-<script>
+<script lang="ts">
 	import { onMount } from 'svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
@@ -6,6 +6,10 @@
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Radio from '$lib/components/Radio.svelte';
 	import Combobox from '$lib/components/Combobox.svelte';
+	import PopupMenuButton from '$lib/components/PopupMenuButton.svelte';
+	import PopupMenu from '$lib/components/PopupMenu.svelte';
+	import Popup from '$lib/components/Popup.svelte';
+	import type { MenuItem } from '$lib/types/MenuItem';
 
 	let theme = $state('light');
 
@@ -33,6 +37,39 @@
 	let checkboxValue = $state(false);
 	let radioValue = $state('');
 	let comboboxValue = $state('');
+
+	// Popup menu items
+	const menuItems: (MenuItem | 'separator')[] = [
+		{
+			title: 'Edit',
+			icon: 'edit',
+			callback: () => alert('Edit clicked')
+		},
+		{
+			title: 'Copy',
+			icon: 'content_copy',
+			callback: () => alert('Copy clicked')
+		},
+		'separator',
+		{
+			title: 'Delete',
+			icon: 'delete',
+			callback: () => alert('Delete clicked')
+		}
+	];
+
+	// Popup demo
+	let popupAnchorRef: HTMLElement = $state();
+	let popupMenuRef: any = $state();
+	let popupRef: any = $state();
+
+	const openPopup = () => {
+		popupRef?.open();
+	};
+
+	const openPopupMenu = () => {
+		popupMenuRef?.open();
+	};
 </script>
 
 <div
@@ -70,17 +107,24 @@
 			<h2 style="color: var(--svelte-ui-text); margin-bottom: 15px;">コンポーネントテスト</h2>
 
 			<div style="margin-bottom: 15px;">
-				<label style="color: var(--svelte-ui-text); display: block; margin-bottom: 5px;">
+				<label
+					for="input-demo"
+					style="color: var(--svelte-ui-text); display: block; margin-bottom: 5px;"
+				>
 					Input:
 				</label>
-				<Input bind:value={inputValue} placeholder="プレースホルダーテキスト" />
+				<Input id="input-demo" bind:value={inputValue} placeholder="プレースホルダーテキスト" />
 			</div>
 
 			<div style="margin-bottom: 15px;">
-				<label style="color: var(--svelte-ui-text); display: block; margin-bottom: 5px;">
+				<label
+					for="select-demo"
+					style="color: var(--svelte-ui-text); display: block; margin-bottom: 5px;"
+				>
 					Select:
 				</label>
 				<Select
+					id="select-demo"
 					bind:value={selectValue}
 					options={selectOptions}
 					placeholder="オプションを選択してください"
@@ -104,6 +148,59 @@
 				<Button variant="filled">フィルドボタン</Button>
 				<Button variant="outlined">アウトラインボタン</Button>
 				<Button variant="text">テキストボタン</Button>
+			</div>
+
+			<!-- Popup Components Test -->
+			<div style="margin-bottom: 15px;">
+				<h3 style="color: var(--svelte-ui-text); margin-bottom: 10px;">Popup Components</h3>
+
+				<div style="display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px;">
+					<!-- PopupMenuButton -->
+					<div>
+						<p style="color: var(--svelte-ui-text); margin-bottom: 8px;">PopupMenuButton:</p>
+						<PopupMenuButton {menuItems} />
+					</div>
+
+					<!-- Custom PopupMenu -->
+					<div>
+						<p style="color: var(--svelte-ui-text); margin-bottom: 8px;">PopupMenu:</p>
+						<button
+							bind:this={popupAnchorRef}
+							onclick={openPopupMenu}
+							style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
+						>
+							Open Menu
+						</button>
+						<PopupMenu bind:this={popupMenuRef} anchorElement={popupAnchorRef} {menuItems} />
+					</div>
+
+					<!-- Basic Popup -->
+					<div>
+						<p style="color: var(--svelte-ui-text); margin-bottom: 8px;">Basic Popup:</p>
+						<button
+							onclick={openPopup}
+							style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
+						>
+							Open Popup
+						</button>
+						<Popup bind:this={popupRef} anchorElement={popupAnchorRef}>
+							<div
+								style="padding: 16px; background: white; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); min-width: 200px;"
+							>
+								<h4 style="margin: 0 0 8px 0; color: var(--svelte-ui-text);">Custom Popup</h4>
+								<p style="margin: 0; color: var(--svelte-ui-text-subtle);">
+									This is a custom popup with your own content.
+								</p>
+								<button
+									onclick={() => popupRef?.close()}
+									style="margin-top: 8px; padding: 4px 8px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 2px; cursor: pointer;"
+								>
+									Close
+								</button>
+							</div>
+						</Popup>
+					</div>
+				</div>
 			</div>
 		</div>
 
