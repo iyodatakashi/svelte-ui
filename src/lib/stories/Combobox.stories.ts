@@ -142,21 +142,9 @@ export const Playground = {
 		required: false,
 		minWidth: null,
 		maxWidth: null,
-		maxlength: 0,
+		maxlength: null,
 		placeholder: 'Playground'
-	},
-	render: (args: Record<string, unknown>) => ({
-		Component: Combobox,
-		props: {
-			...args,
-			onchange: (value: string | number | null | undefined) => {
-				console.log('onChange:', value);
-			},
-			oninput: (value: string | number | null | undefined) => {
-				console.log('onInput:', value);
-			}
-		}
-	})
+	}
 };
 
 // 基本的なコンボボックス
