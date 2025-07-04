@@ -578,11 +578,9 @@
 	.date-list-item.is-range-start::before,
 	.date-list-item.is-range-end::before,
 	.date-list-item.is-range-middle::before,
-	.date-list-item.is-range-single::before,
 	.date-list-item.is-range-preview-start::before,
 	.date-list-item.is-range-preview-end::before,
-	.date-list-item.is-range-preview-middle::before,
-	.date-list-item.is-range-preview-single::before {
+	.date-list-item.is-range-preview-middle::before {
 		content: '';
 		position: absolute;
 		top: 50%;
@@ -625,11 +623,7 @@
 	/* 単一日選択（開始日と終了日が同じ） */
 	.date-list-item.is-range-single::before,
 	.date-list-item.is-range-preview-single::before {
-		left: 50%;
-		right: 50%;
-		width: 36px;
-		transform: translate(-50%, -50%);
-		border-radius: 18px;
+		display: none;
 	}
 
 	/* 範囲内の日付ボタンスタイル */
