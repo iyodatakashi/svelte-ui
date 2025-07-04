@@ -156,6 +156,9 @@ export const InlineVariant: Story = {
 		showIcon: false,
 		disabled: false,
 		openIfClicked: true
+	},
+	parameters: {
+		layout: 'padded'
 	}
 };
 
