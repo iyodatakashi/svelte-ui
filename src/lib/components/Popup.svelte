@@ -626,24 +626,6 @@
 		}
 	}
 
-	/* Touch target optimization */
-	@media (max-width: 768px) {
-		button,
-		[role='button'],
-		[role='menuitem'] {
-			min-height: var(--svelte-ui-touch-target);
-			min-width: var(--svelte-ui-touch-target);
-		}
-
-		/* Increase tap targets in mobile popups */
-		:popover-open.mobile button,
-		:popover-open.mobile [role='button'],
-		:popover-open.mobile [role='menuitem'] {
-			min-height: var(--svelte-ui-touch-target-lg);
-			padding: 12px 16px;
-		}
-	}
-
 	/* Responsive design adjustments */
 	@media (max-width: 480px) {
 		.mobile-container {
