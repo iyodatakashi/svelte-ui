@@ -240,10 +240,11 @@ focus-style-{focusStyle}"
 	<Popup
 		bind:this={popupRef}
 		anchorElement={comboboxElement}
-		position="bottom"
+		position="bottom-left"
 		role="listbox"
 		focusTrap={false}
 		onClose={handlePopupClose}
+		margin={0}
 	>
 		<div
 			bind:this={listElement}

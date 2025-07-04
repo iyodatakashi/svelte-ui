@@ -21,7 +21,8 @@
 		onClose,
 		mobileFullscreen = false,
 		enableSwipeToClose = true,
-		mobileBehavior = 'auto' // 'auto' | 'fullscreen' | 'popup'
+		mobileBehavior = 'auto', // 'auto' | 'fullscreen' | 'popup'
+		margin = 8
 	}: {
 		anchorElement: HTMLElement;
 		position?:
@@ -53,6 +54,7 @@
 		mobileFullscreen?: boolean;
 		enableSwipeToClose?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+		margin?: number;
 	} = $props();
 
 	let isOpen: boolean = $state(false);
@@ -136,18 +138,23 @@
 	export const open = async () => {
 		setTimeout(async () => {
 			popupRef?.removeEventListener('animationend', closeEnd);
-			popupRef?.showPopover();
 
-			// モバイルでフルスクリーンでない場合のみpositionを設定
-			if (!shouldUseFullscreen) {
-				setPosition();
-			}
+			popupRef?.showPopover();
 
 			isOpen = true;
 			addEventListenersToClose();
 			addKeyboardListener();
 
 			await tick();
+
+			// サイズを取得して正しい位置を計算
+			if (!shouldUseFullscreen) {
+				setPosition();
+
+				// 追加で正確な位置計算（サイズ確定後）
+				await new Promise((resolve) => requestAnimationFrame(resolve));
+				setPosition();
+			}
 
 			// モバイル機能の設定
 			setupMobileFeatures();
@@ -221,7 +228,6 @@
 				width: window.innerWidth,
 				height: window.innerHeight
 			};
-			const margin = 8; // マージン
 
 			let actualPosition = position;
 
@@ -232,8 +238,15 @@
 
 			const coords = calculatePosition(actualPosition, anchorRect, popupRect, viewport, margin);
 
-			popupRef.style.left = coords.x + 'px';
-			popupRef.style.top = coords.y + 'px';
+			// 位置指定
+			popupRef.style.setProperty('left', '0px', 'important');
+			popupRef.style.setProperty('top', '0px', 'important');
+			popupRef.style.setProperty('position', 'fixed', 'important');
+			popupRef.style.setProperty(
+				'transform',
+				`translate(${coords.x}px, ${coords.y}px)`,
+				'important'
+			);
 		}
 	};
 
