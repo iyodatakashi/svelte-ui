@@ -255,6 +255,27 @@
 		}
 		return false;
 	};
+
+	// 期間選択の範囲表示用の判定関数
+	const isRangeStart = (date: dayjs.Dayjs) => {
+		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		return dayjs(date).isSame(dayjs(value.start).startOf('day'));
+	};
+
+	const isRangeEnd = (date: dayjs.Dayjs) => {
+		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		return dayjs(date).isSame(dayjs(value.end).startOf('day'));
+	};
+
+	const isRangeMiddle = (date: dayjs.Dayjs) => {
+		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		return isSelected(date) && !isRangeStart(date) && !isRangeEnd(date);
+	};
+
+	const isRangeSingle = (date: dayjs.Dayjs) => {
+		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		return isRangeStart(date) && isRangeEnd(date);
+	};
 	const isOutOfMonth = (date: dayjs.Dayjs) => {
 		return date.month() !== month.month();
 	};
@@ -311,7 +332,7 @@
 
 <div
 	bind:this={calendarRef}
-	class="stamp-sheet"
+	class="datepicker-calendar"
 	role="grid"
 	aria-label={`${month.locale(locale).format(currentLocaleConfig.monthFormat)}${currentLocaleConfig.calendarLabel}`}
 	tabindex="-1"
@@ -349,7 +370,11 @@
 					{#each week as date}
 						<div
 							class="date-list-item"
-							class:is-selected={isSelected(date)}
+							class:is-selected={!isDateRange && isSelected(date)}
+							class:is-range-start={isRangeStart(date)}
+							class:is-range-end={isRangeEnd(date)}
+							class:is-range-middle={isRangeMiddle(date)}
+							class:is-range-single={isRangeSingle(date)}
 							class:out-of-month={isOutOfMonth(date)}
 							class:out-of-range={isOutOfRange(date)}
 							class:today={isToday(date)}
@@ -380,23 +405,27 @@
 </div>
 
 <style lang="scss">
-	.stamp-sheet {
+	.datepicker-calendar {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
 		width: 320px;
 		padding: 16px;
 	}
+
 	.header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		gap: 16px;
 	}
+
 	.month-label-block {
 		font-size: 1.4rem;
 		font-weight: bold;
+		color: var(--svelte-ui-text-color);
 	}
+
 	.day-list {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
@@ -413,6 +442,7 @@
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 		place-items: center stretch;
 	}
+
 	.day-list-item,
 	.date-list-item {
 		display: flex;
@@ -420,9 +450,15 @@
 		padding: 2px 0;
 		font-size: 1rem;
 	}
+
 	.day-list-item {
 		color: var(--svelte-ui-text-subtle-color);
 	}
+
+	.date-list-item .date-button {
+		color: var(--svelte-ui-text-color);
+	}
+
 	.date-list-item.out-of-month .date-button {
 		color: var(--svelte-ui-text-subtle-color);
 	}
@@ -432,7 +468,75 @@
 	}
 	.date-list-item.is-selected .date-button {
 		background-color: var(--primary-color);
-		color: var(--svelte-ui-text-reverse-color);
+		color: var(--svelte-ui-text-on-filled-color);
+	}
+
+	/* 期間選択の帯状表示 */
+	.date-list-item.is-range-start,
+	.date-list-item.is-range-end,
+	.date-list-item.is-range-middle,
+	.date-list-item.is-range-single {
+		position: relative;
+	}
+
+	.date-list-item.is-range-start::before,
+	.date-list-item.is-range-end::before,
+	.date-list-item.is-range-middle::before,
+	.date-list-item.is-range-single::before {
+		content: '';
+		position: absolute;
+		top: 50%;
+		transform: translateY(-50%);
+		height: 36px;
+		background-color: var(--svelte-ui-select-overlay);
+		z-index: 0;
+	}
+
+	/* 範囲開始日 */
+	.date-list-item.is-range-start::before {
+		left: 50%;
+		right: 0;
+	}
+
+	/* 範囲終了日 */
+	.date-list-item.is-range-end::before {
+		left: 0;
+		right: 50%;
+	}
+
+	/* 範囲中間日 */
+	.date-list-item.is-range-middle::before {
+		left: 0;
+		right: 0;
+		border-radius: 0;
+	}
+
+	/* 単一日選択（開始日と終了日が同じ） */
+	.date-list-item.is-range-single::before {
+		left: 50%;
+		right: 50%;
+		width: 36px;
+		transform: translate(-50%, -50%);
+		border-radius: 18px;
+	}
+
+	/* 範囲内の日付ボタンスタイル */
+	.date-list-item.is-range-start .date-button,
+	.date-list-item.is-range-end .date-button,
+	.date-list-item.is-range-single .date-button {
+		background-color: var(--primary-color);
+		color: var(--svelte-ui-text-on-filled-color);
+		font-weight: bold;
+		z-index: 1;
+		position: relative;
+	}
+
+	.date-list-item.is-range-middle .date-button {
+		background-color: transparent;
+		color: var(--svelte-ui-text-color);
+		font-weight: 500;
+		z-index: 1;
+		position: relative;
 	}
 	.date-list-item.out-of-range {
 		background: var(--base-50);
@@ -455,6 +559,18 @@
 		border-radius: 18px;
 	}
 	.date-button:hover {
+		background: var(--svelte-ui-hover-overlay);
+	}
+
+	/* 範囲選択中のホバー効果を調整 */
+	.date-list-item.is-range-start .date-button:hover,
+	.date-list-item.is-range-end .date-button:hover,
+	.date-list-item.is-range-single .date-button:hover {
+		background-color: var(--primary-color);
+		opacity: 0.9;
+	}
+
+	.date-list-item.is-range-middle .date-button:hover {
 		background: var(--svelte-ui-hover-overlay);
 	}
 </style>
