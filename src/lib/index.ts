@@ -3,6 +3,7 @@ export { default as Button } from './components/Button.svelte';
 export { default as Checkbox } from './components/Checkbox.svelte';
 export { default as ColorPicker } from './components/ColorPicker.svelte';
 export { default as Combobox } from './components/Combobox.svelte';
+export { default as Datepicker } from './components/Datepicker.svelte';
 export { default as Icon } from './components/Icon.svelte';
 export { default as IconButton } from './components/IconButton.svelte';
 export { default as Input } from './components/Input.svelte';
