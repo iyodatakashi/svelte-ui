@@ -245,6 +245,7 @@ focus-style-{focusStyle}"
 		focusTrap={false}
 		onClose={handlePopupClose}
 		margin={0}
+		allowRepositioning={false}
 	>
 		<div
 			bind:this={listElement}

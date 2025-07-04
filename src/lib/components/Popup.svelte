@@ -22,7 +22,8 @@
 		mobileFullscreen = false,
 		enableSwipeToClose = true,
 		mobileBehavior = 'auto', // 'auto' | 'fullscreen' | 'popup'
-		margin = 8
+		margin = 8,
+		allowRepositioning = true
 	}: {
 		anchorElement: HTMLElement;
 		position?:
@@ -55,6 +56,7 @@
 		enableSwipeToClose?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 		margin?: number;
+		allowRepositioning?: boolean;
 	} = $props();
 
 	let isOpen: boolean = $state(false);
@@ -187,6 +189,12 @@
 
 	const closeEnd = () => {
 		popupRef?.hidePopover();
+
+		// 高さ制限をリセット
+		if (popupRef) {
+			popupRef.style.maxHeight = '';
+			popupRef.style.overflowY = '';
+		}
 	};
 
 	const focusFirstElement = () => {
@@ -269,7 +277,10 @@
 		// 各方向の候補をスコアリング
 		const candidates = [
 			{ position: 'bottom-center' as const, score: spaceBelow >= needHeight ? spaceBelow : 0 },
-			{ position: 'top-center' as const, score: spaceAbove >= needHeight ? spaceAbove : 0 },
+			{
+				position: 'top-center' as const,
+				score: !allowRepositioning ? 0 : spaceAbove >= needHeight ? spaceAbove : 0
+			},
 			{ position: 'right-center' as const, score: spaceRight >= needWidth ? spaceRight : 0 },
 			{ position: 'left-center' as const, score: spaceLeft >= needWidth ? spaceLeft : 0 }
 		];
@@ -354,7 +365,21 @@
 
 		// 画面端での調整
 		x = Math.max(margin, Math.min(x, viewport.width - popupRect.width - margin));
-		y = Math.max(margin, Math.min(y, viewport.height - popupRect.height - margin));
+
+		// allowRepositioning が false の場合は位置調整せず、高さを制限
+		if (!allowRepositioning) {
+			y = Math.max(margin, y);
+			// 画面下端からはみ出す場合は高さを制限
+			if (y + popupRect.height + margin > viewport.height) {
+				const availableHeight = viewport.height - y - margin;
+				if (popupRef) {
+					popupRef.style.maxHeight = `${availableHeight}px`;
+					popupRef.style.overflowY = 'auto';
+				}
+			}
+		} else {
+			y = Math.max(margin, Math.min(y, viewport.height - popupRect.height - margin));
+		}
 
 		return { x, y };
 	};
