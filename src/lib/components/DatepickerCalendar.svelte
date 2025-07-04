@@ -31,6 +31,7 @@
 	let month: dayjs.Dayjs = $state(dayjs());
 	let focusedDate: dayjs.Dayjs = $state(dayjs());
 	let isCalendarFocused: boolean = $state(false);
+	let allowKeyboardFocus: boolean = $state(false);
 
 	dayjs.extend(isSameOrBefore);
 	dayjs.extend(isSameOrAfter);
@@ -119,6 +120,7 @@
 
 	// フォーカス管理
 	export const focusCalendar = () => {
+		allowKeyboardFocus = true;
 		isCalendarFocused = true;
 		calendarRef?.focus();
 	};
@@ -167,6 +169,9 @@
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (!isCalendarFocused) return;
 
+		// キーボード操作時はフォーカスを維持
+		allowKeyboardFocus = true;
+
 		switch (event.key) {
 			case 'ArrowUp':
 				event.preventDefault();
@@ -214,11 +219,15 @@
 	};
 
 	const handleFocus = () => {
-		isCalendarFocused = true;
+		// プログラム的フォーカス（focusCalendar()）の場合のみ有効にする
+		if (allowKeyboardFocus) {
+			isCalendarFocused = true;
+		}
 	};
 
 	const handleBlur = () => {
 		isCalendarFocused = false;
+		allowKeyboardFocus = false;
 	};
 	const generateDateArray = (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) => {
 		let dates = [];
