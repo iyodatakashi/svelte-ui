@@ -35,25 +35,75 @@
 	let anchorElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
+	let isCalendarOpen: boolean = $state(false);
+	let openedViaKeyboard: boolean = $state(false);
+	const calendarId = `datepicker-calendar-${Math.random().toString(36).substr(2, 9)}`;
 	const handleChange = () => {
-		close();
+		isCalendarOpen = false;
+		popupRef?.close();
+		// 状態をリセット
+		openedViaKeyboard = false;
 		onchange();
 	};
 	const handleClick = () => {
 		if (openIfClicked) {
+			openedViaKeyboard = false;
 			toggle();
+		}
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		switch (event.key) {
+			case 'Enter':
+			case ' ':
+			case 'ArrowDown':
+				event.preventDefault();
+				openedViaKeyboard = true;
+				open();
+				break;
+			case 'Escape':
+				if (isCalendarOpen) {
+					event.preventDefault();
+					close();
+				}
+				break;
 		}
 	};
 	export const open = () => {
 		datapickerCalendarRef?.reset();
 		popupRef?.open();
+		isCalendarOpen = true;
+		// キーボードで開いた場合のみカレンダーにフォーカスを移動
+		if (openedViaKeyboard) {
+			setTimeout(() => {
+				datapickerCalendarRef?.focusCalendar();
+			}, 100);
+		}
 	};
 	export const close = () => {
 		popupRef?.close();
+		isCalendarOpen = false;
+		// キーボードで開いた場合のみボタンにフォーカスを戻す
+		if (openedViaKeyboard) {
+			displayElement?.focus();
+		}
+		// 状態をリセット
+		openedViaKeyboard = false;
 	};
 	export const toggle = () => {
-		datapickerCalendarRef?.reset();
-		popupRef?.toggle();
+		if (isCalendarOpen) {
+			close();
+		} else {
+			datapickerCalendarRef?.reset();
+			popupRef?.toggle();
+			isCalendarOpen = true;
+			// キーボードで開いた場合のみカレンダーにフォーカスを移動
+			if (openedViaKeyboard) {
+				setTimeout(() => {
+					datapickerCalendarRef?.focusCalendar();
+				}, 100);
+			}
+		}
 	};
 	const displayValue = $derived.by(() => {
 		if (isDateRange && value && 'start' in value && 'end' in value) {
@@ -70,7 +120,13 @@
 	class:inline={variant === 'inline'}
 	bind:this={displayElement}
 	{disabled}
+	role="combobox"
+	aria-haspopup="grid"
+	aria-expanded={isCalendarOpen}
+	aria-controls={calendarId}
+	aria-label={`日付を選択してください。現在の値: ${displayValue || '未選択'}`}
 	onclick={handleClick}
+	onkeydown={handleKeyDown}
 >
 	{#if showCalendarIcon}
 		<div class="icon-block">
@@ -95,6 +151,7 @@
 		{minDate}
 		{maxDate}
 		onchange={handleChange}
+		id={calendarId}
 	/>
 </Popup>
 

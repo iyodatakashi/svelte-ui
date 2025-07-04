@@ -9,30 +9,156 @@
 		isDateRange = false,
 		onchange = () => {},
 		minDate,
-		maxDate
+		maxDate,
+		id
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
 		isDateRange?: boolean;
 		onchange: Function;
 		minDate?: Date;
 		maxDate?: Date;
+		id?: string;
 	} = $props();
 	let month: dayjs.Dayjs = $state(dayjs());
+	let focusedDate: dayjs.Dayjs = $state(dayjs());
+	let isCalendarFocused: boolean = $state(false);
+
 	dayjs.extend(isSameOrBefore);
 	dayjs.extend(isSameOrAfter);
 	const startDate = $derived(month.startOf('month').startOf('week'));
 	const endDate = $derived(month.endOf('month').endOf('week'));
 	const DAY_ARRAY = ['日', '月', '火', '水', '木', '金', '土'];
 	let isSelectingStart: boolean = $state(true);
+	let calendarRef: HTMLDivElement | undefined = $state();
 	onMount(() => {
 		reset();
+		// 初期フォーカス日を設定
+		if (value) {
+			if (isDateRange && value && 'start' in value && 'end' in value) {
+				focusedDate = dayjs(value.start);
+			} else if (!isDateRange && value instanceof Date) {
+				focusedDate = dayjs(value);
+			}
+		} else {
+			focusedDate = dayjs();
+		}
 	});
+
 	export const reset = () => {
 		if (isDateRange && value && 'start' in value && 'end' in value) {
 			month = value ? dayjs(value.start).startOf('month') : dayjs().startOf('month');
+			focusedDate = value ? dayjs(value.start) : dayjs();
 		} else if (!isDateRange && value && value instanceof Date) {
 			month = value ? dayjs(value).startOf('month') : dayjs().startOf('month');
+			focusedDate = value ? dayjs(value) : dayjs();
+		} else {
+			month = dayjs().startOf('month');
+			focusedDate = dayjs();
 		}
+	};
+
+	// フォーカス管理
+	export const focusCalendar = () => {
+		isCalendarFocused = true;
+		calendarRef?.focus();
+	};
+
+	// キーボードナビゲーション関数
+	const moveDay = (direction: number) => {
+		const newDate = focusedDate.add(direction, 'day');
+		focusedDate = newDate;
+
+		// 月が変わった場合は表示月も変更
+		if (newDate.month() !== month.month()) {
+			month = newDate.startOf('month');
+		}
+	};
+
+	const moveWeek = (direction: number) => {
+		const newDate = focusedDate.add(direction * 7, 'day');
+		focusedDate = newDate;
+
+		// 月が変わった場合は表示月も変更
+		if (newDate.month() !== month.month()) {
+			month = newDate.startOf('month');
+		}
+	};
+
+	const moveToStartOfWeek = () => {
+		focusedDate = focusedDate.startOf('week');
+	};
+
+	const moveToEndOfWeek = () => {
+		focusedDate = focusedDate.endOf('week');
+	};
+
+	const moveMonth = (direction: number) => {
+		const newDate = focusedDate.add(direction, 'month');
+		focusedDate = newDate;
+		month = newDate.startOf('month');
+	};
+
+	const selectFocusedDate = () => {
+		if (isOutOfRange(focusedDate)) return;
+		selectDate(focusedDate);
+	};
+
+	// キーボードイベントハンドラ
+	const handleKeyDown = (event: KeyboardEvent) => {
+		if (!isCalendarFocused) return;
+
+		switch (event.key) {
+			case 'ArrowUp':
+				event.preventDefault();
+				moveWeek(-1);
+				break;
+			case 'ArrowDown':
+				event.preventDefault();
+				moveWeek(1);
+				break;
+			case 'ArrowLeft':
+				event.preventDefault();
+				moveDay(-1);
+				break;
+			case 'ArrowRight':
+				event.preventDefault();
+				moveDay(1);
+				break;
+			case 'Home':
+				event.preventDefault();
+				moveToStartOfWeek();
+				break;
+			case 'End':
+				event.preventDefault();
+				moveToEndOfWeek();
+				break;
+			case 'PageUp':
+				event.preventDefault();
+				moveMonth(-1);
+				break;
+			case 'PageDown':
+				event.preventDefault();
+				moveMonth(1);
+				break;
+			case 'Enter':
+			case ' ':
+				event.preventDefault();
+				selectFocusedDate();
+				break;
+			case 'Escape':
+				event.preventDefault();
+				isCalendarFocused = false;
+				// 親コンポーネントでカレンダーを閉じる処理を想定
+				break;
+		}
+	};
+
+	const handleFocus = () => {
+		isCalendarFocused = true;
+	};
+
+	const handleBlur = () => {
+		isCalendarFocused = false;
 	};
 	const generateDateArray = (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) => {
 		let dates = [];
@@ -44,6 +170,15 @@
 		return dates;
 	};
 	const dates: dayjs.Dayjs[] = $derived(generateDateArray(startDate, endDate));
+
+	// 週ごとにグループ化した日付配列
+	const weekRows = $derived.by(() => {
+		const weeks: dayjs.Dayjs[][] = [];
+		for (let i = 0; i < dates.length; i += 7) {
+			weeks.push(dates.slice(i, i + 7));
+		}
+		return weeks;
+	});
 	const goPrev = () => {
 		month = month.subtract(1, 'month');
 	};
@@ -72,6 +207,19 @@
 	};
 	const isToday = (date: dayjs.Dayjs) => {
 		return date.startOf('day').isSame(dayjs().startOf('day'));
+	};
+
+	const isFocused = (date: dayjs.Dayjs) => {
+		return isCalendarFocused && date.startOf('day').isSame(focusedDate.startOf('day'));
+	};
+
+	const getDateTabIndex = (date: dayjs.Dayjs) => {
+		// フォーカスされた日付のみtabindex="0"、その他は"-1"
+		return isFocused(date) ? 0 : -1;
+	};
+
+	const getDateId = (date: dayjs.Dayjs) => {
+		return `calendar-date-${date.format('YYYY-MM-DD')}`;
 	};
 	const selectDate = (date: dayjs.Dayjs) => {
 		if (isDateRange) {
@@ -102,40 +250,70 @@
 	};
 </script>
 
-<div class="stamp-sheet">
+<div
+	bind:this={calendarRef}
+	class="stamp-sheet"
+	role="grid"
+	aria-label={`${month.format('YYYY年M月')}のカレンダー`}
+	tabindex="-1"
+	onkeydown={handleKeyDown}
+	onfocus={handleFocus}
+	onblur={handleBlur}
+	{id}
+>
 	<div class="header">
 		<div class="prev-button-block">
 			<IconButton ariaLabel="前の月へ移動" onclick={goPrev}>chevron_left</IconButton>
 		</div>
-		<div class="month-label-block">
+		<div class="month-label-block" aria-live="polite" aria-atomic="true">
 			{month.format('YYYY年M月')}
 		</div>
 		<div class="next-button-block">
 			<IconButton ariaLabel="次の月へ移動" onclick={goNext}>chevron_right</IconButton>
 		</div>
 	</div>
-	<ul class="day-list">
-		{#each DAY_ARRAY as day}
-			<li class="day-list-item">
-				{day}
-			</li>
-		{/each}
-	</ul>
-	<ul class="date-list">
-		{#each dates as date}
-			<li
-				class="date-list-item"
-				class:is-selected={isSelected(date)}
-				class:out-of-month={isOutOfMonth(date)}
-				class:out-of-range={isOutOfRange(date)}
-				class:today={isToday(date)}
-			>
-				<button class="date-button" onclick={() => selectDate(date)}>
-					{date.format('D')}
-				</button>
-			</li>
-		{/each}
-	</ul>
+	<div class="calendar-grid" role="grid" aria-labelledby="month-label">
+		<div class="day-list" role="row">
+			{#each DAY_ARRAY as day}
+				<div class="day-list-item" role="columnheader">
+					{day}
+				</div>
+			{/each}
+		</div>
+		<div class="date-grid">
+			{#each weekRows as week}
+				<div class="date-row" role="row">
+					{#each week as date}
+						<div
+							class="date-list-item"
+							class:is-selected={isSelected(date)}
+							class:out-of-month={isOutOfMonth(date)}
+							class:out-of-range={isOutOfRange(date)}
+							class:today={isToday(date)}
+							class:is-focused={isFocused(date)}
+							role="gridcell"
+						>
+							<button
+								id={getDateId(date)}
+								class="date-button"
+								tabindex={getDateTabIndex(date)}
+								aria-current={isToday(date) ? 'date' : undefined}
+								aria-pressed={isSelected(date)}
+								aria-label={`${date.format('YYYY年M月D日')}${isToday(date) ? ' 今日' : ''}${isSelected(date) ? ' 選択済み' : ''}`}
+								aria-disabled={isOutOfRange(date)}
+								onclick={() => selectDate(date)}
+								onfocus={() => {
+									focusedDate = date;
+								}}
+							>
+								{date.format('D')}
+							</button>
+						</div>
+					{/each}
+				</div>
+			{/each}
+		</div>
+	</div>
 </div>
 
 <style lang="scss">
@@ -156,8 +334,18 @@
 		font-size: 1.4rem;
 		font-weight: bold;
 	}
-	.day-list,
-	.date-list {
+	.day-list {
+		display: grid;
+		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+		place-items: center stretch;
+	}
+
+	.date-grid {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.date-row {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 		place-items: center stretch;
@@ -189,6 +377,11 @@
 		.date-button {
 			color: var(--svelte-ui-text-subtle-color);
 		}
+	}
+
+	.date-list-item.is-focused .date-button {
+		outline: 2px solid var(--svelte-ui-primary-color);
+		outline-offset: 2px;
 	}
 	.date-button {
 		width: 36px;
