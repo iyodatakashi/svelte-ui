@@ -257,44 +257,47 @@
 		return false;
 	};
 
-	// ホバープレビュー中かどうかの判定
-	const isHoverPreviewActive = $derived(
+	// 範囲プレビュー中かどうかの判定
+	const isRangePreviewActive = $derived(
 		isDateRange && !isSelectingStart && hoveredDate && value && 'start' in value && 'end' in value
 	);
 
-	// 期間選択の範囲表示用の判定関数（ホバープレビュー中は無効化）
+	// 期間選択の範囲表示用の判定関数（範囲プレビュー中は無効化）
 	const isRangeStart = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
-		if (isHoverPreviewActive) return false; // ホバープレビュー中は無効化
+		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return dayjs(date).isSame(dayjs(value.start).startOf('day'));
 	};
 
 	const isRangeEnd = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
-		if (isHoverPreviewActive) return false; // ホバープレビュー中は無効化
+		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return dayjs(date).isSame(dayjs(value.end).startOf('day'));
 	};
 
 	const isRangeMiddle = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
-		if (isHoverPreviewActive) return false; // ホバープレビュー中は無効化
+		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return isSelected(date) && !isRangeStart(date) && !isRangeEnd(date);
 	};
 
 	const isRangeSingle = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
-		if (isHoverPreviewActive) return false; // ホバープレビュー中は無効化
+		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return isRangeStart(date) && isRangeEnd(date);
 	};
 
-	// ホバープレビュー用の判定関数
-	const isHoverPreviewStart = (date: dayjs.Dayjs) => {
+	// 日付範囲プレビュー用の判定関数
+	const isRangePreviewStart = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
 
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
+
+		// プレビューの開始日と終了日が同じ場合は無効化
+		if (startDate.isSame(endDate)) return false;
 
 		// 正しい順序で範囲を設定
 		const actualStart = startDate.isSameOrBefore(endDate) ? startDate : endDate;
@@ -302,13 +305,16 @@
 		return dayjs(date).isSame(actualStart);
 	};
 
-	const isHoverPreviewEnd = (date: dayjs.Dayjs) => {
+	const isRangePreviewEnd = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
 
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
+
+		// プレビューの開始日と終了日が同じ場合は無効化
+		if (startDate.isSame(endDate)) return false;
 
 		// 正しい順序で範囲を設定
 		const actualEnd = startDate.isSameOrBefore(endDate) ? endDate : startDate;
@@ -316,7 +322,7 @@
 		return dayjs(date).isSame(actualEnd);
 	};
 
-	const isHoverPreviewMiddle = (date: dayjs.Dayjs) => {
+	const isRangePreviewMiddle = (date: dayjs.Dayjs) => {
 		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
@@ -324,11 +330,26 @@
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
 
+		// プレビューの開始日と終了日が同じ場合は無効化
+		if (startDate.isSame(endDate)) return false;
+
 		// 正しい順序で範囲を設定
 		const actualStart = startDate.isSameOrBefore(endDate) ? startDate : endDate;
 		const actualEnd = startDate.isSameOrBefore(endDate) ? endDate : startDate;
 
 		return dayjs(date).isAfter(actualStart) && dayjs(date).isBefore(actualEnd);
+	};
+
+	const isRangePreviewSingle = (date: dayjs.Dayjs) => {
+		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
+			return false;
+		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
+
+		const startDate = dayjs(value.start).startOf('day');
+		const endDate = hoveredDate.startOf('day');
+
+		// プレビューの開始日と終了日が同じ場合
+		return startDate.isSame(endDate) && dayjs(date).isSame(startDate);
 	};
 
 	const isOutOfMonth = (date: dayjs.Dayjs) => {
@@ -440,9 +461,10 @@
 							class:is-range-end={isRangeEnd(date)}
 							class:is-range-middle={isRangeMiddle(date)}
 							class:is-range-single={isRangeSingle(date)}
-							class:is-hover-preview-start={isHoverPreviewStart(date)}
-							class:is-hover-preview-end={isHoverPreviewEnd(date)}
-							class:is-hover-preview-middle={isHoverPreviewMiddle(date)}
+							class:is-range-preview-start={isRangePreviewStart(date)}
+							class:is-range-preview-end={isRangePreviewEnd(date)}
+							class:is-range-preview-middle={isRangePreviewMiddle(date)}
+							class:is-range-preview-single={isRangePreviewSingle(date)}
 							class:out-of-month={isOutOfMonth(date)}
 							class:out-of-range={isOutOfRange(date)}
 							class:today={isToday(date)}
@@ -546,9 +568,10 @@
 	.date-list-item.is-range-end,
 	.date-list-item.is-range-middle,
 	.date-list-item.is-range-single,
-	.date-list-item.is-hover-preview-start,
-	.date-list-item.is-hover-preview-end,
-	.date-list-item.is-hover-preview-middle {
+	.date-list-item.is-range-preview-start,
+	.date-list-item.is-range-preview-end,
+	.date-list-item.is-range-preview-middle,
+	.date-list-item.is-range-preview-single {
 		position: relative;
 	}
 
@@ -556,9 +579,10 @@
 	.date-list-item.is-range-end::before,
 	.date-list-item.is-range-middle::before,
 	.date-list-item.is-range-single::before,
-	.date-list-item.is-hover-preview-start::before,
-	.date-list-item.is-hover-preview-end::before,
-	.date-list-item.is-hover-preview-middle::before {
+	.date-list-item.is-range-preview-start::before,
+	.date-list-item.is-range-preview-end::before,
+	.date-list-item.is-range-preview-middle::before,
+	.date-list-item.is-range-preview-single::before {
 		content: '';
 		position: absolute;
 		top: 50%;
@@ -568,37 +592,39 @@
 		z-index: 0;
 	}
 
-	/* ホバープレビュー用の背景色調整 */
-	.date-list-item.is-hover-preview-start::before,
-	.date-list-item.is-hover-preview-end::before,
-	.date-list-item.is-hover-preview-middle::before {
+	/* 範囲プレビュー用の背景色調整 */
+	.date-list-item.is-range-preview-start::before,
+	.date-list-item.is-range-preview-end::before,
+	.date-list-item.is-range-preview-middle::before,
+	.date-list-item.is-range-preview-single::before {
 		background-color: var(--svelte-ui-hover-overlay);
 	}
 
 	/* 範囲開始日 */
 	.date-list-item.is-range-start::before,
-	.date-list-item.is-hover-preview-start::before {
+	.date-list-item.is-range-preview-start::before {
 		left: 50%;
 		right: 0;
 	}
 
 	/* 範囲終了日 */
 	.date-list-item.is-range-end::before,
-	.date-list-item.is-hover-preview-end::before {
+	.date-list-item.is-range-preview-end::before {
 		left: 0;
 		right: 50%;
 	}
 
 	/* 範囲中間日 */
 	.date-list-item.is-range-middle::before,
-	.date-list-item.is-hover-preview-middle::before {
+	.date-list-item.is-range-preview-middle::before {
 		left: 0;
 		right: 0;
 		border-radius: 0;
 	}
 
 	/* 単一日選択（開始日と終了日が同じ） */
-	.date-list-item.is-range-single::before {
+	.date-list-item.is-range-single::before,
+	.date-list-item.is-range-preview-single::before {
 		left: 50%;
 		right: 50%;
 		width: 36px;
@@ -620,14 +646,14 @@
 	.date-list-item.is-range-middle .date-button {
 		background-color: transparent;
 		color: var(--svelte-ui-text-color);
-		font-weight: 500;
 		z-index: 1;
 		position: relative;
 	}
 
-	/* ホバープレビュー用のボタンスタイル */
-	.date-list-item.is-hover-preview-start .date-button,
-	.date-list-item.is-hover-preview-end .date-button {
+	/* 範囲プレビュー用のボタンスタイル */
+	.date-list-item.is-range-preview-start .date-button,
+	.date-list-item.is-range-preview-end .date-button,
+	.date-list-item.is-range-preview-single .date-button {
 		background-color: var(--primary-color);
 		color: var(--svelte-ui-text-on-filled-color);
 		font-weight: bold;
@@ -635,7 +661,7 @@
 		position: relative;
 	}
 
-	.date-list-item.is-hover-preview-middle .date-button {
+	.date-list-item.is-range-preview-middle .date-button {
 		background-color: transparent;
 		color: var(--svelte-ui-text-color);
 		z-index: 1;
