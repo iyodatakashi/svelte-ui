@@ -1,4 +1,17 @@
 <script lang="ts">
+	/**
+	 * 🚨 CRITICAL: DO NOT MANAGE POPUP STATE FROM PARENT COMPONENTS
+	 *
+	 * This Popup component manages its own open/closed state internally.
+	 * Parent components must NEVER create their own popup state variables.
+	 *
+	 * ❌ WRONG: let isPopupOpen = $state(false)
+	 * ✅ RIGHT: Use popupRef.open(), popupRef.close(), popupRef.toggle()
+	 * ✅ RIGHT: Use onOpen/onClose callbacks for side effects
+	 *
+	 * This prevents state synchronization bugs and ensures consistent behavior.
+	 */
+
 	import type { Snippet } from 'svelte';
 	import { onDestroy, tick, onMount } from 'svelte';
 	import {

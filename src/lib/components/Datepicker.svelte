@@ -44,7 +44,6 @@
 	let anchorElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
-	let isCalendarOpen: boolean = $state(false);
 	let openedViaKeyboard: boolean = $state(false);
 	const calendarId = `datepicker-calendar-${Math.random().toString(36).substr(2, 9)}`;
 
@@ -81,10 +80,7 @@
 		dayjs.locale(locale);
 	});
 	const handleChange = () => {
-		isCalendarOpen = false;
 		popupRef?.close();
-		// 状態をリセット
-		openedViaKeyboard = false;
 		onchange();
 	};
 	const handleClick = () => {
@@ -104,17 +100,27 @@
 				open();
 				break;
 			case 'Escape':
-				if (isCalendarOpen) {
-					event.preventDefault();
-					close();
-				}
+				event.preventDefault();
+				close();
 				break;
 		}
 	};
 	export const open = () => {
 		datapickerCalendarRef?.reset();
 		popupRef?.open();
-		isCalendarOpen = true;
+	};
+
+	export const close = () => {
+		popupRef?.close();
+	};
+
+	export const toggle = () => {
+		datapickerCalendarRef?.reset();
+		popupRef?.toggle();
+	};
+
+	// Popupが開いた時のコールバック
+	const handlePopupOpen = () => {
 		// キーボードで開いた場合のみカレンダーにフォーカスを移動
 		if (openedViaKeyboard) {
 			setTimeout(() => {
@@ -122,30 +128,15 @@
 			}, 100);
 		}
 	};
-	export const close = () => {
-		popupRef?.close();
-		isCalendarOpen = false;
+
+	// Popupが閉じた時のコールバック
+	const handlePopupClose = () => {
 		// キーボードで開いた場合のみボタンにフォーカスを戻す
 		if (openedViaKeyboard) {
 			displayElement?.focus();
 		}
 		// 状態をリセット
 		openedViaKeyboard = false;
-	};
-	export const toggle = () => {
-		if (isCalendarOpen) {
-			close();
-		} else {
-			datapickerCalendarRef?.reset();
-			popupRef?.toggle();
-			isCalendarOpen = true;
-			// キーボードで開いた場合のみカレンダーにフォーカスを移動
-			if (openedViaKeyboard) {
-				setTimeout(() => {
-					datapickerCalendarRef?.focusCalendar();
-				}, 100);
-			}
-		}
 	};
 	const displayValue = $derived.by(() => {
 		// dayjsインスタンスの作成時にlocaleを適用
@@ -167,7 +158,7 @@
 	{disabled}
 	role="combobox"
 	aria-haspopup="grid"
-	aria-expanded={isCalendarOpen}
+	aria-expanded="false"
 	aria-controls={calendarId}
 	aria-label={`${currentLocaleConfig.selectDateLabel} ${displayValue || currentLocaleConfig.notSelected}`}
 	onclick={handleClick}
@@ -188,7 +179,12 @@
 	{/if}
 </button>
 <div bind:this={anchorElement} class="calendar-container"></div>
-<Popup bind:this={popupRef} anchorElement={displayElement}>
+<Popup
+	bind:this={popupRef}
+	anchorElement={displayElement}
+	onOpen={handlePopupOpen}
+	onClose={handlePopupClose}
+>
 	<DatepickerCalendar
 		bind:this={datapickerCalendarRef}
 		bind:value
