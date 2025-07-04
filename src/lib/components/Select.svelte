@@ -8,6 +8,7 @@
 		value = $bindable(),
 		options = [],
 		customStyle = '',
+		variant = 'default',
 
 		focusStyle = 'border',
 		placeholder = '',
@@ -30,6 +31,7 @@
 		value: string | number | null | undefined;
 		options: any[];
 		customStyle?: string;
+		variant?: 'default' | 'inline';
 
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
@@ -69,6 +71,7 @@
 <div
 	class="select
 focus-style-{focusStyle}"
+	class:inline={variant === 'inline'}
 	class:full-width={fullWidth}
 	class:disabled
 	class:readonly
@@ -214,7 +217,7 @@ focus-style-{focusStyle}"
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
-	.select {
+	.select:not(.inline) {
 		select {
 			min-height: var(--svelte-ui-select-height);
 			padding: var(--svelte-ui-select-padding);
@@ -233,9 +236,29 @@ focus-style-{focusStyle}"
 	}
 
 	/* =============================================
+ * デザインバリアント：inline
+ * ============================================= */
+	.select.inline {
+		select {
+			padding: inherit;
+			padding-right: 24px;
+			background: transparent;
+			border: none;
+			border-radius: 0;
+			color: inherit;
+			min-height: auto;
+			line-height: inherit;
+		}
+
+		.dropdown-icon {
+			right: 0;
+		}
+	}
+
+	/* =============================================
  * デザインバリアント：rounded
  * ============================================= */
-	.select.rounded {
+	.select.rounded:not(.inline) {
 		select {
 			border-radius: var(--svelte-ui-select-border-radius-rounded);
 		}
