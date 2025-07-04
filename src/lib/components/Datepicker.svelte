@@ -17,8 +17,7 @@
 		format,
 		nullString = '',
 		isDateRange = false,
-		showCalendarIcon = false,
-		showPopupIcon = false,
+		showIcon = false,
 		disabled = false,
 		onchange = () => {},
 		openIfClicked = true,
@@ -31,8 +30,7 @@
 		format?: string;
 		nullString?: string;
 		isDateRange?: boolean;
-		showCalendarIcon?: boolean;
-		showPopupIcon?: boolean;
+		showIcon?: boolean;
 		disabled?: boolean;
 		onchange?: Function;
 		openIfClicked?: boolean;
@@ -164,17 +162,12 @@
 	onclick={handleClick}
 	onkeydown={handleKeyDown}
 >
-	{#if showCalendarIcon}
-		<div class="icon-block">
-			<Icon fill={true}>calendar_today</Icon>
-		</div>
-	{/if}
 	<div class="label-block">
 		{displayValue}
 	</div>
-	{#if showPopupIcon}
-		<div class="popup-icon-block">
-			<Icon>arrow_drop_down</Icon>
+	{#if showIcon}
+		<div class="icon-block">
+			<Icon fill={true}>{isDateRange ? 'date_range' : 'calendar_today'}</Icon>
 		</div>
 	{/if}
 </button>
@@ -202,7 +195,7 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 4px;
+		gap: 8px;
 		position: relative;
 		padding: inherit;
 		background-color: transparent;
@@ -248,13 +241,10 @@
 		opacity: 0.5;
 		pointer-events: none;
 	}
-	.icon-block {
-		margin-left: -4px;
-	}
 	.label-block {
 		width: 100%;
 	}
-	.popup-icon-block {
+	.icon-block {
 		margin-right: -4px;
 	}
 	.calendar-container {

@@ -8,8 +8,7 @@ interface DatepickerArgs {
 	format?: string;
 	nullString?: string;
 	isDateRange?: boolean;
-	showCalendarIcon?: boolean;
-	showPopupIcon?: boolean;
+	showIcon?: boolean;
 	disabled?: boolean;
 	openIfClicked?: boolean;
 	minDate?: Date;
@@ -53,13 +52,9 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'boolean',
 			description: '日付範囲選択モード'
 		},
-		showCalendarIcon: {
+		showIcon: {
 			control: 'boolean',
 			description: 'カレンダーアイコンを表示'
-		},
-		showPopupIcon: {
-			control: 'boolean',
-			description: 'ドロップダウンアイコンを表示'
 		},
 		disabled: {
 			control: 'boolean',
@@ -101,8 +96,7 @@ export const Default: Story = {
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		isDateRange: false,
-		showCalendarIcon: false,
-		showPopupIcon: false,
+		showIcon: false,
 		disabled: false,
 		openIfClicked: true,
 		locale: 'ja'
@@ -117,53 +111,35 @@ export const DateRange: Story = {
 		format: 'YYYY/M/D',
 		nullString: '期間を選択してください',
 		isDateRange: true,
-		showCalendarIcon: false,
-		showPopupIcon: false,
+		showIcon: false,
 		disabled: false,
 		openIfClicked: true
 	}
 };
 
-// With Calendar Icon（カレンダーアイコン付き）
-export const WithCalendarIcon: Story = {
+// With Icon（アイコン付き）
+export const WithIcon: Story = {
 	args: {
 		value: undefined,
 		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択',
 		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: false,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true
 	}
 };
 
-// With Popup Icon（ドロップダウンアイコン付き）
-export const WithPopupIcon: Story = {
+// With Icon and Date Range（アイコン付き日付範囲選択）
+export const WithIconAndDateRange: Story = {
 	args: {
 		value: undefined,
 		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択',
-		isDateRange: false,
-		showCalendarIcon: false,
-		showPopupIcon: true,
-		disabled: false,
-		openIfClicked: true
-	}
-};
-
-// With Both Icons（両方のアイコン付き）
-export const WithBothIcons: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択',
-		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: true,
+		format: 'YYYY/M/D',
+		nullString: '期間を選択',
+		isDateRange: true,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true
 	}
@@ -177,8 +153,7 @@ export const InlineVariant: Story = {
 		format: 'YYYY/M/D（ddd）',
 		nullString: '',
 		isDateRange: false,
-		showCalendarIcon: false,
-		showPopupIcon: false,
+		showIcon: false,
 		disabled: false,
 		openIfClicked: true
 	}
@@ -192,38 +167,51 @@ export const CustomFormat: Story = {
 		format: 'MM/DD/YYYY',
 		nullString: 'Select date',
 		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: false,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true
 	}
 };
 
-// Japanese Format（和暦フォーマット）
-export const JapaneseFormat: Story = {
+// Disabled State（無効状態）
+export const Disabled: Story = {
 	args: {
 		value: new Date(),
 		variant: 'default',
-		format: 'YYYY年MM月DD日（dddd）',
-		nullString: '日付未選択',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
 		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: true,
+		showIcon: true,
+		disabled: true,
+		openIfClicked: true
+	}
+};
+
+// With Min/Max Date（最小/最大日付制限）
+export const WithMinMaxDate: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
+		isDateRange: false,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true,
-		locale: 'ja'
+		minDate: new Date(2024, 0, 1),
+		maxDate: new Date(2024, 11, 31)
 	}
 };
 
 // English Locale（英語表示）
 export const EnglishLocale: Story = {
 	args: {
-		value: new Date(),
+		value: undefined,
 		variant: 'default',
-		nullString: 'Select a date',
+		format: 'MMM D, YYYY',
+		nullString: 'Select date',
 		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: true,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true,
 		locale: 'en'
@@ -233,12 +221,12 @@ export const EnglishLocale: Story = {
 // Korean Locale（韓国語表示）
 export const KoreanLocale: Story = {
 	args: {
-		value: new Date(),
+		value: undefined,
 		variant: 'default',
+		format: 'YYYY년 M월 D일',
 		nullString: '날짜를 선택하세요',
 		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: true,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true,
 		locale: 'ko'
@@ -248,116 +236,19 @@ export const KoreanLocale: Story = {
 // Chinese Locale（中国語表示）
 export const ChineseLocale: Story = {
 	args: {
-		value: new Date(),
+		value: undefined,
 		variant: 'default',
+		format: 'YYYY年M月D日',
 		nullString: '请选择日期',
 		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: true,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true,
 		locale: 'zh-cn'
 	}
 };
 
-// With Min Max Date（日付制限付き）
-export const WithMinMaxDate: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '今月の日付を選択',
-		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: false,
-		disabled: false,
-		openIfClicked: true,
-		minDate: new Date(new Date().getFullYear(), new Date().getMonth(), 1),
-		maxDate: new Date(new Date().getFullYear(), new Date().getMonth() + 1, 0)
-	}
-};
-
-// Date Range with Constraints（制限付き日付範囲）
-export const DateRangeWithConstraints: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D',
-		nullString: '今週の期間を選択',
-		isDateRange: true,
-		showCalendarIcon: true,
-		showPopupIcon: true,
-		disabled: false,
-		openIfClicked: true,
-		minDate: new Date(),
-		maxDate: new Date(Date.now() + 30 * 24 * 60 * 60 * 1000) // 30日後まで
-	}
-};
-
-// Disabled（無効状態）
-export const Disabled: Story = {
-	args: {
-		value: new Date(),
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '',
-		isDateRange: false,
-		showCalendarIcon: true,
-		showPopupIcon: false,
-		disabled: true,
-		openIfClicked: true
-	}
-};
-
-// No Click to Open（クリックで開かない）
-export const NoClickToOpen: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: 'プログラムから制御',
-		isDateRange: false,
-		showCalendarIcon: false,
-		showPopupIcon: false,
-		disabled: false,
-		openIfClicked: false
-	}
-};
-
-// Pre-selected Date（事前選択済み）
-export const PreselectedDate: Story = {
-	args: {
-		value: new Date(),
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '',
-		isDateRange: false,
-		showCalendarIcon: false,
-		showPopupIcon: true,
-		disabled: false,
-		openIfClicked: true
-	}
-};
-
-// Pre-selected Date Range（事前選択済み範囲）
-export const PreselectedDateRange: Story = {
-	args: {
-		value: {
-			start: new Date(),
-			end: new Date(Date.now() + 7 * 24 * 60 * 60 * 1000) // 7日後
-		},
-		variant: 'default',
-		format: 'M/D',
-		nullString: '',
-		isDateRange: true,
-		showCalendarIcon: true,
-		showPopupIcon: false,
-		disabled: false,
-		openIfClicked: true
-	}
-};
-
-// Playground（全プロパティ操作用）
+// Playground（プレイグラウンド）
 export const Playground: Story = {
 	args: {
 		value: undefined,
@@ -365,12 +256,9 @@ export const Playground: Story = {
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		isDateRange: false,
-		showCalendarIcon: false,
-		showPopupIcon: false,
+		showIcon: true,
 		disabled: false,
 		openIfClicked: true,
-		minDate: undefined,
-		maxDate: undefined,
 		locale: 'ja'
 	}
 };
