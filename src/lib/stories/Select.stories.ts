@@ -110,77 +110,61 @@ export const FullWidth = {
 		options: countryOptions,
 		fullWidth: true,
 		placeholder: '国を選択'
+	},
+	parameters: {
+		layout: 'padded'
 	}
 };
 
 // Focus styles
-export const FocusStyles = {
-	render: () => ({
-		Component: Select,
-		props: {}
-	}),
-	decorators: [
-		() => ({
-			template: `
-				<div style="display: flex; flex-direction: column; gap: 1rem;">
-					<div>
-						<label>フォーカス時に背景色変更</label>
-						<Select options={basicOptions} focusStyle="background" placeholder="背景色変更" />
-					</div>
-					<div>
-						<label>フォーカス時にボーダー表示</label>
-						<Select options={basicOptions} focusStyle="border" placeholder="ボーダー表示" />
-					</div>
-					<div>
-						<label>フォーカススタイルなし</label>
-						<Select options={basicOptions} focusStyle="none" placeholder="スタイルなし" />
-					</div>
-				</div>
-			`,
-			data() {
-				return {
-					basicOptions
-				};
-			}
-		})
-	]
+export const FocusBackground = {
+	args: {
+		options: basicOptions,
+		focusStyle: 'background',
+		placeholder: 'フォーカス時に背景色変更'
+	}
+};
+
+export const FocusBorder = {
+	args: {
+		options: basicOptions,
+		focusStyle: 'border',
+		placeholder: 'フォーカス時にボーダー表示'
+	}
+};
+
+export const FocusNone = {
+	args: {
+		options: basicOptions,
+		focusStyle: 'none',
+		placeholder: 'フォーカススタイルなし'
+	}
 };
 
 // States
-export const States = {
-	render: () => ({
-		Component: Select,
-		props: {}
-	}),
-	decorators: [
-		() => ({
-			template: `
-				<div style="display: flex; flex-direction: column; gap: 1rem;">
-					<div>
-						<label>通常状態</label>
-						<Select options={basicOptions} placeholder="通常状態" />
-					</div>
-					<div>
-						<label>無効状態</label>
-						<Select options={basicOptions} disabled placeholder="無効状態" />
-					</div>
-					<div>
-						<label>読み取り専用</label>
-						<Select options={basicOptions} readonly value="option1" placeholder="読み取り専用" />
-					</div>
-					<div>
-						<label>必須項目</label>
-						<Select options={basicOptions} required placeholder="必須項目" />
-					</div>
-				</div>
-			`,
-			data() {
-				return {
-					basicOptions
-				};
-			}
-		})
-	]
+export const Disabled = {
+	args: {
+		options: basicOptions,
+		disabled: true,
+		placeholder: '無効状態'
+	}
+};
+
+export const ReadOnly = {
+	args: {
+		options: basicOptions,
+		readonly: true,
+		value: 'option1',
+		placeholder: '読み取り専用'
+	}
+};
+
+export const Required = {
+	args: {
+		options: basicOptions,
+		required: true,
+		placeholder: '必須項目'
+	}
 };
 
 // With events
@@ -207,6 +191,55 @@ export const WithEvents = {
 	})
 };
 
+// Comparison - Width
+export const WidthComparison = {
+	render: () => ({
+		template: `
+			<div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
+				<div>
+					<label style="display: block; margin-bottom: 0.5rem;">通常の幅</label>
+					<Select options={basicOptions} placeholder="通常の幅" />
+				</div>
+				<div>
+					<label style="display: block; margin-bottom: 0.5rem;">幅100%（fullWidth）</label>
+					<Select options={basicOptions} fullWidth placeholder="幅100%の表示" />
+				</div>
+			</div>
+		`,
+		data() {
+			return {
+				basicOptions
+			};
+		}
+	}),
+	parameters: {
+		layout: 'padded'
+	}
+};
+
+// Comparison - Variant
+export const VariantComparison = {
+	render: () => ({
+		template: `
+			<div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
+				<div>
+					<label style="display: block; margin-bottom: 0.5rem;">Default バリアント</label>
+					<Select options={basicOptions} placeholder="Default バリアント" />
+				</div>
+				<div>
+					<label style="display: block; margin-bottom: 0.5rem;">Inline バリアント</label>
+					<Select options={basicOptions} variant="inline" placeholder="Inline バリアント" />
+				</div>
+			</div>
+		`,
+		data() {
+			return {
+				basicOptions
+			};
+		}
+	})
+};
+
 // Playground (全props操作用)
 export const Playground = {
 	args: {
@@ -222,6 +255,9 @@ export const Playground = {
 		required: false,
 		customStyle: '',
 		size: 1
+	},
+	parameters: {
+		layout: 'padded'
 	},
 	render: (args: Record<string, unknown>) => ({
 		Component: Select,
