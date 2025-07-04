@@ -1,16 +1,24 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
+	import localeData from 'dayjs/plugin/localeData';
+	import 'dayjs/locale/ja';
+	import 'dayjs/locale/en';
+	import 'dayjs/locale/ko';
+	import 'dayjs/locale/zh-cn';
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
 	import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
 	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
+
+	dayjs.extend(localeData);
 	let {
 		value = $bindable(),
 		isDateRange = false,
 		onchange = () => {},
 		minDate,
 		maxDate,
-		id
+		id,
+		locale = 'ja'
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
 		isDateRange?: boolean;
@@ -18,6 +26,7 @@
 		minDate?: Date;
 		maxDate?: Date;
 		id?: string;
+		locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
 	} = $props();
 	let month: dayjs.Dayjs = $state(dayjs());
 	let focusedDate: dayjs.Dayjs = $state(dayjs());
@@ -25,9 +34,59 @@
 
 	dayjs.extend(isSameOrBefore);
 	dayjs.extend(isSameOrAfter);
+
+	// 言語別設定
+	const localeConfig = {
+		ja: {
+			monthFormat: 'YYYY年M月',
+			calendarLabel: 'のカレンダー',
+			prevMonthLabel: '前の月へ移動',
+			nextMonthLabel: '次の月へ移動',
+			todayLabel: ' 今日',
+			selectedLabel: ' 選択済み'
+		},
+		en: {
+			monthFormat: 'MMMM YYYY',
+			calendarLabel: ' calendar',
+			prevMonthLabel: 'Previous month',
+			nextMonthLabel: 'Next month',
+			todayLabel: ' today',
+			selectedLabel: ' selected'
+		},
+		ko: {
+			monthFormat: 'YYYY년 M월',
+			calendarLabel: ' 달력',
+			prevMonthLabel: '이전 달',
+			nextMonthLabel: '다음 달',
+			todayLabel: ' 오늘',
+			selectedLabel: ' 선택됨'
+		},
+		'zh-cn': {
+			monthFormat: 'YYYY年M月',
+			calendarLabel: '日历',
+			prevMonthLabel: '上个月',
+			nextMonthLabel: '下个月',
+			todayLabel: ' 今天',
+			selectedLabel: ' 已选择'
+		}
+	};
+
+	const currentLocaleConfig = $derived(localeConfig[locale]);
+
+	// dayjsのlocaleを設定
+	$effect(() => {
+		dayjs.locale(locale);
+	});
+
 	const startDate = $derived(month.startOf('month').startOf('week'));
 	const endDate = $derived(month.endOf('month').endOf('week'));
-	const DAY_ARRAY = ['日', '月', '火', '水', '木', '金', '土'];
+
+	// 曜日配列を動的に生成
+	const DAY_ARRAY = $derived.by(() => {
+		dayjs.locale(locale);
+		return dayjs.weekdaysMin();
+	});
+
 	let isSelectingStart: boolean = $state(true);
 	let calendarRef: HTMLDivElement | undefined = $state();
 	onMount(() => {
@@ -254,7 +313,7 @@
 	bind:this={calendarRef}
 	class="stamp-sheet"
 	role="grid"
-	aria-label={`${month.format('YYYY年M月')}のカレンダー`}
+	aria-label={`${month.locale(locale).format(currentLocaleConfig.monthFormat)}${currentLocaleConfig.calendarLabel}`}
 	tabindex="-1"
 	onkeydown={handleKeyDown}
 	onfocus={handleFocus}
@@ -263,13 +322,17 @@
 >
 	<div class="header">
 		<div class="prev-button-block">
-			<IconButton ariaLabel="前の月へ移動" onclick={goPrev}>chevron_left</IconButton>
+			<IconButton ariaLabel={currentLocaleConfig.prevMonthLabel} onclick={goPrev}
+				>chevron_left</IconButton
+			>
 		</div>
 		<div class="month-label-block" aria-live="polite" aria-atomic="true">
-			{month.format('YYYY年M月')}
+			{month.locale(locale).format(currentLocaleConfig.monthFormat)}
 		</div>
 		<div class="next-button-block">
-			<IconButton ariaLabel="次の月へ移動" onclick={goNext}>chevron_right</IconButton>
+			<IconButton ariaLabel={currentLocaleConfig.nextMonthLabel} onclick={goNext}
+				>chevron_right</IconButton
+			>
 		</div>
 	</div>
 	<div class="calendar-grid" role="grid" aria-labelledby="month-label">
@@ -299,7 +362,7 @@
 								tabindex={getDateTabIndex(date)}
 								aria-current={isToday(date) ? 'date' : undefined}
 								aria-pressed={isSelected(date)}
-								aria-label={`${date.format('YYYY年M月D日')}${isToday(date) ? ' 今日' : ''}${isSelected(date) ? ' 選択済み' : ''}`}
+								aria-label={`${date.locale(locale).format('LL')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
 								aria-disabled={isOutOfRange(date)}
 								onclick={() => selectDate(date)}
 								onfocus={() => {

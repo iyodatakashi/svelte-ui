@@ -1,13 +1,20 @@
 <script lang="ts">
 	import { type SvelteComponent } from 'svelte';
 	import dayjs from 'dayjs';
+	import localeData from 'dayjs/plugin/localeData';
+	import 'dayjs/locale/ja';
+	import 'dayjs/locale/en';
+	import 'dayjs/locale/ko';
+	import 'dayjs/locale/zh-cn';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import Icon from './Icon.svelte';
+
+	dayjs.extend(localeData);
 	let {
 		value = $bindable(),
 		variant = 'default',
-		format = 'YYYY/M/D（ddd）',
+		format,
 		nullString = '',
 		isDateRange = false,
 		showCalendarIcon = false,
@@ -16,7 +23,8 @@
 		onchange = () => {},
 		openIfClicked = true,
 		minDate,
-		maxDate
+		maxDate,
+		locale = 'ja'
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
 		variant?: 'default' | 'inline';
@@ -30,6 +38,7 @@
 		openIfClicked?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
+		locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
 	} = $props();
 	let displayElement: HTMLButtonElement | undefined = $state();
 	let anchorElement: HTMLDivElement | undefined = $state();
@@ -38,6 +47,39 @@
 	let isCalendarOpen: boolean = $state(false);
 	let openedViaKeyboard: boolean = $state(false);
 	const calendarId = `datepicker-calendar-${Math.random().toString(36).substr(2, 9)}`;
+
+	// 言語別設定
+	const localeConfig = {
+		ja: {
+			defaultFormat: 'YYYY/M/D（ddd）',
+			selectDateLabel: '日付を選択してください。現在の値:',
+			notSelected: '未選択'
+		},
+		en: {
+			defaultFormat: 'MM/DD/YYYY (ddd)',
+			selectDateLabel: 'Select a date. Current value:',
+			notSelected: 'Not selected'
+		},
+		ko: {
+			defaultFormat: 'YYYY/M/D (ddd)',
+			selectDateLabel: '날짜를 선택하세요. 현재 값:',
+			notSelected: '선택되지 않음'
+		},
+		'zh-cn': {
+			defaultFormat: 'YYYY/M/D（ddd）',
+			selectDateLabel: '请选择日期。当前值：',
+			notSelected: '未选择'
+		}
+	};
+
+	// 現在のlocale設定を取得
+	const currentLocaleConfig = $derived(localeConfig[locale]);
+	const finalFormat = $derived(format || currentLocaleConfig.defaultFormat);
+
+	// dayjsのlocaleを設定
+	$effect(() => {
+		dayjs.locale(locale);
+	});
 	const handleChange = () => {
 		isCalendarOpen = false;
 		popupRef?.close();
@@ -106,12 +148,15 @@
 		}
 	};
 	const displayValue = $derived.by(() => {
+		// dayjsインスタンスの作成時にlocaleを適用
+		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
+
 		if (isDateRange && value && 'start' in value && 'end' in value) {
-			return `${dayjs(value.start).format(format)} - ${dayjs(value.end).format(format)}`;
+			return `${formatWithLocale(value.start)} - ${formatWithLocale(value.end)}`;
 		} else if (!isDateRange && value && value instanceof Date) {
-			return dayjs(value).format(format);
+			return formatWithLocale(value);
 		} else {
-			return nullString;
+			return nullString || currentLocaleConfig.notSelected;
 		}
 	});
 </script>
@@ -124,7 +169,7 @@
 	aria-haspopup="grid"
 	aria-expanded={isCalendarOpen}
 	aria-controls={calendarId}
-	aria-label={`日付を選択してください。現在の値: ${displayValue || '未選択'}`}
+	aria-label={`${currentLocaleConfig.selectDateLabel} ${displayValue || currentLocaleConfig.notSelected}`}
 	onclick={handleClick}
 	onkeydown={handleKeyDown}
 >
@@ -150,6 +195,7 @@
 		{isDateRange}
 		{minDate}
 		{maxDate}
+		{locale}
 		onchange={handleChange}
 		id={calendarId}
 	/>

@@ -14,6 +14,7 @@ interface DatepickerArgs {
 	openIfClicked?: boolean;
 	minDate?: Date;
 	maxDate?: Date;
+	locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
 	onchange?: () => void;
 }
 
@@ -76,6 +77,11 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'date',
 			description: '選択可能な最大日付'
 		},
+		locale: {
+			control: 'select',
+			options: ['ja', 'en', 'ko', 'zh-cn'],
+			description: '表示言語'
+		},
 		onchange: {
 			control: false,
 			action: 'changed',
@@ -98,7 +104,8 @@ export const Default: Story = {
 		showCalendarIcon: false,
 		showPopupIcon: false,
 		disabled: false,
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -203,7 +210,53 @@ export const JapaneseFormat: Story = {
 		showCalendarIcon: true,
 		showPopupIcon: true,
 		disabled: false,
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
+	}
+};
+
+// English Locale（英語表示）
+export const EnglishLocale: Story = {
+	args: {
+		value: new Date(),
+		variant: 'default',
+		nullString: 'Select a date',
+		isDateRange: false,
+		showCalendarIcon: true,
+		showPopupIcon: true,
+		disabled: false,
+		openIfClicked: true,
+		locale: 'en'
+	}
+};
+
+// Korean Locale（韓国語表示）
+export const KoreanLocale: Story = {
+	args: {
+		value: new Date(),
+		variant: 'default',
+		nullString: '날짜를 선택하세요',
+		isDateRange: false,
+		showCalendarIcon: true,
+		showPopupIcon: true,
+		disabled: false,
+		openIfClicked: true,
+		locale: 'ko'
+	}
+};
+
+// Chinese Locale（中国語表示）
+export const ChineseLocale: Story = {
+	args: {
+		value: new Date(),
+		variant: 'default',
+		nullString: '请选择日期',
+		isDateRange: false,
+		showCalendarIcon: true,
+		showPopupIcon: true,
+		disabled: false,
+		openIfClicked: true,
+		locale: 'zh-cn'
 	}
 };
 
@@ -317,6 +370,7 @@ export const Playground: Story = {
 		disabled: false,
 		openIfClicked: true,
 		minDate: undefined,
-		maxDate: undefined
+		maxDate: undefined,
+		locale: 'ja'
 	}
 };
