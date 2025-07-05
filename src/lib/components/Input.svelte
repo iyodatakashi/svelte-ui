@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
+	import Icon from './Icon.svelte';
 	let {
 		name,
 		value = $bindable(),
@@ -21,6 +22,8 @@
 		pattern = null,
 		clearable = false,
 		hasRightIcon = false,
+		rightIcon = undefined,
+		leftIcon = undefined,
 		rounded = false,
 		disabled = false,
 		readonly = false,
@@ -34,7 +37,9 @@
 		onfocus = () => {},
 		onblur = () => {},
 		onclick = () => {},
-		onkeydown = () => {}
+		onkeydown = () => {},
+		onRightIconClick = () => {},
+		onLeftIconClick = () => {}
 	}: {
 		name?: string;
 		value: string | number | undefined;
@@ -54,6 +59,8 @@
 		pattern?: string | null;
 		clearable?: boolean;
 		hasRightIcon?: boolean;
+		rightIcon?: string;
+		leftIcon?: string;
 		rounded?: boolean;
 		disabled?: boolean;
 		readonly?: boolean;
@@ -68,6 +75,8 @@
 		onblur?: Function;
 		onclick?: Function;
 		onkeydown?: Function;
+		onRightIconClick?: Function;
+		onLeftIconClick?: Function;
 	} = $props();
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
@@ -125,7 +134,8 @@
 	class:auto-resize={variant === 'inline'}
 	class:full-width={fullWidth}
 	class:clearable
-	class:has-right-icon={hasRightIcon}
+	class:has-right-icon={hasRightIcon || rightIcon}
+	class:has-left-icon={leftIcon}
 	class:rounded
 	class:disabled
 	class:readonly
@@ -180,6 +190,32 @@
 				iconFill={true}
 				size={24}>cancel</IconButton
 			>
+		</div>
+	{/if}
+
+	<!-- Left Icon -->
+	{#if leftIcon}
+		<div class="left-icon-block">
+			<Icon
+				fill={true}
+				onclick={onLeftIconClick}
+				style="cursor: {onLeftIconClick ? 'pointer' : 'default'}"
+			>
+				{leftIcon}
+			</Icon>
+		</div>
+	{/if}
+
+	<!-- Right Icon -->
+	{#if rightIcon}
+		<div class="right-icon-block">
+			<Icon
+				fill={true}
+				onclick={onRightIconClick}
+				style="cursor: {onRightIconClick ? 'pointer' : 'default'}"
+			>
+				{rightIcon}
+			</Icon>
 		</div>
 	{/if}
 </div>
@@ -285,6 +321,28 @@
 		transition: var(--svelte-ui-clear-button-transition);
 	}
 
+	.left-icon-block {
+		position: absolute;
+		top: 50%;
+		left: 8px;
+		transform: translateY(-50%);
+		font-size: var(--svelte-ui-select-dropdown-size);
+		color: var(--svelte-ui-select-icon-color);
+		pointer-events: auto;
+		z-index: 1;
+	}
+
+	.right-icon-block {
+		position: absolute;
+		top: 50%;
+		right: 8px;
+		transform: translateY(-50%);
+		font-size: var(--svelte-ui-select-dropdown-size);
+		color: var(--svelte-ui-select-icon-color);
+		pointer-events: auto;
+		z-index: 1;
+	}
+
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
@@ -310,6 +368,13 @@
 		input,
 		.plain-text {
 			padding-right: var(--svelte-ui-input-icon-space);
+		}
+	}
+
+	.has-left-icon {
+		input,
+		.plain-text {
+			padding-left: var(--svelte-ui-input-icon-space);
 		}
 	}
 
@@ -344,6 +409,11 @@
 	.disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
+
+		.left-icon-block,
+		.right-icon-block {
+			opacity: var(--svelte-ui-button-disabled-opacity);
+		}
 	}
 
 	.readonly {
@@ -396,6 +466,12 @@
 				padding-right: var(--svelte-ui-input-icon-space);
 			}
 		}
+
+		&.has-left-icon {
+			input {
+				padding-left: var(--svelte-ui-input-icon-space);
+			}
+		}
 	}
 
 	/* =============================================
@@ -428,6 +504,13 @@
 			input,
 			.plain-text {
 				padding-right: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.has-left-icon {
+			input,
+			.plain-text {
+				padding-left: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 

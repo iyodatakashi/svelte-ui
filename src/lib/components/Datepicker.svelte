@@ -4,12 +4,13 @@
 	import localeData from 'dayjs/plugin/localeData';
 	import 'dayjs/locale/ja';
 	import 'dayjs/locale/en';
-	import 'dayjs/locale/ko';
+	import 'dayjs/locale/fr';
+	import 'dayjs/locale/de';
+	import 'dayjs/locale/es';
 	import 'dayjs/locale/zh-cn';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
-	import Icon from './Icon.svelte';
 
 	dayjs.extend(localeData);
 	let {
@@ -30,7 +31,7 @@
 		openIfClicked = true,
 		minDate,
 		maxDate,
-		locale = 'ja',
+		locale = 'en',
 		...restProps
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
@@ -50,7 +51,7 @@
 		openIfClicked?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
-		locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 		[key: string]: any;
 	} = $props();
 	let inputRef: any = $state();
@@ -62,25 +63,41 @@
 
 	// 言語別設定
 	const localeConfig = {
-		ja: {
-			defaultFormat: 'YYYY/M/D（ddd）',
-			selectDateLabel: '日付を選択してください。現在の値:',
-			notSelected: '未選択'
-		},
 		en: {
 			defaultFormat: 'MM/DD/YYYY (ddd)',
 			selectDateLabel: 'Select a date. Current value:',
-			notSelected: 'Not selected'
+			notSelected: 'Not selected',
+			directInputPlaceholder: 'Enter date'
 		},
-		ko: {
-			defaultFormat: 'YYYY/M/D (ddd)',
-			selectDateLabel: '날짜를 선택하세요. 현재 값:',
-			notSelected: '선택되지 않음'
+		ja: {
+			defaultFormat: 'YYYY/M/D（ddd）',
+			selectDateLabel: '日付を選択してください。現在の値:',
+			notSelected: '未選択',
+			directInputPlaceholder: '日付を入力してください'
+		},
+		fr: {
+			defaultFormat: 'DD/MM/YYYY (ddd)',
+			selectDateLabel: 'Sélectionnez une date. Valeur actuelle :',
+			notSelected: 'Non sélectionné',
+			directInputPlaceholder: 'Saisir la date'
+		},
+		de: {
+			defaultFormat: 'DD.MM.YYYY (ddd)',
+			selectDateLabel: 'Wählen Sie ein Datum. Aktueller Wert:',
+			notSelected: 'Nicht ausgewählt',
+			directInputPlaceholder: 'Datum eingeben'
+		},
+		es: {
+			defaultFormat: 'DD/MM/YYYY (ddd)',
+			selectDateLabel: 'Seleccione una fecha. Valor actual:',
+			notSelected: 'No seleccionado',
+			directInputPlaceholder: 'Introducir fecha'
 		},
 		'zh-cn': {
 			defaultFormat: 'YYYY/M/D（ddd）',
 			selectDateLabel: '请选择日期。当前值：',
-			notSelected: '未选择'
+			notSelected: '未选择',
+			directInputPlaceholder: '请输入日期'
 		}
 	};
 
@@ -220,9 +237,10 @@
 		{disabled}
 		readonly={!allowDirectInput}
 		placeholder={allowDirectInput
-			? nullString || '日付を入力してください'
+			? nullString || currentLocaleConfig.directInputPlaceholder
 			: nullString || currentLocaleConfig.notSelected}
-		hasRightIcon={showIcon}
+		rightIcon={showIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
+		onRightIconClick={handleClick}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -230,11 +248,6 @@
 		onkeydown={handleKeyDown}
 		{...restProps}
 	/>
-	{#if showIcon}
-		<div class="icon-block">
-			<Icon fill={true}>{isDateRange ? 'date_range' : 'calendar_today'}</Icon>
-		</div>
-	{/if}
 </div>
 <Popup
 	bind:this={popupRef}
@@ -259,15 +272,5 @@
 		position: relative;
 		display: inline-block;
 		width: auto;
-	}
-
-	.icon-block {
-		position: absolute;
-		top: 50%;
-		right: var(--svelte-ui-select-icon-right);
-		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-size);
-		color: var(--svelte-ui-select-icon-color);
-		pointer-events: none;
 	}
 </style>

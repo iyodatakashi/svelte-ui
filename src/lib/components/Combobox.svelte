@@ -192,7 +192,8 @@
 		{tabindex}
 		{maxlength}
 		{rounded}
-		hasRightIcon={variant !== 'inline'}
+		rightIcon={variant !== 'inline' ? 'arrow_drop_down' : undefined}
+		onRightIconClick={handleClick}
 		onfocus={handleInputFocus}
 		onblur={handleBlur}
 		onclick={handleClick}
@@ -201,12 +202,6 @@
 		onkeydown={handleKeydown}
 		{...restProps}
 	/>
-	<!-- ドロップダウンアイコン -->
-	{#if variant !== 'inline'}
-		<div class="dropdown-icon">
-			<Icon>arrow_drop_down</Icon>
-		</div>
-	{/if}
 	<!-- オプションリスト -->
 	<Popup
 		bind:this={popupRef}
@@ -270,15 +265,6 @@
 	/* =============================================
  * ドロップダウンアイコン
  * ============================================= */
-	.dropdown-icon {
-		position: absolute;
-		top: 50%;
-		right: 8px;
-		transform: translateY(-50%);
-		font-size: var(--svelte-ui-combobox-dropdown-icon-size);
-		color: var(--svelte-ui-combobox-icon-color);
-		pointer-events: none;
-	}
 
 	/* =============================================
  * オプションリスト

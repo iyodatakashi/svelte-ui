@@ -74,6 +74,14 @@ const meta = {
 		maxWidth: {
 			control: { type: 'number' },
 			description: '最大幅'
+		},
+		rightIcon: {
+			control: { type: 'text' },
+			description: '右側のアイコン名'
+		},
+		leftIcon: {
+			control: { type: 'text' },
+			description: '左側のアイコン名'
 		}
 	}
 };
@@ -195,6 +203,46 @@ export const WithWidthLimits = {
 		minWidth: 200,
 		maxWidth: 300,
 		placeholder: '幅制限あり'
+	}
+};
+
+// With Right Icon
+export const WithRightIcon = {
+	args: {
+		placeholder: '右側にアイコン',
+		rightIcon: 'search',
+		onRightIconClick: () => alert('右アイコンがクリックされました！')
+	}
+};
+
+// With Left Icon
+export const WithLeftIcon = {
+	args: {
+		placeholder: '左側にアイコン',
+		leftIcon: 'person',
+		onLeftIconClick: () => alert('左アイコンがクリックされました！')
+	}
+};
+
+// With Both Icons
+export const WithBothIcons = {
+	args: {
+		placeholder: '両側にアイコン',
+		leftIcon: 'search',
+		rightIcon: 'clear',
+		onLeftIconClick: () => alert('左アイコンがクリックされました！'),
+		onRightIconClick: () => alert('右アイコンがクリックされました！')
+	}
+};
+
+// Icons Disabled State
+export const IconsDisabled = {
+	args: {
+		placeholder: '無効状態のアイコン',
+		rightIcon: 'calendar_today',
+		leftIcon: 'person',
+		disabled: true,
+		value: '無効状態'
 	}
 };
 

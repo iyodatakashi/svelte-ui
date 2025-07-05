@@ -17,7 +17,7 @@ interface DatepickerArgs {
 	openIfClicked?: boolean;
 	minDate?: Date;
 	maxDate?: Date;
-	locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
+	locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 	onchange?: () => void;
 }
 
@@ -95,7 +95,7 @@ const meta: Meta<DatepickerArgs> = {
 		},
 		locale: {
 			control: 'select',
-			options: ['ja', 'en', 'ko', 'zh-cn'],
+			options: ['en', 'ja', 'fr', 'de', 'es', 'zh-cn'],
 			description: '表示言語'
 		},
 		onchange: {
@@ -136,7 +136,8 @@ export const DateRange: Story = {
 		showIcon: false,
 		disabled: false,
 		focusStyle: 'border',
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -151,7 +152,8 @@ export const WithIcon: Story = {
 		showIcon: true,
 		disabled: false,
 		focusStyle: 'border',
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -166,7 +168,8 @@ export const WithIconAndDateRange: Story = {
 		showIcon: true,
 		disabled: false,
 		focusStyle: 'border',
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -181,7 +184,8 @@ export const InlineVariant: Story = {
 		showIcon: false,
 		disabled: false,
 		focusStyle: 'border',
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	},
 	parameters: {
 		layout: 'padded'
@@ -194,12 +198,13 @@ export const CustomFormat: Story = {
 		value: new Date(),
 		variant: 'default',
 		format: 'MM/DD/YYYY',
-		nullString: 'Select date',
+		nullString: '日付を選択',
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
 		focusStyle: 'border',
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -214,7 +219,8 @@ export const Disabled: Story = {
 		showIcon: true,
 		disabled: true,
 		focusStyle: 'border',
-		openIfClicked: true
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -231,7 +237,8 @@ export const WithMinMaxDate: Story = {
 		focusStyle: 'border',
 		openIfClicked: true,
 		minDate: new Date(2024, 0, 1),
-		maxDate: new Date(2024, 11, 31)
+		maxDate: new Date(2024, 11, 31),
+		locale: 'ja'
 	}
 };
 
@@ -251,19 +258,51 @@ export const EnglishLocale: Story = {
 	}
 };
 
-// Korean Locale（韓国語表示）
-export const KoreanLocale: Story = {
+// French Locale（フランス語表示）
+export const FrenchLocale: Story = {
 	args: {
 		value: undefined,
 		variant: 'default',
-		format: 'YYYY년 M월 D일',
-		nullString: '날짜를 선택하세요',
+		format: 'D MMM YYYY',
+		nullString: 'Sélectionnez une date',
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
-		locale: 'ko'
+		locale: 'fr'
+	}
+};
+
+// German Locale（ドイツ語表示）
+export const GermanLocale: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'D. MMM YYYY',
+		nullString: 'Datum auswählen',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'border',
+		openIfClicked: true,
+		locale: 'de'
+	}
+};
+
+// Spanish Locale（スペイン語表示）
+export const SpanishLocale: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'D [de] MMM [de] YYYY',
+		nullString: 'Seleccionar fecha',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'border',
+		openIfClicked: true,
+		locale: 'es'
 	}
 };
 

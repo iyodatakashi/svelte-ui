@@ -3,7 +3,9 @@
 	import localeData from 'dayjs/plugin/localeData';
 	import 'dayjs/locale/ja';
 	import 'dayjs/locale/en';
-	import 'dayjs/locale/ko';
+	import 'dayjs/locale/fr';
+	import 'dayjs/locale/de';
+	import 'dayjs/locale/es';
 	import 'dayjs/locale/zh-cn';
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
@@ -20,7 +22,7 @@
 		minDate,
 		maxDate,
 		id,
-		locale = 'ja'
+		locale = 'en'
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
 		isDateRange?: boolean;
@@ -30,7 +32,7 @@
 		minDate?: Date;
 		maxDate?: Date;
 		id?: string;
-		locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 	} = $props();
 	let month: dayjs.Dayjs = $state(dayjs());
 	let viewMode: 'date' | 'month' = $state('date');
@@ -44,15 +46,6 @@
 
 	// 言語別設定
 	const localeConfig = {
-		ja: {
-			monthFormat: 'YYYY年M月',
-			yearFormat: 'YYYY年',
-			calendarLabel: 'のカレンダー',
-			prevMonthLabel: '前の月へ移動',
-			nextMonthLabel: '次の月へ移動',
-			todayLabel: ' 今日',
-			selectedLabel: ' 選択済み'
-		},
 		en: {
 			monthFormat: 'MMMM YYYY',
 			yearFormat: 'YYYY',
@@ -62,14 +55,41 @@
 			todayLabel: ' today',
 			selectedLabel: ' selected'
 		},
-		ko: {
-			monthFormat: 'YYYY년 M월',
-			yearFormat: 'YYYY년',
-			calendarLabel: ' 달력',
-			prevMonthLabel: '이전 달',
-			nextMonthLabel: '다음 달',
-			todayLabel: ' 오늘',
-			selectedLabel: ' 선택됨'
+		ja: {
+			monthFormat: 'YYYY年M月',
+			yearFormat: 'YYYY年',
+			calendarLabel: 'のカレンダー',
+			prevMonthLabel: '前の月へ移動',
+			nextMonthLabel: '次の月へ移動',
+			todayLabel: ' 今日',
+			selectedLabel: ' 選択済み'
+		},
+		fr: {
+			monthFormat: 'MMMM YYYY',
+			yearFormat: 'YYYY',
+			calendarLabel: ' calendrier',
+			prevMonthLabel: 'Mois précédent',
+			nextMonthLabel: 'Mois suivant',
+			todayLabel: " aujourd'hui",
+			selectedLabel: ' sélectionné'
+		},
+		de: {
+			monthFormat: 'MMMM YYYY',
+			yearFormat: 'YYYY',
+			calendarLabel: ' Kalender',
+			prevMonthLabel: 'Vorheriger Monat',
+			nextMonthLabel: 'Nächster Monat',
+			todayLabel: ' heute',
+			selectedLabel: ' ausgewählt'
+		},
+		es: {
+			monthFormat: 'MMMM YYYY',
+			yearFormat: 'YYYY',
+			calendarLabel: ' calendario',
+			prevMonthLabel: 'Mes anterior',
+			nextMonthLabel: 'Mes siguiente',
+			todayLabel: ' hoy',
+			selectedLabel: ' seleccionado'
 		},
 		'zh-cn': {
 			monthFormat: 'YYYY年M月',
