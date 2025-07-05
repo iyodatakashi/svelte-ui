@@ -219,10 +219,28 @@
 	};
 
 	const moveMonthInSelection = (direction: number) => {
-		if (direction > 0) {
-			focusedMonth = focusedMonth < 11 ? focusedMonth + 1 : 0;
-		} else {
-			focusedMonth = focusedMonth > 0 ? focusedMonth - 1 : 11;
+		let newMonth = focusedMonth + direction;
+		let yearChange = 0;
+
+		// 年の境界を越えた場合の処理
+		if (newMonth < 0) {
+			yearChange = Math.floor(newMonth / 12);
+			newMonth = newMonth % 12;
+			if (newMonth < 0) {
+				newMonth = 12 + newMonth;
+			}
+		} else if (newMonth > 11) {
+			yearChange = Math.floor(newMonth / 12);
+			newMonth = newMonth % 12;
+		}
+
+		// フォーカスされた月を更新
+		focusedMonth = newMonth;
+
+		// 年が変わった場合は表示年も更新
+		if (yearChange !== 0) {
+			month = month.add(yearChange, 'year');
+			focusedDate = focusedDate.add(yearChange, 'year');
 		}
 	};
 
@@ -279,7 +297,7 @@
 					viewMode = 'date';
 					break;
 			}
-		} else {
+		} else if (viewMode === 'date') {
 			// 日付選択モード
 			switch (event.key) {
 				case 'ArrowUp':
