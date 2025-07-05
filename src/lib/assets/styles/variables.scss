@@ -426,7 +426,15 @@
 	--badge-color: var(--svelte-ui-primary-color);
 
 	/* フォーカススタイル */
-	--svelte-ui-focus-shadow: 0 0 0 2px inset var(--svelte-ui-focus-color);
-	--svelte-ui-focus-outline: 2px solid var(--svelte-ui-focus-color);
-	--svelte-ui-focus-outline-offset: 2px;
+	/* 外側フォーカススタイル（要素の外側に2px離して表示） */
+	--svelte-ui-focus-outline-outer: 2px solid var(--svelte-ui-focus-color);
+	--svelte-ui-focus-outline-offset-outer: 2px;
+
+	/* 内側フォーカススタイル（要素の内側に表示） */
+	--svelte-ui-focus-outline-inner: 2px solid var(--svelte-ui-focus-color);
+	--svelte-ui-focus-outline-offset-inner: -2px;
+
+	/* 後方互換性のための既存変数（外側フォーカススタイルのエイリアス） */
+	--svelte-ui-focus-outline: var(--svelte-ui-focus-outline-outer);
+	--svelte-ui-focus-outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 }

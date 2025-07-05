@@ -249,7 +249,8 @@
 
 	/* Focus state */
 	input[type='radio']:focus-visible + .radio-label::after {
-		box-shadow: var(--svelte-ui-radio-focus-shadow);
+		outline: var(--svelte-ui-focus-outline-outer);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
 	/* Size variants */

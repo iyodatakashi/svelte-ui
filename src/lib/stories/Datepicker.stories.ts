@@ -10,6 +10,7 @@ interface DatepickerArgs {
 	isDateRange?: boolean;
 	showIcon?: boolean;
 	disabled?: boolean;
+	focusStyle?: 'background' | 'border' | 'none';
 	openIfClicked?: boolean;
 	minDate?: Date;
 	maxDate?: Date;
@@ -60,6 +61,11 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'boolean',
 			description: '無効状態'
 		},
+		focusStyle: {
+			control: 'select',
+			options: ['background', 'border', 'none'],
+			description: 'フォーカス時の表示スタイル'
+		},
 		openIfClicked: {
 			control: 'boolean',
 			description: 'クリックでカレンダーを開く'
@@ -98,6 +104,7 @@ export const Default: Story = {
 		isDateRange: false,
 		showIcon: false,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -113,6 +120,7 @@ export const DateRange: Story = {
 		isDateRange: true,
 		showIcon: false,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true
 	}
 };
@@ -127,6 +135,7 @@ export const WithIcon: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true
 	}
 };
@@ -141,6 +150,7 @@ export const WithIconAndDateRange: Story = {
 		isDateRange: true,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true
 	}
 };
@@ -155,6 +165,7 @@ export const InlineVariant: Story = {
 		isDateRange: false,
 		showIcon: false,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true
 	},
 	parameters: {
@@ -172,6 +183,7 @@ export const CustomFormat: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true
 	}
 };
@@ -186,6 +198,7 @@ export const Disabled: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: true,
+		focusStyle: 'border',
 		openIfClicked: true
 	}
 };
@@ -200,6 +213,7 @@ export const WithMinMaxDate: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true,
 		minDate: new Date(2024, 0, 1),
 		maxDate: new Date(2024, 11, 31)
@@ -216,6 +230,7 @@ export const EnglishLocale: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'en'
 	}
@@ -231,6 +246,7 @@ export const KoreanLocale: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'ko'
 	}
@@ -246,8 +262,55 @@ export const ChineseLocale: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'zh-cn'
+	}
+};
+
+// Focus Style Variations（フォーカススタイルのバリエーション）
+export const FocusStyleBorder: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'border',
+		openIfClicked: true,
+		locale: 'ja'
+	}
+};
+
+export const FocusStyleBackground: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'background',
+		openIfClicked: true,
+		locale: 'ja'
+	}
+};
+
+export const FocusStyleNone: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'none',
+		openIfClicked: true,
+		locale: 'ja'
 	}
 };
 
@@ -261,6 +324,7 @@ export const Playground: Story = {
 		isDateRange: false,
 		showIcon: true,
 		disabled: false,
+		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'ja'
 	}

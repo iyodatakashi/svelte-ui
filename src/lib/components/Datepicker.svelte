@@ -19,6 +19,7 @@
 		isDateRange = false,
 		showIcon = false,
 		disabled = false,
+		focusStyle = 'border',
 		onchange = () => {},
 		openIfClicked = true,
 		minDate,
@@ -32,6 +33,7 @@
 		isDateRange?: boolean;
 		showIcon?: boolean;
 		disabled?: boolean;
+		focusStyle?: 'background' | 'border' | 'none';
 		onchange?: Function;
 		openIfClicked?: boolean;
 		minDate?: Date;
@@ -158,6 +160,8 @@
 </script>
 
 <button
+	class="datepicker-button
+	focus-style-{focusStyle}"
 	class:inline={variant === 'inline'}
 	class:has-icon={showIcon}
 	bind:this={displayElement}
@@ -250,6 +254,20 @@
 	button[disabled] {
 		opacity: 0.5;
 		pointer-events: none;
+	}
+
+	/* フォーカス効果バリエーション */
+	.focus-style-border button:focus {
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+	}
+
+	.focus-style-background button:focus {
+		background-color: var(--svelte-ui-hover-overlay);
+	}
+
+	.focus-style-none button:focus {
+		/* フォーカス表示なし */
 	}
 	.label-block {
 		width: 100%;

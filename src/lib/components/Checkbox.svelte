@@ -250,7 +250,8 @@
 
 	/* Focus states */
 	input[type='checkbox']:focus-visible + .checkbox-label::before {
-		box-shadow: var(--svelte-ui-checkbox-focus-shadow);
+		outline: var(--svelte-ui-focus-outline-outer);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
 	/* Checked/Indeterminate background */

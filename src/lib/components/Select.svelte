@@ -177,7 +177,8 @@ focus-style-{focusStyle}"
  * フォーカス効果バリエーション
  * ============================================= */
 	.focus-style-border select:focus {
-		box-shadow: var(--svelte-ui-focus-shadow);
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.focus-style-background select:focus {
