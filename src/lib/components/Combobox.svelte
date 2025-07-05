@@ -192,6 +192,7 @@
 		{tabindex}
 		{maxlength}
 		{rounded}
+		hasRightIcon={variant !== 'inline'}
 		onfocus={handleInputFocus}
 		onblur={handleBlur}
 		onclick={handleClick}
@@ -287,7 +288,6 @@
 		width: max-content;
 		max-width: var(--svelte-ui-combobox-max-width);
 		background: var(--svelte-ui-combobox-bg);
-		border: var(--svelte-ui-border-width) solid var(--svelte-ui-combobox-border-color);
 		border-radius: var(--svelte-ui-combobox-border-radius);
 		max-height: var(--svelte-ui-combobox-options-max-height);
 		overflow-y: auto;

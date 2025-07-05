@@ -175,6 +175,8 @@
 	--svelte-ui-input-height: 36px;
 	--svelte-ui-input-padding: 0 12px;
 	--svelte-ui-input-padding-left: 12px;
+	--svelte-ui-input-icon-space: 40px;
+	--svelte-ui-input-padding-with-icon: 0 var(--svelte-ui-input-icon-space) 0 12px;
 	--svelte-ui-input-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-input-focus-shadow: var(--svelte-ui-focus-shadow);
@@ -187,7 +189,7 @@
 
 	/* Select */
 	--svelte-ui-select-height: 36px;
-	--svelte-ui-select-padding: 0 32px 0 12px;
+	--svelte-ui-select-padding: var(--svelte-ui-input-padding-with-icon);
 	--svelte-ui-select-icon-right: 8px;
 	--svelte-ui-select-dropdown-size: 18px;
 	--svelte-ui-select-border-radius: var(--svelte-ui-border-radius);

@@ -152,6 +152,7 @@
 
 <button
 	class:inline={variant === 'inline'}
+	class:has-icon={showIcon}
 	bind:this={displayElement}
 	{disabled}
 	role="combobox"
@@ -192,10 +193,6 @@
 
 <style lang="scss">
 	button {
-		display: flex;
-		justify-content: center;
-		align-items: center;
-		gap: 8px;
 		position: relative;
 		padding: inherit;
 		background-color: transparent;
@@ -203,6 +200,7 @@
 		color: inherit;
 		line-height: normal;
 		overflow: hidden;
+		text-align: left;
 	}
 	button:not(.inline) {
 		min-height: 36px;
@@ -213,6 +211,11 @@
 		border-radius: 4px;
 		color: var(--svelte-ui-text-color);
 		line-height: normal;
+	}
+
+	/* アイコンがある時のpadding調整 */
+	button:not(.inline).has-icon {
+		padding: var(--svelte-ui-input-padding-with-icon);
 	}
 	button > * {
 		z-index: 1;
@@ -243,9 +246,18 @@
 	}
 	.label-block {
 		width: 100%;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
 	}
 	.icon-block {
-		margin-right: -4px;
+		position: absolute;
+		top: 50%;
+		right: var(--svelte-ui-select-icon-right);
+		transform: translateY(-50%);
+		font-size: var(--svelte-ui-select-dropdown-size);
+		color: var(--svelte-ui-select-icon-color);
+		pointer-events: none;
 	}
 	.calendar-container {
 		position: absolute;

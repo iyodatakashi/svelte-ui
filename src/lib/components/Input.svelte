@@ -20,6 +20,7 @@
 		maxlength = null,
 		pattern = null,
 		clearable = false,
+		hasRightIcon = false,
 		rounded = false,
 		disabled = false,
 		readonly = false,
@@ -52,6 +53,7 @@
 		maxlength?: number | null;
 		pattern?: string | null;
 		clearable?: boolean;
+		hasRightIcon?: boolean;
 		rounded?: boolean;
 		disabled?: boolean;
 		readonly?: boolean;
@@ -123,6 +125,7 @@
 	class:auto-resize={variant === 'inline'}
 	class:full-width={fullWidth}
 	class:clearable
+	class:has-right-icon={hasRightIcon}
 	class:rounded
 	class:disabled
 	class:readonly
@@ -303,6 +306,13 @@
 		}
 	}
 
+	.has-right-icon {
+		input,
+		.plain-text {
+			padding-right: var(--svelte-ui-input-icon-space);
+		}
+	}
+
 	:hover .clear-button-block {
 		opacity: 1;
 		pointer-events: all;
@@ -377,6 +387,12 @@
 		&.clearable {
 			input {
 				padding-right: var(--svelte-ui-clear-button-padding-adjustment);
+			}
+		}
+
+		&.has-right-icon {
+			input {
+				padding-right: var(--svelte-ui-input-icon-space);
 			}
 		}
 	}
