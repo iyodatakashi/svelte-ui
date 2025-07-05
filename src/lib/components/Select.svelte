@@ -177,7 +177,7 @@ focus-style-{focusStyle}"
  * フォーカス効果バリエーション
  * ============================================= */
 	.focus-style-border select:focus {
-		box-shadow: var(--svelte-ui-input-focus-shadow);
+		box-shadow: var(--svelte-ui-focus-shadow);
 	}
 
 	.focus-style-background select:focus {
@@ -241,7 +241,7 @@ focus-style-{focusStyle}"
 	.select.inline {
 		select {
 			padding: inherit;
-			padding-right: 24px;
+			padding-right: var(--svelte-ui-input-icon-space-inline);
 			background: transparent;
 			border: none;
 			border-radius: 0;

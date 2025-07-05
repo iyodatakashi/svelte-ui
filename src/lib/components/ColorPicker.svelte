@@ -275,7 +275,7 @@
  * フォーカス効果バリエーション
  * ============================================= */
 	.focus-style-border .text-input:focus-visible {
-		box-shadow: var(--svelte-ui-input-focus-shadow);
+		box-shadow: var(--svelte-ui-focus-shadow);
 	}
 
 	.focus-style-background .text-input:focus-visible {

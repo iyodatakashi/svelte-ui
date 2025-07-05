@@ -330,7 +330,7 @@
  * フォーカス効果バリエーション
  * ============================================= */
 	.focus-style-border input:focus {
-		box-shadow: var(--svelte-ui-input-focus-shadow);
+		box-shadow: var(--svelte-ui-focus-shadow);
 	}
 
 	.focus-style-background input:focus {
@@ -421,6 +421,13 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
+		}
+
+		&.has-right-icon {
+			input,
+			.plain-text {
+				padding-right: var(--svelte-ui-input-icon-space-inline);
+			}
 		}
 
 		&.is-focused {

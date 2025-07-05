@@ -312,7 +312,7 @@
  * フォーカス効果バリエーション
  * ============================================= */
 	.textarea.focus-style-border textarea:focus {
-		box-shadow: var(--svelte-ui-input-focus-shadow);
+		box-shadow: var(--svelte-ui-focus-shadow);
 	}
 
 	.textarea.focus-style-background textarea:focus {

@@ -140,6 +140,18 @@
 	--svelte-ui-z-tooltip: 1070;
 	--svelte-ui-z-toast: 1080;
 
+	/* Form Controls - 共通 */
+	--svelte-ui-form-height: 36px;
+	--svelte-ui-form-padding: 0 12px;
+	--svelte-ui-form-padding-left: 12px;
+	--svelte-ui-form-icon-space: 40px;
+	--svelte-ui-form-icon-space-inline: 32px;
+	--svelte-ui-form-padding-with-icon: 0 var(--svelte-ui-form-icon-space) 0 12px;
+	--svelte-ui-form-padding-with-icon-inline: 0 var(--svelte-ui-form-icon-space-inline) 0 12px;
+	--svelte-ui-form-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-form-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-form-disabled-opacity: 0.6;
+
 	/* ====================================
    * 基本の色変数
    * ==================================== */
@@ -151,7 +163,6 @@
 	--svelte-ui-error-color: #a54254;
 	--svelte-ui-warning-color: #ffc107;
 	--svelte-ui-info-color: #17a2b8;
-	--svelte-ui-focus-color: var(--primary-color);
 
 	/* ====================================
    * 各コンポーネントのサイズ、パディングなど
@@ -172,15 +183,16 @@
 	--svelte-ui-button-disabled-opacity: 0.5;
 
 	/* Input */
-	--svelte-ui-input-height: 36px;
-	--svelte-ui-input-padding: 0 12px;
-	--svelte-ui-input-padding-left: 12px;
-	--svelte-ui-input-icon-space: 40px;
-	--svelte-ui-input-padding-with-icon: 0 var(--svelte-ui-input-icon-space) 0 12px;
-	--svelte-ui-input-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-input-focus-shadow: var(--svelte-ui-focus-shadow);
-	--svelte-ui-input-disabled-opacity: 0.6;
+	--svelte-ui-input-height: var(--svelte-ui-form-height);
+	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
+	--svelte-ui-input-padding-left: var(--svelte-ui-form-padding-left);
+	--svelte-ui-input-icon-space: var(--svelte-ui-form-icon-space);
+	--svelte-ui-input-icon-space-inline: var(--svelte-ui-form-icon-space-inline);
+	--svelte-ui-input-padding-with-icon: var(--svelte-ui-form-padding-with-icon);
+	--svelte-ui-input-padding-with-icon-inline: var(--svelte-ui-form-padding-with-icon-inline);
+	--svelte-ui-input-border-radius: var(--svelte-ui-form-border-radius);
+	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
+	--svelte-ui-input-disabled-opacity: var(--svelte-ui-form-disabled-opacity);
 
 	/* Textarea */
 	--svelte-ui-textarea-padding: 5px 12px;
@@ -188,12 +200,13 @@
 	--svelte-ui-textarea-border-radius-rounded: 20px;
 
 	/* Select */
-	--svelte-ui-select-height: 36px;
-	--svelte-ui-select-padding: var(--svelte-ui-input-padding-with-icon);
+	--svelte-ui-select-height: var(--svelte-ui-form-height);
+	--svelte-ui-select-padding: var(--svelte-ui-form-padding-with-icon);
+	--svelte-ui-select-padding-inline: var(--svelte-ui-form-padding-with-icon-inline);
 	--svelte-ui-select-icon-right: 8px;
 	--svelte-ui-select-dropdown-size: 18px;
-	--svelte-ui-select-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-select-border-radius: var(--svelte-ui-form-border-radius);
+	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 
 	/* Checkbox */
 	--svelte-ui-checkbox-size: 12px;
@@ -252,8 +265,8 @@
 	--svelte-ui-combobox-option-padding: 8px 12px;
 	--svelte-ui-combobox-dropdown-icon-size: 18px;
 	--svelte-ui-combobox-dropdown-icon-right: 8px;
-	--svelte-ui-combobox-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-combobox-border-radius: var(--svelte-ui-form-border-radius);
+	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 
 	/* Popup */
 	--svelte-ui-popup-mobile-margin: 16px;
@@ -299,11 +312,11 @@
 	--svelte-ui-hover-overlay: var(--base-50-transparent);
 	--svelte-ui-select-overlay: var(--primary-200-transparent);
 
-	/* フォーカスボーダー */
-	--svelte-ui-focus-shadow: 0 0 0 2px inset var(--svelte-ui-focus-color);
-
 	/* ドロップダウンアイコン */
 	--svelte-ui-dropdown-icon-color: var(--svelte-ui-text-subtle-color);
+
+	/* フォーカス色 */
+	--svelte-ui-focus-color: var(--primary-color);
 }
 
 /* ====================================
@@ -334,11 +347,11 @@
 	--svelte-ui-hover-overlay: var(--white-100-transparent);
 	--svelte-ui-select-overlay: var(--primary-200-transparent);
 
-	/* フォーカスボーダー */
-	--svelte-ui-focus-shadow: 0 0 0 2px inset var(--svelte-ui-focus-color);
-
 	/* ドロップダウンアイコン */
 	--svelte-ui-dropdown-icon-color: var(--svelte-ui-text-subtle-color);
+
+	/* フォーカス色 */
+	--svelte-ui-focus-color: var(--primary-color);
 }
 
 /* ====================================
@@ -411,4 +424,7 @@
 	/* Badge */
 	--badge-text-color: var(--svelte-ui-text-on-filled-color);
 	--badge-color: var(--svelte-ui-primary-color);
+
+	/* フォーカススタイル */
+	--svelte-ui-focus-shadow: 0 0 0 2px inset var(--svelte-ui-focus-color);
 }
