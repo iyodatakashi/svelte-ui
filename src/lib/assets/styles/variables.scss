@@ -427,4 +427,6 @@
 
 	/* フォーカススタイル */
 	--svelte-ui-focus-shadow: 0 0 0 2px inset var(--svelte-ui-focus-color);
+	--svelte-ui-focus-outline: 2px solid var(--svelte-ui-focus-color);
+	--svelte-ui-focus-outline-offset: 2px;
 }

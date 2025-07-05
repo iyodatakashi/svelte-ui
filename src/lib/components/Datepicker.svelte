@@ -92,7 +92,15 @@
 		switch (event.key) {
 			case 'Enter':
 			case ' ':
+				event.preventDefault();
+				openedViaKeyboard = true;
+				open();
+				break;
 			case 'ArrowDown':
+				// ポップアップが既に開いている場合は何もしない（DatepickerCalendarのキーボード処理に任せる）
+				if (popupRef?.getIsOpen()) {
+					return;
+				}
 				event.preventDefault();
 				openedViaKeyboard = true;
 				open();
@@ -119,16 +127,15 @@
 
 	// Popupが開いた時のコールバック
 	const handlePopupOpen = () => {
-		// キーボードで開いた場合のみカレンダーにフォーカスを移動
-		if (openedViaKeyboard) {
-			setTimeout(() => {
-				datapickerCalendarRef?.focusCalendar();
-			}, 100);
-		}
+		// DatepickerCalendarのイベントハンドラーを有効にする
+		datapickerCalendarRef?.handlePopupOpen();
+		// キーボードで開いた場合は、最初のキーボード操作時にフォーカス表示が有効になる
 	};
 
 	// Popupが閉じた時のコールバック
 	const handlePopupClose = () => {
+		// DatepickerCalendarのイベントハンドラーを無効にする
+		datapickerCalendarRef?.handlePopupClose();
 		// キーボードで開いた場合のみボタンにフォーカスを戻す
 		if (openedViaKeyboard) {
 			displayElement?.focus();

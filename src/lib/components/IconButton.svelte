@@ -205,8 +205,8 @@
 	}
 
 	.iconbutton:focus-visible {
-		outline: 2px solid var(--svelte-ui-iconbutton-focus-color);
-		outline-offset: 2px;
+		outline: var(--svelte-ui-focus-outline);
+		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
 
 	.iconbutton--pressed {

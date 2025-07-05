@@ -15,6 +15,8 @@
 		value = $bindable(),
 		isDateRange = false,
 		onchange = () => {},
+		onOpen,
+		onClose,
 		minDate,
 		maxDate,
 		id,
@@ -23,15 +25,19 @@
 		value: Date | { start: Date; end: Date } | undefined;
 		isDateRange?: boolean;
 		onchange: Function;
+		onOpen?: Function;
+		onClose?: Function;
 		minDate?: Date;
 		maxDate?: Date;
 		id?: string;
 		locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
 	} = $props();
 	let month: dayjs.Dayjs = $state(dayjs());
+	let viewMode: 'date' | 'month' = $state('date');
+	let selectedYearMonth: dayjs.Dayjs = $state(dayjs().startOf('month'));
 	let focusedDate: dayjs.Dayjs = $state(dayjs());
-	let isCalendarFocused: boolean = $state(false);
-	let allowKeyboardFocus: boolean = $state(false);
+	let focusedMonth: number = $state(dayjs().month());
+	let isKeyboardActive: boolean = $state(false);
 
 	dayjs.extend(isSameOrBefore);
 	dayjs.extend(isSameOrAfter);
@@ -40,6 +46,7 @@
 	const localeConfig = {
 		ja: {
 			monthFormat: 'YYYY年M月',
+			yearFormat: 'YYYY年',
 			calendarLabel: 'のカレンダー',
 			prevMonthLabel: '前の月へ移動',
 			nextMonthLabel: '次の月へ移動',
@@ -48,6 +55,7 @@
 		},
 		en: {
 			monthFormat: 'MMMM YYYY',
+			yearFormat: 'YYYY',
 			calendarLabel: ' calendar',
 			prevMonthLabel: 'Previous month',
 			nextMonthLabel: 'Next month',
@@ -56,6 +64,7 @@
 		},
 		ko: {
 			monthFormat: 'YYYY년 M월',
+			yearFormat: 'YYYY년',
 			calendarLabel: ' 달력',
 			prevMonthLabel: '이전 달',
 			nextMonthLabel: '다음 달',
@@ -64,6 +73,7 @@
 		},
 		'zh-cn': {
 			monthFormat: 'YYYY年M月',
+			yearFormat: 'YYYY年',
 			calendarLabel: '日历',
 			prevMonthLabel: '上个月',
 			nextMonthLabel: '下个月',
@@ -93,6 +103,9 @@
 	let calendarRef: HTMLDivElement | undefined = $state();
 	onMount(() => {
 		reset();
+		selectedYearMonth = month.startOf('month');
+		isKeyboardActive = false; // 初期状態はキーボード非アクティブ
+
 		// 初期フォーカス日を設定
 		if (value) {
 			if (isDateRange && value && 'start' in value && 'end' in value) {
@@ -116,16 +129,69 @@
 			month = dayjs().startOf('month');
 			focusedDate = dayjs();
 		}
+		selectedYearMonth = month.startOf('month');
+		// isKeyboardActiveはhandleCalendarCloseでリセットされるため、ここではリセットしない
 	};
 
-	// フォーカス管理
+	// フォーカス管理（キーボードで開かれた場合）
 	export const focusCalendar = () => {
-		allowKeyboardFocus = true;
-		isCalendarFocused = true;
-		calendarRef?.focus();
+		isKeyboardActive = true; // キーボードで開かれた場合はフォーカス表示を有効に
+		// documentレベルでキーボードイベントを処理するため、実際のフォーカス移動は不要
 	};
 
-	// キーボードナビゲーション関数
+	// イベントハンドラー管理
+	const handleCalendarOpen = () => {
+		// documentレベルでキーボードイベントをリッスン
+		document.addEventListener('keydown', handleKeyDown);
+
+		// 親コンポーネントのコールバックを呼び出し
+		onOpen?.();
+	};
+
+	const handleCalendarClose = () => {
+		// documentレベルのキーボードイベントリスナーを削除
+		document.removeEventListener('keydown', handleKeyDown);
+
+		// 状態をリセット
+		isKeyboardActive = false;
+
+		// 親コンポーネントのコールバックを呼び出し
+		onClose?.();
+	};
+
+	// 外部から呼び出し可能なメソッドとして公開
+	export const handlePopupOpen = handleCalendarOpen;
+	export const handlePopupClose = handleCalendarClose;
+
+	// 年月選択モードのロジック
+	const toggleMonthMode = () => {
+		viewMode = viewMode === 'month' ? 'date' : 'month';
+		if (viewMode === 'month') {
+			focusedMonth = month.month();
+		}
+	};
+
+	const selectMonth = (monthIndex: number) => {
+		month = month.month(monthIndex);
+		focusedDate = focusedDate.month(monthIndex);
+		selectedYearMonth = month.startOf('month');
+		viewMode = 'date';
+	};
+
+	// 月選択モードでの年の変更
+	const changeYearInMonthMode = (direction: number) => {
+		month = month.add(direction, 'year');
+		focusedDate = focusedDate.add(direction, 'year');
+	};
+
+	// 月の名前を生成
+
+	const monthNames = $derived.by(() => {
+		dayjs.locale(locale);
+		return dayjs.months();
+	});
+
+	// キーボードナビゲーション関数（document レベル対応）
 	const moveDay = (direction: number) => {
 		const newDate = focusedDate.add(direction, 'day');
 		focusedDate = newDate;
@@ -146,18 +212,18 @@
 		}
 	};
 
-	const moveToStartOfWeek = () => {
-		focusedDate = focusedDate.startOf('week');
-	};
-
-	const moveToEndOfWeek = () => {
-		focusedDate = focusedDate.endOf('week');
-	};
-
 	const moveMonth = (direction: number) => {
 		const newDate = focusedDate.add(direction, 'month');
 		focusedDate = newDate;
 		month = newDate.startOf('month');
+	};
+
+	const moveMonthInSelection = (direction: number) => {
+		if (direction > 0) {
+			focusedMonth = focusedMonth < 11 ? focusedMonth + 1 : 0;
+		} else {
+			focusedMonth = focusedMonth > 0 ? focusedMonth - 1 : 11;
+		}
 	};
 
 	const selectFocusedDate = () => {
@@ -165,70 +231,102 @@
 		selectDate(focusedDate);
 	};
 
-	// キーボードイベントハンドラ
+	// キーボードイベントハンドラ（document レベル）
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (!isCalendarFocused) return;
+		// イベントハンドラーが登録されているときのみ有効（PopupMenuと同様）
 
-		// キーボード操作時はフォーカスを維持
-		allowKeyboardFocus = true;
+		// キーボード操作があった時にフォーカス表示を有効にする
+		if (
+			!isKeyboardActive &&
+			(event.key === 'ArrowUp' ||
+				event.key === 'ArrowDown' ||
+				event.key === 'ArrowLeft' ||
+				event.key === 'ArrowRight' ||
+				event.key === 'PageUp' ||
+				event.key === 'PageDown' ||
+				event.key === 'Home' ||
+				event.key === 'End')
+		) {
+			isKeyboardActive = true;
+		}
 
-		switch (event.key) {
-			case 'ArrowUp':
-				event.preventDefault();
-				moveWeek(-1);
-				break;
-			case 'ArrowDown':
-				event.preventDefault();
-				moveWeek(1);
-				break;
-			case 'ArrowLeft':
-				event.preventDefault();
-				moveDay(-1);
-				break;
-			case 'ArrowRight':
-				event.preventDefault();
-				moveDay(1);
-				break;
-			case 'Home':
-				event.preventDefault();
-				moveToStartOfWeek();
-				break;
-			case 'End':
-				event.preventDefault();
-				moveToEndOfWeek();
-				break;
-			case 'PageUp':
-				event.preventDefault();
-				moveMonth(-1);
-				break;
-			case 'PageDown':
-				event.preventDefault();
-				moveMonth(1);
-				break;
-			case 'Enter':
-			case ' ':
-				event.preventDefault();
-				selectFocusedDate();
-				break;
-			case 'Escape':
-				event.preventDefault();
-				isCalendarFocused = false;
-				// 親コンポーネントでカレンダーを閉じる処理を想定
-				break;
+		if (viewMode === 'month') {
+			// 月選択モード
+			switch (event.key) {
+				case 'ArrowUp':
+					event.preventDefault();
+					moveMonthInSelection(-3);
+					break;
+				case 'ArrowDown':
+					event.preventDefault();
+					moveMonthInSelection(3);
+					break;
+				case 'ArrowLeft':
+					event.preventDefault();
+					moveMonthInSelection(-1);
+					break;
+				case 'ArrowRight':
+					event.preventDefault();
+					moveMonthInSelection(1);
+					break;
+				case 'Enter':
+				case ' ':
+					event.preventDefault();
+					selectMonth(focusedMonth);
+					break;
+				case 'Escape':
+					event.preventDefault();
+					viewMode = 'date';
+					break;
+			}
+		} else {
+			// 日付選択モード
+			switch (event.key) {
+				case 'ArrowUp':
+					event.preventDefault();
+					moveWeek(-1);
+					break;
+				case 'ArrowDown':
+					event.preventDefault();
+					moveWeek(1);
+					break;
+				case 'ArrowLeft':
+					event.preventDefault();
+					moveDay(-1);
+					break;
+				case 'ArrowRight':
+					event.preventDefault();
+					moveDay(1);
+					break;
+				case 'PageUp':
+					event.preventDefault();
+					moveMonth(-1);
+					break;
+				case 'PageDown':
+					event.preventDefault();
+					moveMonth(1);
+					break;
+				case 'Home':
+					event.preventDefault();
+					focusedDate = focusedDate.startOf('week');
+					break;
+				case 'End':
+					event.preventDefault();
+					focusedDate = focusedDate.endOf('week');
+					break;
+				case 'Enter':
+				case ' ':
+					event.preventDefault();
+					selectFocusedDate();
+					break;
+				case 'Escape':
+					event.preventDefault();
+					// 親コンポーネントでカレンダーを閉じる処理を想定
+					break;
+			}
 		}
 	};
 
-	const handleFocus = () => {
-		// プログラム的フォーカス（focusCalendar()）の場合のみ有効にする
-		if (allowKeyboardFocus) {
-			isCalendarFocused = true;
-		}
-	};
-
-	const handleBlur = () => {
-		isCalendarFocused = false;
-		allowKeyboardFocus = false;
-	};
 	const generateDateArray = (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) => {
 		let dates = [];
 		let currentDate = startDate;
@@ -249,10 +347,18 @@
 		return weeks;
 	});
 	const goPrev = () => {
-		month = month.subtract(1, 'month');
+		if (viewMode === 'month') {
+			changeYearInMonthMode(-1);
+		} else {
+			month = month.subtract(1, 'month');
+		}
 	};
 	const goNext = () => {
-		month = month.add(1, 'month');
+		if (viewMode === 'month') {
+			changeYearInMonthMode(1);
+		} else {
+			month = month.add(1, 'month');
+		}
 	};
 	const isSelected = (date: dayjs.Dayjs) => {
 		if (isDateRange && value && 'start' in value && 'end' in value) {
@@ -374,13 +480,16 @@
 		return date.startOf('day').isSame(dayjs().startOf('day'));
 	};
 
-	const isFocused = (date: dayjs.Dayjs) => {
-		return isCalendarFocused && date.startOf('day').isSame(focusedDate.startOf('day'));
-	};
+	// フォーカス表示用の計算プロパティ
+	const focusedDateKey = $derived(
+		isKeyboardActive ? focusedDate.startOf('day').format('YYYY-MM-DD') : null
+	);
 
-	const getDateTabIndex = (date: dayjs.Dayjs) => {
-		// フォーカスされた日付のみtabindex="0"、その他は"-1"
-		return isFocused(date) ? 0 : -1;
+	// フォーカス表示関数
+	const isFocused = (date: dayjs.Dayjs) => {
+		const dateKey = date.startOf('day').format('YYYY-MM-DD');
+		const result = focusedDateKey === dateKey;
+		return result;
 	};
 
 	const getDateId = (date: dayjs.Dayjs) => {
@@ -430,10 +539,6 @@
 	class="datepicker-calendar"
 	role="grid"
 	aria-label={`${month.locale(locale).format(currentLocaleConfig.monthFormat)}${currentLocaleConfig.calendarLabel}`}
-	tabindex="-1"
-	onkeydown={handleKeyDown}
-	onfocus={handleFocus}
-	onblur={handleBlur}
 	{id}
 >
 	<div class="header">
@@ -442,67 +547,107 @@
 				>chevron_left</IconButton
 			>
 		</div>
-		<div class="month-label-block" aria-live="polite" aria-atomic="true">
-			{month.locale(locale).format(currentLocaleConfig.monthFormat)}
-		</div>
+		<button
+			class="month-label-button"
+			aria-live="polite"
+			aria-atomic="true"
+			onclick={(event) => {
+				event.stopPropagation();
+				isKeyboardActive = false; // マウスクリック時はフォーカス表示をリセット
+				toggleMonthMode();
+			}}
+		>
+			{#if viewMode === 'month'}
+				{month.locale(locale).format(currentLocaleConfig.yearFormat)}
+			{:else}
+				{month.locale(locale).format(currentLocaleConfig.monthFormat)}
+			{/if}
+		</button>
 		<div class="next-button-block">
 			<IconButton ariaLabel={currentLocaleConfig.nextMonthLabel} onclick={goNext}
 				>chevron_right</IconButton
 			>
 		</div>
 	</div>
-	<div class="calendar-grid" role="grid" aria-labelledby="month-label">
-		<div class="day-list" role="row">
-			{#each DAY_ARRAY as day}
-				<div class="day-list-item" role="columnheader">
-					{day}
-				</div>
-			{/each}
+
+	{#if viewMode === 'month'}
+		<div class="month-selection-container">
+			<div class="month-selection-grid">
+				{#each monthNames as monthName, index}
+					<button
+						class="month-button"
+						class:is-current={index === dayjs().month() && month.year() === dayjs().year()}
+						class:is-selected={month
+							.month(index)
+							.startOf('month')
+							.isSame(selectedYearMonth, 'month')}
+						class:is-focused={isKeyboardActive && index === focusedMonth}
+						onclick={(event) => {
+							event.stopPropagation();
+							focusedMonth = index;
+							isKeyboardActive = false; // マウスクリック時はフォーカス表示をリセット
+							selectMonth(index);
+						}}
+					>
+						{monthName}
+					</button>
+				{/each}
+			</div>
 		</div>
-		<div class="date-grid">
-			{#each weekRows as week}
-				<div class="date-row" role="row">
-					{#each week as date}
-						<div
-							class="date-list-item"
-							class:is-selected={!isDateRange && isSelected(date)}
-							class:is-range-start={isRangeStart(date)}
-							class:is-range-end={isRangeEnd(date)}
-							class:is-range-middle={isRangeMiddle(date)}
-							class:is-range-single={isRangeSingle(date)}
-							class:is-range-preview-start={isRangePreviewStart(date)}
-							class:is-range-preview-end={isRangePreviewEnd(date)}
-							class:is-range-preview-middle={isRangePreviewMiddle(date)}
-							class:is-range-preview-single={isRangePreviewSingle(date)}
-							class:out-of-month={isOutOfMonth(date)}
-							class:out-of-range={isOutOfRange(date)}
-							class:today={isToday(date)}
-							class:is-focused={isFocused(date)}
-							role="gridcell"
-						>
-							<button
-								id={getDateId(date)}
-								class="date-button"
-								tabindex={getDateTabIndex(date)}
-								aria-current={isToday(date) ? 'date' : undefined}
-								aria-pressed={isSelected(date)}
-								aria-label={`${date.locale(locale).format('LL')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
-								aria-disabled={isOutOfRange(date)}
-								onclick={() => selectDate(date)}
-								onfocus={() => {
-									focusedDate = date;
-								}}
-								onmouseenter={() => handleMouseEnter(date)}
-								onmouseleave={handleMouseLeave}
+	{:else}
+		<div class="calendar-grid" role="grid" aria-labelledby="month-label">
+			<div class="day-list" role="row">
+				{#each DAY_ARRAY as day}
+					<div class="day-list-item" role="columnheader">
+						{day}
+					</div>
+				{/each}
+			</div>
+			<div class="date-grid">
+				{#each weekRows as week}
+					<div class="date-row" role="row">
+						{#each week as date}
+							<div
+								class="date-list-item"
+								class:is-selected={!isDateRange && isSelected(date)}
+								class:is-range-start={isRangeStart(date)}
+								class:is-range-end={isRangeEnd(date)}
+								class:is-range-middle={isRangeMiddle(date)}
+								class:is-range-single={isRangeSingle(date)}
+								class:is-range-preview-start={isRangePreviewStart(date)}
+								class:is-range-preview-end={isRangePreviewEnd(date)}
+								class:is-range-preview-middle={isRangePreviewMiddle(date)}
+								class:is-range-preview-single={isRangePreviewSingle(date)}
+								class:out-of-month={isOutOfMonth(date)}
+								class:out-of-range={isOutOfRange(date)}
+								class:today={isToday(date)}
+								class:is-focused={focusedDateKey === date.startOf('day').format('YYYY-MM-DD')}
+								role="gridcell"
 							>
-								{date.format('D')}
-							</button>
-						</div>
-					{/each}
-				</div>
-			{/each}
+								<button
+									id={getDateId(date)}
+									class="date-button"
+									aria-current={isToday(date) ? 'date' : undefined}
+									aria-pressed={isSelected(date)}
+									aria-label={`${date.locale(locale).format('LL')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
+									aria-disabled={isOutOfRange(date)}
+									onclick={() => {
+										focusedDate = date;
+										isKeyboardActive = false; // マウスクリック時はフォーカス表示をリセット
+										selectDate(date);
+									}}
+									onmouseenter={() => handleMouseEnter(date)}
+									onmouseleave={handleMouseLeave}
+								>
+									{date.format('D')}
+								</button>
+							</div>
+						{/each}
+					</div>
+				{/each}
+			</div>
 		</div>
-	</div>
+	{/if}
 </div>
 
 <style lang="scss">
@@ -521,10 +666,70 @@
 		gap: 16px;
 	}
 
-	.month-label-block {
+	.month-label-button {
 		font-size: 1.4rem;
 		font-weight: bold;
 		color: var(--svelte-ui-text-color);
+		background: none;
+		border: none;
+		padding: 8px 12px;
+		border-radius: var(--svelte-ui-border-radius);
+		cursor: pointer;
+		transition: background-color var(--svelte-ui-transition-duration-fast);
+
+		&:hover {
+			background-color: var(--svelte-ui-hover-overlay);
+		}
+
+		&:focus-visible {
+			outline: var(--svelte-ui-focus-outline);
+			outline-offset: var(--svelte-ui-focus-outline-offset);
+		}
+	}
+
+	.month-selection-container {
+		padding: 8px 0;
+	}
+
+	.month-selection-grid {
+		display: grid;
+		grid-template-columns: repeat(3, 1fr);
+		gap: 8px;
+	}
+
+	.month-button {
+		padding: 12px 8px;
+		border-radius: var(--svelte-ui-border-radius);
+		background: var(--svelte-ui-surface-color);
+		color: var(--svelte-ui-text-color);
+		font-size: 1rem;
+		cursor: pointer;
+		transition: all var(--svelte-ui-transition-duration-fast);
+
+		&:hover {
+			background-color: var(--svelte-ui-hover-overlay);
+		}
+
+		&:focus-visible {
+			outline: var(--svelte-ui-focus-outline);
+			outline-offset: var(--svelte-ui-focus-outline-offset);
+		}
+
+		&.is-current {
+			font-weight: bold;
+			color: var(--svelte-ui-primary-color);
+		}
+
+		&.is-selected {
+			background-color: var(--svelte-ui-primary-color);
+			color: var(--svelte-ui-text-on-filled-color);
+			border-color: var(--svelte-ui-primary-color);
+		}
+
+		&.is-focused {
+			outline: var(--svelte-ui-focus-outline);
+			outline-offset: var(--svelte-ui-focus-outline-offset);
+		}
 	}
 
 	.day-list {
@@ -678,10 +883,16 @@
 		}
 	}
 
-	.date-list-item.is-focused .date-button {
-		outline: 2px solid var(--svelte-ui-primary-color);
-		outline-offset: 2px;
+	.date-button:focus-visible {
+		outline: var(--svelte-ui-focus-outline);
+		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
+
+	.date-list-item.is-focused .date-button {
+		outline: var(--svelte-ui-focus-outline);
+		outline-offset: var(--svelte-ui-focus-outline-offset);
+	}
+
 	.date-button {
 		width: 36px;
 		height: 36px;

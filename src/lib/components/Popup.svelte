@@ -29,7 +29,7 @@
 		ariaLabel,
 		ariaLabelledby,
 		ariaDescribedby,
-		focusTrap = true,
+		focusTrap = false,
 		onOpen,
 		onClose,
 		mobileFullscreen = false,
@@ -198,6 +198,10 @@
 
 		// Notify parent component
 		onClose?.();
+	};
+
+	export const getIsOpen = () => {
+		return isOpen;
 	};
 
 	const closeEnd = () => {
