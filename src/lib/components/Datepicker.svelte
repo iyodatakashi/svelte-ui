@@ -6,6 +6,7 @@
 	import 'dayjs/locale/en';
 	import 'dayjs/locale/ko';
 	import 'dayjs/locale/zh-cn';
+	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import Icon from './Icon.svelte';
@@ -20,11 +21,17 @@
 		showIcon = false,
 		disabled = false,
 		focusStyle = 'border',
+		allowDirectInput = false,
+		fullWidth = false,
+		rounded = false,
 		onchange = () => {},
+		onfocus = () => {},
+		onblur = () => {},
 		openIfClicked = true,
 		minDate,
 		maxDate,
-		locale = 'ja'
+		locale = 'ja',
+		...restProps
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
 		variant?: 'default' | 'inline';
@@ -34,14 +41,20 @@
 		showIcon?: boolean;
 		disabled?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
+		allowDirectInput?: boolean;
+		fullWidth?: boolean;
+		rounded?: boolean;
 		onchange?: Function;
+		onfocus?: Function;
+		onblur?: Function;
 		openIfClicked?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
 		locale?: 'ja' | 'en' | 'ko' | 'zh-cn';
+		[key: string]: any;
 	} = $props();
-	let displayElement: HTMLButtonElement | undefined = $state();
-	let anchorElement: HTMLDivElement | undefined = $state();
+	let inputRef: any = $state();
+	let containerElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
 	let openedViaKeyboard: boolean = $state(false);
@@ -84,23 +97,29 @@
 		onchange();
 	};
 	const handleClick = () => {
-		if (openIfClicked) {
+		if (openIfClicked && !disabled) {
 			openedViaKeyboard = false;
-			toggle();
+			open();
 		}
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
+		if (disabled) return;
+
 		switch (event.key) {
 			case 'Enter':
 			case ' ':
+				// 直接入力が許可されている場合はEnterキーで入力を確定
+				if (allowDirectInput && event.key === 'Enter') {
+					return; // Inputコンポーネントの処理に任せる
+				}
 				event.preventDefault();
 				openedViaKeyboard = true;
 				open();
 				break;
 			case 'ArrowDown':
 				// ポップアップが既に開いている場合は何もしない（DatepickerCalendarのキーボード処理に任せる）
-				if (popupRef?.getIsOpen()) {
+				if (popupRef?.getIsOpen && popupRef.getIsOpen()) {
 					return;
 				}
 				event.preventDefault();
@@ -138,12 +157,41 @@
 	const handlePopupClose = () => {
 		// DatepickerCalendarのイベントハンドラーを無効にする
 		datapickerCalendarRef?.handlePopupClose();
-		// キーボードで開いた場合のみボタンにフォーカスを戻す
-		if (openedViaKeyboard) {
-			displayElement?.focus();
-		}
 		// 状態をリセット
 		openedViaKeyboard = false;
+	};
+
+	// 入力欄のフォーカスハンドラー
+	const handleFocus = () => {
+		// キーボードでのフォーカス時のみPopupを開く
+		// クリック時は handleClick で処理
+		onfocus();
+	};
+
+	// 入力欄のブラーハンドラー
+	const handleBlur = () => {
+		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
+		// フォーカスイベントのみをハンドルする
+		onblur();
+	};
+
+	// 直接入力時のハンドラー
+	const handleInputChange = (inputValue: string | number | undefined) => {
+		if (!allowDirectInput) return;
+
+		const inputStr = String(inputValue || '');
+		if (!inputStr) {
+			value = undefined;
+			onchange();
+			return;
+		}
+
+		// 日付の解析を試行
+		const parsedDate = dayjs(inputStr, finalFormat, locale, true);
+		if (parsedDate.isValid()) {
+			value = parsedDate.toDate();
+			onchange();
+		}
 	};
 	const displayValue = $derived.by(() => {
 		// dayjsインスタンスの作成時にlocaleを適用
@@ -154,39 +202,43 @@
 		} else if (!isDateRange && value && value instanceof Date) {
 			return formatWithLocale(value);
 		} else {
-			return nullString || currentLocaleConfig.notSelected;
+			// direct input が許可されている場合は空文字を返す（placeholderのみ表示）
+			// そうでない場合は nullString または notSelected を表示
+			return allowDirectInput ? '' : nullString || currentLocaleConfig.notSelected;
 		}
 	});
 </script>
 
-<button
-	class="datepicker-button
-	focus-style-{focusStyle}"
-	class:inline={variant === 'inline'}
-	class:has-icon={showIcon}
-	bind:this={displayElement}
-	{disabled}
-	role="combobox"
-	aria-haspopup="grid"
-	aria-expanded="false"
-	aria-controls={calendarId}
-	aria-label={`${currentLocaleConfig.selectDateLabel} ${displayValue || currentLocaleConfig.notSelected}`}
-	onclick={handleClick}
-	onkeydown={handleKeyDown}
->
-	<div class="label-block">
-		{displayValue}
-	</div>
+<div bind:this={containerElement} class="datepicker-container">
+	<Input
+		bind:this={inputRef}
+		value={displayValue}
+		{variant}
+		{focusStyle}
+		{fullWidth}
+		{rounded}
+		{disabled}
+		readonly={!allowDirectInput}
+		placeholder={allowDirectInput
+			? nullString || '日付を入力してください'
+			: nullString || currentLocaleConfig.notSelected}
+		hasRightIcon={showIcon}
+		onclick={handleClick}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onchange={handleInputChange}
+		onkeydown={handleKeyDown}
+		{...restProps}
+	/>
 	{#if showIcon}
 		<div class="icon-block">
 			<Icon fill={true}>{isDateRange ? 'date_range' : 'calendar_today'}</Icon>
 		</div>
 	{/if}
-</button>
-<div bind:this={anchorElement} class="calendar-container"></div>
+</div>
 <Popup
 	bind:this={popupRef}
-	anchorElement={displayElement}
+	anchorElement={containerElement}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}
 >
@@ -203,78 +255,12 @@
 </Popup>
 
 <style lang="scss">
-	button {
+	.datepicker-container {
 		position: relative;
-		padding: inherit;
-		background-color: transparent;
-		font-size: inherit;
-		color: inherit;
-		line-height: normal;
-		overflow: hidden;
-		text-align: left;
-	}
-	button:not(.inline) {
-		min-height: 36px;
-		max-width: 100%;
-		padding: 6px 12px;
-		background-color: var(--svelte-ui-form-bg);
-		box-shadow: 0 0 0 1px inset var(--svelte-ui-border-weak-color);
-		border-radius: 4px;
-		color: var(--svelte-ui-text-color);
-		line-height: normal;
+		display: inline-block;
+		width: auto;
 	}
 
-	/* アイコンがある時のpadding調整 */
-	button:not(.inline).has-icon {
-		padding: var(--svelte-ui-input-padding-with-icon);
-	}
-	button > * {
-		z-index: 1;
-	}
-	button:before {
-		content: '';
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: var(--svelte-ui-hover-overlay);
-		opacity: 0;
-		transition-property: opacity;
-		transition-duration: 0.3s;
-		z-index: 0;
-	}
-	button:hover:before {
-		opacity: 1;
-	}
-	button:hover {
-		cursor: pointer;
-	}
-	button[disabled] {
-		opacity: 0.5;
-		pointer-events: none;
-	}
-
-	/* フォーカス効果バリエーション */
-	.focus-style-border button:focus {
-		outline: var(--svelte-ui-focus-outline-inner);
-		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-	}
-
-	.focus-style-background button:focus {
-		background-color: var(--svelte-ui-hover-overlay);
-	}
-
-	.focus-style-none button:focus {
-		/* フォーカス表示なし */
-	}
-	.label-block {
-		width: 100%;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
-	}
 	.icon-block {
 		position: absolute;
 		top: 50%;
@@ -283,14 +269,5 @@
 		font-size: var(--svelte-ui-select-dropdown-size);
 		color: var(--svelte-ui-select-icon-color);
 		pointer-events: none;
-	}
-	.calendar-container {
-		position: absolute;
-	}
-	@media (width < 768px) {
-		:global(.note-detail-title) {
-			width: 160px;
-			font-size: 1.5rem;
-		}
 	}
 </style>

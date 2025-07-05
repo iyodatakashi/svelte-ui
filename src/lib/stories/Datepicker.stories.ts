@@ -11,6 +11,9 @@ interface DatepickerArgs {
 	showIcon?: boolean;
 	disabled?: boolean;
 	focusStyle?: 'background' | 'border' | 'none';
+	allowDirectInput?: boolean;
+	fullWidth?: boolean;
+	rounded?: boolean;
 	openIfClicked?: boolean;
 	minDate?: Date;
 	maxDate?: Date;
@@ -65,6 +68,18 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'select',
 			options: ['background', 'border', 'none'],
 			description: 'フォーカス時の表示スタイル'
+		},
+		allowDirectInput: {
+			control: 'boolean',
+			description: '直接入力を許可するかどうか'
+		},
+		fullWidth: {
+			control: 'boolean',
+			description: '全幅表示'
+		},
+		rounded: {
+			control: 'boolean',
+			description: '角丸スタイル'
 		},
 		openIfClicked: {
 			control: 'boolean',
@@ -309,6 +324,67 @@ export const FocusStyleNone: Story = {
 		showIcon: true,
 		disabled: false,
 		focusStyle: 'none',
+		openIfClicked: true,
+		locale: 'ja'
+	}
+};
+
+// Allow Direct Input（直接入力を許可）
+export const AllowDirectInput: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D',
+		nullString: '',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'border',
+		allowDirectInput: true,
+		openIfClicked: true,
+		locale: 'ja'
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: '直接入力を許可した場合、値がない時は placeholder のみが表示されます。'
+			}
+		}
+	}
+};
+
+// Full Width（全幅表示）
+export const FullWidth: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'border',
+		fullWidth: true,
+		openIfClicked: true,
+		locale: 'ja'
+	},
+	parameters: {
+		layout: 'padded'
+	}
+};
+
+// Rounded Style（角丸スタイル）
+export const RoundedStyle: Story = {
+	args: {
+		value: undefined,
+		variant: 'default',
+		format: 'YYYY/M/D（ddd）',
+		nullString: '日付を選択してください',
+		isDateRange: false,
+		showIcon: true,
+		disabled: false,
+		focusStyle: 'border',
+		rounded: true,
 		openIfClicked: true,
 		locale: 'ja'
 	}
