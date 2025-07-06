@@ -1,4 +1,16 @@
 <script lang="ts">
+	/**
+	 * 🚨 CRITICAL: DO NOT MANAGE DIALOG STATE FROM PARENT COMPONENTS
+	 *
+	 * This Dialog component manages its own open/closed state internally.
+	 * Parent components must NEVER create their own Dialog state variables.
+	 *
+	 * ❌ WRONG: let isDialogOpen = $state(false)
+	 * ✅ RIGHT: Use dialogRef.open(), dialogRef.close(), dialogRef.toggle()
+	 * ✅ RIGHT: Use onOpen/onClose callbacks for side effects
+	 *
+	 * This prevents state synchronization bugs and ensures consistent behavior.
+	 */
 	import type { Snippet } from 'svelte';
 	let {
 		isOpen = $bindable(false),

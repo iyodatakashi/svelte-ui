@@ -1,4 +1,16 @@
 <script lang="ts">
+	/**
+	 * 🚨 CRITICAL: DO NOT MANAGE DRAWER STATE FROM PARENT COMPONENTS
+	 *
+	 * This Drawer component manages its own open/closed state internally.
+	 * Parent components must NEVER create their own Drawer state variables.
+	 *
+	 * ❌ WRONG: let isDrawerOpen = $state(false)
+	 * ✅ RIGHT: Use drawerRef.open(), drawerRef.close(), drawerRef.toggle()
+	 * ✅ RIGHT: Use onOpen/onClose callbacks for side effects
+	 *
+	 * This prevents state synchronization bugs and ensures consistent behavior.
+	 */
 	import type { Snippet } from 'svelte';
 	let {
 		isOpen = $bindable(false),
