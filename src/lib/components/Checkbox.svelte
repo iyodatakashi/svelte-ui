@@ -228,23 +228,17 @@
 	}
 
 	/* Hover states */
-	.checkbox-label:hover::before,
-	input[type='checkbox']:checked + .checkbox-label::before,
-	input[type='checkbox']:indeterminate + .checkbox-label::before {
+	.checkbox-label:hover::before {
 		border-color: var(--svelte-ui-primary-color);
 	}
 
 	/* Error state hover override */
-	.checkbox-container--error .checkbox-label:hover::before,
-	.checkbox-container--error input[type='checkbox']:checked + .checkbox-label::before,
-	.checkbox-container--error input[type='checkbox']:indeterminate + .checkbox-label::before {
+	.checkbox-container--error .checkbox-label:hover::before {
 		border-color: var(--svelte-ui-error-color);
 	}
 
 	/* Success state hover override */
-	.checkbox-container--success .checkbox-label:hover::before,
-	.checkbox-container--success input[type='checkbox']:checked + .checkbox-label::before,
-	.checkbox-container--success input[type='checkbox']:indeterminate + .checkbox-label::before {
+	.checkbox-container--success .checkbox-label:hover::before {
 		border-color: var(--svelte-ui-success-color);
 	}
 
