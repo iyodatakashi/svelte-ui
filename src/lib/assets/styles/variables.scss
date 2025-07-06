@@ -272,6 +272,30 @@
 	--svelte-ui-popup-mobile-margin: 16px;
 	--svelte-ui-popup-mobile-border-radius: 12px;
 
+	/* Dialog */
+	--svelte-ui-dialog-gap: 16px;
+	--svelte-ui-dialog-gap-sm: 8px;
+	--svelte-ui-dialog-padding: 16px 24px;
+	--svelte-ui-dialog-body-padding: 24px;
+	--svelte-ui-dialog-header-height: 56px;
+	--svelte-ui-dialog-title-font-size: 1.4rem;
+	--svelte-ui-dialog-description-font-size: 0.875rem;
+	--svelte-ui-dialog-description-padding: 0.5rem 1rem;
+	--svelte-ui-dialog-footer-padding: 8px;
+	--svelte-ui-dialog-border-radius: var(--svelte-ui-border-radius);
+
+	/* Drawer */
+	--svelte-ui-drawer-width: 240px;
+	--svelte-ui-drawer-gap: 16px;
+	--svelte-ui-drawer-gap-sm: 8px;
+	--svelte-ui-drawer-padding: 16px 24px;
+	--svelte-ui-drawer-body-padding: 24px;
+	--svelte-ui-drawer-header-height: 56px;
+	--svelte-ui-drawer-title-font-size: 1.4rem;
+	--svelte-ui-drawer-description-font-size: 0.875rem;
+	--svelte-ui-drawer-description-padding: 0.5rem 1rem;
+	--svelte-ui-drawer-footer-padding: 8px;
+
 	/* ====================================
    * 共通部品のサイズ、パディングなど
    * ==================================== */

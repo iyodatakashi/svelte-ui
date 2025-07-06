@@ -292,7 +292,7 @@
 		padding: 0;
 		overflow: hidden;
 		border-width: 0;
-		border-radius: var(--svelte-ui-border-radius, 4px);
+		border-radius: var(--svelte-ui-dialog-border-radius);
 		background-color: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-text-color);
 		box-shadow:
@@ -341,15 +341,15 @@
 	}
 	.header {
 		display: flex;
-		gap: 16px;
+		gap: var(--svelte-ui-dialog-gap);
 		align-items: center;
 		justify-content: stretch;
-		min-height: 56px;
-		padding: 16px 24px;
-		margin-bottom: -24px;
+		min-height: var(--svelte-ui-dialog-header-height);
+		padding: var(--svelte-ui-dialog-padding);
+		margin-bottom: calc(0px - var(--svelte-ui-dialog-body-padding));
 		.title-block {
 			flex-grow: 1;
-			font-size: 1.4rem;
+			font-size: var(--svelte-ui-dialog-title-font-size);
 			line-height: normal;
 			color: var(--svelte-ui-text-color);
 		}
@@ -357,21 +357,21 @@
 	.body {
 		flex-shrink: 1;
 		position: relative;
-		padding: 24px;
+		padding: var(--svelte-ui-dialog-body-padding);
 	}
 	.footer {
 		display: flex;
-		gap: 8px;
+		gap: var(--svelte-ui-dialog-gap-sm);
 		justify-content: end;
-		padding: 8px;
+		padding: var(--svelte-ui-dialog-footer-padding);
 	}
 
 	.description {
 		color: var(--svelte-ui-text-subtle-color);
-		font-size: 0.875rem;
+		font-size: var(--svelte-ui-dialog-description-font-size);
 		line-height: 1.4;
 		margin: 0;
-		padding: 0.5rem 1rem;
+		padding: var(--svelte-ui-dialog-description-padding);
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 	.scrollable {
@@ -381,7 +381,7 @@
 		}
 		.body {
 			flex-shrink: 1;
-			padding: 24px;
+			padding: var(--svelte-ui-dialog-body-padding);
 			overflow: auto;
 		}
 		.footer {

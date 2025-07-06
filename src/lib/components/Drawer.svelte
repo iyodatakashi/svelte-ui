@@ -294,7 +294,7 @@
 
 <style lang="scss">
 	dialog {
-		width: 240px;
+		width: var(--svelte-ui-drawer-width);
 		min-height: 100%;
 		height: 100%;
 		padding: 0;
@@ -331,7 +331,7 @@
 	@keyframes fadeInFromLeft {
 		from {
 			opacity: 0;
-			left: -240px;
+			left: calc(0px - var(--svelte-ui-drawer-width));
 		}
 		to {
 			opacity: 1;
@@ -345,7 +345,7 @@
 		}
 		to {
 			opacity: 1;
-			left: calc(100% - 240px);
+			left: calc(100% - var(--svelte-ui-drawer-width));
 		}
 	}
 	dialog.right.fade-in {
@@ -364,13 +364,13 @@
 		}
 		to {
 			opacity: 0;
-			left: -240px;
+			left: calc(0px - var(--svelte-ui-drawer-width));
 		}
 	}
 	@keyframes fadeOutToRight {
 		from {
 			opacity: 1;
-			left: calc(100% - 240px);
+			left: calc(100% - var(--svelte-ui-drawer-width));
 		}
 		to {
 			opacity: 0;
@@ -403,15 +403,15 @@
 	}
 	.header {
 		display: flex;
-		gap: 16px;
+		gap: var(--svelte-ui-drawer-gap);
 		align-items: center;
 		justify-content: stretch;
-		min-height: 56px;
-		padding: 16px 24px;
-		margin-bottom: -24px;
+		min-height: var(--svelte-ui-drawer-header-height);
+		padding: var(--svelte-ui-drawer-padding);
+		margin-bottom: calc(0px - var(--svelte-ui-drawer-body-padding));
 		.title-block {
 			flex-grow: 1;
-			font-size: 1.4rem;
+			font-size: var(--svelte-ui-drawer-title-font-size);
 			line-height: normal;
 			color: var(--svelte-ui-text-color);
 		}
@@ -419,22 +419,22 @@
 	.body {
 		flex-shrink: 1;
 		position: relative;
-		padding: 24px;
+		padding: var(--svelte-ui-drawer-body-padding);
 		flex-grow: 1;
 	}
 	.footer {
 		display: flex;
-		gap: 8px;
+		gap: var(--svelte-ui-drawer-gap-sm);
 		justify-content: end;
-		padding: 8px;
+		padding: var(--svelte-ui-drawer-footer-padding);
 	}
 
 	.description {
 		color: var(--svelte-ui-text-subtle-color);
-		font-size: 0.875rem;
+		font-size: var(--svelte-ui-drawer-description-font-size);
 		line-height: 1.4;
 		margin: 0;
-		padding: 0.5rem 1rem;
+		padding: var(--svelte-ui-drawer-description-padding);
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 	.scrollable {
@@ -444,7 +444,7 @@
 		}
 		.body {
 			flex-shrink: 1;
-			padding: 24px;
+			padding: var(--svelte-ui-drawer-body-padding);
 			overflow: auto;
 		}
 		.footer {
