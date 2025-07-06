@@ -152,7 +152,7 @@
 		padding: var(--svelte-ui-checkbox-padding);
 		white-space: nowrap;
 		font-size: inherit;
-		color: var(--svelte-ui-checkbox-text-color);
+		color: var(--svelte-ui-checkbox-label-color);
 		cursor: pointer;
 		min-height: var(--svelte-ui-checkbox-min-height);
 	}
@@ -229,17 +229,17 @@
 
 	/* Hover states */
 	.checkbox-label:hover::before {
-		border-color: var(--svelte-ui-primary-color);
+		border-color: var(--svelte-ui-checkbox-hover-color);
 	}
 
 	/* Error state hover override */
 	.checkbox-container--error .checkbox-label:hover::before {
-		border-color: var(--svelte-ui-error-color);
+		border-color: var(--svelte-ui-checkbox-error-hover-color);
 	}
 
 	/* Success state hover override */
 	.checkbox-container--success .checkbox-label:hover::before {
-		border-color: var(--svelte-ui-success-color);
+		border-color: var(--svelte-ui-checkbox-success-hover-color);
 	}
 
 	/* Focus states */
@@ -317,22 +317,22 @@
 
 	/* Error state */
 	.checkbox-container--error .checkbox-label::before {
-		border-color: var(--svelte-ui-error-color);
+		border-color: var(--svelte-ui-checkbox-error-border-color);
 	}
 
 	.checkbox-container--error input[type='checkbox']:checked + .checkbox-label::before,
 	.checkbox-container--error input[type='checkbox']:indeterminate + .checkbox-label::before {
-		background-color: var(--svelte-ui-error-color);
+		background-color: var(--svelte-ui-checkbox-error-checked-color);
 	}
 
 	/* Success state */
 	.checkbox-container--success .checkbox-label::before {
-		border-color: var(--svelte-ui-success-color);
+		border-color: var(--svelte-ui-checkbox-success-border-color);
 	}
 
 	.checkbox-container--success input[type='checkbox']:checked + .checkbox-label::before,
 	.checkbox-container--success input[type='checkbox']:indeterminate + .checkbox-label::before {
-		background-color: var(--svelte-ui-success-color);
+		background-color: var(--svelte-ui-checkbox-success-checked-color);
 	}
 
 	/* Message styles */
@@ -343,11 +343,11 @@
 	}
 
 	.checkbox-message--error {
-		color: var(--svelte-ui-error-color);
+		color: var(--svelte-ui-checkbox-error-message-color);
 	}
 
 	.checkbox-message--success {
-		color: var(--svelte-ui-success-color);
+		color: var(--svelte-ui-checkbox-success-message-color);
 	}
 
 	/* Reduced motion */

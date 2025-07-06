@@ -315,6 +315,8 @@
 
 	/* Badge */
 	--badge-font-size: 12px;
+	--badge-text-color: var(--svelte-ui-text-on-filled-color);
+	--badge-color: var(--svelte-ui-primary-color);
 
 	/* ====================================
    * ライトテーマ用の色変数
@@ -348,6 +350,19 @@
 
 	/* フォーカス色 */
 	--svelte-ui-focus-color: var(--primary-color);
+
+	/* フォーカススタイル */
+	/* 外側フォーカススタイル（要素の外側に2px離して表示） */
+	--svelte-ui-focus-outline-outer: 2px solid var(--svelte-ui-focus-color);
+	--svelte-ui-focus-outline-offset-outer: 2px;
+
+	/* 内側フォーカススタイル（要素の内側に表示） */
+	--svelte-ui-focus-outline-inner: 2px solid var(--svelte-ui-focus-color);
+	--svelte-ui-focus-outline-offset-inner: -2px;
+
+	/* 後方互換性のための既存変数（外側フォーカススタイルのエイリアス） */
+	--svelte-ui-focus-outline: var(--svelte-ui-focus-outline-outer);
+	--svelte-ui-focus-outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 }
 
 /* ====================================
@@ -401,32 +416,57 @@
 	--svelte-ui-button-border-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-button-focus-color: var(--svelte-ui-focus-color);
+	--svelte-ui-button-label-color: var(--svelte-ui-text-color);
 
 	/* Input */
 	--svelte-ui-input-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-input-readonly-bg: var(--svelte-ui-form-bg);
+	--svelte-ui-input-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-input-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Textarea */
 	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-textarea-border-color: var(--svelte-ui-border-weak-color);
+	--svelte-ui-textarea-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-textarea-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Select */
 	--svelte-ui-select-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-select-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-select-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-select-icon-color: var(--svelte-ui-dropdown-icon-color);
+	--svelte-ui-select-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Checkbox */
 	--svelte-ui-checkbox-border-color: var(--svelte-ui-border-color);
-	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-primary-color);
-	--svelte-ui-checkbox-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-checkbox-checked-color);
+	--svelte-ui-checkbox-label-color: var(--svelte-ui-text-color);
 	--svelte-ui-checkbox-text-color-subtle: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-checkbox-icon-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-checkbox-hover-color: var(--svelte-ui-primary-color);
+	--svelte-ui-checkbox-checked-color: var(--svelte-ui-primary-color);
+	--svelte-ui-checkbox-error-border-color: var(--svelte-ui-error-color);
+	--svelte-ui-checkbox-error-checked-color: var(--svelte-ui-error-color);
+	--svelte-ui-checkbox-error-hover-color: var(--svelte-ui-error-color);
+	--svelte-ui-checkbox-error-message-color: var(--svelte-ui-error-color);
+	--svelte-ui-checkbox-success-border-color: var(--svelte-ui-success-color);
+	--svelte-ui-checkbox-success-checked-color: var(--svelte-ui-success-color);
+	--svelte-ui-checkbox-success-hover-color: var(--svelte-ui-success-color);
+	--svelte-ui-checkbox-success-message-color: var(--svelte-ui-success-color);
 
 	/* Radio */
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
-	--svelte-ui-radio-bg-checked: var(--svelte-ui-primary-color);
+	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
+	--svelte-ui-radio-hover-color: var(--svelte-ui-primary-color);
+	--svelte-ui-radio-checked-color: var(--svelte-ui-primary-color);
+	--svelte-ui-radio-error-border-color: var(--svelte-ui-error-color);
+	--svelte-ui-radio-error-checked-color: var(--svelte-ui-error-color);
+	--svelte-ui-radio-error-message-color: var(--svelte-ui-error-color);
+	--svelte-ui-radio-success-border-color: var(--svelte-ui-success-color);
+	--svelte-ui-radio-success-checked-color: var(--svelte-ui-success-color);
+	--svelte-ui-radio-success-message-color: var(--svelte-ui-success-color);
+	--svelte-ui-radio-label-color: var(--svelte-ui-text-color);
 
 	/* IconButton */
 	--svelte-ui-iconbutton-bg-filled: var(--svelte-ui-primary-color);
@@ -443,6 +483,8 @@
 	/* ColorPicker */
 	--svelte-ui-colorpicker-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-colorpicker-bg: var(--svelte-ui-form-bg);
+	--svelte-ui-colorpicker-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-colorpicker-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Combobox */
 	--svelte-ui-combobox-border-color: var(--svelte-ui-border-weak-color);
@@ -451,6 +493,40 @@
 	--svelte-ui-combobox-icon-color: var(--svelte-ui-dropdown-icon-color);
 	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-overlay);
 	--svelte-ui-combobox-option-selected-bg: var(--svelte-ui-select-overlay);
+	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
+
+	/* Pagination */
+	--svelte-ui-pagination-selected-color: var(--svelte-ui-primary-color);
+	--svelte-ui-pagination-nav-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-pagination-selected-text-color: var(--svelte-ui-text-on-filled-color);
+
+	/* DatepickerCalendar */
+	--svelte-ui-datepicker-today-color: var(--svelte-ui-primary-color);
+	--svelte-ui-datepicker-selected-color: var(--svelte-ui-primary-color);
+	--svelte-ui-datepicker-range-color: var(--svelte-ui-primary-color);
+	--svelte-ui-datepicker-current-color: var(--svelte-ui-primary-color);
+	--svelte-ui-datepicker-date-color: var(--svelte-ui-text-color);
+	--svelte-ui-datepicker-day-label-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-datepicker-out-of-month-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-datepicker-selected-text-color: var(--svelte-ui-text-on-filled-color);
+
+	/* Popup */
+	--svelte-ui-popup-focus-color: var(--svelte-ui-primary-color);
+
+	/* PopupMenu */
+	--svelte-ui-popupmenu-focus-color: var(--svelte-ui-primary-color);
+	--svelte-ui-popupmenu-text-color: var(--svelte-ui-text-color);
+
+	/* Dialog */
+	--svelte-ui-dialog-title-color: var(--svelte-ui-text-color);
+	--svelte-ui-dialog-description-color: var(--svelte-ui-text-subtle-color);
+
+	/* ConfirmDialog */
+	--svelte-ui-confirmdialog-text-color: var(--svelte-ui-text-color);
+
+	/* Drawer */
+	--svelte-ui-drawer-title-color: var(--svelte-ui-text-color);
+	--svelte-ui-drawer-description-color: var(--svelte-ui-text-subtle-color);
 
 	/* Badge */
 	--badge-text-color: var(--svelte-ui-text-on-filled-color);

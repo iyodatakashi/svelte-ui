@@ -289,7 +289,7 @@
 		text-align: left;
 		cursor: pointer;
 		font-size: inherit;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-combobox-text-color);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		&:hover,
@@ -314,7 +314,7 @@
 	.no-options {
 		padding: var(--svelte-ui-combobox-option-padding);
 		font-size: inherit;
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--svelte-ui-combobox-no-options-color);
 		font-style: italic;
 		list-style: none;
 	}

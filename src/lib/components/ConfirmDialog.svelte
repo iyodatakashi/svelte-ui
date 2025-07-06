@@ -72,6 +72,6 @@
 		padding: 16px 0;
 		font-size: 16px;
 		line-height: 1.5;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-confirmdialog-text-color);
 	}
 </style>

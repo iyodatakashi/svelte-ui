@@ -707,7 +707,7 @@
 	.month-label-button {
 		font-size: 1.4rem;
 		font-weight: bold;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-datepicker-date-color);
 		background: none;
 		border: none;
 		padding: 8px 12px;
@@ -739,7 +739,7 @@
 		padding: 12px 8px;
 		border-radius: var(--svelte-ui-border-radius);
 		background: var(--svelte-ui-surface-color);
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-datepicker-date-color);
 		font-size: 1rem;
 		cursor: pointer;
 		transition: all var(--svelte-ui-transition-duration-fast);
@@ -755,13 +755,13 @@
 
 		&.is-current {
 			font-weight: bold;
-			color: var(--svelte-ui-primary-color);
+			color: var(--svelte-ui-datepicker-current-color);
 		}
 
 		&.is-selected {
-			background-color: var(--svelte-ui-primary-color);
-			color: var(--svelte-ui-text-on-filled-color);
-			border-color: var(--svelte-ui-primary-color);
+			background-color: var(--svelte-ui-datepicker-selected-color);
+			color: var(--svelte-ui-datepicker-selected-text-color);
+			border-color: var(--svelte-ui-datepicker-selected-color);
 		}
 
 		&.is-focused {
@@ -796,23 +796,23 @@
 	}
 
 	.day-list-item {
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--svelte-ui-datepicker-day-label-color);
 	}
 
 	.date-list-item .date-button {
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-datepicker-date-color);
 	}
 
 	.date-list-item.out-of-month .date-button {
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--svelte-ui-datepicker-out-of-month-color);
 	}
 	.date-list-item.today .date-button {
 		font-weight: bold;
-		color: var(--svelte-ui-primary-color);
+		color: var(--svelte-ui-datepicker-today-color);
 	}
 	.date-list-item.is-selected .date-button {
-		background-color: var(--svelte-ui-primary-color);
-		color: var(--svelte-ui-text-on-filled-color);
+		background-color: var(--svelte-ui-datepicker-selected-color);
+		color: var(--svelte-ui-datepicker-selected-text-color);
 	}
 
 	/* 期間選択の帯状表示 */
@@ -882,8 +882,8 @@
 	.date-list-item.is-range-start .date-button,
 	.date-list-item.is-range-end .date-button,
 	.date-list-item.is-range-single .date-button {
-		background-color: var(--svelte-ui-primary-color);
-		color: var(--svelte-ui-text-on-filled-color);
+		background-color: var(--svelte-ui-datepicker-range-color);
+		color: var(--svelte-ui-datepicker-selected-text-color);
 		font-weight: bold;
 		z-index: 1;
 		position: relative;
@@ -891,7 +891,7 @@
 
 	.date-list-item.is-range-middle .date-button {
 		background-color: transparent;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-datepicker-date-color);
 		z-index: 1;
 		position: relative;
 	}
@@ -900,8 +900,8 @@
 	.date-list-item.is-range-preview-start .date-button,
 	.date-list-item.is-range-preview-end .date-button,
 	.date-list-item.is-range-preview-single .date-button {
-		background-color: var(--svelte-ui-primary-color);
-		color: var(--svelte-ui-text-on-filled-color);
+		background-color: var(--svelte-ui-datepicker-range-color);
+		color: var(--svelte-ui-datepicker-selected-text-color);
 		font-weight: bold;
 		z-index: 1;
 		position: relative;
@@ -909,7 +909,7 @@
 
 	.date-list-item.is-range-preview-middle .date-button {
 		background-color: transparent;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-datepicker-date-color);
 		z-index: 1;
 		position: relative;
 	}
@@ -917,7 +917,7 @@
 		background: var(--base-50);
 		pointer-events: none;
 		.date-button {
-			color: var(--svelte-ui-text-subtle-color);
+			color: var(--svelte-ui-datepicker-out-of-month-color);
 		}
 	}
 

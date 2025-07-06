@@ -20,7 +20,7 @@
 		popup = false,
 		rounded = false,
 		icon = '',
-		color = 'var(--svelte-ui-primary-color)',
+		color = 'var(--svelte-ui-button-text-outlined)',
 		variant = 'text',
 		size = 'medium',
 		reducedMotion = false,
@@ -155,7 +155,7 @@
 		border-radius: var(--svelte-ui-button-border-radius);
 		font-size: inherit;
 		font-family: inherit;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-button-label-color);
 		line-height: normal;
 		overflow: hidden;
 		cursor: pointer;

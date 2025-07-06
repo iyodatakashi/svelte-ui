@@ -255,7 +255,7 @@
 		overflow: hidden;
 		border-width: 0;
 		background-color: var(--svelte-ui-surface-color);
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-drawer-title-color);
 		box-shadow:
 			0 11px 15px -7px rgb(0 0 0 / 20%),
 			0 24px 38px 3px rgb(0 0 0 / 14%),
@@ -374,7 +374,7 @@
 			flex-grow: 1;
 			font-size: var(--svelte-ui-drawer-title-font-size);
 			line-height: normal;
-			color: var(--svelte-ui-text-color);
+			color: var(--svelte-ui-drawer-title-color);
 		}
 	}
 	.body {
@@ -391,7 +391,7 @@
 	}
 
 	.description {
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--svelte-ui-drawer-description-color);
 		font-size: var(--svelte-ui-drawer-description-font-size);
 		line-height: 1.4;
 		margin: 0;

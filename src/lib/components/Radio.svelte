@@ -180,7 +180,7 @@
 		padding: var(--svelte-ui-radio-padding);
 		white-space: nowrap;
 		font-size: inherit;
-		color: var(--svelte-ui-checkbox-text-color);
+		color: var(--svelte-ui-radio-label-color);
 		cursor: pointer;
 		min-height: var(--svelte-ui-radio-min-height);
 	}
@@ -244,7 +244,7 @@
 	/* Hover and focus states */
 	.radio-label:hover::after,
 	input[type='radio']:checked + .radio-label::after {
-		border-color: var(--svelte-ui-primary-color);
+		border-color: var(--svelte-ui-radio-hover-color);
 	}
 
 	/* Focus state */
@@ -328,20 +328,20 @@
 
 	/* Error state */
 	.radio-container--error .radio-label::after {
-		border-color: var(--svelte-ui-error-color);
+		border-color: var(--svelte-ui-radio-error-border-color);
 	}
 
 	.radio-container--error input[type='radio']:checked + .radio-label::before {
-		background-color: var(--svelte-ui-error-color);
+		background-color: var(--svelte-ui-radio-error-checked-color);
 	}
 
 	/* Success state */
 	.radio-container--success .radio-label::after {
-		border-color: var(--svelte-ui-success-color);
+		border-color: var(--svelte-ui-radio-success-border-color);
 	}
 
 	.radio-container--success input[type='radio']:checked + .radio-label::before {
-		background-color: var(--svelte-ui-success-color);
+		background-color: var(--svelte-ui-radio-success-checked-color);
 	}
 
 	/* Message styles */
@@ -352,11 +352,11 @@
 	}
 
 	.radio-message--error {
-		color: var(--svelte-ui-error-color);
+		color: var(--svelte-ui-radio-error-message-color);
 	}
 
 	.radio-message--success {
-		color: var(--svelte-ui-success-color);
+		color: var(--svelte-ui-radio-success-message-color);
 	}
 
 	/* Reduced motion */

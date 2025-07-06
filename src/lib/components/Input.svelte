@@ -184,7 +184,7 @@
 		<div class="clear-button-block">
 			<IconButton
 				ariaLabel="クリア"
-				color="var(--svelte-ui-text-color)"
+				color="var(--svelte-ui-input-text-color)"
 				onclick={clear}
 				tabindex={-1}
 				iconFill={true}
@@ -388,7 +388,7 @@
  * ============================================= */
 	input::placeholder,
 	.plain-text:empty::before {
-		color: var(--svelte-ui-text-placeholder-color);
+		color: var(--svelte-ui-input-placeholder-color);
 	}
 
 	/* =============================================
@@ -448,7 +448,7 @@
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 			border: none;
 			border-radius: var(--svelte-ui-input-border-radius);
-			color: var(--svelte-ui-text-color);
+			color: var(--svelte-ui-input-text-color);
 		}
 
 		.clear-button-block {

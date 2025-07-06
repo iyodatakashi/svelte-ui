@@ -301,7 +301,7 @@
 		background: transparent;
 		border: none;
 		font-size: 1rem;
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-popupmenu-text-color);
 		text-align: left;
 		white-space: nowrap;
 		cursor: pointer;
@@ -317,7 +317,7 @@
 
 	.menu-button:focus-visible {
 		background-color: var(--svelte-ui-hover-overlay);
-		outline: 2px solid var(--svelte-ui-primary-color);
+		outline: 2px solid var(--svelte-ui-popupmenu-focus-color);
 		outline-offset: -2px;
 	}
 

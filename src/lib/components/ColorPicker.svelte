@@ -114,7 +114,7 @@
 			<div class="clear-button-block">
 				<IconButton
 					ariaLabel="クリア"
-					color="var(--svelte-ui-text-color)"
+					color="var(--svelte-ui-colorpicker-text-color)"
 					onclick={clear}
 					tabindex={-1}
 					iconFill={true}
@@ -268,7 +268,7 @@
  * プレースホルダー・テキスト表示
  * ============================================= */
 	input::placeholder {
-		color: var(--svelte-ui-text-placeholder-color);
+		color: var(--svelte-ui-colorpicker-placeholder-color);
 	}
 
 	/* =============================================
@@ -309,7 +309,7 @@
 			background-color: var(--svelte-ui-colorpicker-bg);
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
 				var(--svelte-ui-colorpicker-border-color);
-			color: var(--svelte-ui-text-color);
+			color: var(--svelte-ui-colorpicker-text-color);
 		}
 
 		.custom-color-picker::before {

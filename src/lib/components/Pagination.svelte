@@ -47,7 +47,7 @@
 		<li>
 			<IconButton
 				ariaLabel="最初のページへ移動"
-				color="var(--svelte-ui-text-subtle-color)"
+				color="var(--svelte-ui-pagination-text-color)"
 				disabled={currentPageNum === 1}
 				onclick={goFirstPage}
 			>
@@ -57,7 +57,7 @@
 		<li>
 			<IconButton
 				ariaLabel="前のページへ移動"
-				color="var(--svelte-ui-text-subtle-color)"
+				color="var(--svelte-ui-pagination-text-color)"
 				disabled={currentPageNum === 1}
 				onclick={goPrevPage}
 			>
@@ -78,7 +78,7 @@
 		<li>
 			<IconButton
 				ariaLabel="次のページへ移動"
-				color="var(--svelte-ui-text-subtle-color)"
+				color="var(--svelte-ui-pagination-text-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goNextPage}
 			>
@@ -88,7 +88,7 @@
 		<li>
 			<IconButton
 				ariaLabel="最後のページへ移動"
-				color="var(--svelte-ui-text-subtle-color)"
+				color="var(--svelte-ui-pagination-text-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goLastPage}
 			>
@@ -129,7 +129,7 @@
 		border-radius: var(--svelte-ui-pagination-button-border-radius);
 		line-height: 1px;
 		overflow: hidden;
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--svelte-ui-pagination-nav-color);
 		transition-duration: 0s;
 	}
 	button:before {
@@ -150,7 +150,7 @@
 		opacity: 1;
 	}
 	button.is-selected {
-		background-color: var(--svelte-ui-primary-color);
-		color: var(--svelte-ui-text-on-filled-color);
+		background-color: var(--svelte-ui-pagination-selected-color);
+		color: var(--svelte-ui-pagination-selected-text-color);
 	}
 </style>

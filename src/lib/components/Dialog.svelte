@@ -240,7 +240,7 @@
 		border-width: 0;
 		border-radius: var(--svelte-ui-dialog-border-radius);
 		background-color: var(--svelte-ui-surface-color);
-		color: var(--svelte-ui-text-color);
+		color: var(--svelte-ui-dialog-title-color);
 		box-shadow:
 			0 11px 15px -7px rgb(0 0 0 / 20%),
 			0 24px 38px 3px rgb(0 0 0 / 14%),
@@ -297,7 +297,7 @@
 			flex-grow: 1;
 			font-size: var(--svelte-ui-dialog-title-font-size);
 			line-height: normal;
-			color: var(--svelte-ui-text-color);
+			color: var(--svelte-ui-dialog-title-color);
 		}
 	}
 	.body {
@@ -313,7 +313,7 @@
 	}
 
 	.description {
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--svelte-ui-dialog-description-color);
 		font-size: var(--svelte-ui-dialog-description-font-size);
 		line-height: 1.4;
 		margin: 0;
