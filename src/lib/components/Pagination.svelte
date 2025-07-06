@@ -11,10 +11,10 @@
 		currentPageNum: number;
 		onchange: (pageNum: number) => void;
 	} = $props();
+	const MAX_VISIBLE_PAGES = 7;
 	const totalPages = $derived(Math.ceil(total / limit));
 	const pageList: number[] = $derived.by(() => {
-		const maxButtons = 7;
-		const pagesToShow = Math.min(totalPages, maxButtons);
+		const pagesToShow = Math.min(totalPages, MAX_VISIBLE_PAGES);
 		// 表示開始ページを計算
 		let startPage = Math.max(currentPageNum - Math.floor(pagesToShow / 2), 1);
 		// 最大ページ数を超えないように補正
@@ -47,7 +47,7 @@
 		<li>
 			<IconButton
 				ariaLabel="最初のページへ移動"
-				color="var(--text-light)"
+				color="var(--svelte-ui-text-subtle-color)"
 				disabled={currentPageNum === 1}
 				onclick={goFirstPage}
 			>
@@ -57,7 +57,7 @@
 		<li>
 			<IconButton
 				ariaLabel="前のページへ移動"
-				color="var(--text-light)"
+				color="var(--svelte-ui-text-subtle-color)"
 				disabled={currentPageNum === 1}
 				onclick={goPrevPage}
 			>
@@ -78,7 +78,7 @@
 		<li>
 			<IconButton
 				ariaLabel="次のページへ移動"
-				color="var(--text-light)"
+				color="var(--svelte-ui-text-subtle-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goNextPage}
 			>
@@ -88,7 +88,7 @@
 		<li>
 			<IconButton
 				ariaLabel="最後のページへ移動"
-				color="var(--text-light)"
+				color="var(--svelte-ui-text-subtle-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goLastPage}
 			>
@@ -102,31 +102,31 @@
 	.pagination {
 		display: flex;
 		align-items: center;
-		gap: 16px;
+		gap: var(--svelte-ui-pagination-gap);
 	}
 	.count-block::after {
 		content: '件';
-		margin-left: 0.5em;
-		font-size: 0.7rem;
+		margin-left: var(--svelte-ui-pagination-count-label-margin);
+		font-size: var(--svelte-ui-font-size-xs);
 	}
 	.page-list {
 		display: flex;
-		gap: 8px;
+		gap: var(--svelte-ui-pagination-page-list-gap);
 	}
 	button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: 32px;
-		height: 32px;
+		width: var(--svelte-ui-pagination-button-size);
+		height: var(--svelte-ui-pagination-button-size);
 		padding: 0;
 		background-color: transparent;
 		border: none;
-		border-radius: 50%;
+		border-radius: var(--svelte-ui-pagination-button-border-radius);
 		line-height: 1px;
 		overflow: hidden;
-		color: var(--text-light);
+		color: var(--svelte-ui-text-subtle-color);
 		transition-duration: 0s;
 	}
 	button:before {
@@ -137,17 +137,17 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		background-color: var(--hover-color);
+		background-color: var(--svelte-ui-hover-overlay);
 		opacity: 0;
 		transition-property: opacity;
-		transition-duration: 0.3s;
+		transition-duration: var(--svelte-ui-transition-duration);
 		z-index: 0;
 	}
 	button:hover:before {
 		opacity: 1;
 	}
 	button.is-selected {
-		background-color: var(--primary-color);
-		color: var(--text-white);
+		background-color: var(--svelte-ui-primary-color);
+		color: var(--svelte-ui-text-on-filled-color);
 	}
 </style>
