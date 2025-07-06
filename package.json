@@ -66,6 +66,7 @@
   },
   "dependencies": {
     "dayjs": "^1.11.13",
+    "dompurify": "^3.2.6",
     "sass": "^1.89.2"
   },
   "peerDependencies": {
