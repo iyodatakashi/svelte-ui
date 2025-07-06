@@ -183,17 +183,6 @@
 		}
 	}
 
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.material-symbols-outlined,
-		.material-symbols-filled,
-		.material-symbols-rounded,
-		.material-symbols-sharp,
-		.icon-fallback-text {
-			text-shadow: 0 0 1px currentColor;
-		}
-	}
-
 	/* Print styles */
 	@media print {
 		.material-symbols-outlined,

@@ -372,11 +372,4 @@
 			transition-duration: 0.01s;
 		}
 	}
-
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.radio-label::after {
-			border-width: 3px;
-		}
-	}
 </style>

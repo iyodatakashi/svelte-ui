@@ -344,17 +344,6 @@
 		border: 0;
 	}
 
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.menu-container {
-			border-width: 2px;
-		}
-
-		.menu-button:focus-visible {
-			outline-width: 3px;
-		}
-	}
-
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.menu-button {

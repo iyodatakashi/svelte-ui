@@ -323,17 +323,6 @@
 		}
 	}
 
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.button--outlined {
-			border-width: var(--svelte-ui-border-width-thick);
-		}
-
-		.button:focus-visible {
-			outline-width: 3px;
-		}
-	}
-
 	/* Print styles */
 	@media print {
 		.button {

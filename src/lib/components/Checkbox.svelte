@@ -369,11 +369,4 @@
 			transition-duration: 0.01s;
 		}
 	}
-
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		.checkbox-label::before {
-			border-width: 3px;
-		}
-	}
 </style>

@@ -11,6 +11,8 @@ interface DialogArgs {
 	closeIfClickOutside?: boolean;
 	width?: number;
 	restoreFocus?: boolean;
+	ariaDescribedby?: string;
+	description?: string;
 	header?: Snippet;
 	body?: Snippet;
 	children?: Snippet;
@@ -58,6 +60,14 @@ const meta: Meta<DialogArgs> = {
 		restoreFocus: {
 			control: 'boolean',
 			description: 'Whether to restore focus to the previous element when closing'
+		},
+		ariaDescribedby: {
+			control: 'text',
+			description: 'ID of element that describes the dialog'
+		},
+		description: {
+			control: 'text',
+			description: 'Description text for screen readers'
 		},
 		// Snippetはコントロールから除外
 		header: {
@@ -240,6 +250,7 @@ export const FormDialog: Story = {
 		isOpen: true,
 		title: 'Add New Item',
 		width: 450,
+		description: 'Fill out the form below to create a new item',
 		children: createContentSnippet(`
 			<div>
 				<form>
@@ -294,5 +305,85 @@ export const Closed: Story = {
 				<p>This dialog is closed. Toggle the 'isOpen' control to see it.</p>
 			</div>
 		`)
+	}
+};
+
+// Accessibility enhanced dialog
+export const AccessibilityEnhanced: Story = {
+	args: {
+		isOpen: true,
+		title: 'Accessibility Demo',
+		width: 500,
+		description:
+			'This dialog demonstrates enhanced accessibility features including high contrast mode support and screen reader announcements',
+		children: createContentSnippet(`
+			<div>
+				<h3>Accessibility Features</h3>
+				<ul>
+					<li>High contrast mode support</li>
+					<li>Screen reader announcements when opening/closing</li>
+					<li>Proper ARIA attributes (aria-describedby, aria-labelledby)</li>
+					<li>Focus management with Tab trapping</li>
+					<li>ESC key to close</li>
+				</ul>
+				<p style="margin-top: 16px; padding: 12px; background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 4px;">
+					<strong>Tip:</strong> Try using keyboard navigation (Tab, Shift+Tab, ESC) and screen reader to experience the accessibility features.
+				</p>
+			</div>
+		`),
+		footer: createRawSnippet(() => ({
+			render: () => `
+				<button style="padding: 8px 16px; border: 1px solid var(--svelte-ui-border-color, #ccc); background: var(--svelte-ui-surface-color, white); border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.2s; color: var(--svelte-ui-text-color, #333);" onmouseover="this.style.backgroundColor='var(--svelte-ui-hover-color, #f5f5f5)'" onmouseout="this.style.backgroundColor='var(--svelte-ui-surface-color, white)'">
+					Close
+				</button>
+			`
+		}))
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'This story demonstrates the accessibility enhancements including high contrast mode support, screen reader announcements, and proper ARIA attributes.'
+			}
+		}
+	}
+};
+
+// Dark theme demo
+export const DarkTheme: Story = {
+	args: {
+		isOpen: true,
+		title: 'Dark Theme Dialog',
+		width: 500,
+		description: 'This dialog automatically adapts to the current theme using CSS variables',
+		children: createContentSnippet(`
+			<div>
+				<h3>Theme Features</h3>
+				<ul>
+					<li>Automatic light/dark theme switching</li>
+					<li>Uses CSS variables for all colors</li>
+					<li>Consistent with system theme preferences</li>
+					<li>No manual theme implementation needed</li>
+				</ul>
+				<p style="margin-top: 16px; padding: 12px; background: var(--svelte-ui-form-bg); border: 1px solid var(--svelte-ui-border-weak-color); border-radius: 4px;">
+					<strong>Note:</strong> This dialog uses variables like --svelte-ui-surface-color and --svelte-ui-text-color for automatic theme support.
+				</p>
+			</div>
+		`),
+		footer: createRawSnippet(() => ({
+			render: () => `
+				<button style="padding: 8px 16px; border: 1px solid var(--svelte-ui-border-color); background: var(--svelte-ui-surface-color); color: var(--svelte-ui-text-color); border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.2s;">
+					Close
+				</button>
+			`
+		}))
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'This dialog demonstrates automatic theme adaptation using CSS variables. The dialog will automatically switch between light and dark themes based on the data-theme attribute.'
+			}
+		}
 	}
 };

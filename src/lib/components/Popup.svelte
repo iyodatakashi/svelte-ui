@@ -593,17 +593,6 @@
 		border: 0;
 	}
 
-	/* High contrast mode support */
-	@media (prefers-contrast: high) {
-		:popover-open {
-			border-width: 2px;
-		}
-
-		:popover-open:focus-visible {
-			outline-width: 3px;
-		}
-	}
-
 	/* =============================================
 	 * Mobile-specific styles
 	 * ============================================= */

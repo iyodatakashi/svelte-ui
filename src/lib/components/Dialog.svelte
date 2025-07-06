@@ -7,6 +7,8 @@
 		closeIfClickOutside = true,
 		width = 320,
 		restoreFocus = false,
+		ariaDescribedby,
+		description,
 		header,
 		body,
 		children,
@@ -18,6 +20,8 @@
 		closeIfClickOutside?: boolean;
 		width?: number;
 		restoreFocus?: boolean;
+		ariaDescribedby?: string;
+		description?: string;
 		header?: Snippet;
 		body?: Snippet;
 		children?: Snippet;
@@ -26,6 +30,23 @@
 	let dialogRef: HTMLDialogElement;
 	let containerRef: HTMLDivElement;
 	let previousActiveElement: HTMLElement | null = null;
+
+	// スクリーンリーダー向けアナウンス
+	const announceToScreenReader = (message: string) => {
+		const announcement = document.createElement('div');
+		announcement.setAttribute('aria-live', 'polite');
+		announcement.setAttribute('aria-atomic', 'true');
+		announcement.className = 'sr-only';
+		announcement.textContent = message;
+		document.body.appendChild(announcement);
+
+		// アナウンス後に削除
+		setTimeout(() => {
+			if (document.body.contains(announcement)) {
+				document.body.removeChild(announcement);
+			}
+		}, 1000);
+	};
 
 	// 外側クリックでのクローズ
 	$effect(() => {
@@ -174,6 +195,10 @@
 				} catch {
 					// エラーを無視して続行
 				}
+
+				// スクリーンリーダーにダイアログが開いたことをアナウンス
+				const titleText = title || 'Dialog';
+				announceToScreenReader(`${titleText} opened`);
 			}, 0);
 		} catch {
 			// エラーを無視して続行
@@ -187,6 +212,10 @@
 			isOpen = false;
 			dialogRef.classList.add('fade-out');
 			dialogRef.addEventListener('animationend', closeEnd, { once: true });
+
+			// スクリーンリーダーにダイアログが閉じたことをアナウンス
+			const titleText = title || 'Dialog';
+			announceToScreenReader(`${titleText} closed`);
 		} catch {
 			// エラーを無視して続行
 		}
@@ -221,6 +250,7 @@
 	style="width: {width}px"
 	aria-modal="true"
 	aria-labelledby={title ? 'dialog-title' : undefined}
+	aria-describedby={ariaDescribedby || (description ? 'dialog-description' : undefined)}
 >
 	<div class="dialog-contents" bind:this={containerRef}>
 		{#if header || title}
@@ -232,6 +262,11 @@
 						{title || ''}
 					</div>
 				{/if}
+			</div>
+		{/if}
+		{#if description}
+			<div class="description" id="dialog-description">
+				{description}
 			</div>
 		{/if}
 		{#if children}
@@ -257,7 +292,9 @@
 		padding: 0;
 		overflow: hidden;
 		border-width: 0;
-		border-radius: 4px;
+		border-radius: var(--svelte-ui-border-radius, 4px);
+		background-color: var(--svelte-ui-surface-color);
+		color: var(--svelte-ui-text-color);
 		box-shadow:
 			0 11px 15px -7px rgb(0 0 0 / 20%),
 			0 24px 38px 3px rgb(0 0 0 / 14%),
@@ -281,7 +318,7 @@
 	}
 	dialog.fade-in,
 	dialog.fade-in::backdrop {
-		animation: fadeIn 300ms forwards;
+		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 	@keyframes fadeOut {
 		from {
@@ -293,7 +330,7 @@
 	}
 	dialog.fade-out,
 	dialog.fade-out::backdrop {
-		animation: fadeOut 300ms forwards;
+		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 	.dialog-contents {
 		display: flex;
@@ -314,6 +351,7 @@
 			flex-grow: 1;
 			font-size: 1.4rem;
 			line-height: normal;
+			color: var(--svelte-ui-text-color);
 		}
 	}
 	.body {
@@ -327,10 +365,19 @@
 		justify-content: end;
 		padding: 8px;
 	}
+
+	.description {
+		color: var(--svelte-ui-text-subtle-color);
+		font-size: 0.875rem;
+		line-height: 1.4;
+		margin: 0;
+		padding: 0.5rem 1rem;
+		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
+	}
 	.scrollable {
 		.header {
 			margin-bottom: 0;
-			border-bottom: solid 1px var(--svelte-ui-border-weak-color);
+			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 		.body {
 			flex-shrink: 1;
@@ -338,7 +385,7 @@
 			overflow: auto;
 		}
 		.footer {
-			border-top: solid 1px var(--svelte-ui-border-weak-color);
+			border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 	}
 
@@ -350,5 +397,18 @@
 		dialog.fade-out::backdrop {
 			animation-duration: 0.01s;
 		}
+	}
+
+	/* Screen reader only content */
+	:global(.sr-only) {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
 	}
 </style>

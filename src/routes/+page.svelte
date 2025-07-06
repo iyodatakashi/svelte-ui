@@ -1,17 +1,31 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Button from '$lib/components/Button.svelte';
 	import Input from '$lib/components/Input.svelte';
-	import Select from '$lib/components/Select.svelte';
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Radio from '$lib/components/Radio.svelte';
-	import Combobox from '$lib/components/Combobox.svelte';
-	import PopupMenuButton from '$lib/components/PopupMenuButton.svelte';
-	import PopupMenu from '$lib/components/PopupMenu.svelte';
-	import Popup from '$lib/components/Popup.svelte';
-	import type { MenuItem } from '$lib/types/MenuItem';
+	import Select from '$lib/components/Select.svelte';
+	import Dialog from '$lib/components/Dialog.svelte';
+	import { onMount } from 'svelte';
 
 	let theme = $state('light');
+	let isDialogOpen = $state(false);
+	let checkboxValue = $state(false);
+	let inputValue = $state('');
+
+	// ハイコントラストモードの検出
+	let isHighContrast = $state(false);
+	let mediaQuery: MediaQueryList | null = null;
+
+	function checkHighContrast() {
+		if (typeof window !== 'undefined') {
+			mediaQuery = window.matchMedia('(prefers-contrast: more)');
+			isHighContrast = mediaQuery.matches;
+
+			mediaQuery.addEventListener('change', (e) => {
+				isHighContrast = e.matches;
+			});
+		}
+	}
 
 	const toggleTheme = () => {
 		theme = theme === 'light' ? 'dark' : 'light';
@@ -24,6 +38,7 @@
 		if (typeof document !== 'undefined') {
 			document.body.setAttribute('data-theme', theme);
 		}
+		checkHighContrast();
 	});
 
 	const selectOptions = [
@@ -32,259 +47,213 @@
 		{ value: 'option3', label: 'オプション 3' }
 	];
 
-	let inputValue = $state('テスト入力');
 	let selectValue = $state('');
-	let checkboxValue = $state(false);
 	let radioValue = $state('');
-	let comboboxValue = $state('');
-
-	// Popup menu items
-	const menuItems: (MenuItem | 'separator')[] = [
-		{
-			title: 'Edit',
-			icon: 'edit',
-			callback: () => alert('Edit clicked')
-		},
-		{
-			title: 'Copy',
-			icon: 'content_copy',
-			callback: () => alert('Copy clicked')
-		},
-		'separator',
-		{
-			title: 'Delete',
-			icon: 'delete',
-			callback: () => alert('Delete clicked')
-		}
-	];
-
-	// Popup demo
-	let popupAnchorRef: HTMLElement = $state();
-	let popupMenuRef: any = $state();
-	let popupRef: any = $state();
-
-	const openPopup = () => {
-		popupRef?.open();
-	};
-
-	const openPopupMenu = () => {
-		popupMenuRef?.open();
-	};
 </script>
 
-<div
-	class="page-container"
-	style="background: {theme === 'dark' ? '#232220' : '#fafafa'}; min-height: 100vh; padding: 20px;"
->
-	<div class="content" style="max-width: 800px; margin: 0 auto;">
-		<h1 style="color: var(--svelte-ui-text-color); margin-bottom: 20px;">
-			テーマカラーテスト - {theme === 'light' ? 'ライト' : 'ダーク'}テーマ
-		</h1>
+<svelte:head>
+	<title>SvelteKit UI Library - High Contrast Test</title>
+	<meta name="description" content="Testing High Contrast Mode" />
+</svelte:head>
 
-		<div style="margin-bottom: 30px;">
-			<Button onclick={toggleTheme}>
-				{theme === 'light' ? 'ダーク' : 'ライト'}テーマに切り替え
-			</Button>
-		</div>
+<main>
+	<div class="container">
+		<h1>High Contrast Mode Test</h1>
 
-		<div class="test-section">
-			<h2 style="color: var(--svelte-ui-text-color); margin-bottom: 15px;">テキスト色テスト</h2>
-
-			<p style="color: var(--svelte-ui-text-color); margin-bottom: 10px;">
-				メインテキスト色 (--svelte-ui-text-color)
+		<div class="debug-info">
+			<h2>Debug Information</h2>
+			<p><strong>High Contrast Mode Detected (OS):</strong> {isHighContrast ? 'Yes' : 'No'}</p>
+			<p><strong>Current Theme:</strong> {theme}</p>
+			<p><strong>Media Query:</strong> <code>@media (prefers-contrast: more)</code></p>
+			<p>
+				<strong>Implementation:</strong> CSS variables automatically override based on system preference
 			</p>
 
-			<p style="color: var(--svelte-ui-text-subtle-color); margin-bottom: 10px;">
-				サブテキスト色 (--svelte-ui-text-subtle-color)
-			</p>
-
-			<p style="color: var(--svelte-ui-text-placeholder-color); margin-bottom: 20px;">
-				プレースホルダー色 (--svelte-ui-text-placeholder-color)
-			</p>
-		</div>
-
-		<div class="test-section">
-			<h2 style="color: var(--svelte-ui-text-color); margin-bottom: 15px;">コンポーネントテスト</h2>
-
-			<div style="margin-bottom: 15px;">
-				<label
-					for="input-demo"
-					style="color: var(--svelte-ui-text-color); display: block; margin-bottom: 5px;"
+			<div style="margin-top: 1rem;">
+				<button
+					type="button"
+					onclick={toggleTheme}
+					style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
 				>
-					Input:
-				</label>
-				<Input id="input-demo" bind:value={inputValue} placeholder="プレースホルダーテキスト" />
+					Switch to {theme === 'light' ? 'Dark' : 'Light'} Theme
+				</button>
 			</div>
 
-			<div style="margin-bottom: 15px;">
-				<label
-					for="select-demo"
-					style="color: var(--svelte-ui-text-color); display: block; margin-bottom: 5px;"
-				>
-					Select:
-				</label>
+			<div
+				style="margin-top: 1rem; padding: 1rem; background: var(--svelte-ui-border-weak-color); border-radius: 4px;"
+			>
+				<h3>How to Test High Contrast Mode</h3>
+				<ul style="margin-left: 1.5rem;">
+					<li>
+						<strong>macOS:</strong> System Preferences → Accessibility → Display → Increase contrast
+					</li>
+					<li><strong>Windows:</strong> Settings → Ease of Access → High contrast</li>
+					<li>
+						<strong>Chrome DevTools:</strong> Elements → Styles → Toggle device toolbar → More options
+						→ Emulate CSS media feature prefers-contrast
+					</li>
+				</ul>
+			</div>
+
+			<div class="css-variable-test">
+				<h3>CSS Variables Test</h3>
+				<div class="test-box">
+					<p>
+						Text Color: <span class="text-color-test"
+							>This text should be CanvasText in high contrast</span
+						>
+					</p>
+					<div class="bg-color-test">Background: This should be Canvas in high contrast</div>
+					<div class="border-color-test">
+						Border: This should be CanvasText border in high contrast
+					</div>
+				</div>
+			</div>
+		</div>
+
+		<div class="components-test">
+			<h2>Components Test</h2>
+
+			<div class="component-section">
+				<h3>Button</h3>
+				<Button variant="filled">Filled Button</Button>
+				<Button variant="outlined">Outlined Button</Button>
+				<Button variant="text">Text Button</Button>
+			</div>
+
+			<div class="component-section">
+				<h3>Input</h3>
+				<Input bind:value={inputValue} placeholder="Type something..." />
+			</div>
+
+			<div class="component-section">
+				<h3>Select</h3>
 				<Select
-					id="select-demo"
 					bind:value={selectValue}
 					options={selectOptions}
-					placeholder="オプションを選択してください"
+					placeholder="Select an option..."
 				/>
 			</div>
 
-			<div style="margin-bottom: 15px;">
-				<Checkbox bind:value={checkboxValue}>チェックボックスのテキスト</Checkbox>
+			<div class="component-section">
+				<h3>Checkbox</h3>
+				<Checkbox bind:value={checkboxValue} label="Test checkbox" />
 			</div>
 
-			<div style="margin-bottom: 15px;">
-				<Radio name="test-radio" bind:currentValue={radioValue} value="radio1">
-					ラジオボタンのテキスト 1
-				</Radio>
-				<Radio name="test-radio" bind:currentValue={radioValue} value="radio2">
-					ラジオボタンのテキスト 2
-				</Radio>
+			<div class="component-section">
+				<h3>Radio</h3>
+				<Radio name="test-radio" bind:currentValue={radioValue} value="radio1">Option 1</Radio>
+				<Radio name="test-radio" bind:currentValue={radioValue} value="radio2">Option 2</Radio>
 			</div>
 
-			<div style="margin-bottom: 15px;">
-				<Button variant="filled">フィルドボタン</Button>
-				<Button variant="outlined">アウトラインボタン</Button>
-				<Button variant="text">テキストボタン</Button>
-			</div>
+			<div class="component-section">
+				<h3>Dialog</h3>
+				<Button variant="outlined" onclick={() => (isDialogOpen = true)}>Open Dialog</Button>
 
-			<!-- Popup Components Test -->
-			<div style="margin-bottom: 15px;">
-				<h3 style="color: var(--svelte-ui-text-color); margin-bottom: 10px;">
-					Popup Components with Accessibility ✨
-				</h3>
-
-				<div
-					style="margin-bottom: 16px; padding: 12px; background: var(--svelte-ui-surface-color); border: 1px solid var(--svelte-ui-border-color); border-radius: 4px;"
-				>
-					<h4 style="color: var(--svelte-ui-text-color); margin: 0 0 8px 0; font-size: 0.9em;">
-						🎯 Test these accessibility features:
-					</h4>
-					<ul
-						style="color: var(--svelte-ui-text-subtle-color); font-size: 0.8em; margin: 0; padding-left: 20px;"
-					>
-						<li>Use <kbd>Tab</kbd> to navigate between buttons</li>
-						<li>Use <kbd>Enter</kbd> or <kbd>Space</kbd> to open menus</li>
-						<li>Use <kbd>↑</kbd>/<kbd>↓</kbd> arrows to navigate menu items</li>
-						<li>Use <kbd>Enter</kbd> to select menu items</li>
-						<li>Use <kbd>Escape</kbd> to close popups/menus</li>
-						<li>Screen reader announcements when opening menus</li>
-					</ul>
-				</div>
-
-				<div style="display: flex; gap: 16px; align-items: flex-start; margin-bottom: 20px;">
-					<!-- PopupMenuButton -->
-					<div>
-						<p style="color: var(--svelte-ui-text-color); margin-bottom: 8px; font-weight: 500;">
-							PopupMenuButton (Full Accessibility):
-						</p>
-						<PopupMenuButton {menuItems} ariaLabel="Action menu" />
-						<p
-							style="color: var(--svelte-ui-text-subtle-color); font-size: 0.7em; margin-top: 4px;"
-						>
-							Tab → Enter → Arrows → Enter → Escape
-						</p>
-					</div>
-
-					<!-- Custom PopupMenu -->
-					<div>
-						<p style="color: var(--svelte-ui-text-color); margin-bottom: 8px; font-weight: 500;">
-							PopupMenu:
-						</p>
-						<button
-							bind:this={popupAnchorRef}
-							onclick={openPopupMenu}
-							aria-haspopup="menu"
-							style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
-						>
-							Open Menu
-						</button>
-						<PopupMenu
-							bind:this={popupMenuRef}
-							anchorElement={popupAnchorRef}
-							{menuItems}
-							ariaLabel="Context menu"
-						/>
-						<p
-							style="color: var(--svelte-ui-text-subtle-color); font-size: 0.7em; margin-top: 4px;"
-						>
-							Tab → Click → Arrows → Enter
-						</p>
-					</div>
-
-					<!-- Basic Popup -->
-					<div>
-						<p style="color: var(--svelte-ui-text-color); margin-bottom: 8px; font-weight: 500;">
-							Dialog Popup:
-						</p>
-						<button
-							onclick={openPopup}
-							aria-haspopup="dialog"
-							style="padding: 8px 16px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 4px; cursor: pointer;"
-						>
-							Open Dialog
-						</button>
-						<Popup
-							bind:this={popupRef}
-							anchorElement={popupAnchorRef}
-							role="dialog"
-							ariaLabel="Settings dialog"
-							focusTrap={true}
-						>
-							<div
-								style="padding: 16px; background: white; border-radius: 4px; box-shadow: 0 2px 8px rgba(0,0,0,0.1); min-width: 250px;"
-							>
-								<h4 style="margin: 0 0 12px 0; color: var(--svelte-ui-text-color);">
-									Settings Dialog
-								</h4>
-								<p style="margin: 0 0 12px 0; color: var(--svelte-ui-text-subtle-color);">
-									Focus trap and Escape key support.
-								</p>
-								<div style="display: flex; gap: 8px;">
-									<button
-										style="padding: 6px 12px; background: var(--svelte-ui-primary-color); color: white; border: none; border-radius: 2px; cursor: pointer;"
-									>
-										Save
-									</button>
-									<button
-										onclick={() => popupRef?.close()}
-										style="padding: 6px 12px; background: var(--svelte-ui-border-color); color: var(--svelte-ui-text-color); border: none; border-radius: 2px; cursor: pointer;"
-									>
-										Cancel
-									</button>
-								</div>
-							</div>
-						</Popup>
-						<p
-							style="color: var(--svelte-ui-text-subtle-color); font-size: 0.7em; margin-top: 4px;"
-						>
-							Tab → Click → Tab inside → Escape
-						</p>
-					</div>
-				</div>
-			</div>
-		</div>
-
-		<div
-			class="debug-info"
-			style="margin-top: 30px; padding: 15px; border: 1px solid var(--svelte-ui-border-color); border-radius: 8px;"
-		>
-			<h3 style="color: var(--svelte-ui-text-color); margin-bottom: 10px;">デバッグ情報</h3>
-			<div style="font-family: monospace; font-size: 0.9em;">
-				<div style="color: var(--svelte-ui-text-subtle-color);">現在のテーマ: {theme}</div>
-				<div style="color: var(--svelte-ui-text-subtle-color);">body[data-theme]: {theme}</div>
+				<Dialog bind:isOpen={isDialogOpen} title="Test Dialog">
+					<p>This is a test dialog to check high contrast mode.</p>
+					{#snippet footer()}
+						<Button variant="filled" onclick={() => (isDialogOpen = false)}>Close</Button>
+					{/snippet}
+				</Dialog>
 			</div>
 		</div>
 	</div>
-</div>
+</main>
 
 <style>
-	.test-section {
-		margin-bottom: 30px;
-		padding: 20px;
-		border: 1px solid var(--svelte-ui-border-color);
-		border-radius: 8px;
+	.container {
+		max-width: 1200px;
+		margin: 0 auto;
+		padding: 2rem;
+		background: var(--svelte-ui-surface-color);
+		min-height: 100vh;
 	}
+
+	h1 {
+		color: var(--svelte-ui-text-color);
+		margin-bottom: 2rem;
+	}
+
+	h2,
+	h3 {
+		color: var(--svelte-ui-text-color);
+		margin-top: 2rem;
+		margin-bottom: 1rem;
+	}
+
+	.debug-info {
+		background: var(--svelte-ui-surface-color);
+		border: 1px solid var(--svelte-ui-border-color);
+		padding: 1rem;
+		margin-bottom: 2rem;
+		border-radius: 4px;
+	}
+
+	.css-variable-test {
+		margin-top: 1rem;
+	}
+
+	.test-box {
+		border: 1px solid var(--svelte-ui-border-color);
+		padding: 1rem;
+		margin-top: 0.5rem;
+		border-radius: 4px;
+	}
+
+	.text-color-test {
+		color: var(--svelte-ui-text-color);
+		font-weight: bold;
+	}
+
+	.bg-color-test {
+		background: var(--svelte-ui-surface-color);
+		padding: 0.5rem;
+		margin: 0.5rem 0;
+		border-radius: 4px;
+	}
+
+	.border-color-test {
+		border: 2px solid var(--svelte-ui-border-color);
+		padding: 0.5rem;
+		margin: 0.5rem 0;
+		border-radius: 4px;
+	}
+
+	.component-section {
+		margin-bottom: 2rem;
+		padding: 1rem;
+		border: 1px solid var(--svelte-ui-border-color);
+		border-radius: 4px;
+	}
+
+	.component-section h3 {
+		margin-top: 0;
+	}
+
+	code {
+		background: var(--svelte-ui-surface-color);
+		padding: 0.2rem 0.4rem;
+		border-radius: 2px;
+		font-family: 'Courier New', monospace;
+	}
+
+	/* High contrast mode debug styles */
+	@media (prefers-contrast: more) {
+		.debug-info {
+			outline: 2px solid red;
+		}
+
+		.debug-info::before {
+			content: '🔍 HIGH CONTRAST MODE DETECTED';
+			display: block;
+			background: red;
+			color: white;
+			padding: 0.5rem;
+			margin: -1rem -1rem 1rem -1rem;
+			font-weight: bold;
+		}
+	}
+
+	/* 手動テスト用のスタイルは削除 - variables.scssの@media (prefers-contrast: high)を使用 */
 </style>

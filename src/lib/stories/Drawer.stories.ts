@@ -13,6 +13,8 @@ interface DrawerArgs {
 	position?: 'left' | 'right';
 	ariaLabel?: string;
 	restoreFocus?: boolean;
+	ariaDescribedby?: string;
+	description?: string;
 	header?: Snippet;
 	body?: Snippet;
 	children?: Snippet;
@@ -69,6 +71,14 @@ const meta: Meta<DrawerArgs> = {
 		restoreFocus: {
 			control: 'boolean',
 			description: 'Whether to restore focus to the previous element when closing'
+		},
+		ariaDescribedby: {
+			control: 'text',
+			description: 'ID of element that describes the drawer'
+		},
+		description: {
+			control: 'text',
+			description: 'Description text for screen readers'
 		},
 		// Snippetはコントロールから除外
 		header: {
@@ -149,6 +159,7 @@ export const WithHeaderFooter: Story = {
 		isOpen: true,
 		position: 'left',
 		width: 280,
+		description: 'Navigation drawer with header and footer sections',
 		header: createRawSnippet(() => ({
 			render: () => `
 				<div style="display: flex; align-items: center; gap: 12px; width: 100%;">
@@ -161,38 +172,24 @@ export const WithHeaderFooter: Story = {
 			`
 		})),
 		body: createContentSnippet(`
-			<nav>
-				<ul style="list-style: none; padding: 0; margin: 0;">
-					<li style="margin-bottom: 8px;">
-						<a href="#" style="display: block; padding: 8px 12px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.2s;" 
-						   onmouseover="this.style.backgroundColor='#f5f5f5'" 
-						   onmouseout="this.style.backgroundColor='transparent'">
-							🏠 Home
-						</a>
-					</li>
-					<li style="margin-bottom: 8px;">
-						<a href="#" style="display: block; padding: 8px 12px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.2s;"
-						   onmouseover="this.style.backgroundColor='#f5f5f5'" 
-						   onmouseout="this.style.backgroundColor='transparent'">
-							📊 Dashboard
-						</a>
-					</li>
-					<li style="margin-bottom: 8px;">
-						<a href="#" style="display: block; padding: 8px 12px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.2s;"
-						   onmouseover="this.style.backgroundColor='#f5f5f5'" 
-						   onmouseout="this.style.backgroundColor='transparent'">
-							⚙️ Settings
-						</a>
-					</li>
-					<li style="margin-bottom: 8px;">
-						<a href="#" style="display: block; padding: 8px 12px; text-decoration: none; color: #333; border-radius: 4px; transition: background-color 0.2s;"
-						   onmouseover="this.style.backgroundColor='#f5f5f5'" 
-						   onmouseout="this.style.backgroundColor='transparent'">
-							👤 Profile
-						</a>
-					</li>
-				</ul>
-			</nav>
+			<div style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
+				<div style="display: flex; align-items: center; gap: 8px;">
+					<span style="font-size: 1rem;">👤</span>
+					<span>Profile</span>
+				</div>
+				<div style="display: flex; align-items: center; gap: 8px;">
+					<span style="font-size: 1rem;">🔔</span>
+					<span>Notifications</span>
+				</div>
+				<div style="display: flex; align-items: center; gap: 8px;">
+					<span style="font-size: 1rem;">🎨</span>
+					<span>Theme</span>
+				</div>
+				<div style="display: flex; align-items: center; gap: 8px;">
+					<span style="font-size: 1rem;">🌐</span>
+					<span>Language</span>
+				</div>
+			</div>
 		`),
 		footer: createRawSnippet(() => ({
 			render: () => `
@@ -499,5 +496,47 @@ export const Closed: Story = {
 				<p>This drawer is closed. Toggle the 'isOpen' control to see it.</p>
 			</div>
 		`)
+	}
+};
+
+// Dark theme demo
+export const DarkTheme: Story = {
+	args: {
+		isOpen: true,
+		title: 'Dark Theme Drawer',
+		width: 300,
+		position: 'left',
+		description: 'This drawer automatically adapts to the current theme using CSS variables',
+		body: createContentSnippet(`
+			<div style="padding: 16px;">
+				<h3>Theme Features</h3>
+				<ul>
+					<li>Automatic light/dark theme switching</li>
+					<li>Uses CSS variables for all colors</li>
+					<li>Consistent with system theme preferences</li>
+					<li>No manual theme implementation needed</li>
+				</ul>
+				<p style="margin-top: 16px; padding: 12px; background: var(--svelte-ui-form-bg); border: 1px solid var(--svelte-ui-border-weak-color); border-radius: 4px;">
+					<strong>Note:</strong> This drawer uses variables like --svelte-ui-surface-color and --svelte-ui-text-color for automatic theme support.
+				</p>
+			</div>
+		`),
+		footer: createRawSnippet(() => ({
+			render: () => `
+				<div style="border-top: 1px solid var(--svelte-ui-border-weak-color); padding: 16px; text-align: center;">
+					<button style="padding: 8px 16px; border: 1px solid var(--svelte-ui-border-color); background: var(--svelte-ui-surface-color); color: var(--svelte-ui-text-color); border-radius: 4px; font-size: 0.875rem; cursor: pointer;">
+						Close
+					</button>
+				</div>
+			`
+		}))
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'This drawer demonstrates automatic theme adaptation using CSS variables. The drawer will automatically switch between light and dark themes based on the data-theme attribute.'
+			}
+		}
 	}
 };

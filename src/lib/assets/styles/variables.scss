@@ -438,3 +438,85 @@
 	--svelte-ui-focus-outline: var(--svelte-ui-focus-outline-outer);
 	--svelte-ui-focus-outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 }
+
+/* ====================================
+ * ハイコントラストモード用の変数上書き
+ * ==================================== */
+
+@media (prefers-contrast: more) {
+	:where(:root),
+	[data-theme='dark'] {
+		/* ===== 基本色の上書き ===== */
+		--svelte-ui-text-color: CanvasText;
+		--svelte-ui-text-subtle-color: CanvasText;
+		--svelte-ui-text-on-filled-color: HighlightText;
+		--svelte-ui-text-placeholder-color: CanvasText;
+
+		/* ===== 背景色の上書き ===== */
+		--svelte-ui-surface-color: Canvas;
+		--svelte-ui-form-bg: Canvas;
+
+		/* ===== ボーダー色・太さの上書き ===== */
+		--svelte-ui-border-color: CanvasText;
+		--svelte-ui-border-weak-color: CanvasText;
+		--svelte-ui-border-strong-color: CanvasText;
+		--svelte-ui-border-width: 2px;
+		--svelte-ui-border-width-thick: 3px;
+
+		/* ===== フォーカス色・太さの上書き ===== */
+		--svelte-ui-focus-outline-outer: 3px solid CanvasText;
+		--svelte-ui-focus-outline-inner: 3px solid CanvasText;
+		--svelte-ui-focus-outline-offset-outer: 2px;
+		--svelte-ui-focus-outline-offset-inner: -3px;
+
+		/* ===== ボタン色の上書き ===== */
+		--svelte-ui-button-bg-filled: ButtonFace;
+		--svelte-ui-button-bg-outlined: Canvas;
+		--svelte-ui-button-text-filled: ButtonText;
+		--svelte-ui-button-text-outlined: ButtonText;
+		--svelte-ui-button-text-text: ButtonText;
+		--svelte-ui-button-border-outlined: ButtonText;
+		--svelte-ui-button-hover-overlay: Highlight;
+
+		/* ===== チェックボックス・ラジオの上書き ===== */
+		--svelte-ui-checkbox-border-color: CanvasText;
+		--svelte-ui-checkbox-border-width: var(--svelte-ui-border-width-thick);
+		--svelte-ui-checkbox-bg-checked: Highlight;
+		--svelte-ui-checkbox-text-color: CanvasText;
+		--svelte-ui-checkbox-icon-color: HighlightText;
+		--svelte-ui-radio-border-color: CanvasText;
+		--svelte-ui-radio-border-width: var(--svelte-ui-border-width-thick);
+		--svelte-ui-radio-bg-checked: Highlight;
+
+		/* ===== フォーム要素の上書き ===== */
+		--svelte-ui-input-bg: Canvas;
+		--svelte-ui-input-border-color: CanvasText;
+		--svelte-ui-textarea-bg: Canvas;
+		--svelte-ui-textarea-border-color: CanvasText;
+		--svelte-ui-select-bg: Canvas;
+		--svelte-ui-select-border-color: CanvasText;
+		--svelte-ui-select-text-color: CanvasText;
+		--svelte-ui-select-icon-color: CanvasText;
+		--svelte-ui-colorpicker-border-color: CanvasText;
+		--svelte-ui-colorpicker-bg: Canvas;
+		--svelte-ui-combobox-border-color: CanvasText;
+		--svelte-ui-combobox-bg: Canvas;
+		--svelte-ui-combobox-text-color: CanvasText;
+		--svelte-ui-combobox-icon-color: CanvasText;
+
+		/* ===== オーバーレイ・インタラクション色の上書き ===== */
+		--svelte-ui-hover-overlay: Highlight;
+		--svelte-ui-select-overlay: Highlight;
+		--svelte-ui-combobox-option-hover-bg: Highlight;
+		--svelte-ui-combobox-option-selected-bg: Highlight;
+
+		/* ===== アイコンボタンの上書き ===== */
+		--svelte-ui-iconbutton-bg-filled: ButtonFace;
+		--svelte-ui-iconbutton-bg-outlined: Canvas;
+		--svelte-ui-iconbutton-text-filled: ButtonText;
+		--svelte-ui-iconbutton-text-outlined: ButtonText;
+		--svelte-ui-iconbutton-text-text: ButtonText;
+		--svelte-ui-iconbutton-border-outlined: ButtonText;
+		--svelte-ui-iconbutton-hover-overlay: Highlight;
+	}
+}

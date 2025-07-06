@@ -303,18 +303,4 @@
 			transform: none;
 		}
 	}
-
-	@media (prefers-contrast: high) {
-		.iconbutton--outlined {
-			border-width: var(--svelte-ui-border-width-thick);
-		}
-
-		.iconbutton:focus-visible {
-			outline-width: 3px;
-		}
-
-		.iconbutton__badge {
-			border: var(--svelte-ui-border-width) solid;
-		}
-	}
 </style>
