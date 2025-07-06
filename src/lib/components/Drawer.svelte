@@ -2,22 +2,30 @@
 	import type { Snippet } from 'svelte';
 	let {
 		isOpen = $bindable(false),
-		scrollable = false,
+		title = '',
+		scrollable = true,
 		closeIfClickOutside = true,
 		width = 240,
 		position = 'left',
 		ariaLabel = 'Navigation drawer',
 		restoreFocus = false,
-		children
+		header,
+		body,
+		children,
+		footer
 	}: {
 		isOpen?: boolean;
+		title?: string;
 		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
 		width?: number;
 		position?: 'left' | 'right';
 		ariaLabel?: string;
 		restoreFocus?: boolean;
-		children: Snippet;
+		header?: Snippet;
+		body?: Snippet;
+		children?: Snippet;
+		footer?: Snippet;
 	} = $props();
 	let dialogRef: HTMLDialogElement;
 	let containerRef: HTMLDivElement;
@@ -139,9 +147,35 @@
 	style="width: {width}px"
 	aria-modal="true"
 	aria-label={ariaLabel}
+	aria-labelledby={title ? 'drawer-title' : undefined}
 >
 	<div class="dialog-contents" bind:this={containerRef}>
-		{@render children()}
+		{#if header || title}
+			<div class="header">
+				{#if header}
+					{@render header()}
+				{:else}
+					<div class="title-block" id="drawer-title">
+						{title || ''}
+					</div>
+				{/if}
+			</div>
+		{/if}
+		{#if children}
+			<div class="body">
+				{@render children()}
+			</div>
+		{/if}
+		{#if body}
+			<div class="body">
+				{@render body()}
+			</div>
+		{/if}
+		{#if footer}
+			<div class="footer">
+				{@render footer()}
+			</div>
+		{/if}
 	</div>
 </dialog>
 
@@ -250,6 +284,46 @@
 		flex-direction: column;
 		justify-content: stretch;
 		height: 100%;
-		overflow: auto;
+		overflow: hidden;
+	}
+	.header {
+		display: flex;
+		gap: 16px;
+		align-items: center;
+		justify-content: stretch;
+		min-height: 56px;
+		padding: 16px 24px;
+		margin-bottom: -24px;
+		.title-block {
+			flex-grow: 1;
+			font-size: 1.4rem;
+			line-height: normal;
+		}
+	}
+	.body {
+		flex-shrink: 1;
+		position: relative;
+		padding: 24px;
+		flex-grow: 1;
+	}
+	.footer {
+		display: flex;
+		gap: 8px;
+		justify-content: end;
+		padding: 8px;
+	}
+	.scrollable {
+		.header {
+			margin-bottom: 0;
+			border-bottom: solid 1px var(--svelte-ui-border-weak-color);
+		}
+		.body {
+			flex-shrink: 1;
+			padding: 24px;
+			overflow: auto;
+		}
+		.footer {
+			border-top: solid 1px var(--svelte-ui-border-weak-color);
+		}
 	}
 </style>
