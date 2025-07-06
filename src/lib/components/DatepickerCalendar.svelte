@@ -811,7 +811,7 @@
 		color: var(--svelte-ui-primary-color);
 	}
 	.date-list-item.is-selected .date-button {
-		background-color: var(--primary-color);
+		background-color: var(--svelte-ui-primary-color);
 		color: var(--svelte-ui-text-on-filled-color);
 	}
 
@@ -882,7 +882,7 @@
 	.date-list-item.is-range-start .date-button,
 	.date-list-item.is-range-end .date-button,
 	.date-list-item.is-range-single .date-button {
-		background-color: var(--primary-color);
+		background-color: var(--svelte-ui-primary-color);
 		color: var(--svelte-ui-text-on-filled-color);
 		font-weight: bold;
 		z-index: 1;
@@ -900,7 +900,7 @@
 	.date-list-item.is-range-preview-start .date-button,
 	.date-list-item.is-range-preview-end .date-button,
 	.date-list-item.is-range-preview-single .date-button {
-		background-color: var(--primary-color);
+		background-color: var(--svelte-ui-primary-color);
 		color: var(--svelte-ui-text-on-filled-color);
 		font-weight: bold;
 		z-index: 1;

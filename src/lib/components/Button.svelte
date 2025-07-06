@@ -20,7 +20,7 @@
 		popup = false,
 		rounded = false,
 		icon = '',
-		color = 'var(--primary-color)',
+		color = 'var(--svelte-ui-primary-color)',
 		variant = 'text',
 		size = 'medium',
 		reducedMotion = false,

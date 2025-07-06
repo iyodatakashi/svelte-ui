@@ -299,7 +299,7 @@ export const Playground: Story = {
 		iconFill: false,
 		reducedMotion: false,
 		icon: '',
-		color: 'var(--primary-color)',
+		color: 'var(--svelte-ui-primary-color)',
 		customStyle: '',
 		minWidth: 0,
 		tabindex: null,
