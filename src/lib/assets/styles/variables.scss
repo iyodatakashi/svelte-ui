@@ -528,6 +528,10 @@
 	--svelte-ui-drawer-title-color: var(--svelte-ui-text-color);
 	--svelte-ui-drawer-description-color: var(--svelte-ui-text-subtle-color);
 
+	/* LoadingSpinner */
+	--svelte-ui-loadingspinner-color: var(--svelte-ui-primary-color);
+	--svelte-ui-loadingspinner-size: 32px;
+
 	/* Badge */
 	--badge-text-color: var(--svelte-ui-text-on-filled-color);
 	--badge-color: var(--svelte-ui-primary-color);

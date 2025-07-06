@@ -15,10 +15,11 @@
 		reducedMotion?: boolean;
 	} = $props();
 
-	const radius = $derived(size / 2 - strokeWidth * 2);
+	const radius = $derived((size - strokeWidth) / 2);
+
+	// speedによる動的計算
 	const growDuration = $derived(1.6 / speed);
 	const rotateDuration = $derived(0.8 / speed);
-	const spinnerColor = $derived(color || 'var(--svelte-ui-spinner-color)');
 </script>
 
 <div
@@ -27,7 +28,7 @@
 	style:--grow-duration="{growDuration}s"
 	style:--rotate-duration="{rotateDuration}s"
 	style:--spinner-size="{size}px"
-	style:--spinner-color={spinnerColor}
+	style:--spinner-color={color}
 >
 	<svg viewBox="0 0 {size} {size}" width={size} height={size}>
 		<circle cx={size / 2} cy={size / 2} r={radius} style:stroke-width={strokeWidth} />
@@ -36,24 +37,22 @@
 
 <style>
 	.spinner {
-		width: var(--spinner-size, var(--svelte-ui-spinner-size));
-		height: var(--spinner-size, var(--svelte-ui-spinner-size));
+		width: var(--spinner-size, var(--svelte-ui-loadingspinner-size));
+		height: var(--spinner-size, var(--svelte-ui-loadingspinner-size));
 	}
 
 	.spinner svg {
 		width: 100%;
 		height: 100%;
 		transform: rotate(-90deg);
-		animation: rotate var(--rotate-duration, var(--svelte-ui-spinner-rotate-duration)) linear
-			infinite;
+		animation: rotate var(--rotate-duration, 0.8s) linear infinite;
 	}
 
 	.spinner circle {
 		fill: none;
-		stroke: var(--spinner-color, var(--svelte-ui-spinner-color));
+		stroke: var(--spinner-color, var(--svelte-ui-loadingspinner-color));
 		stroke-linecap: butt;
-		animation: complex-grow var(--grow-duration, var(--svelte-ui-spinner-grow-duration)) linear
-			infinite;
+		animation: complex-grow var(--grow-duration, 1.6s) linear infinite;
 		transform-origin: center;
 	}
 
