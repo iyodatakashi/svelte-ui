@@ -10,7 +10,6 @@
 		ariaDescribedby,
 		description,
 		header,
-		body,
 		children,
 		footer
 	}: {
@@ -23,7 +22,6 @@
 		ariaDescribedby?: string;
 		description?: string;
 		header?: Snippet;
-		body?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
 	} = $props();
@@ -272,11 +270,6 @@
 		{#if children}
 			<div class="body">
 				{@render children()}
-			</div>
-		{/if}
-		{#if body}
-			<div class="body">
-				{@render body()}
 			</div>
 		{/if}
 		{#if footer}
