@@ -29,36 +29,63 @@
 
 	// 外側クリックでのクローズ
 	$effect(() => {
-		if (!dialogRef) return;
+		if (!dialogRef || !isOpen) return;
 
 		const handleClick = (event: MouseEvent) => {
-			if (!closeIfClickOutside) return;
-			if (!containerRef.contains(event.target as Node)) {
-				close();
+			try {
+				if (!closeIfClickOutside) return;
+				if (!containerRef || !event.target) return;
+				if (!containerRef.contains(event.target as Node)) {
+					close();
+				}
+			} catch {
+				// エラーを無視して続行
 			}
 		};
 
-		dialogRef.addEventListener('click', handleClick);
+		try {
+			dialogRef.addEventListener('click', handleClick);
+		} catch {
+			// エラーを無視して続行
+		}
 
 		return () => {
-			dialogRef.removeEventListener('click', handleClick);
+			try {
+				if (dialogRef) {
+					dialogRef.removeEventListener('click', handleClick);
+				}
+			} catch {
+				// エラーを無視して続行
+			}
 		};
 	});
 
 	// ESCキーでのクローズ
 	$effect(() => {
-		if (!isOpen) return;
+		if (!isOpen || !dialogRef) return;
 
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				close();
+			try {
+				if (event.key === 'Escape') {
+					close();
+				}
+			} catch {
+				// エラーを無視して続行
 			}
 		};
 
-		document.addEventListener('keydown', handleKeyDown);
+		try {
+			document.addEventListener('keydown', handleKeyDown);
+		} catch {
+			// エラーを無視して続行
+		}
 
 		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
+			try {
+				document.removeEventListener('keydown', handleKeyDown);
+			} catch {
+				// エラーを無視して続行
+			}
 		};
 	});
 
@@ -67,72 +94,123 @@
 		if (!isOpen || !dialogRef) return;
 
 		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key !== 'Tab') return;
+			try {
+				if (event.key !== 'Tab') return;
 
-			const focusableElements = dialogRef.querySelectorAll(
-				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-			);
-			const firstElement = focusableElements[0] as HTMLElement;
-			const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+				const focusableElements = dialogRef.querySelectorAll(
+					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+				);
 
-			if (event.shiftKey) {
-				// Shift + Tab
-				if (document.activeElement === firstElement) {
-					event.preventDefault();
-					lastElement?.focus();
+				if (focusableElements.length === 0) return;
+
+				const firstElement = focusableElements[0] as HTMLElement;
+				const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+				if (event.shiftKey) {
+					// Shift + Tab
+					if (document.activeElement === firstElement) {
+						event.preventDefault();
+						lastElement?.focus();
+					}
+				} else {
+					// Tab
+					if (document.activeElement === lastElement) {
+						event.preventDefault();
+						firstElement?.focus();
+					}
 				}
-			} else {
-				// Tab
-				if (document.activeElement === lastElement) {
-					event.preventDefault();
-					firstElement?.focus();
-				}
+			} catch {
+				// エラーを無視して続行
 			}
 		};
 
-		dialogRef.addEventListener('keydown', handleKeyDown);
+		try {
+			dialogRef.addEventListener('keydown', handleKeyDown);
+		} catch {
+			// エラーを無視して続行
+		}
 
 		return () => {
-			dialogRef.removeEventListener('keydown', handleKeyDown);
+			try {
+				if (dialogRef) {
+					dialogRef.removeEventListener('keydown', handleKeyDown);
+				}
+			} catch {
+				// エラーを無視して続行
+			}
 		};
 	});
 
 	$effect(() => {
 		if (dialogRef) {
-			if (isOpen) {
-				open();
-			} else {
-				close();
+			try {
+				if (isOpen) {
+					open();
+				} else {
+					close();
+				}
+			} catch {
+				// エラーを無視して続行
 			}
 		}
 	});
 	export const open = (): void => {
-		isOpen = true;
-		previousActiveElement = document.activeElement as HTMLElement;
-		dialogRef.classList.add('fade-in');
-		dialogRef.removeEventListener('animationend', closeEnd);
-		dialogRef.showModal();
-		setTimeout(() => {
-			// 最初のフォーカス可能要素にフォーカス
-			const firstFocusableElement = dialogRef.querySelector(
-				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-			) as HTMLElement;
-			firstFocusableElement?.focus();
-		}, 0);
-	};
-	export const close = (): void => {
-		isOpen = false;
-		dialogRef.classList.add('fade-out');
-		dialogRef.addEventListener('animationend', closeEnd, { once: true });
-	};
-	export const closeEnd = (): void => {
-		dialogRef.close();
-		dialogRef.classList.remove('fade-out');
-		// オプションが有効な場合のみ元の要素にフォーカスを戻す
-		if (restoreFocus && previousActiveElement) {
-			previousActiveElement.focus();
+		try {
+			if (!dialogRef) return;
+
+			isOpen = true;
+			previousActiveElement = document.activeElement as HTMLElement;
+			dialogRef.classList.add('fade-in');
+			dialogRef.removeEventListener('animationend', closeEnd);
+			dialogRef.showModal();
+
+			setTimeout(() => {
+				try {
+					// 最初のフォーカス可能要素にフォーカス
+					const firstFocusableElement = dialogRef.querySelector(
+						'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+					) as HTMLElement;
+					firstFocusableElement?.focus();
+				} catch {
+					// エラーを無視して続行
+				}
+			}, 0);
+		} catch {
+			// エラーを無視して続行
 		}
-		previousActiveElement = null;
+	};
+
+	export const close = (): void => {
+		try {
+			if (!dialogRef) return;
+
+			isOpen = false;
+			dialogRef.classList.add('fade-out');
+			dialogRef.addEventListener('animationend', closeEnd, { once: true });
+		} catch {
+			// エラーを無視して続行
+		}
+	};
+
+	export const closeEnd = (): void => {
+		try {
+			if (!dialogRef) return;
+
+			dialogRef.close();
+			dialogRef.classList.remove('fade-out');
+
+			// オプションが有効な場合のみ元の要素にフォーカスを戻す
+			if (restoreFocus && previousActiveElement) {
+				try {
+					previousActiveElement.focus();
+				} catch {
+					// エラーを無視して続行
+				}
+			}
+			previousActiveElement = null;
+		} catch {
+			// エラーを無視して続行
+		}
 	};
 </script>
 
@@ -261,6 +339,16 @@
 		}
 		.footer {
 			border-top: solid 1px var(--svelte-ui-border-weak-color);
+		}
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		dialog.fade-in,
+		dialog.fade-in::backdrop,
+		dialog.fade-out,
+		dialog.fade-out::backdrop {
+			animation-duration: 0.01s;
 		}
 	}
 </style>
