@@ -17,6 +17,11 @@
 
 	const radius = $derived((size - strokeWidth) / 2);
 
+	// 円周の動的計算
+	const circumference = $derived(2 * Math.PI * radius);
+	const halfCircumference = $derived(circumference / 2);
+	const negativeHalfCircumference = $derived(-circumference / 2);
+
 	// speedによる動的計算
 	const growDuration = $derived(1.6 / speed);
 	const rotateDuration = $derived(0.8 / speed);
@@ -29,6 +34,9 @@
 	style:--rotate-duration="{rotateDuration}s"
 	style:--spinner-size="{size}px"
 	style:--spinner-color={color}
+	style:--circumference={circumference}
+	style:--half-circumference={halfCircumference}
+	style:--negative-half-circumference={negativeHalfCircumference}
 >
 	<svg viewBox="0 0 {size} {size}" width={size} height={size}>
 		<circle cx={size / 2} cy={size / 2} r={radius} style:stroke-width={strokeWidth} />
@@ -66,19 +74,18 @@
 	}
 
 	@keyframes complex-grow {
-		/* フェーズ1: 12時から6時まで */
+		/* 負の値も別のCSS変数として定義 */
 		0% {
-			stroke-dasharray: 0 88;
-			stroke-dashoffset: -44;
+			stroke-dasharray: 0 var(--circumference);
+			stroke-dashoffset: var(--negative-half-circumference);
 		}
 		50% {
-			stroke-dasharray: 44 88;
+			stroke-dasharray: var(--half-circumference) var(--circumference);
 			stroke-dashoffset: 0;
 		}
-		/* フェーズ2: 6時から12時まで */
 		100% {
-			stroke-dasharray: 0 88;
-			stroke-dashoffset: -44;
+			stroke-dasharray: 0 var(--circumference);
+			stroke-dashoffset: var(--negative-half-circumference);
 		}
 	}
 
