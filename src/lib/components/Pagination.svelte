@@ -104,6 +104,9 @@
 		align-items: center;
 		gap: var(--svelte-ui-pagination-gap);
 	}
+	.count-block {
+		white-space: nowrap;
+	}
 	.count-block::after {
 		content: '件';
 		margin-left: var(--svelte-ui-pagination-count-label-margin);
