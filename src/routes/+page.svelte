@@ -7,6 +7,8 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { onMount } from 'svelte';
 	import Tab from '$lib/components/Tab.svelte';
+	import Fab from '../lib/components/Fab.svelte';
+	import type { MenuItem } from '../lib/types/MenuItem';
 
 	let theme = $state('light');
 	let isDialogOpen = $state(false);
@@ -51,36 +53,32 @@
 	let selectValue = $state('');
 	let radioValue = $state('');
 
-	const tabItems = [
+	const tabItems: MenuItem[] = [
 		{
 			title: 'Home',
 			href: '/',
-			icon: 'home',
-			strictMatch: true
+			icon: 'home'
 		},
 		{
 			title: 'About',
 			href: '/about',
-			icon: 'info',
-			strictMatch: true
+			icon: 'info'
 		},
 		{
 			title: 'Services',
 			href: '/services',
-			icon: 'build',
-			strictMatch: true
+			icon: 'business'
 		},
 		{
 			title: 'Contact',
 			href: '/contact',
-			icon: 'mail',
-			strictMatch: true
+			icon: 'contact_mail'
 		},
 		{
-			title: 'Accessibility Test',
-			href: '/accessibility-test',
-			icon: 'accessibility',
-			strictMatch: true
+			title: 'Products',
+			href: '/products',
+			icon: 'inventory_2',
+			strictMatch: false
 		}
 	];
 </script>
@@ -210,9 +208,18 @@
 					<li>Notice the blue indicator shows the current page</li>
 				</ul>
 			</div>
+
+			<div class="test-links">
+				<h3>Component Tests:</h3>
+			</div>
 		</main>
 	</div>
 </main>
+
+<!-- Fabコンポーネントのテスト -->
+<Fab icon="add" position="left" color="#6750a4" />
+<Fab icon="edit" position="center" color="#6750a4">Edit</Fab>
+<Fab icon="favorite" position="right" color="#6750a4">Favorite</Fab>
 
 <style>
 	.container {

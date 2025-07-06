@@ -7,6 +7,7 @@ export { default as ConfirmDialog } from './components/ConfirmDialog.svelte';
 export { default as Datepicker } from './components/Datepicker.svelte';
 export { default as Dialog } from './components/Dialog.svelte';
 export { default as Drawer } from './components/Drawer.svelte';
+export { default as Fab } from './components/Fab.svelte';
 export { default as Icon } from './components/Icon.svelte';
 export { default as IconButton } from './components/IconButton.svelte';
 export { default as Input } from './components/Input.svelte';

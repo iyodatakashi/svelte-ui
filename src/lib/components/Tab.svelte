@@ -18,53 +18,37 @@
 
 	// アクティブなタブのインデックスを現在のパスに基づいて計算
 	const selectedTabIndex = $derived.by(() => {
-		console.log('🔍 Debug - Current path:', currentPath);
-		console.log('🔍 Debug - Tab items:', tabItems);
-
 		for (let i = 0; i < tabItems.length; i++) {
 			const item = tabItems[i];
 			if (!item.href) continue;
 
-			console.log(`🔍 Debug - Checking tab ${i}: ${item.href} against ${currentPath}`);
-
 			if (item.strictMatch) {
 				if (currentPath === item.href) {
-					console.log(`✅ Debug - Match found (strict): ${item.href} at index ${i}`);
 					return i;
 				}
 				if (item.matchingPath && item.matchingPath.some((href) => currentPath.startsWith(href))) {
-					console.log(`✅ Debug - Match found (matching path): ${item.href} at index ${i}`);
 					return i;
 				}
 			} else {
 				// ルートパス (/) の特別な処理
 				if (item.href === '/') {
 					if (currentPath === '/') {
-						console.log(`✅ Debug - Match found (root): ${item.href} at index ${i}`);
 						return i;
 					}
 				} else {
 					// その他のパス
 					if (currentPath !== '' && currentPath.startsWith(item.href)) {
-						console.log(`✅ Debug - Match found (starts with): ${item.href} at index ${i}`);
 						return i;
 					}
 				}
 
 				// matchingPathのチェック
 				if (item.matchingPath && item.matchingPath.some((href) => currentPath.startsWith(href))) {
-					console.log(`✅ Debug - Match found (matching path): ${item.href} at index ${i}`);
 					return i;
 				}
 			}
 		}
-		console.log('❌ Debug - No match found, returning -1');
 		return -1;
-	});
-
-	// デバッグ用：selectedTabIndexの変化を監視
-	$effect(() => {
-		console.log('🎯 Debug - Selected tab index:', selectedTabIndex);
 	});
 
 	// シンプルなキーボードナビゲーション

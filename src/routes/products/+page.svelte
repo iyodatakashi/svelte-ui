@@ -1,5 +1,6 @@
 <script>
 	import Tab from '$lib/components/Tab.svelte';
+	import Fab from '$lib/components/Fab.svelte';
 
 	const tabItems = [
 		{
@@ -75,6 +76,9 @@
 		</div>
 	</main>
 </div>
+
+<!-- Fabコンポーネントのテスト -->
+<Fab icon="add" onclick={() => alert('Add product clicked!')} />
 
 <style>
 	.container {
