@@ -47,7 +47,7 @@
 		<li>
 			<IconButton
 				ariaLabel="最初のページへ移動"
-				color="var(--svelte-ui-pagination-text-color)"
+				color="var(--svelte-ui-pagination-nav-color)"
 				disabled={currentPageNum === 1}
 				onclick={goFirstPage}
 			>
@@ -57,7 +57,7 @@
 		<li>
 			<IconButton
 				ariaLabel="前のページへ移動"
-				color="var(--svelte-ui-pagination-text-color)"
+				color="var(--svelte-ui-pagination-nav-color)"
 				disabled={currentPageNum === 1}
 				onclick={goPrevPage}
 			>
@@ -78,7 +78,7 @@
 		<li>
 			<IconButton
 				ariaLabel="次のページへ移動"
-				color="var(--svelte-ui-pagination-text-color)"
+				color="var(--svelte-ui-pagination-nav-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goNextPage}
 			>
@@ -88,7 +88,7 @@
 		<li>
 			<IconButton
 				ariaLabel="最後のページへ移動"
-				color="var(--svelte-ui-pagination-text-color)"
+				color="var(--svelte-ui-pagination-nav-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goLastPage}
 			>
