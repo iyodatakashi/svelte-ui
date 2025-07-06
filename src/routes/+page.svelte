@@ -6,6 +6,7 @@
 	import Select from '$lib/components/Select.svelte';
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { onMount } from 'svelte';
+	import Tab from '$lib/components/Tab.svelte';
 
 	let theme = $state('light');
 	let isDialogOpen = $state(false);
@@ -49,6 +50,39 @@
 
 	let selectValue = $state('');
 	let radioValue = $state('');
+
+	const tabItems = [
+		{
+			title: 'Home',
+			href: '/',
+			icon: 'home',
+			strictMatch: true
+		},
+		{
+			title: 'About',
+			href: '/about',
+			icon: 'info',
+			strictMatch: true
+		},
+		{
+			title: 'Services',
+			href: '/services',
+			icon: 'build',
+			strictMatch: true
+		},
+		{
+			title: 'Contact',
+			href: '/contact',
+			icon: 'mail',
+			strictMatch: true
+		},
+		{
+			title: 'Accessibility Test',
+			href: '/accessibility-test',
+			icon: 'accessibility',
+			strictMatch: true
+		}
+	];
 </script>
 
 <svelte:head>
@@ -158,6 +192,25 @@
 				</Dialog>
 			</div>
 		</div>
+
+		<div class="tab-container">
+			<Tab {tabItems} ariaLabel="Main navigation" />
+		</div>
+
+		<main>
+			<h2>Home Page</h2>
+			<p>This is the home page. Navigate through the tabs above to see the active state change.</p>
+
+			<div class="info-box">
+				<h3>Test Instructions:</h3>
+				<ul>
+					<li>Click on different tabs to see the active state change</li>
+					<li>Use keyboard navigation (arrow keys) to navigate between tabs</li>
+					<li>Try Home/End keys for first/last tab</li>
+					<li>Notice the blue indicator shows the current page</li>
+				</ul>
+			</div>
+		</main>
 	</div>
 </main>
 
@@ -256,4 +309,32 @@
 	}
 
 	/* 手動テスト用のスタイルは削除 - variables.scssの@media (prefers-contrast: high)を使用 */
+
+	.tab-container {
+		background: white;
+		border-radius: 8px;
+		box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+		margin-bottom: 2rem;
+		height: 60px;
+	}
+
+	.info-box {
+		background: #f5f5f5;
+		padding: 1rem;
+		border-radius: 4px;
+		margin-top: 2rem;
+	}
+
+	.info-box h3 {
+		margin-top: 0;
+		color: #333;
+	}
+
+	.info-box ul {
+		margin-bottom: 0;
+	}
+
+	.info-box li {
+		margin-bottom: 0.5rem;
+	}
 </style>

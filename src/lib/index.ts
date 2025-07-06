@@ -11,11 +11,14 @@ export { default as Icon } from './components/Icon.svelte';
 export { default as IconButton } from './components/IconButton.svelte';
 export { default as Input } from './components/Input.svelte';
 export { default as LoadingSpinner } from './components/LoadingSpinner.svelte';
+export { default as Pagination } from './components/Pagination.svelte';
 export { default as Popup } from './components/Popup.svelte';
 export { default as PopupMenu } from './components/PopupMenu.svelte';
 export { default as PopupMenuButton } from './components/PopupMenuButton.svelte';
 export { default as Radio } from './components/Radio.svelte';
 export { default as Select } from './components/Select.svelte';
+export { default as Tab } from './components/Tab.svelte';
+export { default as TabItem } from './components/TabItem.svelte';
 export { default as Textarea } from './components/Textarea.svelte';
 
 // Types

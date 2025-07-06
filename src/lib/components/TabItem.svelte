@@ -4,40 +4,20 @@
 
 	let {
 		tabItem,
-		currentPath
+		isSelected = false
 	}: {
 		tabItem: MenuItem;
-		currentPath: string;
+		isSelected?: boolean;
 	} = $props();
-
-	const isSelected: boolean = $derived.by(() => {
-		if (currentPath === undefined) return false;
-		if (tabItem.href === undefined) return false;
-		if (tabItem.strictMatch) {
-			if (currentPath === tabItem.href) return true;
-			if (
-				tabItem.matchingPath &&
-				tabItem.matchingPath.some((href) => {
-					return currentPath.startsWith(href);
-				})
-			)
-				return true;
-		} else {
-			if (currentPath === '') return false;
-			if (currentPath.startsWith(tabItem.href)) return true;
-			if (
-				tabItem.matchingPath &&
-				tabItem.matchingPath.some((href) => {
-					return currentPath.startsWith(href);
-				})
-			)
-				return true;
-		}
-		return false;
-	});
 </script>
 
-<a href={tabItem.href} class:is-selected={isSelected}>
+<a
+	href={tabItem.href}
+	class:is-selected={isSelected}
+	role="tab"
+	aria-selected={isSelected}
+	tabindex={0}
+>
 	{#if tabItem.icon}
 		<div class="icon-block">
 			<Icon fill={isSelected}>{tabItem.icon}</Icon>
@@ -55,16 +35,41 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 4px;
+		gap: 8px;
 		position: relative;
 		height: 100%;
 		padding: 0 16px;
-		color: var(--text-light);
+		color: var(--svelte-ui-text-subtle-color);
 		white-space: nowrap;
+		text-decoration: none;
+		transition-property: background-color, color, outline;
+		transition-duration: 0.3s;
+		outline: none;
 	}
-	a:hover {
-		background-color: var(--hover-color);
+
+	a:hover:not(.is-selected) {
+		background-color: var(--svelte-ui-hover-overlay);
 	}
+
+	/* キーボードフォーカス時のみ枠線を表示 */
+	a:focus-visible {
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+	}
+
+	/* フォールバック: :focus-visible未対応ブラウザ用 */
+	@supports not selector(:focus-visible) {
+		a:focus {
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+		}
+
+		a:focus:not(.is-selected) {
+			background-color: var(--svelte-ui-hover-overlay);
+		}
+	}
+
+	/* 選択状態のインジケーター */
 	a::before {
 		content: '';
 		display: block;
@@ -73,19 +78,22 @@
 		bottom: 0;
 		width: calc(100% - 32px);
 		height: 4px;
-		background-color: var(--primary-color);
+		background-color: var(--svelte-ui-primary-color);
 		border-radius: 3px 3px 0 0;
-		color: var(--primary-color);
 		opacity: 0;
 		transition-property: opacity;
 		transition-duration: 0.3s;
 	}
+
 	a.is-selected {
-		color: var(--primary-color);
+		color: var(--svelte-ui-primary-color);
+		background-color: transparent;
 	}
+
 	a.is-selected::before {
 		opacity: 1;
 	}
+
 	.icon-block {
 		width: 24px;
 		height: 24px;
