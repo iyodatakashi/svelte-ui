@@ -252,7 +252,7 @@
 	.scrollable {
 		.header {
 			margin-bottom: 0;
-			border-bottom: solid 1px var(--border-light);
+			border-bottom: solid 1px var(--svelte-ui-border-weak-color);
 		}
 		.body {
 			flex-shrink: 1;
@@ -260,7 +260,7 @@
 			overflow: auto;
 		}
 		.footer {
-			border-top: solid 1px var(--border-light);
+			border-top: solid 1px var(--svelte-ui-border-weak-color);
 		}
 	}
 </style>
