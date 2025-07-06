@@ -284,21 +284,25 @@
 	@keyframes fadeInFromLeft {
 		from {
 			opacity: 0;
-			left: calc(0px - var(--svelte-ui-drawer-width));
+			right: 100%;
+			transform: translateX(-50%);
 		}
 		to {
 			opacity: 1;
-			left: 0;
+			right: 100%;
+			transform: translateX(0);
 		}
 	}
 	@keyframes fadeInFromRight {
 		from {
 			opacity: 0;
 			left: 100%;
+			transform: translateX(-50%);
 		}
 		to {
 			opacity: 1;
-			left: calc(100% - var(--svelte-ui-drawer-width));
+			left: 100%;
+			transform: translateX(-100%);
 		}
 	}
 	dialog.right.fade-in {
@@ -313,21 +317,25 @@
 	@keyframes fadeOutToLeft {
 		from {
 			opacity: 1;
-			left: 0;
+			right: 100%;
+			transform: translateX(0);
 		}
 		to {
 			opacity: 0;
-			left: calc(0px - var(--svelte-ui-drawer-width));
+			right: 100%;
+			transform: translateX(-50%);
 		}
 	}
 	@keyframes fadeOutToRight {
 		from {
 			opacity: 1;
-			left: calc(100% - var(--svelte-ui-drawer-width));
+			left: 100%;
+			transform: translateX(-100%);
 		}
 		to {
 			opacity: 0;
 			left: 100%;
+			transform: translateX(-50%);
 		}
 	}
 	@keyframes fadeOut {
