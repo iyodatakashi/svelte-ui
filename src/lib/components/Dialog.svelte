@@ -6,6 +6,7 @@
 		scrollable = false,
 		closeIfClickOutside = true,
 		width = 320,
+		restoreFocus = false,
 		header,
 		body,
 		children,
@@ -16,6 +17,7 @@
 		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
 		width?: number;
+		restoreFocus?: boolean;
 		header?: Snippet;
 		body?: Snippet;
 		children?: Snippet;
@@ -23,6 +25,9 @@
 	} = $props();
 	let dialogRef: HTMLDialogElement;
 	let containerRef: HTMLDivElement;
+	let previousActiveElement: HTMLElement | null = null;
+
+	// 外側クリックでのクローズ
 	$effect(() => {
 		if (!dialogRef) return;
 
@@ -39,6 +44,59 @@
 			dialogRef.removeEventListener('click', handleClick);
 		};
 	});
+
+	// ESCキーでのクローズ
+	$effect(() => {
+		if (!isOpen) return;
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key === 'Escape') {
+				close();
+			}
+		};
+
+		document.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			document.removeEventListener('keydown', handleKeyDown);
+		};
+	});
+
+	// フォーカストラップ
+	$effect(() => {
+		if (!isOpen || !dialogRef) return;
+
+		const handleKeyDown = (event: KeyboardEvent) => {
+			if (event.key !== 'Tab') return;
+
+			const focusableElements = dialogRef.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
+			const firstElement = focusableElements[0] as HTMLElement;
+			const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+
+			if (event.shiftKey) {
+				// Shift + Tab
+				if (document.activeElement === firstElement) {
+					event.preventDefault();
+					lastElement?.focus();
+				}
+			} else {
+				// Tab
+				if (document.activeElement === lastElement) {
+					event.preventDefault();
+					firstElement?.focus();
+				}
+			}
+		};
+
+		dialogRef.addEventListener('keydown', handleKeyDown);
+
+		return () => {
+			dialogRef.removeEventListener('keydown', handleKeyDown);
+		};
+	});
+
 	$effect(() => {
 		if (dialogRef) {
 			if (isOpen) {
@@ -50,12 +108,16 @@
 	});
 	export const open = (): void => {
 		isOpen = true;
+		previousActiveElement = document.activeElement as HTMLElement;
 		dialogRef.classList.add('fade-in');
 		dialogRef.removeEventListener('animationend', closeEnd);
 		dialogRef.showModal();
 		setTimeout(() => {
-			const activeElement = document.activeElement as HTMLElement | null;
-			activeElement?.blur();
+			// 最初のフォーカス可能要素にフォーカス
+			const firstFocusableElement = dialogRef.querySelector(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			) as HTMLElement;
+			firstFocusableElement?.focus();
 		}, 0);
 	};
 	export const close = (): void => {
@@ -66,6 +128,11 @@
 	export const closeEnd = (): void => {
 		dialogRef.close();
 		dialogRef.classList.remove('fade-out');
+		// オプションが有効な場合のみ元の要素にフォーカスを戻す
+		if (restoreFocus && previousActiveElement) {
+			previousActiveElement.focus();
+		}
+		previousActiveElement = null;
 	};
 </script>
 
@@ -74,6 +141,8 @@
 	class:scrollable
 	class={isOpen ? 'fade-in' : 'fade-out'}
 	style="width: {width}px"
+	aria-modal="true"
+	aria-labelledby={title ? 'dialog-title' : undefined}
 >
 	<div class="dialog-contents" bind:this={containerRef}>
 		{#if header || title}
@@ -81,7 +150,7 @@
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="title-block">
+					<div class="title-block" id="dialog-title">
 						{title || ''}
 					</div>
 				{/if}

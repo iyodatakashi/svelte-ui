@@ -30,6 +30,7 @@
 		ariaLabelledby,
 		ariaDescribedby,
 		focusTrap = false,
+		restoreFocus = false,
 		onOpen,
 		onClose,
 		mobileFullscreen = false,
@@ -63,6 +64,7 @@
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
 		focusTrap?: boolean;
+		restoreFocus?: boolean;
 		onOpen?: () => void;
 		onClose?: () => void;
 		mobileFullscreen?: boolean;
@@ -75,6 +77,7 @@
 	let isOpen: boolean = $state(false);
 	let popupRef: HTMLDivElement | undefined = $state();
 	let popupId: string = $state(`popup-${Math.random().toString(36).substr(2, 9)}`);
+	let previousActiveElement: HTMLElement | null = null;
 
 	// モバイル関連の状態
 	let isMobile: boolean = $state(false);
@@ -151,6 +154,8 @@
 	};
 
 	export const open = async () => {
+		previousActiveElement = document.activeElement as HTMLElement;
+
 		setTimeout(async () => {
 			popupRef?.removeEventListener('animationend', closeEnd);
 
@@ -212,6 +217,12 @@
 			popupRef.style.maxHeight = '';
 			popupRef.style.overflowY = '';
 		}
+
+		// オプションが有効な場合のみ元の要素にフォーカスを戻す
+		if (restoreFocus && previousActiveElement) {
+			previousActiveElement.focus();
+		}
+		previousActiveElement = null;
 	};
 
 	const focusFirstElement = () => {
