@@ -69,30 +69,18 @@
 		if (!dialogRef || !isOpen) return;
 
 		const handleClick = (event: MouseEvent) => {
-			try {
-				if (!closeIfClickOutside) return;
-				if (!containerRef || !event.target) return;
-				if (!containerRef.contains(event.target as Node)) {
-					close();
-				}
-			} catch {
-				// エラーを無視して続行
+			if (!closeIfClickOutside) return;
+			if (!containerRef || !event.target) return;
+			if (!containerRef.contains(event.target as Node)) {
+				close();
 			}
 		};
 
-		try {
-			dialogRef.addEventListener('click', handleClick);
-		} catch {
-			// エラーを無視して続行
-		}
+		dialogRef.addEventListener('click', handleClick);
 
 		return () => {
-			try {
-				if (dialogRef) {
-					dialogRef.removeEventListener('click', handleClick);
-				}
-			} catch {
-				// エラーを無視して続行
+			if (dialogRef) {
+				dialogRef.removeEventListener('click', handleClick);
 			}
 		};
 	});
@@ -102,27 +90,15 @@
 		if (!isOpen || !dialogRef) return;
 
 		const handleKeyDown = (event: KeyboardEvent) => {
-			try {
-				if (event.key === 'Escape') {
-					close();
-				}
-			} catch {
-				// エラーを無視して続行
+			if (event.key === 'Escape') {
+				close();
 			}
 		};
 
-		try {
-			document.addEventListener('keydown', handleKeyDown);
-		} catch {
-			// エラーを無視して続行
-		}
+		document.addEventListener('keydown', handleKeyDown);
 
 		return () => {
-			try {
-				document.removeEventListener('keydown', handleKeyDown);
-			} catch {
-				// エラーを無視して続行
-			}
+			document.removeEventListener('keydown', handleKeyDown);
 		};
 	});
 
@@ -131,131 +107,96 @@
 		if (!isOpen || !dialogRef) return;
 
 		const handleKeyDown = (event: KeyboardEvent) => {
-			try {
-				if (event.key !== 'Tab') return;
+			if (event.key !== 'Tab') return;
 
-				const focusableElements = dialogRef.querySelectorAll(
-					'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-				);
+			const focusableElements = dialogRef.querySelectorAll(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			);
 
-				if (focusableElements.length === 0) return;
+			if (focusableElements.length === 0) return;
 
-				const firstElement = focusableElements[0] as HTMLElement;
-				const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
+			const firstElement = focusableElements[0] as HTMLElement;
+			const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
-				if (event.shiftKey) {
-					// Shift + Tab
-					if (document.activeElement === firstElement) {
-						event.preventDefault();
-						lastElement?.focus();
-					}
-				} else {
-					// Tab
-					if (document.activeElement === lastElement) {
-						event.preventDefault();
-						firstElement?.focus();
-					}
+			if (event.shiftKey) {
+				// Shift + Tab
+				if (document.activeElement === firstElement) {
+					event.preventDefault();
+					lastElement?.focus();
 				}
-			} catch {
-				// エラーを無視して続行
+			} else {
+				// Tab
+				if (document.activeElement === lastElement) {
+					event.preventDefault();
+					firstElement?.focus();
+				}
 			}
 		};
 
-		try {
-			dialogRef.addEventListener('keydown', handleKeyDown);
-		} catch {
-			// エラーを無視して続行
-		}
+		dialogRef.addEventListener('keydown', handleKeyDown);
 
 		return () => {
-			try {
-				if (dialogRef) {
-					dialogRef.removeEventListener('keydown', handleKeyDown);
-				}
-			} catch {
-				// エラーを無視して続行
+			if (dialogRef) {
+				dialogRef.removeEventListener('keydown', handleKeyDown);
 			}
 		};
 	});
 
 	$effect(() => {
 		if (dialogRef) {
-			try {
-				if (isOpen) {
-					open();
-				} else {
-					close();
-				}
-			} catch {
-				// エラーを無視して続行
+			if (isOpen) {
+				open();
+			} else {
+				close();
 			}
 		}
 	});
 	export const open = (): void => {
-		try {
-			if (!dialogRef) return;
+		if (!dialogRef) return;
 
-			isOpen = true;
-			previousActiveElement = document.activeElement as HTMLElement;
-			dialogRef.classList.add('fade-in');
-			dialogRef.removeEventListener('animationend', closeEnd);
-			dialogRef.showModal();
+		isOpen = true;
+		previousActiveElement = document.activeElement as HTMLElement;
 
-			setTimeout(() => {
-				try {
-					// 最初のフォーカス可能要素にフォーカス
-					const firstFocusableElement = dialogRef.querySelector(
-						'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-					) as HTMLElement;
-					firstFocusableElement?.focus();
-				} catch {
-					// エラーを無視して続行
-				}
+		dialogRef.classList.add('fade-in');
+		dialogRef.removeEventListener('animationend', closeEnd);
+		dialogRef.showModal();
 
-				// スクリーンリーダーにドロワーが開いたことをアナウンス
-				const titleText = title || ariaLabel || 'Drawer';
-				announceToScreenReader(`${titleText} opened`);
-			}, 0);
-		} catch {
-			// エラーを無視して続行
-		}
+		setTimeout(() => {
+			// 最初のフォーカス可能要素にフォーカス
+			const firstFocusableElement = dialogRef?.querySelector(
+				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
+			) as HTMLElement;
+			firstFocusableElement?.focus();
+
+			// スクリーンリーダーにドロワーが開いたことをアナウンス
+			const titleText = title || ariaLabel || 'Drawer';
+			announceToScreenReader(`${titleText} opened`);
+		}, 0);
 	};
 
 	export const close = (): void => {
-		try {
-			if (!dialogRef) return;
+		if (!dialogRef) return;
 
-			isOpen = false;
-			dialogRef.classList.add('fade-out');
-			dialogRef.addEventListener('animationend', closeEnd, { once: true });
+		isOpen = false;
+		dialogRef.classList.add('fade-out');
+		dialogRef.addEventListener('animationend', closeEnd, { once: true });
 
-			// スクリーンリーダーにドロワーが閉じたことをアナウンス
-			const titleText = title || ariaLabel || 'Drawer';
-			announceToScreenReader(`${titleText} closed`);
-		} catch {
-			// エラーを無視して続行
-		}
+		// スクリーンリーダーにドロワーが閉じたことをアナウンス
+		const titleText = title || ariaLabel || 'Drawer';
+		announceToScreenReader(`${titleText} closed`);
 	};
 
 	export const closeEnd = (): void => {
-		try {
-			if (!dialogRef) return;
+		if (!dialogRef) return;
 
-			dialogRef.close();
-			dialogRef.classList.remove('fade-out');
+		dialogRef.close();
+		dialogRef.classList.remove('fade-out');
 
-			// オプションが有効な場合のみ元の要素にフォーカスを戻す
-			if (restoreFocus && previousActiveElement) {
-				try {
-					previousActiveElement.focus();
-				} catch {
-					// エラーを無視して続行
-				}
-			}
-			previousActiveElement = null;
-		} catch {
-			// エラーを無視して続行
+		// オプションが有効な場合のみ元の要素にフォーカスを戻す
+		if (restoreFocus && previousActiveElement) {
+			previousActiveElement.focus();
 		}
+		previousActiveElement = null;
 	};
 </script>
 
