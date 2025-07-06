@@ -123,7 +123,7 @@
 >
 	{#if loading}
 		<div class="button__loading">
-			<LoadingSpinner />
+			<LoadingSpinner size={18} strokeWidth={2} color="currentColor" />
 		</div>
 	{:else if icon}
 		<div class="button__icon">

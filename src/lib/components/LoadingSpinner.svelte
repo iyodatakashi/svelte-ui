@@ -28,7 +28,7 @@
 </script>
 
 <div
-	class="spinner"
+	class="loading-spinner"
 	class:spinner--no-motion={reducedMotion}
 	style:--grow-duration="{growDuration}s"
 	style:--rotate-duration="{rotateDuration}s"
@@ -44,19 +44,20 @@
 </div>
 
 <style>
-	.spinner {
+	.loading-spinner {
 		width: var(--spinner-size, var(--svelte-ui-loadingspinner-size));
 		height: var(--spinner-size, var(--svelte-ui-loadingspinner-size));
+		line-height: 1px;
 	}
 
-	.spinner svg {
+	.loading-spinner svg {
 		width: 100%;
 		height: 100%;
 		transform: rotate(-90deg);
 		animation: rotate var(--rotate-duration, 0.8s) linear infinite;
 	}
 
-	.spinner circle {
+	.loading-spinner circle {
 		fill: none;
 		stroke: var(--spinner-color, var(--svelte-ui-loadingspinner-color));
 		stroke-linecap: butt;
@@ -97,8 +98,8 @@
 
 	/* Prefers reduced motion */
 	@media (prefers-reduced-motion: reduce) {
-		.spinner svg,
-		.spinner circle {
+		.loading-spinner svg,
+		.loading-spinner circle {
 			animation-duration: 0.01s;
 		}
 	}

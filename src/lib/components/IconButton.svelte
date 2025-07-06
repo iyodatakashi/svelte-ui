@@ -130,7 +130,7 @@
 	>
 		{#if loading}
 			<div class="iconbutton__loading">
-				<LoadingSpinner />
+				<LoadingSpinner size={size * 0.5} strokeWidth={2} color="currentColor" />
 			</div>
 		{:else}
 			<div class="iconbutton__icon" class:iconbutton__icon--hidden={loading}>
