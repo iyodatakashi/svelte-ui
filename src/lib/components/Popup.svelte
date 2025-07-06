@@ -412,17 +412,61 @@
 		return { x, y };
 	};
 
+	const handleScroll = (event: Event) => {
+		// スクロールイベントが発生した要素を取得
+		const target = event.target;
+
+		// Popup内の要素かどうかを判定
+		if (
+			popupRef &&
+			target &&
+			target instanceof Element &&
+			(popupRef.contains(target) || target === popupRef)
+		) {
+			// Popup内でのスクロールの場合は閉じない
+			return;
+		}
+
+		// anchorElementの祖先要素がスクロールされた場合のみPopupを閉じる
+		if (anchorElement && target) {
+			// ページ全体のスクロール（document、documentElement、body）の場合は常に閉じる
+			if (target === document || target === document.documentElement || target === document.body) {
+				close();
+				return;
+			}
+
+			// スクロールされた要素がanchorElementの祖先要素かどうかを判定
+			if (target instanceof Element && target.contains(anchorElement)) {
+				// anchorElementの親要素がスクロールされた場合は閉じる
+				close();
+				return;
+			}
+		}
+
+		// 関係ない要素のスクロールの場合は何もしない
+	};
+
 	const addEventListenersToClose = () => {
 		window.addEventListener('resize', close);
+
+		// すべてのスクロールイベントを監視（キャプチャフェーズで捕捉）
+		// これにより、ページ全体のスクロールやoverflow:scrollの要素のスクロールも検出される
+		window.addEventListener('scroll', handleScroll, true);
+
+		// 念のため、特定の.scrollableクラスの要素も監視
 		document.querySelectorAll('.scrollable').forEach((element) => {
-			element.addEventListener('scroll', close);
+			element.addEventListener('scroll', handleScroll);
 		});
 	};
 
 	const removeEventListenersToClose = () => {
 		window.removeEventListener('resize', close);
+
+		// スクロールイベントリスナーの削除
+		window.removeEventListener('scroll', handleScroll, true);
+
 		document.querySelectorAll('.scrollable').forEach((element) => {
-			element.removeEventListener('scroll', close);
+			element.removeEventListener('scroll', handleScroll);
 		});
 	};
 
