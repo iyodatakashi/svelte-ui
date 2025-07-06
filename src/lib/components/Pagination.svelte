@@ -66,7 +66,11 @@
 		</li>
 		{#each pageList as page (page)}
 			<li>
-				<button class:is-selected={page === currentPageNum} onclick={() => handleClick(page)}>
+				<button
+					class:is-selected={page === currentPageNum}
+					aria-label={`${page}ページ目へ移動`}
+					onclick={() => handleClick(page)}
+				>
 					{page}
 				</button>
 			</li>
