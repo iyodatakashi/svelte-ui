@@ -124,10 +124,11 @@
 				{#each files as file, index}
 					<div class="image-preview-item" class:single={!multiple}>
 						<img src={createImageUrl(file)} alt={file.name} class="preview-image" />
-						<div class="image-overlay">
+						<div class="delete-button-container">
 							<IconButton
-								variant="filled"
+								iconFill={true}
 								size={24}
+								color="var(--svelte-ui-text-color)"
 								onclick={(e) => {
 									e.stopPropagation();
 									removeFile(index);
@@ -135,7 +136,7 @@
 								ariaLabel="画像を削除"
 								tabindex={-1}
 							>
-								<Icon>close</Icon>
+								cancel
 							</IconButton>
 						</div>
 					</div>
@@ -176,7 +177,9 @@
 
 <style>
 	.image-uploader-container {
+		position: relative;
 		width: 100%;
+		height: 100%;
 	}
 
 	.image-uploader {
@@ -188,11 +191,27 @@
 		min-height: 200px;
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
-		border: dashed 1px var(--svelte-ui-border-color);
 		border-radius: var(--svelte-ui-border-radius);
 		cursor: pointer;
-		transition: all var(--svelte-ui-transition-duration-fast);
+		transition: background-color var(--svelte-ui-transition-duration);
 		position: relative;
+	}
+
+	.image-uploader::before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: calc(100% - 2px);
+		height: calc(100% - 2px);
+		border: dashed 1px var(--svelte-ui-border-color);
+		border-radius: var(--svelte-ui-border-radius);
+		transition: border-color var(--svelte-ui-transition-duration);
+	}
+
+	.image-uploader:hover {
+		background-color: var(--svelte-ui-fileupload-hover-bg);
 	}
 
 	.image-uploader:focus-visible {
@@ -202,6 +221,11 @@
 
 	.image-uploader.hover {
 		background-color: var(--svelte-ui-hover-overlay);
+		border-color: var(--svelte-ui-primary-color);
+	}
+
+	.image-uploader:hover::before,
+	.image-uploader.hover::before {
 		border-color: var(--svelte-ui-primary-color);
 	}
 
@@ -247,7 +271,6 @@
 		border-radius: var(--svelte-ui-border-radius);
 		overflow: hidden;
 		background-color: var(--svelte-ui-surface-color);
-		border: 1px solid var(--svelte-ui-border-color);
 	}
 
 	.image-preview-item.single {
@@ -263,15 +286,15 @@
 		object-position: center;
 	}
 
-	.image-overlay {
+	.delete-button-container {
 		position: absolute;
 		top: 4px;
 		right: 4px;
 		opacity: 0;
-		transition: opacity var(--svelte-ui-transition-duration-fast);
+		transition: opacity var(--svelte-ui-transition-duration);
 	}
 
-	.image-preview-item:hover .image-overlay {
+	.image-preview-item:hover .delete-button-container {
 		opacity: 1;
 	}
 
