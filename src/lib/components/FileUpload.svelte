@@ -5,12 +5,18 @@
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
+
+	const generateId = (): string => {
+		return 'fileupload-' + Math.random().toString(36).substring(2, 15);
+	};
+	const fileUploadId = generateId();
 	const handleClick = () => {
 		fileInputRef?.click();
 	};
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
+			files = undefined;
 		}
 	};
 </script>
@@ -55,7 +61,7 @@
 		bind:this={fileInputRef}
 		{accept}
 		class="upload-file-input"
-		id="file-upload"
+		id={fileUploadId}
 		type="file"
 		bind:files
 	/>
@@ -71,15 +77,15 @@
 		width: 100%;
 		min-height: 100px;
 		padding: 16px;
-		background-color: var(--base-50-transparent);
+		background-color: var(--svelte-ui-fileupload-bg);
 		border: dashed 1px var(--svelte-ui-border-color);
 		border-radius: 4px;
 	}
 	.hover {
-		background-color: var(--base-100-transparent);
+		background-color: var(--svelte-ui-fileupload-hover-bg);
 	}
 	.file-upload-text {
-		color: var(--text-light);
+		color: var(--svelte-ui-text-subtle-color);
 	}
 	.upload-file-input {
 		display: none;
