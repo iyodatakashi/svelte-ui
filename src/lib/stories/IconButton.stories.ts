@@ -64,11 +64,6 @@ const meta: Meta<IconButtonArgs> = {
 			control: 'number',
 			description: 'Size of the button in pixels'
 		},
-		fontSize: {
-			control: 'number',
-			description: 'Font size of the icon (defaults to size * 0.75)'
-		},
-
 		disabled: {
 			control: 'boolean',
 			description: 'Whether the button is disabled'
@@ -306,8 +301,6 @@ export const Playground: Story = {
 		type: 'button',
 		variant: 'filled',
 		size: 32,
-		fontSize: 24,
-
 		disabled: false,
 		loading: false,
 		rounded: true,
