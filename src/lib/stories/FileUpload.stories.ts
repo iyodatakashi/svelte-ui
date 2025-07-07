@@ -1,9 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import FileUpload from '../components/FileUpload.svelte';
+import FileUploader from '../components/FileUploader.svelte';
 
-const meta: Meta<FileUpload> = {
-	title: 'Forms/FileUpload',
-	component: FileUpload,
+const meta: Meta<FileUploader> = {
+	title: 'Forms/FileUploader',
+	component: FileUploader,
 	parameters: {
 		layout: 'padded',
 		docs: {

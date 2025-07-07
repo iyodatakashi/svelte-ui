@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Button from './Button.svelte';
+	import Icon from './Icon.svelte';
+
 	let { files = $bindable(), accept = '' }: { files: FileList | undefined; accept: string } =
 		$props();
 	let dropAreaRef: HTMLButtonElement;
@@ -23,7 +24,7 @@
 
 <button
 	bind:this={dropAreaRef}
-	class="file-upload"
+	class="file-uploader"
 	class:hover={isHover}
 	onclick={handleClick}
 	ondragover={(event) => {
@@ -48,16 +49,20 @@
 	aria-label="ファイルをアップロード"
 	aria-describedby={`${fileUploadId}-help`}
 >
-	<p class="file-upload-text" id={`${fileUploadId}-help`}>ファイルをドラッグ＆ドロップ</p>
-	<div class="file-select-button-block">
-		<Button variant="outlined" tabindex={-1}>またはファイルを選択</Button>
-	</div>
 	{#if files && files.length > 0}
-		<ul class="file-list">
-			{#each files as file}
-				<li>{file.name}</li>
-			{/each}
-		</ul>
+		<div class="description with-file">
+			<Icon size={48}>draft</Icon>
+			<ul class="file-list">
+				{#each files as file}
+					<li>{file.name}</li>
+				{/each}
+			</ul>
+		</div>
+	{:else}
+		<div class="description">
+			<Icon size={48}>draft</Icon>
+			ファイルをドラッグ＆ドロップ<br />またはファイルを選択
+		</div>
 	{/if}
 	<input
 		bind:this={fileInputRef}
@@ -70,7 +75,7 @@
 </button>
 
 <style>
-	.file-upload {
+	.file-uploader {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
@@ -84,7 +89,12 @@
 		border-radius: 4px;
 	}
 
-	.file-upload:focus-visible {
+	.file-uploader:hover {
+		background-color: var(--svelte-ui-fileupload-hover-bg);
+		border-color: var(--svelte-ui-primary-color);
+	}
+
+	.file-uploader:focus-visible {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
@@ -92,8 +102,15 @@
 		background-color: var(--svelte-ui-fileupload-hover-bg);
 		border-color: var(--svelte-ui-primary-color);
 	}
-	.file-upload-text {
+	.description {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
 		color: var(--svelte-ui-text-subtle-color);
+	}
+	.description.with-file {
+		color: var(--svelte-ui-text-color);
 	}
 	.upload-file-input {
 		display: none;

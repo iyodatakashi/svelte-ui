@@ -5,7 +5,7 @@ const meta: Meta<ImageUploader> = {
 	title: 'Forms/ImageUploader',
 	component: ImageUploader,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component: '画像ファイルの選択とプレビュー表示機能を持つImageUploaderコンポーネント'

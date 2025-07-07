@@ -1,5 +1,4 @@
 <script lang="ts">
-	import Button from './Button.svelte';
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 
@@ -143,12 +142,9 @@
 				{/each}
 			</div>
 		{:else}
-			<div class="upload-prompt">
+			<div class="description">
 				<Icon size={48}>image</Icon>
-				<p class="upload-text" id={`${imageUploaderId}-help`}>画像をドラッグ＆ドロップ</p>
-				<div class="upload-button-block">
-					<Button variant="outlined" tabindex={-1}>または画像を選択</Button>
-				</div>
+				画像をドラッグ＆ドロップ<br />または画像を選択
 			</div>
 		{/if}
 	</button>
@@ -188,7 +184,6 @@
 		justify-content: center;
 		align-items: center;
 		width: 100%;
-		min-height: 200px;
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
 		border-radius: var(--svelte-ui-border-radius);
@@ -234,22 +229,12 @@
 		min-height: auto;
 	}
 
-	.upload-prompt {
+	.description {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 16px;
 		color: var(--svelte-ui-text-subtle-color);
-	}
-
-	.upload-text {
-		margin: 0;
-		font-size: var(--svelte-ui-font-size-lg);
-		color: var(--svelte-ui-text-subtle-color);
-	}
-
-	.upload-button-block {
-		margin-top: 8px;
 	}
 
 	.image-preview-container {
@@ -275,8 +260,7 @@
 
 	.image-preview-item.single {
 		width: 100%;
-		height: 300px;
-		max-height: 500px;
+		height: auto;
 	}
 
 	.preview-image {
