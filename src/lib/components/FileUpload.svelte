@@ -45,10 +45,12 @@
 			files = fileList;
 		}
 	}}
+	aria-label="ファイルをアップロード"
+	aria-describedby={`${fileUploadId}-help`}
 >
-	<p class="file-upload-text">ファイルをドラッグ＆ドロップ</p>
+	<p class="file-upload-text" id={`${fileUploadId}-help`}>ファイルをドラッグ＆ドロップ</p>
 	<div class="file-select-button-block">
-		<Button variant="outlined">またはファイルを選択</Button>
+		<Button variant="outlined" tabindex={-1}>またはファイルを選択</Button>
 	</div>
 	{#if files && files.length > 0}
 		<ul class="file-list">
@@ -81,8 +83,14 @@
 		border: dashed 1px var(--svelte-ui-border-color);
 		border-radius: 4px;
 	}
+
+	.file-upload:focus-visible {
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+	}
 	.hover {
 		background-color: var(--svelte-ui-fileupload-hover-bg);
+		border-color: var(--svelte-ui-primary-color);
 	}
 	.file-upload-text {
 		color: var(--svelte-ui-text-subtle-color);
