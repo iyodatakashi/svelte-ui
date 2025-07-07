@@ -215,7 +215,7 @@
 	}
 
 	.image-uploader.hover {
-		background-color: var(--svelte-ui-hover-overlay);
+		background-color: var(--svelte-ui-fileupload-hover-bg);
 		border-color: var(--svelte-ui-primary-color);
 	}
 
