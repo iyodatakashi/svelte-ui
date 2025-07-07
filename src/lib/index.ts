@@ -11,6 +11,7 @@ export { default as FileUpload } from './components/FileUpload.svelte';
 export { default as Fab } from './components/Fab.svelte';
 export { default as Icon } from './components/Icon.svelte';
 export { default as IconButton } from './components/IconButton.svelte';
+export { default as ImageUploader } from './components/ImageUploader.svelte';
 export { default as Input } from './components/Input.svelte';
 export { default as LoadingSpinner } from './components/LoadingSpinner.svelte';
 export { default as Pagination } from './components/Pagination.svelte';
