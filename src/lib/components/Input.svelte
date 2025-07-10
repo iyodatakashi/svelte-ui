@@ -9,7 +9,6 @@
 		type = 'text',
 		customStyle = '',
 		variant = 'default',
-
 		focusStyle = 'background',
 		placeholder = '',
 		fullWidth = false,
@@ -24,6 +23,7 @@
 		hasRightIcon = false,
 		rightIcon = undefined,
 		leftIcon = undefined,
+		iconFilled = false,
 		rounded = false,
 		disabled = false,
 		readonly = false,
@@ -46,7 +46,6 @@
 		type?: 'text' | 'password' | 'number';
 		customStyle?: string;
 		variant?: 'default' | 'inline';
-
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -61,6 +60,7 @@
 		hasRightIcon?: boolean;
 		rightIcon?: string;
 		leftIcon?: string;
+		iconFilled?: boolean;
 		rounded?: boolean;
 		disabled?: boolean;
 		readonly?: boolean;
@@ -75,8 +75,8 @@
 		onblur?: Function;
 		onclick?: Function;
 		onkeydown?: Function;
-		onRightIconClick?: Function;
-		onLeftIconClick?: Function;
+		onRightIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
+		onLeftIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 	} = $props();
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
@@ -187,7 +187,7 @@
 				color="var(--svelte-ui-input-text-color)"
 				onclick={clear}
 				tabindex={-1}
-				iconFill={true}
+				iconFilled={true}
 				size={24}>cancel</IconButton
 			>
 		</div>
@@ -196,26 +196,46 @@
 	<!-- Left Icon -->
 	{#if leftIcon}
 		<div class="left-icon-block">
-			<Icon
-				fill={true}
-				onclick={onLeftIconClick}
-				style="cursor: {onLeftIconClick ? 'pointer' : 'default'}"
-			>
-				{leftIcon}
-			</Icon>
+			{#if onLeftIconClick}
+				<IconButton
+					ariaLabel="左アイコン"
+					color="var(--svelte-ui-select-icon-color)"
+					variant="text"
+					onclick={onLeftIconClick}
+					tabindex={-1}
+					{iconFilled}
+					size={32}
+				>
+					{leftIcon}
+				</IconButton>
+			{:else}
+				<Icon fill={iconFilled}>
+					{leftIcon}
+				</Icon>
+			{/if}
 		</div>
 	{/if}
 
 	<!-- Right Icon -->
 	{#if rightIcon}
 		<div class="right-icon-block">
-			<Icon
-				fill={true}
-				onclick={onRightIconClick}
-				style="cursor: {onRightIconClick ? 'pointer' : 'default'}"
-			>
-				{rightIcon}
-			</Icon>
+			{#if onRightIconClick}
+				<IconButton
+					ariaLabel="右アイコン"
+					color="var(--svelte-ui-select-icon-color)"
+					variant="text"
+					onclick={onRightIconClick}
+					tabindex={-1}
+					{iconFilled}
+					size={32}
+				>
+					{rightIcon}
+				</IconButton>
+			{:else}
+				<Icon fill={iconFilled}>
+					{rightIcon}
+				</Icon>
+			{/if}
 		</div>
 	{/if}
 </div>
@@ -322,9 +342,12 @@
 	}
 
 	.left-icon-block {
+		display: flex;
+		justify-content: center;
 		position: absolute;
 		top: 50%;
-		left: 8px;
+		left: 0;
+		width: 40px;
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-size);
 		color: var(--svelte-ui-select-icon-color);
@@ -333,9 +356,12 @@
 	}
 
 	.right-icon-block {
+		display: flex;
+		justify-content: center;
 		position: absolute;
 		top: 50%;
-		right: 8px;
+		right: 0;
+		width: 40px;
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-size);
 		color: var(--svelte-ui-select-icon-color);

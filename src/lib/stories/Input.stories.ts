@@ -82,6 +82,10 @@ const meta = {
 		leftIcon: {
 			control: { type: 'text' },
 			description: '左側のアイコン名'
+		},
+		iconFilled: {
+			control: { type: 'boolean' },
+			description: 'アイコンを塗りつぶし表示'
 		}
 	}
 };
@@ -211,6 +215,7 @@ export const WithRightIcon = {
 	args: {
 		placeholder: '右側にアイコン',
 		rightIcon: 'search',
+		iconFilled: true,
 		onRightIconClick: () => alert('右アイコンがクリックされました！')
 	}
 };
@@ -220,6 +225,7 @@ export const WithLeftIcon = {
 	args: {
 		placeholder: '左側にアイコン',
 		leftIcon: 'person',
+		iconFilled: true,
 		onLeftIconClick: () => alert('左アイコンがクリックされました！')
 	}
 };
@@ -230,6 +236,7 @@ export const WithBothIcons = {
 		placeholder: '両側にアイコン',
 		leftIcon: 'search',
 		rightIcon: 'clear',
+		iconFilled: true,
 		onLeftIconClick: () => alert('左アイコンがクリックされました！'),
 		onRightIconClick: () => alert('右アイコンがクリックされました！')
 	}
@@ -241,8 +248,39 @@ export const IconsDisabled = {
 		placeholder: '無効状態のアイコン',
 		rightIcon: 'calendar_today',
 		leftIcon: 'person',
+		iconFilled: true,
 		disabled: true,
 		value: '無効状態'
+	}
+};
+
+// Icon Fill Comparison
+export const IconFillComparison = {
+	args: {
+		placeholder: 'アイコンの塗りつぶし比較',
+		leftIcon: 'favorite',
+		rightIcon: 'star',
+		iconFilled: false
+	}
+};
+
+// Icon Fill True
+export const IconFillTrue = {
+	args: {
+		placeholder: 'アイコン塗りつぶしあり',
+		leftIcon: 'favorite',
+		rightIcon: 'star',
+		iconFilled: true
+	}
+};
+
+// Icon Fill False
+export const IconFillFalse = {
+	args: {
+		placeholder: 'アイコン塗りつぶしなし',
+		leftIcon: 'favorite',
+		rightIcon: 'star',
+		iconFilled: false
 	}
 };
 
@@ -260,7 +298,6 @@ export const Playground = {
 		value: '',
 		type: 'text',
 		variant: 'default',
-
 		focusStyle: 'background',
 		placeholder: 'Playground',
 		fullWidth: false,
@@ -270,7 +307,8 @@ export const Playground = {
 		readonly: false,
 		required: false,
 		minWidth: null,
-		maxWidth: null
+		maxWidth: null,
+		iconFilled: false
 	},
 	render: (args: Record<string, unknown>) => ({
 		Component: Input,

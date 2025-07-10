@@ -14,7 +14,7 @@ interface IconButtonArgs {
 	disabled?: boolean;
 	loading?: boolean;
 	tabindex?: number | null;
-	iconFill?: boolean;
+	iconFilled?: boolean;
 	iconWeight?: number;
 	customStyle?: string;
 	rounded?: boolean;
@@ -80,7 +80,7 @@ const meta: Meta<IconButtonArgs> = {
 			control: 'boolean',
 			description: 'Whether the button appears pressed (for toggle buttons)'
 		},
-		iconFill: {
+		iconFilled: {
 			control: 'boolean',
 			description: 'Whether the icon should be filled'
 		},
@@ -227,7 +227,7 @@ export const Loading: Story = {
 export const FilledIcon: Story = {
 	args: {
 		variant: 'text',
-		iconFill: true,
+		iconFilled: true,
 		ariaLabel: 'Filled heart button',
 		children: createChildrenSnippet('favorite')
 	}
@@ -305,7 +305,7 @@ export const Playground: Story = {
 		loading: false,
 		rounded: true,
 		pressed: false,
-		iconFill: false,
+		iconFilled: false,
 		showBadge: false,
 		badgeCount: 0,
 		badgeVariant: 'count',
