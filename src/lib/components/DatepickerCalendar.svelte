@@ -667,7 +667,7 @@
 									class="date-button"
 									aria-current={isToday(date) ? 'date' : undefined}
 									aria-pressed={isSelected(date)}
-									aria-label={`${date.locale(locale).format('LL')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
+									aria-label={`${date.locale(locale).format('YYYY/MM/DD')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
 									aria-disabled={isOutOfRange(date)}
 									onclick={() => {
 										focusedDate = date;
@@ -891,7 +891,7 @@
 
 	.date-list-item.is-range-middle .date-button {
 		background-color: transparent;
-		color: var(--svelte-ui-datepicker-date-color);
+		color: var(--svelte-ui-datepicker-date-color); // 今日も黒にする
 		z-index: 1;
 		position: relative;
 	}
@@ -909,7 +909,6 @@
 
 	.date-list-item.is-range-preview-middle .date-button {
 		background-color: transparent;
-		color: var(--svelte-ui-datepicker-date-color);
 		z-index: 1;
 		position: relative;
 	}
