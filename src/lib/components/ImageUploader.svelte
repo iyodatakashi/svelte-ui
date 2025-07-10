@@ -6,12 +6,22 @@
 		files = $bindable(),
 		accept = '.jpg,.jpeg,.png,.gif,.webp',
 		multiple = false,
-		maxSize = 5 * 1024 * 1024 // 5MB
+		maxFileSize = 5 * 1024 * 1024, // 5MB
+		width = undefined,
+		height = undefined,
+		rounded = false,
+		icon = 'image',
+		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択'
 	}: {
 		files?: FileList;
 		accept?: string;
 		multiple?: boolean;
-		maxSize?: number;
+		maxFileSize?: number;
+		width?: number;
+		height?: number;
+		rounded?: boolean;
+		icon?: string;
+		placeholder?: string;
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;
@@ -36,8 +46,8 @@
 		}
 
 		// ファイルサイズチェック
-		if (file.size > maxSize) {
-			errorMessage = `ファイルサイズは${(maxSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
+		if (file.size > maxFileSize) {
+			errorMessage = `ファイルサイズは${(maxFileSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
 			return false;
 		}
 
@@ -89,12 +99,20 @@
 	};
 </script>
 
-<div class="image-uploader-container">
+<div
+	class="image-uploader-container"
+	class:rounded
+	style="
+		--image-uploader-width: {width}px;
+		--image-uploader-height: {height}px
+	"
+>
 	<button
 		bind:this={dropAreaRef}
 		class="image-uploader"
 		class:hover={isHover}
 		class:has-images={files && files.length > 0}
+		class:rounded
 		onclick={handleClick}
 		ondragover={(event) => {
 			event.stopPropagation();
@@ -143,8 +161,8 @@
 			</div>
 		{:else}
 			<div class="description">
-				<Icon size={48}>image</Icon>
-				画像をドラッグ＆ドロップ<br />または画像を選択
+				<Icon size={48}>{icon}</Icon>
+				{@html placeholder}
 			</div>
 		{/if}
 	</button>
@@ -174,8 +192,12 @@
 <style>
 	.image-uploader-container {
 		position: relative;
-		width: 100%;
-		height: 100%;
+		width: var(--image-uploader-width, 100%);
+		height: var(--image-uploader-width, 100%);
+	}
+
+	.image-uploader-container.rounded {
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	.image-uploader {
@@ -183,13 +205,20 @@
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
+		position: relative;
 		width: 100%;
+		height: 100%;
+		min-height: 120px;
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
 		border-radius: var(--svelte-ui-border-radius);
 		cursor: pointer;
 		transition: background-color var(--svelte-ui-transition-duration);
-		position: relative;
+		overflow: hidden;
+	}
+
+	.image-uploader.rounded {
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	.image-uploader::before {
@@ -203,6 +232,10 @@
 		border: dashed 1px var(--svelte-ui-border-color);
 		border-radius: var(--svelte-ui-border-radius);
 		transition: border-color var(--svelte-ui-transition-duration);
+	}
+
+	.image-uploader.rounded::before {
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	.image-uploader:hover {
@@ -235,6 +268,7 @@
 		align-items: center;
 		gap: 16px;
 		color: var(--svelte-ui-text-subtle-color);
+		text-align: center;
 	}
 
 	.image-preview-container {
@@ -261,6 +295,14 @@
 	.image-preview-item.single {
 		width: 100%;
 		height: auto;
+	}
+
+	.image-uploader.rounded .image-preview-item {
+		border-radius: var(--image-uploader-border-radius);
+	}
+
+	.image-uploader.rounded .image-preview-item.single {
+		border-radius: var(--image-uploader-border-radius);
 	}
 
 	.preview-image {
