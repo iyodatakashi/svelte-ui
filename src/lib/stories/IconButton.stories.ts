@@ -11,11 +11,11 @@ interface IconButtonArgs {
 	fontSize?: number;
 	variant?: 'filled' | 'outlined' | 'text';
 	color?: string;
-
 	disabled?: boolean;
 	loading?: boolean;
 	tabindex?: number | null;
 	iconFill?: boolean;
+	iconWeight?: number;
 	customStyle?: string;
 	rounded?: boolean;
 	pressed?: boolean;
@@ -32,7 +32,7 @@ interface IconButtonArgs {
 }
 
 const meta: Meta<IconButtonArgs> = {
-	title: 'Forms/IconButton',
+	title: 'UI/IconButton',
 	component: IconButton,
 	parameters: {
 		layout: 'centered',

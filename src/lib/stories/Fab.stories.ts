@@ -24,7 +24,7 @@ interface FabArgs {
 }
 
 const meta: Meta<FabArgs> = {
-	title: 'Actions/Fab',
+	title: 'UI/Fab',
 	component: Fab,
 	parameters: {
 		layout: 'fullscreen',
