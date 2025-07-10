@@ -10,7 +10,7 @@
 		color = '',
 		style = '',
 		variant = 'outlined',
-		weight = 400,
+		weight = 300,
 		grade = 0,
 		opticalSize = size,
 		decorative = true,

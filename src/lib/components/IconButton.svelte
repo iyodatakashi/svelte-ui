@@ -16,6 +16,7 @@
 		loading = false,
 		tabindex = null,
 		iconFill = false,
+		iconWeight = 300,
 		customStyle,
 		rounded = true,
 		pressed = false,
@@ -44,6 +45,7 @@
 		loading?: boolean;
 		tabindex?: number | null;
 		iconFill?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		customStyle?: HTMLButtonAttributes['style'];
 		rounded?: boolean;
 		pressed?: boolean;
@@ -134,7 +136,7 @@
 			</div>
 		{:else}
 			<div class="iconbutton__icon" class:iconbutton__icon--hidden={loading}>
-				<Icon fill={iconFill} size={fontSize}>
+				<Icon fill={iconFill} weight={iconWeight} size={fontSize}>
 					{@render children()}
 				</Icon>
 			</div>
