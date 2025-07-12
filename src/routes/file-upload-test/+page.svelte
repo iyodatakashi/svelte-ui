@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { Button, FileUpload } from '$lib/index.js';
+	import { Button, FileUploader } from '$lib/index.js';
 
 	let files: FileList | undefined = $state();
 	let imageFiles: FileList | undefined = $state();
@@ -18,16 +18,16 @@
 </script>
 
 <svelte:head>
-	<title>FileUpload Test</title>
+	<title>FileUploader Test</title>
 </svelte:head>
 
 <div class="container">
-	<h1>FileUpload Component Test</h1>
-	<p>様々なパターンでFileUploadコンポーネントをテストしてください。</p>
+	<h1>FileUploader Component Test</h1>
+	<p>様々なパターンでFileUploaderコンポーネントをテストしてください。</p>
 
 	<div class="test-section">
 		<h2>基本的な使用例</h2>
-		<FileUpload bind:files bind:this={fileUploadRef} accept="" />
+		<FileUploader bind:files bind:this={fileUploadRef} accept="" />
 		<div class="controls">
 			<Button onclick={handleReset}>リセット</Button>
 		</div>
@@ -45,7 +45,7 @@
 
 	<div class="test-section">
 		<h2>画像のみ</h2>
-		<FileUpload bind:files={imageFiles} accept=".jpg,.jpeg,.png,.gif,.webp" />
+		<FileUploader bind:files={imageFiles} accept=".jpg,.jpeg,.png,.gif,.webp" />
 		{#if imageFiles && imageFiles.length > 0}
 			<div class="file-display">
 				<h3>選択された画像:</h3>
@@ -60,7 +60,7 @@
 
 	<div class="test-section">
 		<h2>ドキュメントのみ</h2>
-		<FileUpload bind:files={singleFile} accept=".pdf,.doc,.docx,.txt" />
+		<FileUploader bind:files={singleFile} accept=".pdf,.doc,.docx,.txt" />
 		{#if singleFile && singleFile.length > 0}
 			<div class="file-display">
 				<h3>選択されたファイル:</h3>

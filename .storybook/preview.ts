@@ -1,5 +1,9 @@
 import type { Preview } from '@storybook/sveltekit';
+// Core styles (required for components)
 import '../src/lib/assets/styles/import.scss';
+// Optional styles for Storybook
+import '../src/lib/assets/styles/optional/reset.scss';
+import '../src/lib/assets/styles/optional/fonts.scss';
 
 const withTheme = (Story, context) => {
 	const theme = context.globals.theme || 'light';

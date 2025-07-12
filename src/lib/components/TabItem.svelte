@@ -96,9 +96,4 @@
 	.tab-item--selected::before {
 		opacity: 1;
 	}
-
-	.icon-block {
-		width: 24px;
-		height: 24px;
-	}
 </style>

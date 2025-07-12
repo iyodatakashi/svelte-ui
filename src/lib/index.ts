@@ -1,4 +1,3 @@
-import './assets/styles/import.scss';
 export { default as Button } from './components/Button.svelte';
 export { default as Checkbox } from './components/Checkbox.svelte';
 export { default as ColorPicker } from './components/ColorPicker.svelte';

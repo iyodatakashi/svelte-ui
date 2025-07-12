@@ -1,0 +1,23 @@
+/* src/lib/assets/styles/optional/fonts.scss */
+/*
+ * Optional Font Imports
+ * Include this if you want to use our default font stack
+ * Import with: @import 'svelte-ui/styles/optional/fonts.scss';
+ */
+
+/*===================================================================
+ * Google Fonts & External Font Imports
+ *===================================================================*/
+@import url('https://fonts.googleapis.com/css?family=Roboto:300,400,500,700');
+@import url('https://fonts.googleapis.com/css2?family=Roboto+Mono:ital,wght@0,100..700;1,100..700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@100;400;700&display=swap');
+@import url('https://cdn.jsdelivr.net/npm/yakuhanjp@3.0.0/dist/css/yakuhanjp.min.css');
+
+/*===================================================================
+ * Font Family Settings
+ *===================================================================*/
+body * {
+	font-family:
+		YakuHanJP, Roboto, 'Noto Sans JP', 'ヒラギノ角ゴ ProN W3', 'Hiragino Kaku Gothic ProN',
+		'メイリオ', Meiryo, sans-serif;
+}

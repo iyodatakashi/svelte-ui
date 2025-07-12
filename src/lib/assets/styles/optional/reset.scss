@@ -1,0 +1,230 @@
+/* src/lib/assets/styles/optional/reset.scss */
+/*
+ * Optional CSS Reset
+ * Include this if you want to use our reset styles
+ * Import with: @import 'svelte-ui/styles/optional/reset.scss';
+ */
+
+/*===================================================================
+ * Eric Meyer's CSS Reset
+ *===================================================================*/
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+em,
+img,
+ins,
+kbd,
+q,
+s,
+samp,
+small,
+strike,
+strong,
+sub,
+sup,
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+ol,
+ul,
+li,
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+}
+
+/* HTML5 display-role reset for older browsers */
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
+}
+
+/* Image reset */
+img {
+	vertical-align: bottom;
+}
+
+/* Body reset */
+body {
+	-webkit-font-smoothing: antialiased;
+	-moz-osx-font-smoothing: grayscale;
+	line-height: 1;
+}
+
+/* List reset */
+ol,
+ul {
+	list-style: none;
+}
+
+/* Quote reset */
+blockquote,
+q {
+	quotes: none;
+}
+
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+/* Table reset */
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+/*===================================================================
+ * General Layout Settings
+ *===================================================================*/
+html {
+	width: 100%;
+	font-size: 100%;
+}
+
+body {
+	width: 100%;
+	min-height: 100%;
+	line-height: 1.8;
+	font-size: 1rem;
+	font-weight: 400;
+	word-break: normal;
+	word-wrap: break-word;
+}
+
+html > body {
+	height: auto;
+}
+
+/*===================================================================
+ * Link Styles
+ *===================================================================*/
+a {
+	text-decoration: none !important;
+}
+
+a:link {
+	text-decoration: none !important;
+}
+
+a:visited {
+	text-decoration: none !important;
+}
+
+a:hover {
+	text-decoration: none !important;
+}
+
+a:active {
+	text-decoration: none !important;
+}
+
+/*===================================================================
+ * Interactive Elements
+ *===================================================================*/
+a,
+button {
+	cursor: pointer;
+	transition-duration: 0.3s;
+	transition-property: background-color, color, opacity;
+}
+
+a.disabled,
+button.disabled {
+	cursor: default;
+}
+
+a:not(.disabled),
+button:not(.disabled) {
+	cursor: pointer !important;
+}
+
+/*===================================================================
+ * Typography
+ *===================================================================*/
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+h7 {
+	font-size: 1rem;
+	margin: 0;
+}

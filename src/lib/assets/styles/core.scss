@@ -1,0 +1,61 @@
+/* src/lib/assets/styles/core.scss */
+/* 
+ * Core styles required for component functionality
+ * These styles are automatically included with the library
+ */
+
+/*===================================================================
+ * Box-sizing - Required for proper component sizing
+ *===================================================================*/
+*,
+*::before,
+*::after {
+	box-sizing: border-box;
+}
+
+/*===================================================================
+ * Button reset - Required for consistent button styling
+ *===================================================================*/
+button {
+	background: transparent;
+	border: none;
+	font-size: inherit;
+	font-weight: inherit;
+	cursor: pointer;
+}
+
+/*===================================================================
+ * Dialog element - Required for dialog components
+ *===================================================================*/
+dialog {
+	color: inherit;
+}
+
+/*===================================================================
+ * Form elements - Required for proper form functionality
+ *===================================================================*/
+/* Prevent autofill background color changes */
+input:-webkit-autofill {
+	transition: background-color 5000s ease-in-out 0s !important;
+}
+
+/* Label normalization - Used in Input, Textarea, Checkbox, Radio */
+label {
+	font-weight: normal;
+}
+
+/*===================================================================
+ * Accessibility - Required for screen readers
+ *===================================================================*/
+/* Screen reader only class for accessibility - Used in PopupMenu */
+.sr-only {
+	position: absolute;
+	width: 1px;
+	height: 1px;
+	padding: 0;
+	margin: -1px;
+	overflow: hidden;
+	clip: rect(0, 0, 0, 0);
+	white-space: nowrap;
+	border: 0;
+}

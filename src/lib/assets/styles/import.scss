@@ -1,3 +1,9 @@
+/* src/lib/assets/styles/import.scss */
+/*
+ * Core styles automatically included with svelte-ui
+ * These are the minimum required styles for components to work properly
+ */
+
 @use './variables';
-@use './common';
+@use './core';
 @use './material-symbols';
