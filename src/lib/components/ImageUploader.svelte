@@ -1,6 +1,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
 
 	let {
 		files = $bindable(),
@@ -30,6 +31,19 @@
 	let errorMessage: string = $state('');
 
 	const imageUploaderId = `imageuploader-${Math.random().toString(36).substring(2, 15)}`;
+
+	// ファイル選択時のアナウンス
+	$effect(() => {
+		if (files && files.length > 0) {
+			const fileCount = files.length;
+			const fileNames = Array.from(files)
+				.map((file) => file.name)
+				.join(', ');
+			announceToScreenReader(
+				`${fileCount} image${fileCount > 1 ? 's' : ''} selected: ${fileNames}`
+			);
+		}
+	});
 
 	const handleClick = () => {
 		fileInputRef?.click();

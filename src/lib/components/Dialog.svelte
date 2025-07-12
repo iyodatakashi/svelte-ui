@@ -42,21 +42,7 @@
 	let previousActiveElement: HTMLElement | null = null;
 
 	// スクリーンリーダー向けアナウンス
-	const announceToScreenReader = (message: string) => {
-		const announcement = document.createElement('div');
-		announcement.setAttribute('aria-live', 'polite');
-		announcement.setAttribute('aria-atomic', 'true');
-		announcement.className = 'sr-only';
-		announcement.textContent = message;
-		document.body.appendChild(announcement);
-
-		// アナウンス後に削除
-		setTimeout(() => {
-			if (document.body.contains(announcement)) {
-				document.body.removeChild(announcement);
-			}
-		}, 1000);
-	};
+	import { announceOpenClose } from '$lib/utils/accessibility';
 
 	// 外側クリックでのクローズ
 	$effect(() => {
@@ -163,8 +149,7 @@
 			firstFocusableElement?.focus();
 
 			// スクリーンリーダーにダイアログが開いたことをアナウンス
-			const titleText = title || 'Dialog';
-			announceToScreenReader(`${titleText} opened`);
+			announceOpenClose('Dialog', true, title);
 		}, 0);
 	};
 
@@ -176,8 +161,7 @@
 		dialogRef.addEventListener('animationend', closeEnd, { once: true });
 
 		// スクリーンリーダーにダイアログが閉じたことをアナウンス
-		const titleText = title || 'Dialog';
-		announceToScreenReader(`${titleText} closed`);
+		announceOpenClose('Dialog', false, title);
 	};
 
 	export const closeEnd = (): void => {

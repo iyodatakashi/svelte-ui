@@ -239,21 +239,11 @@
 		}
 	};
 
+	import { announceOpenClose } from '$lib/utils/accessibility';
+
 	const announceToScreenReader = () => {
 		if (!ariaLabel && !ariaLabelledby) return;
-
-		const announcement = document.createElement('div');
-		announcement.setAttribute('aria-live', 'polite');
-		announcement.setAttribute('aria-atomic', 'true');
-		announcement.className = 'sr-only';
-		announcement.textContent = ariaLabel ? `${ariaLabel} opened` : 'Popup opened';
-		document.body.appendChild(announcement);
-
-		setTimeout(() => {
-			if (document.body.contains(announcement)) {
-				document.body.removeChild(announcement);
-			}
-		}, 1000);
+		announceOpenClose('Popup', true, ariaLabel);
 	};
 
 	const setPosition = (): void => {

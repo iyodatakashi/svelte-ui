@@ -48,21 +48,7 @@
 	let previousActiveElement: HTMLElement | null = null;
 
 	// スクリーンリーダー向けアナウンス
-	const announceToScreenReader = (message: string) => {
-		const announcement = document.createElement('div');
-		announcement.setAttribute('aria-live', 'polite');
-		announcement.setAttribute('aria-atomic', 'true');
-		announcement.className = 'sr-only';
-		announcement.textContent = message;
-		document.body.appendChild(announcement);
-
-		// アナウンス後に削除
-		setTimeout(() => {
-			if (document.body.contains(announcement)) {
-				document.body.removeChild(announcement);
-			}
-		}, 1000);
-	};
+	import { announceOpenClose } from '$lib/utils/accessibility';
 
 	// 外側クリックでのクローズ
 	$effect(() => {
@@ -169,8 +155,7 @@
 			firstFocusableElement?.focus();
 
 			// スクリーンリーダーにドロワーが開いたことをアナウンス
-			const titleText = title || ariaLabel || 'Drawer';
-			announceToScreenReader(`${titleText} opened`);
+			announceOpenClose('Drawer', true, title || ariaLabel);
 		}, 0);
 	};
 
@@ -182,8 +167,7 @@
 		dialogRef.addEventListener('animationend', closeEnd, { once: true });
 
 		// スクリーンリーダーにドロワーが閉じたことをアナウンス
-		const titleText = title || ariaLabel || 'Drawer';
-		announceToScreenReader(`${titleText} closed`);
+		announceOpenClose('Drawer', false, title || ariaLabel);
 	};
 
 	export const closeEnd = (): void => {

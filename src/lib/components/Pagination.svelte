@@ -1,5 +1,6 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
 	let {
 		total,
 		limit = 100,
@@ -26,18 +27,25 @@
 	});
 	const handleClick = (pageNum: number) => {
 		onchange(pageNum);
+		announceToScreenReader(`Page ${pageNum} of ${totalPages}`);
 	};
 	const goFirstPage = () => {
 		onchange(1);
+		announceToScreenReader(`First page, page 1 of ${totalPages}`);
 	};
 	const goLastPage = () => {
 		onchange(totalPages);
+		announceToScreenReader(`Last page, page ${totalPages} of ${totalPages}`);
 	};
 	const goPrevPage = () => {
-		onchange(currentPageNum - 1);
+		const newPage = currentPageNum - 1;
+		onchange(newPage);
+		announceToScreenReader(`Previous page, page ${newPage} of ${totalPages}`);
 	};
 	const goNextPage = () => {
-		onchange(currentPageNum + 1);
+		const newPage = currentPageNum + 1;
+		onchange(newPage);
+		announceToScreenReader(`Next page, page ${newPage} of ${totalPages}`);
 	};
 </script>
 

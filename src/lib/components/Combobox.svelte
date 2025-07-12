@@ -4,6 +4,7 @@
 	import Input from './Input.svelte';
 	import Icon from './Icon.svelte';
 	import Popup from './Popup.svelte';
+	import { announceSelection } from '$lib/utils/accessibility';
 	let {
 		name,
 		value = $bindable(),
@@ -96,6 +97,11 @@
 
 		// inputValueも更新
 		inputValue = option !== null && option !== undefined ? String(option) : '';
+
+		// スクリーンリーダーアナウンス
+		if (option !== null && option !== undefined) {
+			announceSelection(String(option));
+		}
 
 		onchange?.(option);
 	};

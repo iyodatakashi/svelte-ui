@@ -1,5 +1,6 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
 
 	let { files = $bindable(), accept = '' }: { files: FileList | undefined; accept: string } =
 		$props();
@@ -8,6 +9,18 @@
 	let isHover: boolean = $state(false);
 
 	const fileUploadId = `fileupload-${Math.random().toString(36).substring(2, 15)}`;
+
+	// ファイル選択時のアナウンス
+	$effect(() => {
+		if (files && files.length > 0) {
+			const fileCount = files.length;
+			const fileNames = Array.from(files)
+				.map((file) => file.name)
+				.join(', ');
+			announceToScreenReader(`${fileCount} file${fileCount > 1 ? 's' : ''} selected: ${fileNames}`);
+		}
+	});
+
 	const handleClick = () => {
 		fileInputRef?.click();
 	};

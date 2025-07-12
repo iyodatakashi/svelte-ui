@@ -11,6 +11,7 @@
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
 
 	dayjs.extend(localeData);
 	let {
@@ -111,6 +112,19 @@
 	});
 	const handleChange = () => {
 		popupRef?.close();
+
+		// スクリーンリーダーアナウンス
+		if (value) {
+			if (isDateRange && typeof value === 'object' && 'start' in value && 'end' in value) {
+				const startDate = dayjs(value.start).format(finalFormat);
+				const endDate = dayjs(value.end).format(finalFormat);
+				announceToScreenReader(`Date range selected: ${startDate} to ${endDate}`);
+			} else if (value instanceof Date) {
+				const formattedDate = dayjs(value).format(finalFormat);
+				announceToScreenReader(`Date selected: ${formattedDate}`);
+			}
+		}
+
 		onchange();
 	};
 	const handleClick = () => {
