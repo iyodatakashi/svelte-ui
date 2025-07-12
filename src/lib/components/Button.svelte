@@ -14,7 +14,7 @@
 		disabled = false,
 		loading = false,
 		tabindex = null,
-		iconFill = false,
+		iconFilled = false,
 		fullWidth = false,
 		minWidth = 0,
 		popup = false,
@@ -40,7 +40,7 @@
 		disabled?: boolean;
 		loading?: boolean;
 		tabindex?: number | null;
-		iconFill?: boolean;
+		iconFilled?: boolean;
 		fullWidth?: boolean;
 		minWidth?: number;
 		popup?: boolean;
@@ -127,7 +127,7 @@
 		</div>
 	{:else if icon}
 		<div class="button__icon">
-			<Icon fill={iconFill}>{icon}</Icon>
+			<Icon fill={iconFilled}>{icon}</Icon>
 		</div>
 	{/if}
 

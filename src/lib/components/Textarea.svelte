@@ -157,7 +157,7 @@
 					color="var(--svelte-ui-textarea-text-color)"
 					onclick={clear}
 					tabindex={-1}
-					iconFill={true}
+					iconFilled={true}
 					size={24}>cancel</IconButton
 				>
 			</div>

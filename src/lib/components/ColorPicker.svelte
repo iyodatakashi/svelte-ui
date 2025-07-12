@@ -117,7 +117,7 @@
 					color="var(--svelte-ui-colorpicker-text-color)"
 					onclick={clear}
 					tabindex={-1}
-					iconFill={true}
+					iconFilled={true}
 					size={24}>cancel</IconButton
 				>
 			</div>

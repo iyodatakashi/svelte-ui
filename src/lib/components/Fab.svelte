@@ -12,7 +12,7 @@
 		disabled = false,
 		loading = false,
 		icon = '',
-		iconFill = false,
+		iconFilled = false,
 		color = 'var(--svelte-ui-primary-color)',
 		variant = 'filled',
 		position = 'right',
@@ -40,7 +40,7 @@
 		disabled?: boolean;
 		loading?: boolean;
 		icon?: string;
-		iconFill?: boolean;
+		iconFilled?: boolean;
 		color?: string;
 		variant?: 'filled' | 'outlined' | 'text';
 		position?: 'left' | 'center' | 'right';
@@ -126,7 +126,7 @@
 		</div>
 	{:else if icon}
 		<div class="fab__icon">
-			<Icon fill={iconFill} size={24}>{icon}</Icon>
+			<Icon fill={iconFilled} size={24}>{icon}</Icon>
 		</div>
 	{/if}
 

@@ -143,7 +143,7 @@
 						<img src={createImageUrl(file)} alt={file.name} class="preview-image" />
 						<div class="delete-button-container">
 							<IconButton
-								iconFill={true}
+								iconFilled={true}
 								size={24}
 								color="var(--svelte-ui-text-color)"
 								onclick={(e) => {
