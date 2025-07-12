@@ -29,7 +29,7 @@
 		onchange?: (value: string) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onclick?: (event: MouseEvent) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
@@ -82,7 +82,8 @@
 		onchange(value);
 	};
 
-	const handleClick = (event: MouseEvent) => onclick(event);
+	const handleClick = (event: MouseEvent) =>
+		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
 	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
 </script>
 

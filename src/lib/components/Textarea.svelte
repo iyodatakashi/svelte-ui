@@ -53,10 +53,10 @@
 		tabindex?: number | null;
 		onchange?: (value: string | undefined) => void;
 		oninput?: (value: string | undefined) => void;
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
-		onclick?: (event: MouseEvent) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
+		onfocus?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
+		onblur?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLTextAreaElement }) => void;
+		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		[key: string]: any;
 	} = $props();
 	let ref: HTMLTextAreaElement | null = null;
@@ -96,14 +96,16 @@
 	const handleInput = () => oninput?.(value);
 	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
-		onfocus(event);
+		onfocus?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
 	};
 	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
-		onblur(event);
+		onblur?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
 	};
-	const handleClick = (event: MouseEvent) => onclick(event);
-	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
+	const handleClick = (event: MouseEvent) =>
+		onclick?.(event as MouseEvent & { currentTarget: HTMLTextAreaElement });
+	const handleKeydown = (event: KeyboardEvent) =>
+		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLTextAreaElement });
 </script>
 
 <div

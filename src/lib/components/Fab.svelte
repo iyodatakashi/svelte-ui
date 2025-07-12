@@ -48,7 +48,7 @@
 		reducedMotion?: boolean;
 		ariaLabel?: string;
 		ariaDescribedby?: string;
-		onclick?: (event: MouseEvent) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
@@ -80,7 +80,7 @@
 
 	const handleClick = (event: MouseEvent) => {
 		if (isDisabled) return;
-		if (onclick) onclick(event);
+		if (onclick) onclick(event as MouseEvent & { currentTarget: HTMLButtonElement });
 	};
 
 	const handleFocus = (event: FocusEvent) => onfocus(event);

@@ -36,7 +36,7 @@
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onchange?: (value: string | number | boolean) => void;
-		onclick?: (event: MouseEvent) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
@@ -62,7 +62,8 @@
 		}
 	};
 
-	const handleClick = (event: MouseEvent) => onclick(event);
+	const handleClick = (event: MouseEvent) =>
+		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (disabled || readonly) return;

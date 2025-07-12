@@ -44,10 +44,10 @@
 		size?: number | null;
 		rounded?: boolean;
 		onchange?: (value: string | number | null | undefined) => void;
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
-		onclick?: (event: MouseEvent) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
+		onfocus?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
+		onblur?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLSelectElement }) => void;
+		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLSelectElement }) => void;
 		[key: string]: any;
 	} = $props();
 
@@ -55,17 +55,19 @@
 
 	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
-		onfocus(event);
+		onfocus?.(event as FocusEvent & { currentTarget: HTMLSelectElement });
 	};
 	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
-		onblur(event);
+		onblur?.(event as FocusEvent & { currentTarget: HTMLSelectElement });
 	};
 	const handleChange = () => {
 		onchange?.(value);
 	};
-	const handleClick = (event: MouseEvent) => onclick(event);
-	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
+	const handleClick = (event: MouseEvent) =>
+		onclick?.(event as MouseEvent & { currentTarget: HTMLSelectElement });
+	const handleKeydown = (event: KeyboardEvent) =>
+		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLSelectElement });
 </script>
 
 <div

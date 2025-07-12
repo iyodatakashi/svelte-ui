@@ -71,10 +71,10 @@
 		autocomplete?: AutoFill | null | undefined;
 		onchange?: (value: string | number | undefined) => void;
 		oninput?: (value: string | number | undefined) => void;
-		onfocus?: Function;
-		onblur?: Function;
-		onclick?: Function;
-		onkeydown?: Function;
+		onfocus?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
+		onblur?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
+		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLInputElement }) => void;
 		onRightIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 		onLeftIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 	} = $props();
@@ -114,16 +114,18 @@
 	};
 	const handleChange = () => onchange?.(value);
 	const handleInput = () => oninput?.(value);
-	const handleFocus = () => {
+	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
-		onfocus?.();
+		onfocus?.(event as FocusEvent & { currentTarget: HTMLInputElement });
 	};
-	const handleBlur = () => {
+	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
-		onblur?.();
+		onblur?.(event as FocusEvent & { currentTarget: HTMLInputElement });
 	};
-	const handleClick = () => onclick?.();
-	const handleKeydown = () => onkeydown?.();
+	const handleClick = (event: MouseEvent) =>
+		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
+	const handleKeydown = (event: KeyboardEvent) =>
+		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLInputElement });
 </script>
 
 <div

@@ -56,7 +56,7 @@
 		oninput?: (value: string | number | null | undefined) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onclick?: (event: MouseEvent) => void;
+		onclick?: (event: MouseEvent & { currentTarget: HTMLDivElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
 	} = $props();
@@ -142,11 +142,11 @@
 		const finalValue = !isNaN(numericValue) && inputValue !== '' ? numericValue : inputValue;
 		onchange?.(finalValue);
 	};
-	const handleClick = () => {
+	const handleClick = (event: MouseEvent) => {
 		if (!disabled && !readonly) {
 			handleInputFocus();
 		}
-		onclick(new MouseEvent('click'));
+		onclick?.(event as MouseEvent & { currentTarget: HTMLDivElement });
 	};
 	const handleKeydown = () => {
 		onkeydown(new KeyboardEvent('keydown'));
