@@ -81,6 +81,41 @@
 			strictMatch: false
 		}
 	];
+
+	// Multi-tenant test tabs
+	const multiTenantTabs: MenuItem[] = [
+		{
+			title: 'Dashboard',
+			href: '/dashboard',
+			icon: 'dashboard'
+		},
+		{
+			title: 'Articles',
+			href: '/articles',
+			icon: 'article'
+		},
+		{
+			title: 'Settings',
+			href: '/settings',
+			icon: 'settings'
+		}
+	];
+
+	// Custom path matcher for multi-tenant
+	const customMatcher = (currentPath: string, itemHref: string, item: MenuItem) => {
+		// Simulate multi-tenant path: /tenant-name/path
+		const pathWithoutTenant = currentPath.replace(/^\/[^/]+/, '');
+
+		if (item.strictMatch) {
+			return pathWithoutTenant === itemHref;
+		} else {
+			// Handle root path
+			if (itemHref === '/') {
+				return pathWithoutTenant === '/' || pathWithoutTenant === '';
+			}
+			return pathWithoutTenant.startsWith(itemHref);
+		}
+	};
 </script>
 
 <svelte:head>
@@ -195,6 +230,48 @@
 			<Tab {tabItems} ariaLabel="Main navigation" />
 		</div>
 
+		<div class="multi-tenant-test">
+			<h2>Multi-Tenant Tab Test</h2>
+
+			<div class="test-section">
+				<h3>With pathPrefix</h3>
+				<p>Simulates: Current path is '/tenant-name/articles', but tab href is '/articles'</p>
+				<div class="tab-container">
+					<Tab
+						tabItems={multiTenantTabs}
+						pathPrefix="/tenant-name"
+						ariaLabel="Multi-tenant navigation with pathPrefix"
+					/>
+				</div>
+			</div>
+
+			<div class="test-section">
+				<h3>With customPathMatcher</h3>
+				<p>Custom logic to strip tenant prefix from current path for matching</p>
+				<div class="tab-container">
+					<Tab
+						tabItems={multiTenantTabs}
+						customPathMatcher={customMatcher}
+						ariaLabel="Multi-tenant navigation with custom matcher"
+					/>
+				</div>
+			</div>
+
+			<div class="usage-example">
+				<h3>Usage Examples</h3>
+				<pre><code
+						>{`// Method 1: Using pathPrefix
+<Tab tabItems={items} pathPrefix="/tenant-name" />
+
+// Method 2: Using customPathMatcher
+<Tab tabItems={items} customPathMatcher={(currentPath, itemHref, item) => {
+  const pathWithoutTenant = currentPath.replace(/^\/[^/]+/, '');
+  return pathWithoutTenant.startsWith(itemHref);
+}} />`}</code
+					></pre>
+			</div>
+		</div>
+
 		<main>
 			<h2>Home Page</h2>
 			<p>This is the home page. Navigate through the tabs above to see the active state change.</p>
@@ -211,6 +288,15 @@
 
 			<div class="test-links">
 				<h3>Component Tests:</h3>
+				<div class="demo-links">
+					<a href="/tenant-demo" class="demo-link">
+						<div class="demo-icon">🏢</div>
+						<div class="demo-info">
+							<h4>Multi-Tenant Demo</h4>
+							<p>Test pathPrefix functionality with Tab component</p>
+						</div>
+					</a>
+				</div>
 			</div>
 		</main>
 	</div>
@@ -343,5 +429,105 @@
 
 	.info-box li {
 		margin-bottom: 0.5rem;
+	}
+
+	.multi-tenant-test {
+		margin-top: 3rem;
+		padding: 2rem;
+		background: var(--svelte-ui-surface-color);
+		border: 1px solid var(--svelte-ui-border-color);
+		border-radius: 8px;
+	}
+
+	.multi-tenant-test h2 {
+		margin-top: 0;
+		color: var(--svelte-ui-primary-color);
+	}
+
+	.test-section {
+		margin-bottom: 2rem;
+		padding: 1rem;
+		background: var(--svelte-ui-surface-color);
+		border: 1px solid var(--svelte-ui-border-weak-color);
+		border-radius: 4px;
+	}
+
+	.test-section h3 {
+		margin-top: 0;
+		color: var(--svelte-ui-text-color);
+	}
+
+	.test-section p {
+		color: var(--svelte-ui-text-subtle-color);
+		font-style: italic;
+		margin-bottom: 1rem;
+	}
+
+	.usage-example {
+		margin-top: 2rem;
+		padding: 1rem;
+		background: var(--svelte-ui-surface-color);
+		border: 1px solid var(--svelte-ui-border-weak-color);
+		border-radius: 4px;
+	}
+
+	.usage-example h3 {
+		margin-top: 0;
+		color: var(--svelte-ui-text-color);
+	}
+
+	.usage-example pre {
+		background: var(--svelte-ui-surface-color);
+		padding: 1rem;
+		border-radius: 4px;
+		overflow-x: auto;
+		border: 1px solid var(--svelte-ui-border-weak-color);
+	}
+
+	.usage-example code {
+		background: transparent;
+		padding: 0;
+		font-family: 'Monaco', 'Menlo', 'Ubuntu Mono', monospace;
+		font-size: 0.9rem;
+		line-height: 1.4;
+	}
+
+	.demo-links {
+		margin-top: 1rem;
+	}
+
+	.demo-link {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+		padding: 1rem;
+		background: var(--svelte-ui-surface-color);
+		border: 1px solid var(--svelte-ui-border-color);
+		border-radius: 8px;
+		text-decoration: none;
+		transition: all 0.2s;
+		margin-bottom: 1rem;
+	}
+
+	.demo-link:hover {
+		transform: translateY(-2px);
+		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+		border-color: var(--svelte-ui-primary-color);
+	}
+
+	.demo-icon {
+		font-size: 2rem;
+		flex-shrink: 0;
+	}
+
+	.demo-info h4 {
+		margin: 0 0 0.25rem 0;
+		color: var(--svelte-ui-text-color);
+	}
+
+	.demo-info p {
+		margin: 0;
+		color: var(--svelte-ui-text-subtle-color);
+		font-size: 0.9rem;
 	}
 </style>

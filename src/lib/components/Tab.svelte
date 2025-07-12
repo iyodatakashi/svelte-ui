@@ -6,15 +6,59 @@
 	let {
 		tabItems = [],
 		ariaLabel = 'Navigation tabs',
-		ariaLabelledby
+		ariaLabelledby,
+		pathPrefix = '',
+		customPathMatcher
 	}: {
 		tabItems: MenuItem[];
 		ariaLabel?: string;
 		ariaLabelledby?: string;
+		pathPrefix?: string;
+		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
 	} = $props();
 
 	// 現在のパスを取得
 	const currentPath = $derived(page.url.pathname);
+
+	// パスの正規化処理
+	const normalizePath = (path: string): string => {
+		if (!pathPrefix) return path;
+
+		// pathPrefixが設定されている場合、それを除去
+		if (path.startsWith(pathPrefix)) {
+			const normalized = path.substring(pathPrefix.length);
+			return normalized.startsWith('/') ? normalized : '/' + normalized;
+		}
+
+		return path;
+	};
+
+	// パスマッチング関数
+	const matchPath = (currentPath: string, itemHref: string, item: MenuItem): boolean => {
+		if (customPathMatcher) {
+			return customPathMatcher(currentPath, itemHref, item);
+		}
+
+		const normalizedCurrentPath = normalizePath(currentPath);
+
+		// matchingPathのチェック
+		if (item.matchingPath?.some((href) => normalizedCurrentPath.startsWith(href))) {
+			return true;
+		}
+
+		// strictMatchの場合
+		if (item.strictMatch) {
+			return normalizedCurrentPath === itemHref;
+		}
+
+		// ルートパス (/) の特別な処理
+		if (itemHref === '/') {
+			return normalizedCurrentPath === '/';
+		}
+
+		// その他のパス
+		return normalizedCurrentPath !== '' && normalizedCurrentPath.startsWith(itemHref);
+	};
 
 	// アクティブなタブのインデックスを現在のパスに基づいて計算
 	const selectedTabIndex = $derived.by(() => {
@@ -22,30 +66,8 @@
 			const item = tabItems[i];
 			if (!item.href) continue;
 
-			if (item.strictMatch) {
-				if (currentPath === item.href) {
-					return i;
-				}
-				if (item.matchingPath && item.matchingPath.some((href) => currentPath.startsWith(href))) {
-					return i;
-				}
-			} else {
-				// ルートパス (/) の特別な処理
-				if (item.href === '/') {
-					if (currentPath === '/') {
-						return i;
-					}
-				} else {
-					// その他のパス
-					if (currentPath !== '' && currentPath.startsWith(item.href)) {
-						return i;
-					}
-				}
-
-				// matchingPathのチェック
-				if (item.matchingPath && item.matchingPath.some((href) => currentPath.startsWith(href))) {
-					return i;
-				}
+			if (matchPath(currentPath, item.href, item)) {
+				return i;
 			}
 		}
 		return -1;

@@ -7,6 +7,8 @@ interface TabArgs {
 	tabItems: MenuItem[];
 	ariaLabel?: string;
 	ariaLabelledby?: string;
+	pathPrefix?: string;
+	customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
 }
 
 const meta: Meta<TabArgs> = {
@@ -17,7 +19,7 @@ const meta: Meta<TabArgs> = {
 		docs: {
 			description: {
 				component:
-					"A tab navigation component that automatically manages active state based on current URL path. Uses SvelteKit's page state for efficient reactive updates."
+					"A tab navigation component that automatically manages active state based on current URL path. Uses SvelteKit's page state for efficient reactive updates. Now supports multi-tenant applications with pathPrefix and customPathMatcher."
 			}
 		}
 	},
@@ -38,6 +40,14 @@ const meta: Meta<TabArgs> = {
 		ariaLabelledby: {
 			control: 'text',
 			description: 'ID of element that labels the tab list'
+		},
+		pathPrefix: {
+			control: 'text',
+			description: 'Path prefix to strip from current URL for matching (e.g., "/tenant-name")'
+		},
+		customPathMatcher: {
+			control: false,
+			description: 'Custom function to match current path against tab href'
 		}
 	}
 };
@@ -138,6 +148,68 @@ export const MultipleMatchingPaths: Story = {
 				title: 'Reports',
 				href: '/reports',
 				matchingPath: ['/reports', '/analytics', '/metrics']
+			}
+		]
+	}
+};
+
+// Multi-tenant with pathPrefix
+export const MultiTenantWithPathPrefix: Story = {
+	args: {
+		pathPrefix: '/tenant-name',
+		tabItems: [
+			{
+				title: 'Dashboard',
+				href: '/dashboard',
+				icon: 'dashboard'
+			},
+			{
+				title: 'Articles',
+				href: '/articles',
+				icon: 'article'
+			},
+			{
+				title: 'Settings',
+				href: '/settings',
+				icon: 'settings'
+			}
+		]
+	}
+};
+
+// Multi-tenant with custom path matcher
+export const MultiTenantWithCustomMatcher: Story = {
+	args: {
+		customPathMatcher: (currentPath: string, itemHref: string, item: MenuItem) => {
+			// Remove tenant prefix from current path for matching
+			// Pattern: /tenant-name/path -> /path
+			const pathWithoutTenant = currentPath.replace(/^\/[^/]+/, '');
+
+			if (item.strictMatch) {
+				return pathWithoutTenant === itemHref;
+			} else {
+				// Handle root path
+				if (itemHref === '/') {
+					return pathWithoutTenant === '/' || pathWithoutTenant === '';
+				}
+				return pathWithoutTenant.startsWith(itemHref);
+			}
+		},
+		tabItems: [
+			{
+				title: 'Home',
+				href: '/',
+				icon: 'home'
+			},
+			{
+				title: 'Products',
+				href: '/products',
+				icon: 'inventory'
+			},
+			{
+				title: 'Analytics',
+				href: '/analytics',
+				icon: 'analytics'
 			}
 		]
 	}
