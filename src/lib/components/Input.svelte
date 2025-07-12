@@ -24,6 +24,10 @@
 		rightIcon = undefined,
 		leftIcon = undefined,
 		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined',
 		rounded = false,
 		disabled = false,
 		readonly = false,
@@ -61,6 +65,10 @@
 		rightIcon?: string;
 		leftIcon?: string;
 		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 		rounded?: boolean;
 		disabled?: boolean;
 		readonly?: boolean;
@@ -68,7 +76,7 @@
 		id?: string | null;
 		tabindex?: number | null;
 		size?: number | null;
-		autocomplete?: AutoFill | null | undefined;
+		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
 		onchange?: (value: string | number | undefined) => void;
 		oninput?: (value: string | number | undefined) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
@@ -206,12 +214,19 @@
 					onclick={onLeftIconClick}
 					tabindex={-1}
 					{iconFilled}
+					{iconWeight}
 					size={32}
 				>
 					{leftIcon}
 				</IconButton>
 			{:else}
-				<Icon fill={iconFilled}>
+				<Icon
+					filled={iconFilled}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}
+				>
 					{leftIcon}
 				</Icon>
 			{/if}
@@ -229,12 +244,19 @@
 					onclick={onRightIconClick}
 					tabindex={-1}
 					{iconFilled}
+					{iconWeight}
 					size={32}
 				>
 					{rightIcon}
 				</IconButton>
 			{:else}
-				<Icon fill={iconFilled}>
+				<Icon
+					filled={iconFilled}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}
+				>
 					{rightIcon}
 				</Icon>
 			{/if}

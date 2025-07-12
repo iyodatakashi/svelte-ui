@@ -6,7 +6,7 @@
 
 	let {
 		size = 24,
-		fill = false,
+		filled = false,
 		color = '',
 		style = '',
 		variant = 'outlined',
@@ -22,7 +22,7 @@
 		...restProps
 	}: {
 		size?: number;
-		fill?: boolean;
+		filled?: boolean;
 		color?: string;
 		style?: string;
 		variant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
@@ -83,14 +83,14 @@
 
 	// CSS classes based on state
 	const iconClasses = $derived(
-		[`material-symbols-${variant}`, fill && 'icon--filled', reducedMotion && 'icon--no-motion']
+		[`material-symbols-${variant}`, filled && 'icon--filled', reducedMotion && 'icon--no-motion']
 			.filter(Boolean)
 			.join(' ')
 	);
 
 	// フォントバリエーション設定
 	const fontVariationSettings = $derived(
-		`'FILL' ${fill ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${opticalSize}`
+		`'FILL' ${filled ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${opticalSize}`
 	);
 
 	// アクセシビリティ属性

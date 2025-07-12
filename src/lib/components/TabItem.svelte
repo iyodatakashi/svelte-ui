@@ -6,10 +6,20 @@
 
 	let {
 		tabItem,
-		isSelected = false
+		isSelected = false,
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined'
 	}: {
 		tabItem: MenuItem;
 		isSelected?: boolean;
+		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 	} = $props();
 </script>
 
@@ -23,7 +33,13 @@
 >
 	{#if tabItem.icon}
 		<div class="tab-item__icon">
-			<Icon fill={isSelected}>{tabItem.icon}</Icon>
+			<Icon
+				filled={iconFilled || isSelected}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}>{tabItem.icon}</Icon
+			>
 		</div>
 	{/if}
 	{#if tabItem.title}

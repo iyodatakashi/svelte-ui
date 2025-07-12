@@ -15,6 +15,10 @@
 		loading = false,
 		tabindex = null,
 		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined',
 		fullWidth = false,
 		minWidth = 0,
 		popup = false,
@@ -41,6 +45,10 @@
 		loading?: boolean;
 		tabindex?: number | null;
 		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 		fullWidth?: boolean;
 		minWidth?: number;
 		popup?: boolean;
@@ -127,7 +135,13 @@
 		</div>
 	{:else if icon}
 		<div class="button__icon">
-			<Icon fill={iconFilled}>{icon}</Icon>
+			<Icon
+				filled={iconFilled}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}>{icon}</Icon
+			>
 		</div>
 	{/if}
 

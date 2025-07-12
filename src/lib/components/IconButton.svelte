@@ -136,7 +136,7 @@
 			</div>
 		{:else}
 			<div class="iconbutton__icon" class:iconbutton__icon--hidden={loading}>
-				<Icon fill={iconFilled} weight={iconWeight} size={fontSize}>
+				<Icon filled={iconFilled} weight={iconWeight} size={fontSize}>
 					{@render children()}
 				</Icon>
 			</div>

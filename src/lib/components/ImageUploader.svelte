@@ -14,7 +14,12 @@
 		height = undefined,
 		rounded = false,
 		icon = 'image',
-		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択'
+		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択',
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined'
 	}: {
 		files?: FileList;
 		accept?: string;
@@ -25,6 +30,11 @@
 		rounded?: boolean;
 		icon?: string;
 		placeholder?: string;
+		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;
@@ -174,7 +184,14 @@
 			</div>
 		{:else}
 			<div class="description">
-				<Icon size={48}>{icon}</Icon>
+				<Icon
+					size={48}
+					filled={iconFilled}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}>{icon}</Icon
+				>
 				{@html placeholder}
 			</div>
 		{/if}

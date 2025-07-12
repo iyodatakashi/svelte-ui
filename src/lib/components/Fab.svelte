@@ -15,6 +15,10 @@
 		loading = false,
 		icon = '',
 		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined',
 		color = 'var(--svelte-ui-primary-color)',
 		variant = 'filled',
 		position = 'right',
@@ -43,6 +47,10 @@
 		loading?: boolean;
 		icon?: string;
 		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 		color?: string;
 		variant?: 'filled' | 'outlined' | 'text';
 		position?: 'left' | 'center' | 'right';
@@ -128,7 +136,14 @@
 		</div>
 	{:else if icon}
 		<div class="fab__icon">
-			<Icon fill={iconFilled} size={24}>{icon}</Icon>
+			<Icon
+				filled={iconFilled}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}
+				size={24}>{icon}</Icon
+			>
 		</div>
 	{/if}
 

@@ -15,7 +15,12 @@
 		ariaLabel = 'Menu',
 		mobileFullscreen = true,
 		enableSwipeToClose = true,
-		mobileBehavior = 'auto'
+		mobileBehavior = 'auto',
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined'
 	}: {
 		anchorElement: HTMLElement;
 		position?:
@@ -41,6 +46,11 @@
 		mobileFullscreen?: boolean;
 		enableSwipeToClose?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 	} = $props();
 
 	// 変数定義
@@ -259,7 +269,15 @@
 							onfocus={() => handleFocus(actionableIndex)}
 						>
 							{#if item.icon}
-								<Icon id="{getMenuItemId(actionableIndex)}-icon" aria-hidden="true">
+								<Icon
+									id="{getMenuItemId(actionableIndex)}-icon"
+									aria-hidden="true"
+									filled={iconFilled}
+									weight={iconWeight}
+									grade={iconGrade}
+									opticalSize={iconOpticalSize}
+									variant={iconVariant}
+								>
 									{item.icon}
 								</Icon>
 							{/if}

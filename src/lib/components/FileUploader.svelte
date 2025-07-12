@@ -4,8 +4,23 @@
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '$lib/utils/accessibility';
 
-	let { files = $bindable(), accept = '' }: { files: FileList | undefined; accept: string } =
-		$props();
+	let {
+		files = $bindable(),
+		accept = '',
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined'
+	}: {
+		files: FileList | undefined;
+		accept: string;
+		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+	} = $props();
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
@@ -63,7 +78,14 @@
 >
 	{#if files && files.length > 0}
 		<div class="description with-file">
-			<Icon size={48}>draft</Icon>
+			<Icon
+				size={48}
+				filled={iconFilled}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}>draft</Icon
+			>
 			<ul class="file-list">
 				{#each files as file}
 					<li>{file.name}</li>
@@ -72,7 +94,14 @@
 		</div>
 	{:else}
 		<div class="description">
-			<Icon size={48}>draft</Icon>
+			<Icon
+				size={48}
+				filled={iconFilled}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}>draft</Icon
+			>
 			ファイルをドラッグ＆ドロップ<br />またはファイルを選択
 		</div>
 	{/if}

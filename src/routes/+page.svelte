@@ -9,6 +9,7 @@
 	import Tab from '$lib/components/Tab.svelte';
 	import Fab from '../lib/components/Fab.svelte';
 	import type { MenuItem } from '../lib/types/MenuItem';
+	import Icon from '$lib/components/Icon.svelte';
 
 	let theme = $state('light');
 	let isDialogOpen = $state(false);
@@ -299,6 +300,45 @@
 				</div>
 			</div>
 		</main>
+
+		<!-- Icon Variations Test Section -->
+		<section>
+			<h2>Icon Variations Test</h2>
+			<div class="icon-grid">
+				<div class="icon-demo">
+					<Icon>home</Icon>
+					<p>基本</p>
+				</div>
+				<div class="icon-demo">
+					<Icon filled={true}>home</Icon>
+					<p>塗りつぶし</p>
+				</div>
+				<div class="icon-demo">
+					<Icon weight={700}>home</Icon>
+					<p>太字</p>
+				</div>
+				<div class="icon-demo">
+					<Icon filled={true} weight={700}>home</Icon>
+					<p>塗りつぶし + 太字</p>
+				</div>
+				<div class="icon-demo">
+					<Icon size={18} weight={200}>home</Icon>
+					<p>小 + 軽い</p>
+				</div>
+				<div class="icon-demo">
+					<Icon size={32} weight={600}>home</Icon>
+					<p>大 + 太字</p>
+				</div>
+				<div class="icon-demo">
+					<Icon grade={200}>home</Icon>
+					<p>高グラデーション</p>
+				</div>
+				<div class="icon-demo">
+					<Icon grade={-25}>home</Icon>
+					<p>低グラデーション</p>
+				</div>
+			</div>
+		</section>
 	</div>
 </main>
 
@@ -529,5 +569,29 @@
 		margin: 0;
 		color: var(--svelte-ui-text-subtle-color);
 		font-size: 0.9rem;
+	}
+
+	.icon-grid {
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+		gap: 1rem;
+		margin-top: 1rem;
+	}
+
+	.icon-demo {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		text-align: center;
+		padding: 1rem;
+		border: 1px solid #ddd;
+		border-radius: 8px;
+		background: #f9f9f9;
+	}
+
+	.icon-demo p {
+		margin-top: 0.5rem;
+		font-size: 0.85rem;
+		color: #666;
 	}
 </style>
