@@ -1,3 +1,5 @@
+<!-- TabItem.svelte -->
+
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import type { MenuItem } from '../types/MenuItem';

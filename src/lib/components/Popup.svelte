@@ -1,3 +1,5 @@
+<!-- Popup.svelte -->
+
 <script lang="ts">
 	/**
 	 * 🚨 CRITICAL: DO NOT MANAGE POPUP STATE FROM PARENT COMPONENTS

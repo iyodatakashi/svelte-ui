@@ -1,3 +1,5 @@
+<!-- ImageUploader.svelte -->
+
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';

@@ -1,3 +1,5 @@
+<!-- ConfirmDialog.svelte -->
+
 <script lang="ts">
 	import Dialog from './Dialog.svelte';
 	import Button from './Button.svelte';

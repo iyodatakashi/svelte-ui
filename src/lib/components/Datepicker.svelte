@@ -1,3 +1,5 @@
+<!-- Datepicker.svelte -->
+
 <script lang="ts">
 	import { type SvelteComponent } from 'svelte';
 	import dayjs from 'dayjs';

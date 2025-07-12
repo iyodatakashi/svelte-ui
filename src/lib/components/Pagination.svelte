@@ -1,3 +1,5 @@
+<!-- Pagination.svelte -->
+
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import { announceToScreenReader } from '$lib/utils/accessibility';

@@ -1,3 +1,5 @@
+<!-- PopupMenuButton.svelte -->
+
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import PopupMenu from './PopupMenu.svelte';

@@ -1,3 +1,5 @@
+<!-- Drawer.svelte -->
+
 <script lang="ts">
 	/**
 	 * 🚨 CRITICAL: DO NOT MANAGE DRAWER STATE FROM PARENT COMPONENTS

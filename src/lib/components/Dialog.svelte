@@ -1,3 +1,5 @@
+<!-- Dialog.svelte -->
+
 <script lang="ts">
 	/**
 	 * 🚨 CRITICAL: DO NOT MANAGE DIALOG STATE FROM PARENT COMPONENTS
