@@ -46,7 +46,7 @@
 	let menuContainerRef: HTMLDivElement | undefined = $state();
 	let menuItemRefs: HTMLButtonElement[] = $state([]);
 	let activeIndex: number = $state(-1);
-	let menuId: string = $state(`menu-${Math.random().toString(36).substr(2, 9)}`);
+	let menuId: string = $state(`menu-${Math.random().toString(36).substring(2, 15)}`);
 
 	// $derived
 	// Filter out separators to get only actionable items

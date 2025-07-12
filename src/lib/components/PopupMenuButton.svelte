@@ -43,7 +43,7 @@
 
 	let anchorRef: HTMLElement | undefined = $state();
 	let popupMenuRef: SvelteComponent | undefined = $state();
-	let buttonId: string = $state(`menu-button-${Math.random().toString(36).substr(2, 9)}`);
+	let buttonId: string = $state(`menu-button-${Math.random().toString(36).substring(2, 15)}`);
 
 	const handleClick = (event: MouseEvent) => {
 		event.stopPropagation();

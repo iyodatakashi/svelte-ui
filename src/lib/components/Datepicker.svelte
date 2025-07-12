@@ -59,7 +59,7 @@
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
 	let openedViaKeyboard: boolean = $state(false);
-	const calendarId = `datepicker-calendar-${Math.random().toString(36).substr(2, 9)}`;
+	const calendarId = `datepicker-calendar-${Math.random().toString(36).substring(2, 15)}`;
 
 	// 言語別設定
 	const localeConfig = {

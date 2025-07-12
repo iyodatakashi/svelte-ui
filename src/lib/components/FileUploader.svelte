@@ -7,10 +7,7 @@
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 
-	const generateId = (): string => {
-		return 'fileupload-' + Math.random().toString(36).substring(2, 15);
-	};
-	const fileUploadId = generateId();
+	const fileUploadId = `fileupload-${Math.random().toString(36).substring(2, 15)}`;
 	const handleClick = () => {
 		fileInputRef?.click();
 	};

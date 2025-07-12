@@ -41,11 +41,7 @@
 		[key: string]: any;
 	} = $props();
 
-	const generateId = (): string => {
-		return 'checkbox-' + Math.random().toString(36).substring(2, 15);
-	};
-
-	const id: string = generateId();
+	const id = `checkbox-${Math.random().toString(36).substring(2, 15)}`;
 
 	const handleFocus = (event: FocusEvent) => {
 		onfocus(event);

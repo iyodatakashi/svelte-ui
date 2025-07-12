@@ -76,7 +76,7 @@
 
 	let isOpen: boolean = $state(false);
 	let popupRef: HTMLDivElement | undefined = $state();
-	let popupId: string = $state(`popup-${Math.random().toString(36).substr(2, 9)}`);
+	let popupId: string = $state(`popup-${Math.random().toString(36).substring(2, 15)}`);
 	let previousActiveElement: HTMLElement | null = null;
 
 	// モバイル関連の状態

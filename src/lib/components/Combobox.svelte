@@ -68,8 +68,8 @@
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 	let inputValue = $state('');
-	const comboboxId = id || `combobox-${Math.random().toString(36).substr(2, 9)}`;
-	const listboxId = `listbox-${Math.random().toString(36).substr(2, 9)}`;
+	const comboboxId = id || `combobox-${Math.random().toString(36).substring(2, 15)}`;
+	const listboxId = `listbox-${Math.random().toString(36).substring(2, 15)}`;
 
 	// inputValueとvalueの同期
 	$effect(() => {

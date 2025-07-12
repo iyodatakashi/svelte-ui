@@ -29,10 +29,7 @@
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
 
-	const generateId = (): string => {
-		return 'imageuploader-' + Math.random().toString(36).substring(2, 15);
-	};
-	const imageUploaderId = generateId();
+	const imageUploaderId = `imageuploader-${Math.random().toString(36).substring(2, 15)}`;
 
 	const handleClick = () => {
 		fileInputRef?.click();
