@@ -16,12 +16,7 @@
 
 	import type { Snippet } from 'svelte';
 	import { onDestroy, tick, onMount } from 'svelte';
-	import {
-		isMobileDevice,
-		createSwipeGestureDetector,
-		disableBodyScroll,
-		getViewportSize
-	} from '$lib/utils/mobile';
+	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
 
 	let {
 		anchorElement,
@@ -36,7 +31,7 @@
 		onOpen,
 		onClose,
 		mobileFullscreen = false,
-		enableSwipeToClose = true,
+
 		mobileBehavior = 'auto', // 'auto' | 'fullscreen' | 'popup'
 		margin = 8,
 		allowRepositioning = true
@@ -70,7 +65,7 @@
 		onOpen?: () => void;
 		onClose?: () => void;
 		mobileFullscreen?: boolean;
-		enableSwipeToClose?: boolean;
+
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 		margin?: number;
 		allowRepositioning?: boolean;
@@ -84,7 +79,7 @@
 	// モバイル関連の状態
 	let isMobile: boolean = $state(false);
 	let shouldUseFullscreen: boolean = $state(false);
-	let swipeCleanup: (() => void) | undefined = $state();
+
 	let bodyScrollCleanup: (() => void) | undefined = $state();
 
 	onMount(() => {
@@ -501,24 +496,6 @@
 	const setupMobileFeatures = () => {
 		if (!popupRef || !isMobile) return;
 
-		// スワイプジェスチャーの設定
-		if (enableSwipeToClose) {
-			swipeCleanup = createSwipeGestureDetector(
-				popupRef,
-				(result) => {
-					// 下方向のスワイプで閉じる
-					if (result.direction === 'down' && result.distance > 80) {
-						close();
-					}
-				},
-				{
-					threshold: 50,
-					restraint: 120,
-					allowedTime: 500
-				}
-			);
-		}
-
 		// フルスクリーンモードでボディスクロールを無効化
 		if (shouldUseFullscreen) {
 			bodyScrollCleanup = disableBodyScroll();
@@ -526,10 +503,6 @@
 	};
 
 	const cleanupMobileFeatures = () => {
-		if (swipeCleanup) {
-			swipeCleanup();
-			swipeCleanup = undefined;
-		}
 		if (bodyScrollCleanup) {
 			bodyScrollCleanup();
 			bodyScrollCleanup = undefined;
@@ -555,9 +528,6 @@
 >
 	{#if shouldUseFullscreen}
 		<div class="mobile-container">
-			{#if enableSwipeToClose}
-				<div class="swipe-indicator"></div>
-			{/if}
 			<div class="mobile-content">
 				{@render children()}
 			</div>
@@ -664,15 +634,6 @@
 		box-shadow:
 			0 -4px 6px -1px rgb(0 0 0 / 10%),
 			0 -2px 4px -1px rgb(0 0 0 / 6%);
-	}
-
-	.swipe-indicator {
-		width: 36px;
-		height: 4px;
-		background: var(--svelte-ui-border-color);
-		border-radius: 2px;
-		margin: 8px auto;
-		opacity: 0.6;
 	}
 
 	.mobile-content {
