@@ -13,25 +13,26 @@
 
 <a
 	href={tabItem.href}
-	class:is-selected={isSelected}
+	class="tab-item"
+	class:tab-item--selected={isSelected}
 	role="tab"
 	aria-selected={isSelected}
 	tabindex={0}
 >
 	{#if tabItem.icon}
-		<div class="icon-block">
+		<div class="tab-item__icon">
 			<Icon fill={isSelected}>{tabItem.icon}</Icon>
 		</div>
 	{/if}
 	{#if tabItem.title}
-		<div class="title-block">
+		<div class="tab-item__text">
 			{tabItem.title}
 		</div>
 	{/if}
 </a>
 
 <style lang="scss">
-	a {
+	.tab-item {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -47,30 +48,30 @@
 		outline: none;
 	}
 
-	a:hover:not(.is-selected) {
+	.tab-item:hover:not(.tab-item--selected) {
 		background-color: var(--svelte-ui-hover-overlay);
 	}
 
 	/* キーボードフォーカス時のみ枠線を表示 */
-	a:focus-visible {
+	.tab-item:focus-visible {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	/* フォールバック: :focus-visible未対応ブラウザ用 */
 	@supports not selector(:focus-visible) {
-		a:focus {
+		.tab-item:focus {
 			outline: var(--svelte-ui-focus-outline-inner);
 			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
 
-		a:focus:not(.is-selected) {
+		.tab-item:focus:not(.tab-item--selected) {
 			background-color: var(--svelte-ui-hover-overlay);
 		}
 	}
 
 	/* 選択状態のインジケーター */
-	a::before {
+	.tab-item::before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -85,12 +86,12 @@
 		transition-duration: 0.3s;
 	}
 
-	a.is-selected {
+	.tab-item--selected {
 		color: var(--svelte-ui-primary-color);
 		background-color: transparent;
 	}
 
-	a.is-selected::before {
+	.tab-item--selected::before {
 		opacity: 1;
 	}
 

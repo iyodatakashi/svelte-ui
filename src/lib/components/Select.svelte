@@ -72,13 +72,13 @@
 
 <div
 	class="select
-focus-style-{focusStyle}"
-	class:inline={variant === 'inline'}
-	class:full-width={fullWidth}
-	class:disabled
-	class:readonly
-	class:is-focused={isFocused}
-	class:rounded
+select--focus-{focusStyle}"
+	class:select--inline={variant === 'inline'}
+	class:select--full-width={fullWidth}
+	class:select--disabled={disabled}
+	class:select--readonly={readonly}
+	class:select--focused={isFocused}
+	class:select--rounded={rounded}
 >
 	<select
 		{id}
@@ -110,7 +110,7 @@ focus-style-{focusStyle}"
 		{/each}
 	</select>
 	<!-- ドロップダウンアイコン -->
-	<div class="dropdown-icon" aria-hidden="true">
+	<div class="select__dropdown-icon" aria-hidden="true">
 		<Icon>arrow_drop_down</Icon>
 	</div>
 </div>
@@ -151,7 +151,7 @@ focus-style-{focusStyle}"
 		}
 	}
 
-	.dropdown-icon {
+	.select__dropdown-icon {
 		position: absolute;
 		top: 50%;
 		right: var(--svelte-ui-select-icon-right);
@@ -164,7 +164,7 @@ focus-style-{focusStyle}"
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
-	.select.full-width {
+	.select--full-width {
 		width: 100%;
 	}
 
@@ -178,28 +178,28 @@ focus-style-{focusStyle}"
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.focus-style-border select:focus {
+	.select--focus-border select:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.focus-style-background select:focus {
+	.select--focus-background select:focus {
 		background: var(--svelte-ui-hover-overlay);
 	}
 
 	/* =============================================
  * 状態管理（disabled, readonly等）
  * ============================================= */
-	.disabled {
+	.select--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
 
-		.dropdown-icon {
+		.select__dropdown-icon {
 			opacity: var(--svelte-ui-button-disabled-opacity);
 		}
 	}
 
-	.readonly {
+	.select--readonly {
 		pointer-events: none;
 
 		select {

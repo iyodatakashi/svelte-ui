@@ -130,23 +130,23 @@
 
 <div
 	class="input
-	focus-style-{focusStyle}
-	{type}"
-	class:inline={variant === 'inline'}
-	class:auto-resize={variant === 'inline'}
-	class:full-width={fullWidth}
-	class:clearable
-	class:has-right-icon={hasRightIcon || rightIcon}
-	class:has-left-icon={leftIcon}
-	class:rounded
-	class:disabled
-	class:readonly
-	class:is-focused={isFocused}
+	input--focus-{focusStyle}
+	input--type-{type}"
+	class:input--inline={variant === 'inline'}
+	class:input--auto-resize={variant === 'inline'}
+	class:input--full-width={fullWidth}
+	class:input--clearable={clearable}
+	class:input--has-icon-right={hasRightIcon || rightIcon}
+	class:input--has-icon-left={leftIcon}
+	class:input--rounded={rounded}
+	class:input--disabled={disabled}
+	class:input--readonly={readonly}
+	class:input--focused={isFocused}
 	style="max-width: {maxWidth}px; min-width: {minWidth}px"
 >
 	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
 	{#if variant === 'inline'}
-		<div class="plain-text" data-placeholder={placeholder} style={customStyle}>
+		<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
 			{getDisplayValue()}
 		</div>
 	{/if}
@@ -183,7 +183,7 @@
 	</form>
 	<!-- クリアボタン -->
 	{#if clearable && !disabled && !readonly}
-		<div class="clear-button-block">
+		<div class="input__clear-button">
 			<IconButton
 				ariaLabel="クリア"
 				color="var(--svelte-ui-input-text-color)"
@@ -197,7 +197,7 @@
 
 	<!-- Left Icon -->
 	{#if leftIcon}
-		<div class="left-icon-block">
+		<div class="input__icon-left">
 			{#if onLeftIconClick}
 				<IconButton
 					ariaLabel="左アイコン"
@@ -220,7 +220,7 @@
 
 	<!-- Right Icon -->
 	{#if rightIcon}
-		<div class="right-icon-block">
+		<div class="input__icon-right">
 			{#if onRightIconClick}
 				<IconButton
 					ariaLabel="右アイコン"
@@ -304,7 +304,7 @@
 		}
 	}
 
-	.plain-text {
+	.input__display-text {
 		display: inline-block;
 		vertical-align: top;
 		width: 100%;
@@ -334,7 +334,7 @@
 		}
 	}
 
-	.clear-button-block {
+	.input__clear-button {
 		position: absolute;
 		top: 50%;
 		right: 0;
@@ -343,7 +343,7 @@
 		transition: var(--svelte-ui-clear-button-transition);
 	}
 
-	.left-icon-block {
+	.input__icon-left {
 		display: flex;
 		justify-content: center;
 		position: absolute;
@@ -357,7 +357,7 @@
 		z-index: 1;
 	}
 
-	.right-icon-block {
+	.input__icon-right {
 		display: flex;
 		justify-content: center;
 		position: absolute;
@@ -374,39 +374,39 @@
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
-	.input.auto-resize {
+	.input--auto-resize {
 		width: fit-content;
 	}
 
-	.input.full-width {
+	.input--full-width {
 		width: 100%;
 	}
 
 	/* =============================================
  * 機能バリエーション
  * ============================================= */
-	.clearable {
+	.input--clearable {
 		input,
-		.plain-text {
+		.input__display-text {
 			padding-right: 24px;
 		}
 	}
 
-	.has-right-icon {
+	.input--has-icon-right {
 		input,
-		.plain-text {
+		.input__display-text {
 			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
-	.has-left-icon {
+	.input--has-icon-left {
 		input,
-		.plain-text {
+		.input__display-text {
 			padding-left: var(--svelte-ui-input-icon-space);
 		}
 	}
 
-	:hover .clear-button-block {
+	:hover .input__clear-button {
 		opacity: 1;
 		pointer-events: all;
 	}
@@ -415,36 +415,36 @@
  * プレースホルダー・テキスト表示
  * ============================================= */
 	input::placeholder,
-	.plain-text:empty::before {
+	.input__display-text:empty::before {
 		color: var(--svelte-ui-input-placeholder-color);
 	}
 
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.focus-style-border input:focus {
+	.input--focus-border input:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.focus-style-background input:focus {
+	.input--focus-background input:focus {
 		background: var(--svelte-ui-hover-overlay);
 	}
 
 	/* =============================================
  * 状態管理（disabled, readonly等）
  * ============================================= */
-	.disabled {
+	.input--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
 
-		.left-icon-block,
-		.right-icon-block {
+		.input__icon-left,
+		.input__icon-right {
 			opacity: var(--svelte-ui-button-disabled-opacity);
 		}
 	}
 
-	.readonly {
+	.input--readonly {
 		input {
 			cursor: default;
 		}
@@ -463,7 +463,7 @@
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
-	.input:not(.inline) {
+	.input:not(.input--inline) {
 		form {
 			position: static;
 			opacity: 1;
@@ -479,23 +479,23 @@
 			color: var(--svelte-ui-input-text-color);
 		}
 
-		.clear-button-block {
+		.input__clear-button {
 			right: 8px;
 		}
 
-		&.clearable {
+		&.input--clearable {
 			input {
 				padding-right: var(--svelte-ui-clear-button-padding-adjustment);
 			}
 		}
 
-		&.has-right-icon {
+		&.input--has-icon-right {
 			input {
 				padding-right: var(--svelte-ui-input-icon-space);
 			}
 		}
 
-		&.has-left-icon {
+		&.input--has-icon-left {
 			input {
 				padding-left: var(--svelte-ui-input-icon-space);
 			}
@@ -505,7 +505,7 @@
 	/* =============================================
  * デザインバリアント：rounded
  * ============================================= */
-	.input.rounded:not(.inline) {
+	.input--rounded:not(.input--inline) {
 		input {
 			border-radius: var(--svelte-ui-input-border-radius-rounded);
 		}
@@ -514,8 +514,8 @@
 	/* =============================================
  * デザインバリアント：inline
  * ============================================= */
-	.input.inline {
-		&.number .plain-text {
+	.input--inline {
+		&.input--type-number .input__display-text {
 			text-align: right;
 		}
 
@@ -528,22 +528,22 @@
 			height: 100%;
 		}
 
-		&.has-right-icon {
+		&.input--has-icon-right {
 			input,
-			.plain-text {
+			.input__display-text {
 				padding-right: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 
-		&.has-left-icon {
+		&.input--has-icon-left {
 			input,
-			.plain-text {
+			.input__display-text {
 				padding-left: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 
-		&.is-focused {
-			.plain-text {
+		&.input--focused {
+			.input__display-text {
 				opacity: 0;
 			}
 

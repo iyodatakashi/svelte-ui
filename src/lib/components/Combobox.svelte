@@ -178,7 +178,7 @@
 <div
 	bind:this={comboboxElement}
 	class="combobox"
-	class:full-width={fullWidth}
+	class:combobox--full-width={fullWidth}
 	style="max-width: {maxWidth}px; min-width: {minWidth}px"
 >
 	<!-- Inputコンポーネントを使用 -->
@@ -222,7 +222,7 @@
 		<div
 			bind:this={listElement}
 			id={listboxId}
-			class="options-list"
+			class="combobox__options"
 			role="listbox"
 			aria-label="オプション一覧"
 			aria-labelledby={comboboxId}
@@ -231,9 +231,9 @@
 				<div role="presentation">
 					<button
 						type="button"
-						class="option"
-						class:highlighted={index === highlightedIndex}
-						class:selected={option === value}
+						class="combobox__option"
+						class:combobox__option--highlighted={index === highlightedIndex}
+						class:combobox__option--selected={option === value}
 						role="option"
 						aria-selected={option === value}
 						onmousedown={(event) => {
@@ -247,7 +247,7 @@
 					</button>
 				</div>
 			{:else}
-				<div class="no-options">該当するオプションがありません</div>
+				<div class="combobox__no-options">該当するオプションがありません</div>
 			{/each}
 		</div>
 	</Popup>
@@ -264,7 +264,7 @@
 		max-width: 100%;
 	}
 
-	.combobox.full-width {
+	.combobox--full-width {
 		width: 100%;
 	}
 
@@ -275,7 +275,7 @@
 	/* =============================================
  * オプションリスト
  * ============================================= */
-	.options-list {
+	.combobox__options {
 		min-width: var(--svelte-ui-combobox-min-width);
 		width: max-content;
 		max-width: var(--svelte-ui-combobox-max-width);
@@ -287,7 +287,7 @@
 		padding: 0;
 	}
 
-	.option {
+	.combobox__option {
 		width: 100%;
 		padding: var(--svelte-ui-combobox-option-padding);
 		border: none;
@@ -299,15 +299,15 @@
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		&:hover,
-		&.highlighted {
+		&.combobox__option--highlighted {
 			background-color: var(--svelte-ui-combobox-option-hover-bg);
 		}
 
-		&.selected {
+		&.combobox__option--selected {
 			background-color: var(--svelte-ui-combobox-option-selected-bg);
 		}
 
-		&.selected.highlighted {
+		&.combobox__option--selected.combobox__option--highlighted {
 			background-color: var(--svelte-ui-combobox-option-selected-bg);
 		}
 
@@ -317,7 +317,7 @@
 		}
 	}
 
-	.no-options {
+	.combobox__no-options {
 		padding: var(--svelte-ui-combobox-option-padding);
 		font-size: inherit;
 		color: var(--svelte-ui-combobox-no-options-color);

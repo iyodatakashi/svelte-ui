@@ -50,8 +50,8 @@
 </script>
 
 <div class="pagination">
-	<div class="count-block">{total.toLocaleString()}</div>
-	<ul class="page-list">
+	<div class="pagination__count">{total.toLocaleString()}</div>
+	<ul class="pagination__list">
 		<li>
 			<IconButton
 				ariaLabel="最初のページへ移動"
@@ -75,7 +75,8 @@
 		{#each pageList as page (page)}
 			<li>
 				<button
-					class:is-selected={page === currentPageNum}
+					class="pagination__button"
+					class:pagination__button--selected={page === currentPageNum}
 					aria-label={`${page}ページ目へ移動`}
 					onclick={() => handleClick(page)}
 				>
@@ -112,19 +113,19 @@
 		align-items: center;
 		gap: var(--svelte-ui-pagination-gap);
 	}
-	.count-block {
+	.pagination__count {
 		white-space: nowrap;
 	}
-	.count-block::after {
+	.pagination__count::after {
 		content: '件';
 		margin-left: var(--svelte-ui-pagination-count-label-margin);
 		font-size: var(--svelte-ui-font-size-xs);
 	}
-	.page-list {
+	.pagination__list {
 		display: flex;
 		gap: var(--svelte-ui-pagination-page-list-gap);
 	}
-	button {
+	.pagination__button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -140,7 +141,7 @@
 		color: var(--svelte-ui-pagination-nav-color);
 		transition-duration: 0s;
 	}
-	button:before {
+	.pagination__button:before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -154,10 +155,10 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 		z-index: 0;
 	}
-	button:hover:before {
+	.pagination__button:hover:before {
 		opacity: 1;
 	}
-	button.is-selected {
+	.pagination__button--selected {
 		background-color: var(--svelte-ui-pagination-selected-color);
 		color: var(--svelte-ui-pagination-selected-text-color);
 	}

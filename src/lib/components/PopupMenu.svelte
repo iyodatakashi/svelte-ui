@@ -229,26 +229,26 @@
 	{mobileBehavior}
 >
 	<div
-		class="menu-container"
+		class="popup-menu"
 		bind:this={menuContainerRef}
 		role="menu"
 		aria-label={ariaLabel}
 		aria-activedescendant={activeIndex >= 0 ? getMenuItemId(activeIndex) : undefined}
 		tabindex="-1"
 	>
-		<ul class="menu-list" role="none">
+		<ul class="popup-menu__list" role="none">
 			{#each menuItems as item, index}
-				<li class="menu-item" role="none">
+				<li class="popup-menu__item" role="none">
 					{#if item === 'separator'}
-						<div class="separator" role="separator" aria-orientation="horizontal"></div>
+						<div class="popup-menu__separator" role="separator" aria-orientation="horizontal"></div>
 					{:else}
 						{@const actionableIndex = actionableItems.findIndex((ai) => ai.originalIndex === index)}
 						{@const isActive = actionableIndex === activeIndex}
 						<button
 							bind:this={menuItemRefs[actionableIndex]}
 							id={getMenuItemId(actionableIndex)}
-							class="menu-button"
-							class:active={isActive}
+							class="popup-menu__button"
+							class:popup-menu__button--active={isActive}
 							role="menuitem"
 							tabindex="-1"
 							aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
@@ -261,7 +261,7 @@
 									{item.icon}
 								</Icon>
 							{/if}
-							<span class="menu-text">{item.title}</span>
+							<span class="popup-menu__text">{item.title}</span>
 							{#if item.href}
 								<span class="sr-only">link</span>
 							{/if}
@@ -274,7 +274,7 @@
 </Popup>
 
 <style lang="scss">
-	.menu-container {
+	.popup-menu {
 		background-color: var(--svelte-ui-surface-color);
 		border-radius: 4px;
 		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
@@ -282,17 +282,17 @@
 		min-width: 160px;
 	}
 
-	.menu-list {
+	.popup-menu__list {
 		padding: 8px 0;
 		margin: 0;
 		list-style: none;
 	}
 
-	.menu-item {
+	.popup-menu__item {
 		margin: 0;
 	}
 
-	.menu-button {
+	.popup-menu__button {
 		display: flex;
 		align-items: center;
 		gap: 8px;
@@ -309,23 +309,23 @@
 		border-radius: 0;
 	}
 
-	.menu-button:hover,
-	.menu-button.active {
+	.popup-menu__button:hover,
+	.popup-menu__button--active {
 		background-color: var(--svelte-ui-hover-overlay);
 		outline: none;
 	}
 
-	.menu-button:focus-visible {
+	.popup-menu__button:focus-visible {
 		background-color: var(--svelte-ui-hover-overlay);
 		outline: 2px solid var(--svelte-ui-popupmenu-focus-color);
 		outline-offset: -2px;
 	}
 
-	.menu-text {
+	.popup-menu__text {
 		flex: 1;
 	}
 
-	.separator {
+	.popup-menu__separator {
 		height: 0;
 		margin: 8px 0;
 		border-bottom: solid 1px var(--svelte-ui-border-color);
@@ -346,21 +346,21 @@
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		.menu-button {
+		.popup-menu__button {
 			transition: none;
 		}
 	}
 
 	/* Mobile touch target optimization */
 	@media (max-width: 768px) {
-		.menu-button {
+		.popup-menu__button {
 			min-height: var(--svelte-ui-touch-target);
 			padding: 12px 16px;
 		}
 	}
 
 	/* Enhanced mobile menu styles */
-	:global(.mobile .menu-container) {
+	:global(.mobile .popup-menu) {
 		border-radius: 0;
 		box-shadow: none;
 		background: transparent;
@@ -369,7 +369,7 @@
 		min-width: auto;
 	}
 
-	:global(.mobile.fullscreen .menu-container) {
+	:global(.mobile.fullscreen .popup-menu) {
 		background: var(--svelte-ui-surface-color);
 		border-radius: var(--svelte-ui-popup-mobile-border-radius);
 		box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 10%);
@@ -377,11 +377,11 @@
 		padding: 0;
 	}
 
-	:global(.mobile.fullscreen .menu-list) {
+	:global(.mobile.fullscreen .popup-menu__list) {
 		padding: 16px 0;
 	}
 
-	:global(.mobile.fullscreen .menu-button) {
+	:global(.mobile.fullscreen .popup-menu__button) {
 		padding: 16px 24px;
 		font-size: 1.1rem;
 		min-height: var(--svelte-ui-touch-target-lg);

@@ -110,19 +110,19 @@
 
 <div
 	class="textarea
-	focus-style-{focusStyle}"
-	class:inline={variant === 'inline'}
-	class:full-width={fullWidth}
-	class:auto-resize={autoResize}
-	class:clearable
-	class:rounded
-	class:disabled
-	class:readonly
-	class:is-focused={isFocused}
+	textarea--focus-{focusStyle}"
+	class:textarea--inline={variant === 'inline'}
+	class:textarea--full-width={fullWidth}
+	class:textarea--auto-resize={autoResize}
+	class:textarea--clearable={clearable}
+	class:textarea--rounded={rounded}
+	class:textarea--disabled={disabled}
+	class:textarea--readonly={readonly}
+	class:textarea--focused={isFocused}
 >
 	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->
 	<div
-		class="plain-text"
+		class="textarea__display-text"
 		data-placeholder={placeholder}
 		style="min-height: {minHeight}px; {customStyle}"
 	>
@@ -153,7 +153,7 @@
 		></textarea>
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
-			<div class="clear-button-block">
+			<div class="textarea__clear-button">
 				<IconButton
 					ariaLabel="クリア"
 					color="var(--svelte-ui-textarea-text-color)"
@@ -197,7 +197,7 @@
 	/* =============================================
  * 基本コンポーネント
  * ============================================= */
-	.plain-text {
+	.textarea__display-text {
 		display: flex;
 		align-items: start; /* テーブルの他の列に合わせて高さが高くなっているときに、上寄せになるようにするための措置 */
 		width: 100%;
@@ -250,7 +250,7 @@
 		}
 	}
 
-	.clear-button-block {
+	.textarea__clear-button {
 		position: absolute;
 		top: var(--svelte-ui-clear-button-top-textarea);
 		right: var(--svelte-ui-clear-button-right-textarea);
@@ -261,18 +261,18 @@
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
-	.textarea.full-width {
+	.textarea--full-width {
 		width: 100%;
 	}
 
-	.textarea.auto-resize {
+	.textarea--auto-resize {
 		textarea {
 			overflow: hidden;
 		}
 	}
 
-	.textarea:not(.auto-resize) {
-		.plain-text {
+	.textarea:not(.textarea--auto-resize) {
+		.textarea__display-text {
 			display: none;
 		}
 
@@ -290,14 +290,14 @@
 	/* =============================================
  * 機能バリエーション
  * ============================================= */
-	.clearable {
+	.textarea--clearable {
 		textarea,
-		.plain-text {
+		.textarea__display-text {
 			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
 		}
 	}
 
-	:hover .clear-button-block {
+	:hover .textarea__clear-button {
 		opacity: 1;
 		pointer-events: all;
 	}
@@ -306,31 +306,31 @@
  * プレースホルダー・テキスト表示
  * ============================================= */
 	textarea::placeholder,
-	.plain-text:empty::before {
+	.textarea__display-text:empty::before {
 		color: var(--svelte-ui-textarea-placeholder-color);
 	}
 
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.textarea.focus-style-border textarea:focus {
+	.textarea--focus-border textarea:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.textarea.focus-style-background textarea:focus {
+	.textarea--focus-background textarea:focus {
 		background: var(--svelte-ui-hover-overlay);
 	}
 
 	/* =============================================
  * 状態管理（disabled, readonly等）
  * ============================================= */
-	.disabled {
+	.textarea--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
 	}
 
-	.readonly {
+	.textarea--readonly {
 		textarea {
 			cursor: default;
 		}
@@ -349,9 +349,9 @@
 	/* =============================================
  * 表示切り替え（フォーカス時・非autoResize時）
  * ============================================= */
-	.is-focused,
-	.textarea:not(.inline) {
-		.plain-text {
+	.textarea--focused,
+	.textarea:not(.textarea--inline) {
+		.textarea__display-text {
 			opacity: 0;
 		}
 
@@ -363,8 +363,8 @@
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
-	.textarea:not(.inline) {
-		.plain-text {
+	.textarea:not(.textarea--inline) {
+		.textarea__display-text {
 			padding: var(--svelte-ui-textarea-padding);
 		}
 
@@ -382,7 +382,7 @@
 	/* =============================================
  * デザインバリアント：rounded
  * ============================================= */
-	.textarea.rounded:not(.inline) {
+	.textarea--rounded:not(.textarea--inline) {
 		textarea {
 			border-radius: var(--svelte-ui-textarea-border-radius-rounded);
 		}
@@ -391,8 +391,8 @@
 	/* =============================================
  * デザインバリアント：inline
  * ============================================= */
-	.textarea.inline {
-		.plain-text {
+	.textarea--inline {
+		.textarea__display-text {
 			opacity: 1;
 		}
 
@@ -400,8 +400,8 @@
 			opacity: 0;
 		}
 
-		&.is-focused {
-			.plain-text {
+		&.textarea--focused {
+			.textarea__display-text {
 				opacity: 0;
 			}
 
