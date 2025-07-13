@@ -12,7 +12,11 @@ interface ButtonArgs {
 	disabled?: boolean;
 	loading?: boolean;
 	tabindex?: number | null;
-	iconFill?: boolean;
+	iconFilled?: boolean;
+	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+	iconGrade?: number;
+	iconOpticalSize?: number | null;
+	iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 	fullWidth?: boolean;
 	minWidth?: number;
 	popup?: boolean;
@@ -83,7 +87,7 @@ const meta: Meta<ButtonArgs> = {
 			control: 'boolean',
 			description: 'Whether the button shows popup indicator'
 		},
-		iconFill: {
+		iconFilled: {
 			control: 'boolean',
 			description: 'Whether the icon should be filled'
 		},
@@ -215,16 +219,6 @@ export const WithIcon: Story = {
 	}
 };
 
-// Icon only
-export const IconOnly: Story = {
-	args: {
-		variant: 'filled',
-		icon: 'edit',
-		ariaLabel: 'Edit item',
-		children: createChildrenSnippet('')
-	}
-};
-
 // Custom color
 export const CustomColor: Story = {
 	args: {
@@ -296,7 +290,7 @@ export const Playground: Story = {
 		fullWidth: false,
 		rounded: false,
 		popup: false,
-		iconFill: false,
+		iconFilled: false,
 		reducedMotion: false,
 		icon: '',
 		color: 'var(--svelte-ui-primary-color)',
