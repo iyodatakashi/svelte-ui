@@ -328,12 +328,28 @@
 		border-color: var(--svelte-ui-radio-error-border-color);
 	}
 
+	.radio-container--error input[type='radio']:checked + .radio-label::after {
+		border-color: var(--svelte-ui-radio-error-border-color);
+	}
+
+	.radio-container--error .radio-label:hover::after {
+		border-color: var(--svelte-ui-radio-error-border-color);
+	}
+
 	.radio-container--error input[type='radio']:checked + .radio-label::before {
 		background-color: var(--svelte-ui-radio-error-checked-color);
 	}
 
 	/* Success state */
 	.radio-container--success .radio-label::after {
+		border-color: var(--svelte-ui-radio-success-border-color);
+	}
+
+	.radio-container--success input[type='radio']:checked + .radio-label::after {
+		border-color: var(--svelte-ui-radio-success-border-color);
+	}
+
+	.radio-container--success .radio-label:hover::after {
 		border-color: var(--svelte-ui-radio-success-border-color);
 	}
 
