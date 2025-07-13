@@ -14,7 +14,7 @@ interface FabArgs {
 	disabled?: boolean;
 	loading?: boolean;
 	reducedMotion?: boolean;
-	iconFill?: boolean;
+	iconFilled?: boolean;
 	ariaLabel?: string;
 	ariaDescribedby?: string;
 	onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;

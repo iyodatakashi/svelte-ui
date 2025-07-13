@@ -254,8 +254,8 @@ export const IconsDisabled = {
 	}
 };
 
-// Icon Fill Comparison
-export const IconFillComparison = {
+// Icon Filled Comparison
+export const IconFilledComparison = {
 	args: {
 		placeholder: 'アイコンの塗りつぶし比較',
 		leftIcon: 'favorite',
@@ -264,8 +264,8 @@ export const IconFillComparison = {
 	}
 };
 
-// Icon Fill True
-export const IconFillTrue = {
+// Icon Filled True
+export const IconFilledTrue = {
 	args: {
 		placeholder: 'アイコン塗りつぶしあり',
 		leftIcon: 'favorite',
@@ -274,8 +274,8 @@ export const IconFillTrue = {
 	}
 };
 
-// Icon Fill False
-export const IconFillFalse = {
+// Icon Filled False
+export const IconFilledFalse = {
 	args: {
 		placeholder: 'アイコン塗りつぶしなし',
 		leftIcon: 'favorite',
