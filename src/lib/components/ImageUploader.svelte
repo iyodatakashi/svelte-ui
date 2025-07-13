@@ -268,8 +268,15 @@
 		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
-	.image-uploader:hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
+	@media (hover: hover) {
+		.image-uploader:hover {
+			background-color: var(--svelte-ui-fileupload-hover-bg);
+		}
+
+		.image-uploader:hover::before,
+		.image-uploader.hover::before {
+			border-color: var(--svelte-ui-primary-color);
+		}
 	}
 
 	.image-uploader:focus-visible {
@@ -279,11 +286,6 @@
 
 	.image-uploader.hover {
 		background-color: var(--svelte-ui-fileupload-hover-bg);
-		border-color: var(--svelte-ui-primary-color);
-	}
-
-	.image-uploader:hover::before,
-	.image-uploader.hover::before {
 		border-color: var(--svelte-ui-primary-color);
 	}
 
@@ -346,12 +348,17 @@
 		position: absolute;
 		top: 4px;
 		right: 4px;
+		background-color: var(--svelte-ui-surface-color);
+		border-radius: var(--svelte-ui-border-radius-rounded);
 		opacity: 0;
 		transition: opacity var(--svelte-ui-transition-duration);
+		z-index: 10;
 	}
 
-	.image-preview-item:hover .delete-button-container {
-		opacity: 1;
+	@media (hover: hover) {
+		.image-preview-item:hover .delete-button-container {
+			opacity: 1;
+		}
 	}
 
 	.error-message {

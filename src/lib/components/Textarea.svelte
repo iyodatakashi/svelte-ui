@@ -297,9 +297,10 @@
 		}
 	}
 
-	:hover .textarea__clear-button {
-		opacity: 1;
-		pointer-events: all;
+	@media (hover: hover) {
+		:hover .textarea__clear-button {
+			opacity: 1;
+		}
 	}
 
 	/* =============================================

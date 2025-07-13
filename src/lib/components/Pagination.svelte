@@ -157,9 +157,13 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 		z-index: 0;
 	}
-	.pagination__button:hover:before {
-		opacity: 1;
+
+	@media (hover: hover) {
+		.pagination__button:hover:before {
+			opacity: 1;
+		}
 	}
+
 	.pagination__button--selected {
 		background-color: var(--svelte-ui-pagination-selected-color);
 		color: var(--svelte-ui-pagination-selected-text-color);

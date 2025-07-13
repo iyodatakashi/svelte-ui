@@ -717,8 +717,10 @@
 		cursor: pointer;
 		transition: background-color var(--svelte-ui-transition-duration-fast);
 
-		&:hover {
-			background-color: var(--svelte-ui-hover-overlay);
+		@media (hover: hover) {
+			&:hover {
+				background-color: var(--svelte-ui-hover-overlay);
+			}
 		}
 
 		&:focus-visible {
@@ -746,8 +748,10 @@
 		cursor: pointer;
 		transition: all var(--svelte-ui-transition-duration-fast);
 
-		&:hover {
-			background-color: var(--svelte-ui-hover-overlay);
+		@media (hover: hover) {
+			&:hover {
+				background-color: var(--svelte-ui-hover-overlay);
+			}
 		}
 
 		&:focus-visible {
@@ -940,7 +944,10 @@
 		border: none;
 		border-radius: 18px;
 	}
-	.date-button:hover {
-		background: var(--svelte-ui-hover-overlay);
+
+	@media (hover: hover) {
+		.date-button:hover {
+			background: var(--svelte-ui-hover-overlay);
+		}
 	}
 </style>

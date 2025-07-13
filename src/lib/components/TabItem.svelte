@@ -66,8 +66,10 @@
 		outline: none;
 	}
 
-	.tab-item:hover:not(.tab-item--selected) {
-		background-color: var(--svelte-ui-hover-overlay);
+	@media (hover: hover) {
+		.tab-item:hover:not(.tab-item--selected) {
+			background-color: var(--svelte-ui-hover-overlay);
+		}
 	}
 
 	/* キーボードフォーカス時のみ枠線を表示 */

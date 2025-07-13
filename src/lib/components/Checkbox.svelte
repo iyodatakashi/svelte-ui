@@ -232,18 +232,20 @@
 	}
 
 	/* Hover states */
-	.checkbox-container:not(.checkbox-container--disabled) .checkbox-label:hover::before {
-		border-color: var(--svelte-ui-checkbox-hover-color);
-	}
+	@media (hover: hover) {
+		.checkbox-container:not(.checkbox-container--disabled) .checkbox-label:hover::before {
+			border-color: var(--svelte-ui-checkbox-hover-color);
+		}
 
-	/* Error state hover override */
-	.checkbox-container--error:not(.checkbox-container--disabled) .checkbox-label:hover::before {
-		border-color: var(--svelte-ui-checkbox-error-hover-color);
-	}
+		/* Error state hover override */
+		.checkbox-container--error:not(.checkbox-container--disabled) .checkbox-label:hover::before {
+			border-color: var(--svelte-ui-checkbox-error-hover-color);
+		}
 
-	/* Success state hover override */
-	.checkbox-container--success:not(.checkbox-container--disabled) .checkbox-label:hover::before {
-		border-color: var(--svelte-ui-checkbox-success-hover-color);
+		/* Success state hover override */
+		.checkbox-container--success:not(.checkbox-container--disabled) .checkbox-label:hover::before {
+			border-color: var(--svelte-ui-checkbox-success-hover-color);
+		}
 	}
 
 	/* Focus states */

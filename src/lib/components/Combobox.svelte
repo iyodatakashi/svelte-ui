@@ -298,7 +298,13 @@
 		color: var(--svelte-ui-combobox-text-color);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 
-		&:hover,
+		@media (hover: hover) {
+			&:hover,
+			&.combobox__option--highlighted {
+				background-color: var(--svelte-ui-combobox-option-hover-bg);
+			}
+		}
+
 		&.combobox__option--highlighted {
 			background-color: var(--svelte-ui-combobox-option-hover-bg);
 		}

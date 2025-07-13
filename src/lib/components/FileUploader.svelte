@@ -156,4 +156,13 @@
 	.upload-file-input {
 		display: none;
 	}
+	.file-uploader.hover::before {
+		border-color: var(--svelte-ui-primary-color);
+	}
+
+	@media (hover: hover) {
+		.file-uploader:hover {
+			background-color: var(--svelte-ui-fileupload-hover-bg);
+		}
+	}
 </style>

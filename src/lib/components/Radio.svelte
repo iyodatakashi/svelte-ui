@@ -238,8 +238,25 @@
 		height: var(--svelte-ui-radio-dot-size);
 	}
 
-	/* Hover and focus states */
-	.radio-container:not(.radio-container--disabled) .radio-label:hover::after,
+	/* Hover states */
+	@media (hover: hover) {
+		.radio-container:not(.radio-container--disabled) .radio-label:hover::after,
+		.radio-container:not(.radio-container--disabled) .radio-label:hover::before {
+			border-color: var(--svelte-ui-radio-hover-color);
+		}
+
+		/* Error state hover override */
+		.radio-container--error:not(.radio-container--disabled) .radio-label:hover::after {
+			border-color: var(--svelte-ui-radio-error-hover-color);
+		}
+
+		/* Success state hover override */
+		.radio-container--success:not(.radio-container--disabled) .radio-label:hover::after {
+			border-color: var(--svelte-ui-radio-success-hover-color);
+		}
+	}
+
+	/* Checked state */
 	input[type='radio']:checked + .radio-label::after {
 		border-color: var(--svelte-ui-radio-hover-color);
 	}

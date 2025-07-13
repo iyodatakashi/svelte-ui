@@ -331,7 +331,14 @@
 		border-radius: 0;
 	}
 
-	.popup-menu__button:hover,
+	@media (hover: hover) {
+		.popup-menu__button:hover,
+		.popup-menu__button--active {
+			background-color: var(--svelte-ui-hover-overlay);
+			outline: none;
+		}
+	}
+
 	.popup-menu__button--active {
 		background-color: var(--svelte-ui-hover-overlay);
 		outline: none;

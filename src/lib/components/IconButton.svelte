@@ -202,8 +202,10 @@
 		z-index: 0;
 	}
 
-	.iconbutton:hover:before {
-		opacity: 1;
+	@media (hover: hover) {
+		.iconbutton:hover:before {
+			opacity: 1;
+		}
 	}
 
 	.iconbutton:focus-visible {

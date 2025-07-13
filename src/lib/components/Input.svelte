@@ -365,6 +365,12 @@
 		transition: var(--svelte-ui-clear-button-transition);
 	}
 
+	@media (hover: hover) {
+		:hover .input__clear-button {
+			opacity: 1;
+		}
+	}
+
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
@@ -426,11 +432,6 @@
 		.input__display-text {
 			padding-left: var(--svelte-ui-input-icon-space);
 		}
-	}
-
-	:hover .input__clear-button {
-		opacity: 1;
-		pointer-events: all;
 	}
 
 	/* =============================================

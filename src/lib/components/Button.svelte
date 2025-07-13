@@ -240,8 +240,10 @@
 		z-index: 0;
 	}
 
-	.button:hover:before {
-		opacity: 1;
+	@media (hover: hover) {
+		.button:hover:before {
+			opacity: 1;
+		}
 	}
 
 	/* Focus styles */

@@ -260,9 +260,11 @@
 		}
 	}
 
-	.color-picker:hover .clear-button-block {
-		opacity: 1;
-		pointer-events: all;
+	@media (hover: hover) {
+		.color-picker:hover .clear-button-block {
+			opacity: 1;
+			pointer-events: all;
+		}
 	}
 
 	/* =============================================
