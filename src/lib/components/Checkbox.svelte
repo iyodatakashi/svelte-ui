@@ -183,7 +183,7 @@
 		border: var(--svelte-ui-checkbox-border-width) solid var(--svelte-ui-checkbox-border-color);
 		border-radius: var(--svelte-ui-checkbox-border-radius);
 		background-color: transparent;
-		transition-property: background-color, border-color;
+		transition-property: background-color, border-color, opacity;
 		transition-duration: var(--svelte-ui-transition-duration-fast);
 	}
 
@@ -208,20 +208,27 @@
 		direction: ltr;
 		font-feature-settings: 'liga';
 		-webkit-font-smoothing: antialiased;
-		transition-property: width;
-		transition-delay: var(--svelte-ui-transition-duration-fast);
-		transition-duration: var(--svelte-ui-transition-duration);
+		opacity: 0;
+		transition-property: width, opacity;
+		transition-delay: 0s, 0s;
+		transition-duration: var(--svelte-ui-transition-duration), var(--svelte-ui-transition-duration);
 	}
 
 	/* Checked state */
 	input[type='checkbox']:checked + .checkbox-label::after {
 		width: var(--svelte-ui-checkbox-icon-width);
+		opacity: 1;
+		transition-delay:
+			var(--svelte-ui-transition-duration-fast), var(--svelte-ui-transition-duration-fast);
 	}
 
 	/* Indeterminate state */
 	input[type='checkbox']:indeterminate + .checkbox-label::after {
 		content: 'remove';
 		width: var(--svelte-ui-checkbox-icon-width);
+		opacity: 1;
+		transition-delay:
+			var(--svelte-ui-transition-duration-fast), var(--svelte-ui-transition-duration-fast);
 	}
 
 	/* Hover states */
