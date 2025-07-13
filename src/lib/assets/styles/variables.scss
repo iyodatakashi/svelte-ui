@@ -209,9 +209,9 @@
 	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 
 	/* Checkbox */
-	--svelte-ui-checkbox-size: 12px;
-	--svelte-ui-checkbox-size-sm: 10px;
-	--svelte-ui-checkbox-size-lg: 16px;
+	--svelte-ui-checkbox-size: 16px;
+	--svelte-ui-checkbox-size-sm: 14px;
+	--svelte-ui-checkbox-size-lg: 20px;
 	--svelte-ui-checkbox-min-height: 20px;
 	--svelte-ui-checkbox-min-height-sm: 16px;
 	--svelte-ui-checkbox-min-height-lg: 24px;
@@ -230,12 +230,12 @@
 	--svelte-ui-checkbox-icon-width-lg: 20px;
 
 	/* Radio */
-	--svelte-ui-radio-size: 12px;
-	--svelte-ui-radio-size-sm: 10px;
-	--svelte-ui-radio-size-lg: 16px;
-	--svelte-ui-radio-dot-size: 6px;
-	--svelte-ui-radio-dot-size-sm: 5px;
-	--svelte-ui-radio-dot-size-lg: 8px;
+	--svelte-ui-radio-size: 16px;
+	--svelte-ui-radio-size-sm: 14px;
+	--svelte-ui-radio-size-lg: 20px;
+	--svelte-ui-radio-dot-size: 8px;
+	--svelte-ui-radio-dot-size-sm: 7px;
+	--svelte-ui-radio-dot-size-lg: 10px;
 	--svelte-ui-radio-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-radio-border-width: 2px;
 	--svelte-ui-radio-min-height: 20px;

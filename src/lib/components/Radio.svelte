@@ -222,7 +222,7 @@
 
 	/* Radio button inner dot */
 	.radio-label::before {
-		left: calc(var(--svelte-ui-radio-size) / 2 + 2px);
+		left: calc(var(--svelte-ui-radio-size) / 2);
 		width: 0;
 		height: 0;
 		background-color: var(--svelte-ui-radio-bg-checked);
@@ -233,7 +233,7 @@
 
 	/* Checked state */
 	input[type='radio']:checked + .radio-label::before {
-		left: calc((var(--svelte-ui-radio-size) - var(--svelte-ui-radio-dot-size)) / 2 + 2px);
+		left: calc((var(--svelte-ui-radio-size) - var(--svelte-ui-radio-dot-size)) / 2);
 		width: var(--svelte-ui-radio-dot-size);
 		height: var(--svelte-ui-radio-dot-size);
 	}
@@ -271,11 +271,11 @@
 	}
 
 	.radio-container--small .radio-label::before {
-		left: calc(var(--svelte-ui-radio-size-sm) / 2 + 2px);
+		left: calc(var(--svelte-ui-radio-size-sm) / 2);
 	}
 
 	.radio-container--small input[type='radio']:checked + .radio-label::before {
-		left: calc((var(--svelte-ui-radio-size-sm) - var(--svelte-ui-radio-dot-size-sm)) / 2 + 2px);
+		left: calc((var(--svelte-ui-radio-size-sm) - var(--svelte-ui-radio-dot-size-sm)) / 2);
 		width: var(--svelte-ui-radio-dot-size-sm);
 		height: var(--svelte-ui-radio-dot-size-sm);
 	}
@@ -307,11 +307,11 @@
 	}
 
 	.radio-container--large .radio-label::before {
-		left: calc(var(--svelte-ui-radio-size-lg) / 2 + 2px);
+		left: calc(var(--svelte-ui-radio-size-lg) / 2);
 	}
 
 	.radio-container--large input[type='radio']:checked + .radio-label::before {
-		left: calc((var(--svelte-ui-radio-size-lg) - var(--svelte-ui-radio-dot-size-lg)) / 2 + 2px);
+		left: calc((var(--svelte-ui-radio-size-lg) - var(--svelte-ui-radio-dot-size-lg)) / 2);
 		width: var(--svelte-ui-radio-dot-size-lg);
 		height: var(--svelte-ui-radio-dot-size-lg);
 	}

@@ -249,6 +249,7 @@
 	input[type='checkbox']:checked + .checkbox-label::before,
 	input[type='checkbox']:indeterminate + .checkbox-label::before {
 		background-color: var(--svelte-ui-checkbox-bg-checked);
+		border-color: transparent;
 	}
 
 	/* Size variants */
