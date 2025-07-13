@@ -1,7 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import FileUploader from '../components/FileUploader.svelte';
 
-const meta: Meta<FileUploader> = {
+interface FileUploaderArgs {
+	files?: FileList | undefined;
+	accept?: string;
+	iconFilled?: boolean;
+	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+	iconGrade?: number;
+	iconOpticalSize?: number | null;
+	iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+}
+
+const meta: Meta<FileUploaderArgs> = {
 	title: 'Forms/FileUploader',
 	component: FileUploader,
 	parameters: {
@@ -27,7 +37,7 @@ const meta: Meta<FileUploader> = {
 };
 
 export default meta;
-type Story = StoryObj<typeof meta>;
+type Story = StoryObj<FileUploaderArgs>;
 
 export const Default: Story = {
 	args: {}

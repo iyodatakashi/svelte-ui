@@ -158,7 +158,6 @@ export const CustomPlaceholder: Story = {
 };
 
 export const AvatarUploader: Story = {
-	name: 'Avatar Uploader',
 	args: {
 		accept: '.jpg,.jpeg,.png',
 		multiple: false,
@@ -172,7 +171,6 @@ export const AvatarUploader: Story = {
 };
 
 export const DocumentUploader: Story = {
-	name: 'Document Uploader',
 	args: {
 		accept: '.pdf,.doc,.docx',
 		multiple: true,
@@ -215,8 +213,7 @@ export const Playground: Story = {
 	}
 };
 
-export const WithSVG: Story = {
-	name: 'SVG Support',
+export const SVGSupport: Story = {
 	args: {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
@@ -227,7 +224,6 @@ export const WithSVG: Story = {
 };
 
 export const SVGOnly: Story = {
-	name: 'SVG Only',
 	args: {
 		accept: '.svg',
 		multiple: false,
@@ -237,8 +233,7 @@ export const SVGOnly: Story = {
 	}
 };
 
-export const AllFormats: Story = {
-	name: 'All Image Formats',
+export const AllImageFormats: Story = {
 	args: {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg,.bmp,.tiff,.ico',
 		multiple: true,
