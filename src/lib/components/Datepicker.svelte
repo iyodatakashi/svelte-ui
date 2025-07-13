@@ -235,11 +235,17 @@
 		} else if (!isDateRange && value && value instanceof Date) {
 			return formatWithLocale(value);
 		} else {
-			// direct input が許可されている場合は空文字を返す（placeholderのみ表示）
-			// そうでない場合は nullString または notSelected を表示
-			return allowDirectInput ? '' : nullString || currentLocaleConfig.notSelected;
+			// 値がない場合は常に空文字を返す（placeholderで表示するため）
+			return '';
 		}
 	});
+
+	// プレースホルダーテキストを決定
+	const placeholderText = $derived(
+		allowDirectInput
+			? nullString || currentLocaleConfig.directInputPlaceholder
+			: nullString || currentLocaleConfig.notSelected
+	);
 </script>
 
 <div bind:this={containerElement} class="datepicker-container">
@@ -252,9 +258,7 @@
 		{rounded}
 		{disabled}
 		readonly={!allowDirectInput}
-		placeholder={allowDirectInput
-			? nullString || currentLocaleConfig.directInputPlaceholder
-			: nullString || currentLocaleConfig.notSelected}
+		placeholder={placeholderText}
 		rightIcon={showIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
 		onRightIconClick={handleClick}
 		onclick={handleClick}
