@@ -239,7 +239,7 @@
 	}
 
 	/* Hover and focus states */
-	.radio-label:hover::after,
+	.radio-container:not(.radio-container--disabled) .radio-label:hover::after,
 	input[type='radio']:checked + .radio-label::after {
 		border-color: var(--svelte-ui-radio-hover-color);
 	}
@@ -332,7 +332,7 @@
 		border-color: var(--svelte-ui-radio-error-border-color);
 	}
 
-	.radio-container--error .radio-label:hover::after {
+	.radio-container--error:not(.radio-container--disabled) .radio-label:hover::after {
 		border-color: var(--svelte-ui-radio-error-border-color);
 	}
 
@@ -349,7 +349,7 @@
 		border-color: var(--svelte-ui-radio-success-border-color);
 	}
 
-	.radio-container--success .radio-label:hover::after {
+	.radio-container--success:not(.radio-container--disabled) .radio-label:hover::after {
 		border-color: var(--svelte-ui-radio-success-border-color);
 	}
 

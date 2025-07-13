@@ -232,17 +232,17 @@
 	}
 
 	/* Hover states */
-	.checkbox-label:hover::before {
+	.checkbox-container:not(.checkbox-container--disabled) .checkbox-label:hover::before {
 		border-color: var(--svelte-ui-checkbox-hover-color);
 	}
 
 	/* Error state hover override */
-	.checkbox-container--error .checkbox-label:hover::before {
+	.checkbox-container--error:not(.checkbox-container--disabled) .checkbox-label:hover::before {
 		border-color: var(--svelte-ui-checkbox-error-hover-color);
 	}
 
 	/* Success state hover override */
-	.checkbox-container--success .checkbox-label:hover::before {
+	.checkbox-container--success:not(.checkbox-container--disabled) .checkbox-label:hover::before {
 		border-color: var(--svelte-ui-checkbox-success-hover-color);
 	}
 
