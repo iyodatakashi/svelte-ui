@@ -96,35 +96,35 @@
 	customClass={drawerClasses}
 	customStyles={drawerStyles}
 >
-	<div class="drawer-contents">
+	<div class="drawer">
 		{#if header || title}
-			<div class="header">
+			<div class="drawer__header">
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="title-block" id="drawer-title">
+					<div class="drawer__title" id="drawer-title">
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="description" id="drawer-description">
+			<div class="drawer__description" id="drawer-description">
 				{description}
 			</div>
 		{/if}
 		{#if children}
-			<div class="body">
+			<div class="drawer__body">
 				{@render children()}
 			</div>
 		{/if}
 		{#if body}
-			<div class="body">
+			<div class="drawer__body">
 				{@render body()}
 			</div>
 		{/if}
 		{#if footer}
-			<div class="footer">
+			<div class="drawer__footer">
 				{@render footer()}
 			</div>
 		{/if}
@@ -245,7 +245,7 @@
 		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	.drawer-contents {
+	.drawer {
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
@@ -253,7 +253,7 @@
 		overflow: hidden;
 	}
 
-	.header {
+	.drawer__header {
 		display: flex;
 		gap: var(--svelte-ui-drawer-gap);
 		align-items: center;
@@ -262,7 +262,7 @@
 		padding: var(--svelte-ui-drawer-padding);
 		margin-bottom: calc(0px - var(--svelte-ui-drawer-body-padding));
 
-		.title-block {
+		.drawer__title {
 			flex-grow: 1;
 			font-size: var(--svelte-ui-drawer-title-font-size);
 			line-height: normal;
@@ -270,21 +270,21 @@
 		}
 	}
 
-	.body {
+	.drawer__body {
 		flex-shrink: 1;
 		position: relative;
 		padding: var(--svelte-ui-drawer-body-padding);
 		flex-grow: 1;
 	}
 
-	.footer {
+	.drawer__footer {
 		display: flex;
 		gap: var(--svelte-ui-drawer-gap-sm);
 		justify-content: end;
 		padding: var(--svelte-ui-drawer-footer-padding);
 	}
 
-	.description {
+	.drawer__description {
 		color: var(--svelte-ui-drawer-description-color);
 		font-size: var(--svelte-ui-drawer-description-font-size);
 		line-height: 1.4;
@@ -294,18 +294,18 @@
 	}
 
 	:global(.drawer.scrollable) {
-		.header {
+		.drawer__header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 
-		.body {
+		.drawer__body {
 			flex-shrink: 1;
 			padding: var(--svelte-ui-drawer-body-padding);
 			overflow: auto;
 		}
 
-		.footer {
+		.drawer__footer {
 			border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 	}

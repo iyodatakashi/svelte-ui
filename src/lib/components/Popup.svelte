@@ -530,6 +530,7 @@
 <div
 	popover="manual"
 	bind:this={popupRef}
+	class="popup"
 	class:fade-out={!isOpen}
 	class:mobile={isMobile}
 	class:fullscreen={shouldUseFullscreen}
@@ -544,8 +545,8 @@
 	}}
 >
 	{#if shouldUseFullscreen}
-		<div class="mobile-container">
-			<div class="mobile-content">
+		<div class="popup__mobile-container">
+			<div class="popup__mobile-content">
 				{@render children()}
 			</div>
 		</div>
@@ -637,7 +638,7 @@
 			env(safe-area-inset-left);
 	}
 
-	.mobile-container {
+	.popup__mobile-container {
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -653,7 +654,7 @@
 			0 -2px 4px -1px rgb(0 0 0 / 6%);
 	}
 
-	.mobile-content {
+	.popup__mobile-content {
 		padding: var(--svelte-ui-popup-mobile-margin);
 		max-height: calc(90vh - 60px);
 		overflow-y: auto;
@@ -669,7 +670,7 @@
 		}
 	}
 
-	:popover-open.mobile.fullscreen.fade-out .mobile-container {
+	:popover-open.mobile.fullscreen.fade-out .popup__mobile-container {
 		animation: slideDownMobile 300ms ease-in;
 	}
 
@@ -684,12 +685,12 @@
 
 	/* Responsive design adjustments */
 	@media (max-width: 480px) {
-		.mobile-container {
+		.popup__mobile-container {
 			border-radius: 0;
 			max-height: 100vh;
 		}
 
-		.mobile-content {
+		.popup__mobile-content {
 			max-height: calc(100vh - 60px);
 		}
 	}

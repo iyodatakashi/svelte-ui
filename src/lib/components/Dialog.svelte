@@ -87,30 +87,30 @@
 	customClass={dialogClasses}
 	customStyles={dialogStyles}
 >
-	<div class="dialog-contents">
+	<div class="dialog">
 		{#if header || title}
-			<div class="header">
+			<div class="dialog__header">
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="title-block" id="dialog-title">
+					<div class="dialog__title" id="dialog-title">
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="description" id="dialog-description">
+			<div class="dialog__description" id="dialog-description">
 				{description}
 			</div>
 		{/if}
 		{#if children}
-			<div class="body">
+			<div class="dialog__body">
 				{@render children()}
 			</div>
 		{/if}
 		{#if footer}
-			<div class="footer">
+			<div class="dialog__footer">
 				{@render footer()}
 			</div>
 		{/if}
@@ -122,7 +122,7 @@
 		color: var(--svelte-ui-dialog-title-color);
 	}
 
-	.dialog-contents {
+	.dialog {
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
@@ -130,7 +130,7 @@
 		overflow: hidden;
 	}
 
-	.header {
+	.dialog__header {
 		display: flex;
 		gap: var(--svelte-ui-dialog-gap);
 		align-items: center;
@@ -139,7 +139,7 @@
 		padding: var(--svelte-ui-dialog-padding);
 		margin-bottom: calc(0px - var(--svelte-ui-dialog-body-padding));
 
-		.title-block {
+		.dialog__title {
 			flex-grow: 1;
 			font-size: var(--svelte-ui-dialog-title-font-size);
 			line-height: normal;
@@ -147,20 +147,20 @@
 		}
 	}
 
-	.body {
+	.dialog__body {
 		flex-shrink: 1;
 		position: relative;
 		padding: var(--svelte-ui-dialog-body-padding);
 	}
 
-	.footer {
+	.dialog__footer {
 		display: flex;
 		gap: var(--svelte-ui-dialog-gap-sm);
 		justify-content: end;
 		padding: var(--svelte-ui-dialog-footer-padding);
 	}
 
-	.description {
+	.dialog__description {
 		color: var(--svelte-ui-dialog-description-color);
 		font-size: var(--svelte-ui-dialog-description-font-size);
 		line-height: 1.4;
@@ -170,18 +170,18 @@
 	}
 
 	:global(.dialog.scrollable) {
-		.header {
+		.dialog__header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 
-		.body {
+		.dialog__body {
 			flex-shrink: 1;
 			padding: var(--svelte-ui-dialog-body-padding);
 			overflow: auto;
 		}
 
-		.footer {
+		.dialog__footer {
 			border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 	}

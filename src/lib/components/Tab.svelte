@@ -129,7 +129,7 @@
 	onkeydown={handleKeyDown}
 >
 	{#each tabItems as tabItem, index}
-		<div class="tab-item">
+		<div class="tab__item">
 			<TabItem {tabItem} isSelected={index === selectedTabIndex} />
 		</div>
 	{/each}
@@ -150,7 +150,7 @@
 	.tab::-webkit-scrollbar {
 		display: none;
 	}
-	.tab-item {
+	.tab__item {
 		display: block;
 		height: 100%;
 		flex-shrink: 0;

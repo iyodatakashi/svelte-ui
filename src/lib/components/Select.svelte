@@ -261,9 +261,7 @@ select--focus-{focusStyle}"
 	/* =============================================
  * デザインバリアント：rounded
  * ============================================= */
-	.select.rounded:not(.inline) {
-		select {
-			border-radius: var(--svelte-ui-select-border-radius-rounded);
-		}
+	.select--rounded:not(.select--inline) select {
+		border-radius: var(--svelte-ui-select-border-radius-rounded);
 	}
 </style>
