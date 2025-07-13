@@ -19,6 +19,7 @@
 	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
 
 	let {
+		isOpen = $bindable(false),
 		anchorElement,
 		position = 'bottom',
 		children,
@@ -36,6 +37,7 @@
 		margin = 8,
 		allowRepositioning = true
 	}: {
+		isOpen?: boolean;
 		anchorElement: HTMLElement;
 		position?:
 			| 'top'
@@ -70,8 +72,6 @@
 		margin?: number;
 		allowRepositioning?: boolean;
 	} = $props();
-
-	let isOpen: boolean = $state(false);
 	let popupRef: HTMLDivElement | undefined = $state();
 	let popupId: string = $state(`popup-${Math.random().toString(36).substring(2, 15)}`);
 	let previousActiveElement: HTMLElement | null = null;
@@ -100,6 +100,23 @@
 		removeEventListenersToClose();
 		removeKeyboardListener();
 		cleanupMobileFeatures();
+	});
+
+	// isOpen状態の同期処理
+	$effect(() => {
+		if (isOpen) {
+			// すでに開いている場合は何もしない
+			if (popupRef && popupRef.matches(':popover-open')) {
+				return;
+			}
+			open();
+		} else {
+			// すでに閉じている場合は何もしない
+			if (!popupRef || !popupRef.matches(':popover-open')) {
+				return;
+			}
+			close();
+		}
 	});
 
 	const handleKeyDown = (event: KeyboardEvent) => {

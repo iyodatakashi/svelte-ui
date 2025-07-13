@@ -7,6 +7,7 @@
 	import type { SvelteComponent } from 'svelte';
 
 	let {
+		isOpen = $bindable(false),
 		title = 'Confirm',
 		message = 'Are you sure you want to proceed?',
 		confirmText = 'Confirm',
@@ -16,6 +17,7 @@
 		onConfirm = () => {},
 		onCancel = () => {}
 	}: {
+		isOpen?: boolean;
 		title?: string;
 		message?: string;
 		confirmText?: string;
@@ -27,7 +29,6 @@
 	} = $props();
 
 	let dialogRef: SvelteComponent | undefined = $state();
-	let isOpen = $state(false);
 
 	const handleConfirm = (): void => {
 		onConfirm();
@@ -41,12 +42,14 @@
 
 	export const open = (): void => {
 		isOpen = true;
-		dialogRef?.open();
 	};
 
 	export const close = (): void => {
 		isOpen = false;
-		dialogRef?.close();
+	};
+
+	export const toggle = (): void => {
+		isOpen = !isOpen;
 	};
 </script>
 

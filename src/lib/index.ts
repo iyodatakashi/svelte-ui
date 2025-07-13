@@ -13,6 +13,7 @@ export { default as IconButton } from './components/IconButton.svelte';
 export { default as ImageUploader } from './components/ImageUploader.svelte';
 export { default as Input } from './components/Input.svelte';
 export { default as LoadingSpinner } from './components/LoadingSpinner.svelte';
+export { default as Modal } from './components/Modal.svelte';
 export { default as Pagination } from './components/Pagination.svelte';
 export { default as Popup } from './components/Popup.svelte';
 export { default as PopupMenu } from './components/PopupMenu.svelte';

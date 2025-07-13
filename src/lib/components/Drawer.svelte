@@ -14,6 +14,8 @@
 	 * This prevents state synchronization bugs and ensures consistent behavior.
 	 */
 	import type { Snippet } from 'svelte';
+	import Modal from './Modal.svelte';
+
 	let {
 		isOpen = $bindable(false),
 		title = '',
@@ -45,158 +47,56 @@
 		children?: Snippet;
 		footer?: Snippet;
 	} = $props();
-	let dialogRef: HTMLDialogElement;
-	let containerRef: HTMLDivElement;
-	let previousActiveElement: HTMLElement | null = null;
 
-	// スクリーンリーダー向けアナウンス
-	import { announceOpenClose } from '$lib/utils/accessibility';
+	let modalRef: Modal;
 
-	// 外側クリックでのクローズ
-	$effect(() => {
-		if (!dialogRef || !isOpen) return;
+	// Drawer固有のスタイル
+	const drawerStyles = $derived(
+		`width: ${width}px; height: 100%; min-height: 100%; ${position}: 0;`
+	);
 
-		const handleClick = (event: MouseEvent) => {
-			if (!closeIfClickOutside) return;
-			if (!containerRef || !event.target) return;
-			if (!containerRef.contains(event.target as Node)) {
-				close();
-			}
-		};
+	// Drawer固有のクラス
+	const drawerClasses = $derived(
+		['drawer', position, scrollable && 'scrollable'].filter(Boolean).join(' ')
+	);
 
-		dialogRef.addEventListener('click', handleClick);
+	// aria属性
+	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
+	const ariaDescribedbyValue = $derived(
+		ariaDescribedby || (description ? 'drawer-description' : undefined)
+	);
 
-		return () => {
-			if (dialogRef) {
-				dialogRef.removeEventListener('click', handleClick);
-			}
-		};
-	});
-
-	// ESCキーでのクローズ
-	$effect(() => {
-		if (!isOpen || !dialogRef) return;
-
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				close();
-			}
-		};
-
-		document.addEventListener('keydown', handleKeyDown);
-
-		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
-		};
-	});
-
-	// フォーカストラップ
-	$effect(() => {
-		if (!isOpen || !dialogRef) return;
-
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key !== 'Tab') return;
-
-			const focusableElements = dialogRef.querySelectorAll(
-				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-			);
-
-			if (focusableElements.length === 0) return;
-
-			const firstElement = focusableElements[0] as HTMLElement;
-			const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
-
-			if (event.shiftKey) {
-				// Shift + Tab
-				if (document.activeElement === firstElement) {
-					event.preventDefault();
-					lastElement?.focus();
-				}
-			} else {
-				// Tab
-				if (document.activeElement === lastElement) {
-					event.preventDefault();
-					firstElement?.focus();
-				}
-			}
-		};
-
-		dialogRef.addEventListener('keydown', handleKeyDown);
-
-		return () => {
-			if (dialogRef) {
-				dialogRef.removeEventListener('keydown', handleKeyDown);
-			}
-		};
-	});
-
-	$effect(() => {
-		if (dialogRef) {
-			if (isOpen) {
-				open();
-			} else {
-				close();
-			}
-		}
-	});
+	// 外部からのAPI（後方互換性のため）
 	export const open = (): void => {
-		if (!dialogRef) return;
-
-		isOpen = true;
-		previousActiveElement = document.activeElement as HTMLElement;
-
-		dialogRef.classList.add('fade-in');
-		dialogRef.removeEventListener('animationend', closeEnd);
-		dialogRef.showModal();
-
-		setTimeout(() => {
-			// 最初のフォーカス可能要素にフォーカス
-			const firstFocusableElement = dialogRef?.querySelector(
-				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-			) as HTMLElement;
-			firstFocusableElement?.focus();
-
-			// スクリーンリーダーにドロワーが開いたことをアナウンス
-			announceOpenClose('Drawer', true, title || ariaLabel);
-		}, 0);
+		modalRef?.open(title || ariaLabel);
 	};
 
 	export const close = (): void => {
-		if (!dialogRef) return;
+		modalRef?.close(title || ariaLabel);
+	};
 
-		isOpen = false;
-		dialogRef.classList.add('fade-out');
-		dialogRef.addEventListener('animationend', closeEnd, { once: true });
-
-		// スクリーンリーダーにドロワーが閉じたことをアナウンス
-		announceOpenClose('Drawer', false, title || ariaLabel);
+	export const toggle = (): void => {
+		modalRef?.toggle(title || ariaLabel);
 	};
 
 	export const closeEnd = (): void => {
-		if (!dialogRef) return;
-
-		dialogRef.close();
-		dialogRef.classList.remove('fade-out');
-
-		// オプションが有効な場合のみ元の要素にフォーカスを戻す
-		if (restoreFocus && previousActiveElement) {
-			previousActiveElement.focus();
-		}
-		previousActiveElement = null;
+		modalRef?.closeEnd();
 	};
 </script>
 
-<dialog
-	bind:this={dialogRef}
-	class:scrollable
-	class="{isOpen ? 'fade-in' : 'fade-out'} {position}"
-	style="width: {width}px"
-	aria-modal="true"
-	aria-label={ariaLabel}
-	aria-labelledby={title ? 'drawer-title' : undefined}
-	aria-describedby={ariaDescribedby || (description ? 'drawer-description' : undefined)}
+<Modal
+	bind:this={modalRef}
+	bind:isOpen
+	{closeIfClickOutside}
+	{restoreFocus}
+	componentType="Drawer"
+	{ariaLabel}
+	{ariaLabelledby}
+	ariaDescribedby={ariaDescribedbyValue}
+	customClass={drawerClasses}
+	customStyles={drawerStyles}
 >
-	<div class="dialog-contents" bind:this={containerRef}>
+	<div class="drawer-contents">
 		{#if header || title}
 			<div class="header">
 				{#if header}
@@ -229,36 +129,24 @@
 			</div>
 		{/if}
 	</div>
-</dialog>
+</Modal>
 
 <style lang="scss">
-	dialog {
+	:global(.drawer) {
 		width: var(--svelte-ui-drawer-width);
-		min-height: 100%;
 		height: 100%;
+		min-height: 100%;
 		padding: 0;
 		margin: 0;
 		overflow: hidden;
-		border-width: 0;
-		background-color: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-drawer-title-color);
-		box-shadow:
-			0 11px 15px -7px rgb(0 0 0 / 20%),
-			0 24px 38px 3px rgb(0 0 0 / 14%),
-			0 9px 46px 8px rgb(0 0 0 / 12%);
 	}
-	dialog:-internal-dialog-in-top-layer {
+
+	:global(.drawer:-internal-dialog-in-top-layer) {
 		max-height: none;
 	}
-	dialog::backdrop {
-		position: fixed;
-		inset: 0;
-		background: rgb(0 0 0 / 40%);
-		left: 0;
-	}
-	dialog:focus {
-		outline: none;
-	}
+
+	/* 位置固有のアニメーション */
 	@keyframes fadeIn {
 		from {
 			opacity: 0;
@@ -267,6 +155,16 @@
 			opacity: 1;
 		}
 	}
+
+	@keyframes fadeOut {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
 	@keyframes fadeInFromLeft {
 		from {
 			opacity: 0;
@@ -279,6 +177,7 @@
 			transform: translateX(0);
 		}
 	}
+
 	@keyframes fadeInFromRight {
 		from {
 			opacity: 0;
@@ -291,15 +190,7 @@
 			transform: translateX(-100%);
 		}
 	}
-	dialog.right.fade-in {
-		animation: fadeInFromRight var(--svelte-ui-transition-duration, 300ms) forwards;
-	}
-	dialog.right.fade-in::backdrop {
-		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
-	}
-	dialog.fade-in {
-		animation: fadeInFromLeft var(--svelte-ui-transition-duration, 300ms) forwards;
-	}
+
 	@keyframes fadeOutToLeft {
 		from {
 			opacity: 1;
@@ -312,6 +203,7 @@
 			transform: translateX(-50%);
 		}
 	}
+
 	@keyframes fadeOutToRight {
 		from {
 			opacity: 1;
@@ -324,30 +216,43 @@
 			transform: translateX(-50%);
 		}
 	}
-	@keyframes fadeOut {
-		from {
-			opacity: 1;
-		}
-		to {
-			opacity: 0;
-		}
+
+	:global(.drawer.right.fade-in) {
+		animation: fadeInFromRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
-	dialog.left.fade-out {
+
+	:global(.drawer.right.fade-in::backdrop) {
+		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
+	}
+
+	:global(.drawer.left.fade-in) {
+		animation: fadeInFromLeft var(--svelte-ui-transition-duration, 300ms) forwards;
+	}
+
+	:global(.drawer.left.fade-in::backdrop) {
+		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
+	}
+
+	:global(.drawer.left.fade-out) {
 		animation: fadeOutToLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
-	dialog.right.fade-out {
+
+	:global(.drawer.right.fade-out) {
 		animation: fadeOutToRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
-	dialog.fade-out::backdrop {
+
+	:global(.drawer.fade-out::backdrop) {
 		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
-	.dialog-contents {
+
+	.drawer-contents {
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
 		height: 100%;
 		overflow: hidden;
 	}
+
 	.header {
 		display: flex;
 		gap: var(--svelte-ui-drawer-gap);
@@ -356,6 +261,7 @@
 		min-height: var(--svelte-ui-drawer-header-height);
 		padding: var(--svelte-ui-drawer-padding);
 		margin-bottom: calc(0px - var(--svelte-ui-drawer-body-padding));
+
 		.title-block {
 			flex-grow: 1;
 			font-size: var(--svelte-ui-drawer-title-font-size);
@@ -363,12 +269,14 @@
 			color: var(--svelte-ui-drawer-title-color);
 		}
 	}
+
 	.body {
 		flex-shrink: 1;
 		position: relative;
 		padding: var(--svelte-ui-drawer-body-padding);
 		flex-grow: 1;
 	}
+
 	.footer {
 		display: flex;
 		gap: var(--svelte-ui-drawer-gap-sm);
@@ -384,16 +292,19 @@
 		padding: var(--svelte-ui-drawer-description-padding);
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
-	.scrollable {
+
+	:global(.drawer.scrollable) {
 		.header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
+
 		.body {
 			flex-shrink: 1;
 			padding: var(--svelte-ui-drawer-body-padding);
 			overflow: auto;
 		}
+
 		.footer {
 			border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
@@ -401,13 +312,16 @@
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		dialog.fade-in,
-		dialog.fade-in::backdrop,
-		dialog.fade-out,
-		dialog.fade-out::backdrop,
-		dialog.left.fade-out,
-		dialog.right.fade-in,
-		dialog.right.fade-out {
+		:global(.drawer.fade-in),
+		:global(.drawer.fade-in::backdrop),
+		:global(.drawer.fade-out),
+		:global(.drawer.fade-out::backdrop),
+		:global(.drawer.left.fade-in),
+		:global(.drawer.left.fade-in::backdrop),
+		:global(.drawer.left.fade-out),
+		:global(.drawer.right.fade-in),
+		:global(.drawer.right.fade-in::backdrop),
+		:global(.drawer.right.fade-out) {
 			animation-duration: 0.01s;
 		}
 	}

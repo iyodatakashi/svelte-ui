@@ -9,12 +9,13 @@
 	import { tick } from 'svelte';
 
 	let {
+		isOpen = $bindable(false),
 		anchorElement,
 		position = 'bottom',
 		menuItems,
 		ariaLabel = 'Menu',
 		mobileFullscreen = true,
-		enableSwipeToClose = true,
+
 		mobileBehavior = 'auto',
 		iconFilled = false,
 		iconWeight = 300,
@@ -22,6 +23,7 @@
 		iconOpticalSize = null,
 		iconVariant = 'outlined'
 	}: {
+		isOpen?: boolean;
 		anchorElement: HTMLElement;
 		position?:
 			| 'top'
@@ -44,7 +46,7 @@
 		menuItems: (MenuItem | 'separator')[];
 		ariaLabel?: string;
 		mobileFullscreen?: boolean;
-		enableSwipeToClose?: boolean;
+
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
@@ -231,13 +233,13 @@
 
 <Popup
 	bind:this={popupRef}
+	bind:isOpen
 	{anchorElement}
 	{position}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}
 	role="menu"
 	{mobileFullscreen}
-	{enableSwipeToClose}
 	{mobileBehavior}
 >
 	<div
