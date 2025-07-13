@@ -480,8 +480,7 @@
 	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-text-text: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-hover-overlay: rgba(0, 0, 0, 0.08);
-	--svelte-ui-iconbutton-hover-overlay-dark: rgba(255, 255, 255, 0.12);
+	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
 
 	/* ColorPicker */
