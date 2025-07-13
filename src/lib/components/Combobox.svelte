@@ -1,10 +1,10 @@
 <!-- Combobox.svelte -->
 
 <script lang="ts">
-	import Input from './Input.svelte';
 	import Icon from './Icon.svelte';
+	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
-	import { announceSelection } from '$lib/utils/accessibility';
+	import { announceSelection } from '../utils/accessibility';
 	let {
 		name,
 		value = $bindable(),

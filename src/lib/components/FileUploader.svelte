@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { announceToScreenReader } from '../utils/accessibility';
 
 	let {
 		files = $bindable(),

@@ -13,7 +13,7 @@
 	 * This prevents state synchronization bugs and ensures consistent behavior.
 	 */
 	import type { Snippet } from 'svelte';
-	import { announceOpenClose } from '$lib/utils/accessibility';
+	import { announceOpenClose } from '../utils/accessibility';
 
 	let {
 		isOpen = $bindable(false),

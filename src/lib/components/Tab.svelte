@@ -3,7 +3,14 @@
 <script lang="ts">
 	import TabItem from './TabItem.svelte';
 	import type { MenuItem } from '../types/MenuItem';
-	import { page } from '$app/state';
+
+	// ブラウザ標準APIを使用した現在パス取得
+	const getCurrentPath = () => {
+		if (typeof window !== 'undefined') {
+			return window.location.pathname;
+		}
+		return '';
+	};
 
 	let {
 		tabItems = [],
@@ -20,7 +27,7 @@
 	} = $props();
 
 	// 現在のパスを取得
-	const currentPath = $derived(page.url.pathname);
+	const currentPath = $derived(getCurrentPath());
 
 	// パスの正規化処理
 	const normalizePath = (path: string): string => {

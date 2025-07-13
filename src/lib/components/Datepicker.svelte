@@ -13,7 +13,7 @@
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
-	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { announceToScreenReader } from '../utils/accessibility';
 
 	dayjs.extend(localeData);
 	let {

@@ -3,7 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import PopupMenu from './PopupMenu.svelte';
-	import type { MenuItem } from '$lib/types/MenuItem';
+	import type { MenuItem } from '../types/MenuItem';
 	import type { SvelteComponent, Snippet } from 'svelte';
 
 	let {
@@ -13,7 +13,6 @@
 		disabled = false,
 		position = 'bottom',
 		mobileFullscreen = true,
-		enableSwipeToClose = true,
 		mobileBehavior = 'auto'
 	}: {
 		children?: Snippet;
@@ -39,7 +38,6 @@
 			| 'right-bottom'
 			| 'auto';
 		mobileFullscreen?: boolean;
-		enableSwipeToClose?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 	} = $props();
 
@@ -106,7 +104,6 @@
 	{ariaLabel}
 	{position}
 	{mobileFullscreen}
-	{enableSwipeToClose}
 	{mobileBehavior}
 />
 

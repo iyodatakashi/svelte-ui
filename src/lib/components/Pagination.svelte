@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
-	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { announceToScreenReader } from '../utils/accessibility';
 	let {
 		total,
 		limit = 100,

@@ -3,10 +3,16 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
 	import Icon from './Icon.svelte';
-	import type { MenuItem } from '$lib/types/MenuItem';
-	import { goto } from '$app/navigation';
+	import type { MenuItem } from '../types/MenuItem';
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';
+
+	// ブラウザ標準APIを使用したナビゲーション関数
+	const goto = (url: string) => {
+		if (typeof window !== 'undefined') {
+			window.location.href = url;
+		}
+	};
 
 	let {
 		isOpen = $bindable(false),

@@ -16,7 +16,9 @@
 
 	import type { Snippet } from 'svelte';
 	import { onDestroy, tick, onMount } from 'svelte';
-	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
+	import { isMobileDevice, disableBodyScroll, getViewportSize } from '../utils/mobile';
+
+	import { announceOpenClose } from '../utils/accessibility';
 
 	let {
 		isOpen = $bindable(false),
@@ -252,8 +254,6 @@
 			popupRef.focus();
 		}
 	};
-
-	import { announceOpenClose } from '$lib/utils/accessibility';
 
 	const announceToScreenReader = () => {
 		if (!ariaLabel && !ariaLabelledby) return;
