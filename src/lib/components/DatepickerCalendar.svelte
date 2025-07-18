@@ -559,7 +559,7 @@
 						value = { start: date.toDate(), end: value.start };
 					}
 					isSelectingStart = true;
-					onchange();
+					onchange(value);
 				}
 			} else {
 				// 初回選択または値がundefinedの場合
@@ -569,7 +569,7 @@
 		} else {
 			// 単一日付選択モード
 			value = date.toDate();
-			onchange();
+			onchange(value);
 		}
 	};
 </script>

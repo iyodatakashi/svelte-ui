@@ -127,7 +127,7 @@
 			}
 		}
 
-		onchange();
+		onchange(value);
 	};
 	const handleClick = () => {
 		if (openIfClicked && !disabled) {
@@ -195,17 +195,17 @@
 	};
 
 	// 入力欄のフォーカスハンドラー
-	const handleFocus = () => {
+	const handleFocus = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
 		// キーボードでのフォーカス時のみPopupを開く
 		// クリック時は handleClick で処理
-		onfocus();
+		onfocus(event);
 	};
 
 	// 入力欄のブラーハンドラー
-	const handleBlur = () => {
+	const handleBlur = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
 		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
 		// フォーカスイベントのみをハンドルする
-		onblur();
+		onblur(event);
 	};
 
 	// 直接入力時のハンドラー
@@ -215,7 +215,7 @@
 		const inputStr = String(inputValue || '');
 		if (!inputStr) {
 			value = undefined;
-			onchange();
+			onchange(value);
 			return;
 		}
 
@@ -223,20 +223,23 @@
 		const parsedDate = dayjs(inputStr, finalFormat, locale, true);
 		if (parsedDate.isValid()) {
 			value = parsedDate.toDate();
-			onchange();
+			onchange(value);
 		}
 	};
-	const displayValue = $derived.by(() => {
+	// 表示用の値を計算
+	let displayValue = $state('');
+
+	$effect(() => {
 		// dayjsインスタンスの作成時にlocaleを適用
 		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
 
 		if (isDateRange && value && 'start' in value && 'end' in value) {
-			return `${formatWithLocale(value.start)} - ${formatWithLocale(value.end)}`;
+			displayValue = `${formatWithLocale(value.start)} - ${formatWithLocale(value.end)}`;
 		} else if (!isDateRange && value && value instanceof Date) {
-			return formatWithLocale(value);
+			displayValue = formatWithLocale(value);
 		} else {
 			// 値がない場合は常に空文字を返す（placeholderで表示するため）
-			return '';
+			displayValue = '';
 		}
 	});
 
