@@ -97,14 +97,6 @@ export const Default = {
 	}
 };
 
-// Dark theme
-export const DarkTheme = {
-	args: {
-		placeholder: 'ダークテーマのテキストエリア',
-		value: 'ダークモード\n複数行テキスト'
-	}
-};
-
 // Rounded
 export const Rounded = {
 	args: {

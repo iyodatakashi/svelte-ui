@@ -128,13 +128,6 @@ export const Inline = {
 	}
 };
 
-// Dark theme (グローバルテーマで制御)
-export const DarkTheme = {
-	args: {
-		placeholder: 'ダークテーマの入力'
-	}
-};
-
 // Rounded
 export const Rounded = {
 	args: {

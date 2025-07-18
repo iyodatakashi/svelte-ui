@@ -313,19 +313,6 @@ export const InlineEmpty = {
 	})
 };
 
-// ダークテーマ
-export const DarkTheme = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: programmingLanguages,
-			placeholder: 'ダークテーマのコンボボックス',
-
-			filterable: true
-		}
-	})
-};
-
 // 文字数制限
 export const WithMaxLength = {
 	render: () => ({

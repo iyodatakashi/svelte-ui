@@ -62,13 +62,6 @@ export const Default = {
 	}
 };
 
-// Dark theme
-export const DarkTheme = {
-	args: {
-		value: '#f1c40f'
-	}
-};
-
 // Rounded
 export const Rounded = {
 	args: {
