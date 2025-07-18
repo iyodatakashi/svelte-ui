@@ -1,8 +1,27 @@
 {
-	"name": "svelte-ui",
+	"name": "@14ch/svelte-ui",
+	"description": "Modern Svelte UI components library with TypeScript support",
 	"private": false,
 	"version": "0.0.1",
 	"type": "module",
+	"keywords": [
+		"svelte",
+		"ui",
+		"components",
+		"typescript",
+		"sveltekit",
+		"library"
+	],
+	"author": "14ch",
+	"license": "MIT",
+	"repository": {
+		"type": "git",
+		"url": "git+https://github.com/14ch/svelte-ui.git"
+	},
+	"homepage": "https://github.com/14ch/svelte-ui#readme",
+	"bugs": {
+		"url": "https://github.com/14ch/svelte-ui/issues"
+	},
 	"main": "dist/index.js",
 	"exports": {
 		".": {
@@ -13,7 +32,12 @@
 		"./styles/*": "./dist/assets/styles/*"
 	},
 	"files": [
-		"dist"
+		"dist/components/",
+		"dist/types/",
+		"dist/utils/",
+		"dist/assets/",
+		"dist/index.js",
+		"dist/index.d.ts"
 	],
 	"svelte": "./dist/index.js",
 	"types": "./dist/index.d.ts",

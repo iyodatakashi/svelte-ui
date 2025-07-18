@@ -15,11 +15,11 @@ A modern, accessible Svelte component library with built-in TypeScript support a
 ## Installation
 
 ```bash
-npm install svelte-ui
+npm install @14ch/svelte-ui
 # or
-pnpm add svelte-ui
+pnpm add @14ch/svelte-ui
 # or
-yarn add svelte-ui
+yarn add @14ch/svelte-ui
 ```
 
 ## Setup
@@ -32,26 +32,26 @@ Add this to your main app file (e.g., `app.html`, `+layout.svelte`, or `main.js`
 
 ```javascript
 // Import all necessary styles (recommended)
-import 'svelte-ui/styles';
+import '@14ch/svelte-ui/styles';
 ```
 
 Or import individual style files:
 
 ```javascript
 // Core styles (required)
-import 'svelte-ui/styles/variables.scss';
-import 'svelte-ui/styles/core.scss';
+import '@14ch/svelte-ui/styles/variables.scss';
+import '@14ch/svelte-ui/styles/core.scss';
 
 // Optional styles
-import 'svelte-ui/styles/optional/fonts.scss'; // Material Symbols font
-import 'svelte-ui/styles/optional/reset.scss'; // CSS reset
+import '@14ch/svelte-ui/styles/optional/fonts.scss'; // Material Symbols font
+import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 ```
 
 ### 2. Basic Usage
 
 ```svelte
 <script>
-	import { Button, Input, Dialog } from 'svelte-ui';
+	import { Button, Input, Dialog } from '@14ch/svelte-ui';
 
 	let dialogRef;
 	let inputValue = '';
@@ -110,7 +110,7 @@ import 'svelte-ui/styles/optional/reset.scss'; // CSS reset
 
 ```svelte
 <script>
-	import { Button } from 'svelte-ui';
+	import { Button } from '@14ch/svelte-ui';
 </script>
 
 <!-- Different variants -->
@@ -135,7 +135,7 @@ import 'svelte-ui/styles/optional/reset.scss'; // CSS reset
 
 ```svelte
 <script>
-	import { Input, Checkbox, Button } from 'svelte-ui';
+	import { Input, Checkbox, Button } from '@14ch/svelte-ui';
 
 	let email = '';
 	let password = '';
@@ -163,7 +163,7 @@ import 'svelte-ui/styles/optional/reset.scss'; // CSS reset
 
 ```svelte
 <script>
-	import { Button, ConfirmDialog } from 'svelte-ui';
+	import { Button, ConfirmDialog } from '@14ch/svelte-ui';
 
 	let confirmDialogRef;
 
@@ -222,7 +222,7 @@ The library uses CSS custom properties for easy theming:
 All components come with full TypeScript definitions:
 
 ```typescript
-import type { MenuItem } from 'svelte-ui';
+import type { MenuItem } from '@14ch/svelte-ui';
 
 const menuItems: MenuItem[] = [
 	{ title: 'Home', href: '/' },
