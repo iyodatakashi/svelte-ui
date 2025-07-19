@@ -154,6 +154,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+		contain: layout;
 	}
 
 	.radio-container input[type='radio'] {

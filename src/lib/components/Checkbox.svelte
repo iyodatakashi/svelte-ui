@@ -126,6 +126,7 @@
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
+		contain: layout;
 	}
 
 	.checkbox-container input[type='checkbox'] {
