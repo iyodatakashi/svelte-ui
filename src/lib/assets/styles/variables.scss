@@ -400,6 +400,7 @@
 	--svelte-ui-input-readonly-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-input-placeholder-color: var(--svelte-ui-text-placeholder-color);
+	--svelte-ui-input-icon-color: var(--svelte-ui-text-subtle-color);
 
 	/* Textarea */
 	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
@@ -578,6 +579,7 @@
 		/* ===== フォーム要素の上書き ===== */
 		--svelte-ui-input-bg: Canvas;
 		--svelte-ui-input-border-color: CanvasText;
+		--svelte-ui-input-icon-color: CanvasText;
 		--svelte-ui-textarea-bg: Canvas;
 		--svelte-ui-textarea-border-color: CanvasText;
 		--svelte-ui-select-bg: Canvas;
