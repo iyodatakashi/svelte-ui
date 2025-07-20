@@ -299,11 +299,11 @@
    * ==================================== */
 
 	/* 基本テキスト色の定義 */
-	--svelte-ui-text-color: var(--base-800);
-	--svelte-ui-text-subtle-color: var(--base-500);
+	--svelte-ui-text-color: var(--base-800-transparent);
+	--svelte-ui-text-subtle-color: var(--base-400-transparent);
 	--svelte-ui-text-on-filled-color: var(--white);
 	--svelte-ui-text-inverse-color: var(--white-800-transparent);
-	--svelte-ui-text-inverse-subtle-color: var(--white-600-transparent);
+	--svelte-ui-text-inverse-subtle-color: var(--white-400-transparent);
 	--svelte-ui-text-placeholder-color: var(--base-400-transparent);
 
 	/* ボーダーカラー */
@@ -348,10 +348,10 @@
 [data-theme='dark'] {
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text-color: var(--white-800-transparent);
-	--svelte-ui-text-subtle-color: var(--white-500-transparent);
+	--svelte-ui-text-subtle-color: var(--white-400-transparent);
 	--svelte-ui-text-on-filled-color: var(--white);
 	--svelte-ui-text-inverse-color: var(--base-800-transparent);
-	--svelte-ui-text-inverse-subtle-color: var(--base-600-transparent);
+	--svelte-ui-text-inverse-subtle-color: var(--base-400-transparent);
 	--svelte-ui-text-placeholder-color: var(--white-400-transparent);
 
 	/* ボーダーカラー */
