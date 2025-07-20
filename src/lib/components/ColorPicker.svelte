@@ -172,7 +172,7 @@
 	.text-input {
 		width: 100%;
 		min-width: 1em;
-		padding: 0 12px 0 var(--svelte-ui-colorpicker-input-padding-left);
+		padding: 0 12px 0 var(--svelte-ui-colorpicker-text-padding-left);
 		background: transparent;
 		border: none;
 		background-color: var(--svelte-ui-colorpicker-bg);
@@ -195,8 +195,8 @@
 		position: absolute;
 		left: var(--svelte-ui-colorpicker-trigger-offset);
 		display: inline-block;
-		width: var(--svelte-ui-colorpicker-size);
-		height: var(--svelte-ui-colorpicker-size);
+		width: var(--svelte-ui-colorpicker-trigger-size);
+		height: var(--svelte-ui-colorpicker-trigger-size);
 		padding: 0;
 
 		&::before {
