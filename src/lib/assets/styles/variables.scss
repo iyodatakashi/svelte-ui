@@ -168,9 +168,10 @@
 	--svelte-ui-input-disabled-opacity: var(--svelte-ui-form-disabled-opacity);
 
 	/* Textarea */
-	--svelte-ui-textarea-padding: 5px 12px;
+	--svelte-ui-textarea-min-height: 36px;
+	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - 1.8em) / 2) 12px;
 	--svelte-ui-textarea-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-textarea-border-radius-rounded: 20px;
+	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
 
 	/* Select */
 	--svelte-ui-select-height: var(--svelte-ui-form-height);
@@ -224,10 +225,10 @@
 	/* ColorPicker */
 	--svelte-ui-colorpicker-size: 28px;
 	--svelte-ui-colorpicker-input-padding-left: 40px;
-	--svelte-ui-colorpicker-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
-	--svelte-ui-colorpicker-border-style: dashed;
-	--svelte-ui-colorpicker-border-width: 1px;
-	--svelte-ui-colorpicker-offset: 4px;
+	--svelte-ui-colorpicker-trigger-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
+	--svelte-ui-colorpicker-trigger-border-style: dashed;
+	--svelte-ui-colorpicker-trigger-border-width: 1px;
+	--svelte-ui-colorpicker-trigger-offset: 4px;
 
 	/* Combobox */
 	--svelte-ui-combobox-min-width: 120px;
@@ -456,6 +457,7 @@
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-border-color: var(--svelte-ui-border-weak-color);
+	--svelte-ui-colorpicker-trigger-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-colorpicker-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-colorpicker-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-colorpicker-placeholder-color: var(--svelte-ui-text-placeholder-color);
@@ -583,6 +585,7 @@
 		--svelte-ui-select-text-color: CanvasText;
 		--svelte-ui-select-icon-color: CanvasText;
 		--svelte-ui-colorpicker-border-color: CanvasText;
+		--svelte-ui-colorpicker-trigger-border-color: CanvasText;
 		--svelte-ui-colorpicker-bg: Canvas;
 		--svelte-ui-combobox-border-color: CanvasText;
 		--svelte-ui-combobox-bg: Canvas;

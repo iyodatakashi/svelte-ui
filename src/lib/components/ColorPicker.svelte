@@ -125,7 +125,7 @@
 		{/if}
 	</form>
 
-	<div class="custom-color-picker">
+	<div class="color-picker-trigger">
 		<input
 			type="color"
 			bind:value
@@ -191,22 +191,24 @@
 		}
 	}
 
-	.custom-color-picker {
+	.color-picker-trigger {
 		position: absolute;
-		left: var(--svelte-ui-colorpicker-offset);
+		left: var(--svelte-ui-colorpicker-trigger-offset);
 		display: inline-block;
 		width: var(--svelte-ui-colorpicker-size);
 		height: var(--svelte-ui-colorpicker-size);
+		padding: 0;
 
 		&::before {
 			content: '';
 			display: block;
 			position: absolute;
-			width: calc(100% - 2px);
-			height: calc(100% - 2px);
-			border: var(--svelte-ui-colorpicker-border-style) var(--svelte-ui-colorpicker-border-width)
-				var(--svelte-ui-colorpicker-border-color);
-			border-radius: var(--svelte-ui-colorpicker-border-radius);
+			width: 100%;
+			height: 100%;
+			border: var(--svelte-ui-colorpicker-trigger-border-style)
+				var(--svelte-ui-colorpicker-trigger-border-width)
+				var(--svelte-ui-colorpicker-trigger-border-color);
+			border-radius: var(--svelte-ui-colorpicker-trigger-border-radius);
 		}
 	}
 
@@ -215,6 +217,7 @@
 		position: absolute;
 		width: 100%;
 		height: 100%;
+		padding: 0;
 		z-index: 2;
 		pointer-events: auto;
 		cursor: pointer;
@@ -226,7 +229,7 @@
 		height: 100%;
 		cursor: pointer;
 		position: relative;
-		border-radius: var(--svelte-ui-colorpicker-border-radius);
+		border-radius: var(--svelte-ui-colorpicker-trigger-border-radius);
 		z-index: 1;
 	}
 
@@ -315,8 +318,8 @@
 			color: var(--svelte-ui-colorpicker-text-color);
 		}
 
-		.custom-color-picker::before {
-			border-color: var(--svelte-ui-colorpicker-border-color);
+		.color-picker-trigger::before {
+			border-color: var(--svelte-ui-colorpicker-trigger-border-color);
 		}
 	}
 
@@ -332,7 +335,7 @@
 			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
 
-		.custom-color-picker::before {
+		.color-picker-trigger::before {
 			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
 

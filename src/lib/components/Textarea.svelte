@@ -78,6 +78,7 @@
 			return value ?? '';
 		}
 	});
+
 	const clear = (): void => {
 		if (disabled || readonly) return;
 		value = undefined;
