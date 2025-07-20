@@ -35,6 +35,7 @@
 		minDate,
 		maxDate,
 		locale = 'en',
+		rangeSeparator = ' - ',
 		...restProps
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
@@ -55,6 +56,7 @@
 		minDate?: Date;
 		maxDate?: Date;
 		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		rangeSeparator?: string;
 		[key: string]: any;
 	} = $props();
 	let inputRef: any = $state();
@@ -68,36 +70,42 @@
 	const localeConfig = {
 		en: {
 			defaultFormat: 'MM/DD/YYYY (ddd)',
+			rangeFormat: 'MM/DD/YYYY',
 			selectDateLabel: 'Select a date. Current value:',
 			notSelected: 'Not selected',
 			directInputPlaceholder: 'Enter date'
 		},
 		ja: {
 			defaultFormat: 'YYYY/M/D（ddd）',
+			rangeFormat: 'YYYY/M/D',
 			selectDateLabel: '日付を選択してください。現在の値:',
 			notSelected: '未選択',
 			directInputPlaceholder: '日付を入力してください'
 		},
 		fr: {
 			defaultFormat: 'DD/MM/YYYY (ddd)',
+			rangeFormat: 'DD/MM/YYYY',
 			selectDateLabel: 'Sélectionnez une date. Valeur actuelle :',
 			notSelected: 'Non sélectionné',
 			directInputPlaceholder: 'Saisir la date'
 		},
 		de: {
 			defaultFormat: 'DD.MM.YYYY (ddd)',
+			rangeFormat: 'DD.MM.YYYY',
 			selectDateLabel: 'Wählen Sie ein Datum. Aktueller Wert:',
 			notSelected: 'Nicht ausgewählt',
 			directInputPlaceholder: 'Datum eingeben'
 		},
 		es: {
 			defaultFormat: 'DD/MM/YYYY (ddd)',
+			rangeFormat: 'DD/MM/YYYY',
 			selectDateLabel: 'Seleccione una fecha. Valor actual:',
 			notSelected: 'No seleccionado',
 			directInputPlaceholder: 'Introducir fecha'
 		},
 		'zh-cn': {
 			defaultFormat: 'YYYY/M/D（ddd）',
+			rangeFormat: 'YYYY/M/D',
 			selectDateLabel: '请选择日期。当前值：',
 			notSelected: '未选择',
 			directInputPlaceholder: '请输入日期'
@@ -106,7 +114,9 @@
 
 	// 現在のlocale設定を取得
 	const currentLocaleConfig = $derived(localeConfig[locale]);
-	const finalFormat = $derived(format || currentLocaleConfig.defaultFormat);
+	const finalFormat = $derived(
+		format || (isDateRange ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
+	);
 
 	// dayjsのlocaleを設定
 	$effect(() => {
@@ -234,7 +244,7 @@
 		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
 
 		if (isDateRange && value && 'start' in value && 'end' in value) {
-			displayValue = `${formatWithLocale(value.start)} - ${formatWithLocale(value.end)}`;
+			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
 		} else if (!isDateRange && value && value instanceof Date) {
 			displayValue = formatWithLocale(value);
 		} else {
