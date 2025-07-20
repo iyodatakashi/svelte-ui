@@ -154,10 +154,10 @@ select--focus-{focusStyle}"
 	.select__dropdown-icon {
 		position: absolute;
 		top: 50%;
-		right: var(--svelte-ui-select-icon-right);
+		right: var(--svelte-ui-select-dropdown-icon-right);
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
-		color: var(--svelte-ui-select-icon-color);
+		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: none;
 	}
 
@@ -234,7 +234,7 @@ select--focus-{focusStyle}"
 		}
 
 		.dropdown-icon {
-			right: var(--svelte-ui-select-icon-right);
+			right: var(--svelte-ui-select-dropdown-icon-right);
 		}
 	}
 

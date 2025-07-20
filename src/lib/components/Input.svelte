@@ -209,7 +209,7 @@
 			{#if onLeftIconClick}
 				<IconButton
 					ariaLabel="左アイコン"
-					color="var(--svelte-ui-select-icon-color)"
+					color="var(--svelte-ui-select-dropdown-icon-color)"
 					variant="text"
 					onclick={onLeftIconClick}
 					tabindex={-1}
@@ -239,7 +239,7 @@
 			{#if onRightIconClick}
 				<IconButton
 					ariaLabel="右アイコン"
-					color="var(--svelte-ui-select-icon-color)"
+					color="var(--svelte-ui-select-dropdown-icon-color)"
 					variant="text"
 					onclick={onRightIconClick}
 					tabindex={-1}
@@ -380,7 +380,7 @@
 		width: 40px;
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
-		color: var(--svelte-ui-select-icon-color);
+		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: auto;
 		z-index: 1;
 	}
@@ -394,7 +394,7 @@
 		width: 40px;
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
-		color: var(--svelte-ui-select-icon-color);
+		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: auto;
 		z-index: 1;
 	}
