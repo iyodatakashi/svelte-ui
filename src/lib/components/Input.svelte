@@ -379,7 +379,7 @@
 		left: 0;
 		width: 40px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-size);
+		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-select-icon-color);
 		pointer-events: auto;
 		z-index: 1;
@@ -393,7 +393,7 @@
 		right: 0;
 		width: 40px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-size);
+		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-select-icon-color);
 		pointer-events: auto;
 		z-index: 1;
@@ -508,7 +508,7 @@
 
 		&.input--clearable {
 			input {
-				padding-right: var(--svelte-ui-clear-button-padding-adjustment);
+				padding-right: var(--svelte-ui-clear-button-right-spacing);
 			}
 		}
 

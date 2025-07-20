@@ -259,7 +259,7 @@
  * ============================================= */
 	.clearable {
 		.text-input {
-			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
+			padding-right: var(--svelte-ui-clear-button-right-spacing);
 		}
 	}
 
@@ -340,7 +340,7 @@
 		}
 
 		&.clearable .text-input {
-			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
+			padding-right: var(--svelte-ui-clear-button-right-spacing);
 		}
 	}
 </style>

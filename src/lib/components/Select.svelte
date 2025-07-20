@@ -156,7 +156,7 @@ select--focus-{focusStyle}"
 		top: 50%;
 		right: var(--svelte-ui-select-icon-right);
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-size);
+		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-select-icon-color);
 		pointer-events: none;
 	}

@@ -178,7 +178,7 @@
 	--svelte-ui-select-padding: var(--svelte-ui-form-padding-with-icon);
 	--svelte-ui-select-padding-inline: var(--svelte-ui-form-padding-with-icon-inline);
 	--svelte-ui-select-icon-right: 8px;
-	--svelte-ui-select-dropdown-size: 18px;
+	--svelte-ui-select-dropdown-icon-size: 18px;
 	--svelte-ui-select-border-radius: var(--svelte-ui-form-border-radius);
 	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 
@@ -287,7 +287,7 @@
 	--svelte-ui-clear-button-transition: opacity 0.3s ease;
 	--svelte-ui-clear-button-top-textarea: 8px;
 	--svelte-ui-clear-button-right-textarea: 8px;
-	--svelte-ui-clear-button-padding-adjustment: 36px;
+	--svelte-ui-clear-button-right-spacing: 36px;
 
 	/* Badge */
 	--badge-font-size: 12px;

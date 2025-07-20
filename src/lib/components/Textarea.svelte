@@ -294,7 +294,7 @@
 	.textarea--clearable {
 		textarea,
 		.textarea__display-text {
-			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
+			padding-right: var(--svelte-ui-clear-button-right-spacing);
 		}
 	}
 
