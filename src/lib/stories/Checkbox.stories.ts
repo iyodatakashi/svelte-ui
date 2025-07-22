@@ -18,7 +18,7 @@ interface CheckboxArgs {
 	children?: Snippet;
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
-	onchange?: (checked: boolean, event: Event) => void;
+	onchange?: (value: boolean) => void;
 }
 
 const meta: Meta<CheckboxArgs> = {

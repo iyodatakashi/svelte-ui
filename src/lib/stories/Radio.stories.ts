@@ -18,7 +18,7 @@ interface RadioArgs {
 	children?: Snippet;
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
-	onchange?: (value: string | number | boolean, event: Event) => void;
+	onchange?: (value: string | number | boolean | null | undefined) => void;
 }
 
 const meta: Meta<RadioArgs> = {

@@ -303,14 +303,14 @@ export const Playground = {
 		maxWidth: null,
 		iconFilled: false
 	},
-	render: (args: Record<string, unknown>) => ({
+	render: (args) => ({
 		Component: Input,
 		props: {
 			...args,
-			onchange: (value: string | number | undefined) => {
+			onchange: (value) => {
 				console.log('onChange:', value);
 			},
-			oninput: (value: string | number | undefined) => {
+			oninput: (value) => {
 				console.log('onInput:', value);
 			}
 		}

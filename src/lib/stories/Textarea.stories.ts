@@ -232,7 +232,7 @@ export const Playground = {
 		Component: Textarea,
 		props: {
 			...args,
-			onchange: (value: string | number | undefined) => {
+			onchange: (value: string | number | null | undefined) => {
 				console.log('onChange:', value);
 			},
 			oninput: (value: string | number | undefined) => {

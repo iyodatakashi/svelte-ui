@@ -178,7 +178,7 @@ export const WithEvents = {
 		Component: Select,
 		props: {
 			...args,
-			onchange: (value: string | number | undefined) => {
+			onchange: (value: string | number | boolean | null | undefined) => {
 				console.log('onChange:', value);
 			},
 			onfocus: () => {
@@ -263,7 +263,7 @@ export const Playground = {
 		Component: Select,
 		props: {
 			...args,
-			onchange: (value: string | number | undefined) => {
+			onchange: (value: string | number | boolean | null | undefined) => {
 				console.log('onChange:', value);
 			}
 		}
