@@ -7,6 +7,7 @@
 	let {
 		value = $bindable(''),
 		disabled = false,
+		readonly = false,
 		fullWidth = false,
 		rounded = false,
 		clearable = false,
@@ -21,12 +22,13 @@
 	}: {
 		value?: string;
 		disabled?: boolean;
+		readonly?: boolean;
 		fullWidth?: boolean;
 		rounded?: boolean;
 		clearable?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		customStyle?: string;
-		onchange?: (value: string) => void;
+		onchange?: (value: string | number | null | undefined) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
@@ -108,10 +110,11 @@
 			onclick={handleClick}
 			onkeydown={handleKeydown}
 			{disabled}
+			{readonly}
 			{...restProps}
 		/>
 		<!-- クリアボタン -->
-		{#if clearable && !disabled}
+		{#if clearable && !disabled && !readonly}
 			<div class="clear-button-block">
 				<IconButton
 					ariaLabel="クリア"
@@ -305,6 +308,20 @@
 	.text-input:disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
+	}
+
+	/* =============================================
+ * 状態管理（readonly等）
+ * ============================================= */
+	.color-picker:has(.text-input[readonly]) {
+		.color-input,
+		.color-picker-trigger {
+			pointer-events: none;
+		}
+
+		.text-input[readonly] {
+			background-color: var(--svelte-ui-input-readonly-bg);
+		}
 	}
 
 	/* =============================================

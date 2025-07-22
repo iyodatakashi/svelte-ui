@@ -41,63 +41,29 @@ const meta: Meta<CheckboxArgs> = {
 	}),
 	argTypes: {
 		value: {
-			control: 'boolean',
-			description: 'The checked state of the checkbox'
-		},
-		indeterminate: {
-			control: 'boolean',
-			description: 'Whether the checkbox is in an indeterminate state'
-		},
-		disabled: {
-			control: 'boolean',
-			description: 'Whether the checkbox is disabled'
-		},
-		required: {
-			control: 'boolean',
-			description: 'Whether the checkbox is required'
-		},
-		readonly: {
-			control: 'boolean',
-			description: 'Whether the checkbox is readonly'
-		},
-		size: {
-			control: 'select',
-			options: ['small', 'medium', 'large'],
-			description: 'Size variant of the checkbox'
-		},
-		error: {
-			control: 'text',
-			description: 'Error message to display'
-		},
-		success: {
-			control: 'text',
-			description: 'Success message to display'
+			control: { type: 'boolean' },
+			description: 'チェック状態'
 		},
 		name: {
-			control: 'text',
-			description: 'Name attribute for the checkbox input'
+			control: { type: 'text' },
+			description: 'フォームの名前属性'
+		},
+		disabled: {
+			control: { type: 'boolean' },
+			description: '無効状態'
+		},
+		required: {
+			control: { type: 'boolean' },
+			description: '必須項目'
+		},
+		size: {
+			control: { type: 'select' },
+			options: ['small', 'medium', 'large'],
+			description: 'サイズ'
 		},
 		reducedMotion: {
-			control: 'boolean',
-			description: 'Disable animations for reduced motion'
-		},
-		// Snippetはコントロールから除外
-		children: {
-			control: false,
-			description: 'Content to display as label'
-		},
-		// イベントハンドラもコントロールから除外
-		onfocus: {
-			control: false,
-			action: 'focus'
-		},
-		onblur: {
-			control: false,
-			action: 'blur'
-		},
-		onchange: {
-			control: false,
-			action: 'change'
+			control: { type: 'boolean' },
+			description: 'アニメーション無効化'
 		}
 	}
 };
@@ -161,34 +127,6 @@ export const Disabled: Story = {
 	}
 };
 
-// Error
-export const WithError: Story = {
-	args: {
-		value: false,
-		error: 'You must agree',
-		children: createChildrenSnippet('With error')
-	}
-};
-
-// Success
-export const WithSuccess: Story = {
-	args: {
-		value: true,
-		success: 'Success!',
-		children: createChildrenSnippet('With success')
-	}
-};
-
-// Required
-export const Required: Story = {
-	args: {
-		value: false,
-		required: true,
-		error: 'This field is required',
-		children: createChildrenSnippet('Required *')
-	}
-};
-
 // Readonly
 export const ReadOnly: Story = {
 	args: {
@@ -216,8 +154,6 @@ export const Playground: Story = {
 		required: false,
 		readonly: false,
 		size: 'medium',
-		error: '',
-		success: '',
 		reducedMotion: false
 		// children は除外してコントロールの問題を回避
 	},

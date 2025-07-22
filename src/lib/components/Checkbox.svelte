@@ -10,9 +10,6 @@
 		children,
 		disabled = false,
 		required = false,
-		readonly = false,
-		error = null,
-		success = null,
 		size = 'medium',
 		reducedMotion = false,
 		onfocus = (event: FocusEvent) => {},
@@ -28,9 +25,6 @@
 		children?: Snippet;
 		disabled?: boolean;
 		required?: boolean;
-		readonly?: boolean;
-		error?: string | null;
-		success?: string | null;
 		size?: 'small' | 'medium' | 'large';
 		reducedMotion?: boolean;
 		onfocus?: (event: FocusEvent) => void;
@@ -52,7 +46,6 @@
 	};
 
 	const handleChange = (event: Event) => {
-		if (readonly) return;
 		onchange(value);
 	};
 
@@ -60,7 +53,7 @@
 		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
 
 	const handleKeydown = (event: KeyboardEvent) => {
-		if (disabled || readonly) return;
+		if (disabled) return;
 		if (event.key === ' ' || event.key === 'Enter') {
 			event.preventDefault();
 			value = !value;
@@ -75,8 +68,6 @@
 			'checkbox-container',
 			`checkbox-container--${size}`,
 			disabled && 'checkbox-container--disabled',
-			error && 'checkbox-container--error',
-			success && 'checkbox-container--success',
 			reducedMotion && 'checkbox-container--no-motion'
 		]
 			.filter(Boolean)
@@ -93,10 +84,9 @@
 		{name}
 		{disabled}
 		{required}
-		{readonly}
-		aria-invalid={error ? 'true' : 'false'}
+		aria-invalid={false}
 		aria-required={required ? 'true' : 'false'}
-		aria-describedby={error ? `${id}-error` : success ? `${id}-success` : undefined}
+		aria-describedby={undefined}
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onchange={handleChange}
@@ -108,16 +98,6 @@
 		<label for={id} class="checkbox-label">
 			{@render children()}
 		</label>
-	{/if}
-	{#if error}
-		<div id="{id}-error" class="checkbox-message checkbox-message--error" role="alert">
-			{error}
-		</div>
-	{/if}
-	{#if success}
-		<div id="{id}-success" class="checkbox-message checkbox-message--success">
-			{success}
-		</div>
 	{/if}
 </div>
 
@@ -237,16 +217,6 @@
 		.checkbox-container:not(.checkbox-container--disabled) .checkbox-label:hover::before {
 			border-color: var(--svelte-ui-checkbox-hover-color);
 		}
-
-		/* Error state hover override */
-		.checkbox-container--error:not(.checkbox-container--disabled) .checkbox-label:hover::before {
-			border-color: var(--svelte-ui-checkbox-error-hover-color);
-		}
-
-		/* Success state hover override */
-		.checkbox-container--success:not(.checkbox-container--disabled) .checkbox-label:hover::before {
-			border-color: var(--svelte-ui-checkbox-success-hover-color);
-		}
 	}
 
 	/* Focus states */
@@ -321,41 +291,6 @@
 		.checkbox-container--large .checkbox-label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
-	}
-
-	/* Error state */
-	.checkbox-container--error .checkbox-label::before {
-		border-color: var(--svelte-ui-checkbox-error-border-color);
-	}
-
-	.checkbox-container--error input[type='checkbox']:checked + .checkbox-label::before,
-	.checkbox-container--error input[type='checkbox']:indeterminate + .checkbox-label::before {
-		background-color: var(--svelte-ui-checkbox-error-checked-color);
-	}
-
-	/* Success state */
-	.checkbox-container--success .checkbox-label::before {
-		border-color: var(--svelte-ui-checkbox-success-border-color);
-	}
-
-	.checkbox-container--success input[type='checkbox']:checked + .checkbox-label::before,
-	.checkbox-container--success input[type='checkbox']:indeterminate + .checkbox-label::before {
-		background-color: var(--svelte-ui-checkbox-success-checked-color);
-	}
-
-	/* Message styles */
-	.checkbox-message {
-		font-size: var(--svelte-ui-font-size-xs);
-		margin-top: 2px;
-		margin-left: var(--svelte-ui-checkbox-message-offset);
-	}
-
-	.checkbox-message--error {
-		color: var(--svelte-ui-checkbox-error-message-color);
-	}
-
-	.checkbox-message--success {
-		color: var(--svelte-ui-checkbox-success-message-color);
 	}
 
 	/* Reduced motion */

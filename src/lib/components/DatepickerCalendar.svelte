@@ -810,7 +810,7 @@
 	}
 
 	.date-list-item.out-of-month .date-button {
-		color: var(--svelte-ui-datepicker-out-of-month-color);
+		color: var(--svelte-ui-datepicker-out-of-month-text-color);
 	}
 	.date-list-item.today .date-button {
 		font-weight: bold;
@@ -919,10 +919,10 @@
 		position: relative;
 	}
 	.date-list-item.out-of-range {
-		background: var(--base-50);
+		background: var(--svelte-ui-datepicker-out-of-range-bg);
 		pointer-events: none;
 		.date-button {
-			color: var(--svelte-ui-datepicker-out-of-month-color);
+			color: var(--svelte-ui-datepicker-out-of-range-text-color);
 		}
 	}
 

@@ -10,9 +10,6 @@
 		children,
 		disabled = false,
 		required = false,
-		readonly = false,
-		error = null,
-		success = null,
 		size = 'medium',
 		reducedMotion = false,
 		onfocus = (event: FocusEvent) => {},
@@ -28,14 +25,11 @@
 		children?: Snippet;
 		disabled?: boolean;
 		required?: boolean;
-		readonly?: boolean;
-		error?: string | null;
-		success?: string | null;
 		size?: 'small' | 'medium' | 'large';
 		reducedMotion?: boolean;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onchange?: (value: string | number | boolean) => void;
+		onchange?: (value: string | number | boolean | null | undefined) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;
@@ -53,7 +47,7 @@
 	};
 
 	const handleChange = (event: Event) => {
-		if (readonly || disabled) return;
+		if (disabled) return;
 
 		const target = event.target as HTMLInputElement;
 		if (target.checked) {
@@ -66,7 +60,7 @@
 		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
 
 	const handleKeydown = (event: KeyboardEvent) => {
-		if (disabled || readonly) return;
+		if (disabled) return;
 
 		// Arrow key navigation for radio group
 		if (
@@ -105,8 +99,6 @@
 			'radio-container',
 			`radio-container--${size}`,
 			disabled && 'radio-container--disabled',
-			error && 'radio-container--error',
-			success && 'radio-container--success',
 			reducedMotion && 'radio-container--no-motion'
 		]
 			.filter(Boolean)
@@ -123,8 +115,7 @@
 		{value}
 		{disabled}
 		{required}
-		{readonly}
-		aria-describedby={error ? `${id}-error` : success ? `${id}-success` : undefined}
+		aria-describedby={undefined}
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onchange={handleChange}
@@ -137,16 +128,6 @@
 			{@render children()}
 		{/if}
 	</label>
-	{#if error}
-		<div id="{id}-error" class="radio-message radio-message--error" role="alert">
-			{error}
-		</div>
-	{/if}
-	{#if success}
-		<div id="{id}-success" class="radio-message radio-message--success">
-			{success}
-		</div>
-	{/if}
 </div>
 
 <style>
@@ -245,16 +226,6 @@
 		.radio-container:not(.radio-container--disabled) .radio-label:hover::before {
 			border-color: var(--svelte-ui-radio-hover-color);
 		}
-
-		/* Error state hover override */
-		.radio-container--error:not(.radio-container--disabled) .radio-label:hover::after {
-			border-color: var(--svelte-ui-radio-error-hover-color);
-		}
-
-		/* Success state hover override */
-		.radio-container--success:not(.radio-container--disabled) .radio-label:hover::after {
-			border-color: var(--svelte-ui-radio-success-hover-color);
-		}
 	}
 
 	/* Checked state */
@@ -339,55 +310,6 @@
 		.radio-container--large .radio-label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
-	}
-
-	/* Error state */
-	.radio-container--error .radio-label::after {
-		border-color: var(--svelte-ui-radio-error-border-color);
-	}
-
-	.radio-container--error input[type='radio']:checked + .radio-label::after {
-		border-color: var(--svelte-ui-radio-error-border-color);
-	}
-
-	.radio-container--error:not(.radio-container--disabled) .radio-label:hover::after {
-		border-color: var(--svelte-ui-radio-error-border-color);
-	}
-
-	.radio-container--error input[type='radio']:checked + .radio-label::before {
-		background-color: var(--svelte-ui-radio-error-checked-color);
-	}
-
-	/* Success state */
-	.radio-container--success .radio-label::after {
-		border-color: var(--svelte-ui-radio-success-border-color);
-	}
-
-	.radio-container--success input[type='radio']:checked + .radio-label::after {
-		border-color: var(--svelte-ui-radio-success-border-color);
-	}
-
-	.radio-container--success:not(.radio-container--disabled) .radio-label:hover::after {
-		border-color: var(--svelte-ui-radio-success-border-color);
-	}
-
-	.radio-container--success input[type='radio']:checked + .radio-label::before {
-		background-color: var(--svelte-ui-radio-success-checked-color);
-	}
-
-	/* Message styles */
-	.radio-message {
-		font-size: var(--svelte-ui-font-size-xs);
-		margin-top: 2px;
-		margin-left: var(--svelte-ui-checkbox-message-offset);
-	}
-
-	.radio-message--error {
-		color: var(--svelte-ui-radio-error-message-color);
-	}
-
-	.radio-message--success {
-		color: var(--svelte-ui-radio-success-message-color);
 	}
 
 	/* Reduced motion */

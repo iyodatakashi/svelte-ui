@@ -45,6 +45,10 @@ const meta = {
 			control: { type: 'boolean' },
 			description: '無効状態'
 		},
+		readonly: {
+			control: { type: 'boolean' },
+			description: '読み取り専用'
+		},
 		customStyle: {
 			control: { type: 'text' },
 			description: 'カスタムスタイル'
@@ -118,11 +122,11 @@ export const Disabled = {
 	}
 };
 
-// With custom style
-export const WithCustomStyle = {
+// ReadOnly
+export const ReadOnly = {
 	args: {
-		value: '#6c5ce7',
-		customStyle: 'border: 2px solid #ddd; padding: 8px; border-radius: 8px;'
+		value: '#f39c12',
+		readonly: true
 	}
 };
 
@@ -136,6 +140,7 @@ export const Playground = {
 		rounded: false,
 		clearable: true,
 		disabled: false,
+		readonly: false,
 		customStyle: ''
 	}
 };

@@ -194,7 +194,6 @@
 	--svelte-ui-checkbox-padding-lg: 0 0 0 28px;
 	--svelte-ui-checkbox-border-radius: 2px;
 	--svelte-ui-checkbox-border-width: 2px;
-	--svelte-ui-checkbox-message-offset: 24px;
 	--svelte-ui-checkbox-icon-size: 1rem;
 	--svelte-ui-checkbox-icon-size-sm: 0.875rem;
 	--svelte-ui-checkbox-icon-size-lg: 1.25rem;
@@ -327,6 +326,9 @@
 	/* フォーカス色 */
 	--svelte-ui-focus-color: var(--primary-color);
 
+	/* Disabled色 */
+	--svelte-ui-disabled-bg: var(--base-50-transparent);
+
 	/* フォーカススタイル */
 	/* 外側フォーカススタイル（要素の外側に2px離して表示） */
 	--svelte-ui-focus-outline-outer: 2px solid var(--svelte-ui-focus-color);
@@ -335,10 +337,6 @@
 	/* 内側フォーカススタイル（要素の内側に表示） */
 	--svelte-ui-focus-outline-inner: 2px solid var(--svelte-ui-focus-color);
 	--svelte-ui-focus-outline-offset-inner: -2px;
-
-	/* 後方互換性のための既存変数（外側フォーカススタイルのエイリアス） */
-	--svelte-ui-focus-outline: var(--svelte-ui-focus-outline-outer);
-	--svelte-ui-focus-outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 }
 
 /* ====================================
@@ -374,6 +372,9 @@
 
 	/* フォーカス色 */
 	--svelte-ui-focus-color: var(--primary-color);
+
+	/* Disabled色 */
+	--svelte-ui-disabled-bg: var(--white-100-transparent);
 }
 
 /* ====================================
@@ -423,26 +424,12 @@
 	--svelte-ui-checkbox-icon-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-checkbox-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-checkbox-checked-color: var(--svelte-ui-primary-color);
-	--svelte-ui-checkbox-error-border-color: var(--svelte-ui-error-color);
-	--svelte-ui-checkbox-error-checked-color: var(--svelte-ui-error-color);
-	--svelte-ui-checkbox-error-hover-color: var(--svelte-ui-error-color);
-	--svelte-ui-checkbox-error-message-color: var(--svelte-ui-error-color);
-	--svelte-ui-checkbox-success-border-color: var(--svelte-ui-success-color);
-	--svelte-ui-checkbox-success-checked-color: var(--svelte-ui-success-color);
-	--svelte-ui-checkbox-success-hover-color: var(--svelte-ui-success-color);
-	--svelte-ui-checkbox-success-message-color: var(--svelte-ui-success-color);
 
 	/* Radio */
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
 	--svelte-ui-radio-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-radio-checked-color: var(--svelte-ui-primary-color);
-	--svelte-ui-radio-error-border-color: var(--svelte-ui-error-color);
-	--svelte-ui-radio-error-checked-color: var(--svelte-ui-error-color);
-	--svelte-ui-radio-error-message-color: var(--svelte-ui-error-color);
-	--svelte-ui-radio-success-border-color: var(--svelte-ui-success-color);
-	--svelte-ui-radio-success-checked-color: var(--svelte-ui-success-color);
-	--svelte-ui-radio-success-message-color: var(--svelte-ui-success-color);
 	--svelte-ui-radio-label-color: var(--svelte-ui-text-color);
 
 	/* IconButton */
@@ -484,7 +471,9 @@
 	--svelte-ui-datepicker-current-color: var(--svelte-ui-primary-color);
 	--svelte-ui-datepicker-date-color: var(--svelte-ui-text-color);
 	--svelte-ui-datepicker-day-label-color: var(--svelte-ui-text-subtle-color);
-	--svelte-ui-datepicker-out-of-month-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-datepicker-out-of-month-text-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-datepicker-out-of-range-text-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-datepicker-out-of-range-bg: var(--svelte-ui-disabled-bg);
 	--svelte-ui-datepicker-selected-text-color: var(--svelte-ui-text-on-filled-color);
 
 	/* Popup */

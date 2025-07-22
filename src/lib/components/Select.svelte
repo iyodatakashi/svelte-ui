@@ -14,7 +14,6 @@
 		placeholder = '',
 		fullWidth = false,
 		disabled = false,
-		readonly = false,
 		required = false,
 		id = null,
 		tabindex = null,
@@ -37,13 +36,12 @@
 		placeholder?: string;
 		fullWidth?: boolean;
 		disabled?: boolean;
-		readonly?: boolean;
 		required?: boolean;
 		id?: string | null;
 		tabindex?: number | null;
 		size?: number | null;
 		rounded?: boolean;
-		onchange?: (value: string | number | null | undefined) => void;
+		onchange?: (value: string | number | boolean | null | undefined) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLSelectElement }) => void;
@@ -76,7 +74,6 @@ select--focus-{focusStyle}"
 	class:select--inline={variant === 'inline'}
 	class:select--full-width={fullWidth}
 	class:select--disabled={disabled}
-	class:select--readonly={readonly}
 	class:select--focused={isFocused}
 	class:select--rounded={rounded}
 >
@@ -104,7 +101,7 @@ select--focus-{focusStyle}"
 		{/if}
 		<!-- 通常のオプション -->
 		{#each options as option (option.value)}
-			<option value={option.value} disabled={option.disabled || readonly}>
+			<option value={option.value} disabled={option.disabled}>
 				{option.label}
 			</option>
 		{/each}
@@ -195,19 +192,6 @@ select--focus-{focusStyle}"
 		pointer-events: none;
 
 		.select__dropdown-icon {
-			opacity: var(--svelte-ui-button-disabled-opacity);
-		}
-	}
-
-	.select--readonly {
-		pointer-events: none;
-
-		select {
-			background-color: var(--svelte-ui-input-readonly-bg);
-			cursor: default;
-		}
-
-		.dropdown-icon {
 			opacity: var(--svelte-ui-button-disabled-opacity);
 		}
 	}

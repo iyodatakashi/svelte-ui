@@ -41,63 +41,33 @@ const meta: Meta<RadioArgs> = {
 	}),
 	argTypes: {
 		name: {
-			control: 'text',
-			description: 'Name attribute for the radio group'
+			control: { type: 'text' },
+			description: 'グループ名'
 		},
 		value: {
-			control: 'text',
-			description: 'Value of this radio option'
+			control: { type: 'text' },
+			description: '選択肢の値'
 		},
 		currentValue: {
-			control: 'text',
-			description: 'Currently selected value in the group'
+			control: { type: 'text' },
+			description: '現在の選択値'
 		},
 		disabled: {
-			control: 'boolean',
-			description: 'Whether the radio is disabled'
+			control: { type: 'boolean' },
+			description: '無効状態'
 		},
 		required: {
-			control: 'boolean',
-			description: 'Whether the radio group is required'
-		},
-		readonly: {
-			control: 'boolean',
-			description: 'Whether the radio is readonly'
+			control: { type: 'boolean' },
+			description: '必須項目'
 		},
 		size: {
-			control: 'select',
+			control: { type: 'select' },
 			options: ['small', 'medium', 'large'],
-			description: 'Size variant of the radio'
-		},
-		error: {
-			control: 'text',
-			description: 'Error message to display'
-		},
-		success: {
-			control: 'text',
-			description: 'Success message to display'
+			description: 'サイズ'
 		},
 		reducedMotion: {
-			control: 'boolean',
-			description: 'Disable animations for reduced motion'
-		},
-		// Snippetはコントロールから除外
-		children: {
-			control: false,
-			description: 'Content to display as label'
-		},
-		// イベントハンドラもコントロールから除外
-		onfocus: {
-			control: false,
-			action: 'focus'
-		},
-		onblur: {
-			control: false,
-			action: 'blur'
-		},
-		onchange: {
-			control: false,
-			action: 'change'
+			control: { type: 'boolean' },
+			description: 'アニメーション無効化'
 		}
 	}
 };
@@ -162,40 +132,6 @@ export const Disabled: Story = {
 	}
 };
 
-// Error
-export const WithError: Story = {
-	args: {
-		name: 'error-group',
-		value: 'option1',
-		currentValue: null,
-		error: 'Please select an option',
-		children: createChildrenSnippet('With error')
-	}
-};
-
-// Success
-export const WithSuccess: Story = {
-	args: {
-		name: 'success-group',
-		value: 'option1',
-		currentValue: 'option1',
-		success: 'Selection confirmed',
-		children: createChildrenSnippet('With success')
-	}
-};
-
-// Required
-export const Required: Story = {
-	args: {
-		name: 'required-group',
-		value: 'option1',
-		currentValue: null,
-		required: true,
-		error: 'This field is required',
-		children: createChildrenSnippet('Required *')
-	}
-};
-
 // Readonly
 export const ReadOnly: Story = {
 	args: {
@@ -256,8 +192,6 @@ export const Playground: Story = {
 		required: false,
 		readonly: false,
 		size: 'medium',
-		error: '',
-		success: '',
 		reducedMotion: false
 		// children は除外してコントロールの問題を回避
 	},
