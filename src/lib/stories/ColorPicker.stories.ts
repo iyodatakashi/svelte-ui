@@ -5,7 +5,7 @@ const meta = {
 	title: 'Forms/ColorPicker',
 	component: ColorPicker,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

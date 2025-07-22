@@ -17,7 +17,7 @@ const meta: Meta<ConfirmDialogArgs> = {
 	title: 'UI/ConfirmDialog',
 	component: ConfirmDialog,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

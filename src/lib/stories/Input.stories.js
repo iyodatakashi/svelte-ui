@@ -5,7 +5,7 @@ const meta = {
 	title: 'Forms/Input',
 	component: Input,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

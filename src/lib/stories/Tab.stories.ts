@@ -15,7 +15,7 @@ const meta: Meta<TabArgs> = {
 	title: 'Navigation/Tab',
 	component: Tab,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

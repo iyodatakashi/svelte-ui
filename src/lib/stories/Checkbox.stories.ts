@@ -25,7 +25,7 @@ const meta: Meta<CheckboxArgs> = {
 	title: 'Forms/Checkbox',
 	component: Checkbox,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

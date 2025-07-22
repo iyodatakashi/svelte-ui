@@ -13,7 +13,7 @@ const meta: Meta<PaginationArgs> = {
 	title: 'Navigation/Pagination',
 	component: Pagination,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

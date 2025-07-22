@@ -36,7 +36,7 @@ const meta: Meta<ButtonArgs> = {
 	title: 'Forms/Button',
 	component: Button,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

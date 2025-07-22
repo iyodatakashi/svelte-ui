@@ -25,7 +25,7 @@ const meta: Meta<DatepickerArgs> = {
 	title: 'Forms/Datepicker',
 	component: Datepicker,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

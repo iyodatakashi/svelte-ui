@@ -35,7 +35,7 @@ const meta: Meta<IconButtonArgs> = {
 	title: 'UI/IconButton',
 	component: IconButton,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

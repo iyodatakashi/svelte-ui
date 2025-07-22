@@ -25,7 +25,7 @@ const meta: Meta<IconArgs> = {
 	title: 'UI/Icon',
 	component: Icon,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

@@ -5,7 +5,7 @@ const meta = {
 	title: 'Forms/Textarea',
 	component: Textarea,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

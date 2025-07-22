@@ -23,7 +23,7 @@ const meta: Meta<DialogArgs> = {
 	title: 'UI/Dialog',
 	component: Dialog,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

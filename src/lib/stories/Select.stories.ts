@@ -5,7 +5,7 @@ const meta = {
 	title: 'Forms/Select',
 	component: Select,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component: 'セレクトボックスコンポーネント。カスタムスタイリングとテーマに対応します。'

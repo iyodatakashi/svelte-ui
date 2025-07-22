@@ -25,7 +25,7 @@ const meta: Meta<RadioArgs> = {
 	title: 'Forms/Radio',
 	component: Radio,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

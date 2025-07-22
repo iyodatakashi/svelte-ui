@@ -32,7 +32,7 @@ const meta: Meta<PopupMenuButtonArgs> = {
 	title: 'UI/PopupMenuButton',
 	component: PopupMenuButton,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:
