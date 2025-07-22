@@ -36,7 +36,7 @@
 		tabindex = null,
 		size = null,
 		autocomplete = null,
-		onchange = (value: string | number | undefined) => {},
+		onchange = (value: string | number | null | undefined) => {},
 		oninput = (value: string | number | undefined) => {},
 		onfocus = () => {},
 		onblur = () => {},

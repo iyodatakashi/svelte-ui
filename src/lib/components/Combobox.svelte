@@ -25,7 +25,7 @@
 		maxlength = null,
 		filterable = true,
 		rounded = false,
-		onchange = (value: string | number | null | undefined) => {},
+		onchange = (value: string | number | boolean | null | undefined) => {},
 		oninput = (value: string | number | null | undefined) => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
@@ -52,7 +52,7 @@
 		maxlength?: number | null;
 		filterable?: boolean;
 		rounded?: boolean;
-		onchange?: (value: string | number | null | undefined) => void;
+		onchange?: (value: string | number | boolean | null | undefined) => void;
 		oninput?: (value: string | number | null | undefined) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;

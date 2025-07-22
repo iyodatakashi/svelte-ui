@@ -17,7 +17,7 @@
 		reducedMotion = false,
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
-		onchange = (checked: boolean) => {},
+		onchange = (value: boolean) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
 		...restProps
@@ -35,7 +35,7 @@
 		reducedMotion?: boolean;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onchange?: (checked: boolean) => void;
+		onchange?: (value: boolean) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;

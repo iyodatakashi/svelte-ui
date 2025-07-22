@@ -23,7 +23,7 @@
 		id = null,
 		maxlength = null,
 		tabindex = null,
-		onchange = (value: string | undefined) => {},
+		onchange = (value: string | number | null | undefined) => {},
 		oninput = (value: string | undefined) => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
