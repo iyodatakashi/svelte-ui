@@ -132,10 +132,10 @@
 	--svelte-ui-primary-color: var(--primary-color);
 
 	/* State Colors */
-	--svelte-ui-success-color: #28a745;
-	--svelte-ui-error-color: #a54254;
-	--svelte-ui-warning-color: #ffc107;
-	--svelte-ui-info-color: #17a2b8;
+	--svelte-ui-success-color: #12b073;
+	--svelte-ui-error-color: #c4272c;
+	--svelte-ui-warning-color: #bf7314;
+	--svelte-ui-info-color: #13a3b4;
 
 	/* ====================================
    * 各コンポーネントのサイズ、パディングなど
@@ -278,6 +278,22 @@
 	--svelte-ui-pagination-button-border-radius: 50%;
 	--svelte-ui-pagination-count-label-margin: 0.5em;
 
+	/* Snackbar */
+	--svelte-ui-snackbar-min-width: 300px;
+	--svelte-ui-snackbar-max-width: 500px;
+	--svelte-ui-snackbar-padding: 12px 16px;
+	--svelte-ui-snackbar-gap: 12px;
+	--svelte-ui-snackbar-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-snackbar-offset: 24px;
+	--svelte-ui-snackbar-z-index: 9999;
+	--svelte-ui-snackbar-font-size: var(--svelte-ui-font-size-sm);
+	--svelte-ui-snackbar-line-height: 1.4;
+	--svelte-ui-snackbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	--svelte-ui-snackbar-action-font-size: var(--svelte-ui-font-size-xs);
+	--svelte-ui-snackbar-action-font-weight: 600;
+	--svelte-ui-snackbar-action-padding: 4px 8px;
+	--svelte-ui-snackbar-action-border-radius: 4px;
+
 	/* ====================================
    * 共通部品のサイズ、パディングなど
    * ==================================== */
@@ -328,15 +344,6 @@
 
 	/* Disabled色 */
 	--svelte-ui-disabled-bg: var(--base-50-transparent);
-
-	/* フォーカススタイル */
-	/* 外側フォーカススタイル（要素の外側に2px離して表示） */
-	--svelte-ui-focus-outline-outer: 2px solid var(--svelte-ui-focus-color);
-	--svelte-ui-focus-outline-offset-outer: 2px;
-
-	/* 内側フォーカススタイル（要素の内側に表示） */
-	--svelte-ui-focus-outline-inner: 2px solid var(--svelte-ui-focus-color);
-	--svelte-ui-focus-outline-offset-inner: -2px;
 }
 
 /* ====================================
@@ -498,6 +505,29 @@
 	--svelte-ui-loadingspinner-color: var(--svelte-ui-primary-color);
 	--svelte-ui-loadingspinner-size: 32px;
 
+	/* Snackbar */
+	--svelte-ui-snackbar-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-snackbar-action-color: var(--svelte-ui-primary-color);
+	--svelte-ui-snackbar-action-hover-bg: rgba(var(--svelte-ui-primary-rgb), 0.1);
+
+	/* Snackbar Type Colors */
+	--svelte-ui-snackbar-info-bg: var(--svelte-ui-info-color);
+	--svelte-ui-snackbar-info-text-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-info-icon-color: var(--svelte-ui-text-on-filled-color);
+
+	--svelte-ui-snackbar-success-bg: var(--svelte-ui-success-color);
+	--svelte-ui-snackbar-success-text-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-success-icon-color: var(--svelte-ui-text-on-filled-color);
+
+	--svelte-ui-snackbar-warning-bg: var(--svelte-ui-warning-color);
+	--svelte-ui-snackbar-warning-text-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-warning-icon-color: var(--svelte-ui-text-on-filled-color);
+
+	--svelte-ui-snackbar-error-bg: var(--svelte-ui-error-color);
+	--svelte-ui-snackbar-error-text-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-error-icon-color: var(--svelte-ui-text-on-filled-color);
+
 	/* Badge */
 	--badge-text-color: var(--svelte-ui-text-on-filled-color);
 	--badge-color: var(--svelte-ui-primary-color);
@@ -510,10 +540,6 @@
 	/* 内側フォーカススタイル（要素の内側に表示） */
 	--svelte-ui-focus-outline-inner: 2px solid var(--svelte-ui-focus-color);
 	--svelte-ui-focus-outline-offset-inner: -2px;
-
-	/* 後方互換性のための既存変数（外側フォーカススタイルのエイリアス） */
-	--svelte-ui-focus-outline: var(--svelte-ui-focus-outline-outer);
-	--svelte-ui-focus-outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 }
 
 /* ====================================
