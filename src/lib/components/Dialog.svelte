@@ -33,7 +33,7 @@
 		title?: string;
 		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
-		width?: number;
+		width?: string | number;
 		restoreFocus?: boolean;
 		ariaDescribedby?: string;
 		description?: string;
@@ -46,7 +46,7 @@
 
 	// Dialog固有のスタイル
 	const dialogStyles = $derived(
-		`width: ${width}px; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
+		`width: ${typeof width === 'number' ? `${width}px` : width}; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
 	);
 
 	// Dialog固有のクラス

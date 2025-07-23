@@ -8,7 +8,7 @@ interface ConfirmDialogArgs {
 	confirmText?: string;
 	cancelText?: string;
 	variant?: 'info' | 'warning' | 'danger';
-	width?: number;
+	width?: string | number;
 	onConfirm?: () => void;
 	onCancel?: () => void;
 }
@@ -53,8 +53,8 @@ const meta: Meta<ConfirmDialogArgs> = {
 			description: 'Visual variant of the confirmation dialog'
 		},
 		width: {
-			control: 'number',
-			description: 'Dialog width in pixels'
+			control: 'text',
+			description: 'Dialog width (number for pixels, string for calc/vw/% etc.)'
 		},
 		onConfirm: {
 			action: 'confirmed',

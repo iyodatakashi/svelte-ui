@@ -25,7 +25,7 @@
 		accept?: string;
 		multiple?: boolean;
 		maxFileSize?: number;
-		width?: number;
+		width?: string | number;
 		height?: number;
 		rounded?: boolean;
 		icon?: string;
@@ -126,7 +126,7 @@
 	class="image-uploader-container"
 	class:rounded
 	style="
-		--image-uploader-width: {width}px;
+		--image-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
 		--image-uploader-height: {height}px
 	"
 >

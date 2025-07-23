@@ -6,7 +6,7 @@ interface ImageUploaderArgs {
 	accept?: string;
 	multiple?: boolean;
 	maxFileSize?: number;
-	width?: number;
+	width?: string | number;
 	height?: number;
 	rounded?: boolean;
 	icon?: string;
@@ -43,8 +43,8 @@ const meta: Meta<ImageUploaderArgs> = {
 			description: 'Maximum file size in bytes'
 		},
 		width: {
-			control: 'number',
-			description: 'Fixed width in pixels'
+			control: 'text',
+			description: 'Fixed width in pixels or a percentage'
 		},
 		height: {
 			control: 'number',
@@ -230,6 +230,31 @@ export const SVGOnly: Story = {
 		maxFileSize: 2 * 1024 * 1024,
 		icon: 'code',
 		placeholder: 'SVGファイルを選択'
+	}
+};
+
+// Responsive width examples
+export const ResponsiveWidth: Story = {
+	args: {
+		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		multiple: false,
+		maxFileSize: 5 * 1024 * 1024,
+		width: 'calc(100vw - 80px)',
+		height: 200,
+		icon: 'image',
+		placeholder: 'レスポンシブ幅<br />calc(100vw - 80px)'
+	}
+};
+
+export const PercentageWidth: Story = {
+	args: {
+		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		multiple: false,
+		maxFileSize: 5 * 1024 * 1024,
+		width: '80%',
+		height: 150,
+		icon: 'image',
+		placeholder: 'パーセント幅<br />80%'
 	}
 };
 

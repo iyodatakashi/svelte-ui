@@ -9,7 +9,7 @@ interface DialogArgs {
 	title?: string;
 	scrollable?: boolean;
 	closeIfClickOutside?: boolean;
-	width?: number;
+	width?: string | number;
 	restoreFocus?: boolean;
 	ariaDescribedby?: string;
 	description?: string;
@@ -54,8 +54,8 @@ const meta: Meta<DialogArgs> = {
 			description: 'Whether to close dialog when clicking outside'
 		},
 		width: {
-			control: 'number',
-			description: 'Dialog width in pixels'
+			control: 'text',
+			description: 'Dialog width in pixels or percentage'
 		},
 		restoreFocus: {
 			control: 'boolean',
@@ -300,11 +300,76 @@ export const Closed: Story = {
 	args: {
 		isOpen: false,
 		title: 'Hidden Dialog',
+		width: 320,
 		children: createContentSnippet(`
 			<div>
 				<p>This dialog is closed. Toggle the 'isOpen' control to see it.</p>
 			</div>
 		`)
+	}
+};
+
+// Responsive width dialog - ウィンドウ幅マイナスピクセル
+export const ResponsiveWidth: Story = {
+	args: {
+		isOpen: true,
+		title: 'Responsive Dialog',
+		width: 'calc(100vw - 80px)',
+		children: createContentSnippet(`
+			<div>
+				<h3>Responsive Width Example</h3>
+				<p>This dialog uses <code>calc(100vw - 80px)</code> as its width, making it adapt to the viewport size while maintaining margins.</p>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
+					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+						<h4 style="margin: 0 0 8px 0;">Feature 1</h4>
+						<p style="margin: 0; font-size: 0.9em; color: #666;">Content that adapts to the available width</p>
+					</div>
+					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+						<h4 style="margin: 0 0 8px 0;">Feature 2</h4>
+						<p style="margin: 0; font-size: 0.9em; color: #666;">Responsive grid layout</p>
+					</div>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Dialog with responsive width using calc(100vw - 80px). Adapts to viewport size while maintaining fixed margins.'
+			}
+		}
+	}
+};
+
+// Percentage width dialog
+export const PercentageWidth: Story = {
+	args: {
+		isOpen: true,
+		title: 'Percentage Width',
+		width: '80%',
+		children: createContentSnippet(`
+			<div>
+				<h3>80% Width Dialog</h3>
+				<p>This dialog takes up 80% of the viewport width, making it responsive to different screen sizes.</p>
+				<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
+					<div style="padding: 12px; background: #fff3e0; border-radius: 6px;">
+						<strong>Small screens:</strong> Still maintains good proportions
+					</div>
+					<div style="padding: 12px; background: #e8f5e8; border-radius: 6px;">
+						<strong>Large screens:</strong> Scales appropriately
+					</div>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Dialog with percentage-based width (80%). Creates a responsive dialog that scales with the viewport.'
+			}
+		}
 	}
 };
 

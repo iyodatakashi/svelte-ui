@@ -23,7 +23,7 @@
 		confirmText?: string;
 		cancelText?: string;
 		variant?: 'info' | 'warning' | 'danger';
-		width?: number;
+		width?: string | number;
 		onConfirm?: () => void;
 		onCancel?: () => void;
 	} = $props();
