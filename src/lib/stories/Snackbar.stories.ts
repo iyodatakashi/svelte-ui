@@ -24,6 +24,11 @@ const meta = {
 			options: ['info', 'success', 'warning', 'error'],
 			description: '通知の種類'
 		},
+		variant: {
+			control: { type: 'select' },
+			options: ['filled', 'outlined'],
+			description: 'スタイルバリエーション（filled: 濃い背景、outlined: 薄い背景）'
+		},
 		duration: {
 			control: { type: 'number' },
 			description: '表示時間（ms、0で無期限）'
@@ -123,5 +128,33 @@ export const Persistent = {
 		type: 'warning',
 		duration: 0,
 		closable: true
+	}
+};
+
+// Outlined variant
+export const Outlined = {
+	args: {
+		message: 'アカウントが正常に作成されました',
+		type: 'success',
+		variant: 'outlined',
+		duration: 5000
+	}
+};
+
+// Variant comparison
+export const VariantComparison = {
+	args: {
+		message: 'このメッセージで2つのvariantを比較できます',
+		type: 'info',
+		variant: 'filled',
+		duration: 10000
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'variant controlを切り替えて、filled（濃い背景）とoutlined（薄い背景）を比較してください。'
+			}
+		}
 	}
 };
