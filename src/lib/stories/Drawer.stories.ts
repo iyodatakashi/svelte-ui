@@ -16,7 +16,6 @@ interface DrawerArgs {
 	ariaDescribedby?: string;
 	description?: string;
 	header?: Snippet;
-	body?: Snippet;
 	children?: Snippet;
 	footer?: Snippet;
 }
@@ -85,13 +84,9 @@ const meta: Meta<DrawerArgs> = {
 			control: false,
 			description: 'Custom header content'
 		},
-		body: {
-			control: false,
-			description: 'Main body content'
-		},
 		children: {
 			control: false,
-			description: 'Drawer content (legacy prop, use body instead)'
+			description: 'Main drawer content'
 		},
 		footer: {
 			control: false,
@@ -116,7 +111,7 @@ export const Default: Story = {
 		position: 'left',
 		width: 240,
 		title: 'Navigation',
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<nav>
 				<ul style="list-style: none; padding: 0; margin: 0;">
 					<li style="margin-bottom: 8px;">
@@ -171,7 +166,7 @@ export const WithHeaderFooter: Story = {
 				</div>
 			`
 		})),
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<div style="padding: 16px; display: flex; flex-direction: column; gap: 16px;">
 				<div style="display: flex; align-items: center; gap: 8px;">
 					<span style="font-size: 1rem;">👤</span>
@@ -222,7 +217,7 @@ export const ScrollableWithBorders: Story = {
 		width: 300,
 		scrollable: true,
 		title: 'Long Content',
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<div>
 				<h3>Section 1</h3>
 				<p>Lorem ipsum dolor sit amet, consectetur adipiscing elit. Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua.</p>
@@ -266,7 +261,7 @@ export const RightSide: Story = {
 		position: 'right',
 		width: 300,
 		title: 'Settings Panel',
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<div style="margin-bottom: 20px;">
 				<h3 style="margin: 0 0 8px 0; font-size: 1rem;">Appearance</h3>
 				<label style="display: block; margin-bottom: 8px;">
@@ -307,7 +302,7 @@ export const Wide: Story = {
 		position: 'left',
 		width: 400,
 		title: 'Wide Drawer',
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 16px; margin-bottom: 24px;">
 				<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
 					<h3 style="margin: 0 0 8px 0; font-size: 1rem;">Quick Stats</h3>
@@ -506,7 +501,7 @@ export const ResponsiveWidth: Story = {
 		position: 'left',
 		width: 'calc(100vw - 80px)',
 		title: 'Responsive Drawer',
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<div style="padding: 16px;">
 				<h3 style="margin: 0 0 16px 0; font-size: 1.2rem;">Responsive Width Example</h3>
 				<p style="margin-bottom: 16px;">
@@ -556,7 +551,7 @@ export const PercentageWidth: Story = {
 		position: 'right',
 		width: '60%',
 		title: 'Percentage Width',
-		body: createContentSnippet(`
+		children: createContentSnippet(`
 			<div style="padding: 16px;">
 				<h3 style="margin: 0 0 16px 0;">60% Width Drawer</h3>
 				<p style="margin-bottom: 16px;">
