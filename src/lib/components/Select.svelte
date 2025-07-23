@@ -19,7 +19,7 @@
 		tabindex = null,
 		size = null,
 		rounded = false,
-		onchange = (value: string | number | boolean | null | undefined) => {},
+		onchange = (_value: any) => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},

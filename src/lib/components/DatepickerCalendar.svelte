@@ -18,7 +18,7 @@
 	let {
 		value = $bindable(),
 		isDateRange = false,
-		onchange = () => {},
+		onchange = (value: Date | { start: Date; end: Date } | undefined) => {},
 		onOpen,
 		onClose,
 		minDate,
@@ -28,7 +28,7 @@
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
 		isDateRange?: boolean;
-		onchange: Function;
+		onchange: (value: Date | { start: Date; end: Date } | undefined) => void;
 		onOpen?: Function;
 		onClose?: Function;
 		minDate?: Date;

@@ -13,7 +13,7 @@
 		clearable = false,
 		focusStyle = 'border',
 		customStyle = '',
-		onchange = (value: string | number | null | undefined) => {},
+		onchange = (_value: any) => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},

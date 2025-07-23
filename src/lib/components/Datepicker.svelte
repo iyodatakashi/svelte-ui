@@ -28,7 +28,7 @@
 		allowDirectInput = false,
 		fullWidth = false,
 		rounded = false,
-		onchange = () => {},
+		onchange = (_value: Date | { start: Date; end: Date } | undefined) => {},
 		onfocus = () => {},
 		onblur = () => {},
 		openIfClicked = true,
@@ -49,7 +49,7 @@
 		allowDirectInput?: boolean;
 		fullWidth?: boolean;
 		rounded?: boolean;
-		onchange?: Function;
+		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
 		onfocus?: Function;
 		onblur?: Function;
 		openIfClicked?: boolean;

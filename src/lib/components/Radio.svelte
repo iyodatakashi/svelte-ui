@@ -14,7 +14,7 @@
 		reducedMotion = false,
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
-		onchange = (value: string | number | boolean | null | undefined) => {},
+		onchange = (_value: any) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
 		...restProps
