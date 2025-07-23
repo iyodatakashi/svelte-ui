@@ -29,7 +29,9 @@
 		description,
 		header,
 		children,
-		footer
+		footer,
+		bodyStyle = '',
+		noPadding = false
 	}: {
 		isOpen?: boolean;
 		title?: string;
@@ -44,14 +46,34 @@
 		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+		bodyStyle?: string;
+		noPadding?: boolean;
 	} = $props();
 
 	let modalRef: Modal;
 
 	// Drawer固有のスタイル
-	const drawerStyles = $derived(
-		`width: ${typeof width === 'number' ? `${width}px` : width}; height: 100%; min-height: 100%; ${position}: 0;`
-	);
+	const drawerStyles = $derived(() => {
+		const styles = [];
+		const widthValue = typeof width === 'number' ? `${width}px` : width;
+		styles.push(`width: ${widthValue}`);
+		styles.push('height: 100%');
+		styles.push('min-height: 100%');
+		styles.push(`${position}: 0`);
+		return styles.join('; ');
+	});
+
+	// Body部分のスタイル
+	const bodyStyles = $derived(() => {
+		const styles = [];
+		if (noPadding) {
+			styles.push('padding: 0');
+		}
+		if (bodyStyle) {
+			styles.push(bodyStyle);
+		}
+		return styles.join('; ');
+	});
 
 	// Drawer固有のクラス
 	const drawerClasses = $derived(
@@ -92,7 +114,7 @@
 	{ariaLabelledby}
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={drawerClasses}
-	customStyles={drawerStyles}
+	customStyles={drawerStyles()}
 >
 	<div class="drawer">
 		{#if header || title}
@@ -112,7 +134,7 @@
 			</div>
 		{/if}
 		{#if children}
-			<div class="drawer__body">
+			<div class="drawer__body" style={bodyStyles()}>
 				{@render children()}
 			</div>
 		{/if}

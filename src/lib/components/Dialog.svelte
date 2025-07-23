@@ -27,7 +27,9 @@
 		description,
 		header,
 		children,
-		footer
+		footer,
+		bodyStyle = '',
+		noPadding = false
 	}: {
 		isOpen?: boolean;
 		title?: string;
@@ -40,6 +42,8 @@
 		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+		bodyStyle?: string;
+		noPadding?: boolean;
 	} = $props();
 
 	let modalRef: Modal;
@@ -48,6 +52,18 @@
 	const dialogStyles = $derived(
 		`width: ${typeof width === 'number' ? `${width}px` : width}; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
 	);
+
+	// Body部分のスタイル
+	const bodyStyles = $derived(() => {
+		const styles = [];
+		if (noPadding) {
+			styles.push('padding: 0');
+		}
+		if (bodyStyle) {
+			styles.push(bodyStyle);
+		}
+		return styles.join('; ');
+	});
 
 	// Dialog固有のクラス
 	const dialogClasses = $derived(['dialog', scrollable && 'scrollable'].filter(Boolean).join(' '));
@@ -105,7 +121,7 @@
 			</div>
 		{/if}
 		{#if children}
-			<div class="dialog__body">
+			<div class="dialog__body" style={bodyStyles()}>
 				{@render children()}
 			</div>
 		{/if}

@@ -18,6 +18,8 @@ interface DrawerArgs {
 	header?: Snippet;
 	children?: Snippet;
 	footer?: Snippet;
+	bodyStyle?: string;
+	noPadding?: boolean;
 }
 
 const meta: Meta<DrawerArgs> = {
@@ -91,6 +93,14 @@ const meta: Meta<DrawerArgs> = {
 		footer: {
 			control: false,
 			description: 'Footer content'
+		},
+		bodyStyle: {
+			control: 'text',
+			description: 'Custom CSS styles for the body section'
+		},
+		noPadding: {
+			control: 'boolean',
+			description: 'Remove default padding from body section'
 		}
 	}
 };
@@ -576,6 +586,80 @@ export const PercentageWidth: Story = {
 			description: {
 				story:
 					'Drawer with percentage-based width (60%). This creates a responsive drawer that scales with the viewport size.'
+			}
+		}
+	}
+};
+
+// Custom body styling - no padding for navigation sections
+export const NoPadding: Story = {
+	args: {
+		isOpen: true,
+		position: 'left',
+		title: 'Custom Navigation',
+		width: 280,
+		noPadding: true,
+		children: createContentSnippet(`
+			<div>
+				<div style="padding: 16px 20px; background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+					<h4 style="margin: 0; font-size: 0.875rem; font-weight: 600; color: #6c757d; text-transform: uppercase; letter-spacing: 0.5px;">Main Menu</h4>
+				</div>
+				<nav style="padding: 8px 0;">
+					<a href="#" style="display: block; padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #f1f3f4; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
+						🏠 Home
+					</a>
+					<a href="#" style="display: block; padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #f1f3f4; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
+						📊 Dashboard  
+					</a>
+					<a href="#" style="display: block; padding: 12px 20px; text-decoration: none; color: #333; border-bottom: 1px solid #f1f3f4; transition: background-color 0.2s;" onmouseover="this.style.backgroundColor='#f8f9fa'" onmouseout="this.style.backgroundColor='transparent'">
+						⚙️ Settings
+					</a>
+				</nav>
+				<div style="padding: 16px 20px; background: #e9ecef; border-top: 1px solid #dee2e6; margin-top: auto;">
+					<p style="margin: 0; font-size: 0.875rem; color: #6c757d;">Navigation with full-width borders</p>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Drawer with noPadding=true to create navigation menus with full-width separators and custom section styling.'
+			}
+		}
+	}
+};
+
+// Custom body styling with gradient
+export const CustomBodyStyle: Story = {
+	args: {
+		isOpen: true,
+		position: 'right',
+		title: 'Styled Panel',
+		width: 320,
+		bodyStyle:
+			'padding: 0; background: linear-gradient(180deg, #667eea 0%, #764ba2 100%); color: white;',
+		children: createContentSnippet(`
+			<div style="padding: 24px;">
+				<h3 style="margin: 0 0 16px 0; color: white;">Custom Styled Panel</h3>
+				<p style="margin: 0 0 20px 0; opacity: 0.9;">This drawer uses bodyStyle for gradient background and custom styling.</p>
+				<div style="background: rgba(255,255,255,0.1); padding: 16px; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2);">
+					<h4 style="margin: 0 0 8px 0; color: white;">Features</h4>
+					<ul style="margin: 0; padding-left: 20px; opacity: 0.9;">
+						<li>Gradient background</li>
+						<li>Custom padding</li>
+						<li>Custom colors</li>
+					</ul>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Drawer with custom bodyStyle CSS to create visually striking panels with gradients and custom styling.'
 			}
 		}
 	}

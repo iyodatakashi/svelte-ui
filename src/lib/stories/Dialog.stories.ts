@@ -14,9 +14,10 @@ interface DialogArgs {
 	ariaDescribedby?: string;
 	description?: string;
 	header?: Snippet;
-	body?: Snippet;
 	children?: Snippet;
 	footer?: Snippet;
+	bodyStyle?: string;
+	noPadding?: boolean;
 }
 
 const meta: Meta<DialogArgs> = {
@@ -74,17 +75,21 @@ const meta: Meta<DialogArgs> = {
 			control: false,
 			description: 'Custom header content'
 		},
-		body: {
-			control: false,
-			description: 'Body content'
-		},
 		children: {
 			control: false,
-			description: 'Main content (alternative to body)'
+			description: 'Main dialog content'
 		},
 		footer: {
 			control: false,
-			description: 'Footer content (typically buttons)'
+			description: 'Footer content with action buttons'
+		},
+		bodyStyle: {
+			control: 'text',
+			description: 'Custom CSS styles for the body section'
+		},
+		noPadding: {
+			control: 'boolean',
+			description: 'Remove default padding from body section'
 		}
 	}
 };
@@ -295,120 +300,61 @@ export const FormDialog: Story = {
 	}
 };
 
-// Closed dialog (for demonstration)
-export const Closed: Story = {
-	args: {
-		isOpen: false,
-		title: 'Hidden Dialog',
-		width: 320,
-		children: createContentSnippet(`
-			<div>
-				<p>This dialog is closed. Toggle the 'isOpen' control to see it.</p>
-			</div>
-		`)
-	}
-};
-
-// Responsive width dialog - ウィンドウ幅マイナスピクセル
-export const ResponsiveWidth: Story = {
+// Custom body styling - no padding for full-width layouts
+export const NoPadding: Story = {
 	args: {
 		isOpen: true,
-		title: 'Responsive Dialog',
-		width: 'calc(100vw - 80px)',
-		children: createContentSnippet(`
-			<div>
-				<h3>Responsive Width Example</h3>
-				<p>This dialog uses <code>calc(100vw - 80px)</code> as its width, making it adapt to the viewport size while maintaining margins.</p>
-				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px; margin-top: 16px;">
-					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
-						<h4 style="margin: 0 0 8px 0;">Feature 1</h4>
-						<p style="margin: 0; font-size: 0.9em; color: #666;">Content that adapts to the available width</p>
-					</div>
-					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
-						<h4 style="margin: 0 0 8px 0;">Feature 2</h4>
-						<p style="margin: 0; font-size: 0.9em; color: #666;">Responsive grid layout</p>
-					</div>
-				</div>
-			</div>
-		`)
-	},
-	parameters: {
-		docs: {
-			description: {
-				story:
-					'Dialog with responsive width using calc(100vw - 80px). Adapts to viewport size while maintaining fixed margins.'
-			}
-		}
-	}
-};
-
-// Percentage width dialog
-export const PercentageWidth: Story = {
-	args: {
-		isOpen: true,
-		title: 'Percentage Width',
-		width: '80%',
-		children: createContentSnippet(`
-			<div>
-				<h3>80% Width Dialog</h3>
-				<p>This dialog takes up 80% of the viewport width, making it responsive to different screen sizes.</p>
-				<div style="display: flex; flex-direction: column; gap: 12px; margin-top: 16px;">
-					<div style="padding: 12px; background: #fff3e0; border-radius: 6px;">
-						<strong>Small screens:</strong> Still maintains good proportions
-					</div>
-					<div style="padding: 12px; background: #e8f5e8; border-radius: 6px;">
-						<strong>Large screens:</strong> Scales appropriately
-					</div>
-				</div>
-			</div>
-		`)
-	},
-	parameters: {
-		docs: {
-			description: {
-				story:
-					'Dialog with percentage-based width (80%). Creates a responsive dialog that scales with the viewport.'
-			}
-		}
-	}
-};
-
-// Accessibility enhanced dialog
-export const AccessibilityEnhanced: Story = {
-	args: {
-		isOpen: true,
-		title: 'Accessibility Demo',
+		title: 'Custom Layout Dialog',
 		width: 500,
-		description:
-			'This dialog demonstrates enhanced accessibility features including high contrast mode support and screen reader announcements',
+		noPadding: true,
 		children: createContentSnippet(`
 			<div>
-				<h3>Accessibility Features</h3>
-				<ul>
-					<li>High contrast mode support</li>
-					<li>Screen reader announcements when opening/closing</li>
-					<li>Proper ARIA attributes (aria-describedby, aria-labelledby)</li>
-					<li>Focus management with Tab trapping</li>
-					<li>ESC key to close</li>
-				</ul>
-				<p style="margin-top: 16px; padding: 12px; background: #f0f9ff; border: 1px solid #0ea5e9; border-radius: 4px;">
-					<strong>Tip:</strong> Try using keyboard navigation (Tab, Shift+Tab, ESC) and screen reader to experience the accessibility features.
-				</p>
+				<div style="padding: 20px; background: #f8f9fa; border-bottom: 1px solid #dee2e6;">
+					<h3 style="margin: 0;">Section 1</h3>
+					<p style="margin: 8px 0 0 0;">Full-width section with custom padding</p>
+				</div>
+				<div style="padding: 20px;">
+					<h3 style="margin: 0 0 12px 0;">Section 2</h3>
+					<p style="margin: 0;">Normal content section</p>
+				</div>
+				<div style="padding: 20px; background: #e9ecef; border-top: 1px solid #dee2e6;">
+					<h3 style="margin: 0;">Section 3</h3>
+					<p style="margin: 8px 0 0 0;">Another full-width section</p>
+				</div>
 			</div>
-		`),
-		footer: createRawSnippet(() => ({
-			render: () => `
-				<button style="padding: 8px 16px; border: 1px solid var(--svelte-ui-border-color, #ccc); background: var(--svelte-ui-surface-color, white); border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; transition: all 0.2s; color: var(--svelte-ui-text-color, #333);" onmouseover="this.style.backgroundColor='var(--svelte-ui-hover-color, #f5f5f5)'" onmouseout="this.style.backgroundColor='var(--svelte-ui-surface-color, white)'">
-					Close
-				</button>
-			`
-		}))
+		`)
 	},
 	parameters: {
 		docs: {
 			description: {
 				story:
-					'This story demonstrates the accessibility enhancements including high contrast mode support, screen reader announcements, and proper ARIA attributes.'
+					'Dialog with noPadding=true to allow custom layouts with full-width sections and border lines.'
+			}
+		}
+	}
+};
+
+// Custom body styling with CSS
+export const CustomBodyStyle: Story = {
+	args: {
+		isOpen: true,
+		title: 'Custom Styled Dialog',
+		width: 400,
+		bodyStyle: 'padding: 0; background: linear-gradient(45deg, #f0f9ff, #e0f2fe);',
+		children: createContentSnippet(`
+			<div style="padding: 24px;">
+				<h3 style="margin: 0 0 16px 0; color: #0369a1;">Custom Styling</h3>
+				<p style="margin: 0 0 16px 0;">This dialog uses bodyStyle to apply custom CSS including gradient background and custom padding.</p>
+				<div style="padding: 16px; background: rgba(255,255,255,0.8); border-radius: 8px; border: 1px solid #0284c7;">
+					<strong>Custom styled content area</strong>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: 'Dialog with custom bodyStyle CSS to create unique layouts and styling.'
 			}
 		}
 	}
