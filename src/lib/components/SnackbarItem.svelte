@@ -132,6 +132,14 @@
 
 	onMount(() => {
 		console.log(`SnackbarItem mounted with duration: ${duration}ms`);
+		console.log(
+			`SnackbarItem classes: type=${type}, variant=${variant}, position=${position}, visible=${visible}`
+		);
+		if (snackbarRef) {
+			const contentEl = snackbarRef.querySelector('.snackbar-item__content');
+			console.log(`Actual container classes: ${snackbarRef.className}`);
+			console.log(`Actual content classes: ${contentEl?.className}`);
+		}
 		if (duration > 0) {
 			timeoutId = setTimeout(() => {
 				console.log(`Auto-closing snackbar ${id} after ${duration}ms`);
@@ -150,11 +158,11 @@
 
 <div
 	bind:this={snackbarRef}
-	class="snackbar-container snackbar-container--{position} {visible ? '' : 'fade-out'}"
+	class="snackbar-item snackbar-item--{position} {visible ? '' : 'snackbar-item--hidden'}"
 >
 	<div
-		class="snackbar snackbar--{type} snackbar--{variant} snackbar--{position} {visible
-			? 'fade-in'
+		class="snackbar-item__content snackbar-item__content--{type} snackbar-item__content--{variant} snackbar-item__content--{position} {visible
+			? 'snackbar-item__content--visible'
 			: ''}"
 		role="alert"
 		aria-live="polite"
@@ -167,7 +175,7 @@
 			{#if children}
 				{@render children()}
 			{:else}
-				<span class="snackbar__message">{message}</span>
+				<span class="snackbar-item__message">{message}</span>
 			{/if}
 		</div>
 
@@ -182,7 +190,7 @@
 		{/if}
 
 		{#if closable}
-			<div class="snackbar__close">
+			<div class="snackbar-item__close">
 				<IconButton
 					ariaLabel="閉じる"
 					iconFilled={true}
@@ -243,23 +251,23 @@
 		}
 	}
 
-	.snackbar-container--bottom {
+	.snackbar-item--bottom {
 		padding-bottom: 12px;
 	}
 
-	.snackbar-container--top {
+	.snackbar-item--top {
 		padding-top: 12px;
 	}
 
-	.snackbar-container.fade-out {
+	.snackbar-item--hidden {
 		animation: slideOutWithCollapse 400ms ease-in-out forwards;
 	}
 
-	.snackbar-container--top.fade-out {
+	.snackbar-item--top.snackbar-item--hidden {
 		animation: slideOutWithCollapseTop 400ms ease-in-out forwards;
 	}
 
-	.snackbar {
+	.snackbar-item__content {
 		position: relative; /* コンテナ内での通常のフローに従う */
 		/* left/transformはコンテナが処理するので削除 */
 
@@ -281,26 +289,26 @@
 	}
 
 	/* アニメーションクラス */
-	.snackbar--bottom.fade-in {
+	.snackbar-item__content--bottom.snackbar-item__content--visible {
 		animation: slideInFromBottom var(--svelte-ui-transition-duration, 300ms) ease-out forwards;
 	}
 
-	.snackbar--top.fade-in {
+	.snackbar-item__content--top.snackbar-item__content--visible {
 		animation: slideInFromTop var(--svelte-ui-transition-duration, 300ms) ease-out forwards;
 	}
 
-	.snackbar--top {
+	.snackbar-item__content--top {
 		top: var(--svelte-ui-snackbar-offset);
 	}
 
-	.snackbar--bottom {
+	.snackbar-item__content--bottom {
 		bottom: var(--svelte-ui-snackbar-offset);
 	}
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		.snackbar.fade-in,
-		.snackbar.fade-out {
+		.snackbar-item__content--visible,
+		.snackbar-item--hidden {
 			animation-duration: 0.01s;
 		}
 	}
@@ -352,81 +360,81 @@
 	}
 
 	/* Type variants - filled */
-	.snackbar--filled.snackbar--info {
+	.snackbar-item__content--filled.snackbar-item__content--info {
 		background-color: var(--svelte-ui-snackbar-info-bg);
 		color: var(--svelte-ui-snackbar-info-text-color);
 	}
 
-	.snackbar--filled.snackbar--info .snackbar__icon {
+	.snackbar-item__content--filled.snackbar-item__content--info .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-info-icon-color);
 	}
 
-	.snackbar--filled.snackbar--success {
+	.snackbar-item__content--filled.snackbar-item__content--success {
 		background-color: var(--svelte-ui-snackbar-success-bg);
 		color: var(--svelte-ui-snackbar-success-text-color);
 	}
 
-	.snackbar--filled.snackbar--success .snackbar__icon {
+	.snackbar-item__content--filled.snackbar-item__content--success .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-success-icon-color);
 	}
 
-	.snackbar--filled.snackbar--warning {
+	.snackbar-item__content--filled.snackbar-item__content--warning {
 		background-color: var(--svelte-ui-snackbar-warning-bg);
 		color: var(--svelte-ui-snackbar-warning-text-color);
 	}
 
-	.snackbar--filled.snackbar--warning .snackbar__icon {
+	.snackbar-item__content--filled.snackbar-item__content--warning .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-warning-icon-color);
 	}
 
-	.snackbar--filled.snackbar--error {
+	.snackbar-item__content--filled.snackbar-item__content--error {
 		background-color: var(--svelte-ui-snackbar-error-bg);
 		color: var(--svelte-ui-snackbar-error-text-color);
 	}
 
-	.snackbar--filled.snackbar--error .snackbar__icon {
+	.snackbar-item__content--filled.snackbar-item__content--error .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-error-icon-color);
 	}
 
 	/* Type variants - outlined */
-	.snackbar--outlined {
+	.snackbar-item__content--outlined {
 		border: 1px solid;
 		background-color: var(--svelte-ui-surface-color, #ffffff);
 	}
 
-	.snackbar--outlined.snackbar--info {
+	.snackbar-item__content--outlined.snackbar-item__content--info {
 		border-color: var(--svelte-ui-snackbar-info-bg);
 		color: var(--svelte-ui-snackbar-info-bg);
 	}
 
-	.snackbar--outlined.snackbar--info .snackbar__icon {
+	.snackbar-item__content--outlined.snackbar-item__content--info .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-info-bg);
 	}
 
-	.snackbar--outlined.snackbar--success {
+	.snackbar-item__content--outlined.snackbar-item__content--success {
 		border-color: var(--svelte-ui-snackbar-success-bg);
 		color: var(--svelte-ui-snackbar-success-bg);
 	}
 
-	.snackbar--outlined.snackbar--success .snackbar__icon {
+	.snackbar-item__content--outlined.snackbar-item__content--success .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-success-bg);
 	}
 
-	.snackbar--outlined.snackbar--warning {
+	.snackbar-item__content--outlined.snackbar-item__content--warning {
 		border-color: var(--svelte-ui-snackbar-warning-bg);
 		color: var(--svelte-ui-snackbar-warning-bg);
 	}
 
-	.snackbar--outlined.snackbar--warning .snackbar__icon {
+	.snackbar-item__content--outlined.snackbar-item__content--warning .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-warning-bg);
 	}
 
-	.snackbar--outlined.snackbar--error {
+	.snackbar-item__content--outlined.snackbar-item__content--error {
 		border-color: var(--svelte-ui-snackbar-error-bg);
 		color: var(--svelte-ui-snackbar-error-bg);
 	}
 
-	.snackbar--outlined.snackbar--error .snackbar__icon {
+	.snackbar-item__content--outlined.snackbar-item__content--error .snackbar-item__icon {
 		color: var(--svelte-ui-snackbar-error-bg);
 	}
 </style>

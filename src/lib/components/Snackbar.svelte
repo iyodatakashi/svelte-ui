@@ -21,9 +21,9 @@
 
 <!-- Top position snackbars -->
 {#if topItems.length > 0}
-	<div class="snackbar-list snackbar-list--top">
+	<div class="snackbar snackbar--top">
 		{#each topItems as item, index (item.id)}
-			<div class="snackbar-list__item" style="z-index: {1000 + index};">
+			<div class="snackbar__item" style="z-index: {1000 + index};">
 				<SnackbarItem
 					id={item.id}
 					message={item.message}
@@ -43,9 +43,9 @@
 
 <!-- Bottom position snackbars -->
 {#if bottomItems.length > 0}
-	<div class="snackbar-list snackbar-list--bottom">
+	<div class="snackbar snackbar--bottom">
 		{#each bottomItems as item, index (item.id)}
-			<div class="snackbar-list__item" style="z-index: {1000 + index};">
+			<div class="snackbar__item" style="z-index: {1000 + index};">
 				<SnackbarItem
 					id={item.id}
 					message={item.message}
@@ -64,7 +64,7 @@
 {/if}
 
 <style>
-	.snackbar-list {
+	.snackbar {
 		position: fixed;
 		left: 50%;
 		transform: translateX(-50%);
@@ -77,21 +77,21 @@
 		gap: 0;
 	}
 
-	.snackbar-list--top {
+	.snackbar--top {
 		top: 24px;
 	}
 
-	.snackbar-list--bottom {
+	.snackbar--bottom {
 		bottom: 24px;
 		flex-direction: column-reverse;
 	}
 
-	.snackbar-list__item {
+	.snackbar__item {
 		pointer-events: auto;
 		position: relative;
 	}
 
-	.snackbar-list__item :global(.snackbar) {
+	.snackbar__item :global(.snackbar-item__content) {
 		margin-bottom: 0;
 	}
 </style>
