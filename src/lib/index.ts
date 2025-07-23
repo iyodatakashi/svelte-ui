@@ -23,6 +23,7 @@ export { default as PopupMenuButton } from './components/PopupMenuButton.svelte'
 export { default as Radio } from './components/Radio.svelte';
 export { default as Select } from './components/Select.svelte';
 export { default as Snackbar } from './components/Snackbar.svelte';
+export { default as SnackbarItem } from './components/SnackbarItem.svelte';
 export { default as Tab } from './components/Tab.svelte';
 export { default as TabItem } from './components/TabItem.svelte';
 export { default as Textarea } from './components/Textarea.svelte';

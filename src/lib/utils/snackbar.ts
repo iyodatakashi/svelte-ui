@@ -1,75 +1,148 @@
-// snackbar.ts
-import Snackbar from '../components/Snackbar.svelte';
-import { mount, unmount } from 'svelte';
+// src/lib/utils/snackbar.ts
 
-export interface SnackbarOptions {
-	message: string;
-	type?: 'info' | 'success' | 'warning' | 'error';
+import { writable } from 'svelte/store';
+import type { Snippet } from 'svelte';
+
+export interface SnackbarItem {
+	id: string;
+	message?: string;
+	children?: Snippet;
+	type: 'info' | 'success' | 'warning' | 'error';
+	variant?: 'filled' | 'outlined';
 	duration?: number;
 	position?: 'top' | 'bottom';
 	closable?: boolean;
 	actionLabel?: string;
 	onAction?: () => void;
 	onClose?: () => void;
+	createdAt: number;
 }
 
-export function showSnackbar(options: SnackbarOptions): void {
-	// Portal用のコンテナを作成
-	const container = document.createElement('div');
-	container.className = 'snackbar-portal';
-	container.style.cssText = `
-		position: fixed;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		pointer-events: none;
-		z-index: 9999;
-	`;
+export interface SnackbarConfig {
+	maxVisible?: number;
+	defaultDuration?: number;
+	defaultVariant?: 'filled' | 'outlined';
+	defaultPosition?: 'top' | 'bottom';
+}
 
-	// body直下に追加（Portal）
-	document.body.appendChild(container);
+class SnackbarManager {
+	private items = writable<SnackbarItem[]>([]);
+	private config: Required<SnackbarConfig> = {
+		maxVisible: 5,
+		defaultDuration: 3000,
+		defaultVariant: 'filled',
+		defaultPosition: 'bottom'
+	};
 
-	// Svelteコンポーネントをマウント
-	const snackbar = mount(Snackbar, {
-		target: container,
-		props: {
-			...options,
-			onClose: () => {
-				// コンポーネントを破棄
-				unmount(snackbar);
-				// コンテナを削除
-				if (container.parentNode) {
-					container.parentNode.removeChild(container);
-				}
-				// 元のonCloseコールバックを実行
-				if (options.onClose) {
-					options.onClose();
-				}
-			}
+	constructor(config?: SnackbarConfig) {
+		if (config) {
+			this.config = { ...this.config, ...config };
 		}
-	});
+	}
+
+	// 購読用のstore
+	get store() {
+		return this.items;
+	}
+
+	// 設定更新
+	configure(config: SnackbarConfig) {
+		this.config = { ...this.config, ...config };
+	}
+
+	// 基本的なshow メソッド
+	private show(options: Omit<SnackbarItem, 'id' | 'createdAt'>): string {
+		const id = `snackbar-${Date.now()}-${Math.random().toString(36).substr(2, 9)}`;
+		const item: SnackbarItem = {
+			id,
+			variant: this.config.defaultVariant,
+			duration: this.config.defaultDuration,
+			position: this.config.defaultPosition,
+			...options,
+			createdAt: Date.now()
+		};
+
+		this.items.update((currentItems) => {
+			const newItems = [...currentItems, item];
+
+			// 最大表示数を超えた場合、古いものから削除
+			if (newItems.length > this.config.maxVisible) {
+				const itemsToRemove = newItems.slice(0, newItems.length - this.config.maxVisible);
+				itemsToRemove.forEach((oldItem) => {
+					this.remove(oldItem.id);
+				});
+				return newItems.slice(-this.config.maxVisible);
+			}
+
+			return newItems;
+		});
+
+		// 自動削除はSnackbarItem側で制御するため、ここでは設定しない
+
+		return id;
+	}
+
+	// タイプ別メソッド
+	success(
+		message: string,
+		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'message' | 'createdAt'>>
+	): string {
+		return this.show({ message, type: 'success', ...options });
+	}
+
+	error(
+		message: string,
+		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'message' | 'createdAt'>>
+	): string {
+		return this.show({ message, type: 'error', ...options });
+	}
+
+	warning(
+		message: string,
+		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'message' | 'createdAt'>>
+	): string {
+		return this.show({ message, type: 'warning', ...options });
+	}
+
+	info(
+		message: string,
+		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'message' | 'createdAt'>>
+	): string {
+		return this.show({ message, type: 'info', ...options });
+	}
+
+	// カスタムコンテンツ用メソッド
+	custom(
+		children: Snippet,
+		type: SnackbarItem['type'],
+		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'children' | 'createdAt'>>
+	): string {
+		return this.show({ children, type, ...options });
+	}
+
+	// 削除メソッド
+	remove(id: string) {
+		this.items.update((currentItems) => currentItems.filter((item) => item.id !== id));
+	}
+
+	// 全削除メソッド
+	clear() {
+		this.items.set([]);
+	}
+
+	// 位置別のアイテムを取得
+	getItemsByPosition(position: 'top' | 'bottom') {
+		let currentItems: SnackbarItem[] = [];
+		this.items.subscribe((items) => {
+			currentItems = items;
+		})();
+
+		return currentItems.filter((item) => item.position === position);
+	}
 }
 
-// ヘルパー関数
-export const snackbar = {
-	success: (message: string, options?: Partial<SnackbarOptions>) =>
-		showSnackbar({ message, type: 'success', ...options }),
+// グローバルインスタンス
+export const snackbar = new SnackbarManager();
 
-	error: (message: string, options?: Partial<SnackbarOptions>) =>
-		showSnackbar({
-			message,
-			type: 'error',
-			duration: 0,
-			closable: true,
-			...options
-		}),
-
-	info: (message: string, options?: Partial<SnackbarOptions>) =>
-		showSnackbar({ message, type: 'info', ...options }),
-
-	warning: (message: string, options?: Partial<SnackbarOptions>) =>
-		showSnackbar({ message, type: 'warning', ...options }),
-
-	show: showSnackbar
-};
+// デフォルトエクスポート（後方互換性のため）
+export default snackbar;
