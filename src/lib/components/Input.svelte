@@ -77,8 +77,8 @@
 		tabindex?: number | null;
 		size?: number | null;
 		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
-		onchange?: Function;
-		oninput?: Function;
+		onchange?: (value: any) => void;
+		oninput?: (value: any) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;

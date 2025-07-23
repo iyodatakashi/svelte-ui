@@ -41,7 +41,7 @@
 		tabindex?: number | null;
 		size?: number | null;
 		rounded?: boolean;
-		onchange?: Function;
+		onchange?: (value: any) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLSelectElement }) => void;

@@ -51,8 +51,8 @@
 		id?: string | null;
 		maxlength?: number | null;
 		tabindex?: number | null;
-		onchange?: Function;
-		oninput?: Function;
+		onchange?: (value: any) => void;
+		oninput?: (value: any) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLTextAreaElement }) => void;

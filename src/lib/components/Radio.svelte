@@ -29,7 +29,7 @@
 		reducedMotion?: boolean;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onchange?: Function;
+		onchange?: (value: any) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
 		[key: string]: any;

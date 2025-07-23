@@ -52,8 +52,8 @@
 		maxlength?: number | null;
 		filterable?: boolean;
 		rounded?: boolean;
-		onchange?: Function;
-		oninput?: Function;
+		onchange?: (value: any) => void;
+		oninput?: (value: any) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLDivElement }) => void;
