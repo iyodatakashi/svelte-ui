@@ -2,7 +2,6 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { slide, fade } from 'svelte/transition';
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';
@@ -71,48 +70,86 @@
 	});
 </script>
 
-{#if visible}
-	<div
-		class="snackbar snackbar--{type} snackbar--{position}"
-		transition:slide={{ duration: 300, axis: position === 'top' ? 'y' : 'y' }}
-		role="alert"
-		aria-live="polite"
-	>
-		<div class="snackbar__icon">
-			<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
-		</div>
-
-		<div class="snackbar__content">
-			<span class="snackbar__message">{message}</span>
-		</div>
-
-		{#if actionLabel && onAction}
-			<Button
-				variant="outlined"
-				color="var(--svelte-ui-text-on-filled-color)"
-				onclick={handleAction}
-			>
-				{actionLabel}
-			</Button>
-		{/if}
-
-		{#if closable}
-			<div class="snackbar__close">
-				<IconButton
-					ariaLabel="閉じる"
-					iconFilled={true}
-					color="var(--svelte-ui-text-on-filled-color)"
-					size={24}
-					onclick={handleClose}
-				>
-					close
-				</IconButton>
-			</div>
-		{/if}
+<div
+	class="snackbar snackbar--{type} snackbar--{position} {visible ? 'fade-in' : 'fade-out'}"
+	role="alert"
+	aria-live="polite"
+>
+	<div class="snackbar__icon">
+		<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
 	</div>
-{/if}
+
+	<div class="snackbar__content">
+		<span class="snackbar__message">{message}</span>
+	</div>
+
+	{#if actionLabel && onAction}
+		<Button variant="outlined" color="var(--svelte-ui-text-on-filled-color)" onclick={handleAction}>
+			{actionLabel}
+		</Button>
+	{/if}
+
+	{#if closable}
+		<div class="snackbar__close">
+			<IconButton
+				ariaLabel="閉じる"
+				iconFilled={true}
+				color="var(--svelte-ui-text-on-filled-color)"
+				size={24}
+				onclick={handleClose}
+			>
+				close
+			</IconButton>
+		</div>
+	{/if}
+</div>
 
 <style>
+	/* アニメーション定義 */
+	@keyframes slideInFromBottom {
+		from {
+			transform: translateX(-50%) translateY(100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(-50%) translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes slideOutToBottom {
+		from {
+			transform: translateX(-50%) translateY(0);
+			opacity: 1;
+		}
+		to {
+			transform: translateX(-50%) translateY(100%);
+			opacity: 0;
+		}
+	}
+
+	@keyframes slideInFromTop {
+		from {
+			transform: translateX(-50%) translateY(-100%);
+			opacity: 0;
+		}
+		to {
+			transform: translateX(-50%) translateY(0);
+			opacity: 1;
+		}
+	}
+
+	@keyframes slideOutToTop {
+		from {
+			transform: translateX(-50%) translateY(0);
+			opacity: 1;
+		}
+		to {
+			transform: translateX(-50%) translateY(-100%);
+			opacity: 0;
+		}
+	}
+
 	.snackbar {
 		position: fixed;
 		left: 50%;
@@ -136,12 +173,37 @@
 		line-height: var(--svelte-ui-snackbar-line-height);
 	}
 
+	/* アニメーションクラス */
+	.snackbar--bottom.fade-in {
+		animation: slideInFromBottom var(--svelte-ui-transition-duration, 300ms) ease-out forwards;
+	}
+
+	.snackbar--bottom.fade-out {
+		animation: slideOutToBottom var(--svelte-ui-transition-duration, 300ms) ease-in forwards;
+	}
+
+	.snackbar--top.fade-in {
+		animation: slideInFromTop var(--svelte-ui-transition-duration, 300ms) ease-out forwards;
+	}
+
+	.snackbar--top.fade-out {
+		animation: slideOutToTop var(--svelte-ui-transition-duration, 300ms) ease-in forwards;
+	}
+
 	.snackbar--top {
 		top: var(--svelte-ui-snackbar-offset);
 	}
 
 	.snackbar--bottom {
 		bottom: var(--svelte-ui-snackbar-offset);
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.snackbar.fade-in,
+		.snackbar.fade-out {
+			animation-duration: 0.01s;
+		}
 	}
 
 	.snackbar__icon {
