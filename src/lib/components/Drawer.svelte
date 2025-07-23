@@ -133,7 +133,7 @@
 
 <style lang="scss">
 	:global(.drawer) {
-		width: var(--svelte-ui-drawer-width);
+		width: 100%;
 		height: 100%;
 		min-height: 100%;
 		padding: 0;
@@ -144,6 +144,8 @@
 
 	:global(.drawer:-internal-dialog-in-top-layer) {
 		max-height: none;
+		max-width: none;
+		width: 100%;
 	}
 
 	/* 位置固有のアニメーション */
