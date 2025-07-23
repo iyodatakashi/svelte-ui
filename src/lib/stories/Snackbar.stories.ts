@@ -1,5 +1,14 @@
 // src/lib/stories/Snackbar.stories.ts
 import Snackbar from '../components/Snackbar.svelte';
+import type { Snippet } from 'svelte';
+import { createRawSnippet } from 'svelte';
+
+// カスタムコンテンツ用のヘルパー関数
+const createContentSnippet = (content: string): Snippet => {
+	return createRawSnippet(() => ({
+		render: () => content
+	}));
+};
 
 const meta = {
 	title: 'Feedback/Snackbar',
@@ -17,7 +26,7 @@ const meta = {
 	argTypes: {
 		message: {
 			control: { type: 'text' },
-			description: '表示メッセージ'
+			description: '表示メッセージ（childrenが指定されている場合は無視される）'
 		},
 		type: {
 			control: { type: 'select' },
@@ -45,6 +54,10 @@ const meta = {
 		actionLabel: {
 			control: { type: 'text' },
 			description: 'アクションボタンテキスト'
+		},
+		children: {
+			control: false,
+			description: 'カスタムコンテンツ（Snippet）。指定された場合、messageの代わりに表示される'
 		}
 	}
 };
@@ -154,6 +167,49 @@ export const VariantComparison = {
 			description: {
 				story:
 					'variant controlを切り替えて、filled（濃い背景）とoutlined（薄い背景）を比較してください。'
+			}
+		}
+	}
+};
+
+// Custom content with Snippet
+export const CustomContent = {
+	args: {
+		type: 'success',
+		variant: 'filled',
+		duration: 8000,
+		children: createContentSnippet(`
+			<div style="display: flex; align-items: center; gap: 8px;">
+				<strong>アップデート完了</strong>
+				<span style="margin-left: 8px;">バージョン 2.1.0 が利用可能です。</span>
+				<a href="#" style="color: inherit; text-decoration: underline;">詳細</a>
+			</div>
+		`)
+	}
+};
+
+// Custom content with action links
+export const CustomContentWithLinks = {
+	args: {
+		type: 'info',
+		variant: 'outlined',
+		duration: 10000,
+		closable: true,
+		children: createContentSnippet(`
+			<div>
+				<div style="font-weight: 600; margin-bottom: 4px;">新しい機能が追加されました</div>
+				<div style="font-size: 0.9em; opacity: 0.9;">
+					ダッシュボードに新しいチャート機能を追加しました。
+					<a href="#" style="color: inherit; text-decoration: underline;">設定ガイド</a>をご確認ください。
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Snippetを使用してリッチなコンテンツ（リンク、複数行テキスト、強調表示など）を表示できます。'
 			}
 		}
 	}

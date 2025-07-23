@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
+	import type { Snippet } from 'svelte';
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';
@@ -15,9 +16,10 @@
 		closable = false,
 		actionLabel,
 		onAction,
-		onClose = () => {}
+		onClose = () => {},
+		children
 	}: {
-		message: string;
+		message?: string;
 		type?: 'info' | 'success' | 'warning' | 'error';
 		variant?: 'filled' | 'outlined';
 		duration?: number;
@@ -26,6 +28,7 @@
 		actionLabel?: string;
 		onAction?: () => void;
 		onClose?: () => void;
+		children?: Snippet;
 	} = $props();
 
 	let visible = $state(true);
@@ -84,7 +87,11 @@
 	</div>
 
 	<div class="snackbar__content">
-		<span class="snackbar__message">{message}</span>
+		{#if children}
+			{@render children()}
+		{:else}
+			<span class="snackbar__message">{message}</span>
+		{/if}
 	</div>
 
 	{#if actionLabel && onAction}
