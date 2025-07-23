@@ -36,7 +36,7 @@
 		title?: string;
 		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
-		width?: number;
+		width?: string | number;
 		position?: 'left' | 'right';
 		ariaLabel?: string;
 		restoreFocus?: boolean;
@@ -52,7 +52,7 @@
 
 	// Drawer固有のスタイル
 	const drawerStyles = $derived(
-		`width: ${width}px; height: 100%; min-height: 100%; ${position}: 0;`
+		`width: ${typeof width === 'number' ? `${width}px` : width}; height: 100%; min-height: 100%; ${position}: 0;`
 	);
 
 	// Drawer固有のクラス

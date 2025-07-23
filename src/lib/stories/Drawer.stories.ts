@@ -9,7 +9,7 @@ interface DrawerArgs {
 	title?: string;
 	scrollable?: boolean;
 	closeIfClickOutside?: boolean;
-	width?: number;
+	width?: string | number;
 	position?: 'left' | 'right';
 	ariaLabel?: string;
 	restoreFocus?: boolean;
@@ -56,8 +56,8 @@ const meta: Meta<DrawerArgs> = {
 			description: 'Whether to close drawer when clicking outside'
 		},
 		width: {
-			control: 'number',
-			description: 'Drawer width in pixels'
+			control: 'text',
+			description: 'Drawer width (number for pixels, string for calc/vw/% etc.)'
 		},
 		position: {
 			control: 'select',
@@ -496,5 +496,92 @@ export const Closed: Story = {
 				<p>This drawer is closed. Toggle the 'isOpen' control to see it.</p>
 			</div>
 		`)
+	}
+};
+
+// Responsive width drawer - ウィンドウ幅マイナスピクセル
+export const ResponsiveWidth: Story = {
+	args: {
+		isOpen: true,
+		position: 'left',
+		width: 'calc(100vw - 80px)',
+		title: 'Responsive Drawer',
+		body: createContentSnippet(`
+			<div style="padding: 16px;">
+				<h3 style="margin: 0 0 16px 0; font-size: 1.2rem;">Responsive Width Example</h3>
+				<p style="margin-bottom: 16px;">
+					This drawer uses <code>calc(100vw - 80px)</code> as its width, 
+					making it fill almost the entire viewport width minus 80 pixels.
+				</p>
+				<div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 16px;">
+					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+						<h4 style="margin: 0 0 8px 0;">Feature 1</h4>
+						<p style="margin: 0; font-size: 0.9em; color: #666;">Content that adapts to the available width</p>
+					</div>
+					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+						<h4 style="margin: 0 0 8px 0;">Feature 2</h4>
+						<p style="margin: 0; font-size: 0.9em; color: #666;">Responsive grid layout</p>
+					</div>
+					<div style="padding: 16px; background: #f8f9fa; border-radius: 8px;">
+						<h4 style="margin: 0 0 8px 0;">Feature 3</h4>
+						<p style="margin: 0; font-size: 0.9em; color: #666;">Scales with viewport</p>
+					</div>
+				</div>
+				<div style="margin-top: 24px; padding: 16px; background: #e8f5e8; border-radius: 8px; border-left: 4px solid #4caf50;">
+					<h4 style="margin: 0 0 8px 0; color: #2e7d32;">Width Options</h4>
+					<ul style="margin: 0; padding-left: 20px; color: #2e7d32;">
+						<li><code>calc(100vw - 40px)</code> - ウィンドウ幅マイナス40px</li>
+						<li><code>80%</code> - ウィンドウ幅の80%</li>
+						<li><code>90vw</code> - ビューポート幅の90%</li>
+						<li><code>320</code> - 固定320ピクセル</li>
+					</ul>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Drawer with responsive width using calc(100vw - 80px). This makes the drawer width adapt to the viewport size while maintaining a fixed margin.'
+			}
+		}
+	}
+};
+
+// Percentage width drawer
+export const PercentageWidth: Story = {
+	args: {
+		isOpen: true,
+		position: 'right',
+		width: '60%',
+		title: 'Percentage Width',
+		body: createContentSnippet(`
+			<div style="padding: 16px;">
+				<h3 style="margin: 0 0 16px 0;">60% Width Drawer</h3>
+				<p style="margin-bottom: 16px;">
+					This drawer takes up 60% of the viewport width, making it responsive to different screen sizes.
+				</p>
+				<div style="display: flex; flex-direction: column; gap: 12px;">
+					<div style="padding: 12px; background: #fff3e0; border-radius: 6px;">
+						<strong>Small screens:</strong> Optimal for mobile
+					</div>
+					<div style="padding: 12px; background: #e8f5e8; border-radius: 6px;">
+						<strong>Medium screens:</strong> Good for tablets
+					</div>
+					<div style="padding: 12px; background: #e3f2fd; border-radius: 6px;">
+						<strong>Large screens:</strong> Perfect for desktop
+					</div>
+				</div>
+			</div>
+		`)
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Drawer with percentage-based width (60%). This creates a responsive drawer that scales with the viewport size.'
+			}
+		}
 	}
 };
