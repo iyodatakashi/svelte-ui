@@ -13,7 +13,7 @@
 		clearable = false,
 		focusStyle = 'border',
 		customStyle = '',
-		onchange = (_value: any) => {},
+		onchange = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
@@ -28,7 +28,7 @@
 		clearable?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		customStyle?: string;
-		onchange?: (value: string | number | null | undefined) => void;
+		onchange?: Function;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;

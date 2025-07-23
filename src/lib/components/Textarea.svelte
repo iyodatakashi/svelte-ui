@@ -23,8 +23,8 @@
 		id = null,
 		maxlength = null,
 		tabindex = null,
-		onchange = (_value: any) => {},
-		oninput = (_value: any) => {},
+		onchange = () => {},
+		oninput = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
@@ -51,8 +51,8 @@
 		id?: string | null;
 		maxlength?: number | null;
 		tabindex?: number | null;
-		onchange?: (value: string | undefined) => void;
-		oninput?: (value: string | undefined) => void;
+		onchange?: Function;
+		oninput?: Function;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLTextAreaElement }) => void;

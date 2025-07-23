@@ -25,8 +25,8 @@
 		maxlength = null,
 		filterable = true,
 		rounded = false,
-		onchange = (_value: any) => {},
-		oninput = (_value: any) => {},
+		onchange = () => {},
+		oninput = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
@@ -52,8 +52,8 @@
 		maxlength?: number | null;
 		filterable?: boolean;
 		rounded?: boolean;
-		onchange?: (value: string | number | boolean | null | undefined) => void;
-		oninput?: (value: string | number | null | undefined) => void;
+		onchange?: Function;
+		oninput?: Function;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLDivElement }) => void;
