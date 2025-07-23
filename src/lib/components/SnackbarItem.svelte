@@ -52,9 +52,9 @@
 			const container = snackbarRef.closest('.snackbar-container');
 
 			// 同じコンテナ内の他のSnackbar要素を取得
-			const otherSnackbars = Array.from(container?.querySelectorAll('.snackbar') || []).filter(
-				(el) => el !== snackbarRef
-			);
+			const otherSnackbars = Array.from(
+				container?.querySelectorAll('.snackbar-item__content') || []
+			).filter((el) => el !== snackbarRef);
 
 			// 他のSnackbarの現在位置を記録
 			const otherPositions = otherSnackbars.map((el) => ({
@@ -305,22 +305,22 @@
 		}
 	}
 
-	.snackbar__icon {
+	.snackbar-item__icon {
 		display: flex;
 		align-items: center;
 		flex-shrink: 0;
 	}
 
-	.snackbar__content {
+	.snackbar-item__text {
 		flex: 1;
 		min-width: 0;
 	}
 
-	.snackbar__message {
+	.snackbar-item__message {
 		word-break: break-word;
 	}
 
-	.snackbar__action {
+	.snackbar-item__action {
 		background: none;
 		border: none;
 		color: var(--svelte-ui-snackbar-action-color);
@@ -335,16 +335,16 @@
 		transition: background-color 0.2s ease;
 	}
 
-	.snackbar__action:hover {
+	.snackbar-item__action:hover {
 		background-color: var(--svelte-ui-snackbar-action-hover-bg);
 	}
 
-	.snackbar__action:focus {
+	.snackbar-item__action:focus {
 		outline: 2px solid var(--svelte-ui-snackbar-action-color);
 		outline-offset: 2px;
 	}
 
-	.snackbar__close {
+	.snackbar-item__close {
 		display: flex;
 		align-items: center;
 		flex-shrink: 0;

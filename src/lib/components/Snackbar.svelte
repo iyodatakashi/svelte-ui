@@ -21,9 +21,9 @@
 
 <!-- Top position snackbars -->
 {#if topItems.length > 0}
-	<div class="snackbar-container snackbar-container--top">
+	<div class="snackbar-list snackbar-list--top">
 		{#each topItems as item, index (item.id)}
-			<div class="snackbar-wrapper" style="z-index: {1000 + index};">
+			<div class="snackbar-list__item" style="z-index: {1000 + index};">
 				<SnackbarItem
 					id={item.id}
 					message={item.message}
@@ -43,9 +43,9 @@
 
 <!-- Bottom position snackbars -->
 {#if bottomItems.length > 0}
-	<div class="snackbar-container snackbar-container--bottom">
+	<div class="snackbar-list snackbar-list--bottom">
 		{#each bottomItems as item, index (item.id)}
-			<div class="snackbar-wrapper" style="z-index: {1000 + index};">
+			<div class="snackbar-list__item" style="z-index: {1000 + index};">
 				<SnackbarItem
 					id={item.id}
 					message={item.message}
@@ -64,7 +64,7 @@
 {/if}
 
 <style>
-	.snackbar-container {
+	.snackbar-list {
 		position: fixed;
 		left: 50%;
 		transform: translateX(-50%);
@@ -77,25 +77,21 @@
 		gap: 0;
 	}
 
-	.snackbar-container--top {
-		top: 20px;
-		/* top位置では新しいSnackbarが下に追加される（通常のflex-direction） */
-		/* 最初のSnackbarが画面上端に近いので、上の余白は不要 */
+	.snackbar-list--top {
+		top: 24px;
 	}
 
-	.snackbar-container--bottom {
-		bottom: 20px;
-		flex-direction: column-reverse; /* 新しいSnackbarが下（画面下端寄り）に追加 */
-		/* 最初のSnackbarが画面下端に近いので、下の余白は不要 */
+	.snackbar-list--bottom {
+		bottom: 24px;
+		flex-direction: column-reverse;
 	}
 
-	.snackbar-wrapper {
+	.snackbar-list__item {
 		pointer-events: auto;
-		position: relative; /* staticの代わりにrelativeを使用 */
+		position: relative;
 	}
 
-	/* アニメーション改善 */
-	.snackbar-wrapper :global(.snackbar) {
-		margin-bottom: 0; /* デフォルトのマージンを削除 */
+	.snackbar-list__item :global(.snackbar) {
+		margin-bottom: 0;
 	}
 </style>

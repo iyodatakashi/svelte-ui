@@ -27,6 +27,7 @@ export interface SnackbarConfig {
 
 class SnackbarManager {
 	private items = writable<SnackbarItem[]>([]);
+	private queue: SnackbarItem[] = [];
 	private config: Required<SnackbarConfig> = {
 		maxVisible: 5,
 		defaultDuration: 3000,
@@ -63,18 +64,14 @@ class SnackbarManager {
 		};
 
 		this.items.update((currentItems) => {
-			const newItems = [...currentItems, item];
-
-			// 最大表示数を超えた場合、古いものから削除
-			if (newItems.length > this.config.maxVisible) {
-				const itemsToRemove = newItems.slice(0, newItems.length - this.config.maxVisible);
-				itemsToRemove.forEach((oldItem) => {
-					this.remove(oldItem.id);
-				});
-				return newItems.slice(-this.config.maxVisible);
+			// 最大表示数を超えた場合、キューに追加
+			if (currentItems.length >= this.config.maxVisible) {
+				this.queue.push(item);
+				return currentItems;
 			}
 
-			return newItems;
+			// 表示数以内の場合は即座に表示
+			return [...currentItems, item];
 		});
 
 		// 自動削除はSnackbarItem側で制御するため、ここでは設定しない
@@ -122,12 +119,23 @@ class SnackbarManager {
 
 	// 削除メソッド
 	remove(id: string) {
-		this.items.update((currentItems) => currentItems.filter((item) => item.id !== id));
+		this.items.update((currentItems) => {
+			const filteredItems = currentItems.filter((item) => item.id !== id);
+
+			// キューに待機中のアイテムがあり、表示数に余裕がある場合は次を表示
+			if (this.queue.length > 0 && filteredItems.length < this.config.maxVisible) {
+				const nextItem = this.queue.shift()!;
+				return [...filteredItems, nextItem];
+			}
+
+			return filteredItems;
+		});
 	}
 
 	// 全削除メソッド
 	clear() {
 		this.items.set([]);
+		this.queue = [];
 	}
 
 	// 位置別のアイテムを取得

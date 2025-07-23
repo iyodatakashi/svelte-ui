@@ -161,6 +161,31 @@ export const TopPositionDemo: Story = {
 	}
 };
 
+export const QueueDemo: Story = {
+	render: () => ({
+		Component: Snackbar,
+		props: {}
+	}),
+	play: async () => {
+		// グローバルにsnackbarを公開（再確認）
+		if (typeof window !== 'undefined') {
+			window.snackbar = snackbar;
+		}
+
+		// 上限数（5個）を超えて10個のSnackbarを順次追加してキューイング動作をテスト
+		setTimeout(() => snackbar.info('Queue test 1/10', { duration: 2000 }), 500);
+		setTimeout(() => snackbar.info('Queue test 2/10', { duration: 2000 }), 800);
+		setTimeout(() => snackbar.info('Queue test 3/10', { duration: 2000 }), 1100);
+		setTimeout(() => snackbar.info('Queue test 4/10', { duration: 2000 }), 1400);
+		setTimeout(() => snackbar.info('Queue test 5/10', { duration: 2000 }), 1700);
+		setTimeout(() => snackbar.info('Queue test 6/10 (キューに蓄積)', { duration: 2000 }), 2000);
+		setTimeout(() => snackbar.info('Queue test 7/10 (キューに蓄積)', { duration: 2000 }), 2300);
+		setTimeout(() => snackbar.info('Queue test 8/10 (キューに蓄積)', { duration: 2000 }), 2600);
+		setTimeout(() => snackbar.info('Queue test 9/10 (キューに蓄積)', { duration: 2000 }), 2900);
+		setTimeout(() => snackbar.info('Queue test 10/10 (キューに蓄積)', { duration: 2000 }), 3200);
+	}
+};
+
 export const BasicUsage: Story = {
 	render: () => ({
 		Component: Snackbar,
