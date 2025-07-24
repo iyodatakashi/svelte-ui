@@ -150,7 +150,10 @@ class SnackbarManager {
 }
 
 // グローバルインスタンス
-export const snackbar = new SnackbarManager();
+export const snackbarManager = new SnackbarManager();
+
+// 後方互換性のため、snackbarとしてもエクスポート
+export const snackbar = snackbarManager;
 
 // デフォルトエクスポート（後方互換性のため）
-export default snackbar;
+export default snackbarManager;

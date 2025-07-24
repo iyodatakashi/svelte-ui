@@ -1,17 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Snackbar from '../components/Snackbar.svelte';
-import { snackbar } from '../utils/snackbar';
+import { snackbarManager } from '../utils/snackbar';
 
 // グローバルWindow型を拡張
 declare global {
 	interface Window {
-		snackbar: typeof snackbar;
+		snackbar: typeof snackbarManager;
 	}
 }
 
-// ブラウザ環境でグローバルにsnackbarを公開
+// ブラウザ環境でグローバルにsnackbarManagerを公開
 if (typeof window !== 'undefined') {
-	window.snackbar = snackbar;
+	window.snackbar = snackbarManager;
 }
 
 const meta: Meta<Snackbar> = {
@@ -35,7 +35,7 @@ const meta: Meta<Snackbar> = {
 ## 使用方法
 \`\`\`svelte
 <script>
-  import { snackbar, Snackbar } from 'svelte-ui';
+  import { snackbarManager, Snackbar } from 'svelte-ui';
 </script>
 
 <!-- 1. アプリのルートレベルでSnackbarを配置 -->
@@ -96,14 +96,14 @@ export const Demo: Story = {
 		props: {}
 	}),
 	play: async () => {
-		// グローバルにsnackbarを公開（再確認）
+		// グローバルにsnackbarManagerを公開（再確認）
 		if (typeof window !== 'undefined') {
-			window.snackbar = snackbar;
+			window.snackbar = snackbarManager;
 		}
 
 		// ページ読み込み後にデモ用のSnackbarを表示
 		setTimeout(() => {
-			snackbar.info(
+			snackbarManager.info(
 				'Snackbarシステムの動作デモです。ブラウザのコンソールで snackbar.success("テスト") などを実行してください。',
 				{
 					duration: 8000
@@ -113,7 +113,7 @@ export const Demo: Story = {
 
 		// 追加のデモSnackbar
 		setTimeout(() => {
-			snackbar.success('コンソールで snackbar.error("エラーテスト") を試してみてください');
+			snackbarManager.success('コンソールで snackbar.error("エラーテスト") を試してみてください');
 		}, 3000);
 	}
 };
@@ -124,17 +124,17 @@ export const AutoDemo: Story = {
 		props: {}
 	}),
 	play: async () => {
-		// グローバルにsnackbarを公開（再確認）
+		// グローバルにsnackbarManagerを公開（再確認）
 		if (typeof window !== 'undefined') {
-			window.snackbar = snackbar;
+			window.snackbar = snackbarManager;
 		}
 
 		// 自動的に複数のSnackbarを順次表示してデモする
-		setTimeout(() => snackbar.success('Success メッセージの例'), 500);
-		setTimeout(() => snackbar.error('Error メッセージの例'), 1500);
-		setTimeout(() => snackbar.warning('Warning メッセージの例'), 2500);
-		setTimeout(() => snackbar.info('Info メッセージの例'), 3500);
-		setTimeout(() => snackbar.success('Outlined variant', { variant: 'outlined' }), 4500);
+		setTimeout(() => snackbarManager.success('Success メッセージの例'), 500);
+		setTimeout(() => snackbarManager.error('Error メッセージの例'), 1500);
+		setTimeout(() => snackbarManager.warning('Warning メッセージの例'), 2500);
+		setTimeout(() => snackbarManager.info('Info メッセージの例'), 3500);
+		setTimeout(() => snackbarManager.success('Outlined variant', { variant: 'outlined' }), 4500);
 	}
 };
 
@@ -144,18 +144,19 @@ export const TopPositionDemo: Story = {
 		props: {}
 	}),
 	play: async () => {
-		// グローバルにsnackbarを公開（再確認）
+		// グローバルにsnackbarManagerを公開（再確認）
 		if (typeof window !== 'undefined') {
-			window.snackbar = snackbar;
+			window.snackbar = snackbarManager;
 		}
 
 		// 上位置のSnackbarを順次表示してテスト
-		setTimeout(() => snackbar.success('Top Success メッセージ', { position: 'top' }), 500);
-		setTimeout(() => snackbar.error('Top Error メッセージ', { position: 'top' }), 1500);
-		setTimeout(() => snackbar.warning('Top Warning メッセージ', { position: 'top' }), 2500);
-		setTimeout(() => snackbar.info('Top Info メッセージ', { position: 'top' }), 3500);
+		setTimeout(() => snackbarManager.success('Top Success メッセージ', { position: 'top' }), 500);
+		setTimeout(() => snackbarManager.error('Top Error メッセージ', { position: 'top' }), 1500);
+		setTimeout(() => snackbarManager.warning('Top Warning メッセージ', { position: 'top' }), 2500);
+		setTimeout(() => snackbarManager.info('Top Info メッセージ', { position: 'top' }), 3500);
 		setTimeout(
-			() => snackbar.success('Top Outlined variant', { variant: 'outlined', position: 'top' }),
+			() =>
+				snackbarManager.success('Top Outlined variant', { variant: 'outlined', position: 'top' }),
 			4500
 		);
 	}
@@ -167,22 +168,37 @@ export const QueueDemo: Story = {
 		props: {}
 	}),
 	play: async () => {
-		// グローバルにsnackbarを公開（再確認）
+		// グローバルにsnackbarManagerを公開（再確認）
 		if (typeof window !== 'undefined') {
-			window.snackbar = snackbar;
+			window.snackbar = snackbarManager;
 		}
 
 		// 上限数（5個）を超えて10個のSnackbarを順次追加してキューイング動作をテスト
-		setTimeout(() => snackbar.info('Queue test 1/10', { duration: 2000 }), 500);
-		setTimeout(() => snackbar.info('Queue test 2/10', { duration: 2000 }), 800);
-		setTimeout(() => snackbar.info('Queue test 3/10', { duration: 2000 }), 1100);
-		setTimeout(() => snackbar.info('Queue test 4/10', { duration: 2000 }), 1400);
-		setTimeout(() => snackbar.info('Queue test 5/10', { duration: 2000 }), 1700);
-		setTimeout(() => snackbar.info('Queue test 6/10 (キューに蓄積)', { duration: 2000 }), 2000);
-		setTimeout(() => snackbar.info('Queue test 7/10 (キューに蓄積)', { duration: 2000 }), 2300);
-		setTimeout(() => snackbar.info('Queue test 8/10 (キューに蓄積)', { duration: 2000 }), 2600);
-		setTimeout(() => snackbar.info('Queue test 9/10 (キューに蓄積)', { duration: 2000 }), 2900);
-		setTimeout(() => snackbar.info('Queue test 10/10 (キューに蓄積)', { duration: 2000 }), 3200);
+		setTimeout(() => snackbarManager.info('Queue test 1/10', { duration: 2000 }), 500);
+		setTimeout(() => snackbarManager.info('Queue test 2/10', { duration: 2000 }), 800);
+		setTimeout(() => snackbarManager.info('Queue test 3/10', { duration: 2000 }), 1100);
+		setTimeout(() => snackbarManager.info('Queue test 4/10', { duration: 2000 }), 1400);
+		setTimeout(() => snackbarManager.info('Queue test 5/10', { duration: 2000 }), 1700);
+		setTimeout(
+			() => snackbarManager.info('Queue test 6/10 (キューに蓄積)', { duration: 2000 }),
+			2000
+		);
+		setTimeout(
+			() => snackbarManager.info('Queue test 7/10 (キューに蓄積)', { duration: 2000 }),
+			2300
+		);
+		setTimeout(
+			() => snackbarManager.info('Queue test 8/10 (キューに蓄積)', { duration: 2000 }),
+			2600
+		);
+		setTimeout(
+			() => snackbarManager.info('Queue test 9/10 (キューに蓄積)', { duration: 2000 }),
+			2900
+		);
+		setTimeout(
+			() => snackbarManager.info('Queue test 10/10 (キューに蓄積)', { duration: 2000 }),
+			3200
+		);
 	}
 };
 
@@ -196,7 +212,7 @@ export const BasicUsage: Story = {
 			source: {
 				code: `
 <script>
-  import { snackbar, Snackbar } from 'svelte-ui';
+  import { snackbarManager, Snackbar } from 'svelte-ui';
   
   function handleSuccess() {
     snackbar.success("操作が完了しました");
