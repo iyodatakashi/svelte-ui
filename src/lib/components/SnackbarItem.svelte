@@ -44,63 +44,25 @@
 
 	let snackbarRef: HTMLDivElement;
 
+	onMount(() => {
+		if (duration > 0) {
+			timeoutId = setTimeout(() => {
+				handleClose();
+			}, duration);
+		}
+	});
+
 	const handleClose = () => {
 		// アニメーション開始前に、他のSnackbarの位置を測定
 		if (snackbarRef) {
 			// 現在の要素の位置と親コンテナを取得
 			const currentRect = snackbarRef.getBoundingClientRect();
-			const container = snackbarRef.closest('.snackbar-container');
-
-			// 同じコンテナ内の他のSnackbar要素を取得
-			const otherSnackbars = Array.from(
-				container?.querySelectorAll('.snackbar-item__content') || []
-			).filter((el) => el !== snackbarRef);
-
-			// 他のSnackbarの現在位置を記録
-			const otherPositions = otherSnackbars.map((el) => ({
-				element: el,
-				beforeTop: el.getBoundingClientRect().top
-			}));
-
-			console.log(`=== BEFORE ANIMATION ===`);
-			console.log(`Current Snackbar top: ${currentRect.top}`);
-			console.log(`Current Snackbar height: ${currentRect.height}`);
-			console.log(`Other Snackbars count: ${otherSnackbars.length}`);
-			otherPositions.forEach((pos, i) => {
-				console.log(`Other Snackbar ${i} top: ${pos.beforeTop}`);
-			});
-
-			// アニメーション完了後に実際の移動距離を測定
-			setTimeout(() => {
-				console.log(`=== AFTER ANIMATION ===`);
-				otherPositions.forEach((pos, i) => {
-					const afterTop = pos.element.getBoundingClientRect().top;
-					const actualMovement = afterTop - pos.beforeTop;
-					console.log(
-						`Other Snackbar ${i}: moved ${actualMovement}px (${pos.beforeTop} → ${afterTop})`
-					);
-				});
-
-				// 最大移動距離を取得
-				const movements = otherPositions.map((pos) => {
-					const afterTop = pos.element.getBoundingClientRect().top;
-					return afterTop - pos.beforeTop;
-				});
-				const maxMovement = Math.max(...movements);
-				console.log(`Required margin should be: -${Math.abs(maxMovement)}px`);
-			}, 4500);
 
 			// コンテナの高さ（Snackbar本体 + margin-bottom: 12px）
 			const containerHeight = currentRect.height + 12;
 			const requiredMargin = -containerHeight;
 
-			console.log(`Setting margin: ${requiredMargin}px (container height: ${containerHeight}px)`);
 			snackbarRef.style.setProperty('--collapse-margin', `${requiredMargin}px`);
-
-			// 設定が反映されているかを確認
-			const computedValue = getComputedStyle(snackbarRef).getPropertyValue('--collapse-margin');
-			console.log(`Computed --collapse-margin: "${computedValue}"`);
-			console.log(`Element style: ${snackbarRef.style.cssText}`);
 
 			// CSSカスタムプロパティが確実に設定されるまで少し待つ
 			requestAnimationFrame(() => {
@@ -118,9 +80,6 @@
 		} else {
 			visible = false;
 		}
-		if (timeoutId) {
-			clearTimeout(timeoutId);
-		}
 	};
 
 	const handleAction = () => {
@@ -129,31 +88,6 @@
 		}
 		handleClose();
 	};
-
-	onMount(() => {
-		console.log(`SnackbarItem mounted with duration: ${duration}ms`);
-		console.log(
-			`SnackbarItem classes: type=${type}, variant=${variant}, position=${position}, visible=${visible}`
-		);
-		if (snackbarRef) {
-			const contentEl = snackbarRef.querySelector('.snackbar-item__content');
-			console.log(`Actual container classes: ${snackbarRef.className}`);
-			console.log(`Actual content classes: ${contentEl?.className}`);
-		}
-		if (duration > 0) {
-			timeoutId = setTimeout(() => {
-				console.log(`Auto-closing snackbar ${id} after ${duration}ms`);
-				handleClose();
-			}, duration);
-		}
-
-		// クリーンアップ
-		return () => {
-			if (timeoutId) {
-				clearTimeout(timeoutId);
-			}
-		};
-	});
 </script>
 
 <div
