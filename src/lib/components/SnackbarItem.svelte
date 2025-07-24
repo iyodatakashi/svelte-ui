@@ -58,8 +58,14 @@
 			// 現在の要素の位置と親コンテナを取得
 			const currentRect = snackbarRef.getBoundingClientRect();
 
-			// コンテナの高さ（Snackbar本体 + margin-bottom: 12px）
-			const containerHeight = currentRect.height + 12;
+			// コンテナの高さ（Snackbar本体 + gap）
+			const containerHeight =
+				currentRect.height +
+				parseInt(
+					getComputedStyle(document.documentElement)
+						.getPropertyValue('--svelte-ui-snackbar-item-spacing')
+						.replace('px', '')
+				);
 			const requiredMargin = -containerHeight;
 
 			snackbarRef.style.setProperty('--collapse-margin', `${requiredMargin}px`);
@@ -186,11 +192,11 @@
 	}
 
 	.snackbar-item--bottom {
-		padding-bottom: 12px;
+		padding-bottom: var(--svelte-ui-snackbar-item-spacing);
 	}
 
 	.snackbar-item--top {
-		padding-top: 12px;
+		padding-top: var(--svelte-ui-snackbar-item-spacing);
 	}
 
 	.snackbar-item--hidden {
@@ -231,14 +237,6 @@
 		animation: slideInFromTop var(--svelte-ui-transition-duration, 300ms) ease-out forwards;
 	}
 
-	.snackbar-item__content--top {
-		top: var(--svelte-ui-snackbar-offset);
-	}
-
-	.snackbar-item__content--bottom {
-		bottom: var(--svelte-ui-snackbar-offset);
-	}
-
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		.snackbar-item__content--visible,
@@ -260,30 +258,6 @@
 
 	.snackbar-item__message {
 		word-break: break-word;
-	}
-
-	.snackbar-item__action {
-		background: none;
-		border: none;
-		color: var(--svelte-ui-snackbar-action-color);
-		font-size: var(--svelte-ui-snackbar-action-font-size);
-		font-weight: var(--svelte-ui-snackbar-action-font-weight);
-		padding: var(--svelte-ui-snackbar-action-padding);
-		border-radius: var(--svelte-ui-snackbar-action-border-radius);
-		cursor: pointer;
-		text-transform: uppercase;
-		letter-spacing: 0.5px;
-		flex-shrink: 0;
-		transition: background-color 0.2s ease;
-	}
-
-	.snackbar-item__action:hover {
-		background-color: var(--svelte-ui-snackbar-action-hover-bg);
-	}
-
-	.snackbar-item__action:focus {
-		outline: 2px solid var(--svelte-ui-snackbar-action-color);
-		outline-offset: 2px;
 	}
 
 	.snackbar-item__close {

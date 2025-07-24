@@ -78,11 +78,11 @@
 	}
 
 	.snackbar--top {
-		top: 24px;
+		top: calc(var(--svelte-ui-snackbar-offset) - var(--svelte-ui-snackbar-item-spacing));
 	}
 
 	.snackbar--bottom {
-		bottom: 24px;
+		bottom: calc(var(--svelte-ui-snackbar-offset) - var(--svelte-ui-snackbar-item-spacing));
 		flex-direction: column-reverse;
 	}
 
