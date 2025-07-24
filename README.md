@@ -1,4 +1,4 @@
-# Svelte UI Component Library
+# Svelte UI
 
 A modern, accessible Svelte component library with built-in TypeScript support and Material Design-inspired styling.
 
