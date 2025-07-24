@@ -3,7 +3,7 @@
 import { writable } from 'svelte/store';
 import type { Snippet } from 'svelte';
 
-export interface SnackbarItem {
+export type SnackbarItem = {
 	id: string;
 	message?: string;
 	children?: Snippet;
@@ -16,14 +16,14 @@ export interface SnackbarItem {
 	onAction?: () => void;
 	onClose?: () => void;
 	createdAt: number;
-}
+};
 
-export interface SnackbarConfig {
+export type SnackbarConfig = {
 	maxVisible?: number;
 	defaultDuration?: number;
 	defaultVariant?: 'filled' | 'outlined';
 	defaultPosition?: 'top' | 'bottom';
-}
+};
 
 class SnackbarManager {
 	private items = writable<SnackbarItem[]>([]);
@@ -49,6 +49,24 @@ class SnackbarManager {
 	// 設定更新
 	configure(config: SnackbarConfig) {
 		this.config = { ...this.config, ...config };
+	}
+
+	// デフォルト位置を設定
+	setDefaultPosition(position: 'top' | 'bottom') {
+		this.config.defaultPosition = position;
+	}
+
+	// デフォルト設定を一括更新
+	setDefaults(config: {
+		position?: 'top' | 'bottom';
+		maxVisible?: number;
+		defaultDuration?: number;
+		defaultVariant?: 'filled' | 'outlined';
+	}) {
+		if (config.position !== undefined) this.config.defaultPosition = config.position;
+		if (config.maxVisible !== undefined) this.config.maxVisible = config.maxVisible;
+		if (config.defaultDuration !== undefined) this.config.defaultDuration = config.defaultDuration;
+		if (config.defaultVariant !== undefined) this.config.defaultVariant = config.defaultVariant;
 	}
 
 	// 基本的なshow メソッド

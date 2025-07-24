@@ -5,12 +5,34 @@
 	import { snackbar, type SnackbarItem as SnackbarData } from '../utils/snackbar';
 	import SnackbarItem from './SnackbarItem.svelte';
 
+	type Props = {
+		position?: 'top' | 'bottom';
+		maxVisible?: number;
+		duration?: number;
+		variant?: 'filled' | 'outlined';
+	};
+
+	let {
+		position = 'bottom',
+		maxVisible = 5,
+		duration = 3000,
+		variant = 'filled'
+	}: Props = $props();
+
 	let items: SnackbarData[] = $state([]);
 	let topItems: SnackbarData[] = $derived(items.filter((item) => item.position === 'top'));
 	let bottomItems: SnackbarData[] = $derived(items.filter((item) => item.position === 'bottom'));
 
 	// Snackbar管理ストアを購読
 	onMount(() => {
+		// デフォルト設定を適用
+		snackbar.setDefaults({
+			position,
+			maxVisible,
+			defaultDuration: duration,
+			defaultVariant: variant
+		});
+
 		const unsubscribe = snackbar.store.subscribe((newItems) => {
 			items = newItems;
 		});

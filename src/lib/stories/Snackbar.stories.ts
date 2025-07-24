@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
 	window.snackbar = snackbarManager;
 }
 
-const meta: Meta<Snackbar> = {
+const meta: Meta<typeof Snackbar> = {
 	title: 'UI/Snackbar',
 	component: Snackbar,
 	parameters: {
@@ -199,6 +199,23 @@ export const QueueDemo: Story = {
 			() => snackbarManager.info('Queue test 10/10 (キューに蓄積)', { duration: 2000 }),
 			3200
 		);
+	}
+};
+
+export const TopPositionDefault: Story = {
+	render: () => ({
+		Component: Snackbar,
+		props: { position: 'top' }
+	}),
+	play: async () => {
+		// グローバルにsnackbarManagerを公開（再確認）
+		if (typeof window !== 'undefined') {
+			window.snackbar = snackbarManager;
+		}
+
+		// デフォルトが上位置のSnackbarをテスト
+		setTimeout(() => snackbarManager.success('上位置デフォルトのテスト'), 500);
+		setTimeout(() => snackbarManager.error('エラーメッセージ'), 1500);
 	}
 };
 
