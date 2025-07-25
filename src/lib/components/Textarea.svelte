@@ -131,7 +131,7 @@
 	>
 		{@html htmlValue}
 	</div>
-	<label>
+	<div class="textarea__input-container">
 		<textarea
 			{id}
 			{name}
@@ -168,7 +168,7 @@
 				>
 			</div>
 		{/if}
-	</label>
+	</div>
 </div>
 
 <style>
@@ -183,7 +183,7 @@
 		max-width: 100%;
 	}
 
-	label {
+	.textarea__input-container {
 		position: absolute;
 		top: 0;
 		left: 0;

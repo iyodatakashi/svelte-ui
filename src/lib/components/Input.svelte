@@ -191,36 +191,34 @@
 	{/if}
 	<!-- 入力用フォーム -->
 	<form onsubmit={handleSubmit}>
-		<label>
-			<input
-				{id}
-				{name}
-				bind:value
-				bind:this={ref}
-				{type}
-				style={customStyle}
-				{placeholder}
-				{autocomplete}
-				{min}
-				{max}
-				{step}
-				{maxlength}
-				{pattern}
-				{disabled}
-				{readonly}
-				{required}
-				{tabindex}
-				{size}
-				onchange={handleChange}
-				oninput={handleInput}
-				onfocus={handleFocus}
-				onblur={handleBlur}
-				onclick={handleClick}
-				onkeydown={handleKeydown}
-				{...inputAttributes}
-				{...restProps}
-			/>
-		</label>
+		<input
+			{id}
+			{name}
+			bind:value
+			bind:this={ref}
+			{type}
+			style={customStyle}
+			{placeholder}
+			{autocomplete}
+			{min}
+			{max}
+			{step}
+			{maxlength}
+			{pattern}
+			{disabled}
+			{readonly}
+			{required}
+			{tabindex}
+			{size}
+			onchange={handleChange}
+			oninput={handleInput}
+			onfocus={handleFocus}
+			onblur={handleBlur}
+			onclick={handleClick}
+			onkeydown={handleKeydown}
+			{...inputAttributes}
+			{...restProps}
+		/>
 	</form>
 	<!-- クリアボタン -->
 	{#if clearable && !disabled && !readonly}
@@ -318,14 +316,6 @@
 		line-height: inherit;
 		text-align: inherit;
 		opacity: 0;
-	}
-
-	label {
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
 	}
 
 	/* =============================================
@@ -575,8 +565,7 @@
 			text-align: right;
 		}
 
-		form,
-		label {
+		form {
 			position: absolute;
 			top: 0;
 			left: 0;
