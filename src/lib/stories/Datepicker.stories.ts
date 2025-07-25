@@ -7,8 +7,8 @@ interface DatepickerArgs {
 	variant?: 'default' | 'inline';
 	format?: string;
 	nullString?: string;
-	isDateRange?: boolean;
-	showIcon?: boolean;
+	mode?: 'single' | 'range';
+	hasIcon?: boolean;
 	disabled?: boolean;
 	focusStyle?: 'background' | 'border' | 'none';
 	allowDirectInput?: boolean;
@@ -52,11 +52,12 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'text',
 			description: '未選択時に表示する文字列'
 		},
-		isDateRange: {
-			control: 'boolean',
-			description: '日付範囲選択モード'
+		mode: {
+			control: 'select',
+			options: ['single', 'range'],
+			description: '日付選択モード（単一または範囲）'
 		},
-		showIcon: {
+		hasIcon: {
 			control: 'boolean',
 			description: 'カレンダーアイコンを表示'
 		},
@@ -116,8 +117,8 @@ export const Default: Story = {
 		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: false,
+		mode: 'single',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
@@ -132,8 +133,8 @@ export const DateRange: Story = {
 		variant: 'default',
 		format: 'YYYY/M/D',
 		nullString: '期間を選択してください',
-		isDateRange: true,
-		showIcon: false,
+		mode: 'range',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
@@ -141,66 +142,15 @@ export const DateRange: Story = {
 	}
 };
 
-// With Icon（アイコン付き）
-export const WithIcon: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'ja'
-	}
-};
-
-// With Icon and Date Range（アイコン付き日付範囲選択）
-export const WithIconAndDateRange: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D',
-		nullString: '期間を選択',
-		isDateRange: true,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'ja'
-	}
-};
-
-// Inline Variant（インライン表示）
-export const InlineVariant: Story = {
+// Inline Single（インライン単一日付選択）
+export const InlineSingle: Story = {
 	args: {
 		value: new Date(),
 		variant: 'inline',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '',
-		isDateRange: false,
-		showIcon: false,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'ja'
-	},
-	parameters: {
-		layout: 'padded'
-	}
-};
-
-// Custom Format（カスタム日付フォーマット）
-export const CustomFormat: Story = {
-	args: {
-		value: new Date(),
-		variant: 'default',
-		format: 'MM/DD/YYYY',
-		nullString: '日付を選択',
-		isDateRange: false,
-		showIcon: true,
+		mode: 'single',
+		hasIcon: false,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
@@ -208,16 +158,16 @@ export const CustomFormat: Story = {
 	}
 };
 
-// Disabled State（無効状態）
-export const Disabled: Story = {
+// Inline Range（インライン日付範囲選択）
+export const InlineRange: Story = {
 	args: {
-		value: new Date(),
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
-		disabled: true,
+		value: undefined,
+		variant: 'inline',
+		format: 'YYYY/M/D',
+		nullString: '',
+		mode: 'range',
+		hasIcon: false,
+		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'ja'
@@ -231,8 +181,8 @@ export const WithMinMaxDate: Story = {
 		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
+		mode: 'single',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
@@ -242,128 +192,20 @@ export const WithMinMaxDate: Story = {
 	}
 };
 
-// English Locale（英語表示）
-export const EnglishLocale: Story = {
+// With Min/Max Date Range（最小/最大日付制限付き範囲選択）
+export const WithMinMaxDateRange: Story = {
 	args: {
 		value: undefined,
 		variant: 'default',
-		format: 'MMM D, YYYY',
-		nullString: 'Select date',
-		isDateRange: false,
-		showIcon: true,
+		format: 'YYYY/M/D',
+		nullString: '期間を選択してください',
+		mode: 'range',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
-		locale: 'en'
-	}
-};
-
-// French Locale（フランス語表示）
-export const FrenchLocale: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'D MMM YYYY',
-		nullString: 'Sélectionnez une date',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'fr'
-	}
-};
-
-// German Locale（ドイツ語表示）
-export const GermanLocale: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'D. MMM YYYY',
-		nullString: 'Datum auswählen',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'de'
-	}
-};
-
-// Spanish Locale（スペイン語表示）
-export const SpanishLocale: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'D [de] MMM [de] YYYY',
-		nullString: 'Seleccionar fecha',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'es'
-	}
-};
-
-// Chinese Locale（中国語表示）
-export const ChineseLocale: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY年M月D日',
-		nullString: '请选择日期',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'zh-cn'
-	}
-};
-
-// Focus Style Variations（フォーカススタイルのバリエーション）
-export const FocusStyleBorder: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		openIfClicked: true,
-		locale: 'ja'
-	}
-};
-
-export const FocusStyleBackground: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'background',
-		openIfClicked: true,
-		locale: 'ja'
-	}
-};
-
-export const FocusStyleNone: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'none',
-		openIfClicked: true,
+		minDate: new Date(2024, 0, 1),
+		maxDate: new Date(2024, 11, 31),
 		locale: 'ja'
 	}
 };
@@ -375,8 +217,8 @@ export const AllowDirectInput: Story = {
 		variant: 'default',
 		format: 'YYYY/M/D',
 		nullString: '',
-		isDateRange: false,
-		showIcon: true,
+		mode: 'single',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		allowDirectInput: true,
@@ -392,40 +234,27 @@ export const AllowDirectInput: Story = {
 	}
 };
 
-// Full Width（全幅表示）
-export const FullWidth: Story = {
+// Allow Direct Input Range（直接入力を許可した日付範囲選択）
+export const AllowDirectInputRange: Story = {
 	args: {
 		value: undefined,
 		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
+		format: 'YYYY/M/D',
+		nullString: '',
+		mode: 'range',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
-		fullWidth: true,
+		allowDirectInput: true,
 		openIfClicked: true,
 		locale: 'ja'
 	},
 	parameters: {
-		layout: 'padded'
-	}
-};
-
-// Rounded Style（角丸スタイル）
-export const RoundedStyle: Story = {
-	args: {
-		value: undefined,
-		variant: 'default',
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
-		disabled: false,
-		focusStyle: 'border',
-		rounded: true,
-		openIfClicked: true,
-		locale: 'ja'
+		docs: {
+			description: {
+				story: '直接入力を許可した場合、値がない時は placeholder のみが表示されます。'
+			}
+		}
 	}
 };
 
@@ -436,8 +265,8 @@ export const Playground: Story = {
 		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
-		isDateRange: false,
-		showIcon: true,
+		mode: 'single',
+		hasIcon: true,
 		disabled: false,
 		focusStyle: 'border',
 		openIfClicked: true,
