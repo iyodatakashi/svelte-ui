@@ -23,6 +23,11 @@
 		nullString = '',
 		isDateRange = false,
 		hasIcon = false,
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined',
 		disabled = false,
 		focusStyle = 'border',
 		allowDirectInput = false,
@@ -44,6 +49,11 @@
 		nullString?: string;
 		isDateRange?: boolean;
 		hasIcon?: boolean;
+		iconFilled?: boolean;
+		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 		disabled?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		allowDirectInput?: boolean;
@@ -277,6 +287,11 @@
 		readonly={!allowDirectInput}
 		placeholder={placeholderText}
 		rightIcon={hasIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
+		{iconFilled}
+		{iconWeight}
+		{iconGrade}
+		{iconOpticalSize}
+		{iconVariant}
 		onRightIconClick={handleClick}
 		onclick={handleClick}
 		onfocus={handleFocus}
