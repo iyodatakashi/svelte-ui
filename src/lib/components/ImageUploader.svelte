@@ -8,6 +8,7 @@
 	let {
 		files = $bindable(),
 		accept = '.jpg,.jpeg,.png,.gif,.webp',
+		id = `imageuploader-${Math.random().toString(36).substring(2, 15)}`,
 		multiple = false,
 		maxFileSize = 5 * 1024 * 1024, // 5MB
 		width = undefined,
@@ -23,6 +24,7 @@
 	}: {
 		files?: FileList;
 		accept?: string;
+		id?: string;
 		multiple?: boolean;
 		maxFileSize?: number;
 		width?: string | number;
@@ -41,8 +43,6 @@
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
-
-	const imageUploaderId = `imageuploader-${Math.random().toString(36).substring(2, 15)}`;
 
 	// ファイル選択時のアナウンス
 	$effect(() => {
@@ -157,7 +157,7 @@
 			}
 		}}
 		aria-label="画像をアップロード"
-		aria-describedby={`${imageUploaderId}-help`}
+		aria-describedby={`${id}-help`}
 	>
 		{#if files && files.length > 0}
 			<div class="image-preview-container" class:single={!multiple}>
@@ -208,7 +208,7 @@
 		{accept}
 		{multiple}
 		class="upload-file-input"
-		id={imageUploaderId}
+		{id}
 		type="file"
 		onchange={(event) => {
 			const target = event.target as HTMLInputElement;

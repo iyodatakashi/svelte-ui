@@ -10,6 +10,7 @@
 		value = $bindable(''),
 
 		// HTML属性系
+		id = `colorpicker-${Math.random().toString(36).substring(2, 15)}`,
 		inputAttributes,
 
 		// スタイル/レイアウト
@@ -37,6 +38,7 @@
 		value?: string;
 
 		// HTML属性系
+		id?: string;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト

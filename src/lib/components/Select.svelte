@@ -17,7 +17,7 @@
 		rounded = false,
 		disabled = false,
 		required = false,
-		id = null,
+		id = `select-${Math.random().toString(36).substring(2, 15)}`,
 		tabindex = null,
 		size = null,
 		onchange = () => {},

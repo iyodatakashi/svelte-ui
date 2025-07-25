@@ -12,6 +12,7 @@
 		children,
 
 		// HTML属性系
+		id = `checkbox-${Math.random().toString(36).substring(2, 15)}`,
 		inputAttributes,
 
 		// スタイル/レイアウト
@@ -39,6 +40,7 @@
 		children?: Snippet;
 
 		// HTML属性系
+		id?: string;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
@@ -59,8 +61,6 @@
 		// その他
 		[key: string]: any;
 	} = $props();
-
-	const id = `checkbox-${Math.random().toString(36).substring(2, 15)}`;
 
 	const handleFocus = (event: FocusEvent) => {
 		onfocus(event);

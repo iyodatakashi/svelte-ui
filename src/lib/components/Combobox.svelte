@@ -1,7 +1,6 @@
 <!-- Combobox.svelte -->
 
 <script lang="ts">
-	import Icon from './Icon.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
@@ -14,7 +13,7 @@
 
 		// HTML属性系
 		inputAttributes,
-		id = null,
+		id = `combobox-${Math.random().toString(36).substring(2, 15)}`,
 		tabindex = null,
 		maxlength = null,
 
@@ -92,8 +91,10 @@
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 	let inputValue = $state('');
-	const comboboxId = id || `combobox-${Math.random().toString(36).substring(2, 15)}`;
-	const listboxId = `listbox-${Math.random().toString(36).substring(2, 15)}`;
+
+	// 各要素のIDを生成
+	const inputId = `${id}-input`;
+	const listboxId = `${id}-listbox`;
 
 	// inputValueとvalueの同期
 	$effect(() => {
@@ -200,16 +201,22 @@
 
 <div
 	bind:this={comboboxElement}
+	{id}
 	class="combobox"
 	class:combobox--full-width={fullWidth}
 	style="max-width: {maxWidth}px; min-width: {minWidth}px"
+	role="combobox"
+	aria-expanded={!!popupRef}
+	aria-controls={listboxId}
+	aria-haspopup="listbox"
+	aria-owns={listboxId}
 >
 	<!-- Inputコンポーネントを使用 -->
 	<Input
 		bind:this={inputRef}
 		bind:value={inputValue}
 		{name}
-		id={comboboxId}
+		id={inputId}
 		{customStyle}
 		{variant}
 		{focusStyle}
@@ -231,13 +238,15 @@
 		onkeydown={handleKeydown}
 		{inputAttributes}
 		{...restProps}
+		role="textbox"
+		aria-autocomplete="list"
+		aria-controls={listboxId}
 	/>
 	<!-- オプションリスト -->
 	<Popup
 		bind:this={popupRef}
 		anchorElement={comboboxElement}
 		position="bottom-left"
-		role="listbox"
 		focusTrap={false}
 		onClose={handlePopupClose}
 		margin={0}
@@ -249,7 +258,7 @@
 			class="combobox__options"
 			role="listbox"
 			aria-label="オプション一覧"
-			aria-labelledby={comboboxId}
+			aria-labelledby={inputId}
 		>
 			{#each filteredOptions as option, index}
 				<div role="presentation">

@@ -26,6 +26,7 @@
 		rangeSeparator = ' - ',
 
 		// HTML属性系
+		id = `datepicker-${Math.random().toString(36).substring(2, 15)}`,
 		inputAttributes,
 
 		// スタイル/レイアウト
@@ -66,6 +67,7 @@
 		rangeSeparator?: string;
 
 		// HTML属性系
+		id?: string;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
@@ -103,7 +105,7 @@
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
 	let openedViaKeyboard: boolean = $state(false);
-	const calendarId = `datepicker-calendar-${Math.random().toString(36).substring(2, 15)}`;
+	const calendarId = `${id}-calendar`;
 
 	// 言語別設定
 	const localeConfig = {
@@ -327,6 +329,7 @@
 		onblur={handleBlur}
 		onchange={handleInputChange}
 		onkeydown={handleKeyDown}
+		{id}
 		{inputAttributes}
 		{...restProps}
 	/>

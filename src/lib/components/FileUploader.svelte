@@ -7,6 +7,7 @@
 	let {
 		files = $bindable(),
 		accept = '',
+		id = `fileuploader-${Math.random().toString(36).substring(2, 15)}`,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -15,6 +16,7 @@
 	}: {
 		files: FileList | undefined;
 		accept: string;
+		id?: string;
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
@@ -24,8 +26,6 @@
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
-
-	const fileUploadId = `fileupload-${Math.random().toString(36).substring(2, 15)}`;
 
 	// ファイル選択時のアナウンス
 	$effect(() => {
@@ -74,7 +74,7 @@
 		}
 	}}
 	aria-label="ファイルをアップロード"
-	aria-describedby={`${fileUploadId}-help`}
+	aria-describedby={`${id}-help`}
 >
 	{#if files && files.length > 0}
 		<div class="description with-file">
@@ -105,14 +105,7 @@
 			ファイルをドラッグ＆ドロップ<br />またはファイルを選択
 		</div>
 	{/if}
-	<input
-		bind:this={fileInputRef}
-		{accept}
-		class="upload-file-input"
-		id={fileUploadId}
-		type="file"
-		bind:files
-	/>
+	<input bind:this={fileInputRef} {accept} class="upload-file-input" {id} type="file" bind:files />
 </button>
 
 <style>
