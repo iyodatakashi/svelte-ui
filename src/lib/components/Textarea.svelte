@@ -127,7 +127,7 @@
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="min-height: {minHeight}px; {customStyle}"
+		style="{variant !== 'inline' ? `min-height: ${minHeight}px;` : ''} {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -145,7 +145,7 @@
 			{maxlength}
 			{tabindex}
 			class:resizable
-			style={customStyle}
+			style="{variant !== 'inline' ? `min-height: ${minHeight}px;` : ''} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
