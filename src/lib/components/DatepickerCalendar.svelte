@@ -17,7 +17,7 @@
 	dayjs.extend(localeData);
 	let {
 		value = $bindable(),
-		isDateRange = false,
+		mode = 'single',
 		onchange = (value: Date | { start: Date; end: Date } | undefined) => {},
 		onOpen,
 		onClose,
@@ -27,7 +27,7 @@
 		locale = 'en'
 	}: {
 		value: Date | { start: Date; end: Date } | undefined;
-		isDateRange?: boolean;
+		mode?: 'single' | 'range';
 		onchange: (value: Date | { start: Date; end: Date } | undefined) => void;
 		onOpen?: Function;
 		onClose?: Function;
@@ -130,9 +130,9 @@
 
 		// 初期フォーカス日を設定
 		if (value) {
-			if (isDateRange && value && 'start' in value && 'end' in value) {
+			if (mode === 'range' && value && 'start' in value && 'end' in value) {
 				focusedDate = dayjs(value.start);
-			} else if (!isDateRange && value instanceof Date) {
+			} else if (mode === 'single' && value instanceof Date) {
 				focusedDate = dayjs(value);
 			}
 		} else {
@@ -141,10 +141,10 @@
 	});
 
 	export const reset = () => {
-		if (isDateRange && value && 'start' in value && 'end' in value) {
+		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			month = value ? dayjs(value.start).startOf('month') : dayjs().startOf('month');
 			focusedDate = value ? dayjs(value.start) : dayjs();
-		} else if (!isDateRange && value && value instanceof Date) {
+		} else if (mode === 'single' && value && value instanceof Date) {
 			month = value ? dayjs(value).startOf('month') : dayjs().startOf('month');
 			focusedDate = value ? dayjs(value) : dayjs();
 		} else {
@@ -401,12 +401,12 @@
 		}
 	};
 	const isSelected = (date: dayjs.Dayjs) => {
-		if (isDateRange && value && 'start' in value && 'end' in value) {
+		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			return (
 				dayjs(date).isSameOrAfter(dayjs(value.start).startOf('day')) &&
 				dayjs(date).isSameOrBefore(dayjs(value.end).startOf('day'))
 			);
-		} else if (!isDateRange && value && value instanceof Date) {
+		} else if (mode === 'single' && value && value instanceof Date) {
 			return dayjs(date).isSame(dayjs(value).startOf('day'));
 		}
 		return false;
@@ -414,37 +414,42 @@
 
 	// 範囲プレビュー中かどうかの判定
 	const isRangePreviewActive = $derived(
-		isDateRange && !isSelectingStart && hoveredDate && value && 'start' in value && 'end' in value
+		mode === 'range' &&
+			!isSelectingStart &&
+			hoveredDate &&
+			value &&
+			'start' in value &&
+			'end' in value
 	);
 
 	// 期間選択の範囲表示用の判定関数（範囲プレビュー中は無効化）
 	const isRangeStart = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
 		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return dayjs(date).isSame(dayjs(value.start).startOf('day'));
 	};
 
 	const isRangeEnd = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
 		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return dayjs(date).isSame(dayjs(value.end).startOf('day'));
 	};
 
 	const isRangeMiddle = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
 		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return isSelected(date) && !isRangeStart(date) && !isRangeEnd(date);
 	};
 
 	const isRangeSingle = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !value || !('start' in value && 'end' in value)) return false;
+		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
 		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
 		return isRangeStart(date) && isRangeEnd(date);
 	};
 
 	// 日付範囲プレビュー用の判定関数
 	const isRangePreviewStart = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
+		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
 
@@ -461,7 +466,7 @@
 	};
 
 	const isRangePreviewEnd = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
+		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
 
@@ -478,7 +483,7 @@
 	};
 
 	const isRangePreviewMiddle = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
+		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
 
@@ -496,7 +501,7 @@
 	};
 
 	const isRangePreviewSingle = (date: dayjs.Dayjs) => {
-		if (!isDateRange || !hoveredDate || !value || !('start' in value && 'end' in value))
+		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
 		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
 
@@ -538,7 +543,7 @@
 
 	// マウスホバー処理
 	const handleMouseEnter = (date: dayjs.Dayjs) => {
-		if (!isDateRange || isOutOfRange(date)) return;
+		if (mode !== 'range' || isOutOfRange(date)) return;
 		hoveredDate = date;
 	};
 
@@ -546,7 +551,7 @@
 		hoveredDate = null;
 	};
 	const selectDate = (date: dayjs.Dayjs) => {
-		if (isDateRange) {
+		if (mode === 'range') {
 			if (value && 'start' in value && 'end' in value) {
 				// 既存の日付範囲がある場合
 				if (isSelectingStart) {
@@ -649,7 +654,7 @@
 						{#each week as date}
 							<div
 								class="date-list-item"
-								class:is-selected={!isDateRange && isSelected(date)}
+								class:is-selected={mode === 'single' && isSelected(date)}
 								class:is-range-start={isRangeStart(date)}
 								class:is-range-end={isRangeEnd(date)}
 								class:is-range-middle={isRangeMiddle(date)}

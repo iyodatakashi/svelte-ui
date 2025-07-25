@@ -45,7 +45,7 @@
 
 		// 状態/動作
 		disabled = false,
-		isDateRange = false,
+		mode = 'single',
 		allowDirectInput = false,
 		openIfClicked = true,
 		minDate,
@@ -86,7 +86,7 @@
 
 		// 状態/動作
 		disabled?: boolean;
-		isDateRange?: boolean;
+		mode?: 'single' | 'range';
 		allowDirectInput?: boolean;
 		openIfClicked?: boolean;
 		minDate?: Date;
@@ -156,19 +156,19 @@
 	// 現在のlocale設定を取得
 	const currentLocaleConfig = $derived(localeConfig[locale]);
 	const finalFormat = $derived(
-		format || (isDateRange ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
+		format ||
+			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
 	);
 
 	// dayjsのlocaleを設定
 	$effect(() => {
 		dayjs.locale(locale);
 	});
-	const handleChange = () => {
-		popupRef?.close();
 
+	const handleChange = () => {
 		// スクリーンリーダーアナウンス
 		if (value) {
-			if (isDateRange && typeof value === 'object' && 'start' in value && 'end' in value) {
+			if (mode === 'range' && typeof value === 'object' && 'start' in value && 'end' in value) {
 				const startDate = dayjs(value.start).format(finalFormat);
 				const endDate = dayjs(value.end).format(finalFormat);
 				announceToScreenReader(`Date range selected: ${startDate} to ${endDate}`);
@@ -179,7 +179,21 @@
 		}
 
 		onchange(value);
+
+		// 単一日付選択時、または範囲選択時の終了日選択時にポップアップを閉じる
+		if (
+			mode === 'single' ||
+			(mode === 'range' &&
+				value &&
+				typeof value === 'object' &&
+				'start' in value &&
+				'end' in value &&
+				value.end)
+		) {
+			popupRef?.close();
+		}
 	};
+
 	const handleClick = () => {
 		if (openIfClicked && !disabled) {
 			openedViaKeyboard = false;
@@ -284,9 +298,9 @@
 		// dayjsインスタンスの作成時にlocaleを適用
 		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
 
-		if (isDateRange && value && 'start' in value && 'end' in value) {
+		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
-		} else if (!isDateRange && value && value instanceof Date) {
+		} else if (mode === 'single' && value && value instanceof Date) {
 			displayValue = formatWithLocale(value);
 		} else {
 			// 値がない場合は常に空文字を返す（placeholderで表示するため）
@@ -317,7 +331,7 @@
 		{disabled}
 		readonly={!allowDirectInput}
 		placeholder={placeholderText}
-		rightIcon={hasIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
+		rightIcon={hasIcon ? (mode === 'range' ? 'date_range' : 'calendar_today') : undefined}
 		{iconFilled}
 		{iconWeight}
 		{iconGrade}
@@ -343,11 +357,11 @@
 	<DatepickerCalendar
 		bind:this={datapickerCalendarRef}
 		bind:value
-		{isDateRange}
+		{mode}
+		onchange={handleChange}
 		{minDate}
 		{maxDate}
 		{locale}
-		onchange={handleChange}
 		id={calendarId}
 	/>
 </Popup>
