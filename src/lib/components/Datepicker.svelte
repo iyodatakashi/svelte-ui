@@ -261,7 +261,11 @@
 	);
 </script>
 
-<div bind:this={containerElement} class="datepicker-container">
+<div
+	bind:this={containerElement}
+	class="datepicker-container"
+	class:datepicker-container--full-width={fullWidth}
+>
 	<Input
 		bind:this={inputRef}
 		value={displayValue}
@@ -305,5 +309,10 @@
 		position: relative;
 		display: inline-block;
 		width: auto;
+
+		&.datepicker-container--full-width {
+			display: block;
+			width: 100%;
+		}
 	}
 </style>
