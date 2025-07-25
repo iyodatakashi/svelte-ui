@@ -17,6 +17,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	dayjs.extend(localeData);
+
+	// 変数定義
 	let {
 		// 基本プロパティ
 		value = $bindable(),
@@ -100,14 +102,16 @@
 		// その他
 		[key: string]: any;
 	} = $props();
+
 	let inputRef: any = $state();
 	let containerElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
 	let openedViaKeyboard: boolean = $state(false);
+	let displayValue = $state('');
+
 	const calendarId = `${id}-calendar`;
 
-	// 言語別設定
 	const localeConfig = {
 		en: {
 			defaultFormat: 'MM/DD/YYYY (ddd)',
@@ -153,16 +157,31 @@
 		}
 	};
 
-	// 現在のlocale設定を取得
 	const currentLocaleConfig = $derived(localeConfig[locale]);
 	const finalFormat = $derived(
 		format ||
 			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
 	);
+	const placeholderText = $derived(
+		allowDirectInput
+			? nullString || currentLocaleConfig.directInputPlaceholder
+			: nullString || currentLocaleConfig.notSelected
+	);
 
-	// dayjsのlocaleを設定
 	$effect(() => {
 		dayjs.locale(locale);
+	});
+
+	$effect(() => {
+		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
+
+		if (mode === 'range' && value && 'start' in value && 'end' in value) {
+			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
+		} else if (mode === 'single' && value && value instanceof Date) {
+			displayValue = formatWithLocale(value);
+		} else {
+			displayValue = '';
+		}
 	});
 
 	const handleChange = () => {
@@ -230,28 +249,13 @@
 				break;
 		}
 	};
-	export const open = () => {
-		datapickerCalendarRef?.reset();
-		popupRef?.open();
-	};
 
-	export const close = () => {
-		popupRef?.close();
-	};
-
-	export const toggle = () => {
-		datapickerCalendarRef?.reset();
-		popupRef?.toggle();
-	};
-
-	// Popupが開いた時のコールバック
 	const handlePopupOpen = () => {
 		// DatepickerCalendarのイベントハンドラーを有効にする
 		datapickerCalendarRef?.handlePopupOpen();
 		// キーボードで開いた場合は、最初のキーボード操作時にフォーカス表示が有効になる
 	};
 
-	// Popupが閉じた時のコールバック
 	const handlePopupClose = () => {
 		// DatepickerCalendarのイベントハンドラーを無効にする
 		datapickerCalendarRef?.handlePopupClose();
@@ -259,21 +263,18 @@
 		openedViaKeyboard = false;
 	};
 
-	// 入力欄のフォーカスハンドラー
 	const handleFocus = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
 		// キーボードでのフォーカス時のみPopupを開く
 		// クリック時は handleClick で処理
 		onfocus(event);
 	};
 
-	// 入力欄のブラーハンドラー
 	const handleBlur = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
 		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
 		// フォーカスイベントのみをハンドルする
 		onblur(event);
 	};
 
-	// 直接入力時のハンドラー
 	const handleInputChange = (inputValue: string | number | undefined) => {
 		if (!allowDirectInput) return;
 
@@ -291,29 +292,20 @@
 			onchange(value);
 		}
 	};
-	// 表示用の値を計算
-	let displayValue = $state('');
 
-	$effect(() => {
-		// dayjsインスタンスの作成時にlocaleを適用
-		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
+	export const open = () => {
+		datapickerCalendarRef?.reset();
+		popupRef?.open();
+	};
 
-		if (mode === 'range' && value && 'start' in value && 'end' in value) {
-			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
-		} else if (mode === 'single' && value && value instanceof Date) {
-			displayValue = formatWithLocale(value);
-		} else {
-			// 値がない場合は常に空文字を返す（placeholderで表示するため）
-			displayValue = '';
-		}
-	});
+	export const close = () => {
+		popupRef?.close();
+	};
 
-	// プレースホルダーテキストを決定
-	const placeholderText = $derived(
-		allowDirectInput
-			? nullString || currentLocaleConfig.directInputPlaceholder
-			: nullString || currentLocaleConfig.notSelected
-	);
+	export const toggle = () => {
+		datapickerCalendarRef?.reset();
+		popupRef?.toggle();
+	};
 </script>
 
 <div

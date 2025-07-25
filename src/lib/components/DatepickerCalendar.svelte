@@ -3,6 +3,8 @@
 <script lang="ts">
 	import dayjs from 'dayjs';
 	import localeData from 'dayjs/plugin/localeData';
+	import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
+	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 	import 'dayjs/locale/ja';
 	import 'dayjs/locale/en';
 	import 'dayjs/locale/fr';
@@ -11,10 +13,11 @@
 	import 'dayjs/locale/zh-cn';
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
-	import isSameOrAfter from 'dayjs/plugin/isSameOrAfter';
-	import isSameOrBefore from 'dayjs/plugin/isSameOrBefore';
 
 	dayjs.extend(localeData);
+	dayjs.extend(isSameOrBefore);
+	dayjs.extend(isSameOrAfter);
+
 	let {
 		value = $bindable(),
 		mode = 'single',
@@ -36,17 +39,17 @@
 		id?: string;
 		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 	} = $props();
+
 	let month: dayjs.Dayjs = $state(dayjs());
 	let viewMode: 'date' | 'month' = $state('date');
 	let selectedYearMonth: dayjs.Dayjs = $state(dayjs().startOf('month'));
 	let focusedDate: dayjs.Dayjs = $state(dayjs());
 	let focusedMonth: number = $state(dayjs().month());
 	let isKeyboardActive: boolean = $state(false);
+	let isSelectingStart: boolean = $state(true);
+	let hoveredDate: dayjs.Dayjs | null = $state(null);
+	let calendarRef: HTMLDivElement | undefined = $state();
 
-	dayjs.extend(isSameOrBefore);
-	dayjs.extend(isSameOrAfter);
-
-	// 言語別設定
 	const localeConfig = {
 		en: {
 			monthFormat: 'MMMM YYYY',
@@ -104,25 +107,47 @@
 		}
 	};
 
+	const generateDateArray = (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) => {
+		let dates = [];
+		let currentDate = startDate;
+		while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
+			dates.push(currentDate);
+			currentDate = currentDate.add(1, 'day');
+		}
+		return dates;
+	};
+
 	const currentLocaleConfig = $derived(localeConfig[locale]);
-
-	// dayjsのlocaleを設定
-	$effect(() => {
-		dayjs.locale(locale);
-	});
-
 	const startDate = $derived(month.startOf('month').startOf('week'));
 	const endDate = $derived(month.endOf('month').endOf('week'));
-
-	// 曜日配列を動的に生成
+	const dates: dayjs.Dayjs[] = $derived(generateDateArray(startDate, endDate));
+	const monthNames = $derived.by(() => {
+		dayjs.locale(locale);
+		return dayjs.months();
+	});
 	const DAY_ARRAY = $derived.by(() => {
 		dayjs.locale(locale);
 		return dayjs.weekdaysMin();
 	});
+	const weekRows = $derived.by(() => {
+		const weeks: dayjs.Dayjs[][] = [];
+		for (let i = 0; i < dates.length; i += 7) {
+			weeks.push(dates.slice(i, i + 7));
+		}
+		return weeks;
+	});
+	const isRangePreviewActive = $derived(
+		mode === 'range' &&
+			!isSelectingStart &&
+			hoveredDate &&
+			value &&
+			'start' in value &&
+			'end' in value
+	);
+	const focusedDateKey = $derived(
+		isKeyboardActive ? focusedDate.startOf('day').format('YYYY-MM-DD') : null
+	);
 
-	let isSelectingStart: boolean = $state(true);
-	let hoveredDate: dayjs.Dayjs | null = $state(null);
-	let calendarRef: HTMLDivElement | undefined = $state();
 	onMount(() => {
 		reset();
 		selectedYearMonth = month.startOf('month');
@@ -138,6 +163,10 @@
 		} else {
 			focusedDate = dayjs();
 		}
+	});
+
+	$effect(() => {
+		dayjs.locale(locale);
 	});
 
 	export const reset = () => {
@@ -157,15 +186,14 @@
 
 	// フォーカス管理（キーボードで開かれた場合）
 	export const focusCalendar = () => {
-		isKeyboardActive = true; // キーボードで開かれた場合はフォーカス表示を有効に
+		// キーボードで開かれた場合はフォーカス表示を有効に
 		// documentレベルでキーボードイベントを処理するため、実際のフォーカス移動は不要
+		isKeyboardActive = true;
 	};
 
-	// イベントハンドラー管理
 	const handleCalendarOpen = () => {
 		// documentレベルでキーボードイベントをリッスン
 		document.addEventListener('keydown', handleKeyDown);
-
 		// 親コンポーネントのコールバックを呼び出し
 		onOpen?.();
 	};
@@ -173,15 +201,12 @@
 	const handleCalendarClose = () => {
 		// documentレベルのキーボードイベントリスナーを削除
 		document.removeEventListener('keydown', handleKeyDown);
-
 		// 状態をリセット
 		isKeyboardActive = false;
-
 		// 親コンポーネントのコールバックを呼び出し
 		onClose?.();
 	};
 
-	// 外部から呼び出し可能なメソッドとして公開
 	export const handlePopupOpen = handleCalendarOpen;
 	export const handlePopupClose = handleCalendarClose;
 
@@ -207,11 +232,6 @@
 	};
 
 	// 月の名前を生成
-
-	const monthNames = $derived.by(() => {
-		dayjs.locale(locale);
-		return dayjs.months();
-	});
 
 	// キーボードナビゲーション関数（document レベル対応）
 	const moveDay = (direction: number) => {
@@ -274,7 +294,6 @@
 	// キーボードイベントハンドラ（document レベル）
 	const handleKeyDown = (event: KeyboardEvent) => {
 		// イベントハンドラーが登録されているときのみ有効（PopupMenuと同様）
-
 		// キーボード操作があった時にフォーカス表示を有効にする
 		if (
 			!isKeyboardActive &&
@@ -367,25 +386,6 @@
 		}
 	};
 
-	const generateDateArray = (startDate: dayjs.Dayjs, endDate: dayjs.Dayjs) => {
-		let dates = [];
-		let currentDate = startDate;
-		while (currentDate.isBefore(endDate) || currentDate.isSame(endDate, 'day')) {
-			dates.push(currentDate);
-			currentDate = currentDate.add(1, 'day');
-		}
-		return dates;
-	};
-	const dates: dayjs.Dayjs[] = $derived(generateDateArray(startDate, endDate));
-
-	// 週ごとにグループ化した日付配列
-	const weekRows = $derived.by(() => {
-		const weeks: dayjs.Dayjs[][] = [];
-		for (let i = 0; i < dates.length; i += 7) {
-			weeks.push(dates.slice(i, i + 7));
-		}
-		return weeks;
-	});
 	const goPrev = () => {
 		if (viewMode === 'month') {
 			changeYearInMonthMode(-1);
@@ -413,14 +413,6 @@
 	};
 
 	// 範囲プレビュー中かどうかの判定
-	const isRangePreviewActive = $derived(
-		mode === 'range' &&
-			!isSelectingStart &&
-			hoveredDate &&
-			value &&
-			'start' in value &&
-			'end' in value
-	);
 
 	// 期間選択の範囲表示用の判定関数（範囲プレビュー中は無効化）
 	const isRangeStart = (date: dayjs.Dayjs) => {
@@ -526,9 +518,6 @@
 	};
 
 	// フォーカス表示用の計算プロパティ
-	const focusedDateKey = $derived(
-		isKeyboardActive ? focusedDate.startOf('day').format('YYYY-MM-DD') : null
-	);
 
 	// フォーカス表示関数
 	const isFocused = (date: dayjs.Dayjs) => {
