@@ -22,7 +22,7 @@
 		format,
 		nullString = '',
 		isDateRange = false,
-		showIcon = false,
+		hasIcon = false,
 		disabled = false,
 		focusStyle = 'border',
 		allowDirectInput = false,
@@ -43,7 +43,7 @@
 		format?: string;
 		nullString?: string;
 		isDateRange?: boolean;
-		showIcon?: boolean;
+		hasIcon?: boolean;
 		disabled?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		allowDirectInput?: boolean;
@@ -276,7 +276,7 @@
 		{disabled}
 		readonly={!allowDirectInput}
 		placeholder={placeholderText}
-		rightIcon={showIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
+		rightIcon={hasIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
 		onRightIconClick={handleClick}
 		onclick={handleClick}
 		onfocus={handleFocus}

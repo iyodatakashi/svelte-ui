@@ -20,7 +20,7 @@
 		customStyle,
 		rounded = true,
 		pressed = false,
-		showBadge = false,
+		hasBadge = false,
 		badgeCount = 0,
 		badgeVariant = 'count',
 		badgeColor,
@@ -49,7 +49,7 @@
 		customStyle?: HTMLButtonAttributes['style'];
 		rounded?: boolean;
 		pressed?: boolean;
-		showBadge?: boolean;
+		hasBadge?: boolean;
 		badgeCount?: number;
 		badgeVariant?: 'dot' | 'count';
 		badgeColor?: string;
@@ -85,7 +85,7 @@
 	);
 
 	const badgeDisplay = $derived(() => {
-		if (!showBadge) return '';
+		if (!hasBadge) return '';
 		if (badgeVariant === 'dot') return '';
 		if (badgeCount > badgeMax) return `${badgeMax}+`;
 		return badgeCount.toString();
@@ -143,7 +143,7 @@
 		{/if}
 	</button>
 
-	{#if showBadge && (badgeVariant === 'dot' || badgeCount > 0)}
+	{#if hasBadge && (badgeVariant === 'dot' || badgeCount > 0)}
 		<div
 			class="iconbutton__badge iconbutton__badge--{badgeVariant}"
 			style="background-color: {badgeColor || 'var(--badge-color)'}"
