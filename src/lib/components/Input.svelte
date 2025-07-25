@@ -24,11 +24,11 @@
 
 		// スタイル/レイアウト
 		customStyle = '',
-		variant = 'default',
+		inline = false,
 		focusStyle = 'background',
 		placeholder = '',
 		fullWidth = false,
-		minWidth = variant === 'inline' ? null : 120,
+		minWidth = inline ? null : 120,
 		maxWidth = null,
 		rounded = false,
 
@@ -80,7 +80,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: string;
-		variant?: 'default' | 'inline';
+		inline?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -171,8 +171,8 @@
 	class="input
 	input--focus-{focusStyle}
 	input--type-{type}"
-	class:input--inline={variant === 'inline'}
-	class:input--auto-resize={variant === 'inline'}
+	class:input--inline={inline}
+	class:input--auto-resize={inline}
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
 	class:input--has-icon-right={hasRightIcon || rightIcon}
@@ -184,7 +184,7 @@
 	style="max-width: {maxWidth}px; min-width: {minWidth}px"
 >
 	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
-	{#if variant === 'inline'}
+	{#if inline}
 		<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
 			{getDisplayValue()}
 		</div>

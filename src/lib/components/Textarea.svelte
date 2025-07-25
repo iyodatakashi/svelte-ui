@@ -8,7 +8,7 @@
 		value = $bindable(),
 		textareaAttributes,
 		customStyle = '',
-		variant = 'default',
+		inline = false,
 		focusStyle = 'background',
 		placeholder = '',
 		fullWidth = false,
@@ -35,7 +35,7 @@
 		name?: string;
 		value: string | undefined;
 		customStyle?: string;
-		variant?: 'default' | 'inline';
+		inline?: boolean;
 
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
@@ -114,7 +114,7 @@
 <div
 	class="textarea
 	textarea--focus-{focusStyle}"
-	class:textarea--inline={variant === 'inline'}
+	class:textarea--inline={inline}
 	class:textarea--full-width={fullWidth}
 	class:textarea--auto-resize={autoResize}
 	class:textarea--clearable={clearable}
@@ -127,7 +127,7 @@
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="{variant !== 'inline' ? `min-height: ${minHeight}px;` : ''} {customStyle}"
+		style="{!inline ? `min-height: ${minHeight}px;` : ''} {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -145,7 +145,7 @@
 			{maxlength}
 			{tabindex}
 			class:resizable
-			style="{variant !== 'inline' ? `min-height: ${minHeight}px;` : ''} {customStyle}"
+			style="{!inline ? `min-height: ${minHeight}px;` : ''} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -278,11 +278,6 @@
 	.textarea:not(.textarea--auto-resize) {
 		.textarea__display-text {
 			display: none;
-		}
-
-		label {
-			position: static;
-			height: auto;
 		}
 
 		textarea {
