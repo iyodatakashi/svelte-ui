@@ -2,62 +2,85 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import { announceSelection } from '../utils/accessibility';
 	let {
+		// 基本プロパティ
 		name,
 		value = $bindable(),
 		options = [],
+
+		// HTML属性系
+		inputAttributes,
+		id = null,
+		tabindex = null,
+		maxlength = null,
+
+		// スタイル/レイアウト
 		customStyle = '',
 		variant = 'default',
-
 		focusStyle = 'border',
 		placeholder = '選択してください',
 		fullWidth = false,
 		minWidth = variant === 'inline' ? null : 120,
 		maxWidth = null,
+		rounded = false,
+
+		// 状態/動作
 		disabled = false,
 		readonly = false,
 		required = false,
-		id = null,
-		tabindex = null,
-		maxlength = null,
 		filterable = true,
-		rounded = false,
+
+		// イベントハンドラー
 		onchange = () => {},
 		oninput = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
 		options: (string | number | null)[];
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
+		id?: string | null;
+		tabindex?: number | null;
+		maxlength?: number | null;
+
+		// スタイル/レイアウト
 		customStyle?: string;
 		variant?: 'default' | 'inline';
-
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
 		minWidth?: number | null;
 		maxWidth?: number | null;
+		rounded?: boolean;
+
+		// 状態/動作
 		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
-		id?: string | null;
-		tabindex?: number | null;
-		maxlength?: number | null;
 		filterable?: boolean;
-		rounded?: boolean;
+
+		// イベントハンドラー
 		onchange?: (value: any) => void;
 		oninput?: (value: any) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLDivElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
@@ -206,6 +229,7 @@
 		oninput={handleInput}
 		onchange={handleChange}
 		onkeydown={handleKeydown}
+		{inputAttributes}
 		{...restProps}
 	/>
 	<!-- オプションリスト -->

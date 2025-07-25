@@ -2,36 +2,61 @@
 
 <script lang="ts">
 	import { type Snippet } from 'svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	let {
+		// 基本プロパティ
 		name = '',
 		value = '',
 		currentValue = $bindable(null),
 		children,
+
+		// HTML属性系
+		inputAttributes,
+
+		// スタイル/レイアウト
+		size = 'medium',
+
+		// 状態/動作
 		disabled = false,
 		required = false,
-		size = 'medium',
 		reducedMotion = false,
+
+		// イベントハンドラー
+		onchange = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
-		onchange = () => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		name: string;
 		value: string | number | boolean;
 		currentValue: string | number | boolean | null;
 		children?: Snippet;
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
 		disabled?: boolean;
 		required?: boolean;
-		size?: 'small' | 'medium' | 'large';
 		reducedMotion?: boolean;
+
+		// イベントハンドラー
+		onchange?: (value: any) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onchange?: (value: any) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
@@ -121,6 +146,7 @@
 		onchange={handleChange}
 		onclick={handleClick}
 		onkeydown={handleKeydown}
+		{...inputAttributes}
 		{...restProps}
 	/>
 	<label for={id} class={`radio-label ${!!children ? 'with-label' : 'no-label'}`}>

@@ -2,23 +2,24 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import type { HTMLSelectAttributes } from 'svelte/elements';
 
 	let {
 		name,
 		value = $bindable(),
 		options = [],
+		selectAttributes,
 		customStyle = '',
 		variant = 'default',
-
 		focusStyle = 'border',
 		placeholder = '',
 		fullWidth = false,
+		rounded = false,
 		disabled = false,
 		required = false,
 		id = null,
 		tabindex = null,
 		size = null,
-		rounded = false,
 		onchange = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
@@ -45,6 +46,7 @@
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLSelectElement }) => void;
+		selectAttributes?: HTMLSelectAttributes | undefined;
 		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLSelectElement }) => void;
 		[key: string]: any;
 	} = $props();
@@ -91,6 +93,7 @@ select--focus-{focusStyle}"
 		onchange={handleChange}
 		onclick={handleClick}
 		onkeydown={handleKeydown}
+		{...selectAttributes}
 		{...restProps}
 	>
 		<!-- プレースホルダーオプション -->

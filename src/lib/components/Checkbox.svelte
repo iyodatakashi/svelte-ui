@@ -2,36 +2,61 @@
 
 <script lang="ts">
 	import { type Snippet } from 'svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	let {
+		// 基本プロパティ
 		name = '',
 		value = $bindable(false),
 		indeterminate = $bindable(false),
 		children,
+
+		// HTML属性系
+		inputAttributes,
+
+		// スタイル/レイアウト
+		size = 'medium',
+
+		// 状態/動作
 		disabled = false,
 		required = false,
-		size = 'medium',
 		reducedMotion = false,
+
+		// イベントハンドラー
+		onchange = (value: boolean) => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
-		onchange = (value: boolean) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: boolean;
 		indeterminate?: boolean;
 		children?: Snippet;
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
 		disabled?: boolean;
 		required?: boolean;
-		size?: 'small' | 'medium' | 'large';
 		reducedMotion?: boolean;
+
+		// イベントハンドラー
+		onchange?: (value: boolean) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
-		onchange?: (value: boolean) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
@@ -92,6 +117,7 @@
 		onchange={handleChange}
 		onclick={handleClick}
 		onkeydown={handleKeydown}
+		{...inputAttributes}
 		{...restProps}
 	/>
 	{#if children}

@@ -3,10 +3,26 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	let {
+		// 基本プロパティ
 		name,
 		value = $bindable(),
+
+		// HTML属性系
+		inputAttributes,
 		type = 'text',
+		id = null,
+		tabindex = null,
+		maxlength = null,
+		pattern = null,
+		min = null,
+		max = null,
+		step = null,
+		size = null,
+		autocomplete = null,
+
+		// スタイル/レイアウト
 		customStyle = '',
 		variant = 'default',
 		focusStyle = 'background',
@@ -14,12 +30,9 @@
 		fullWidth = false,
 		minWidth = variant === 'inline' ? null : 120,
 		maxWidth = null,
-		min = null,
-		max = null,
-		step = null,
-		maxlength = null,
-		pattern = null,
-		clearable = false,
+		rounded = false,
+
+		// アイコン関連
 		hasRightIcon = false,
 		rightIcon = undefined,
 		leftIcon = undefined,
@@ -28,14 +41,14 @@
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined',
-		rounded = false,
+
+		// 状態/動作
 		disabled = false,
 		readonly = false,
 		required = false,
-		id = null,
-		tabindex = null,
-		size = null,
-		autocomplete = null,
+		clearable = false,
+
+		// イベントハンドラー
 		onchange = () => {},
 		oninput = () => {},
 		onfocus = () => {},
@@ -43,11 +56,29 @@
 		onclick = () => {},
 		onkeydown = () => {},
 		onRightIconClick = () => {},
-		onLeftIconClick = () => {}
+		onLeftIconClick = () => {},
+
+		// その他
+		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: string | number | undefined;
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
 		type?: 'text' | 'password' | 'number';
+		id?: string | null;
+		tabindex?: number | null;
+		maxlength?: number | null;
+		pattern?: string | null;
+		min?: number | null;
+		max?: number | null;
+		step?: number | null;
+		size?: number | null;
+		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
+
+		// スタイル/レイアウト
 		customStyle?: string;
 		variant?: 'default' | 'inline';
 		focusStyle?: 'background' | 'border' | 'none';
@@ -55,12 +86,9 @@
 		fullWidth?: boolean;
 		minWidth?: number | null;
 		maxWidth?: number | null;
-		min?: number | null;
-		max?: number | null;
-		step?: number | null;
-		maxlength?: number | null;
-		pattern?: string | null;
-		clearable?: boolean;
+		rounded?: boolean;
+
+		// アイコン関連
 		hasRightIcon?: boolean;
 		rightIcon?: string;
 		leftIcon?: string;
@@ -69,14 +97,14 @@
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
 		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
-		rounded?: boolean;
+
+		// 状態/動作
 		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
-		id?: string | null;
-		tabindex?: number | null;
-		size?: number | null;
-		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
+		clearable?: boolean;
+
+		// イベントハンドラー
 		onchange?: (value: any) => void;
 		oninput?: (value: any) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
@@ -85,6 +113,9 @@
 		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLInputElement }) => void;
 		onRightIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 		onLeftIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
+
+		// その他
+		[key: string]: any;
 	} = $props();
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
@@ -186,6 +217,8 @@
 				onblur={handleBlur}
 				onclick={handleClick}
 				onkeydown={handleKeydown}
+				{...inputAttributes}
+				{...restProps}
 			/>
 		</label>
 	</form>

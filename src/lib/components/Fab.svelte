@@ -11,8 +11,6 @@
 		buttonAttributes,
 		type = 'button',
 		customStyle,
-		disabled = false,
-		loading = false,
 		icon = '',
 		iconFilled = false,
 		iconWeight = 300,
@@ -24,6 +22,8 @@
 		position = 'right',
 		shadow = true,
 		reducedMotion = false,
+		disabled = false,
+		loading = false,
 		ariaLabel,
 		ariaDescribedby,
 		onclick,
@@ -102,6 +102,7 @@
 	{type}
 	disabled={isDisabled}
 	{...buttonAttributes}
+	{...restProps}
 	class="fab"
 	class:fab--outlined={variant === 'outlined'}
 	class:fab--without-label={!hasLabel}
@@ -128,7 +129,6 @@
 	aria-label={ariaLabel || (hasLabel ? undefined : 'Floating Action Button')}
 	aria-describedby={ariaDescribedby}
 	aria-busy={loading ? 'true' : undefined}
-	{...restProps}
 >
 	{#if loading}
 		<div class="fab__loading">

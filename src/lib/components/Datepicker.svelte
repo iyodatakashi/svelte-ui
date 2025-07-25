@@ -14,59 +14,88 @@
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	dayjs.extend(localeData);
 	let {
+		// 基本プロパティ
 		value = $bindable(),
-		variant = 'default',
 		format,
 		nullString = '',
-		isDateRange = false,
+		locale = 'en',
+		rangeSeparator = ' - ',
+
+		// HTML属性系
+		inputAttributes,
+
+		// スタイル/レイアウト
+		variant = 'default',
+		focusStyle = 'border',
+		fullWidth = false,
+		rounded = false,
+
+		// アイコン関連
 		hasIcon = false,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined',
+
+		// 状態/動作
 		disabled = false,
-		focusStyle = 'border',
+		isDateRange = false,
 		allowDirectInput = false,
-		fullWidth = false,
-		rounded = false,
-		onchange = (_value: Date | { start: Date; end: Date } | undefined) => {},
-		onfocus = () => {},
-		onblur = () => {},
 		openIfClicked = true,
 		minDate,
 		maxDate,
-		locale = 'en',
-		rangeSeparator = ' - ',
+
+		// イベントハンドラー
+		onchange = (_value: Date | { start: Date; end: Date } | undefined) => {},
+		onfocus = () => {},
+		onblur = () => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		value: Date | { start: Date; end: Date } | undefined;
-		variant?: 'default' | 'inline';
 		format?: string;
 		nullString?: string;
-		isDateRange?: boolean;
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		rangeSeparator?: string;
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		variant?: 'default' | 'inline';
+		focusStyle?: 'background' | 'border' | 'none';
+		fullWidth?: boolean;
+		rounded?: boolean;
+
+		// アイコン関連
 		hasIcon?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
 		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+
+		// 状態/動作
 		disabled?: boolean;
-		focusStyle?: 'background' | 'border' | 'none';
+		isDateRange?: boolean;
 		allowDirectInput?: boolean;
-		fullWidth?: boolean;
-		rounded?: boolean;
-		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
-		onfocus?: Function;
-		onblur?: Function;
 		openIfClicked?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
-		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
-		rangeSeparator?: string;
+
+		// イベントハンドラー
+		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
+		onfocus?: Function;
+		onblur?: Function;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 	let inputRef: any = $state();
@@ -298,6 +327,7 @@
 		onblur={handleBlur}
 		onchange={handleInputChange}
 		onkeydown={handleKeyDown}
+		{inputAttributes}
 		{...restProps}
 	/>
 </div>

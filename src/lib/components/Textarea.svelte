@@ -2,12 +2,13 @@
 
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
+	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	let {
 		name = '',
 		value = $bindable(),
+		textareaAttributes,
 		customStyle = '',
 		variant = 'default',
-
 		focusStyle = 'background',
 		placeholder = '',
 		fullWidth = false,
@@ -56,6 +57,7 @@
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLTextAreaElement }) => void;
+		textareaAttributes?: HTMLTextareaAttributes | undefined;
 		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		[key: string]: any;
 	} = $props();
@@ -150,6 +152,7 @@
 			onblur={handleBlur}
 			onclick={handleClick}
 			onkeydown={handleKeydown}
+			{...textareaAttributes}
 			{...restProps}
 		></textarea>
 		<!-- クリアボタン -->

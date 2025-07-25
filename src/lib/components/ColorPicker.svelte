@@ -3,36 +3,61 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import IconButton from './IconButton.svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	let {
+		// 基本プロパティ
 		value = $bindable(''),
-		disabled = false,
-		readonly = false,
+
+		// HTML属性系
+		inputAttributes,
+
+		// スタイル/レイアウト
+		customStyle = '',
+		focusStyle = 'border',
 		fullWidth = false,
 		rounded = false,
+
+		// 状態/動作
+		disabled = false,
+		readonly = false,
 		clearable = false,
-		focusStyle = 'border',
-		customStyle = '',
+
+		// イベントハンドラー
 		onchange = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		value?: string;
-		disabled?: boolean;
-		readonly?: boolean;
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		customStyle?: string;
+		focusStyle?: 'background' | 'border' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
+
+		// 状態/動作
+		disabled?: boolean;
+		readonly?: boolean;
 		clearable?: boolean;
-		focusStyle?: 'background' | 'border' | 'none';
-		customStyle?: string;
+
+		// イベントハンドラー
 		onchange?: (value: any) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
@@ -111,6 +136,7 @@
 			onkeydown={handleKeydown}
 			{disabled}
 			{readonly}
+			{...inputAttributes}
 			{...restProps}
 		/>
 		<!-- クリアボタン -->
@@ -139,6 +165,7 @@
 			onkeydown={handleKeydown}
 			{disabled}
 			class="color-input"
+			{...inputAttributes}
 			{...restProps}
 		/>
 		<div class="color-display" style="background-color: {value};"></div>

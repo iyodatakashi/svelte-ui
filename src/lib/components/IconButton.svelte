@@ -7,62 +7,98 @@
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
 	let {
+		// 基本プロパティ
+		children,
+
+		// HTML属性系
+		buttonAttributes,
 		type = 'button',
+		tabindex = null,
+
+		// スタイル/レイアウト
+		customStyle,
+		variant = 'text',
 		size = 32,
 		fontSize = size * 0.75,
-		variant = 'text',
 		color,
-		disabled = false,
-		loading = false,
-		tabindex = null,
+		rounded = true,
+
+		// アイコン関連
 		iconFilled = false,
 		iconWeight = 300,
-		customStyle,
-		rounded = true,
-		pressed = false,
+
+		// バッジ関連
 		hasBadge = false,
 		badgeCount = 0,
 		badgeVariant = 'count',
 		badgeColor,
 		badgeMax = 99,
+
+		// 状態/動作
+		disabled = false,
+		loading = false,
+		pressed = false,
 		reducedMotion = false,
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaDescribedby,
 		ariaPressed,
-		children,
+
+		// イベントハンドラー
 		onclick,
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
+		children: Snippet;
+
+		// HTML属性系
+		buttonAttributes?: HTMLButtonAttributes | undefined;
 		type?: 'button' | 'submit' | 'reset' | null | undefined;
+		tabindex?: number | null;
+
+		// スタイル/レイアウト
+		customStyle?: HTMLButtonAttributes['style'];
+		variant?: 'filled' | 'outlined' | 'text';
 		size?: number;
 		fontSize?: number;
-		variant?: 'filled' | 'outlined' | 'text';
 		color?: string;
-		disabled?: boolean;
-		loading?: boolean;
-		tabindex?: number | null;
+		rounded?: boolean;
+
+		// アイコン関連
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		customStyle?: HTMLButtonAttributes['style'];
-		rounded?: boolean;
-		pressed?: boolean;
+
+		// バッジ関連
 		hasBadge?: boolean;
 		badgeCount?: number;
 		badgeVariant?: 'dot' | 'count';
 		badgeColor?: string;
 		badgeMax?: number;
+
+		// 状態/動作
+		disabled?: boolean;
+		loading?: boolean;
+		pressed?: boolean;
 		reducedMotion?: boolean;
+
+		// ARIA/アクセシビリティ
 		ariaLabel: string;
 		ariaDescribedby?: string;
 		ariaPressed?: boolean;
-		children: Snippet;
+
+		// イベントハンドラー
 		onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
@@ -128,6 +164,7 @@
 		aria-pressed={ariaPressed !== undefined ? ariaPressed : pressed ? 'true' : undefined}
 		aria-busy={loading ? 'true' : undefined}
 		data-testid="iconbutton"
+		{...buttonAttributes}
 		{...restProps}
 	>
 		{#if loading}

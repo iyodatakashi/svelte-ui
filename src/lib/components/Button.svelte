@@ -7,64 +7,94 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 
 	let {
+		// 基本プロパティ
 		children,
+
+		// HTML属性系
 		buttonAttributes,
 		type = 'button',
-		customStyle,
-		disabled = false,
-		loading = false,
 		tabindex = null,
+
+		// スタイル/レイアウト
+		customStyle,
+		variant = 'text',
+		size = 'medium',
+		color = 'var(--svelte-ui-button-text-outlined)',
+		fullWidth = false,
+		minWidth = 0,
+		rounded = false,
+		popup = false,
+
+		// アイコン関連
+		icon = '',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined',
-		fullWidth = false,
-		minWidth = 0,
-		popup = false,
-		rounded = false,
-		icon = '',
-		color = 'var(--svelte-ui-button-text-outlined)',
-		variant = 'text',
-		size = 'medium',
+
+		// 状態/動作
+		disabled = false,
+		loading = false,
 		reducedMotion = false,
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaDescribedby,
 		ariaExpanded,
+
+		// イベントハンドラー
 		onclick,
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		children: Snippet;
+
+		// HTML属性系
 		buttonAttributes?: HTMLButtonAttributes | undefined;
 		type?: HTMLButtonAttributes['type'];
-		customStyle?: HTMLButtonAttributes['style'];
-		disabled?: boolean;
-		loading?: boolean;
 		tabindex?: number | null;
+
+		// スタイル/レイアウト
+		customStyle?: HTMLButtonAttributes['style'];
+		variant?: 'filled' | 'outlined' | 'text';
+		size?: 'small' | 'medium' | 'large';
+		color?: string;
+		fullWidth?: boolean;
+		minWidth?: number;
+		rounded?: boolean;
+		popup?: boolean;
+
+		// アイコン関連
+		icon?: string;
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
 		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
-		fullWidth?: boolean;
-		minWidth?: number;
-		popup?: boolean;
-		rounded?: boolean;
-		icon?: string;
-		color?: string;
-		variant?: 'filled' | 'outlined' | 'text';
-		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		loading?: boolean;
 		reducedMotion?: boolean;
+
+		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 		ariaDescribedby?: string;
 		ariaExpanded?: boolean;
+
+		// イベントハンドラー
 		onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
 		onfocus?: (event: FocusEvent) => void;
 		onblur?: (event: FocusEvent) => void;
 		onkeydown?: (event: KeyboardEvent) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
