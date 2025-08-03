@@ -3,65 +3,89 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
+		children,
+
+		// 基本プロパティ
+		title,
+		fallbackText,
+
+		// スタイル/レイアウト
 		size = 24,
-		filled = false,
 		color = '',
-		style = '',
-		variant = 'outlined',
+		customStyle = '',
+
+		// アイコン関連
+		filled = false,
 		weight = 300,
 		grade = 0,
 		opticalSize = size,
-		decorative = true,
+		variant = 'outlined',
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
-		title,
-		fallbackText,
+		decorative = true,
 		reducedMotion = false,
-		children,
+
+		// その他
 		...restProps
 	}: {
+		// Snippet
+		children: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		fallbackText?: string;
+
+		// スタイル/レイアウト
 		size?: number;
-		filled?: boolean;
 		color?: string;
-		style?: string;
-		variant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		customStyle?: string;
+
+		// アイコン関連
+		filled?: boolean;
 		weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		grade?: number;
 		opticalSize?: number;
-		decorative?: boolean;
+		variant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+
+		// ARIA/アクセシビ理知
 		ariaLabel?: string;
-		title?: string;
-		fallbackText?: string;
 		reducedMotion?: boolean;
-		children: Snippet;
+		decorative?: boolean;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
-	// CSS classes based on state
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	const iconClasses = $derived(
 		[`material-symbols-${variant}`, filled && 'icon--filled', reducedMotion && 'icon--no-motion']
 			.filter(Boolean)
 			.join(' ')
 	);
 
-	// フォントバリエーション設定
 	const fontVariationSettings = $derived(
 		`'FILL' ${filled ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${opticalSize}`
 	);
 
-	// アクセシビリティ属性
 	const ariaAttributes = $derived({
 		'aria-hidden': decorative && !ariaLabel ? true : undefined,
 		'aria-label': ariaLabel || undefined,
 		role: !decorative && ariaLabel ? 'img' : undefined
 	});
 
-	// スタイル計算
 	const iconStyle = $derived(
 		`width: ${size}px; height: ${size}px; font-size: ${size}px; 
 		color: ${color}; line-height: 1; 
 		font-variation-settings: ${fontVariationSettings}; 
-		${style}`
+		${customStyle}`
 	);
 </script>
 
@@ -73,7 +97,7 @@
 	<!-- Unicode文字での代替表示 -->
 	<span
 		class="icon-fallback-text"
-		style="width: {size}px; height: {size}px; font-size: {size}px; {style}"
+		style="width: {size}px; height: {size}px; font-size: {size}px; {customStyle}"
 		{...ariaAttributes}
 		{...restProps}
 	>

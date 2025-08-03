@@ -2,43 +2,54 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { snackbar, type SnackbarItem as SnackbarData } from '../utils/snackbar';
+	import { snackbarManager, type SnackbarItem as SnackbarData } from '../utils/snackbar';
 	import SnackbarItem from './SnackbarItem.svelte';
 
-	type Props = {
-		position?: 'top' | 'bottom';
-		maxVisible?: number;
-		duration?: number;
-		variant?: 'filled' | 'outlined';
-	};
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 
 	let {
+		// スタイル/レイアウト
 		position = 'bottom',
 		maxVisible = 5,
-		duration = 3000,
-		variant = 'filled'
-	}: Props = $props();
+		variant = 'filled',
 
-	let items: SnackbarData[] = $state([]);
-	let topItems: SnackbarData[] = $derived(items.filter((item) => item.position === 'top'));
-	let bottomItems: SnackbarData[] = $derived(items.filter((item) => item.position === 'bottom'));
+		// 状態/動作
+		duration = 3000
+	}: {
+		// スタイル/レイアウト
+		position?: 'top' | 'bottom';
+		maxVisible?: number;
+		variant?: 'filled' | 'outlined';
 
-	// Snackbar管理ストアを購読
+		// 状態/動作
+		duration?: number;
+	} = $props();
+
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
+
 	onMount(() => {
-		// デフォルト設定を適用
-		snackbar.setDefaults({
+		snackbarManager.setDefaults({
 			position,
 			maxVisible,
 			defaultDuration: duration,
 			defaultVariant: variant
 		});
-
-		const unsubscribe = snackbar.store.subscribe((newItems) => {
-			items = newItems;
-		});
-
-		return unsubscribe;
 	});
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	let topItems: SnackbarData[] = $derived(
+		snackbarManager.items.filter((item) => item.position === 'top')
+	);
+	let bottomItems: SnackbarData[] = $derived(
+		snackbarManager.items.filter((item) => item.position === 'bottom')
+	);
 </script>
 
 <!-- Top position snackbars -->

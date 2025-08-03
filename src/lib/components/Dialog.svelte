@@ -16,44 +16,87 @@
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
-		title = '',
-		scrollable = false,
-		closeIfClickOutside = true,
-		width = 320,
-		restoreFocus = false,
-		ariaDescribedby,
-		description,
+		// Snippet
 		header,
 		children,
 		footer,
+
+		// 基本プロパティ
+		title = '',
+		description,
+
+		// スタイル/レイアウト
+		width = 320,
 		bodyStyle = '',
-		noPadding = false
+		noPadding = false,
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		scrollable = false,
+		closeIfClickOutside = true,
+		restoreFocus = false,
+
+		// ARIA/アクセシビリティ
+		ariaLabel,
+		ariaDescribedby
 	}: {
-		isOpen?: boolean;
-		title?: string;
-		scrollable?: boolean;
-		closeIfClickOutside?: boolean;
-		width?: string | number;
-		restoreFocus?: boolean;
-		ariaDescribedby?: string;
-		description?: string;
+		// Snippet
 		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
 		bodyStyle?: string;
 		noPadding?: boolean;
+
+		// 状態/動作
+		isOpen?: boolean;
+		scrollable?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaDescribedby?: string;
 	} = $props();
 
 	let modalRef: Modal;
 
-	// Dialog固有のスタイル
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	export const open = (): void => {
+		modalRef?.open(title || ariaLabel);
+	};
+
+	export const close = (): void => {
+		modalRef?.close(title || ariaLabel);
+	};
+
+	export const toggle = (): void => {
+		modalRef?.toggle(title || ariaLabel);
+	};
+
+	export const closeEnd = (): void => {
+		modalRef?.closeEnd();
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	const dialogStyles = $derived(
 		`width: ${typeof width === 'number' ? `${width}px` : width}; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
 	);
 
-	// Body部分のスタイル
 	const bodyStyles = $derived(() => {
 		const styles = [];
 		if (noPadding) {
@@ -65,31 +108,12 @@
 		return styles.join('; ');
 	});
 
-	// Dialog固有のクラス
 	const dialogClasses = $derived(['dialog', scrollable && 'scrollable'].filter(Boolean).join(' '));
 
-	// aria属性
 	const ariaLabelledby = $derived(title ? 'dialog-title' : undefined);
 	const ariaDescribedbyValue = $derived(
 		ariaDescribedby || (description ? 'dialog-description' : undefined)
 	);
-
-	// 外部からのAPI（後方互換性のため）
-	export const open = (): void => {
-		modalRef?.open(title);
-	};
-
-	export const close = (): void => {
-		modalRef?.close(title);
-	};
-
-	export const toggle = (): void => {
-		modalRef?.toggle(title);
-	};
-
-	export const closeEnd = (): void => {
-		modalRef?.closeEnd();
-	};
 </script>
 
 <Modal
@@ -98,6 +122,7 @@
 	{closeIfClickOutside}
 	{restoreFocus}
 	componentType="Dialog"
+	{ariaLabel}
 	{ariaLabelledby}
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={dialogClasses}

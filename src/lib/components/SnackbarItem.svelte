@@ -8,28 +8,54 @@
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
 	let {
-		id,
+		// Snippet
+		children,
+
+		// 基本プロパティ
 		message,
 		type = 'info',
-		variant = 'filled',
-		duration = 3000,
-		position = 'bottom',
-		closable = false,
 		actionLabel,
-		onAction,
-		children
+
+		// HTML属性系
+		id,
+
+		// スタイル/レイアウト
+		variant = 'filled',
+		position = 'bottom',
+
+		// 状態/動作
+		duration = 3000,
+		closable = false,
+
+		// イベントハンドラー
+		onAction
 	}: {
-		id: string;
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
 		message?: string;
 		type?: 'info' | 'success' | 'warning' | 'error';
-		variant?: 'filled' | 'outlined';
-		duration?: number;
-		position?: 'top' | 'bottom';
-		closable?: boolean;
 		actionLabel?: string;
+
+		// HTML属性系
+		id: string;
+
+		// スタイル/レイアウト
+		variant?: 'filled' | 'outlined';
+		position?: 'top' | 'bottom';
+
+		// 状態/動作
+		duration?: number;
+		closable?: boolean;
+
+		// イベントハンドラー
 		onAction?: () => void;
-		children?: Snippet;
 	} = $props();
 
 	let visible = $state(true);
@@ -44,6 +70,10 @@
 
 	let snackbarRef: HTMLDivElement;
 
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
+
 	onMount(() => {
 		if (duration > 0) {
 			timeoutId = setTimeout(() => {
@@ -51,6 +81,10 @@
 			}, duration);
 		}
 	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
 
 	const handleClose = () => {
 		// アニメーション開始前に、他のSnackbarの位置を測定

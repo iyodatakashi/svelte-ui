@@ -4,6 +4,34 @@
 	import TabItem from './TabItem.svelte';
 	import type { MenuItem } from '../types/MenuItem';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
+	let {
+		// 基本プロパティ
+		tabItems = [],
+		pathPrefix = '',
+		customPathMatcher,
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Navigation tabs',
+		ariaLabelledby
+	}: {
+		// 基本プロパティ
+		tabItems: MenuItem[];
+		pathPrefix?: string;
+		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaLabelledby?: string;
+	} = $props();
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+
 	// ブラウザ標準APIを使用した現在パス取得
 	const getCurrentPath = () => {
 		if (typeof window !== 'undefined') {
@@ -11,23 +39,6 @@
 		}
 		return '';
 	};
-
-	let {
-		tabItems = [],
-		ariaLabel = 'Navigation tabs',
-		ariaLabelledby,
-		pathPrefix = '',
-		customPathMatcher
-	}: {
-		tabItems: MenuItem[];
-		ariaLabel?: string;
-		ariaLabelledby?: string;
-		pathPrefix?: string;
-		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
-	} = $props();
-
-	// 現在のパスを取得
-	const currentPath = $derived(getCurrentPath());
 
 	// パスの正規化処理
 	const normalizePath = (path: string): string => {
@@ -69,19 +80,6 @@
 		return normalizedCurrentPath !== '' && normalizedCurrentPath.startsWith(itemHref);
 	};
 
-	// アクティブなタブのインデックスを現在のパスに基づいて計算
-	const selectedTabIndex = $derived.by(() => {
-		for (let i = 0; i < tabItems.length; i++) {
-			const item = tabItems[i];
-			if (!item.href) continue;
-
-			if (matchPath(currentPath, item.href, item)) {
-				return i;
-			}
-		}
-		return -1;
-	});
-
 	// シンプルなキーボードナビゲーション
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (tabItems.length === 0) return;
@@ -118,6 +116,26 @@
 
 		tabs[nextIndex]?.focus();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	// 現在のパスを取得
+	const currentPath = $derived(getCurrentPath());
+
+	// アクティブなタブのインデックスを現在のパスに基づいて計算
+	const selectedTabIndex = $derived.by(() => {
+		for (let i = 0; i < tabItems.length; i++) {
+			const item = tabItems[i];
+			if (!item.href) continue;
+
+			if (matchPath(currentPath, item.href, item)) {
+				return i;
+			}
+		}
+		return -1;
+	});
 </script>
 
 <div

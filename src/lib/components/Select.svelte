@@ -4,68 +4,100 @@
 	import Icon from './Icon.svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		name,
 		value = $bindable(),
 		options = [],
-		selectAttributes,
-		customStyle = '',
-		variant = 'default',
-		focusStyle = 'border',
-		placeholder = '',
-		fullWidth = false,
-		rounded = false,
-		disabled = false,
-		required = false,
+
+		// HTML属性系
 		id = `select-${Math.random().toString(36).substring(2, 15)}`,
 		tabindex = null,
+		placeholder = '',
+		selectAttributes,
+
+		// スタイル/レイアウト
 		size = null,
+		variant = 'default',
+		focusStyle = 'border',
+		fullWidth = false,
+		rounded = false,
+		customStyle = '',
+
+		// 状態/動作
+		disabled = false,
+		required = false,
+
+		// イベントハンドラー
 		onchange = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
 		options: any[];
-		customStyle?: string;
-		variant?: 'default' | 'inline';
 
-		focusStyle?: 'background' | 'border' | 'none';
-		placeholder?: string;
-		fullWidth?: boolean;
-		disabled?: boolean;
-		required?: boolean;
+		// HTML属性系
 		id?: string | null;
 		tabindex?: number | null;
+		placeholder?: string;
+		selectAttributes?: HTMLSelectAttributes | undefined;
+
+		// スタイル/レイアウト
 		size?: number | null;
+		variant?: 'default' | 'inline';
+		focusStyle?: 'background' | 'border' | 'none';
+		fullWidth?: boolean;
 		rounded?: boolean;
+		customStyle?: string;
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// イベントハンドラー
 		onchange?: (value: any) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLSelectElement }) => void;
-		selectAttributes?: HTMLSelectAttributes | undefined;
 		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLSelectElement }) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
 	let isFocused: boolean = $state(false);
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
+
 	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
 		onfocus?.(event as FocusEvent & { currentTarget: HTMLSelectElement });
 	};
+
 	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
 		onblur?.(event as FocusEvent & { currentTarget: HTMLSelectElement });
 	};
+
 	const handleChange = () => {
 		onchange?.(value);
 	};
+
 	const handleClick = (event: MouseEvent) =>
 		onclick?.(event as MouseEvent & { currentTarget: HTMLSelectElement });
+
 	const handleKeydown = (event: KeyboardEvent) =>
 		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLSelectElement });
 </script>

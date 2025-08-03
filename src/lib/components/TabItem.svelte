@@ -4,22 +4,36 @@
 	import Icon from './Icon.svelte';
 	import type { MenuItem } from '../types/MenuItem';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
 	let {
+		// 基本プロパティ
 		tabItem,
-		isSelected = false,
+
+		// アイコン関連
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
-		iconVariant = 'outlined'
+		iconVariant = 'outlined',
+
+		// 状態/動作
+		isSelected = false
 	}: {
+		// 基本プロパティ
 		tabItem: MenuItem;
-		isSelected?: boolean;
+
+		// アイコン関連
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
 		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+
+		// 状態/動作
+		isSelected?: boolean;
 	} = $props();
 </script>
 

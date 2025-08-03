@@ -5,33 +5,51 @@
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		files = $bindable(),
-		accept = '.jpg,.jpeg,.png,.gif,.webp',
-		id = `imageuploader-${Math.random().toString(36).substring(2, 15)}`,
 		multiple = false,
-		maxFileSize = 5 * 1024 * 1024, // 5MB
+		maxFileSize = 5 * 1024 * 1024,
+		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択',
+
+		// HTML属性系
+		id = `imageuploader-${Math.random().toString(36).substring(2, 15)}`,
+		accept = '.jpg,.jpeg,.png,.gif,.webp',
+
+		// スタイル/レイアウト
 		width = undefined,
 		height = undefined,
 		rounded = false,
+
+		// アイコン系
 		icon = 'image',
-		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined'
 	}: {
+		// 基本プロパティ
 		files?: FileList;
-		accept?: string;
-		id?: string;
 		multiple?: boolean;
 		maxFileSize?: number;
+		placeholder?: string;
+
+		// HTML属性系
+		id?: string;
+		accept?: string;
+
+		// スタイル/レイアウト
+
 		width?: string | number;
 		height?: number;
 		rounded?: boolean;
+
+		// アイコン系
 		icon?: string;
-		placeholder?: string;
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
@@ -44,7 +62,9 @@
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
 
-	// ファイル選択時のアナウンス
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		if (files && files.length > 0) {
 			const fileCount = files.length;
@@ -57,18 +77,19 @@
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = () => {
 		fileInputRef?.click();
 	};
 
 	const validateFile = (file: File): boolean => {
-		// 画像ファイルかチェック
 		if (!file.type.startsWith('image/')) {
 			errorMessage = '画像ファイルを選択してください';
 			return false;
 		}
 
-		// ファイルサイズチェック
 		if (file.size > maxFileSize) {
 			errorMessage = `ファイルサイズは${(maxFileSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
 			return false;
@@ -87,11 +108,10 @@
 			if (validateFile(file)) {
 				validFiles.push(file);
 			} else {
-				return; // エラーがあった場合は処理を停止
+				return;
 			}
 		}
 
-		// FileListを再構築
 		const dt = new DataTransfer();
 		validFiles.forEach((file) => dt.items.add(file));
 		files = dt.files;

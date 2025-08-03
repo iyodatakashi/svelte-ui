@@ -6,26 +6,42 @@
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
 		children,
-		buttonAttributes,
+
+		// HTML属性系
 		type = 'button',
+		buttonAttributes,
+
+		// スタイル/レイアウト
 		customStyle,
+		color = 'var(--svelte-ui-primary-color)',
+		variant = 'filled',
+		position = 'right',
+		shadow = true,
+
+		// アイコン関連
 		icon = '',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined',
-		color = 'var(--svelte-ui-primary-color)',
-		variant = 'filled',
-		position = 'right',
-		shadow = true,
-		reducedMotion = false,
+
+		// 状態/動作
 		disabled = false,
 		loading = false,
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaDescribedby,
+		reducedMotion = false,
+
+		// イベントハンドラー
 		onclick,
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
@@ -37,6 +53,8 @@
 		ontouchend,
 		ontouchcancel,
 		oncontextmenu,
+
+		// その他
 		...restProps
 	}: {
 		children?: Snippet;
@@ -72,22 +90,9 @@
 		[key: string]: any;
 	} = $props();
 
-	const isDisabled = $derived(disabled || loading);
-
-	const backgroundColor = {
-		filled: color,
-		outlined: 'transparent',
-		text: 'transparent'
-	}[variant];
-
-	const textColor = {
-		filled: 'var(--svelte-ui-button-text-filled)',
-		outlined: color,
-		text: color
-	}[variant];
-
-	const hasLabel = children !== undefined;
-
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = (event: MouseEvent) => {
 		if (isDisabled) return;
 		if (onclick) onclick(event as MouseEvent & { currentTarget: HTMLButtonElement });
@@ -96,6 +101,29 @@
 	const handleFocus = (event: FocusEvent) => onfocus(event);
 	const handleBlur = (event: FocusEvent) => onblur(event);
 	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const isDisabled = $derived(disabled || loading);
+
+	const backgroundColor = $derived(
+		{
+			filled: color,
+			outlined: 'transparent',
+			text: 'transparent'
+		}[variant]
+	);
+
+	const textColor = $derived(
+		{
+			filled: 'var(--svelte-ui-button-text-filled)',
+			outlined: color,
+			text: color
+		}[variant]
+	);
+
+	const hasLabel = $derived(children !== undefined);
 </script>
 
 <button

@@ -18,26 +18,43 @@
 	dayjs.extend(isSameOrBefore);
 	dayjs.extend(isSameOrAfter);
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		value = $bindable(),
-		mode = 'single',
-		onchange = (value: Date | { start: Date; end: Date } | undefined) => {},
-		onOpen,
-		onClose,
+		locale = 'en',
 		minDate,
 		maxDate,
+
+		// HTML属性系
 		id,
-		locale = 'en'
+
+		// 状態/動作
+		mode = 'single',
+
+		// イベントハンドラー
+		onchange = (value: Date | { start: Date; end: Date } | undefined) => {},
+		onOpen,
+		onClose
 	}: {
+		// 基本プロパティ
 		value: Date | { start: Date; end: Date } | undefined;
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		minDate?: Date;
+		maxDate?: Date;
+
+		// HTML属性系
+		id?: string;
+
+		// 状態/動作
 		mode?: 'single' | 'range';
+
+		// イベントハンドラー
 		onchange: (value: Date | { start: Date; end: Date } | undefined) => void;
 		onOpen?: Function;
 		onClose?: Function;
-		minDate?: Date;
-		maxDate?: Date;
-		id?: string;
-		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 	} = $props();
 
 	let month: dayjs.Dayjs = $state(dayjs());
@@ -117,43 +134,14 @@
 		return dates;
 	};
 
-	const currentLocaleConfig = $derived(localeConfig[locale]);
-	const startDate = $derived(month.startOf('month').startOf('week'));
-	const endDate = $derived(month.endOf('month').endOf('week'));
-	const dates: dayjs.Dayjs[] = $derived(generateDateArray(startDate, endDate));
-	const monthNames = $derived.by(() => {
-		dayjs.locale(locale);
-		return dayjs.months();
-	});
-	const DAY_ARRAY = $derived.by(() => {
-		dayjs.locale(locale);
-		return dayjs.weekdaysMin();
-	});
-	const weekRows = $derived.by(() => {
-		const weeks: dayjs.Dayjs[][] = [];
-		for (let i = 0; i < dates.length; i += 7) {
-			weeks.push(dates.slice(i, i + 7));
-		}
-		return weeks;
-	});
-	const isRangePreviewActive = $derived(
-		mode === 'range' &&
-			!isSelectingStart &&
-			hoveredDate &&
-			value &&
-			'start' in value &&
-			'end' in value
-	);
-	const focusedDateKey = $derived(
-		isKeyboardActive ? focusedDate.startOf('day').format('YYYY-MM-DD') : null
-	);
-
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
 	onMount(() => {
 		reset();
 		selectedYearMonth = month.startOf('month');
-		isKeyboardActive = false; // 初期状態はキーボード非アクティブ
+		isKeyboardActive = false;
 
-		// 初期フォーカス日を設定
 		if (value) {
 			if (mode === 'range' && value && 'start' in value && 'end' in value) {
 				focusedDate = dayjs(value.start);
@@ -165,10 +153,16 @@
 		}
 	});
 
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		dayjs.locale(locale);
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	export const reset = () => {
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			month = value ? dayjs(value.start).startOf('month') : dayjs().startOf('month');
@@ -181,36 +175,26 @@
 			focusedDate = dayjs();
 		}
 		selectedYearMonth = month.startOf('month');
-		// isKeyboardActiveはhandleCalendarCloseでリセットされるため、ここではリセットしない
 	};
 
-	// フォーカス管理（キーボードで開かれた場合）
 	export const focusCalendar = () => {
-		// キーボードで開かれた場合はフォーカス表示を有効に
-		// documentレベルでキーボードイベントを処理するため、実際のフォーカス移動は不要
 		isKeyboardActive = true;
 	};
 
 	const handleCalendarOpen = () => {
-		// documentレベルでキーボードイベントをリッスン
 		document.addEventListener('keydown', handleKeyDown);
-		// 親コンポーネントのコールバックを呼び出し
 		onOpen?.();
 	};
 
 	const handleCalendarClose = () => {
-		// documentレベルのキーボードイベントリスナーを削除
 		document.removeEventListener('keydown', handleKeyDown);
-		// 状態をリセット
 		isKeyboardActive = false;
-		// 親コンポーネントのコールバックを呼び出し
 		onClose?.();
 	};
 
 	export const handlePopupOpen = handleCalendarOpen;
 	export const handlePopupClose = handleCalendarClose;
 
-	// 年月選択モードのロジック
 	const toggleMonthMode = () => {
 		viewMode = viewMode === 'month' ? 'date' : 'month';
 		if (viewMode === 'month') {
@@ -225,20 +209,15 @@
 		viewMode = 'date';
 	};
 
-	// 月選択モードでの年の変更
 	const changeYearInMonthMode = (direction: number) => {
 		month = month.add(direction, 'year');
 		focusedDate = focusedDate.add(direction, 'year');
 	};
 
-	// 月の名前を生成
-
-	// キーボードナビゲーション関数（document レベル対応）
 	const moveDay = (direction: number) => {
 		const newDate = focusedDate.add(direction, 'day');
 		focusedDate = newDate;
 
-		// 月が変わった場合は表示月も変更
 		if (newDate.month() !== month.month()) {
 			month = newDate.startOf('month');
 		}
@@ -248,7 +227,6 @@
 		const newDate = focusedDate.add(direction * 7, 'day');
 		focusedDate = newDate;
 
-		// 月が変わった場合は表示月も変更
 		if (newDate.month() !== month.month()) {
 			month = newDate.startOf('month');
 		}
@@ -264,7 +242,6 @@
 		let newMonth = focusedMonth + direction;
 		let yearChange = 0;
 
-		// 年の境界を越えた場合の処理
 		if (newMonth < 0) {
 			yearChange = Math.floor(newMonth / 12);
 			newMonth = newMonth % 12;
@@ -276,10 +253,8 @@
 			newMonth = newMonth % 12;
 		}
 
-		// フォーカスされた月を更新
 		focusedMonth = newMonth;
 
-		// 年が変わった場合は表示年も更新
 		if (yearChange !== 0) {
 			month = month.add(yearChange, 'year');
 			focusedDate = focusedDate.add(yearChange, 'year');
@@ -291,10 +266,7 @@
 		selectDate(focusedDate);
 	};
 
-	// キーボードイベントハンドラ（document レベル）
 	const handleKeyDown = (event: KeyboardEvent) => {
-		// イベントハンドラーが登録されているときのみ有効（PopupMenuと同様）
-		// キーボード操作があった時にフォーカス表示を有効にする
 		if (
 			!isKeyboardActive &&
 			(event.key === 'ArrowUp' ||
@@ -310,7 +282,6 @@
 		}
 
 		if (viewMode === 'month') {
-			// 月選択モード
 			switch (event.key) {
 				case 'ArrowUp':
 					event.preventDefault();
@@ -339,7 +310,6 @@
 					break;
 			}
 		} else if (viewMode === 'date') {
-			// 日付選択モード
 			switch (event.key) {
 				case 'ArrowUp':
 					event.preventDefault();
@@ -380,7 +350,6 @@
 					break;
 				case 'Escape':
 					event.preventDefault();
-					// 親コンポーネントでカレンダーを閉じる処理を想定
 					break;
 			}
 		}
@@ -393,6 +362,7 @@
 			month = month.subtract(1, 'month');
 		}
 	};
+
 	const goNext = () => {
 		if (viewMode === 'month') {
 			changeYearInMonthMode(1);
@@ -400,6 +370,7 @@
 			month = month.add(1, 'month');
 		}
 	};
+
 	const isSelected = (date: dayjs.Dayjs) => {
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			return (
@@ -412,46 +383,40 @@
 		return false;
 	};
 
-	// 範囲プレビュー中かどうかの判定
-
-	// 期間選択の範囲表示用の判定関数（範囲プレビュー中は無効化）
 	const isRangeStart = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
-		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
+		if (isRangePreviewActive) return false;
 		return dayjs(date).isSame(dayjs(value.start).startOf('day'));
 	};
 
 	const isRangeEnd = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
-		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
+		if (isRangePreviewActive) return false;
 		return dayjs(date).isSame(dayjs(value.end).startOf('day'));
 	};
 
 	const isRangeMiddle = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
-		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
+		if (isRangePreviewActive) return false;
 		return isSelected(date) && !isRangeStart(date) && !isRangeEnd(date);
 	};
 
 	const isRangeSingle = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
-		if (isRangePreviewActive) return false; // 範囲プレビュー中は無効化
+		if (isRangePreviewActive) return false;
 		return isRangeStart(date) && isRangeEnd(date);
 	};
 
-	// 日付範囲プレビュー用の判定関数
 	const isRangePreviewStart = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
-		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
+		if (isSelectingStart) return false;
 
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
 
-		// プレビューの開始日と終了日が同じ場合は無効化
 		if (startDate.isSame(endDate)) return false;
 
-		// 正しい順序で範囲を設定
 		const actualStart = startDate.isSameOrBefore(endDate) ? startDate : endDate;
 
 		return dayjs(date).isSame(actualStart);
@@ -460,15 +425,13 @@
 	const isRangePreviewEnd = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
-		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
+		if (isSelectingStart) return false;
 
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
 
-		// プレビューの開始日と終了日が同じ場合は無効化
 		if (startDate.isSame(endDate)) return false;
 
-		// 正しい順序で範囲を設定
 		const actualEnd = startDate.isSameOrBefore(endDate) ? endDate : startDate;
 
 		return dayjs(date).isSame(actualEnd);
@@ -477,15 +440,13 @@
 	const isRangePreviewMiddle = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
-		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
+		if (isSelectingStart) return false;
 
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
 
-		// プレビューの開始日と終了日が同じ場合は無効化
 		if (startDate.isSame(endDate)) return false;
 
-		// 正しい順序で範囲を設定
 		const actualStart = startDate.isSameOrBefore(endDate) ? startDate : endDate;
 		const actualEnd = startDate.isSameOrBefore(endDate) ? endDate : startDate;
 
@@ -495,31 +456,29 @@
 	const isRangePreviewSingle = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || !hoveredDate || !value || !('start' in value && 'end' in value))
 			return false;
-		if (isSelectingStart) return false; // 最初の選択時はプレビューなし
+		if (isSelectingStart) return false;
 
 		const startDate = dayjs(value.start).startOf('day');
 		const endDate = hoveredDate.startOf('day');
 
-		// プレビューの開始日と終了日が同じ場合
 		return startDate.isSame(endDate) && dayjs(date).isSame(startDate);
 	};
 
 	const isOutOfMonth = (date: dayjs.Dayjs) => {
 		return date.month() !== month.month();
 	};
+
 	const isOutOfRange = (date: dayjs.Dayjs) => {
 		return (
 			(minDate && date.startOf('day').isBefore(dayjs(minDate).startOf('day'))) ||
 			(maxDate && date.startOf('day').isAfter(dayjs(maxDate).startOf('day')))
 		);
 	};
+
 	const isToday = (date: dayjs.Dayjs) => {
 		return date.startOf('day').isSame(dayjs().startOf('day'));
 	};
 
-	// フォーカス表示用の計算プロパティ
-
-	// フォーカス表示関数
 	const isFocused = (date: dayjs.Dayjs) => {
 		const dateKey = date.startOf('day').format('YYYY-MM-DD');
 		const result = focusedDateKey === dateKey;
@@ -530,7 +489,6 @@
 		return `calendar-date-${date.format('YYYY-MM-DD')}`;
 	};
 
-	// マウスホバー処理
 	const handleMouseEnter = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || isOutOfRange(date)) return;
 		hoveredDate = date;
@@ -539,10 +497,10 @@
 	const handleMouseLeave = () => {
 		hoveredDate = null;
 	};
+
 	const selectDate = (date: dayjs.Dayjs) => {
 		if (mode === 'range') {
 			if (value && 'start' in value && 'end' in value) {
-				// 既存の日付範囲がある場合
 				if (isSelectingStart) {
 					value = { start: date.toDate(), end: date.toDate() };
 					isSelectingStart = false;
@@ -556,16 +514,48 @@
 					onchange(value);
 				}
 			} else {
-				// 初回選択または値がundefinedの場合
 				value = { start: date.toDate(), end: date.toDate() };
 				isSelectingStart = false;
 			}
 		} else {
-			// 単一日付選択モード
 			value = date.toDate();
 			onchange(value);
 		}
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const currentLocaleConfig = $derived(localeConfig[locale]);
+	const startDate = $derived(month.startOf('month').startOf('week'));
+	const endDate = $derived(month.endOf('month').endOf('week'));
+	const dates: dayjs.Dayjs[] = $derived(generateDateArray(startDate, endDate));
+	const monthNames = $derived.by(() => {
+		dayjs.locale(locale);
+		return dayjs.months();
+	});
+	const DAY_ARRAY = $derived.by(() => {
+		dayjs.locale(locale);
+		return dayjs.weekdaysMin();
+	});
+	const weekRows = $derived.by(() => {
+		const weeks: dayjs.Dayjs[][] = [];
+		for (let i = 0; i < dates.length; i += 7) {
+			weeks.push(dates.slice(i, i + 7));
+		}
+		return weeks;
+	});
+	const isRangePreviewActive = $derived(
+		mode === 'range' &&
+			!isSelectingStart &&
+			hoveredDate &&
+			value &&
+			'start' in value &&
+			'end' in value
+	);
+	const focusedDateKey = $derived(
+		isKeyboardActive ? focusedDate.startOf('day').format('YYYY-MM-DD') : null
+	);
 </script>
 
 <div
@@ -587,7 +577,7 @@
 			aria-atomic="true"
 			onclick={(event) => {
 				event.stopPropagation();
-				isKeyboardActive = false; // マウスクリック時はフォーカス表示をリセット
+				isKeyboardActive = false;
 				toggleMonthMode();
 			}}
 		>
@@ -619,7 +609,7 @@
 						onclick={(event) => {
 							event.stopPropagation();
 							focusedMonth = index;
-							isKeyboardActive = false; // マウスクリック時はフォーカス表示をリセット
+							isKeyboardActive = false;
 							selectMonth(index);
 						}}
 					>
@@ -667,7 +657,7 @@
 									aria-disabled={isOutOfRange(date)}
 									onclick={() => {
 										focusedDate = date;
-										isKeyboardActive = false; // マウスクリック時はフォーカス表示をリセット
+										isKeyboardActive = false;
 										selectDate(date);
 									}}
 									onmouseenter={() => handleMouseEnter(date)}
@@ -891,7 +881,7 @@
 
 	.date-list-item.is-range-middle .date-button {
 		background-color: transparent;
-		color: var(--svelte-ui-datepicker-date-color); // 今日も黒にする
+		color: var(--svelte-ui-datepicker-date-color);
 		z-index: 1;
 		position: relative;
 	}

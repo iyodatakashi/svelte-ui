@@ -6,6 +6,9 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
 		// 基本プロパティ
 		children,
@@ -24,8 +27,12 @@
 		rounded = true,
 
 		// アイコン関連
+		icon = '',
 		iconFilled = false,
 		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = null,
+		iconVariant = 'outlined',
 
 		// バッジ関連
 		hasBadge = false,
@@ -54,7 +61,7 @@
 		// その他
 		...restProps
 	}: {
-		// 基本プロパティ
+		// Snippet
 		children: Snippet;
 
 		// HTML属性系
@@ -71,8 +78,12 @@
 		rounded?: boolean;
 
 		// アイコン関連
+		icon?: string;
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+		iconGrade?: number;
+		iconOpticalSize?: number | null;
+		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 
 		// バッジ関連
 		hasBadge?: boolean;
@@ -102,6 +113,17 @@
 		[key: string]: any;
 	} = $props();
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const handleClick = (event: MouseEvent & { currentTarget: HTMLButtonElement }) => {
+		if (isDisabled) return;
+		if (onclick) onclick(event);
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	const isDisabled = $derived(disabled || loading);
 
 	const backgroundColor = $derived(
@@ -139,11 +161,6 @@
 			.filter(Boolean)
 			.join(' ')
 	);
-
-	const handleClick = (event: MouseEvent & { currentTarget: HTMLButtonElement }) => {
-		if (isDisabled) return;
-		if (onclick) onclick(event);
-	};
 </script>
 
 <div class="iconbutton-container" data-testid="iconbutton-container">
@@ -173,7 +190,13 @@
 			</div>
 		{:else}
 			<div class="iconbutton__icon" class:iconbutton__icon--hidden={loading}>
-				<Icon filled={iconFilled} weight={iconWeight} size={fontSize}>
+				<Icon
+					filled={iconFilled}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}
+				>
 					{@render children()}
 				</Icon>
 			</div>

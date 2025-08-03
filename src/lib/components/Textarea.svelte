@@ -3,66 +3,132 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
 	let {
+		// 基本プロパティ
 		name = '',
 		value = $bindable(),
-		textareaAttributes,
-		customStyle = '',
-		inline = false,
-		focusStyle = 'background',
 		placeholder = '',
-		fullWidth = false,
-		autoResize = true,
+
+		// HTML属性系
+		id = null,
+		tabindex = null,
+		maxlength = null,
+		textareaAttributes,
+
+		// スタイル/レイアウト
 		rows = 3,
 		minHeight = 36,
+		inline = false,
+		focusStyle = 'background',
+		fullWidth = false,
+		rounded = false,
+		customStyle = '',
+
+		// 状態/動作
+		disabled = false,
+		autoResize = true,
 		resizable = false,
 		clearable = false,
-		rounded = false,
-		disabled = false,
 		readonly = false,
 		required = false,
-		id = null,
-		maxlength = null,
-		tabindex = null,
+
+		// イベントハンドラー
 		onchange = () => {},
 		oninput = () => {},
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
 		onclick = (event: MouseEvent) => {},
 		onkeydown = (event: KeyboardEvent) => {},
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: string | undefined;
-		customStyle?: string;
-		inline?: boolean;
-
-		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
-		fullWidth?: boolean;
-		autoResize?: boolean;
+
+		// HTML属性系
+		id?: string | null;
+		tabindex?: number | null;
+		maxlength?: number | null;
+		textareaAttributes?: HTMLTextareaAttributes | undefined;
+
+		// スタイル/レイアウト
 		rows?: number;
 		minHeight?: number | null;
+		inline?: boolean;
+		focusStyle?: 'background' | 'border' | 'none';
+		fullWidth?: boolean;
+		rounded?: boolean;
+		customStyle?: string;
+
+		// 状態/動作
+		disabled?: boolean;
+		autoResize?: boolean;
 		resizable?: boolean;
 		clearable?: boolean;
-		rounded?: boolean;
-		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
-		id?: string | null;
-		maxlength?: number | null;
-		tabindex?: number | null;
+
+		// イベントハンドラー
 		onchange?: (value: any) => void;
 		oninput?: (value: any) => void;
 		onfocus?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onblur?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
 		onclick?: (event: MouseEvent & { currentTarget: HTMLTextAreaElement }) => void;
-		textareaAttributes?: HTMLTextareaAttributes | undefined;
 		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
+
 	let ref: HTMLTextAreaElement | null = null;
 	let isFocused: boolean = $state(false);
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+
+	const clear = (): void => {
+		if (disabled || readonly) return;
+		value = undefined;
+		ref?.focus();
+		onchange?.(value);
+	};
+
+	// 外部からフォーカスを当てる（キャレットを先頭に移動）
+	export const focus = () => {
+		if (ref) {
+			ref.focus();
+			ref.setSelectionRange(0, 0);
+			ref.scrollTop = 0;
+		}
+	};
+
+	const handleChange = () => onchange?.(value);
+	const handleInput = () => oninput?.(value);
+	const handleFocus = (event: FocusEvent) => {
+		isFocused = true;
+		onfocus?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
+	};
+	const handleBlur = (event: FocusEvent) => {
+		isFocused = false;
+		onblur?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
+	};
+	const handleClick = (event: MouseEvent) =>
+		onclick?.(event as MouseEvent & { currentTarget: HTMLTextAreaElement });
+	const handleKeydown = (event: KeyboardEvent) =>
+		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLTextAreaElement });
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
 
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
@@ -80,35 +146,6 @@
 			return value ?? '';
 		}
 	});
-
-	const clear = (): void => {
-		if (disabled || readonly) return;
-		value = undefined;
-		ref?.focus();
-		onchange?.(value);
-	};
-	// 外部からフォーカスを当てる（キャレットを先頭に移動）
-	export const focus = () => {
-		if (ref) {
-			ref.focus();
-			ref.setSelectionRange(0, 0);
-			ref.scrollTop = 0;
-		}
-	};
-	const handleChange = () => onchange?.(value);
-	const handleInput = () => oninput?.(value);
-	const handleFocus = (event: FocusEvent) => {
-		isFocused = true;
-		onfocus?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
-	};
-	const handleBlur = (event: FocusEvent) => {
-		isFocused = false;
-		onblur?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
-	};
-	const handleClick = (event: MouseEvent) =>
-		onclick?.(event as MouseEvent & { currentTarget: HTMLTextAreaElement });
-	const handleKeydown = (event: KeyboardEvent) =>
-		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLTextAreaElement });
 </script>
 
 <div

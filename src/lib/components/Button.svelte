@@ -6,8 +6,11 @@
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		// 基本プロパティ
+		// Snippet
 		children,
 
 		// HTML属性系
@@ -19,7 +22,7 @@
 		customStyle,
 		variant = 'text',
 		size = 'medium',
-		color = 'var(--svelte-ui-button-text-outlined)',
+		color = 'var(--svelte-ui-primary-color)',
 		fullWidth = false,
 		minWidth = 0,
 		rounded = false,
@@ -52,7 +55,7 @@
 		// その他
 		...restProps
 	}: {
-		// 基本プロパティ
+		// Snippet
 		children: Snippet;
 
 		// HTML属性系
@@ -98,8 +101,6 @@
 		[key: string]: any;
 	} = $props();
 
-	const isDisabled = $derived(disabled || loading);
-
 	const backgroundColors = {
 		filled: color,
 		outlined: 'transparent',
@@ -112,7 +113,23 @@
 		text: color
 	};
 
-	// CSS classes based on state
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const handleClick = (event: MouseEvent & { currentTarget: HTMLButtonElement }) => {
+		if (isDisabled) return;
+		if (onclick) onclick(event);
+	};
+
+	const handleFocus = (event: FocusEvent) => onfocus(event);
+	const handleBlur = (event: FocusEvent) => onblur(event);
+	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const isDisabled = $derived(disabled || loading);
+
 	const buttonClasses = $derived(
 		[
 			'button',
@@ -127,15 +144,6 @@
 			.filter(Boolean)
 			.join(' ')
 	);
-
-	const handleClick = (event: MouseEvent & { currentTarget: HTMLButtonElement }) => {
-		if (isDisabled) return;
-		if (onclick) onclick(event);
-	};
-
-	const handleFocus = (event: FocusEvent) => onfocus(event);
-	const handleBlur = (event: FocusEvent) => onblur(event);
-	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
 </script>
 
 <button

@@ -16,77 +16,66 @@
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
-		title = '',
-		scrollable = true,
-		closeIfClickOutside = true,
-		width = 240,
-		position = 'left',
-		ariaLabel = 'Navigation drawer',
-		restoreFocus = false,
-		ariaDescribedby,
-		description,
+		// Snippet
 		header,
 		children,
 		footer,
+
+		// 基本プロパティ
+		title = '',
+		description,
+
+		// スタイル/レイアウト
+		width = 240,
+		position = 'left',
 		bodyStyle = '',
-		noPadding = false
+		noPadding = false,
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		scrollable = true,
+		closeIfClickOutside = true,
+		restoreFocus = false,
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Navigation drawer',
+		ariaDescribedby
 	}: {
-		isOpen?: boolean;
-		title?: string;
-		scrollable?: boolean;
-		closeIfClickOutside?: boolean;
-		width?: string | number;
-		position?: 'left' | 'right';
-		ariaLabel?: string;
-		restoreFocus?: boolean;
-		ariaDescribedby?: string;
-		description?: string;
+		// Snippet
 		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		position?: 'left' | 'right';
 		bodyStyle?: string;
 		noPadding?: boolean;
+
+		// 状態/動作
+		isOpen?: boolean;
+		scrollable?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaDescribedby?: string;
 	} = $props();
 
 	let modalRef: Modal;
 
-	// Drawer固有のスタイル
-	const drawerStyles = $derived(() => {
-		const styles = [];
-		const widthValue = typeof width === 'number' ? `${width}px` : width;
-		styles.push(`width: ${widthValue}`);
-		styles.push('height: 100%');
-		styles.push('min-height: 100%');
-		styles.push(`${position}: 0`);
-		return styles.join('; ');
-	});
-
-	// Body部分のスタイル
-	const bodyStyles = $derived(() => {
-		const styles = [];
-		if (noPadding) {
-			styles.push('padding: 0');
-		}
-		if (bodyStyle) {
-			styles.push(bodyStyle);
-		}
-		return styles.join('; ');
-	});
-
-	// Drawer固有のクラス
-	const drawerClasses = $derived(
-		['drawer', position, scrollable && 'scrollable'].filter(Boolean).join(' ')
-	);
-
-	// aria属性
-	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
-	const ariaDescribedbyValue = $derived(
-		ariaDescribedby || (description ? 'drawer-description' : undefined)
-	);
-
-	// 外部からのAPI（後方互換性のため）
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	export const open = (): void => {
 		modalRef?.open(title || ariaLabel);
 	};
@@ -102,6 +91,39 @@
 	export const closeEnd = (): void => {
 		modalRef?.closeEnd();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const drawerStyles = $derived(() => {
+		const styles = [];
+		const widthValue = typeof width === 'number' ? `${width}px` : width;
+		styles.push(`width: ${widthValue}`);
+		styles.push('height: 100%');
+		styles.push('min-height: 100%');
+		styles.push(`${position}: 0`);
+		return styles.join('; ');
+	});
+
+	const bodyStyles = $derived(() => {
+		const styles = [];
+		if (noPadding) {
+			styles.push('padding: 0');
+		}
+		if (bodyStyle) {
+			styles.push(bodyStyle);
+		}
+		return styles.join('; ');
+	});
+
+	const drawerClasses = $derived(
+		['drawer', position, scrollable && 'scrollable'].filter(Boolean).join(' ')
+	);
+
+	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
+	const ariaDescribedbyValue = $derived(
+		ariaDescribedby || (description ? 'drawer-description' : undefined)
+	);
 </script>
 
 <Modal

@@ -17,30 +17,52 @@
 	import type { Snippet } from 'svelte';
 	import { onDestroy, tick, onMount } from 'svelte';
 	import { isMobileDevice, disableBodyScroll, getViewportSize } from '../utils/mobile';
-
 	import { announceOpenClose } from '../utils/accessibility';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
-		anchorElement,
-		position = 'bottom',
+		// Snippet
 		children,
+
+		// DOM参照
+		anchorElement,
+
+		// 基本プロパティ
 		role = 'menu',
+
+		// スタイル/レイアウト
+		position = 'bottom',
+		margin = 8,
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		focusTrap = false,
+		restoreFocus = false,
+		mobileFullscreen = false,
+		mobileBehavior = 'auto',
+		allowRepositioning = true,
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaLabelledby,
 		ariaDescribedby,
-		focusTrap = false,
-		restoreFocus = false,
-		onOpen,
-		onClose,
-		mobileFullscreen = false,
 
-		mobileBehavior = 'auto', // 'auto' | 'fullscreen' | 'popup'
-		margin = 8,
-		allowRepositioning = true
+		// イベントハンドラー
+		onOpen = () => {},
+		onClose = () => {}
 	}: {
-		isOpen?: boolean;
+		// Snippet
+		children: Snippet;
+
+		// DOM参照
 		anchorElement: HTMLElement;
+
+		// 基本プロパティ
+		role?: string;
+
+		// スタイル/レイアウト
 		position?:
 			| 'top'
 			| 'bottom'
@@ -59,36 +81,39 @@
 			| 'right-center'
 			| 'right-bottom'
 			| 'auto';
-		children: Snippet;
-		role?: 'menu' | 'tooltip' | 'listbox';
+		margin?: number;
+
+		// 状態/動作
+		isOpen?: boolean;
+		focusTrap?: boolean;
+		restoreFocus?: boolean;
+		mobileFullscreen?: boolean;
+		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+		allowRepositioning?: boolean;
+
+		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
-		focusTrap?: boolean;
-		restoreFocus?: boolean;
+
+		// イベントハンドラー
 		onOpen?: () => void;
 		onClose?: () => void;
-		mobileFullscreen?: boolean;
-
-		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
-		margin?: number;
-		allowRepositioning?: boolean;
 	} = $props();
+
 	let popupRef: HTMLDivElement | undefined = $state();
 	let popupId: string = $state(`popup-${Math.random().toString(36).substring(2, 15)}`);
 	let previousActiveElement: HTMLElement | null = null;
-
-	// モバイル関連の状態
 	let isMobile: boolean = $state(false);
 	let shouldUseFullscreen: boolean = $state(false);
-
 	let bodyScrollCleanup: (() => void) | undefined = $state();
 
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
 	onMount(() => {
-		// モバイルデバイス検出
 		isMobile = isMobileDevice();
 
-		// モバイル表示モードの決定
 		if (mobileBehavior === 'auto') {
 			shouldUseFullscreen = isMobile;
 		} else if (mobileBehavior === 'fullscreen') {
@@ -104,16 +129,16 @@
 		cleanupMobileFeatures();
 	});
 
-	// isOpen状態の同期処理
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		if (isOpen) {
-			// すでに開いている場合は何もしない
 			if (popupRef && popupRef.matches(':popover-open')) {
 				return;
 			}
 			open();
 		} else {
-			// すでに閉じている場合は何もしない
 			if (!popupRef || !popupRef.matches(':popover-open')) {
 				return;
 			}
@@ -121,6 +146,9 @@
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (!isOpen) return;
 
@@ -147,13 +175,11 @@
 		const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
 		if (event.shiftKey) {
-			// Shift + Tab
 			if (document.activeElement === firstElement) {
 				event.preventDefault();
 				lastElement?.focus();
 			}
 		} else {
-			// Tab
 			if (document.activeElement === lastElement) {
 				event.preventDefault();
 				firstElement?.focus();
@@ -161,84 +187,192 @@
 		}
 	};
 
-	export const toggle = () => {
-		if (isOpen) {
-			close();
+	const handleScroll = (event: Event) => {
+		const target = event.target;
+
+		if (
+			popupRef &&
+			target &&
+			target instanceof Element &&
+			(popupRef.contains(target) || target === popupRef)
+		) {
+			return;
+		}
+
+		if (anchorElement && target) {
+			if (target === document || target === document.documentElement || target === document.body) {
+				close();
+				return;
+			}
+
+			if (target instanceof Element && target.contains(anchorElement)) {
+				close();
+				return;
+			}
+		}
+	};
+
+	const getBestPosition = (
+		anchorRect: DOMRect,
+		popupRect: DOMRect,
+		viewport: { width: number; height: number },
+		margin: number
+	): typeof position => {
+		const spaceAbove = anchorRect.top;
+		const spaceBelow = viewport.height - anchorRect.bottom;
+		const spaceLeft = anchorRect.left;
+		const spaceRight = viewport.width - anchorRect.right;
+
+		const needHeight = popupRect.height + margin;
+		const needWidth = popupRect.width + margin;
+
+		const candidates = [
+			{ position: 'bottom-center' as const, score: spaceBelow >= needHeight ? spaceBelow : 0 },
+			{
+				position: 'top-center' as const,
+				score: !allowRepositioning ? 0 : spaceAbove >= needHeight ? spaceAbove : 0
+			},
+			{ position: 'right-center' as const, score: spaceRight >= needWidth ? spaceRight : 0 },
+			{ position: 'left-center' as const, score: spaceLeft >= needWidth ? spaceLeft : 0 }
+		];
+
+		const best = candidates.reduce((a, b) => (a.score > b.score ? a : b));
+		return best.score > 0 ? best.position : 'bottom-center';
+	};
+
+	const calculatePosition = (
+		pos: typeof position,
+		anchorRect: DOMRect,
+		popupRect: DOMRect,
+		viewport: { width: number; height: number },
+		margin: number
+	): { x: number; y: number } => {
+		let x = 0;
+		let y = 0;
+
+		switch (pos) {
+			case 'top':
+			case 'top-center':
+				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
+				y = anchorRect.top - popupRect.height - margin;
+				break;
+			case 'top-left':
+				x = anchorRect.left;
+				y = anchorRect.top - popupRect.height - margin;
+				break;
+			case 'top-right':
+				x = anchorRect.right - popupRect.width;
+				y = anchorRect.top - popupRect.height - margin;
+				break;
+			case 'bottom':
+			case 'bottom-center':
+				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
+				y = anchorRect.bottom + margin;
+				break;
+			case 'bottom-left':
+				x = anchorRect.left;
+				y = anchorRect.bottom + margin;
+				break;
+			case 'bottom-right':
+				x = anchorRect.right - popupRect.width;
+				y = anchorRect.bottom + margin;
+				break;
+			case 'left':
+			case 'left-center':
+				x = anchorRect.left - popupRect.width - margin;
+				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
+				break;
+			case 'left-top':
+				x = anchorRect.left - popupRect.width - margin;
+				y = anchorRect.top;
+				break;
+			case 'left-bottom':
+				x = anchorRect.left - popupRect.width - margin;
+				y = anchorRect.bottom - popupRect.height;
+				break;
+			case 'right':
+			case 'right-center':
+				x = anchorRect.right + margin;
+				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
+				break;
+			case 'right-top':
+				x = anchorRect.right + margin;
+				y = anchorRect.top;
+				break;
+			case 'right-bottom':
+				x = anchorRect.right + margin;
+				y = anchorRect.bottom - popupRect.height;
+				break;
+		}
+
+		x = Math.max(margin, Math.min(x, viewport.width - popupRect.width - margin));
+
+		if (!allowRepositioning) {
+			y = Math.max(margin, y);
+			if (y + popupRect.height + margin > viewport.height) {
+				const availableHeight = viewport.height - y - margin;
+				if (popupRef) {
+					popupRef.style.maxHeight = `${availableHeight}px`;
+					popupRef.style.overflowY = 'auto';
+				}
+			}
 		} else {
-			open();
+			y = Math.max(margin, Math.min(y, viewport.height - popupRect.height - margin));
 		}
+
+		return { x, y };
 	};
 
-	export const open = async () => {
-		previousActiveElement = document.activeElement as HTMLElement;
+	const setPosition = (): void => {
+		if (anchorElement && popupRef) {
+			const anchorRect = anchorElement.getBoundingClientRect();
+			const popupRect = popupRef.getBoundingClientRect();
+			const viewport = {
+				width: window.innerWidth,
+				height: window.innerHeight
+			};
 
-		setTimeout(async () => {
-			popupRef?.removeEventListener('animationend', closeEnd);
+			let actualPosition = position;
 
-			popupRef?.showPopover();
-
-			isOpen = true;
-			addEventListenersToClose();
-			addKeyboardListener();
-
-			await tick();
-
-			// サイズを取得して正しい位置を計算
-			if (!shouldUseFullscreen) {
-				setPosition();
-
-				// 追加で正確な位置計算（サイズ確定後）
-				await new Promise((resolve) => requestAnimationFrame(resolve));
-				setPosition();
+			if (position === 'auto') {
+				actualPosition = getBestPosition(anchorRect, popupRect, viewport, margin);
 			}
 
-			// モバイル機能の設定
-			setupMobileFeatures();
+			const coords = calculatePosition(actualPosition, anchorRect, popupRect, viewport, margin);
 
-			// Set focus to the popup or first focusable element
-			if (focusTrap) {
-				focusFirstElement();
-			}
-
-			announceToScreenReader();
-
-			// Notify parent component
-			onOpen?.();
-		}, 1);
-	};
-
-	export const close = () => {
-		isOpen = false;
-		removeEventListenersToClose();
-		removeKeyboardListener();
-
-		// モバイル機能のクリーンアップ
-		cleanupMobileFeatures();
-
-		popupRef?.addEventListener('animationend', closeEnd, { once: true });
-
-		// Notify parent component
-		onClose?.();
-	};
-
-	export const getIsOpen = () => {
-		return isOpen;
-	};
-
-	const closeEnd = () => {
-		popupRef?.hidePopover();
-
-		// 高さ制限をリセット
-		if (popupRef) {
-			popupRef.style.maxHeight = '';
-			popupRef.style.overflowY = '';
+			popupRef.style.setProperty('left', '0px', 'important');
+			popupRef.style.setProperty('top', '0px', 'important');
+			popupRef.style.setProperty('position', 'fixed', 'important');
+			popupRef.style.setProperty(
+				'transform',
+				`translate(${coords.x}px, ${coords.y}px)`,
+				'important'
+			);
 		}
+	};
 
-		// オプションが有効な場合のみ元の要素にフォーカスを戻す
-		if (restoreFocus && previousActiveElement) {
-			previousActiveElement.focus();
-		}
-		previousActiveElement = null;
+	const addEventListenersToClose = () => {
+		window.addEventListener('resize', close);
+		window.addEventListener('scroll', handleScroll, true);
+		document.querySelectorAll('.scrollable').forEach((element) => {
+			element.addEventListener('scroll', handleScroll);
+		});
+	};
+
+	const removeEventListenersToClose = () => {
+		window.removeEventListener('resize', close);
+		window.removeEventListener('scroll', handleScroll, true);
+		document.querySelectorAll('.scrollable').forEach((element) => {
+			element.removeEventListener('scroll', handleScroll);
+		});
+	};
+
+	const addKeyboardListener = () => {
+		document.addEventListener('keydown', handleKeyDown);
+	};
+
+	const removeKeyboardListener = () => {
+		document.removeEventListener('keydown', handleKeyDown);
 	};
 
 	const focusFirstElement = () => {
@@ -260,240 +394,46 @@
 		announceOpenClose('Popup', true, ariaLabel);
 	};
 
-	const setPosition = (): void => {
-		if (anchorElement && popupRef) {
-			const anchorRect = anchorElement.getBoundingClientRect();
-			const popupRect = popupRef.getBoundingClientRect();
-			const viewport = {
-				width: window.innerWidth,
-				height: window.innerHeight
-			};
+	const setupMobileFeatures = () => {
+		if (!popupRef || !isMobile) return;
 
-			let actualPosition = position;
-
-			// Auto positioning: 最適なポジションを自動選択
-			if (position === 'auto') {
-				actualPosition = getBestPosition(anchorRect, popupRect, viewport, margin);
-			}
-
-			const coords = calculatePosition(actualPosition, anchorRect, popupRect, viewport, margin);
-
-			// 位置指定
-			popupRef.style.setProperty('left', '0px', 'important');
-			popupRef.style.setProperty('top', '0px', 'important');
-			popupRef.style.setProperty('position', 'fixed', 'important');
-			popupRef.style.setProperty(
-				'transform',
-				`translate(${coords.x}px, ${coords.y}px)`,
-				'important'
-			);
+		if (shouldUseFullscreen) {
+			bodyScrollCleanup = disableBodyScroll();
 		}
 	};
 
-	const getBestPosition = (
-		anchorRect: DOMRect,
-		popupRect: DOMRect,
-		viewport: { width: number; height: number },
-		margin: number
-	): typeof position => {
-		// スペースの計算
-		const spaceAbove = anchorRect.top;
-		const spaceBelow = viewport.height - anchorRect.bottom;
-		const spaceLeft = anchorRect.left;
-		const spaceRight = viewport.width - anchorRect.right;
-
-		// 必要なスペース
-		const needHeight = popupRect.height + margin;
-		const needWidth = popupRect.width + margin;
-
-		// 各方向の候補をスコアリング
-		const candidates = [
-			{ position: 'bottom-center' as const, score: spaceBelow >= needHeight ? spaceBelow : 0 },
-			{
-				position: 'top-center' as const,
-				score: !allowRepositioning ? 0 : spaceAbove >= needHeight ? spaceAbove : 0
-			},
-			{ position: 'right-center' as const, score: spaceRight >= needWidth ? spaceRight : 0 },
-			{ position: 'left-center' as const, score: spaceLeft >= needWidth ? spaceLeft : 0 }
-		];
-
-		// 最も良いポジションを選択
-		const best = candidates.reduce((a, b) => (a.score > b.score ? a : b));
-		return best.score > 0 ? best.position : 'bottom-center'; // フォールバック
+	const cleanupMobileFeatures = () => {
+		if (bodyScrollCleanup) {
+			bodyScrollCleanup();
+			bodyScrollCleanup = undefined;
+		}
 	};
 
-	const calculatePosition = (
-		pos: typeof position,
-		anchorRect: DOMRect,
-		popupRect: DOMRect,
-		viewport: { width: number; height: number },
-		margin: number
-	): { x: number; y: number } => {
-		let x = 0;
-		let y = 0;
+	const closeEnd = () => {
+		popupRef?.hidePopover();
 
-		// 基本ポジション計算
-		switch (pos) {
-			// Top positions
-			case 'top':
-			case 'top-center':
-				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
-				y = anchorRect.top - popupRect.height - margin;
-				break;
-			case 'top-left':
-				x = anchorRect.left;
-				y = anchorRect.top - popupRect.height - margin;
-				break;
-			case 'top-right':
-				x = anchorRect.right - popupRect.width;
-				y = anchorRect.top - popupRect.height - margin;
-				break;
-
-			// Bottom positions
-			case 'bottom':
-			case 'bottom-center':
-				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
-				y = anchorRect.bottom + margin;
-				break;
-			case 'bottom-left':
-				x = anchorRect.left;
-				y = anchorRect.bottom + margin;
-				break;
-			case 'bottom-right':
-				x = anchorRect.right - popupRect.width;
-				y = anchorRect.bottom + margin;
-				break;
-
-			// Left positions
-			case 'left':
-			case 'left-center':
-				x = anchorRect.left - popupRect.width - margin;
-				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
-				break;
-			case 'left-top':
-				x = anchorRect.left - popupRect.width - margin;
-				y = anchorRect.top;
-				break;
-			case 'left-bottom':
-				x = anchorRect.left - popupRect.width - margin;
-				y = anchorRect.bottom - popupRect.height;
-				break;
-
-			// Right positions
-			case 'right':
-			case 'right-center':
-				x = anchorRect.right + margin;
-				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
-				break;
-			case 'right-top':
-				x = anchorRect.right + margin;
-				y = anchorRect.top;
-				break;
-			case 'right-bottom':
-				x = anchorRect.right + margin;
-				y = anchorRect.bottom - popupRect.height;
-				break;
+		if (popupRef) {
+			popupRef.style.maxHeight = '';
+			popupRef.style.overflowY = '';
 		}
 
-		// 画面端での調整
-		x = Math.max(margin, Math.min(x, viewport.width - popupRect.width - margin));
-
-		// allowRepositioning が false の場合は位置調整せず、高さを制限
-		if (!allowRepositioning) {
-			y = Math.max(margin, y);
-			// 画面下端からはみ出す場合は高さを制限
-			if (y + popupRect.height + margin > viewport.height) {
-				const availableHeight = viewport.height - y - margin;
-				if (popupRef) {
-					popupRef.style.maxHeight = `${availableHeight}px`;
-					popupRef.style.overflowY = 'auto';
-				}
-			}
-		} else {
-			y = Math.max(margin, Math.min(y, viewport.height - popupRect.height - margin));
+		if (restoreFocus && previousActiveElement) {
+			previousActiveElement.focus();
 		}
-
-		return { x, y };
-	};
-
-	const handleScroll = (event: Event) => {
-		// スクロールイベントが発生した要素を取得
-		const target = event.target;
-
-		// Popup内の要素かどうかを判定
-		if (
-			popupRef &&
-			target &&
-			target instanceof Element &&
-			(popupRef.contains(target) || target === popupRef)
-		) {
-			// Popup内でのスクロールの場合は閉じない
-			return;
-		}
-
-		// anchorElementの祖先要素がスクロールされた場合のみPopupを閉じる
-		if (anchorElement && target) {
-			// ページ全体のスクロール（document、documentElement、body）の場合は常に閉じる
-			if (target === document || target === document.documentElement || target === document.body) {
-				close();
-				return;
-			}
-
-			// スクロールされた要素がanchorElementの祖先要素かどうかを判定
-			if (target instanceof Element && target.contains(anchorElement)) {
-				// anchorElementの親要素がスクロールされた場合は閉じる
-				close();
-				return;
-			}
-		}
-
-		// 関係ない要素のスクロールの場合は何もしない
-	};
-
-	const addEventListenersToClose = () => {
-		window.addEventListener('resize', close);
-
-		// すべてのスクロールイベントを監視（キャプチャフェーズで捕捉）
-		// これにより、ページ全体のスクロールやoverflow:scrollの要素のスクロールも検出される
-		window.addEventListener('scroll', handleScroll, true);
-
-		// 念のため、特定の.scrollableクラスの要素も監視
-		document.querySelectorAll('.scrollable').forEach((element) => {
-			element.addEventListener('scroll', handleScroll);
-		});
-	};
-
-	const removeEventListenersToClose = () => {
-		window.removeEventListener('resize', close);
-
-		// スクロールイベントリスナーの削除
-		window.removeEventListener('scroll', handleScroll, true);
-
-		document.querySelectorAll('.scrollable').forEach((element) => {
-			element.removeEventListener('scroll', handleScroll);
-		});
-	};
-
-	const addKeyboardListener = () => {
-		document.addEventListener('keydown', handleKeyDown);
-	};
-
-	const removeKeyboardListener = () => {
-		document.removeEventListener('keydown', handleKeyDown);
+		previousActiveElement = null;
 	};
 
 	const clickOutside = (element: HTMLElement, callbackFunction: Function) => {
 		function onClick(event: MouseEvent) {
 			if (!(event.target instanceof Node)) return;
 
-			// Popup要素とanchorElement両方をチェック
 			const isInsidePopup = element.contains(event.target);
 			const isInsideAnchor = anchorElement && anchorElement.contains(event.target);
 			const isOutside = !isInsidePopup && !isInsideAnchor;
 
 			if (isOutside) {
 				callbackFunction();
-				event.stopPropagation(); // イベント伝播を止める
+				event.stopPropagation();
 			}
 		}
 		setTimeout(() => {
@@ -509,21 +449,54 @@
 		};
 	};
 
-	// モバイル機能の管理
-	const setupMobileFeatures = () => {
-		if (!popupRef || !isMobile) return;
+	export const open = async () => {
+		previousActiveElement = document.activeElement as HTMLElement;
 
-		// フルスクリーンモードでボディスクロールを無効化
-		if (shouldUseFullscreen) {
-			bodyScrollCleanup = disableBodyScroll();
+		setTimeout(async () => {
+			popupRef?.removeEventListener('animationend', closeEnd);
+			popupRef?.showPopover();
+			isOpen = true;
+			addEventListenersToClose();
+			addKeyboardListener();
+
+			await tick();
+
+			if (!shouldUseFullscreen) {
+				setPosition();
+				await new Promise((resolve) => requestAnimationFrame(resolve));
+				setPosition();
+			}
+
+			setupMobileFeatures();
+
+			if (focusTrap) {
+				focusFirstElement();
+			}
+
+			announceToScreenReader();
+			onOpen?.();
+		}, 1);
+	};
+
+	export const close = () => {
+		isOpen = false;
+		removeEventListenersToClose();
+		removeKeyboardListener();
+		cleanupMobileFeatures();
+		popupRef?.addEventListener('animationend', closeEnd, { once: true });
+		onClose?.();
+	};
+
+	export const toggle = () => {
+		if (isOpen) {
+			close();
+		} else {
+			open();
 		}
 	};
 
-	const cleanupMobileFeatures = () => {
-		if (bodyScrollCleanup) {
-			bodyScrollCleanup();
-			bodyScrollCleanup = undefined;
-		}
+	export const getIsOpen = () => {
+		return isOpen;
 	};
 </script>
 

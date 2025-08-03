@@ -6,19 +6,34 @@
 	import type { MenuItem } from '../types/MenuItem';
 	import type { SvelteComponent, Snippet } from 'svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
 		children,
+
+		// 基本プロパティ
 		menuItems,
-		ariaLabel = 'Menu',
-		disabled = false,
+
+		// スタイル/レイアウト
 		position = 'bottom',
+
+		// 状態/動作
+		disabled = false,
 		mobileFullscreen = true,
-		mobileBehavior = 'auto'
+		mobileBehavior = 'auto',
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Menu'
 	}: {
+		// Snippet
 		children?: Snippet;
+
+		// 基本プロパティ
 		menuItems: (MenuItem | 'separator')[];
-		ariaLabel?: string;
-		disabled?: boolean;
+
+		// スタイル/レイアウト
 		position?:
 			| 'top'
 			| 'bottom'
@@ -37,14 +52,23 @@
 			| 'right-center'
 			| 'right-bottom'
 			| 'auto';
+
+		// 状態/動作
+		disabled?: boolean;
 		mobileFullscreen?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
 	} = $props();
 
 	let anchorRef: HTMLElement | undefined = $state();
 	let popupMenuRef: SvelteComponent | undefined = $state();
 	let buttonId: string = $state(`menu-button-${Math.random().toString(36).substring(2, 15)}`);
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = (event: MouseEvent) => {
 		event.stopPropagation();
 		toggle();

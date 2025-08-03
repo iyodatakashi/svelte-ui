@@ -1,6 +1,5 @@
 // src/lib/utils/snackbar.ts
 
-import { writable } from 'svelte/store';
 import type { Snippet } from 'svelte';
 
 export type SnackbarItem = {
@@ -26,14 +25,14 @@ export type SnackbarConfig = {
 };
 
 class SnackbarManager {
-	private items = writable<SnackbarItem[]>([]);
-	private queue: SnackbarItem[] = [];
-	private config: Required<SnackbarConfig> = {
+	private _items: SnackbarItem[] = $state([]);
+	private queue: SnackbarItem[] = $state([]);
+	private config: Required<SnackbarConfig> = $state({
 		maxVisible: 5,
 		defaultDuration: 3000,
 		defaultVariant: 'filled',
 		defaultPosition: 'bottom'
-	};
+	});
 
 	constructor(config?: SnackbarConfig) {
 		if (config) {
@@ -41,9 +40,9 @@ class SnackbarManager {
 		}
 	}
 
-	// 購読用のstore
-	get store() {
-		return this.items;
+	// 現在表示中のアイテムを取得
+	get items() {
+		return this._items;
 	}
 
 	// 設定更新
@@ -81,19 +80,14 @@ class SnackbarManager {
 			createdAt: Date.now()
 		};
 
-		this.items.update((currentItems) => {
-			// 最大表示数を超えた場合、キューに追加
-			if (currentItems.length >= this.config.maxVisible) {
-				this.queue.push(item);
-				return currentItems;
-			}
+		// 最大表示数を超えた場合、キューに追加
+		if (this._items.length >= this.config.maxVisible) {
+			this.queue = [...this.queue, item];
+			return id;
+		}
 
-			// 表示数以内の場合は即座に表示
-			return [...currentItems, item];
-		});
-
-		// 自動削除はSnackbarItem側で制御するため、ここでは設定しない
-
+		// 表示数以内の場合は即座に表示
+		this._items = [...this._items, item];
 		return id;
 	}
 
@@ -137,33 +131,27 @@ class SnackbarManager {
 
 	// 削除メソッド
 	remove(id: string) {
-		this.items.update((currentItems) => {
-			const filteredItems = currentItems.filter((item) => item.id !== id);
+		const filteredItems = this._items.filter((item) => item.id !== id);
 
-			// キューに待機中のアイテムがあり、表示数に余裕がある場合は次を表示
-			if (this.queue.length > 0 && filteredItems.length < this.config.maxVisible) {
-				const nextItem = this.queue.shift()!;
-				return [...filteredItems, nextItem];
-			}
-
-			return filteredItems;
-		});
+		// キューに待機中のアイテムがあり、表示数に余裕がある場合は次を表示
+		if (this.queue.length > 0 && filteredItems.length < this.config.maxVisible) {
+			const nextItem = this.queue[0];
+			this.queue = this.queue.slice(1);
+			this._items = [...filteredItems, nextItem];
+		} else {
+			this._items = filteredItems;
+		}
 	}
 
 	// 全削除メソッド
 	clear() {
-		this.items.set([]);
+		this._items = [];
 		this.queue = [];
 	}
 
 	// 位置別のアイテムを取得
 	getItemsByPosition(position: 'top' | 'bottom') {
-		let currentItems: SnackbarItem[] = [];
-		this.items.subscribe((items) => {
-			currentItems = items;
-		})();
-
-		return currentItems.filter((item) => item.position === position);
+		return this._items.filter((item) => item.position === position);
 	}
 }
 

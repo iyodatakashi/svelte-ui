@@ -3,52 +3,73 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		total,
 		limit = 100,
 		currentPageNum = 1,
+
+		// イベントハンドラー
 		onchange = () => {}
 	}: {
+		// 基本プロパティ
 		total: number;
 		limit: number;
 		currentPageNum: number;
+
+		// イベントハンドラー
 		onchange: (pageNum: number) => void;
 	} = $props();
+
 	const MAX_VISIBLE_PAGES = 7;
-	const totalPages = $derived(Math.ceil(total / limit));
-	const pageList: number[] = $derived.by(() => {
-		const pagesToShow = Math.min(totalPages, MAX_VISIBLE_PAGES);
-		// 表示開始ページを計算
-		let startPage = Math.max(currentPageNum - Math.floor(pagesToShow / 2), 1);
-		// 最大ページ数を超えないように補正
-		if (startPage + pagesToShow - 1 > totalPages) {
-			startPage = totalPages - pagesToShow + 1;
-		}
-		// 指定した範囲の連番配列を作成
-		return Array.from({ length: pagesToShow }, (_, i) => startPage + i);
-	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = (pageNum: number) => {
 		onchange(pageNum);
 		announceToScreenReader(`Page ${pageNum} of ${totalPages}`);
 	};
+
 	const goFirstPage = () => {
 		onchange(1);
 		announceToScreenReader(`First page, page 1 of ${totalPages}`);
 	};
+
 	const goLastPage = () => {
 		onchange(totalPages);
 		announceToScreenReader(`Last page, page ${totalPages} of ${totalPages}`);
 	};
+
 	const goPrevPage = () => {
 		const newPage = currentPageNum - 1;
 		onchange(newPage);
 		announceToScreenReader(`Previous page, page ${newPage} of ${totalPages}`);
 	};
+
 	const goNextPage = () => {
 		const newPage = currentPageNum + 1;
 		onchange(newPage);
 		announceToScreenReader(`Next page, page ${newPage} of ${totalPages}`);
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const totalPages = $derived(Math.ceil(total / limit));
+
+	const pageList: number[] = $derived.by(() => {
+		const pagesToShow = Math.min(totalPages, MAX_VISIBLE_PAGES);
+		let startPage = Math.max(currentPageNum - Math.floor(pagesToShow / 2), 1);
+		if (startPage + pagesToShow - 1 > totalPages) {
+			startPage = totalPages - pagesToShow + 1;
+		}
+		return Array.from({ length: pagesToShow }, (_, i) => startPage + i);
+	});
 </script>
 
 <div class="pagination">

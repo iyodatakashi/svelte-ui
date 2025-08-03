@@ -4,30 +4,46 @@
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		files = $bindable(),
-		accept = '',
+
+		// HTML属性系
 		id = `fileuploader-${Math.random().toString(36).substring(2, 15)}`,
+		accept = '',
+
+		// アイコン系
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined'
 	}: {
+		// 基本プロパティ
 		files: FileList | undefined;
-		accept: string;
+
+		// HTML属性系
 		id?: string;
+		accept?: string;
+
+		// アイコン系
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
 		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
 	} = $props();
+
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 
-	// ファイル選択時のアナウンス
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		if (files && files.length > 0) {
 			const fileCount = files.length;
@@ -38,9 +54,13 @@
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = () => {
 		fileInputRef?.click();
 	};
+
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';

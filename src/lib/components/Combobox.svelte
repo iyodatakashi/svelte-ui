@@ -5,6 +5,10 @@
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import { announceSelection } from '../utils/accessibility';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
 		// 基本プロパティ
 		name,
@@ -96,6 +100,9 @@
 	const inputId = `${id}-input`;
 	const listboxId = `${id}-listbox`;
 
+	// =========================================================================
+	// $effect
+	// =========================================================================
 	// inputValueとvalueの同期
 	$effect(() => {
 		if (searchTerm !== '') {
@@ -104,13 +111,10 @@
 			inputValue = value !== null && value !== undefined ? String(value) : '';
 		}
 	});
-	// フィルタリングされたオプション
-	const filteredOptions = $derived.by(() => {
-		if (!filterable || !searchTerm) return options;
-		return options.filter((option) =>
-			option === null ? false : String(option).toLowerCase().includes(searchTerm.toLowerCase())
-		);
-	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	// オプションを選択
 	const selectOption = (option: string | number | null) => {
 		value = option;
@@ -129,6 +133,7 @@
 
 		onchange?.(option);
 	};
+
 	// input要素のフォーカス/クリック時
 	const handleInputFocus = () => {
 		if (disabled || readonly) return;
@@ -159,6 +164,7 @@
 		popupRef?.open();
 		oninput?.(value);
 	};
+
 	// 値確定ハンドラー
 	const handleChange = (currentValue: string | number | undefined) => {
 		const inputValue = String(currentValue || '');
@@ -197,6 +203,18 @@
 		}, 100);
 		onblur(new FocusEvent('blur'));
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	// フィルタリングされたオプション
+	const filteredOptions = $derived.by(() => {
+		if (!filterable || !searchTerm) return options;
+		return options.filter((option) =>
+			option === null ? false : String(option).toLowerCase().includes(searchTerm.toLowerCase())
+		);
+	});
 </script>
 
 <div

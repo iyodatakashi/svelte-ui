@@ -5,6 +5,9 @@
 	import IconButton from './IconButton.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
 		// 基本プロパティ
 		value = $bindable(''),
@@ -67,6 +70,10 @@
 	let prevValue: string = $state('');
 	let isFocused: boolean = $state(false);
 
+	// =========================================================================
+	// $effect
+	// =========================================================================
+
 	$effect(() => {
 		value;
 		untrack(() => {
@@ -77,6 +84,10 @@
 			handleChange();
 		});
 	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
 
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();

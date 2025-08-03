@@ -4,12 +4,17 @@
 	import { type Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
+		children,
+
 		// 基本プロパティ
 		name = '',
 		value = '',
 		currentValue = $bindable(null),
-		children,
 
 		// HTML属性系
 		id = `radio-${Math.random().toString(36).substring(2, 15)}`,
@@ -33,11 +38,13 @@
 		// その他
 		...restProps
 	}: {
+		// Snippet
+		children?: Snippet;
+
 		// 基本プロパティ
 		name: string;
 		value: string | number | boolean;
 		currentValue: string | number | boolean | null;
-		children?: Snippet;
 
 		// HTML属性系
 		id?: string;
@@ -62,8 +69,9 @@
 		[key: string]: any;
 	} = $props();
 
-	const isChecked: boolean = $derived(currentValue === value);
-
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleFocus = (event: FocusEvent) => {
 		onfocus(event);
 	};
@@ -88,7 +96,6 @@
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (disabled) return;
 
-		// Arrow key navigation for radio group
 		if (
 			event.key === 'ArrowUp' ||
 			event.key === 'ArrowDown' ||
@@ -119,7 +126,11 @@
 		onkeydown(event);
 	};
 
-	// CSS classes based on state
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const isChecked: boolean = $derived(currentValue === value);
+
 	const containerClasses = $derived(
 		[
 			'radio-container',

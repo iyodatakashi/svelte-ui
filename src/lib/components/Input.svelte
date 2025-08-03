@@ -4,15 +4,19 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
 		// 基本プロパティ
 		name,
 		value = $bindable(),
+		placeholder = '',
 
 		// HTML属性系
-		inputAttributes,
-		type = 'text',
 		id = null,
+		type = 'text',
 		tabindex = null,
 		maxlength = null,
 		pattern = null,
@@ -21,12 +25,12 @@
 		step = null,
 		size = null,
 		autocomplete = null,
+		inputAttributes,
 
 		// スタイル/レイアウト
-		customStyle = '',
 		inline = false,
 		focusStyle = 'background',
-		placeholder = '',
+		customStyle = '',
 		fullWidth = false,
 		minWidth = inline ? null : 120,
 		maxWidth = null,
@@ -66,9 +70,8 @@
 		value: string | number | undefined;
 
 		// HTML属性系
-		inputAttributes?: HTMLInputAttributes | undefined;
-		type?: 'text' | 'password' | 'number';
 		id?: string | null;
+		type?: 'text' | 'password' | 'number';
 		tabindex?: number | null;
 		maxlength?: number | null;
 		pattern?: string | null;
@@ -77,9 +80,9 @@
 		step?: number | null;
 		size?: number | null;
 		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
+		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
-		customStyle?: string;
 		inline?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
@@ -87,6 +90,7 @@
 		minWidth?: number | null;
 		maxWidth?: number | null;
 		rounded?: boolean;
+		customStyle?: string;
 
 		// アイコン関連
 		hasRightIcon?: boolean;
@@ -117,40 +121,36 @@
 		// その他
 		[key: string]: any;
 	} = $props();
+
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
-	// 表示用の値をフォーマット（inlineモードでの省略表示用）
-	const getDisplayValue = (): string => {
-		if (value === undefined) return '';
-		// 数値型の場合はコンマ区切りで表示
-		if (type === 'number' && typeof value === 'number') {
-			return value.toLocaleString();
-		}
-		return String(value);
-	};
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const clear = (): void => {
 		if (disabled || readonly) return;
 		value = undefined;
 		ref?.focus();
 		onchange?.(value);
 	};
-	// 外部からフォーカスを当てる（キャレットを先頭に移動）
+
 	export const focus = () => {
 		if (ref) {
 			ref.focus();
-			// テキスト系の場合、キャレットを先頭に移動
 			if (type !== 'number') {
 				ref.setSelectionRange?.(0, 0);
 			}
 			ref.scrollTop = 0;
 		}
 	};
-	// Enterキー押下時の処理（フォーカスを外してonchangeを発火）
+
 	const handleSubmit = (event: SubmitEvent) => {
 		event.preventDefault();
 		ref?.blur();
 		onchange?.(value);
 	};
+
 	const handleChange = () => onchange?.(value);
 	const handleInput = () => oninput?.(value);
 	const handleFocus = (event: FocusEvent) => {
@@ -165,6 +165,17 @@
 		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
 	const handleKeydown = (event: KeyboardEvent) =>
 		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLInputElement });
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const getDisplayValue = (): string => {
+		if (value === undefined) return '';
+		if (type === 'number' && typeof value === 'number') {
+			return value.toLocaleString();
+		}
+		return String(value);
+	};
 </script>
 
 <div

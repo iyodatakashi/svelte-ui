@@ -18,7 +18,10 @@
 
 	dayjs.extend(localeData);
 
-	// 変数定義
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
 	let {
 		// 基本プロパティ
 		value = $bindable(),
@@ -103,6 +106,9 @@
 		[key: string]: any;
 	} = $props();
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let inputRef: any = $state();
 	let containerElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
@@ -157,17 +163,9 @@
 		}
 	};
 
-	const currentLocaleConfig = $derived(localeConfig[locale]);
-	const finalFormat = $derived(
-		format ||
-			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
-	);
-	const placeholderText = $derived(
-		allowDirectInput
-			? nullString || currentLocaleConfig.directInputPlaceholder
-			: nullString || currentLocaleConfig.notSelected
-	);
-
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		dayjs.locale(locale);
 	});
@@ -184,6 +182,9 @@
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleChange = () => {
 		// スクリーンリーダーアナウンス
 		if (value) {
@@ -306,6 +307,21 @@
 		datapickerCalendarRef?.reset();
 		popupRef?.toggle();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	const currentLocaleConfig = $derived(localeConfig[locale]);
+	const finalFormat = $derived(
+		format ||
+			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
+	);
+	const placeholderText = $derived(
+		allowDirectInput
+			? nullString || currentLocaleConfig.directInputPlaceholder
+			: nullString || currentLocaleConfig.notSelected
+	);
 </script>
 
 <div
