@@ -18,6 +18,10 @@
 		id = null,
 		tabindex = null,
 		maxlength = null,
+		autocomplete = null,
+		wrap = null,
+		spellcheck = null,
+		autocapitalize = null,
 		textareaAttributes,
 
 		// スタイル/レイアウト
@@ -57,6 +61,10 @@
 		id?: string | null;
 		tabindex?: number | null;
 		maxlength?: number | null;
+		autocomplete?: HTMLTextareaAttributes['autocomplete'];
+		wrap?: 'soft' | 'hard' | null;
+		spellcheck?: boolean | null;
+		autocapitalize?: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | null;
 		textareaAttributes?: HTMLTextareaAttributes | undefined;
 
 		// スタイル/レイアウト
@@ -181,6 +189,10 @@
 			{required}
 			{maxlength}
 			{tabindex}
+			{autocomplete}
+			{wrap}
+			{spellcheck}
+			{autocapitalize}
 			class:resizable
 			style="{!inline ? `min-height: ${minHeight}px;` : ''} {customStyle}"
 			onchange={handleChange}
