@@ -10,12 +10,21 @@
 	let {
 		// 基本プロパティ
 		files = $bindable(),
+		multiple = false,
+		maxFileSize = 5 * 1024 * 1024,
+		placeholder = 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
 
 		// HTML属性系
 		id = `fileuploader-${Math.random().toString(36).substring(2, 15)}`,
 		accept = '',
 
+		// スタイル/レイアウト
+		width = undefined,
+		height = undefined,
+		rounded = false,
+
 		// アイコン系
+		icon = 'draft',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -24,12 +33,21 @@
 	}: {
 		// 基本プロパティ
 		files: FileList | undefined;
+		multiple?: boolean;
+		maxFileSize?: number;
+		placeholder?: string;
 
 		// HTML属性系
 		id?: string;
 		accept?: string;
 
+		// スタイル/レイアウト
+		width?: string | number;
+		height?: number;
+		rounded?: boolean;
+
 		// アイコン系
+		icon?: string;
 		iconFilled?: boolean;
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
@@ -40,6 +58,7 @@
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
+	let errorMessage: string = $state('');
 
 	// =========================================================================
 	// Effects
@@ -61,10 +80,39 @@
 		fileInputRef?.click();
 	};
 
+	const validateFile = (file: File): boolean => {
+		if (file.size > maxFileSize) {
+			errorMessage = `ファイルサイズは${(maxFileSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
+			return false;
+		}
+
+		errorMessage = '';
+		return true;
+	};
+
+	const handleFileChange = (fileList: FileList | null) => {
+		if (!fileList) return;
+
+		const validFiles: File[] = [];
+		for (let i = 0; i < fileList.length; i++) {
+			const file = fileList[i];
+			if (validateFile(file)) {
+				validFiles.push(file);
+			} else {
+				return;
+			}
+		}
+
+		const dt = new DataTransfer();
+		validFiles.forEach((file) => dt.items.add(file));
+		files = dt.files;
+	};
+
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
 			files = undefined;
+			errorMessage = '';
 		}
 	};
 </script>
@@ -73,6 +121,11 @@
 	bind:this={dropAreaRef}
 	class="file-uploader"
 	class:hover={isHover}
+	class:rounded
+	style="
+		--file-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
+		--file-uploader-height: {height}px
+	"
 	onclick={handleClick}
 	ondragover={(event) => {
 		event.stopPropagation();
@@ -104,7 +157,7 @@
 				weight={iconWeight}
 				grade={iconGrade}
 				opticalSize={iconOpticalSize}
-				variant={iconVariant}>draft</Icon
+				variant={iconVariant}>{icon}</Icon
 			>
 			<ul class="file-list">
 				{#each files as file}
@@ -120,12 +173,32 @@
 				weight={iconWeight}
 				grade={iconGrade}
 				opticalSize={iconOpticalSize}
-				variant={iconVariant}>draft</Icon
+				variant={iconVariant}>{icon}</Icon
 			>
-			ファイルをドラッグ＆ドロップ<br />またはファイルを選択
+			{@html placeholder}
 		</div>
 	{/if}
-	<input bind:this={fileInputRef} {accept} class="upload-file-input" {id} type="file" bind:files />
+
+	{#if errorMessage}
+		<div class="error-message" role="alert" aria-live="polite">
+			{errorMessage}
+		</div>
+	{/if}
+
+	<input
+		bind:this={fileInputRef}
+		{accept}
+		{multiple}
+		class="upload-file-input"
+		{id}
+		type="file"
+		onchange={(event) => {
+			const target = event.target as HTMLInputElement;
+			if (target.files) {
+				handleFileChange(target.files);
+			}
+		}}
+	/>
 </button>
 
 <style>
@@ -135,12 +208,17 @@
 		justify-content: center;
 		align-items: center;
 		gap: 16px;
-		width: 100%;
+		width: var(--file-uploader-width, 100%);
+		height: var(--file-uploader-height);
 		min-height: 100px;
 		padding: 16px;
 		background-color: var(--svelte-ui-fileupload-bg);
 		border: dashed 1px var(--svelte-ui-border-color);
-		border-radius: 4px;
+		border-radius: var(--svelte-ui-border-radius);
+	}
+
+	.file-uploader.rounded {
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	.file-uploader:hover {
@@ -171,6 +249,15 @@
 	}
 	.file-uploader.hover::before {
 		border-color: var(--svelte-ui-primary-color);
+	}
+
+	.error-message {
+		margin-top: 8px;
+		padding: 8px 12px;
+		background-color: var(--svelte-ui-error-container-color);
+		color: var(--svelte-ui-error-color);
+		border-radius: var(--svelte-ui-border-radius);
+		font-size: var(--svelte-ui-font-size-sm);
 	}
 
 	@media (hover: hover) {

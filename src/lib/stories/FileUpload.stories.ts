@@ -3,7 +3,14 @@ import FileUploader from '../components/FileUploader.svelte';
 
 interface FileUploaderArgs {
 	files?: FileList | undefined;
+	multiple?: boolean;
+	maxFileSize?: number;
+	placeholder?: string;
 	accept?: string;
+	width?: string | number;
+	height?: number;
+	rounded?: boolean;
+	icon?: string;
 	iconFilled?: boolean;
 	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 	iconGrade?: number;
@@ -32,6 +39,34 @@ const meta: Meta<FileUploaderArgs> = {
 		files: {
 			control: false,
 			description: '選択されたファイルのリスト'
+		},
+		multiple: {
+			control: 'boolean',
+			description: '複数ファイルの選択を許可するかどうか'
+		},
+		maxFileSize: {
+			control: 'number',
+			description: '許可する最大ファイルサイズ（バイト）'
+		},
+		placeholder: {
+			control: 'text',
+			description: 'プレースホルダーテキスト（HTMLタグ使用可）'
+		},
+		width: {
+			control: 'text',
+			description: 'コンポーネントの幅（数値またはCSS単位付きの文字列）'
+		},
+		height: {
+			control: 'number',
+			description: 'コンポーネントの高さ（px）'
+		},
+		rounded: {
+			control: 'boolean',
+			description: '角丸スタイルを適用するかどうか'
+		},
+		icon: {
+			control: 'text',
+			description: 'アイコン名'
 		}
 	}
 };
@@ -46,6 +81,22 @@ export const Default: Story = {
 export const WithAcceptFilter: Story = {
 	args: {
 		accept: '.jpg,.jpeg,.png,.gif'
+	}
+};
+
+export const MultipleFiles: Story = {
+	args: {
+		multiple: true,
+		placeholder: 'ファイルを複数選択できます<br />ドラッグ＆ドロップも可能です'
+	}
+};
+
+export const CustomStyle: Story = {
+	args: {
+		width: '300px',
+		height: 200,
+		rounded: true,
+		icon: 'upload_file'
 	}
 };
 
