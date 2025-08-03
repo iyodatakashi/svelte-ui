@@ -32,7 +32,7 @@ export { default as Textarea } from './components/Textarea.svelte';
 export * from './utils/accessibility';
 export * from './utils/formatText';
 export * from './utils/mobile';
-export * from './utils/snackbar';
+export * from './utils/snackbar.svelte';
 
 // Types
 export type { MenuItem } from './types/MenuItem';
