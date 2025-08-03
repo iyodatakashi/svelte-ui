@@ -3,7 +3,7 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
-	import { snackbar } from '../utils/snackbar';
+	import { snackbar } from '../utils/snackbar.svelte';
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';
