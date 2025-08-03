@@ -29,8 +29,8 @@
 	// =========================================================================
 	const radius = $derived((size - strokeWidth) / 2);
 	const circumference = $derived(2 * Math.PI * radius);
-	const halfCircumference = $derived(circumference / 2);
-	const negativeHalfCircumference = $derived(-circumference / 2);
+	const halfCircumference = $derived((circumference * 3) / 4);
+	const negativeHalfCircumference = $derived(-halfCircumference);
 	const growDuration = $derived(1.6 / speed);
 	const rotateDuration = $derived(0.8 / speed);
 </script>
