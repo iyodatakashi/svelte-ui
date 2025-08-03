@@ -5,6 +5,7 @@
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -80,10 +81,10 @@
 		// アイコン関連
 		icon?: string;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 
 		// バッジ関連
 		hasBadge?: boolean;
@@ -112,10 +113,6 @@
 		// その他
 		[key: string]: any;
 	} = $props();
-
-	// Debug: iconFilled value
-	console.log('IconButton iconFilled:', iconFilled);
-	console.log('IconButton fontSize:', fontSize);
 
 	// =========================================================================
 	// Methods

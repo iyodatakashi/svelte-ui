@@ -6,6 +6,7 @@
 	import type { MenuItem } from '../types/MenuItem';
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -29,7 +30,7 @@
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
+		iconOpticalSize = 24,
 		iconVariant = 'outlined',
 
 		// ARIA/アクセシビリティ
@@ -60,10 +61,10 @@
 		mobileFullscreen?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 	} = $props();
 
 	let popupRef: SvelteComponent | undefined = $state();

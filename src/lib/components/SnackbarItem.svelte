@@ -4,6 +4,7 @@
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import { snackbar } from '../utils/snackbar.svelte';
+	import type { IconVariant } from '$lib/types/Icon';
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';
@@ -31,6 +32,7 @@
 		// 状態/動作
 		duration = 3000,
 		closable = false,
+		iconVariant = 'outlined',
 
 		// イベントハンドラー
 		onAction
@@ -53,6 +55,7 @@
 		// 状態/動作
 		duration?: number;
 		closable?: boolean;
+		iconVariant?: IconVariant;
 
 		// イベントハンドラー
 		onAction?: () => void;
@@ -171,6 +174,7 @@
 				<IconButton
 					ariaLabel="このメッセージを閉じる"
 					iconFilled={true}
+					{iconVariant}
 					color="var(--svelte-ui-text-on-filled-color)"
 					size={24}
 					onclick={handleClose}

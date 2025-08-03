@@ -3,6 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
+	import type { IconVariant } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -40,6 +41,7 @@
 		clearable = false,
 		readonly = false,
 		required = false,
+		iconVariant = 'outlined',
 
 		// イベントハンドラー
 		onchange = () => {},
@@ -83,6 +85,7 @@
 		clearable?: boolean;
 		readonly?: boolean;
 		required?: boolean;
+		iconVariant?: IconVariant;
 
 		// イベントハンドラー
 		onchange?: (value: any) => void;
@@ -213,6 +216,7 @@
 					onclick={clear}
 					tabindex={-1}
 					iconFilled={true}
+					{iconVariant}
 					size={24}>cancel</IconButton
 				>
 			</div>

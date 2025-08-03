@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -48,10 +49,10 @@
 
 		// アイコン関連
 		filled?: boolean;
-		weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		grade?: number;
-		opticalSize?: number;
-		variant?: 'outlined' | 'rounded' | 'sharp';
+		weight?: IconWeight;
+		grade?: IconGrade;
+		opticalSize?: IconOpticalSize;
+		variant?: IconVariant;
 
 		// ARIA/アクセシビ理知
 		ariaLabel?: string;

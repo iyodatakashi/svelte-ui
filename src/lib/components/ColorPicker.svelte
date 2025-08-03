@@ -4,6 +4,7 @@
 	import { untrack } from 'svelte';
 	import IconButton from './IconButton.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { IconVariant } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -26,6 +27,7 @@
 		disabled = false,
 		readonly = false,
 		clearable = false,
+		iconVariant = 'outlined',
 
 		// イベントハンドラー
 		onchange = () => {},
@@ -54,6 +56,7 @@
 		disabled?: boolean;
 		readonly?: boolean;
 		clearable?: boolean;
+		iconVariant?: IconVariant;
 
 		// イベントハンドラー
 		onchange?: (value: any) => void;
@@ -161,6 +164,7 @@
 					onclick={clear}
 					tabindex={-1}
 					iconFilled={true}
+					{iconVariant}
 					size={24}>cancel</IconButton
 				>
 			</div>

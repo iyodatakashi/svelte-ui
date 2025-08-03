@@ -4,6 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -26,10 +27,11 @@
 
 		// アイコン系
 		icon = 'image',
+		iconSize = 48,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
+		iconOpticalSize = iconSize,
 		iconVariant = 'outlined'
 	}: {
 		// 基本プロパティ
@@ -50,11 +52,12 @@
 
 		// アイコン系
 		icon?: string;
+		iconSize?: number;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;
@@ -205,7 +208,7 @@
 		{:else}
 			<div class="description">
 				<Icon
-					size={48}
+					size={iconSize}
 					filled={iconFilled}
 					weight={iconWeight}
 					grade={iconGrade}
@@ -246,10 +249,6 @@
 		height: var(--image-uploader-width, 100%);
 	}
 
-	.image-uploader-container.rounded {
-		border-radius: var(--svelte-ui-border-radius-rounded);
-	}
-
 	.image-uploader {
 		display: flex;
 		flex-direction: column;
@@ -264,7 +263,6 @@
 		border-radius: var(--svelte-ui-border-radius);
 		cursor: pointer;
 		transition: background-color var(--svelte-ui-transition-duration);
-		overflow: hidden;
 	}
 
 	.image-uploader.rounded {
@@ -349,12 +347,8 @@
 		height: auto;
 	}
 
-	.image-uploader.rounded .image-preview-item {
-		border-radius: var(--image-uploader-border-radius);
-	}
-
-	.image-uploader.rounded .image-preview-item.single {
-		border-radius: var(--image-uploader-border-radius);
+	.image-uploader.rounded .image-preview-item .preview-image {
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	.preview-image {

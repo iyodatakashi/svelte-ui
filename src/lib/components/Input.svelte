@@ -4,6 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -43,7 +44,7 @@
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
+		iconOpticalSize = 24,
 		iconVariant = 'outlined',
 
 		// 状態/動作
@@ -97,10 +98,10 @@
 		rightIcon?: string;
 		leftIcon?: string;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 
 		// 状態/動作
 		disabled?: boolean;

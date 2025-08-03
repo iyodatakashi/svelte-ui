@@ -4,6 +4,7 @@
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -25,11 +26,12 @@
 		rounded = false,
 
 		// アイコン系
-		icon = 'draft',
+		icon = 'upload',
+		iconSize = 48,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
+		iconOpticalSize = iconSize,
 		iconVariant = 'outlined'
 	}: {
 		// 基本プロパティ
@@ -49,11 +51,12 @@
 
 		// アイコン系
 		icon?: string;
+		iconSize?: number;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;
@@ -165,7 +168,7 @@
 	{#if files && files.length > 0}
 		<div class="description with-file">
 			<Icon
-				size={48}
+				size={iconSize}
 				filled={iconFilled}
 				weight={iconWeight}
 				grade={iconGrade}
@@ -178,8 +181,9 @@
 						{file.name}
 						{#if multiple}
 							<IconButton
-								iconFilled={true}
 								size={24}
+								iconFilled={true}
+								iconWeight={300}
 								color="var(--svelte-ui-text-color)"
 								onclick={(e) => {
 									e.stopPropagation();
@@ -188,7 +192,7 @@
 								ariaLabel="ファイルを削除"
 								tabindex={-1}
 							>
-								cancel
+								close
 							</IconButton>
 						{/if}
 					</li>
