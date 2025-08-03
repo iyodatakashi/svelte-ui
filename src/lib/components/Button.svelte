@@ -79,7 +79,7 @@
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconVariant?: 'outlined' | 'rounded' | 'sharp';
 
 		// 状態/動作
 		disabled?: boolean;

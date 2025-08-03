@@ -15,6 +15,7 @@ interface IconButtonArgs {
 	loading?: boolean;
 	tabindex?: number | null;
 	iconFilled?: boolean;
+	iconVariant?: 'outlined' | 'rounded' | 'sharp';
 	iconWeight?: number;
 	customStyle?: string;
 	rounded?: boolean;
@@ -83,6 +84,11 @@ const meta: Meta<IconButtonArgs> = {
 		iconFilled: {
 			control: 'boolean',
 			description: 'Whether the icon should be filled'
+		},
+		iconVariant: {
+			control: 'select',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Icon variant style'
 		},
 		showBadge: {
 			control: 'boolean',
@@ -161,7 +167,8 @@ export const Default: Story = {
 		variant: 'text',
 		size: 32,
 		ariaLabel: 'Default icon button',
-		children: createChildrenSnippet('search')
+		iconFilled: true,
+		children: createChildrenSnippet('cancel')
 	}
 };
 
@@ -171,7 +178,7 @@ export const Filled: Story = {
 		variant: 'filled',
 		size: 32,
 		ariaLabel: 'Filled icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -181,7 +188,7 @@ export const Outlined: Story = {
 		variant: 'outlined',
 		size: 32,
 		ariaLabel: 'Outlined icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -191,7 +198,7 @@ export const Small: Story = {
 		variant: 'filled',
 		size: 24,
 		ariaLabel: 'Small icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 export const Large: Story = {
@@ -199,7 +206,7 @@ export const Large: Story = {
 		variant: 'filled',
 		size: 40,
 		ariaLabel: 'Large icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -209,7 +216,7 @@ export const Disabled: Story = {
 		variant: 'filled',
 		disabled: true,
 		ariaLabel: 'Disabled icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -219,7 +226,7 @@ export const Loading: Story = {
 		variant: 'filled',
 		loading: true,
 		ariaLabel: 'Loading icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -261,7 +268,7 @@ export const Rounded: Story = {
 		variant: 'filled',
 		rounded: true,
 		ariaLabel: 'Rounded icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -271,7 +278,7 @@ export const Pressed: Story = {
 		variant: 'filled',
 		pressed: true,
 		ariaLabel: 'Pressed icon button',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -291,7 +298,7 @@ export const ReducedMotion: Story = {
 		variant: 'filled',
 		reducedMotion: true,
 		ariaLabel: 'No animation',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -324,7 +331,7 @@ export const Playground: Story = {
 		Component: IconButton,
 		props: {
 			...args,
-			children: createChildrenSnippet('search')
+			children: createChildrenSnippet('home')
 		}
 	})
 };

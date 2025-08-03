@@ -51,7 +51,7 @@
 		weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		grade?: number;
 		opticalSize?: number;
-		variant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		variant?: 'outlined' | 'rounded' | 'sharp';
 
 		// ARIA/アクセシビ理知
 		ariaLabel?: string;
@@ -66,9 +66,7 @@
 	// $derived
 	// =========================================================================
 	const iconClasses = $derived(
-		[`material-symbols-${variant}`, filled && 'icon--filled', reducedMotion && 'icon--no-motion']
-			.filter(Boolean)
-			.join(' ')
+		[`material-symbols-${variant}`, reducedMotion && 'icon--no-motion'].filter(Boolean).join(' ')
 	);
 
 	const fontVariationSettings = $derived(
@@ -115,6 +113,11 @@
 		font-size: inherit;
 		color: inherit;
 		line-height: inherit;
+		text-transform: none;
+		letter-spacing: normal;
+		word-wrap: normal;
+		white-space: nowrap;
+		direction: ltr;
 		transition-property: color, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 		transition-timing-function: ease;

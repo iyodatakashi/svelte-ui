@@ -7,7 +7,7 @@ import Icon from '../components/Icon.svelte';
 interface IconArgs {
 	children: Snippet;
 	size?: number;
-	fill?: boolean;
+	filled?: boolean;
 	color?: string;
 	style?: string;
 	variant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
@@ -44,7 +44,7 @@ const meta: Meta<IconArgs> = {
 			control: 'number',
 			description: 'Size of the icon in pixels'
 		},
-		fill: {
+		filled: {
 			control: 'boolean',
 			description: 'Whether the icon should be filled'
 		},
@@ -54,7 +54,7 @@ const meta: Meta<IconArgs> = {
 		},
 		variant: {
 			control: 'select',
-			options: ['outlined', 'filled', 'rounded', 'sharp'],
+			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Material Symbols variant'
 		},
 		weight: {
@@ -116,7 +116,7 @@ export const Default: Story = {
 	args: {
 		size: 24,
 		variant: 'outlined',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -125,21 +125,21 @@ export const Filled: Story = {
 	args: {
 		size: 24,
 		variant: 'filled',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 export const Rounded: Story = {
 	args: {
 		size: 24,
 		variant: 'rounded',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 export const Sharp: Story = {
 	args: {
 		size: 24,
 		variant: 'sharp',
-		children: createChildrenSnippet('search')
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -161,8 +161,8 @@ export const Large: Story = {
 export const FilledIcon: Story = {
 	args: {
 		size: 32,
-		fill: true,
-		children: createChildrenSnippet('favorite')
+		filled: true,
+		children: createChildrenSnippet('home')
 	}
 };
 
@@ -233,7 +233,7 @@ export const ReducedMotion: Story = {
 export const Playground: Story = {
 	args: {
 		size: 24,
-		fill: false,
+		filled: false,
 		color: '',
 		style: '',
 		variant: 'outlined',
@@ -251,7 +251,7 @@ export const Playground: Story = {
 		Component: Icon,
 		props: {
 			...args,
-			children: createChildrenSnippet('search')
+			children: createChildrenSnippet('home')
 		}
 	})
 };

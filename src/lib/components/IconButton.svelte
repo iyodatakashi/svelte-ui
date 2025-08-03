@@ -31,7 +31,7 @@
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
+		iconOpticalSize = fontSize,
 		iconVariant = 'outlined',
 
 		// バッジ関連
@@ -83,7 +83,7 @@
 		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 		iconGrade?: number;
 		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconVariant?: 'outlined' | 'rounded' | 'sharp';
 
 		// バッジ関連
 		hasBadge?: boolean;
@@ -112,6 +112,10 @@
 		// その他
 		[key: string]: any;
 	} = $props();
+
+	// Debug: iconFilled value
+	console.log('IconButton iconFilled:', iconFilled);
+	console.log('IconButton fontSize:', fontSize);
 
 	// =========================================================================
 	// Methods
@@ -191,7 +195,8 @@
 		{:else}
 			<div class="iconbutton__icon" class:iconbutton__icon--hidden={loading}>
 				<Icon
-					filled={iconFilled}
+					filled={true}
+					size={fontSize}
 					weight={iconWeight}
 					grade={iconGrade}
 					opticalSize={iconOpticalSize}
