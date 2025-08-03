@@ -138,10 +138,12 @@
 		class="snackbar-item__content snackbar-item__content--{type} snackbar-item__content--{variant} snackbar-item__content--{position} {visible
 			? 'snackbar-item__content--visible'
 			: ''}"
-		role="alert"
-		aria-live="polite"
+		role={type === 'error' || type === 'warning' ? 'alert' : 'status'}
+		aria-live={type === 'error' || type === 'warning' ? 'assertive' : 'polite'}
+		aria-atomic="true"
+		aria-hidden={!visible}
 	>
-		<div class="snackbar__icon">
+		<div class="snackbar__icon" aria-hidden="true">
 			<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
 		</div>
 
@@ -158,6 +160,7 @@
 				variant="outlined"
 				color="var(--svelte-ui-text-on-filled-color)"
 				onclick={handleAction}
+				aria-label="{actionLabel} - {message}"
 			>
 				{actionLabel}
 			</Button>
@@ -166,7 +169,7 @@
 		{#if closable}
 			<div class="snackbar-item__close">
 				<IconButton
-					ariaLabel="閉じる"
+					ariaLabel="このメッセージを閉じる"
 					iconFilled={true}
 					color="var(--svelte-ui-text-on-filled-color)"
 					size={24}
