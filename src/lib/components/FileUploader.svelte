@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import IconButton from './IconButton.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 
 	// =========================================================================
@@ -78,6 +79,18 @@
 	// =========================================================================
 	const handleClick = () => {
 		fileInputRef?.click();
+	};
+
+	const removeFile = (index: number) => {
+		if (!files) return;
+
+		const dt = new DataTransfer();
+		for (let i = 0; i < files.length; i++) {
+			if (i !== index) {
+				dt.items.add(files[i]);
+			}
+		}
+		files = dt.files.length > 0 ? dt.files : undefined;
 	};
 
 	const validateFile = (file: File): boolean => {
@@ -160,8 +173,25 @@
 				variant={iconVariant}>{icon}</Icon
 			>
 			<ul class="file-list">
-				{#each files as file}
-					<li>{file.name}</li>
+				{#each files as file, index}
+					<li>
+						{file.name}
+						{#if multiple}
+							<IconButton
+								iconFilled={true}
+								size={24}
+								color="var(--svelte-ui-text-color)"
+								onclick={(e) => {
+									e.stopPropagation();
+									removeFile(index);
+								}}
+								ariaLabel="ファイルを削除"
+								tabindex={-1}
+							>
+								cancel
+							</IconButton>
+						{/if}
+					</li>
 				{/each}
 			</ul>
 		</div>
@@ -258,6 +288,20 @@
 		color: var(--svelte-ui-error-color);
 		border-radius: var(--svelte-ui-border-radius);
 		font-size: var(--svelte-ui-font-size-sm);
+	}
+
+	.file-list {
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+	}
+
+	.file-list li {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 0;
 	}
 
 	@media (hover: hover) {
