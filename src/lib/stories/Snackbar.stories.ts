@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/sveltekit';
+import type { StoryObj } from '@storybook/sveltekit';
 import Snackbar from '../components/Snackbar.svelte';
 import { snackbarManager } from '../utils/snackbar.svelte';
 
@@ -14,7 +14,7 @@ if (typeof window !== 'undefined') {
 	window.snackbar = snackbarManager;
 }
 
-const meta: Meta<typeof Snackbar> = {
+const meta = {
 	title: 'UI/Snackbar',
 	component: Snackbar,
 	parameters: {

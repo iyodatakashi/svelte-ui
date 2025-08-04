@@ -28,11 +28,11 @@
 		// スタイル/レイアウト
 		variant = 'filled',
 		position = 'bottom',
+		iconVariant = 'outlined',
 
 		// 状態/動作
 		duration = 3000,
 		closable = false,
-		iconVariant = 'outlined',
 
 		// イベントハンドラー
 		onAction

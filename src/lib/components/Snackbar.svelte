@@ -52,46 +52,38 @@
 	);
 </script>
 
-<!-- Top position snackbars -->
+{#snippet snackbarItemSnippet(item: SnackbarData, index: number)}
+	<div class="snackbar__item" style="z-index: {1000 + index};">
+		<SnackbarItem
+			children={item.children}
+			message={item.message}
+			type={item.type}
+			actionLabel={item.actionLabel}
+			id={item.id}
+			variant={item.variant}
+			position={item.position}
+			iconVariant="outlined"
+			duration={item.duration}
+			closable={item.closable}
+			onAction={item.onAction}
+		/>
+	</div>
+{/snippet}
+
+<!-- Snackbar Top Items -->
 {#if topItems.length > 0}
 	<div class="snackbar snackbar--top">
 		{#each topItems as item, index (item.id)}
-			<div class="snackbar__item" style="z-index: {1000 + index};">
-				<SnackbarItem
-					id={item.id}
-					message={item.message}
-					type={item.type}
-					variant={item.variant}
-					duration={item.duration}
-					position={item.position}
-					closable={item.closable}
-					actionLabel={item.actionLabel}
-					onAction={item.onAction}
-					children={item.children}
-				/>
-			</div>
+			{@render snackbarItemSnippet(item, index)}
 		{/each}
 	</div>
 {/if}
 
-<!-- Bottom position snackbars -->
+<!-- Snackbar Bottom Items -->
 {#if bottomItems.length > 0}
 	<div class="snackbar snackbar--bottom">
 		{#each bottomItems as item, index (item.id)}
-			<div class="snackbar__item" style="z-index: {1000 + index};">
-				<SnackbarItem
-					id={item.id}
-					message={item.message}
-					type={item.type}
-					variant={item.variant}
-					duration={item.duration}
-					position={item.position}
-					closable={item.closable}
-					actionLabel={item.actionLabel}
-					onAction={item.onAction}
-					children={item.children}
-				/>
-			</div>
+			{@render snackbarItemSnippet(item, index)}
 		{/each}
 	</div>
 {/if}
