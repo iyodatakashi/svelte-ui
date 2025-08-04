@@ -116,9 +116,18 @@
 
 		// 有効なファイルがある場合のみ更新
 		if (validFiles.length > 0) {
-			const dt = new DataTransfer();
-			validFiles.forEach((file) => dt.items.add(file));
-			files = dt.files;
+			const dataTransfer = new DataTransfer();
+
+			// multipleの場合は既存のファイルを保持して追加
+			if (multiple && files) {
+				for (let i = 0; i < files.length; i++) {
+					dataTransfer.items.add(files[i]);
+				}
+			}
+
+			// 新しく選択されたファイルのみを追加
+			validFiles.forEach((file) => dataTransfer.items.add(file));
+			files = dataTransfer.files;
 		}
 	};
 
@@ -236,12 +245,6 @@
 		{id}
 		type="file"
 		onchange={(event) => {
-			const target = event.target as HTMLInputElement;
-			if (target.files && target.files.length > 0) {
-				handleFileChange(target.files);
-			}
-		}}
-		oninput={(event) => {
 			const target = event.target as HTMLInputElement;
 			if (target.files && target.files.length > 0) {
 				handleFileChange(target.files);
