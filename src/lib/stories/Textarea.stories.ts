@@ -24,11 +24,6 @@ const meta = {
 			options: ['default', 'inline'],
 			description: 'デザインバリアント'
 		},
-		theme: {
-			control: { type: 'select' },
-			options: ['light', 'dark'],
-			description: 'テーマ'
-		},
 		focusStyle: {
 			control: { type: 'select' },
 			options: ['background', 'border', 'none'],
@@ -213,7 +208,6 @@ export const Playground = {
 	args: {
 		value: '',
 		variant: 'default',
-		theme: 'light',
 		focusStyle: 'background',
 		placeholder: 'Playground',
 		fullWidth: false,
