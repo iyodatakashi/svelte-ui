@@ -110,14 +110,16 @@
 			const file = fileList[i];
 			if (validateFile(file)) {
 				validFiles.push(file);
-			} else {
-				return;
 			}
+			// 無効なファイルは単純にスキップ
 		}
 
-		const dt = new DataTransfer();
-		validFiles.forEach((file) => dt.items.add(file));
-		files = dt.files;
+		// 有効なファイルがある場合のみ更新
+		if (validFiles.length > 0) {
+			const dt = new DataTransfer();
+			validFiles.forEach((file) => dt.items.add(file));
+			files = dt.files;
+		}
 	};
 
 	const removeFile = (index: number) => {
@@ -147,7 +149,7 @@
 
 <div
 	class="image-uploader-container"
-	class:rounded
+	class:rounded={rounded && !multiple}
 	style="
 		--image-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
 		--image-uploader-height: {height}px
@@ -158,7 +160,7 @@
 		class="image-uploader"
 		class:hover={isHover}
 		class:has-images={files && files.length > 0}
-		class:rounded
+		class:rounded={rounded && !multiple}
 		onclick={handleClick}
 		ondragover={(event) => {
 			event.stopPropagation();
@@ -235,7 +237,13 @@
 		type="file"
 		onchange={(event) => {
 			const target = event.target as HTMLInputElement;
-			if (target.files) {
+			if (target.files && target.files.length > 0) {
+				handleFileChange(target.files);
+			}
+		}}
+		oninput={(event) => {
+			const target = event.target as HTMLInputElement;
+			if (target.files && target.files.length > 0) {
 				handleFileChange(target.files);
 			}
 		}}
