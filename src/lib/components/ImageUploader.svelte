@@ -323,14 +323,16 @@
 
 	.image-preview-container {
 		display: flex;
+		justify-content: start;
 		flex-wrap: wrap;
 		gap: 8px;
 		width: 100%;
-		justify-content: center;
+		padding: 8px;
 	}
 
 	.image-preview-container.single {
 		height: 100%;
+		padding: 0;
 	}
 
 	.image-preview-item {
