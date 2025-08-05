@@ -249,3 +249,70 @@ export const BasicUsage: Story = {
 		}
 	}
 };
+
+export const CustomColorTest: Story = {
+	render: () => ({
+		Component: Snackbar,
+		props: {}
+	}),
+	play: async () => {
+		// グローバルにsnackbarManagerを公開
+		if (typeof window !== 'undefined') {
+			window.snackbar = snackbarManager;
+		}
+
+		// カスタム色のテスト
+		setTimeout(() => snackbarManager.success('カスタム背景色: 赤', { color: '#FF0000' }), 500);
+		setTimeout(
+			() => snackbarManager.error('カスタムテキスト色: 緑', { textColor: '#00FF00' }),
+			1500
+		);
+		setTimeout(
+			() =>
+				snackbarManager.warning('カスタム背景色とテキスト色', {
+					color: '#8B5CF6',
+					textColor: '#FFFFFF'
+				}),
+			2500
+		);
+		setTimeout(
+			() =>
+				snackbarManager.info('アウトライン + カスタム色', {
+					color: '#06B6D4',
+					textColor: '#FFFFFF',
+					variant: 'outlined'
+				}),
+			3500
+		);
+	},
+	parameters: {
+		docs: {
+			description: {
+				story: `
+カスタム色のテスト用ストーリーです。
+
+## テスト内容
+1. カスタム背景色のみ指定
+2. カスタムテキスト色のみ指定  
+3. 背景色とテキスト色を両方指定
+4. アウトライン variant でカスタム色指定
+
+## ブラウザコンソールでテスト
+\`\`\`javascript
+// カスタム背景色
+snackbar.success("テスト", { color: "#FF0000" });
+
+// カスタムテキスト色
+snackbar.error("テスト", { textColor: "#00FF00" });
+
+// 両方指定
+snackbar.warning("テスト", { color: "#8B5CF6", textColor: "#FFFFFF" });
+
+// アウトライン variant
+snackbar.info("テスト", { color: "#06B6D4", textColor: "#FFFFFF", variant: "outlined" });
+\`\`\`
+				`
+			}
+		}
+	}
+};

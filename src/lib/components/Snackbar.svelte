@@ -63,6 +63,8 @@
 			variant={item.variant}
 			position={item.position}
 			iconVariant="outlined"
+			color={item.color}
+			textColor={item.textColor}
 			duration={item.duration}
 			closable={item.closable}
 			onAction={item.onAction}

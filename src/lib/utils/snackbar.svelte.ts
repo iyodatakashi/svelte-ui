@@ -8,6 +8,8 @@ export type SnackbarItem = {
 	children?: Snippet;
 	type: 'info' | 'success' | 'warning' | 'error';
 	variant?: 'filled' | 'outlined';
+	color?: string;
+	textColor?: string;
 	duration?: number;
 	position?: 'top' | 'bottom';
 	closable?: boolean;

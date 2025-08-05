@@ -285,13 +285,14 @@
 	--svelte-ui-snackbar-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-snackbar-offset: 24px;
 	--svelte-ui-snackbar-z-index: 9999;
-	--svelte-ui-snackbar-font-size: var(--svelte-ui-font-size-sm);
+	--svelte-ui-snackbar-font-size: var(--svelte-ui-font-size);
 	--svelte-ui-snackbar-line-height: 1.4;
 	--svelte-ui-snackbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
 	--svelte-ui-snackbar-action-font-size: var(--svelte-ui-font-size-xs);
 	--svelte-ui-snackbar-action-font-weight: 600;
 	--svelte-ui-snackbar-action-padding: 4px 8px;
 	--svelte-ui-snackbar-action-border-radius: 4px;
+	--svelte-ui-snackbar-content-gap: 8px;
 
 	/* ====================================
    * 共通部品のサイズ、パディングなど
