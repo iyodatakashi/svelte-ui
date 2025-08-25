@@ -21,7 +21,7 @@ const meta = {
 		},
 		type: {
 			control: { type: 'select' },
-			options: ['text', 'password', 'number'],
+			options: ['text', 'password', 'email', 'tel', 'url', 'number'],
 			description: '入力タイプ'
 		},
 		variant: {
@@ -81,6 +81,32 @@ const meta = {
 		iconFilled: {
 			control: { type: 'boolean' },
 			description: 'アイコンを塗りつぶし表示'
+		},
+		min: {
+			control: { type: 'number' },
+			description: '最小値（number type用）'
+		},
+		max: {
+			control: { type: 'number' },
+			description: '最大値（number type用）'
+		},
+		step: {
+			control: { type: 'number' },
+			description: 'ステップ値（number type用）'
+		},
+		autocomplete: {
+			control: { type: 'select' },
+			options: [
+				null,
+				'email',
+				'tel',
+				'url',
+				'name',
+				'username',
+				'current-password',
+				'new-password'
+			],
+			description: 'オートコンプリート属性'
 		}
 	}
 };
@@ -111,6 +137,65 @@ export const Number = {
 		type: 'number',
 		placeholder: '数値を入力',
 		value: 1000
+	}
+};
+
+// Email
+export const Email = {
+	args: {
+		type: 'email',
+		placeholder: 'メールアドレスを入力',
+		value: 'example@example.com'
+	}
+};
+
+// Tel
+export const Tel = {
+	args: {
+		type: 'tel',
+		placeholder: '電話番号を入力',
+		value: '090-1234-5678'
+	}
+};
+
+// URL
+export const URL = {
+	args: {
+		type: 'url',
+		placeholder: 'URLを入力',
+		value: 'https://example.com'
+	}
+};
+
+// Number with min/max/step
+export const NumberWithConstraints = {
+	args: {
+		type: 'number',
+		placeholder: '0-100の範囲で0.1刻み',
+		value: 50,
+		min: 0,
+		max: 100,
+		step: 0.1
+	}
+};
+
+// Email with autocomplete
+export const EmailWithAutocomplete = {
+	args: {
+		type: 'email',
+		placeholder: 'メールアドレスを入力',
+		value: '',
+		autocomplete: 'email'
+	}
+};
+
+// Tel with autocomplete
+export const TelWithAutocomplete = {
+	args: {
+		type: 'tel',
+		placeholder: '電話番号を入力',
+		value: '',
+		autocomplete: 'tel'
 	}
 };
 
@@ -296,6 +381,10 @@ export const Playground = {
 		required: false,
 		minWidth: null,
 		maxWidth: null,
+		min: null,
+		max: null,
+		step: null,
+		autocomplete: null,
 		iconFilled: false
 	},
 	render: (args) => ({

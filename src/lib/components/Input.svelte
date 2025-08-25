@@ -72,7 +72,7 @@
 
 		// HTML属性系
 		id?: string | null;
-		type?: 'text' | 'password' | 'number';
+		type?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'number';
 		tabindex?: number | null;
 		maxlength?: number | null;
 		pattern?: string | null;
