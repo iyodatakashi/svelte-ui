@@ -24,6 +24,39 @@
 		mobileFullscreen = true,
 		mobileBehavior = 'auto',
 
+		// フォーカスイベント
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+
+		// キーボードイベント
+		onkeydown = (event: KeyboardEvent) => {},
+		onkeyup = (event: KeyboardEvent) => {},
+
+		// マウスイベント
+		onclick = (event: MouseEvent) => {},
+		onmousedown = (event: MouseEvent) => {},
+		onmouseup = (event: MouseEvent) => {},
+		onmouseenter = (event: MouseEvent) => {},
+		onmouseleave = (event: MouseEvent) => {},
+		onmouseover = (event: MouseEvent) => {},
+		onmouseout = (event: MouseEvent) => {},
+		oncontextmenu = (event: MouseEvent) => {},
+		onauxclick = (event: MouseEvent) => {},
+
+		// タッチイベント
+		ontouchstart = (event: TouchEvent) => {},
+		ontouchend = (event: TouchEvent) => {},
+		ontouchmove = (event: TouchEvent) => {},
+		ontouchcancel = (event: TouchEvent) => {},
+
+		// ポインターイベント
+		onpointerdown = (event: PointerEvent) => {},
+		onpointerup = (event: PointerEvent) => {},
+		onpointerenter = (event: PointerEvent) => {},
+		onpointerleave = (event: PointerEvent) => {},
+		onpointermove = (event: PointerEvent) => {},
+		onpointercancel = (event: PointerEvent) => {},
+
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Menu'
 	}: {
@@ -58,6 +91,39 @@
 		mobileFullscreen?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 
+		// フォーカスイベント
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+
+		// キーボードイベント
+		onkeydown?: (event: KeyboardEvent) => void;
+		onkeyup?: (event: KeyboardEvent) => void;
+
+		// マウスイベント
+		onclick?: (event: MouseEvent) => void;
+		onmousedown?: (event: MouseEvent) => void;
+		onmouseup?: (event: MouseEvent) => void;
+		onmouseenter?: (event: MouseEvent) => void;
+		onmouseleave?: (event: MouseEvent) => void;
+		onmouseover?: (event: MouseEvent) => void;
+		onmouseout?: (event: MouseEvent) => void;
+		oncontextmenu?: (event: MouseEvent) => void;
+		onauxclick?: (event: MouseEvent) => void;
+
+		// タッチイベント
+		ontouchstart?: (event: TouchEvent) => void;
+		ontouchend?: (event: TouchEvent) => void;
+		ontouchmove?: (event: TouchEvent) => void;
+		ontouchcancel?: (event: TouchEvent) => void;
+
+		// ポインターイベント
+		onpointerdown?: (event: PointerEvent) => void;
+		onpointerup?: (event: PointerEvent) => void;
+		onpointerenter?: (event: PointerEvent) => void;
+		onpointerleave?: (event: PointerEvent) => void;
+		onpointermove?: (event: PointerEvent) => void;
+		onpointercancel?: (event: PointerEvent) => void;
+
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 	} = $props();
@@ -67,14 +133,31 @@
 	let buttonId: string = $state(`menu-button-${Math.random().toString(36).substring(2, 15)}`);
 
 	// =========================================================================
+	const isDisabled = $derived(disabled);
+
+	// =========================================================================
 	// Methods
 	// =========================================================================
 	const handleClick = (event: MouseEvent) => {
+		if (isDisabled) return;
 		event.stopPropagation();
+		onclick?.(event);
 		toggle();
 	};
 
+	const handleFocus = (event: FocusEvent) => {
+		if (isDisabled) return;
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		if (isDisabled) return;
+		onblur?.(event);
+	};
+
 	const handleKeyDown = (event: KeyboardEvent) => {
+		if (isDisabled) return;
+		onkeydown?.(event);
 		switch (event.key) {
 			case 'ArrowDown':
 			case 'Enter':
@@ -87,6 +170,101 @@
 				close();
 				break;
 		}
+	};
+
+	const handleKeyUp = (event: KeyboardEvent) => {
+		if (isDisabled) return;
+		onkeyup?.(event);
+	};
+
+	const handleMouseDown = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (isDisabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onauxclick?.(event);
+	};
+
+	const handleTouchStart = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchcancel?.(event);
+	};
+
+	const handlePointerDown = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointercancel?.(event);
 	};
 
 	const open = (): void => {
@@ -107,7 +285,28 @@
 		{ariaLabel}
 		{disabled}
 		onclick={handleClick}
+		onfocus={handleFocus}
+		onblur={handleBlur}
 		onkeydown={handleKeyDown}
+		onkeyup={handleKeyUp}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
 		aria-haspopup="menu"
 		aria-expanded="false"
 		aria-controls="{buttonId}-menu"
