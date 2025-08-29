@@ -161,11 +161,13 @@
 	let isFocused: boolean = $state(false);
 
 	// =========================================================================
+	const isDisabled = $derived(disabled || readonly);
+
 	// Methods
 	// =========================================================================
 
 	const clear = (): void => {
-		if (disabled || readonly) return;
+		if (isDisabled) return;
 		value = undefined;
 		ref?.focus();
 		onchange?.(value);
@@ -183,40 +185,124 @@
 	const handleChange = () => onchange?.(value);
 	const handleInput = () => oninput?.(value);
 	const handleFocus = (event: FocusEvent) => {
+		if (isDisabled) return;
 		isFocused = true;
 		onfocus?.(event);
 	};
+
 	const handleBlur = (event: FocusEvent) => {
+		if (isDisabled) return;
 		isFocused = false;
 		onblur?.(event);
 	};
-	const handleKeydown = (event: KeyboardEvent) => onkeydown?.(event);
-	const handleKeyup = (event: KeyboardEvent) => onkeyup?.(event);
+
+	const handleKeydown = (event: KeyboardEvent) => {
+		if (isDisabled) return;
+		onkeydown?.(event);
+	};
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		if (isDisabled) return;
+		onkeyup?.(event);
+	};
 
 	// マウスイベント
-	const handleClick = (event: MouseEvent) => onclick?.(event);
-	const handleMouseDown = (event: MouseEvent) => onmousedown?.(event);
-	const handleMouseUp = (event: MouseEvent) => onmouseup?.(event);
-	const handleMouseEnter = (event: MouseEvent) => onmouseenter?.(event);
-	const handleMouseLeave = (event: MouseEvent) => onmouseleave?.(event);
-	const handleMouseOver = (event: MouseEvent) => onmouseover?.(event);
-	const handleMouseOut = (event: MouseEvent) => onmouseout?.(event);
-	const handleContextMenu = (event: MouseEvent) => oncontextmenu?.(event);
-	const handleAuxClick = (event: MouseEvent) => onauxclick?.(event);
+	const handleClick = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onclick?.(event);
+	};
+
+	const handleMouseDown = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (isDisabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onauxclick?.(event);
+	};
 
 	// タッチイベント
-	const handleTouchStart = (event: TouchEvent) => ontouchstart?.(event);
-	const handleTouchEnd = (event: TouchEvent) => ontouchend?.(event);
-	const handleTouchMove = (event: TouchEvent) => ontouchmove?.(event);
-	const handleTouchCancel = (event: TouchEvent) => ontouchcancel?.(event);
+	const handleTouchStart = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchcancel?.(event);
+	};
 
 	// ポインターイベント
-	const handlePointerDown = (event: PointerEvent) => onpointerdown?.(event);
-	const handlePointerUp = (event: PointerEvent) => onpointerup?.(event);
-	const handlePointerEnter = (event: PointerEvent) => onpointerenter?.(event);
-	const handlePointerLeave = (event: PointerEvent) => onpointerleave?.(event);
-	const handlePointerMove = (event: PointerEvent) => onpointermove?.(event);
-	const handlePointerCancel = (event: PointerEvent) => onpointercancel?.(event);
+	const handlePointerDown = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointercancel?.(event);
+	};
 
 	// =========================================================================
 	// $derived

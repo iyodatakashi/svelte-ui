@@ -181,12 +181,23 @@
 		onauxclick(event);
 	};
 
-	const handleFocus = (event: FocusEvent) => onfocus(event);
-	const handleBlur = (event: FocusEvent) => onblur(event);
-	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
-	const handleKeyup = (event: KeyboardEvent) => onkeyup(event);
+	const handleFocus = (event: FocusEvent) => {
+		onfocus(event);
+	};
 
-	// マウスイベントハンドラ
+	const handleBlur = (event: FocusEvent) => {
+		onblur(event);
+	};
+
+	const handleKeydown = (event: KeyboardEvent) => {
+		onkeydown(event);
+	};
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		onkeyup(event);
+	};
+
+	// マウスイベント
 	const handleMouseDown = (event: MouseEvent) => {
 		if (isDisabled) return;
 		onmousedown(event);
@@ -222,7 +233,7 @@
 		oncontextmenu(event);
 	};
 
-	// タッチイベントハンドラ
+	// タッチイベント
 	const handleTouchStart = (event: TouchEvent) => {
 		if (isDisabled) return;
 		ontouchstart(event);
@@ -243,7 +254,7 @@
 		ontouchcancel(event);
 	};
 
-	// ポインターイベントハンドラ
+	// ポインターイベント
 	const handlePointerDown = (event: PointerEvent) => {
 		if (isDisabled) return;
 		onpointerdown(event);
