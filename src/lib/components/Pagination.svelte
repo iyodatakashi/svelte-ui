@@ -13,7 +13,7 @@
 		limit = 100,
 		currentPageNum = 1,
 
-		// イベントハンドラー
+		// 入力イベント
 		onchange = () => {}
 	}: {
 		// 基本プロパティ
@@ -21,7 +21,7 @@
 		limit: number;
 		currentPageNum: number;
 
-		// イベントハンドラー
+		// 入力イベント
 		onchange: (pageNum: number) => void;
 	} = $props();
 

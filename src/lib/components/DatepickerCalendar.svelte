@@ -34,8 +34,8 @@
 		// 状態/動作
 		mode = 'single',
 
-		// イベントハンドラー
-		onchange = (value: Date | { start: Date; end: Date } | undefined) => {},
+		// 入力イベント
+		onchange = () => {},
 		onOpen,
 		onClose
 	}: {
@@ -51,7 +51,7 @@
 		// 状態/動作
 		mode?: 'single' | 'range';
 
-		// イベントハンドラー
+		// 入力イベント
 		onchange: (value: Date | { start: Date; end: Date } | undefined) => void;
 		onOpen?: Function;
 		onClose?: Function;

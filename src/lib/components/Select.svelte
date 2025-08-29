@@ -64,7 +64,7 @@
 		onpointermove = (event: PointerEvent) => {},
 		onpointercancel = (event: PointerEvent) => {},
 
-		// 選択イベント
+		// 入力イベント
 		onchange = () => {},
 
 		// その他
@@ -126,7 +126,7 @@
 		onpointermove?: (event: PointerEvent) => void;
 		onpointercancel?: (event: PointerEvent) => void;
 
-		// 選択イベント
+		// 入力イベント
 		onchange?: (value: any) => void;
 
 		// その他

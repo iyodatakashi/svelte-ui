@@ -28,6 +28,9 @@
 		required = false,
 		reducedMotion = false,
 
+		// 入力イベント
+		onchange = () => {},
+
 		// フォーカスイベント
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
@@ -61,9 +64,6 @@
 		onpointermove = (event: PointerEvent) => {},
 		onpointercancel = (event: PointerEvent) => {},
 
-		// 変更イベント
-		onchange = (value: boolean) => {},
-
 		// その他
 		...restProps
 	}: {
@@ -84,6 +84,9 @@
 		disabled?: boolean;
 		required?: boolean;
 		reducedMotion?: boolean;
+
+		// 入力イベント
+		onchange?: (value: boolean) => void;
 
 		// フォーカスイベント
 		onfocus?: (event: FocusEvent) => void;
@@ -117,9 +120,6 @@
 		onpointerleave?: (event: PointerEvent) => void;
 		onpointermove?: (event: PointerEvent) => void;
 		onpointercancel?: (event: PointerEvent) => void;
-
-		// 変更イベント
-		onchange?: (value: boolean) => void;
 
 		// その他
 		[key: string]: any;

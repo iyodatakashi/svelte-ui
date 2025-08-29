@@ -57,10 +57,42 @@
 		minDate,
 		maxDate,
 
-		// イベントハンドラー
-		onchange = (_value: Date | { start: Date; end: Date } | undefined) => {},
-		onfocus = () => {},
-		onblur = () => {},
+		// 入力イベント
+		onchange = () => {},
+		oninput = () => {},
+
+		// フォーカスイベント
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+
+		// キーボードイベント
+		onkeydown = (event: KeyboardEvent) => {},
+		onkeyup = (event: KeyboardEvent) => {},
+
+		// マウスイベント
+		onclick = (event: MouseEvent) => {},
+		onmousedown = (event: MouseEvent) => {},
+		onmouseup = (event: MouseEvent) => {},
+		onmouseenter = (event: MouseEvent) => {},
+		onmouseleave = (event: MouseEvent) => {},
+		onmouseover = (event: MouseEvent) => {},
+		onmouseout = (event: MouseEvent) => {},
+		oncontextmenu = (event: MouseEvent) => {},
+		onauxclick = (event: MouseEvent) => {},
+
+		// タッチイベント
+		ontouchstart = (event: TouchEvent) => {},
+		ontouchend = (event: TouchEvent) => {},
+		ontouchmove = (event: TouchEvent) => {},
+		ontouchcancel = (event: TouchEvent) => {},
+
+		// ポインターイベント
+		onpointerdown = (event: PointerEvent) => {},
+		onpointerup = (event: PointerEvent) => {},
+		onpointerenter = (event: PointerEvent) => {},
+		onpointerleave = (event: PointerEvent) => {},
+		onpointermove = (event: PointerEvent) => {},
+		onpointercancel = (event: PointerEvent) => {},
 
 		// その他
 		...restProps
@@ -98,10 +130,34 @@
 		minDate?: Date;
 		maxDate?: Date;
 
-		// イベントハンドラー
+		// 入力イベント
 		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
-		onfocus?: Function;
-		onblur?: Function;
+		oninput?: (value: string) => void;
+
+		// フォーカスイベント
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+		onkeydown?: (event: KeyboardEvent) => void;
+		onkeyup?: (event: KeyboardEvent) => void;
+		onclick?: (event: MouseEvent) => void;
+		onmousedown?: (event: MouseEvent) => void;
+		onmouseup?: (event: MouseEvent) => void;
+		onmouseenter?: (event: MouseEvent) => void;
+		onmouseleave?: (event: MouseEvent) => void;
+		onmouseover?: (event: MouseEvent) => void;
+		onmouseout?: (event: MouseEvent) => void;
+		oncontextmenu?: (event: MouseEvent) => void;
+		onauxclick?: (event: MouseEvent) => void;
+		ontouchstart?: (event: TouchEvent) => void;
+		ontouchend?: (event: TouchEvent) => void;
+		ontouchmove?: (event: TouchEvent) => void;
+		ontouchcancel?: (event: TouchEvent) => void;
+		onpointerdown?: (event: PointerEvent) => void;
+		onpointerup?: (event: PointerEvent) => void;
+		onpointerenter?: (event: PointerEvent) => void;
+		onpointerleave?: (event: PointerEvent) => void;
+		onpointermove?: (event: PointerEvent) => void;
+		onpointercancel?: (event: PointerEvent) => void;
 
 		// その他
 		[key: string]: any;
@@ -118,6 +174,9 @@
 	let displayValue = $state('');
 
 	const calendarId = `${id}-calendar`;
+
+	// =========================================================================
+	const isDisabled = $derived(disabled);
 
 	const localeConfig = {
 		en: {
@@ -215,15 +274,18 @@
 		}
 	};
 
-	const handleClick = () => {
-		if (openIfClicked && !disabled) {
+	const handleClick = (event: MouseEvent) => {
+		if (isDisabled) return;
+		if (openIfClicked) {
 			openedViaKeyboard = false;
 			open();
 		}
+		onclick?.(event);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (disabled) return;
+		if (isDisabled) return;
+		onkeydown(event);
 
 		switch (event.key) {
 			case 'Enter':
@@ -252,6 +314,110 @@
 		}
 	};
 
+	const handleKeyup = (event: KeyboardEvent) => {
+		if (isDisabled) return;
+		onkeyup(event);
+	};
+
+	const handleInput = (event: Event) => {
+		if (isDisabled) return;
+		const target = event.target as HTMLInputElement;
+		oninput?.(target.value);
+	};
+
+	// マウスイベント
+	const handleMouseDown = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (isDisabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (isDisabled) return;
+		onauxclick?.(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (isDisabled) return;
+		ontouchcancel?.(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (isDisabled) return;
+		onpointercancel?.(event);
+	};
+
 	const handlePopupOpen = () => {
 		// DatepickerCalendarのイベントハンドラーを有効にする
 		datapickerCalendarRef?.handlePopupOpen();
@@ -265,19 +431,22 @@
 		openedViaKeyboard = false;
 	};
 
-	const handleFocus = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
+	const handleFocus = (event: FocusEvent) => {
+		if (isDisabled) return;
 		// キーボードでのフォーカス時のみPopupを開く
 		// クリック時は handleClick で処理
 		onfocus(event);
 	};
 
-	const handleBlur = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
+	const handleBlur = (event: FocusEvent) => {
+		if (isDisabled) return;
 		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
 		// フォーカスイベントのみをハンドルする
 		onblur(event);
 	};
 
 	const handleInputChange = (inputValue: string | number | undefined) => {
+		if (isDisabled) return;
 		if (!allowDirectInput) return;
 
 		const inputStr = String(inputValue || '');
@@ -351,7 +520,27 @@
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onchange={handleInputChange}
+		oninput={handleInput}
 		onkeydown={handleKeyDown}
+		onkeyup={handleKeyup}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
 		{id}
 		{inputAttributes}
 		{...restProps}
