@@ -31,12 +31,41 @@
 		disabled = false,
 		required = false,
 
-		// イベントハンドラー
-		onchange = () => {},
+		// フォーカスイベント
 		onfocus = (event: FocusEvent) => {},
 		onblur = (event: FocusEvent) => {},
-		onclick = (event: MouseEvent) => {},
+
+		// キーボードイベント
 		onkeydown = (event: KeyboardEvent) => {},
+		onkeyup = (event: KeyboardEvent) => {},
+
+		// マウスイベント
+		onclick = (event: MouseEvent) => {},
+		onmousedown = (event: MouseEvent) => {},
+		onmouseup = (event: MouseEvent) => {},
+		onmouseenter = (event: MouseEvent) => {},
+		onmouseleave = (event: MouseEvent) => {},
+		onmouseover = (event: MouseEvent) => {},
+		onmouseout = (event: MouseEvent) => {},
+		oncontextmenu = (event: MouseEvent) => {},
+		onauxclick = (event: MouseEvent) => {},
+
+		// タッチイベント
+		ontouchstart = (event: TouchEvent) => {},
+		ontouchend = (event: TouchEvent) => {},
+		ontouchmove = (event: TouchEvent) => {},
+		ontouchcancel = (event: TouchEvent) => {},
+
+		// ポインターイベント
+		onpointerdown = (event: PointerEvent) => {},
+		onpointerup = (event: PointerEvent) => {},
+		onpointerenter = (event: PointerEvent) => {},
+		onpointerleave = (event: PointerEvent) => {},
+		onpointermove = (event: PointerEvent) => {},
+		onpointercancel = (event: PointerEvent) => {},
+
+		// 選択イベント
+		onchange = () => {},
 
 		// その他
 		...restProps
@@ -64,12 +93,41 @@
 		disabled?: boolean;
 		required?: boolean;
 
-		// イベントハンドラー
+		// フォーカスイベント
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+
+		// キーボードイベント
+		onkeydown?: (event: KeyboardEvent) => void;
+		onkeyup?: (event: KeyboardEvent) => void;
+
+		// マウスイベント
+		onclick?: (event: MouseEvent) => void;
+		onmousedown?: (event: MouseEvent) => void;
+		onmouseup?: (event: MouseEvent) => void;
+		onmouseenter?: (event: MouseEvent) => void;
+		onmouseleave?: (event: MouseEvent) => void;
+		onmouseover?: (event: MouseEvent) => void;
+		onmouseout?: (event: MouseEvent) => void;
+		oncontextmenu?: (event: MouseEvent) => void;
+		onauxclick?: (event: MouseEvent) => void;
+
+		// タッチイベント
+		ontouchstart?: (event: TouchEvent) => void;
+		ontouchend?: (event: TouchEvent) => void;
+		ontouchmove?: (event: TouchEvent) => void;
+		ontouchcancel?: (event: TouchEvent) => void;
+
+		// ポインターイベント
+		onpointerdown?: (event: PointerEvent) => void;
+		onpointerup?: (event: PointerEvent) => void;
+		onpointerenter?: (event: PointerEvent) => void;
+		onpointerleave?: (event: PointerEvent) => void;
+		onpointermove?: (event: PointerEvent) => void;
+		onpointercancel?: (event: PointerEvent) => void;
+
+		// 選択イベント
 		onchange?: (value: any) => void;
-		onfocus?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
-		onblur?: (event: FocusEvent & { currentTarget: HTMLSelectElement }) => void;
-		onclick?: (event: MouseEvent & { currentTarget: HTMLSelectElement }) => void;
-		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLSelectElement }) => void;
 
 		// その他
 		[key: string]: any;
@@ -83,23 +141,46 @@
 
 	const handleFocus = (event: FocusEvent) => {
 		isFocused = true;
-		onfocus?.(event as FocusEvent & { currentTarget: HTMLSelectElement });
+		onfocus?.(event);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
 		isFocused = false;
-		onblur?.(event as FocusEvent & { currentTarget: HTMLSelectElement });
+		onblur?.(event);
 	};
 
+	const handleKeydown = (event: KeyboardEvent) => onkeydown?.(event);
+	const handleKeyup = (event: KeyboardEvent) => onkeyup?.(event);
+
+	// マウスイベント
+	const handleClick = (event: MouseEvent) => onclick?.(event);
+	const handleMouseDown = (event: MouseEvent) => onmousedown?.(event);
+	const handleMouseUp = (event: MouseEvent) => onmouseup?.(event);
+	const handleMouseEnter = (event: MouseEvent) => onmouseenter?.(event);
+	const handleMouseLeave = (event: MouseEvent) => onmouseleave?.(event);
+	const handleMouseOver = (event: MouseEvent) => onmouseover?.(event);
+	const handleMouseOut = (event: MouseEvent) => onmouseout?.(event);
+	const handleContextMenu = (event: MouseEvent) => oncontextmenu?.(event);
+	const handleAuxClick = (event: MouseEvent) => onauxclick?.(event);
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => ontouchstart?.(event);
+	const handleTouchEnd = (event: TouchEvent) => ontouchend?.(event);
+	const handleTouchMove = (event: TouchEvent) => ontouchmove?.(event);
+	const handleTouchCancel = (event: TouchEvent) => ontouchcancel?.(event);
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => onpointerdown?.(event);
+	const handlePointerUp = (event: PointerEvent) => onpointerup?.(event);
+	const handlePointerEnter = (event: PointerEvent) => onpointerenter?.(event);
+	const handlePointerLeave = (event: PointerEvent) => onpointerleave?.(event);
+	const handlePointerMove = (event: PointerEvent) => onpointermove?.(event);
+	const handlePointerCancel = (event: PointerEvent) => onpointercancel?.(event);
+
+	// 選択イベント
 	const handleChange = () => {
 		onchange?.(value);
 	};
-
-	const handleClick = (event: MouseEvent) =>
-		onclick?.(event as MouseEvent & { currentTarget: HTMLSelectElement });
-
-	const handleKeydown = (event: KeyboardEvent) =>
-		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLSelectElement });
 </script>
 
 <div
@@ -122,9 +203,28 @@ select--focus-{focusStyle}"
 		style={customStyle}
 		onfocus={handleFocus}
 		onblur={handleBlur}
-		onchange={handleChange}
-		onclick={handleClick}
 		onkeydown={handleKeydown}
+		onkeyup={handleKeyup}
+		onclick={handleClick}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
+		onchange={handleChange}
 		{...selectAttributes}
 		{...restProps}
 	>
