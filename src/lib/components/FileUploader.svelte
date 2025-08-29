@@ -32,7 +32,27 @@
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = iconSize,
-		iconVariant = 'outlined'
+		iconVariant = 'outlined',
+
+		// フォーカスイベント
+		onfocus = (event: FocusEvent) => {},
+		onblur = (event: FocusEvent) => {},
+
+		// キーボードイベント
+		onkeydown = (event: KeyboardEvent) => {},
+		onkeyup = (event: KeyboardEvent) => {},
+
+		// マウスイベント
+		onmouseenter = (event: MouseEvent) => {},
+		onmouseleave = (event: MouseEvent) => {},
+
+		// タッチイベント
+		ontouchstart = (event: TouchEvent) => {},
+		ontouchend = (event: TouchEvent) => {},
+
+		// ポインターイベント
+		onpointerenter = (event: PointerEvent) => {},
+		onpointerleave = (event: PointerEvent) => {}
 	}: {
 		// 基本プロパティ
 		files?: FileList;
@@ -57,6 +77,26 @@
 		iconGrade?: IconGrade;
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
+
+		// フォーカスイベント
+		onfocus?: (event: FocusEvent) => void;
+		onblur?: (event: FocusEvent) => void;
+
+		// キーボードイベント
+		onkeydown?: (event: KeyboardEvent) => void;
+		onkeyup?: (event: KeyboardEvent) => void;
+
+		// マウスイベント
+		onmouseenter?: (event: MouseEvent) => void;
+		onmouseleave?: (event: MouseEvent) => void;
+
+		// タッチイベント
+		ontouchstart?: (event: TouchEvent) => void;
+		ontouchend?: (event: TouchEvent) => void;
+
+		// ポインターイベント
+		onpointerenter?: (event: PointerEvent) => void;
+		onpointerleave?: (event: PointerEvent) => void;
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;
@@ -82,6 +122,50 @@
 	// =========================================================================
 	const handleClick = () => {
 		fileInputRef?.click();
+	};
+
+	const handleFocus = (event: FocusEvent) => {
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		onblur?.(event);
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		onkeydown?.(event);
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			handleClick();
+		}
+	};
+
+	const handleKeyUp = (event: KeyboardEvent) => {
+		onkeyup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		onmouseleave?.(event);
+	};
+
+	const handleTouchStart = (event: TouchEvent) => {
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		ontouchend?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		onpointerleave?.(event);
 	};
 
 	const removeFile = (index: number) => {
@@ -154,6 +238,16 @@
 		--file-uploader-height: {height}px
 	"
 	onclick={handleClick}
+	onfocus={handleFocus}
+	onblur={handleBlur}
+	onkeydown={handleKeyDown}
+	onkeyup={handleKeyUp}
+	onmouseenter={handleMouseEnter}
+	onmouseleave={handleMouseLeave}
+	ontouchstart={handleTouchStart}
+	ontouchend={handleTouchEnd}
+	onpointerenter={handlePointerEnter}
+	onpointerleave={handlePointerLeave}
 	ondragover={(event) => {
 		event.stopPropagation();
 		event.preventDefault();
