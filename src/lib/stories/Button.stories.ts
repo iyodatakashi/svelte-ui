@@ -29,7 +29,30 @@ interface ButtonArgs {
 	ariaLabel?: string;
 	ariaDescribedby?: string;
 	ariaExpanded?: boolean;
-	onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
+	onclick?: (event: MouseEvent) => void;
+	// 新しいイベントハンドラ
+	onfocus?: (event: FocusEvent) => void;
+	onblur?: (event: FocusEvent) => void;
+	onkeydown?: (event: KeyboardEvent) => void;
+	onkeyup?: (event: KeyboardEvent) => void;
+	onmousedown?: (event: MouseEvent) => void;
+	onmouseup?: (event: MouseEvent) => void;
+	onmouseenter?: (event: MouseEvent) => void;
+	onmouseleave?: (event: MouseEvent) => void;
+	onmouseover?: (event: MouseEvent) => void;
+	onmouseout?: (event: MouseEvent) => void;
+	oncontextmenu?: (event: MouseEvent) => void;
+	onauxclick?: (event: MouseEvent) => void;
+	ontouchstart?: (event: TouchEvent) => void;
+	ontouchend?: (event: TouchEvent) => void;
+	ontouchmove?: (event: TouchEvent) => void;
+	ontouchcancel?: (event: TouchEvent) => void;
+	onpointerdown?: (event: PointerEvent) => void;
+	onpointerup?: (event: PointerEvent) => void;
+	onpointerenter?: (event: PointerEvent) => void;
+	onpointerleave?: (event: PointerEvent) => void;
+	onpointermove?: (event: PointerEvent) => void;
+	onpointercancel?: (event: PointerEvent) => void;
 }
 
 const meta: Meta<ButtonArgs> = {
@@ -136,6 +159,95 @@ const meta: Meta<ButtonArgs> = {
 		onclick: {
 			control: false,
 			action: 'clicked'
+		},
+		// 新しいイベントハンドラのargTypes
+		onfocus: {
+			action: 'focused',
+			description: 'フォーカスイベント'
+		},
+		onblur: {
+			action: 'blurred',
+			description: 'ブラーイベント'
+		},
+		onkeydown: {
+			action: 'keydown',
+			description: 'キーダウンイベント'
+		},
+		onkeyup: {
+			action: 'keyup',
+			description: 'キーアップイベント'
+		},
+		onmousedown: {
+			action: 'mousedown',
+			description: 'マウスダウンイベント'
+		},
+		onmouseup: {
+			action: 'mouseup',
+			description: 'マウスアップイベント'
+		},
+		onmouseenter: {
+			action: 'mouseenter',
+			description: 'マウスエンターイベント'
+		},
+		onmouseleave: {
+			action: 'mouseleave',
+			description: 'マウスリーブイベント'
+		},
+		onmouseover: {
+			action: 'mouseover',
+			description: 'マウスオーバーイベント'
+		},
+		onmouseout: {
+			action: 'mouseout',
+			description: 'マウスアウトイベント'
+		},
+		oncontextmenu: {
+			action: 'contextmenu',
+			description: 'コンテキストメニューイベント'
+		},
+		onauxclick: {
+			action: 'auxclick',
+			description: '補助ボタンクリックイベント'
+		},
+		ontouchstart: {
+			action: 'touchstart',
+			description: 'タッチ開始イベント'
+		},
+		ontouchend: {
+			action: 'touchend',
+			description: 'タッチ終了イベント'
+		},
+		ontouchmove: {
+			action: 'touchmove',
+			description: 'タッチ移動イベント'
+		},
+		ontouchcancel: {
+			action: 'touchcancel',
+			description: 'タッチキャンセルイベント'
+		},
+		onpointerdown: {
+			action: 'pointerdown',
+			description: 'ポインターダウンイベント'
+		},
+		onpointerup: {
+			action: 'pointerup',
+			description: 'ポインターアップイベント'
+		},
+		onpointerenter: {
+			action: 'pointerenter',
+			description: 'ポインターエンターイベント'
+		},
+		onpointerleave: {
+			action: 'pointerleave',
+			description: 'ポインターリーブイベント'
+		},
+		onpointermove: {
+			action: 'pointermove',
+			description: 'ポインター移動イベント'
+		},
+		onpointercancel: {
+			action: 'pointercancel',
+			description: 'ポインターキャンセルイベント'
 		}
 	}
 };

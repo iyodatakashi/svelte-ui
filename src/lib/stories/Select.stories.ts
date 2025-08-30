@@ -55,6 +55,103 @@ const meta = {
 		required: {
 			control: { type: 'boolean' },
 			description: '必須項目'
+		},
+		// 新しいイベントハンドラのargTypes
+		onfocus: {
+			action: 'focused',
+			description: 'フォーカスイベント'
+		},
+		onblur: {
+			action: 'blurred',
+			description: 'ブラーイベント'
+		},
+		onkeydown: {
+			action: 'keydown',
+			description: 'キーダウンイベント'
+		},
+		onkeyup: {
+			action: 'keyup',
+			description: 'キーアップイベント'
+		},
+		onclick: {
+			action: 'clicked',
+			description: 'クリックイベント'
+		},
+		onmousedown: {
+			action: 'mousedown',
+			description: 'マウスダウンイベント'
+		},
+		onmouseup: {
+			action: 'mouseup',
+			description: 'マウスアップイベント'
+		},
+		onmouseenter: {
+			action: 'mouseenter',
+			description: 'マウスエンターイベント'
+		},
+		onmouseleave: {
+			action: 'mouseleave',
+			description: 'マウスリーブイベント'
+		},
+		onmouseover: {
+			action: 'mouseover',
+			description: 'マウスオーバーイベント'
+		},
+		onmouseout: {
+			action: 'mouseout',
+			description: 'マウスアウトイベント'
+		},
+		oncontextmenu: {
+			action: 'contextmenu',
+			description: 'コンテキストメニューイベント'
+		},
+		onauxclick: {
+			action: 'auxclick',
+			description: '補助ボタンクリックイベント'
+		},
+		ontouchstart: {
+			action: 'touchstart',
+			description: 'タッチ開始イベント'
+		},
+		ontouchend: {
+			action: 'touchend',
+			description: 'タッチ終了イベント'
+		},
+		ontouchmove: {
+			action: 'touchmove',
+			description: 'タッチ移動イベント'
+		},
+		ontouchcancel: {
+			action: 'touchcancel',
+			description: 'タッチキャンセルイベント'
+		},
+		onpointerdown: {
+			action: 'pointerdown',
+			description: 'ポインターダウンイベント'
+		},
+		onpointerup: {
+			action: 'pointerup',
+			description: 'ポインターアップイベント'
+		},
+		onpointerenter: {
+			action: 'pointerenter',
+			description: 'ポインターエンターイベント'
+		},
+		onpointerleave: {
+			action: 'pointerleave',
+			description: 'ポインターリーブイベント'
+		},
+		onpointermove: {
+			action: 'pointermove',
+			description: 'ポインター移動イベント'
+		},
+		onpointercancel: {
+			action: 'pointercancel',
+			description: 'ポインターキャンセルイベント'
+		},
+		onchange: {
+			action: 'changed',
+			description: '変更イベント'
 		}
 	}
 };

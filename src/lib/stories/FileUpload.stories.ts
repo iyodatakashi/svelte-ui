@@ -16,6 +16,17 @@ interface FileUploaderArgs {
 	iconGrade?: number;
 	iconOpticalSize?: number | null;
 	iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+	// 新しいイベントハンドラ
+	onfocus?: (event: FocusEvent) => void;
+	onblur?: (event: FocusEvent) => void;
+	onkeydown?: (event: KeyboardEvent) => void;
+	onkeyup?: (event: KeyboardEvent) => void;
+	onmouseenter?: (event: MouseEvent) => void;
+	onmouseleave?: (event: MouseEvent) => void;
+	ontouchstart?: (event: TouchEvent) => void;
+	ontouchend?: (event: TouchEvent) => void;
+	onpointerenter?: (event: PointerEvent) => void;
+	onpointerleave?: (event: PointerEvent) => void;
 }
 
 const meta: Meta<FileUploaderArgs> = {
@@ -67,6 +78,47 @@ const meta: Meta<FileUploaderArgs> = {
 		icon: {
 			control: 'text',
 			description: 'アイコン名'
+		},
+		// 新しいイベントハンドラのargTypes
+		onfocus: {
+			action: 'focused',
+			description: 'フォーカスイベント'
+		},
+		onblur: {
+			action: 'blurred',
+			description: 'ブラーイベント'
+		},
+		onkeydown: {
+			action: 'keydown',
+			description: 'キーダウンイベント'
+		},
+		onkeyup: {
+			action: 'keyup',
+			description: 'キーアップイベント'
+		},
+		onmouseenter: {
+			action: 'mouseenter',
+			description: 'マウスエンターイベント'
+		},
+		onmouseleave: {
+			action: 'mouseleave',
+			description: 'マウスリーブイベント'
+		},
+		ontouchstart: {
+			action: 'touchstart',
+			description: 'タッチ開始イベント'
+		},
+		ontouchend: {
+			action: 'touchend',
+			description: 'タッチ終了イベント'
+		},
+		onpointerenter: {
+			action: 'pointerenter',
+			description: 'ポインターエンターイベント'
+		},
+		onpointerleave: {
+			action: 'pointerleave',
+			description: 'ポインターリーブイベント'
 		}
 	}
 };
