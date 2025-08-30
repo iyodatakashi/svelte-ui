@@ -2,39 +2,28 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
 	let {
+		// Snippet
+		children,
+
 		// 基本プロパティ
 		value = $bindable(false),
 
-		// ラベル
-		children,
+		// HTML属性系
+		id = `switch-${Math.random().toString(36).substring(2, 15)}`,
+		inputAttributes,
 
-		// サイズ
+		// スタイル/レイアウト
 		size = 'medium',
 
-		// 色
-		color,
-
-		// 無効状態
+		// 状態/動作
 		disabled = false,
-
-		// 読み取り専用
-		readonly = false,
-
-		// 必須項目
 		required = false,
-
-		// エラー状態
-		error = null,
-
-		// 成功状態
-		success = null,
-
-		// アニメーション無効化
 		reducedMotion = false,
 
 		// フォーカスイベント
@@ -82,26 +71,18 @@
 		// ラベル
 		children?: Snippet;
 
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
 		// サイズ
 		size?: 'small' | 'medium' | 'large';
-
-		// 色
-		color?: string;
 
 		// 無効状態
 		disabled?: boolean;
 
-		// 読み取り専用
-		readonly?: boolean;
-
 		// 必須項目
 		required?: boolean;
-
-		// エラー状態
-		error?: string | null;
-
-		// 成功状態
-		success?: string | null;
 
 		// アニメーション無効化
 		reducedMotion?: boolean;
@@ -151,7 +132,7 @@
 	let errorId = `switch-error-${Math.random().toString(36).substring(2, 15)}`;
 
 	// =========================================================================
-	const isDisabled = $derived(disabled || readonly);
+	const isDisabled = $derived(disabled);
 
 	// =========================================================================
 	// Methods
@@ -293,8 +274,6 @@
 	class:switch-container--medium={size === 'medium'}
 	class:switch-container--large={size === 'large'}
 	class:switch-container--disabled={isDisabled}
-	class:switch-container--error={!!error}
-	class:switch-container--success={!!success}
 	class:switch-container--reduced-motion={reducedMotion}
 >
 	<input
@@ -303,10 +282,9 @@
 		type="checkbox"
 		class="switch-input"
 		{disabled}
-		{readonly}
 		{required}
 		id={switchId}
-		aria-describedby={error ? errorId : undefined}
+		{...inputAttributes}
 		onchange={handleChange}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -342,9 +320,6 @@
 		class:switch-label--large={size === 'large'}
 		class:switch-label--disabled={isDisabled}
 		class:switch-label--checked={value}
-		class:switch-label--error={!!error}
-		class:switch-label--success={!!success}
-		style={color ? `--switch-active-color: ${color};` : ''}
 	>
 		<span class="switch-track">
 			<span class="switch-thumb"></span>
@@ -355,18 +330,6 @@
 			</span>
 		{/if}
 	</label>
-
-	{#if error}
-		<div id={errorId} class="switch-error" role="alert">
-			{error}
-		</div>
-	{/if}
-
-	{#if success}
-		<div class="switch-success">
-			{success}
-		</div>
-	{/if}
 </div>
 
 <style lang="scss">
@@ -391,6 +354,8 @@
 		--switch-height: var(--svelte-ui-switch-height-sm);
 		--switch-thumb-size: var(--svelte-ui-switch-thumb-size-sm);
 		--switch-thumb-margin: var(--svelte-ui-switch-thumb-margin);
+		--switch-border-radius: var(--svelte-ui-switch-border-radius);
+		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
 	}
 
 	.switch-container--medium {
@@ -398,6 +363,8 @@
 		--switch-height: var(--svelte-ui-switch-height);
 		--switch-thumb-size: var(--svelte-ui-switch-thumb-size);
 		--switch-thumb-margin: var(--svelte-ui-switch-thumb-margin);
+		--switch-border-radius: var(--svelte-ui-switch-border-radius);
+		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
 	}
 
 	.switch-container--large {
@@ -405,6 +372,8 @@
 		--switch-height: var(--svelte-ui-switch-height-lg);
 		--switch-thumb-size: var(--svelte-ui-switch-thumb-size-lg);
 		--switch-thumb-margin: var(--svelte-ui-switch-thumb-margin);
+		--switch-border-radius: var(--svelte-ui-switch-border-radius);
+		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
 	}
 
 	/* =============================================
@@ -432,19 +401,9 @@
 		gap: var(--svelte-ui-switch-gap);
 		cursor: pointer;
 		user-select: none;
-		transition: opacity var(--svelte-ui-transition-duration) ease;
-
-		&:hover {
-			opacity: 0.8;
-		}
-
 		&--disabled {
 			cursor: not-allowed;
 			opacity: 0.5;
-
-			&:hover {
-				opacity: 0.5;
-			}
 		}
 	}
 
@@ -456,20 +415,12 @@
 		width: var(--switch-width);
 		height: var(--switch-height);
 		background-color: var(--svelte-ui-switch-inactive-color);
-		border-radius: calc(var(--switch-height) / 2);
+		border-radius: var(--switch-border-radius);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
 
 		.switch-label--checked & {
 			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));
-		}
-
-		.switch-label--error & {
-			background-color: var(--svelte-ui-error-color);
-		}
-
-		.switch-label--success & {
-			background-color: var(--svelte-ui-success-color);
 		}
 
 		.switch-label--disabled & {
@@ -487,7 +438,7 @@
 		width: var(--switch-thumb-size);
 		height: var(--switch-thumb-size);
 		background-color: var(--svelte-ui-switch-thumb-color);
-		border-radius: 50%;
+		border-radius: var(--switch-thumb-border-radius);
 		transition: transform var(--svelte-ui-transition-duration) ease;
 
 		.switch-label--checked & {
@@ -511,21 +462,6 @@
 	}
 
 	/* =============================================
- * エラー・成功メッセージ
- * ============================================= */
-	.switch-error {
-		margin-top: 4px;
-		font-size: var(--svelte-ui-font-size-xs);
-		color: var(--svelte-ui-error-color);
-	}
-
-	.switch-success {
-		margin-top: 4px;
-		font-size: var(--svelte-ui-font-size-xs);
-		color: var(--svelte-ui-success-color);
-	}
-
-	/* =============================================
  * アニメーション無効化
  * ============================================= */
 	.switch-container--reduced-motion {
@@ -541,14 +477,5 @@
 	.switch-input:focus-visible + .switch-label .switch-track {
 		outline: 2px solid var(--svelte-ui-focus-color);
 		outline-offset: 2px;
-	}
-
-	/* =============================================
- * ホバー効果
- * ============================================= */
-	@media (hover: hover) {
-		.switch-label:not(.switch-label--disabled):hover .switch-track {
-			transform: scale(1.05);
-		}
 	}
 </style>

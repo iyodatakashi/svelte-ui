@@ -269,6 +269,8 @@
 	);
 	--svelte-ui-switch-gap: 8px;
 	--svelte-ui-switch-disabled-opacity: var(--svelte-ui-disabled-opacity);
+	--svelte-ui-switch-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-switch-thumb-border-radius: var(--svelte-ui-border-radius-rounded);
 
 	/* Radio */
 	--svelte-ui-radio-size: 16px;

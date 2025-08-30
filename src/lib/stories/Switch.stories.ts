@@ -8,12 +8,10 @@ interface SwitchArgs {
 	value: boolean;
 	children?: Snippet;
 	size?: 'small' | 'medium' | 'large';
-	color?: string;
+
 	disabled?: boolean;
-	readonly?: boolean;
 	required?: boolean;
-	error?: string | null;
-	success?: string | null;
+	reducedMotion?: boolean;
 	reducedMotion?: boolean;
 	// イベントハンドラ
 	onfocus?: (event: FocusEvent) => void;
@@ -70,29 +68,14 @@ const meta: Meta<SwitchArgs> = {
 			options: ['small', 'medium', 'large'],
 			description: 'サイズ'
 		},
-		color: {
-			control: { type: 'color' },
-			description: 'アクティブ時の色'
-		},
+
 		disabled: {
 			control: { type: 'boolean' },
 			description: '無効状態'
 		},
-		readonly: {
-			control: { type: 'boolean' },
-			description: '読み取り専用'
-		},
 		required: {
 			control: { type: 'boolean' },
 			description: '必須項目'
-		},
-		error: {
-			control: { type: 'text' },
-			description: 'エラーメッセージ'
-		},
-		success: {
-			control: { type: 'text' },
-			description: '成功メッセージ'
 		},
 		reducedMotion: {
 			control: { type: 'boolean' },
@@ -257,68 +240,7 @@ export const Disabled: Story = {
 	}
 };
 
-// Readonly
-export const Readonly: Story = {
-	args: {
-		value: true,
-		readonly: true,
-		children: createChildrenSnippet('読み取り専用')
-	}
-};
 
-// Error state
-export const Error: Story = {
-	args: {
-		value: false,
-		error: 'この設定は必須です',
-		children: createChildrenSnippet('エラー状態')
-	}
-};
-
-// Success state
-export const Success: Story = {
-	args: {
-		value: true,
-		success: '設定が正常に保存されました',
-		children: createChildrenSnippet('成功状態')
-	}
-};
-
-// Custom color
-export const CustomColor: Story = {
-	args: {
-		value: true,
-		color: '#4CAF50',
-		children: createChildrenSnippet('緑色のスイッチ')
-	}
-};
-
-// Red color
-export const RedColor: Story = {
-	args: {
-		value: true,
-		color: '#f44336',
-		children: createChildrenSnippet('赤色のスイッチ')
-	}
-};
-
-// Purple color
-export const PurpleColor: Story = {
-	args: {
-		value: true,
-		color: '#9C27B0',
-		children: createChildrenSnippet('紫色のスイッチ')
-	}
-};
-
-// Orange color
-export const OrangeColor: Story = {
-	args: {
-		value: true,
-		color: '#FF9800',
-		children: createChildrenSnippet('オレンジ色のスイッチ')
-	}
-};
 
 // Reduced motion
 export const ReducedMotion: Story = {
