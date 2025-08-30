@@ -455,7 +455,7 @@
 		position: relative;
 		width: var(--switch-width);
 		height: var(--switch-height);
-		background-color: var(--svelte-ui-switch-track-color);
+		background-color: var(--svelte-ui-switch-inactive-color);
 		border-radius: calc(var(--switch-height) / 2);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
@@ -473,7 +473,7 @@
 		}
 
 		.switch-label--disabled & {
-			background-color: var(--svelte-ui-switch-disabled-color);
+			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
 	}
 
@@ -486,7 +486,7 @@
 		left: var(--switch-thumb-margin);
 		width: var(--switch-thumb-size);
 		height: var(--switch-thumb-size);
-		background-color: white;
+		background-color: var(--svelte-ui-switch-thumb-color);
 		border-radius: 50%;
 		transition: transform var(--svelte-ui-transition-duration) ease;
 
@@ -497,7 +497,7 @@
 		}
 
 		.switch-label--disabled & {
-			opacity: 0.5;
+			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
 	}
 
