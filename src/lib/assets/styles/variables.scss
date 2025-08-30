@@ -1,5 +1,39 @@
 /* src/lib/assets/styles/variables.scss */
 
+/* ====================================
+ * ファイル構造と記述ルール
+ * ====================================
+ * 
+ * このファイルは以下の構造になっています：
+ * 
+ * 1. ルートレベル（:where(:root)）
+ *    - カラーパレット（base, primary, white）
+ *    - 共通変数（トランジション、ボーダー半径、タイポグラフィ）
+ *    - 基本色変数（--svelte-ui-primary-color, --svelte-ui-success-color等）
+ *    - 各コンポーネントのサイズ・パディング等の固定値
+ *      ※ テーマに関係なく固定値のため、ここに配置
+ * 
+ * 2. ライトテーマ（:where(:root)内）
+ *    - テキスト色、ボーダー色、背景色等の基本テーマ色
+ * 
+ * 3. ダークテーマ（[data-theme='dark']）
+ *    - ライトテーマで定義された色変数を上書き
+ * 
+ * 4. コンポーネント色変数（:where(:root), [data-theme='dark']）
+ *    - ライト・ダーク両テーマで共有される色変数
+ *    - 各コンポーネントの色変数（Button, Input, Checkbox, Radio, Switch等）
+ *    - テーマで定義された色（--svelte-ui-text-color等）を参照する
+ * 
+ * 5. ハイコントラストモード（@media (prefers-contrast: more)）
+ *    - システムカラーを使用した上書き
+ * 
+ * 【重要】新しいコンポーネントの変数を追加する際：
+ * - サイズ・パディング等の固定値 → ルートレベル（1.）
+ * - 色変数 → コンポーネント色変数セクション（4.）
+ * - 色変数は必ずテーマ色（--svelte-ui-text-color等）を参照する
+ * - ライトテーマセクション内に直接色変数を定義してはいけない
+ * ==================================== */
+
 :where(:root) {
 	/* ====================================
    * カラーパレット
@@ -155,6 +189,10 @@
 	--svelte-ui-button-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-button-disabled-opacity: 0.5;
 
+	/* IconButton */
+	--svelte-ui-iconbutton-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-iconbutton-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+
 	/* Input */
 	--svelte-ui-input-height: var(--svelte-ui-form-height);
 	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
@@ -201,6 +239,25 @@
 	--svelte-ui-checkbox-icon-width-sm: 14px;
 	--svelte-ui-checkbox-icon-width-lg: 20px;
 
+	/* Switch */
+	--svelte-ui-switch-width: 32px;
+	--svelte-ui-switch-width-sm: 24px;
+	--svelte-ui-switch-width-lg: 40px;
+	--svelte-ui-switch-height: 22px; /* width * 0.75 - 2 */
+	--svelte-ui-switch-height-sm: 17px; /* width * 0.75 - 2 */
+	--svelte-ui-switch-height-lg: 28px; /* width * 0.75 - 2 */
+	--svelte-ui-switch-thumb-margin: 2px;
+	--svelte-ui-switch-thumb-size: calc(
+		var(--svelte-ui-switch-height) - var(--svelte-ui-switch-thumb-margin) * 2
+	);
+	--svelte-ui-switch-thumb-size-sm: calc(
+		var(--svelte-ui-switch-height-sm) - var(--svelte-ui-switch-thumb-margin) * 2
+	);
+	--svelte-ui-switch-thumb-size-lg: calc(
+		var(--svelte-ui-switch-height-lg) - var(--svelte-ui-switch-thumb-margin) * 2
+	);
+	--svelte-ui-switch-gap: 8px;
+
 	/* Radio */
 	--svelte-ui-radio-size: 16px;
 	--svelte-ui-radio-size-sm: 14px;
@@ -216,10 +273,6 @@
 	--svelte-ui-radio-padding: 0 0 0 24px;
 	--svelte-ui-radio-padding-sm: 0 0 0 20px;
 	--svelte-ui-radio-padding-lg: 0 0 0 28px;
-
-	/* IconButton */
-	--svelte-ui-iconbutton-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-iconbutton-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;
@@ -402,6 +455,17 @@
 	--svelte-ui-button-focus-color: var(--svelte-ui-focus-color);
 	--svelte-ui-button-label-color: var(--svelte-ui-text-color);
 
+	/* IconButton */
+	--svelte-ui-iconbutton-bg-filled: var(--svelte-ui-primary-color);
+	--svelte-ui-iconbutton-bg-outlined: transparent;
+	--svelte-ui-iconbutton-bg-text: transparent;
+	--svelte-ui-iconbutton-text-filled: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
+	--svelte-ui-iconbutton-text-text: var(--svelte-ui-primary-color);
+	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
+	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
+	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
+
 	/* Input */
 	--svelte-ui-input-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-border-color: var(--svelte-ui-border-weak-color);
@@ -432,23 +496,17 @@
 	--svelte-ui-checkbox-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-checkbox-checked-color: var(--svelte-ui-primary-color);
 
+	/* Switch */
+	--svelte-ui-switch-track-color: var(--svelte-ui-border-color);
+	--svelte-ui-switch-active-color: var(--svelte-ui-primary-color);
+	--svelte-ui-switch-disabled-color: var(--svelte-ui-border-weak-color);
+
 	/* Radio */
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
 	--svelte-ui-radio-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-radio-checked-color: var(--svelte-ui-primary-color);
 	--svelte-ui-radio-label-color: var(--svelte-ui-text-color);
-
-	/* IconButton */
-	--svelte-ui-iconbutton-bg-filled: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-bg-outlined: transparent;
-	--svelte-ui-iconbutton-bg-text: transparent;
-	--svelte-ui-iconbutton-text-filled: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-text-text: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
-	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-border-color: var(--svelte-ui-border-weak-color);
@@ -572,7 +630,7 @@
 		--svelte-ui-focus-outline-offset-outer: 2px;
 		--svelte-ui-focus-outline-offset-inner: -3px;
 
-		/* ===== ボタン色の上書き ===== */
+		/* Button */
 		--svelte-ui-button-bg-filled: ButtonFace;
 		--svelte-ui-button-bg-outlined: Canvas;
 		--svelte-ui-button-text-filled: ButtonText;
@@ -581,22 +639,16 @@
 		--svelte-ui-button-border-outlined: ButtonText;
 		--svelte-ui-button-hover-overlay: Highlight;
 
-		/* ===== チェックボックス・ラジオの上書き ===== */
-		--svelte-ui-checkbox-border-color: CanvasText;
-		--svelte-ui-checkbox-border-width: var(--svelte-ui-border-width-thick);
-		--svelte-ui-checkbox-bg-checked: Highlight;
-		--svelte-ui-checkbox-text-color: CanvasText;
-		--svelte-ui-checkbox-icon-color: HighlightText;
-		--svelte-ui-radio-border-color: CanvasText;
-		--svelte-ui-radio-border-width: var(--svelte-ui-border-width-thick);
-		--svelte-ui-radio-bg-checked: Highlight;
-
-		/* ===== フォーム要素の上書き ===== */
+		/* Input */
 		--svelte-ui-input-bg: Canvas;
 		--svelte-ui-input-border-color: CanvasText;
 		--svelte-ui-input-icon-color: CanvasText;
+
+		/* Textare */
 		--svelte-ui-textarea-bg: Canvas;
 		--svelte-ui-textarea-border-color: CanvasText;
+
+		/* Select */
 		--svelte-ui-select-bg: Canvas;
 		--svelte-ui-select-border-color: CanvasText;
 		--svelte-ui-select-text-color: CanvasText;
@@ -608,6 +660,23 @@
 		--svelte-ui-combobox-bg: Canvas;
 		--svelte-ui-combobox-text-color: CanvasText;
 		--svelte-ui-combobox-dropdown-icon-color: CanvasText;
+
+		/* Checkbox */
+		--svelte-ui-checkbox-border-color: CanvasText;
+		--svelte-ui-checkbox-border-width: var(--svelte-ui-border-width-thick);
+		--svelte-ui-checkbox-bg-checked: Highlight;
+		--svelte-ui-checkbox-text-color: CanvasText;
+		--svelte-ui-checkbox-icon-color: HighlightText;
+
+		/* Switch */
+		--svelte-ui-switch-track-color: CanvasText;
+		--svelte-ui-switch-active-color: Highlight;
+		--svelte-ui-switch-disabled-color: CanvasText;
+
+		/* Radio */
+		--svelte-ui-radio-border-color: CanvasText;
+		--svelte-ui-radio-border-width: var(--svelte-ui-border-width-thick);
+		--svelte-ui-radio-bg-checked: Highlight;
 
 		/* ===== オーバーレイ・インタラクション色の上書き ===== */
 		--svelte-ui-hover-overlay: Highlight;
