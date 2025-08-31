@@ -538,7 +538,8 @@
 
 		&:focus,
 		&:focus-visible {
-			outline: none;
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
 
 		&[type='number'] {

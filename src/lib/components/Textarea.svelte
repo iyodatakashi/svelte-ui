@@ -484,8 +484,10 @@
 		-moz-appearance: none;
 		appearance: none;
 
-		&:focus {
-			outline: none;
+		&:focus,
+		&:focus-visible {
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
 
 		&:not(.resizable) {

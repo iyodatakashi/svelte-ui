@@ -134,6 +134,7 @@
 	} = $props();
 
 	let isFocused: boolean = $state(false);
+	let selectRef = $state<HTMLSelectElement>();
 
 	// =========================================================================
 	const isDisabled = $derived(disabled);
@@ -264,6 +265,10 @@
 	// 選択イベント
 	const handleChange = () => {
 		onchange?.(value);
+		// 選択完了後にフォーカスを解除
+		if (selectRef) {
+			selectRef.blur();
+		}
 	};
 </script>
 
@@ -277,6 +282,7 @@ select--focus-{focusStyle}"
 	class:select--rounded={rounded}
 >
 	<select
+		bind:this={selectRef}
 		{id}
 		{name}
 		bind:value
@@ -363,7 +369,8 @@ select--focus-{focusStyle}"
 
 		&:focus,
 		&:focus-visible {
-			outline: none;
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
 	}
 

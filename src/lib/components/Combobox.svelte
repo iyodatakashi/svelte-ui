@@ -563,9 +563,10 @@
 			background-color: var(--svelte-ui-combobox-option-selected-bg);
 		}
 
-		&:focus {
-			outline: 2px solid var(--svelte-ui-focus-color);
-			outline-offset: -2px;
+		&:focus,
+		&:focus-visible {
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
 	}
 
