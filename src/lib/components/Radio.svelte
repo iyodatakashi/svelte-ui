@@ -378,7 +378,7 @@
 		padding: var(--svelte-ui-radio-padding);
 		white-space: nowrap;
 		font-size: inherit;
-		color: var(--svelte-ui-radio-label-color);
+		color: inherit;
 		cursor: pointer;
 		min-height: var(--svelte-ui-radio-min-height);
 	}

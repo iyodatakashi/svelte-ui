@@ -514,8 +514,6 @@
 	/* Checkbox */
 	--svelte-ui-checkbox-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-checkbox-checked-color);
-	--svelte-ui-checkbox-label-color: var(--svelte-ui-text-color);
-	--svelte-ui-checkbox-text-color-subtle: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-checkbox-icon-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-checkbox-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-checkbox-checked-color: var(--svelte-ui-primary-color);
@@ -530,7 +528,6 @@
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
 	--svelte-ui-radio-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-radio-checked-color: var(--svelte-ui-primary-color);
-	--svelte-ui-radio-label-color: var(--svelte-ui-text-color);
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-border-color: var(--svelte-ui-border-weak-color);
