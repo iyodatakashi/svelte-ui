@@ -442,24 +442,13 @@
 	}
 
 	/* Hover effects */
-	.button:before {
-		content: '';
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: var(--svelte-ui-button-hover-overlay);
-		opacity: 0;
-		transition-property: opacity;
-		transition-duration: var(--svelte-ui-transition-duration);
-		z-index: 0;
+	.button {
+		transition: filter var(--svelte-ui-transition-duration);
 	}
 
 	@media (hover: hover) {
-		.button:hover:before {
-			opacity: 1;
+		.button:hover {
+			filter: var(--svelte-ui-button-hover-filter);
 		}
 	}
 

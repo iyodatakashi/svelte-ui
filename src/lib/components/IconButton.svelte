@@ -434,24 +434,13 @@
 		border-width: var(--svelte-ui-border-width);
 	}
 
-	.iconbutton:before {
-		content: '';
-		display: block;
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		background-color: var(--svelte-ui-iconbutton-hover-overlay);
-		opacity: 0;
-		transition-property: opacity;
-		transition-duration: var(--svelte-ui-transition-duration);
-		z-index: 0;
+	.iconbutton {
+		transition: filter var(--svelte-ui-transition-duration);
 	}
 
 	@media (hover: hover) {
-		.iconbutton:hover:before {
-			opacity: 1;
+		.iconbutton:hover {
+			filter: var(--svelte-ui-iconbutton-hover-filter);
 		}
 	}
 
@@ -464,8 +453,8 @@
 		transform: scale(0.95);
 	}
 
-	.iconbutton--pressed:before {
-		opacity: 0.12;
+	.iconbutton--pressed {
+		filter: brightness(0.88);
 	}
 
 	.iconbutton:disabled {

@@ -416,7 +416,9 @@
 		height: var(--switch-height);
 		background-color: var(--svelte-ui-switch-inactive-color);
 		border-radius: var(--switch-border-radius);
-		transition: background-color var(--svelte-ui-transition-duration) ease;
+		transition:
+			background-color var(--svelte-ui-transition-duration) ease,
+			filter var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
 
 		.switch-label--checked & {
@@ -425,6 +427,12 @@
 
 		.switch-label--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
+		}
+	}
+
+	@media (hover: hover) {
+		.switch-label:not(.switch-label--disabled):hover .switch-track {
+			filter: var(--svelte-ui-switch-hover-filter);
 		}
 	}
 

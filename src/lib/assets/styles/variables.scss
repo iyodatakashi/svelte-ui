@@ -407,7 +407,7 @@
 	--svelte-ui-handle-color: #ffffff;
 
 	/* オーバーレイ */
-	--svelte-ui-hover-overlay: var(--base-50-transparent);
+	--svelte-ui-hover-filter: brightness(0.95);
 	--svelte-ui-select-overlay: var(--primary-200-transparent);
 
 	/* ドロップダウンアイコン */
@@ -448,7 +448,7 @@
 	--svelte-ui-surface-color: var(--base-900);
 
 	/* オーバーレイ */
-	--svelte-ui-hover-overlay: var(--white-100-transparent);
+	--svelte-ui-hover-filter: brightness(1.05);
 	--svelte-ui-select-overlay: var(--primary-200-transparent);
 
 	/* ドロップダウンアイコン */
@@ -475,7 +475,7 @@
 	--svelte-ui-button-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-text-text: var(--svelte-ui-primary-color);
 	--svelte-ui-button-border-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-button-hover-overlay: var(--svelte-ui-hover-overlay);
+	--svelte-ui-button-hover-filter: var(--svelte-ui-hover-filter);
 	--svelte-ui-button-focus-color: var(--svelte-ui-focus-color);
 	--svelte-ui-button-label-color: var(--svelte-ui-text-color);
 
@@ -487,7 +487,7 @@
 	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-text-text: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
+	--svelte-ui-iconbutton-hover-filter: var(--svelte-ui-hover-filter);
 	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
 
 	/* Input */
@@ -522,6 +522,7 @@
 	--svelte-ui-switch-inactive-color: var(--svelte-ui-inactive-color);
 	--svelte-ui-switch-active-color: var(--svelte-ui-primary-color);
 	--svelte-ui-switch-thumb-color: var(--svelte-ui-handle-color);
+	--svelte-ui-switch-hover-filter: var(--svelte-ui-hover-filter);
 
 	/* Radio */
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
@@ -541,7 +542,7 @@
 	--svelte-ui-combobox-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-combobox-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-combobox-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
-	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-overlay);
+	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-filter);
 	--svelte-ui-combobox-option-selected-bg: var(--svelte-ui-select-overlay);
 	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
 
@@ -658,7 +659,7 @@
 		--svelte-ui-button-text-outlined: ButtonText;
 		--svelte-ui-button-text-text: ButtonText;
 		--svelte-ui-button-border-outlined: ButtonText;
-		--svelte-ui-button-hover-overlay: Highlight;
+		--svelte-ui-button-hover-filter: brightness(0.8);
 
 		/* Input */
 		--svelte-ui-input-bg: Canvas;
@@ -699,7 +700,7 @@
 		--svelte-ui-radio-bg-checked: Highlight;
 
 		/* ===== オーバーレイ・インタラクション色の上書き ===== */
-		--svelte-ui-hover-overlay: Highlight;
+		--svelte-ui-hover-filter: brightness(0.8);
 		--svelte-ui-select-overlay: Highlight;
 		--svelte-ui-combobox-option-hover-bg: Highlight;
 		--svelte-ui-combobox-option-selected-bg: Highlight;
