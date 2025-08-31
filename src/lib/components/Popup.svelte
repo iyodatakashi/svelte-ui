@@ -421,6 +421,9 @@
 			previousActiveElement.focus();
 		}
 		previousActiveElement = null;
+
+		// アニメーション完了後にonCloseを呼ぶ
+		onClose?.();
 	};
 
 	const clickOutside = (element: HTMLElement, callbackFunction: Function) => {
@@ -484,7 +487,7 @@
 		removeKeyboardListener();
 		cleanupMobileFeatures();
 		popupRef?.addEventListener('animationend', closeEnd, { once: true });
-		onClose?.();
+		// onCloseはアニメーション完了後に呼ぶ（closeEndで実行）
 	};
 
 	export const toggle = () => {

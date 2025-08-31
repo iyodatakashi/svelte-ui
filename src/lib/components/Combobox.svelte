@@ -153,6 +153,7 @@
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 	let inputValue = $state('');
+	let comboboxRef = $state<HTMLDivElement>();
 
 	// 各要素のIDを生成
 	const inputId = `${id}-input`;
@@ -236,6 +237,17 @@
 	};
 	const handleClick = (event: MouseEvent) => {
 		if (isDisabled) return;
+		// クリック時にもポップアップを開く
+		if (!isFocused) {
+			isFocused = true;
+			popupRef?.open();
+			if (filterable) {
+				searchTerm = value !== null && value !== undefined ? String(value) : '';
+			}
+			highlightedIndex = -1;
+		}
+		// Inputにフォーカスを移す（外側クリック検出のため）
+		inputRef?.focus();
 		onclick?.(event);
 	};
 
@@ -348,18 +360,18 @@
 	const handlePopupClose = () => {
 		isFocused = false;
 		highlightedIndex = -1;
-		// 検索語をリセット
+		// 検索語をリセット（Popupのアニメーション完了後）
 		if (value !== null && value !== undefined) {
 			searchTerm = '';
 		}
 	};
 	const handleBlur = (event: FocusEvent) => {
 		if (isDisabled) return;
+		// フォーカスが外れたらisFocusedをfalseにする
+		isFocused = false;
 		// 少し遅延させてからポップアップを閉じる（オプション選択時の処理のため）
 		setTimeout(() => {
-			if (!isFocused) {
-				popupRef?.close();
-			}
+			popupRef?.close();
 		}, 100);
 		onblur(event);
 	};
@@ -521,22 +533,26 @@
 		width: 100%;
 		padding: var(--svelte-ui-combobox-option-padding);
 		border: none;
-		background: none;
+		background-color: transparent;
 		text-align: left;
 		cursor: pointer;
 		font-size: inherit;
 		color: var(--svelte-ui-combobox-text-color);
-		transition: background-color var(--svelte-ui-transition-duration) ease;
+		transition:
+			background-color var(--svelte-ui-transition-duration) ease,
+			filter var(--svelte-ui-transition-duration) ease;
 
 		@media (hover: hover) {
 			&:hover,
 			&.combobox__option--highlighted {
-				background-color: var(--svelte-ui-combobox-option-hover-bg);
+				background-color: var(--svelte-ui-combobox-bg);
+				filter: var(--svelte-ui-combobox-option-hover-filter);
 			}
 		}
 
 		&.combobox__option--highlighted {
-			background-color: var(--svelte-ui-combobox-option-hover-bg);
+			background-color: var(--svelte-ui-combobox-bg);
+			filter: var(--svelte-ui-combobox-option-hover-filter);
 		}
 
 		&.combobox__option--selected {

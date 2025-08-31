@@ -542,7 +542,7 @@
 	--svelte-ui-combobox-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-combobox-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-combobox-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
-	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-filter);
+	--svelte-ui-combobox-option-hover-filter: var(--svelte-ui-hover-filter);
 	--svelte-ui-combobox-option-selected-bg: var(--svelte-ui-select-overlay);
 	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
 
@@ -702,7 +702,7 @@
 		/* ===== オーバーレイ・インタラクション色の上書き ===== */
 		--svelte-ui-hover-filter: brightness(0.8);
 		--svelte-ui-select-overlay: Highlight;
-		--svelte-ui-combobox-option-hover-bg: Highlight;
+		--svelte-ui-combobox-option-hover-filter: brightness(0.8);
 		--svelte-ui-combobox-option-selected-bg: Highlight;
 
 		/* ===== アイコンボタンの上書き ===== */
