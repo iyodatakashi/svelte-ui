@@ -242,6 +242,7 @@ export const Default: Story = {
 		mode: 'single',
 		hasIcon: false,
 		disabled: false,
+		allowDirectInput: false,
 		focusStyle: 'border',
 		openIfClicked: true,
 		locale: 'ja'

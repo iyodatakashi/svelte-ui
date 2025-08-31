@@ -140,22 +140,21 @@
 	);
 
 	// =========================================================================
-	const isDisabled = $derived(disabled);
 
 	// Methods
 	// =========================================================================
 	const handleFocus = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onfocus(event);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onblur(event);
 	};
 
 	const handleKeydown = (event: KeyboardEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		if (event.key === ' ' || event.key === 'Enter') {
 			event.preventDefault();
 			value = !value;
@@ -170,99 +169,99 @@
 
 	// マウスイベント
 	const handleClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onclick?.(event);
 	};
 
 	const handleMouseDown = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmousedown?.(event);
 	};
 
 	const handleMouseUp = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseup?.(event);
 	};
 
 	const handleMouseEnter = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseenter?.(event);
 	};
 
 	const handleMouseLeave = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseleave?.(event);
 	};
 
 	const handleMouseOver = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseover?.(event);
 	};
 
 	const handleMouseOut = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseout?.(event);
 	};
 
 	const handleContextMenu = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		oncontextmenu?.(event);
 	};
 
 	const handleAuxClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onauxclick?.(event);
 	};
 
 	// タッチイベント
 	const handleTouchStart = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchstart?.(event);
 	};
 
 	const handleTouchEnd = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchend?.(event);
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchmove?.(event);
 	};
 
 	const handleTouchCancel = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchcancel?.(event);
 	};
 
 	// ポインターイベント
 	const handlePointerDown = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerdown?.(event);
 	};
 
 	const handlePointerUp = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerup?.(event);
 	};
 
 	const handlePointerEnter = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerenter?.(event);
 	};
 
 	const handlePointerLeave = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerleave?.(event);
 	};
 
 	const handlePointerMove = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointermove?.(event);
 	};
 
 	const handlePointerCancel = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointercancel?.(event);
 	};
 

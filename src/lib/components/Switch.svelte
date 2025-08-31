@@ -132,23 +132,22 @@
 	let errorId = `switch-error-${Math.random().toString(36).substring(2, 15)}`;
 
 	// =========================================================================
-	const isDisabled = $derived(disabled);
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
 	const handleFocus = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onfocus?.(event);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onblur?.(event);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onkeydown?.(event);
 		if (event.key === 'Enter' || event.key === ' ') {
 			event.preventDefault();
@@ -158,12 +157,12 @@
 	};
 
 	const handleKeyUp = (event: KeyboardEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onkeyup?.(event);
 	};
 
 	const handleClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onclick?.(event);
 		// スイッチの状態を切り替え
 		value = !value;
@@ -171,97 +170,97 @@
 	};
 
 	const handleMouseDown = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmousedown?.(event);
 	};
 
 	const handleMouseUp = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseup?.(event);
 	};
 
 	const handleMouseEnter = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseenter?.(event);
 	};
 
 	const handleMouseLeave = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseleave?.(event);
 	};
 
 	const handleMouseOver = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseover?.(event);
 	};
 
 	const handleMouseOut = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseout?.(event);
 	};
 
 	const handleContextMenu = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		oncontextmenu?.(event);
 	};
 
 	const handleAuxClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onauxclick?.(event);
 	};
 
 	const handleTouchStart = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchstart?.(event);
 	};
 
 	const handleTouchEnd = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchend?.(event);
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchmove?.(event);
 	};
 
 	const handleTouchCancel = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchcancel?.(event);
 	};
 
 	const handlePointerDown = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerdown?.(event);
 	};
 
 	const handlePointerUp = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerup?.(event);
 	};
 
 	const handlePointerEnter = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerenter?.(event);
 	};
 
 	const handlePointerLeave = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerleave?.(event);
 	};
 
 	const handlePointerMove = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointermove?.(event);
 	};
 
 	const handlePointerCancel = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointercancel?.(event);
 	};
 
 	const handleChange = (event: Event) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		const target = event.target as HTMLInputElement;
 		value = target.checked;
 		onchange?.(value);
@@ -273,7 +272,7 @@
 	class:switch-container--small={size === 'small'}
 	class:switch-container--medium={size === 'medium'}
 	class:switch-container--large={size === 'large'}
-	class:switch-container--disabled={isDisabled}
+	class:switch-container--disabled={disabled}
 	class:switch-container--reduced-motion={reducedMotion}
 >
 	<input
@@ -318,7 +317,7 @@
 		class:switch-label--small={size === 'small'}
 		class:switch-label--medium={size === 'medium'}
 		class:switch-label--large={size === 'large'}
-		class:switch-label--disabled={isDisabled}
+		class:switch-label--disabled={disabled}
 		class:switch-label--checked={value}
 	>
 		<span class="switch-track">

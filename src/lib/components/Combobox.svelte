@@ -160,7 +160,6 @@
 	const listboxId = `${id}-listbox`;
 
 	// =========================================================================
-	const isDisabled = $derived(disabled || readonly);
 
 	// =========================================================================
 	// $effect
@@ -198,7 +197,7 @@
 
 	// input要素のフォーカス/クリック時
 	const handleInputFocus = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 
 		isFocused = true;
 		popupRef?.open();
@@ -211,7 +210,7 @@
 
 	// 入力変更ハンドラー
 	const handleInput = (currentValue: string | number | undefined) => {
-		if (isDisabled) return;
+		if (disabled || readonly) return;
 		const currentInputValue = String(currentValue || '');
 
 		if (filterable) {
@@ -229,14 +228,14 @@
 
 	// 値確定ハンドラー
 	const handleChange = (currentValue: string | number | undefined) => {
-		if (isDisabled) return;
+		if (disabled || readonly) return;
 		const inputValue = String(currentValue || '');
 		const numericValue = Number(inputValue);
 		const finalValue = !isNaN(numericValue) && inputValue !== '' ? numericValue : inputValue;
 		onchange?.(finalValue);
 	};
 	const handleClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		// クリック時にもポップアップを開く
 		if (!isFocused) {
 			isFocused = true;
@@ -252,107 +251,107 @@
 	};
 
 	const handleKeydown = (event: KeyboardEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onkeydown(event);
 		// TODO: キーボードナビゲーション実装
 		// ArrowDown, ArrowUp, Enter, Escape等の処理
 	};
 
 	const handleKeyup = (event: KeyboardEvent) => {
-		if (isDisabled) return;
-		onkeyup(event);
+		if (disabled) return;
+		onkeydown(event);
 	};
 
 	// マウスイベント
 	const handleMouseDown = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmousedown?.(event);
 	};
 
 	const handleMouseUp = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseup?.(event);
 	};
 
 	const handleMouseEnter = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseenter?.(event);
 	};
 
 	const handleMouseLeave = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseleave?.(event);
 	};
 
 	const handleMouseOver = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseover?.(event);
 	};
 
 	const handleMouseOut = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseout?.(event);
 	};
 
 	const handleContextMenu = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		oncontextmenu?.(event);
 	};
 
 	const handleAuxClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onauxclick?.(event);
 	};
 
 	// タッチイベント
 	const handleTouchStart = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchstart?.(event);
 	};
 
 	const handleTouchEnd = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchend?.(event);
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchmove?.(event);
 	};
 
 	const handleTouchCancel = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchcancel?.(event);
 	};
 
 	// ポインターイベント
 	const handlePointerDown = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerdown?.(event);
 	};
 
 	const handlePointerUp = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerup?.(event);
 	};
 
 	const handlePointerEnter = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerenter?.(event);
 	};
 
 	const handlePointerLeave = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerleave?.(event);
 	};
 
 	const handlePointerMove = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointermove?.(event);
 	};
 
 	const handlePointerCancel = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointercancel?.(event);
 	};
 
@@ -366,7 +365,7 @@
 		}
 	};
 	const handleBlur = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		// フォーカスが外れたらisFocusedをfalseにする
 		isFocused = false;
 		// 少し遅延させてからポップアップを閉じる（オプション選択時の処理のため）

@@ -176,7 +176,6 @@
 	const calendarId = `${id}-calendar`;
 
 	// =========================================================================
-	const isDisabled = $derived(disabled);
 
 	const localeConfig = {
 		en: {
@@ -275,7 +274,7 @@
 	};
 
 	const handleClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		if (openIfClicked) {
 			openedViaKeyboard = false;
 			open();
@@ -284,7 +283,7 @@
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onkeydown(event);
 
 		switch (event.key) {
@@ -315,106 +314,106 @@
 	};
 
 	const handleKeyup = (event: KeyboardEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onkeyup(event);
 	};
 
 	const handleInput = (event: Event) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		const target = event.target as HTMLInputElement;
 		oninput?.(target.value);
 	};
 
 	// マウスイベント
 	const handleMouseDown = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmousedown?.(event);
 	};
 
 	const handleMouseUp = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseup?.(event);
 	};
 
 	const handleMouseEnter = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseenter?.(event);
 	};
 
 	const handleMouseLeave = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseleave?.(event);
 	};
 
 	const handleMouseOver = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseover?.(event);
 	};
 
 	const handleMouseOut = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onmouseout?.(event);
 	};
 
 	const handleContextMenu = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		oncontextmenu?.(event);
 	};
 
 	const handleAuxClick = (event: MouseEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onauxclick?.(event);
 	};
 
 	// タッチイベント
 	const handleTouchStart = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchstart?.(event);
 	};
 
 	const handleTouchEnd = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchend?.(event);
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchmove?.(event);
 	};
 
 	const handleTouchCancel = (event: TouchEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		ontouchcancel?.(event);
 	};
 
 	// ポインターイベント
 	const handlePointerDown = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerdown?.(event);
 	};
 
 	const handlePointerUp = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerup?.(event);
 	};
 
 	const handlePointerEnter = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerenter?.(event);
 	};
 
 	const handlePointerLeave = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointerleave?.(event);
 	};
 
 	const handlePointerMove = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointermove?.(event);
 	};
 
 	const handlePointerCancel = (event: PointerEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		onpointercancel?.(event);
 	};
 
@@ -432,21 +431,21 @@
 	};
 
 	const handleFocus = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		// キーボードでのフォーカス時のみPopupを開く
 		// クリック時は handleClick で処理
 		onfocus(event);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
 		// フォーカスイベントのみをハンドルする
 		onblur(event);
 	};
 
 	const handleInputChange = (inputValue: string | number | undefined) => {
-		if (isDisabled) return;
+		if (disabled) return;
 		if (!allowDirectInput) return;
 
 		const inputStr = String(inputValue || '');
