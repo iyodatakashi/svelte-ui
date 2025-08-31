@@ -240,8 +240,6 @@ export const Disabled: Story = {
 	}
 };
 
-
-
 // Reduced motion
 export const ReducedMotion: Story = {
 	args: {

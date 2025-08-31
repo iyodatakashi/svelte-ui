@@ -384,7 +384,7 @@
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text-color: var(--base-800-transparent);
 	--svelte-ui-text-subtle-color: var(--base-400-transparent);
-	--svelte-ui-text-on-filled-color: var(--white);
+	--svelte-ui-text-on-filled-color: #ffffff;
 	--svelte-ui-text-inverse-color: var(--white-800-transparent);
 	--svelte-ui-text-inverse-subtle-color: var(--white-400-transparent);
 	--svelte-ui-text-placeholder-color: var(--base-400-transparent);
@@ -402,6 +402,9 @@
 
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--white);
+
+	/* UIカラー */
+	--svelte-ui-handle-color: #ffffff;
 
 	/* オーバーレイ */
 	--svelte-ui-hover-overlay: var(--base-50-transparent);
@@ -425,7 +428,7 @@
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text-color: var(--white-800-transparent);
 	--svelte-ui-text-subtle-color: var(--white-400-transparent);
-	--svelte-ui-text-on-filled-color: var(--white);
+	--svelte-ui-text-on-filled-color: #ffffff;
 	--svelte-ui-text-inverse-color: var(--base-800-transparent);
 	--svelte-ui-text-inverse-subtle-color: var(--base-400-transparent);
 	--svelte-ui-text-placeholder-color: var(--white-400-transparent);
@@ -520,7 +523,7 @@
 	/* Switch */
 	--svelte-ui-switch-inactive-color: var(--svelte-ui-inactive-color);
 	--svelte-ui-switch-active-color: var(--svelte-ui-primary-color);
-	--svelte-ui-switch-thumb-color: var(--white);
+	--svelte-ui-switch-thumb-color: var(--svelte-ui-handle-color);
 
 	/* Radio */
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
