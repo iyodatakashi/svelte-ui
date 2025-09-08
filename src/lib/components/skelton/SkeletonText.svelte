@@ -8,9 +8,11 @@
 
 	let {
 		// 基本プロパティ
-		textConfig = {}
+		textConfig = {},
+		animated = true
 	}: {
 		textConfig?: Partial<SkeletonTextConfig>;
+		animated?: boolean;
 	} = $props();
 
 	// デフォルト設定
@@ -18,7 +20,6 @@
 		type: 'text',
 		width: '100%',
 		lines: 1,
-		animated: true,
 		customStyle: ''
 	};
 
@@ -39,9 +40,7 @@
 	// =========================================================================
 
 	const containerClasses = $derived(
-		['skeleton-text', mergedTextConfig.animated && 'skeleton-text--animated']
-			.filter(Boolean)
-			.join(' ')
+		['skeleton-text', animated && 'skeleton-text--animated'].filter(Boolean).join(' ')
 	);
 
 	const getStyleFromNumber = (value: string | number) => {

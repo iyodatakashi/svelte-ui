@@ -15,7 +15,6 @@
 		| SkeletonButtonsConfig;
 
 	type SkeletonPatternCommonConfig = {
-		animated?: boolean;
 		customStyle?: string;
 	};
 
@@ -69,7 +68,8 @@
 		gap = '24px',
 		itemGap = '16px',
 		className = '',
-		customStyle = ''
+		customStyle = '',
+		animated = true
 	}: {
 		patterns?: SkeletonPatternConfig[];
 		repeat?: number;
@@ -77,6 +77,7 @@
 		itemGap?: string | number;
 		className?: string;
 		customStyle?: string;
+		animated?: boolean;
 	} = $props();
 
 	// =========================================================================
@@ -95,16 +96,16 @@
 			<div class="item" style="gap: {itemGapStyle};">
 				{#each patterns as patternConfig}
 					{#if patternConfig.type === 'text'}
-						<SkeletonText textConfig={patternConfig} />
+						<SkeletonText textConfig={patternConfig} {animated} />
 					{:else if patternConfig.type === 'avatar'}
 						<div class="user-list-container">
-							<SkeletonAvatar avatarConfig={patternConfig} />
+							<SkeletonAvatar avatarConfig={patternConfig} {animated} />
 						</div>
 					{:else if patternConfig.type === 'article'}
-						<SkeletonArticle articleConfig={patternConfig} />
+						<SkeletonArticle articleConfig={patternConfig} {animated} />
 					{:else if patternConfig.type === 'buttons'}
 						<div class="buttons-container">
-							<SkeletonButtons buttonsConfig={patternConfig} />
+							<SkeletonButtons buttonsConfig={patternConfig} {animated} />
 						</div>
 					{/if}
 				{/each}

@@ -14,7 +14,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		patterns: [{ type: 'text' }]
+		patterns: [{ type: 'text', lines: 3 }]
 	}
 };
 

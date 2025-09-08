@@ -23,14 +23,12 @@
 		width: '120px',
 		height: '80px',
 		radius: 'var(--svelte-ui-skeleton-button-border-radius)',
-		animated: true,
 		customStyle: ''
 	};
 	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
 		type: 'text',
 		width: '100%',
 		lines: 2,
-		animated: true,
 		customStyle: ''
 	};
 
@@ -67,9 +65,9 @@
 		textConfig={{
 			width: textWidthStyle,
 			lines: mergedTextConfig.lines,
-			fontSize: mergedTextConfig.fontSize,
-			animated
+			fontSize: mergedTextConfig.fontSize
 		}}
+		{animated}
 	/>
 </div>
 

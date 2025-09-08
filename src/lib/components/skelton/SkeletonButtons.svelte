@@ -3,9 +3,11 @@
 	import type { SkeletonButtonsConfig } from './Skeleton.svelte';
 
 	let {
-		buttonsConfig = {}
+		buttonsConfig = {},
+		animated = true
 	}: {
 		buttonsConfig?: Partial<SkeletonButtonsConfig>;
+		animated?: boolean;
 	} = $props();
 
 	// デフォルト設定
@@ -16,7 +18,6 @@
 		radius: 'var(--svelte-ui-skeleton-button-border-radius)',
 		count: 1,
 		align: 'left',
-		animated: true,
 		customStyle: ''
 	};
 
@@ -52,7 +53,7 @@
 			width={widthStyle}
 			height={heightStyle}
 			radius={radiusStyle}
-			animated={mergedButtonsConfig.animated}
+			{animated}
 			customStyle={mergedButtonsConfig.customStyle}
 		/>
 	{/each}

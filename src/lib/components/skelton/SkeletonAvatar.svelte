@@ -25,14 +25,12 @@
 		type: 'avatar-image',
 		size: '48px',
 		radius: 'var(--svelte-ui-skeleton-avatar-image-border-radius)',
-		animated,
 		customStyle: ''
 	};
 	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
 		type: 'text',
 		width: '160px',
 		lines: 1,
-		animated,
 		customStyle: ''
 	};
 	const DEFAULT_AVATAR_CONFIG: SkeletonAvatarConfig = {
@@ -78,7 +76,11 @@
 	{#if mergedAvatarConfig.showName}
 		<div class="skeleton-avatar__text">
 			<SkeletonText
-				textConfig={{ width: nameWidthStyle, lines: mergedTextConfig.lines, animated }}
+				textConfig={{
+					width: nameWidthStyle,
+					lines: mergedTextConfig.lines
+				}}
+				{animated}
 			/>
 		</div>
 	{/if}
