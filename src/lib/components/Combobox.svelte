@@ -551,21 +551,17 @@
 		cursor: pointer;
 		font-size: inherit;
 		color: var(--svelte-ui-combobox-text-color);
-		transition:
-			background-color var(--svelte-ui-transition-duration) ease,
-			filter var(--svelte-ui-transition-duration) ease;
+		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		@media (hover: hover) {
 			&:hover,
 			&.combobox__option--highlighted {
-				background-color: var(--svelte-ui-combobox-bg);
-				filter: var(--svelte-ui-combobox-option-hover-filter);
+				background-color: var(--svelte-ui-combobox-option-hover-bg);
 			}
 		}
 
 		&.combobox__option--highlighted {
-			background-color: var(--svelte-ui-combobox-bg);
-			filter: var(--svelte-ui-combobox-option-hover-filter);
+			background-color: var(--svelte-ui-combobox-option-hover-bg);
 		}
 
 		&.combobox__option--selected {
