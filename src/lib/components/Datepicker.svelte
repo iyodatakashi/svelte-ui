@@ -439,7 +439,7 @@
 
 	const handleBlur = (event: FocusEvent) => {
 		if (disabled) return;
-		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
+		// Popupの外側クリック機能に依存するため、ここでは自動クローズしない
 		// フォーカスイベントのみをハンドルする
 		onblur(event);
 	};
