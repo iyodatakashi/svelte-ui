@@ -14,54 +14,52 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
-		pattern: 'default',
-		repeat: 1,
-		animated: true,
-		rounded: false
-	}
-};
-
-export const Card: Story = {
-	args: {
-		pattern: 'card',
-		repeat: 1,
-		animated: true,
-		rounded: true
+		patterns: [{ type: 'text' }]
 	}
 };
 
 export const UserList: Story = {
 	args: {
-		pattern: 'user-list',
-		repeat: 3,
-		animated: true,
-		rounded: false
+		patterns: [{ type: 'avatar', showName: true }],
+		repeat: 3
 	}
 };
 
-export const ItemList: Story = {
+export const ArticleList: Story = {
 	args: {
-		pattern: 'item-list',
-		repeat: 3,
-		animated: true,
-		rounded: false
+		patterns: [{ type: 'article' }],
+		repeat: 3
 	}
 };
 
-export const MultipleCards: Story = {
+export const Text: Story = {
 	args: {
-		pattern: 'card',
+		patterns: [{ type: 'text' }],
+		repeat: 3
+	}
+};
+
+export const Buttons: Story = {
+	args: {
+		patterns: [{ type: 'buttons', count: 3 }],
+		repeat: 1
+	}
+};
+
+export const SNSPost: Story = {
+	args: {
+		patterns: [
+			{ type: 'avatar', showName: true },
+			{ type: 'text', lines: 3 }
+		],
 		repeat: 3,
-		animated: true,
-		rounded: true
+		itemGap: '8px',
+		gap: '32px'
 	}
 };
 
 export const NoAnimation: Story = {
 	args: {
-		pattern: 'default',
-		repeat: 1,
-		animated: false,
-		rounded: false
+		patterns: [{ type: 'text', animated: false }]
 	}
 };

@@ -7,15 +7,15 @@
 		// 基本プロパティ
 		width = '100%',
 		height = '40px',
+		radius,
 		animated = true,
-		rounded = false,
 		className = '',
 		customStyle = ''
 	}: {
 		width?: string | number;
 		height?: string | number;
+		radius?: string | number;
 		animated?: boolean;
-		rounded?: boolean;
 		className?: string;
 		customStyle?: string;
 	} = $props();
@@ -25,21 +25,18 @@
 	// =========================================================================
 
 	const containerClasses = $derived(
-		[
-			'skeleton-box-container',
-			animated && 'skeleton-box-container--animated',
-			rounded && 'skeleton-box-container--rounded',
-			className
-		]
-			.filter(Boolean)
-			.join(' ')
+		['skeleton-box', animated && 'skeleton-box--animated', className].filter(Boolean).join(' ')
 	);
 
 	const widthStyle = $derived(typeof width === 'number' ? `${width}px` : width);
 	const heightStyle = $derived(typeof height === 'number' ? `${height}px` : height);
+	const radiusStyle = $derived(typeof radius === 'number' ? `${radius}px` : radius);
 </script>
 
-<div class={containerClasses} style="width: {widthStyle}; height: {heightStyle}; {customStyle}">
+<div
+	class={containerClasses}
+	style="width: {widthStyle}; height: {heightStyle}; border-radius: {radiusStyle}; {customStyle}"
+>
 	<div class="skeleton-box-item"></div>
 </div>
 
@@ -69,12 +66,6 @@
 					);
 					animation: skeleton-shimmer 1.5s infinite;
 				}
-			}
-		}
-
-		&--rounded {
-			.skeleton-box-item {
-				border-radius: var(--svelte-ui-border-radius-rounded);
 			}
 		}
 	}

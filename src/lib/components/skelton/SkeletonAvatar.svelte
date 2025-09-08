@@ -7,22 +7,16 @@
 
 	let {
 		// 基本プロパティ
-		size = 'medium' as 'small' | 'medium' | 'large',
+		size = '40px',
 		showName = false,
-		nameWidth = '240px',
-		width,
-		height,
+		nameWidth = '180px',
 		animated = true,
-		rounded = true,
 		customStyle = ''
 	}: {
-		size?: 'small' | 'medium' | 'large';
+		size?: string | number;
 		showName?: boolean;
 		nameWidth?: string | number;
-		width?: string | number;
-		height?: string | number;
 		animated?: boolean;
-		rounded?: boolean;
 		customStyle?: string;
 	} = $props();
 
@@ -30,28 +24,33 @@
 	// $derived
 	// =========================================================================
 
-	const sizeMap = {
-		small: 32,
-		medium: 40,
-		large: 56
-	};
-
-	const widthStyle = $derived(
-		width ? (typeof width === 'number' ? `${width}px` : width) : `${sizeMap[size]}px`
-	);
-	const heightStyle = $derived(
-		height ? (typeof height === 'number' ? `${height}px` : height) : `${sizeMap[size]}px`
-	);
+	const widthStyle = $derived(typeof size === 'number' ? `${size}px` : size);
+	const heightStyle = $derived(typeof size === 'number' ? `${size}px` : size);
 	const nameWidthStyle = $derived(typeof nameWidth === 'number' ? `${nameWidth}px` : nameWidth);
 </script>
 
 {#if showName}
 	<div class="skeleton-avatar-with-name" style={customStyle}>
-		<SkeletonBox width={widthStyle} height={heightStyle} {animated} {rounded} />
-		<SkeletonBox width={nameWidthStyle} height="1em" {animated} />
+		<SkeletonBox
+			width={widthStyle}
+			height={heightStyle}
+			radius="var(--svelte-ui-skeleton-avatar-radius)"
+			{animated}
+		/>
+		<SkeletonBox
+			width={nameWidthStyle}
+			height="1em"
+			radius="var(--svelte-ui-skeleton-text-radius)"
+			{animated}
+		/>
 	</div>
 {:else}
-	<SkeletonBox width={widthStyle} height={heightStyle} {animated} {rounded} />
+	<SkeletonBox
+		width={widthStyle}
+		height={heightStyle}
+		radius="var(--svelte-ui-skeleton-avatar-radius)"
+		{animated}
+	/>
 {/if}
 
 <style lang="scss">

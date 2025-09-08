@@ -11,8 +11,7 @@
 		lines = 1,
 		fontSize = 'inherit',
 		animated = true,
-		rounded = false,
-		className = '',
+		rounded = true,
 		customStyle = ''
 	}: {
 		width?: string | number;
@@ -20,7 +19,6 @@
 		fontSize?: string | number;
 		animated?: boolean;
 		rounded?: boolean;
-		className?: string;
 		customStyle?: string;
 	} = $props();
 
@@ -35,36 +33,40 @@
 	// =========================================================================
 
 	const containerClasses = $derived(
-		[
-			'skeleton-text-container',
-			animated && 'skeleton-text-container--animated',
-			rounded && 'skeleton-text-container--rounded',
-			className
-		]
+		['skeleton-text', animated && 'skeleton-text--animated', rounded && 'skeleton-text--rounded']
 			.filter(Boolean)
 			.join(' ')
 	);
 
-	const widthStyle = $derived(typeof width === 'number' ? `${width}px` : width);
-	const fontSizeStyle = $derived(typeof fontSize === 'number' ? `${fontSize}px` : fontSize);
+	const getStyleFromNumber = (value: string | number) => {
+		return typeof value === 'number' ? `${value}px` : value;
+	};
+
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const fontSizeStyle = $derived(getStyleFromNumber(fontSize));
 </script>
 
 <div
 	bind:this={containerRef}
-	class={containerClasses}
+	class="skeleton-text {containerClasses}"
 	style="font-size: {fontSizeStyle}; {customStyle}"
 >
 	{#each Array(lines) as _, index}
 		<div class="skeleton-box-container" style="width: {widthStyle}">
-			<SkeletonBox width={index === lines - 1 ? '67%' : '100%'} height="1em" />
+			<SkeletonBox
+				width={index === lines - 1 ? '67%' : '100%'}
+				height="1em"
+				customStyle="border-radius: var(--svelte-ui-skeleton-text-radius)"
+			/>
 		</div>
 	{/each}
 </div>
 
 <style lang="scss">
-	.skeleton-text-container {
+	.skeleton-text {
 		display: block;
 		width: 100%;
+		height: 100%;
 	}
 
 	.skeleton-box-container {

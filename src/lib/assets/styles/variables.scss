@@ -251,12 +251,12 @@
 	--svelte-ui-checkbox-disabled-opacity: var(--svelte-ui-disabled-opacity);
 
 	/* Switch */
-	--svelte-ui-switch-width: 32px;
-	--svelte-ui-switch-width-sm: 24px;
-	--svelte-ui-switch-width-lg: 40px;
-	--svelte-ui-switch-height: 22px; /* width * 0.75 - 2 */
-	--svelte-ui-switch-height-sm: 17px; /* width * 0.75 - 2 */
-	--svelte-ui-switch-height-lg: 28px; /* width * 0.75 - 2 */
+	--svelte-ui-switch-width: 40px;
+	--svelte-ui-switch-width-sm: 32px;
+	--svelte-ui-switch-width-lg: 48px;
+	--svelte-ui-switch-height: 24px; /* width * 0.5 + 4 */
+	--svelte-ui-switch-height-sm: 20px; /* width * 0.5 + 4 */
+	--svelte-ui-switch-height-lg: 28px; /* width * 0.5 + 4 */
 	--svelte-ui-switch-thumb-margin: 2px;
 	--svelte-ui-switch-thumb-size: calc(
 		var(--svelte-ui-switch-height) - var(--svelte-ui-switch-thumb-margin) * 2
@@ -362,10 +362,15 @@
 	--svelte-ui-snackbar-action-border-radius: 4px;
 	--svelte-ui-snackbar-content-gap: 8px;
 
+	/* Skeleton */
+	--svelte-ui-skeleton-text-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-avatar-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-skeleton-image-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-button-radius: var(--svelte-ui-border-radius);
+
 	/* ====================================
    * 共通部品のサイズ、パディングなど
    * ==================================== */
-
 	/* ClearButton */
 	--svelte-ui-clear-button-transition: opacity 0.3s ease;
 	--svelte-ui-clear-button-top-textarea: 8px;
@@ -402,16 +407,17 @@
 
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--white);
+	--svelte-ui-surface-accent-color: var(--base-50-transparent);
 
 	/* スケルトン色 */
 	--svelte-ui-skeleton-color: var(--base-200-transparent);
-	--svelte-ui-skeleton-shimmer-color: var(--white-400-transparent);
+	--svelte-ui-skeleton-shimmer-color: var(--white-300-transparent);
 
 	/* UIカラー */
 	--svelte-ui-handle-color: #ffffff;
 
 	/* hover & select 効果 */
-	--svelte-ui-hover-filter: brightness(0.95);
+	--svelte-ui-hover-overlay: var(--base-50-transparent);
 	--svelte-ui-select-overlay: var(--primary-200-transparent);
 
 	/* ドロップダウンアイコン */
@@ -450,13 +456,14 @@
 
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--base-900);
+	--svelte-ui-surface-accent-color: var(--white-50-transparent);
 
 	/* スケルトン色 */
 	--svelte-ui-skeleton-color: var(--white-200-transparent);
 	--svelte-ui-skeleton-shimmer-color: var(--white-100-transparent);
 
 	/* hover & select 効果 */
-	--svelte-ui-hover-filter: brightness(1.05);
+	--svelte-ui-hover-overlay: var(--white-100-transparent);
 	--svelte-ui-select-overlay: var(--primary-200-transparent);
 
 	/* ドロップダウンアイコン */
@@ -483,7 +490,7 @@
 	--svelte-ui-button-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-text-text: var(--svelte-ui-primary-color);
 	--svelte-ui-button-border-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-button-hover-filter: var(--svelte-ui-hover-filter);
+	--svelte-ui-button-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-button-focus-color: var(--svelte-ui-focus-color);
 	--svelte-ui-button-label-color: var(--svelte-ui-text-color);
 
@@ -495,7 +502,7 @@
 	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-text-text: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-hover-filter: var(--svelte-ui-hover-filter);
+	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
 
 	/* Input */
@@ -530,7 +537,7 @@
 	--svelte-ui-switch-inactive-color: var(--svelte-ui-inactive-color);
 	--svelte-ui-switch-active-color: var(--svelte-ui-primary-color);
 	--svelte-ui-switch-thumb-color: var(--svelte-ui-handle-color);
-	--svelte-ui-switch-hover-filter: var(--svelte-ui-hover-filter);
+	--svelte-ui-switch-hover-overlay: var(--svelte-ui-hover-overlay);
 
 	/* Radio */
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
@@ -550,7 +557,7 @@
 	--svelte-ui-combobox-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-combobox-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-combobox-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
-	--svelte-ui-combobox-option-hover-filter: var(--svelte-ui-hover-filter);
+	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-overlay);
 	--svelte-ui-combobox-option-selected-bg: var(--svelte-ui-select-overlay);
 	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
 
@@ -566,6 +573,7 @@
 	--svelte-ui-datepicker-current-color: var(--svelte-ui-primary-color);
 	--svelte-ui-datepicker-date-color: var(--svelte-ui-text-color);
 	--svelte-ui-datepicker-day-label-color: var(--svelte-ui-text-subtle-color);
+	--svelte-ui-datepicker-day-label-bg: transparent;
 	--svelte-ui-datepicker-out-of-month-text-color: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-datepicker-out-of-range-text-color: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-datepicker-out-of-range-bg: var(--svelte-ui-disabled-bg);
@@ -649,6 +657,7 @@
 		/* ===== 基本色の上書き ===== */
 		--svelte-ui-text-color: CanvasText;
 		--svelte-ui-text-subtle-color: CanvasText;
+		--svelte-ui-surface-accent-color: CanvasText;
 		--svelte-ui-text-on-filled-color: HighlightText;
 		--svelte-ui-text-placeholder-color: CanvasText;
 
@@ -676,7 +685,7 @@
 		--svelte-ui-button-text-outlined: ButtonText;
 		--svelte-ui-button-text-text: ButtonText;
 		--svelte-ui-button-border-outlined: ButtonText;
-		--svelte-ui-button-hover-filter: brightness(0.8);
+		--svelte-ui-button-hover-overlay: Highlight;
 
 		/* Input */
 		--svelte-ui-input-bg: Canvas;
@@ -717,9 +726,9 @@
 		--svelte-ui-radio-bg-checked: Highlight;
 
 		/* ===== オーバーレイ・インタラクション色の上書き ===== */
-		--svelte-ui-hover-filter: brightness(0.8);
+		--svelte-ui-hover-overlay: Highlight;
 		--svelte-ui-select-overlay: Highlight;
-		--svelte-ui-combobox-option-hover-filter: brightness(0.8);
+		--svelte-ui-combobox-option-hover-overlay: Highlight;
 		--svelte-ui-combobox-option-selected-bg: Highlight;
 
 		/* ===== アイコンボタンの上書き ===== */

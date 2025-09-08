@@ -1,27 +1,74 @@
 <script lang="ts">
 	import SkeletonText from './SkeletonText.svelte';
-	import SkeletonBox from './SkeletonBox.svelte';
+	import SkeletonArticle from './SkeletonArticle.svelte';
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
+	import SkeletonButtons from './SkeletonButtons.svelte';
 
 	// =========================================================================
 	// Props
 	// =========================================================================
 
+	type SkeletonPatternConfig =
+		| SkeletonTextConfig
+		| SkeletonAvatarConfig
+		| SkeletonArticleConfig
+		| SkeletonButtonsConfig;
+
+	type SkeletonPatternCommonConfig = {
+		animated?: boolean;
+		customStyle?: string;
+	};
+
+	export type SkeletonTextConfig = SkeletonPatternCommonConfig & {
+		type: 'text';
+		width?: string | number;
+		lines?: number;
+		fontSize?: string | number;
+	};
+
+	export type SkeletonAvatarConfig = SkeletonPatternCommonConfig & {
+		type: 'avatar';
+		size?: string | number;
+		showName?: boolean;
+		nameWidth?: string | number;
+		fontSize?: string | number;
+	};
+
+	export type SkeletonArticleConfig = SkeletonPatternCommonConfig & {
+		type: 'article';
+		thumbnailConfig: SkeletonThumbnailConfig;
+		textConfig: SkeletonTextConfig;
+	};
+
+	export type SkeletonThumbnailConfig = SkeletonPatternCommonConfig & {
+		type: 'thumbnail';
+		width?: string | number;
+		height?: string | number;
+		radius?: string | number;
+	};
+
+	export type SkeletonButtonsConfig = SkeletonPatternCommonConfig & {
+		type: 'buttons';
+		width?: string | number;
+		height?: string | number;
+		radius?: string | number;
+		count?: number;
+		align?: 'left' | 'center' | 'right';
+	};
+
 	let {
 		// 基本プロパティ
-		pattern = 'default' as 'default' | 'card' | 'user-list' | 'item-list',
+		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
 		repeat = 1,
 		gap = '24px',
-		animated = true,
-		rounded = false,
+		itemGap = '16px',
 		className = '',
 		customStyle = ''
 	}: {
-		pattern?: 'default' | 'card' | 'user-list' | 'item-list';
+		patterns?: SkeletonPatternConfig[];
 		repeat?: number;
 		gap?: string | number;
-		animated?: boolean;
-		rounded?: boolean;
+		itemGap?: string | number;
 		className?: string;
 		customStyle?: string;
 	} = $props();
@@ -30,62 +77,52 @@
 	// $derived
 	// =========================================================================
 
-	const containerClasses = $derived(
-		[
-			'skeleton-container',
-			`skeleton-container--${pattern}`,
-			animated && 'skeleton-container--animated',
-			rounded && 'skeleton-container--rounded',
-			className
-		]
-			.filter(Boolean)
-			.join(' ')
-	);
+	const containerClasses = $derived(['skeleton-container', className].filter(Boolean).join(' '));
 
 	const gapStyle = $derived(typeof gap === 'number' ? `${gap}px` : gap);
+	const itemGapStyle = $derived(typeof itemGap === 'number' ? `${itemGap}px` : itemGap);
 </script>
 
-<div class={containerClasses} style="gap: {gapStyle}; {customStyle}">
-	{#each Array(repeat) as _, index}
-		{#if pattern === 'default'}
-			<SkeletonText width="100%" lines={3} />
-		{:else if pattern === 'card'}
-			<div class="card-container">
-				<SkeletonBox width="100%" height="200px" />
-				<SkeletonText width="100%" lines={3} />
-				<SkeletonBox width="120px" height="36px" />
+<div class={containerClasses} style={customStyle}>
+	<div class="skeleton-items-container" style="gap: {gapStyle};">
+		{#each Array(repeat) as _, index}
+			<div class="item" style="gap: {itemGapStyle};">
+				{#each patterns as pattern}
+					{#if pattern.type === 'text'}
+						<SkeletonText lines={3} />
+					{:else if pattern.type === 'avatar'}
+						<div class="user-list-container">
+							<SkeletonAvatar showName />
+						</div>
+					{:else if pattern.type === 'article'}
+						<SkeletonArticle />
+					{:else if pattern.type === 'buttons'}
+						<div class="buttons-container">
+							<SkeletonButtons buttonsConfig={{ count: 2 }} />
+						</div>
+					{/if}
+				{/each}
 			</div>
-		{:else if pattern === 'user-list'}
-			<div class="user-list-container">
-				<SkeletonAvatar size="medium" showName={true} />
-			</div>
-		{:else if pattern === 'item-list'}
-			<div class="item-list-container">
-				<SkeletonBox width="120px" height="80px" />
-				<div style="flex: 1;">
-					<SkeletonText lines={2} />
-				</div>
-			</div>
-		{/if}
-	{/each}
+		{/each}
+	</div>
 </div>
 
 <style lang="scss">
 	.skeleton-container {
-		display: flex;
-		flex-direction: column;
+		display: block;
 		width: 100%;
 		max-width: 100%;
 	}
 
-	.card-container {
+	.skeleton-items-container {
 		display: flex;
 		flex-direction: column;
-		gap: 8px;
+		width: 100%;
 	}
 
-	.item-list-container {
+	.item {
 		display: flex;
-		gap: 16px;
+		flex-direction: column;
+		width: 100%;
 	}
 </style>
