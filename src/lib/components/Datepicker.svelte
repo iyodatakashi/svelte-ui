@@ -548,6 +548,8 @@
 <Popup
 	bind:this={popupRef}
 	anchorElement={containerElement}
+	position="bottom"
+	margin={4}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}
 >

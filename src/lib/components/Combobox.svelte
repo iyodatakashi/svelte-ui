@@ -462,7 +462,7 @@
 		position="bottom-left"
 		focusTrap={false}
 		onClose={handlePopupClose}
-		margin={0}
+		margin={4}
 		allowRepositioning={false}
 	>
 		<div
