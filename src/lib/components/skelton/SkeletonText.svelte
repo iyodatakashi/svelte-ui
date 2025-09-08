@@ -39,10 +39,6 @@
 	// $derived
 	// =========================================================================
 
-	const containerClasses = $derived(
-		['skeleton-text', animated && 'skeleton-text--animated'].filter(Boolean).join(' ')
-	);
-
 	const getStyleFromNumber = (value: string | number) => {
 		return typeof value === 'number' ? `${value}px` : value;
 	};
@@ -53,7 +49,7 @@
 
 <div
 	bind:this={containerRef}
-	class="skeleton-text {containerClasses}"
+	class="skeleton-text"
 	style="font-size: {fontSizeStyle}; {mergedTextConfig.customStyle}"
 >
 	{#each Array(mergedTextConfig.lines) as _, index}
@@ -62,6 +58,7 @@
 				width="100%"
 				height="1em"
 				radius="var(--svelte-ui-skeleton-text-border-radius)"
+				{animated}
 			/>
 		</div>
 	{/each}

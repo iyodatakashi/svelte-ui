@@ -61,6 +61,7 @@ export const SNSPost: Story = {
 
 export const NoAnimation: Story = {
 	args: {
-		patterns: [{ type: 'text' }]
+		patterns: [{ type: 'text' }],
+		animated: false
 	}
 };
