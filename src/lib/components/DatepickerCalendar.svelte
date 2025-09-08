@@ -699,7 +699,7 @@
 		padding: 8px 16px;
 		border-radius: var(--svelte-ui-border-radius);
 		cursor: pointer;
-		transition: background-color var(--svelte-ui-transition-duration-fast);
+		transition: background-color var(--svelte-ui-transition-duration);
 
 		@media (hover: hover) {
 			&:hover {
@@ -726,11 +726,11 @@
 	.month-button {
 		padding: 8px;
 		border-radius: var(--svelte-ui-border-radius);
-		background: var(--svelte-ui-surface-color);
+		background-color: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-datepicker-date-color);
 		font-size: 1rem;
 		cursor: pointer;
-		transition: all var(--svelte-ui-transition-duration-fast);
+		transition: background-color var(--svelte-ui-transition-duration);
 
 		@media (hover: hover) {
 			&:hover {
