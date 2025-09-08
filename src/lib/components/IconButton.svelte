@@ -172,7 +172,7 @@
 	// Methods
 	// =========================================================================
 	const handleClick = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		if (onclick) onclick(event);
 	};
 
@@ -194,100 +194,101 @@
 
 	// マウスイベント
 	const handleMouseDown = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onmousedown(event);
 	};
 
 	const handleMouseUp = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onmouseup(event);
 	};
 
 	const handleMouseEnter = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onmouseenter(event);
 	};
 
 	const handleMouseLeave = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onmouseleave(event);
 	};
 
 	const handleMouseOver = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onmouseover(event);
 	};
 
 	const handleMouseOut = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onmouseout(event);
 	};
 
 	const handleContextMenu = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		oncontextmenu(event);
 	};
 
 	const handleAuxClick = (event: MouseEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onauxclick(event);
 	};
 
 	// タッチイベント
 	const handleTouchStart = (event: TouchEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		ontouchstart(event);
 	};
 
 	const handleTouchEnd = (event: TouchEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		ontouchend(event);
 	};
 
 	const handleTouchMove = (event: TouchEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		ontouchmove(event);
 	};
 
 	const handleTouchCancel = (event: TouchEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		ontouchcancel(event);
 	};
 
 	// ポインターイベント
 	const handlePointerDown = (event: PointerEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onpointerdown(event);
 	};
 
 	const handlePointerUp = (event: PointerEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onpointerup(event);
 	};
 
 	const handlePointerEnter = (event: PointerEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onpointerenter(event);
 	};
 
 	const handlePointerLeave = (event: PointerEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onpointerleave(event);
 	};
 
 	const handlePointerMove = (event: PointerEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onpointermove(event);
 	};
 
 	const handlePointerCancel = (event: PointerEvent) => {
-		if (disabled || loading) return;
+		if (isDisabled) return;
 		onpointercancel(event);
 	};
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
+	const isDisabled = $derived(disabled || loading);
 
 	const backgroundColor = $derived(
 		{
@@ -329,7 +330,7 @@
 <div class="iconbutton-container" data-testid="iconbutton-container">
 	<button
 		{type}
-		disabled={disabled || loading}
+		disabled={isDisabled}
 		class={buttonClasses}
 		style="color: {textColor}; background-color: {backgroundColor}; 
 			border-color: {variant === 'outlined'
@@ -433,13 +434,24 @@
 		border-width: var(--svelte-ui-border-width);
 	}
 
-	.iconbutton {
-		transition: filter var(--svelte-ui-transition-duration);
+	.iconbutton:before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: var(--svelte-ui-iconbutton-hover-overlay);
+		opacity: 0;
+		transition-property: opacity;
+		transition-duration: var(--svelte-ui-transition-duration);
+		z-index: 0;
 	}
 
 	@media (hover: hover) {
-		.iconbutton:hover {
-			filter: var(--svelte-ui-iconbutton-hover-filter);
+		.iconbutton:hover:before {
+			opacity: 1;
 		}
 	}
 
@@ -452,8 +464,8 @@
 		transform: scale(0.95);
 	}
 
-	.iconbutton--pressed {
-		filter: brightness(0.88);
+	.iconbutton--pressed:before {
+		opacity: 0.12;
 	}
 
 	.iconbutton:disabled {

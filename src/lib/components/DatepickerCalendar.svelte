@@ -696,7 +696,7 @@
 		color: var(--svelte-ui-datepicker-date-color);
 		background: none;
 		border: none;
-		padding: 8px 12px;
+		padding: 8px 16px;
 		border-radius: var(--svelte-ui-border-radius);
 		cursor: pointer;
 		transition: background-color var(--svelte-ui-transition-duration-fast);
@@ -724,7 +724,7 @@
 	}
 
 	.month-button {
-		padding: 12px 8px;
+		padding: 8px;
 		border-radius: var(--svelte-ui-border-radius);
 		background: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-datepicker-date-color);
@@ -786,7 +786,19 @@
 	}
 
 	.day-list-item {
+		margin-bottom: 8px;
+		background-color: var(--svelte-ui-datepicker-day-label-bg);
 		color: var(--svelte-ui-datepicker-day-label-color);
+	}
+
+	.day-list-item:first-of-type {
+		border-radius: var(--svelte-ui-datepicker-day-label-radius) 0 0
+			var(--svelte-ui-datepicker-day-label-radius);
+	}
+
+	.day-list-item:last-of-type {
+		border-radius: 0 var(--svelte-ui-datepicker-day-label-radius)
+			var(--svelte-ui-datepicker-day-label-radius) 0;
 	}
 
 	.date-list-item .date-button {

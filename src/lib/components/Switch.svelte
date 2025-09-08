@@ -429,12 +429,6 @@
 		}
 	}
 
-	@media (hover: hover) {
-		.switch-label:not(.switch-label--disabled):hover .switch-track {
-			filter: var(--svelte-ui-switch-hover-filter);
-		}
-	}
-
 	/* =============================================
  * スイッチサム（丸い部分）
  * ============================================= */
