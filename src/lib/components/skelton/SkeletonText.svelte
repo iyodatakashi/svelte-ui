@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
+	import type { SkeletonTextConfig } from './Skeleton.svelte';
 
 	// =========================================================================
 	// Props
@@ -7,18 +8,25 @@
 
 	let {
 		// 基本プロパティ
-		width = '100%',
-		lines = 1,
-		fontSize = 'inherit',
-		animated = true,
-		customStyle = ''
+		textConfig = {}
 	}: {
-		width?: string | number;
-		lines?: number;
-		fontSize?: string | number;
-		animated?: boolean;
-		customStyle?: string;
+		textConfig?: Partial<SkeletonTextConfig>;
 	} = $props();
+
+	// デフォルト設定
+	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
+		type: 'text',
+		width: '100%',
+		lines: 1,
+		animated: true,
+		customStyle: ''
+	};
+
+	// マージされた設定
+	const mergedTextConfig = $derived({
+		...DEFAULT_TEXT_CONFIG,
+		...textConfig
+	});
 
 	// =========================================================================
 	// State
@@ -31,26 +39,28 @@
 	// =========================================================================
 
 	const containerClasses = $derived(
-		['skeleton-text', animated && 'skeleton-text--animated'].filter(Boolean).join(' ')
+		['skeleton-text', mergedTextConfig.animated && 'skeleton-text--animated']
+			.filter(Boolean)
+			.join(' ')
 	);
 
 	const getStyleFromNumber = (value: string | number) => {
 		return typeof value === 'number' ? `${value}px` : value;
 	};
 
-	const widthStyle = $derived(getStyleFromNumber(width));
-	const fontSizeStyle = $derived(getStyleFromNumber(fontSize));
+	const widthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
+	const fontSizeStyle = $derived(getStyleFromNumber(mergedTextConfig.fontSize));
 </script>
 
 <div
 	bind:this={containerRef}
 	class="skeleton-text {containerClasses}"
-	style="font-size: {fontSizeStyle}; {customStyle}"
+	style="font-size: {fontSizeStyle}; {mergedTextConfig.customStyle}"
 >
-	{#each Array(lines) as _, index}
+	{#each Array(mergedTextConfig.lines) as _, index}
 		<div class="skeleton-box-container" style="width: {widthStyle}">
 			<SkeletonBox
-				width={index === lines - 1 ? '67%' : '100%'}
+				width="100%"
 				height="1em"
 				radius="var(--svelte-ui-skeleton-text-border-radius)"
 			/>

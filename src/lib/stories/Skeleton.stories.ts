@@ -18,7 +18,7 @@ export const Default: Story = {
 	}
 };
 
-export const UserList: Story = {
+export const AvatarList: Story = {
 	args: {
 		patterns: [{ type: 'avatar', showName: true }],
 		repeat: 3
@@ -34,7 +34,7 @@ export const ArticleList: Story = {
 
 export const Text: Story = {
 	args: {
-		patterns: [{ type: 'text' }],
+		patterns: [{ type: 'text', lines: 3 }],
 		repeat: 3
 	}
 };
@@ -50,7 +50,8 @@ export const SNSPost: Story = {
 	args: {
 		patterns: [
 			{ type: 'avatar', showName: true },
-			{ type: 'text', lines: 3 }
+			{ type: 'text', lines: 3 },
+			{ type: 'buttons', count: 3 }
 		],
 		repeat: 3,
 		itemGap: '8px',
@@ -60,6 +61,6 @@ export const SNSPost: Story = {
 
 export const NoAnimation: Story = {
 	args: {
-		patterns: [{ type: 'text', animated: false }]
+		patterns: [{ type: 'text' }]
 	}
 };

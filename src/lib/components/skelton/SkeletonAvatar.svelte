@@ -1,6 +1,11 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
-	import type { SkeletonTextConfig, SkeletonAvatarImageConfig } from './Skeleton.svelte';
+	import SkeletonText from './SkeletonText.svelte';
+	import type {
+		SkeletonAvatarConfig,
+		SkeletonTextConfig,
+		SkeletonAvatarImageConfig
+	} from './Skeleton.svelte';
 
 	// =========================================================================
 	// Props
@@ -8,21 +13,17 @@
 
 	let {
 		// 基本プロパティ
-		avatarImageConfig = {},
-		textConfig = {},
-		showName = false,
+		avatarConfig = {},
 		animated = true
 	}: {
-		avatarImageConfig?: Partial<SkeletonAvatarImageConfig>;
-		textConfig?: Partial<SkeletonTextConfig>;
-		showName?: boolean;
+		avatarConfig?: Partial<SkeletonAvatarConfig>;
 		animated?: boolean;
 	} = $props();
 
 	// デフォルト設定
 	const DEFAULT_AVATAR_IMAGE_CONFIG: SkeletonAvatarImageConfig = {
 		type: 'avatar-image',
-		size: '40px',
+		size: '48px',
 		radius: 'var(--svelte-ui-skeleton-avatar-image-border-radius)',
 		animated,
 		customStyle: ''
@@ -34,16 +35,26 @@
 		animated,
 		customStyle: ''
 	};
+	const DEFAULT_AVATAR_CONFIG: SkeletonAvatarConfig = {
+		type: 'avatar',
+		avatarImageConfig: DEFAULT_AVATAR_IMAGE_CONFIG,
+		textConfig: DEFAULT_TEXT_CONFIG
+	};
 
 	// マージされた設定
 	const mergedAvatarImageConfig = $derived({
 		...DEFAULT_AVATAR_IMAGE_CONFIG,
-		...avatarImageConfig
+		...(avatarConfig.avatarImageConfig || {})
 	});
 
 	const mergedTextConfig = $derived({
 		...DEFAULT_TEXT_CONFIG,
-		...textConfig
+		...(avatarConfig.textConfig || {})
+	});
+
+	const mergedAvatarConfig = $derived({
+		...DEFAULT_AVATAR_CONFIG,
+		...avatarConfig
 	});
 
 	const getStyleFromNumber = (value: string | number) => {
@@ -55,20 +66,21 @@
 </script>
 
 <div class="skeleton-avatar">
-	<SkeletonBox
-		width={avatarImageSizeStyle}
-		height={avatarImageSizeStyle}
-		radius="var(--svelte-ui-skeleton-avatar-image-border-radius)"
-		{animated}
-		customStyle={avatarImageConfig.customStyle}
-	/>
-	{#if showName}
+	<div class="skeleton-avatar__avatar-image">
 		<SkeletonBox
-			width={nameWidthStyle}
-			height="1em"
-			radius="var(--svelte-ui-skeleton-text-border-radius)"
+			width={avatarImageSizeStyle}
+			height={avatarImageSizeStyle}
+			radius="var(--svelte-ui-skeleton-avatar-image-border-radius)"
 			{animated}
+			customStyle={mergedAvatarImageConfig.customStyle}
 		/>
+	</div>
+	{#if mergedAvatarConfig.showName}
+		<div class="skeleton-avatar__text">
+			<SkeletonText
+				textConfig={{ width: nameWidthStyle, lines: mergedTextConfig.lines, animated }}
+			/>
+		</div>
 	{/if}
 </div>
 
@@ -78,5 +90,9 @@
 		align-items: center;
 		gap: 12px;
 		width: 100%;
+	}
+
+	.skeleton-avatar > * {
+		flex-shrink: 0;
 	}
 </style>

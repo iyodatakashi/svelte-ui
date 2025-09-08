@@ -1,17 +1,19 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
-	import type { SkeletonThumbnailConfig, SkeletonTextConfig } from './Skeleton.svelte';
+	import type {
+		SkeletonArticleConfig,
+		SkeletonThumbnailConfig,
+		SkeletonTextConfig
+	} from './Skeleton.svelte';
 
 	let {
 		width = '100%',
-		thumbnailConfig = {},
-		textConfig = {},
+		articleConfig = {},
 		animated = true
 	}: {
 		width?: string | number;
-		thumbnailConfig?: Partial<SkeletonThumbnailConfig>;
-		textConfig?: Partial<SkeletonTextConfig>;
+		articleConfig?: Partial<SkeletonArticleConfig>;
 		animated?: boolean;
 	} = $props();
 
@@ -35,12 +37,12 @@
 	// マージされた設定
 	const mergedThumbnailConfig = $derived({
 		...DEFAULT_THUMBNAIL_CONFIG,
-		...thumbnailConfig
+		...(articleConfig.thumbnailConfig || {})
 	});
 
 	const mergedTextConfig = $derived({
 		...DEFAULT_TEXT_CONFIG,
-		...textConfig
+		...(articleConfig.textConfig || {})
 	});
 
 	const getStyleFromNumber = (value: string | number) => {
@@ -59,13 +61,15 @@
 		height={thumbnailHeightStyle}
 		radius={mergedThumbnailConfig.radius}
 		{animated}
-		customStyle={thumbnailConfig.customStyle}
+		customStyle={mergedThumbnailConfig.customStyle}
 	/>
 	<SkeletonText
-		width={textWidthStyle}
-		lines={mergedTextConfig.lines}
-		fontSize={mergedTextConfig.fontSize}
-		{animated}
+		textConfig={{
+			width: textWidthStyle,
+			lines: mergedTextConfig.lines,
+			fontSize: mergedTextConfig.fontSize,
+			animated
+		}}
 	/>
 </div>
 

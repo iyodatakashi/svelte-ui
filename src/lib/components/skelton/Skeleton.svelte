@@ -42,8 +42,8 @@
 
 	export type SkeletonArticleConfig = SkeletonPatternCommonConfig & {
 		type: 'article';
-		thumbnailConfig: SkeletonThumbnailConfig;
-		textConfig: SkeletonTextConfig;
+		thumbnailConfig?: SkeletonThumbnailConfig;
+		textConfig?: SkeletonTextConfig;
 	};
 
 	export type SkeletonThumbnailConfig = SkeletonPatternCommonConfig & {
@@ -93,22 +93,18 @@
 	<div class="skeleton-items-container" style="gap: {gapStyle};">
 		{#each Array(repeat) as _, index}
 			<div class="item" style="gap: {itemGapStyle};">
-				{#each patterns as pattern}
-					{#if pattern.type === 'text'}
-						<SkeletonText lines={3} />
-					{:else if pattern.type === 'avatar'}
+				{#each patterns as patternConfig}
+					{#if patternConfig.type === 'text'}
+						<SkeletonText textConfig={patternConfig} />
+					{:else if patternConfig.type === 'avatar'}
 						<div class="user-list-container">
-							<SkeletonAvatar
-								showName
-								avatarImageConfig={{ type: 'avatar-image', size: '40px' }}
-								textConfig={{ type: 'text', width: '160px' }}
-							/>
+							<SkeletonAvatar avatarConfig={patternConfig} />
 						</div>
-					{:else if pattern.type === 'article'}
-						<SkeletonArticle />
-					{:else if pattern.type === 'buttons'}
+					{:else if patternConfig.type === 'article'}
+						<SkeletonArticle articleConfig={patternConfig} />
+					{:else if patternConfig.type === 'buttons'}
 						<div class="buttons-container">
-							<SkeletonButtons buttonsConfig={{ count: 2 }} />
+							<SkeletonButtons buttonsConfig={patternConfig} />
 						</div>
 					{/if}
 				{/each}
