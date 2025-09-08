@@ -4,6 +4,7 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
+	import Icon from './Icon.svelte';
 	import { announceSelection } from '../utils/accessibility';
 
 	// =========================================================================
@@ -417,8 +418,6 @@
 		{tabindex}
 		{maxlength}
 		{rounded}
-		rightIcon={variant !== 'inline' ? 'arrow_drop_down' : undefined}
-		onRightIconClick={handleClick}
 		onfocus={handleInputFocus}
 		onblur={handleBlur}
 		onclick={handleClick}
@@ -450,6 +449,12 @@
 		aria-autocomplete="list"
 		aria-controls={listboxId}
 	/>
+	<!-- ドロップダウンアイコン -->
+	{#if variant !== 'inline'}
+		<div class="combobox__dropdown-icon" aria-hidden="true">
+			<Icon>arrow_drop_down</Icon>
+		</div>
+	{/if}
 	<!-- オプションリスト -->
 	<Popup
 		bind:this={popupRef}
@@ -512,6 +517,15 @@
 	/* =============================================
  * ドロップダウンアイコン
  * ============================================= */
+	.combobox__dropdown-icon {
+		position: absolute;
+		top: 50%;
+		right: var(--svelte-ui-combobox-dropdown-icon-right);
+		transform: translateY(-50%);
+		font-size: var(--svelte-ui-combobox-dropdown-icon-size);
+		color: var(--svelte-ui-combobox-dropdown-icon-color);
+		pointer-events: none;
+	}
 
 	/* =============================================
  * オプションリスト
