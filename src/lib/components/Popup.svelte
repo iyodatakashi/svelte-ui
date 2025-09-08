@@ -620,8 +620,8 @@
 		left: 0;
 		right: 0;
 		background: var(--svelte-ui-surface-color);
-		border-top-left-radius: var(--svelte-ui-popup-mobile-border-radius);
-		border-top-right-radius: var(--svelte-ui-popup-mobile-border-radius);
+		border-top-left-border-radius: var(--svelte-ui-popup-mobile-border-radius);
+		border-top-right-border-radius: var(--svelte-ui-popup-mobile-border-radius);
 		max-height: 90vh;
 		overflow: hidden;
 		animation: slideUpMobile 300ms ease-out;

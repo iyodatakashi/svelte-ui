@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
+	import type { SkeletonTextConfig, SkeletonAvatarImageConfig } from './Skeleton.svelte';
 
 	// =========================================================================
 	// Props
@@ -7,54 +8,72 @@
 
 	let {
 		// 基本プロパティ
-		size = '40px',
+		avatarImageConfig = {},
+		textConfig = {},
 		showName = false,
-		nameWidth = '180px',
-		animated = true,
-		customStyle = ''
+		animated = true
 	}: {
-		size?: string | number;
+		avatarImageConfig?: Partial<SkeletonAvatarImageConfig>;
+		textConfig?: Partial<SkeletonTextConfig>;
 		showName?: boolean;
-		nameWidth?: string | number;
 		animated?: boolean;
-		customStyle?: string;
 	} = $props();
 
-	// =========================================================================
-	// $derived
-	// =========================================================================
+	// デフォルト設定
+	const DEFAULT_AVATAR_IMAGE_CONFIG: SkeletonAvatarImageConfig = {
+		type: 'avatar-image',
+		size: '40px',
+		radius: 'var(--svelte-ui-skeleton-avatar-image-border-radius)',
+		animated,
+		customStyle: ''
+	};
+	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
+		type: 'text',
+		width: '160px',
+		lines: 1,
+		animated,
+		customStyle: ''
+	};
 
-	const widthStyle = $derived(typeof size === 'number' ? `${size}px` : size);
-	const heightStyle = $derived(typeof size === 'number' ? `${size}px` : size);
-	const nameWidthStyle = $derived(typeof nameWidth === 'number' ? `${nameWidth}px` : nameWidth);
+	// マージされた設定
+	const mergedAvatarImageConfig = $derived({
+		...DEFAULT_AVATAR_IMAGE_CONFIG,
+		...avatarImageConfig
+	});
+
+	const mergedTextConfig = $derived({
+		...DEFAULT_TEXT_CONFIG,
+		...textConfig
+	});
+
+	const getStyleFromNumber = (value: string | number) => {
+		return typeof value === 'number' ? `${value}px` : value;
+	};
+
+	const avatarImageSizeStyle = $derived(getStyleFromNumber(mergedAvatarImageConfig.size));
+	const nameWidthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
 </script>
 
-{#if showName}
-	<div class="skeleton-avatar-with-name" style={customStyle}>
-		<SkeletonBox
-			width={widthStyle}
-			height={heightStyle}
-			radius="var(--svelte-ui-skeleton-avatar-radius)"
-			{animated}
-		/>
+<div class="skeleton-avatar">
+	<SkeletonBox
+		width={avatarImageSizeStyle}
+		height={avatarImageSizeStyle}
+		radius="var(--svelte-ui-skeleton-avatar-image-border-radius)"
+		{animated}
+		customStyle={avatarImageConfig.customStyle}
+	/>
+	{#if showName}
 		<SkeletonBox
 			width={nameWidthStyle}
 			height="1em"
-			radius="var(--svelte-ui-skeleton-text-radius)"
+			radius="var(--svelte-ui-skeleton-text-border-radius)"
 			{animated}
 		/>
-	</div>
-{:else}
-	<SkeletonBox
-		width={widthStyle}
-		height={heightStyle}
-		radius="var(--svelte-ui-skeleton-avatar-radius)"
-		{animated}
-	/>
-{/if}
+	{/if}
+</div>
 
 <style lang="scss">
-	.skeleton-avatar-with-name {
+	.skeleton-avatar {
 		display: flex;
 		align-items: center;
 		gap: 12px;

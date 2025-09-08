@@ -6,11 +6,13 @@
 	let {
 		width = '100%',
 		thumbnailConfig = {},
-		textConfig = {}
+		textConfig = {},
+		animated = true
 	}: {
 		width?: string | number;
 		thumbnailConfig?: Partial<SkeletonThumbnailConfig>;
 		textConfig?: Partial<SkeletonTextConfig>;
+		animated?: boolean;
 	} = $props();
 
 	// デフォルト設定
@@ -18,7 +20,7 @@
 		type: 'thumbnail',
 		width: '120px',
 		height: '80px',
-		radius: 'var(--svelte-ui-skeleton-button-radius)',
+		radius: 'var(--svelte-ui-skeleton-button-border-radius)',
 		animated: true,
 		customStyle: ''
 	};
@@ -48,7 +50,6 @@
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const thumbnailWidthStyle = $derived(getStyleFromNumber(mergedThumbnailConfig.width));
 	const thumbnailHeightStyle = $derived(getStyleFromNumber(mergedThumbnailConfig.height));
-	const thumbnailRadiusStyle = $derived(getStyleFromNumber(mergedThumbnailConfig.radius));
 	const textWidthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
 </script>
 
@@ -56,14 +57,15 @@
 	<SkeletonBox
 		width={thumbnailWidthStyle}
 		height={thumbnailHeightStyle}
-		radius={thumbnailRadiusStyle}
-		animated={thumbnailConfig.animated}
+		radius={mergedThumbnailConfig.radius}
+		{animated}
 		customStyle={thumbnailConfig.customStyle}
 	/>
 	<SkeletonText
 		width={textWidthStyle}
 		lines={mergedTextConfig.lines}
 		fontSize={mergedTextConfig.fontSize}
+		{animated}
 	/>
 </div>
 

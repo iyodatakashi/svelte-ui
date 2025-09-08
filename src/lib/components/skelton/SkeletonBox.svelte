@@ -41,7 +41,7 @@
 </div>
 
 <style lang="scss">
-	.skeleton-box-container {
+	.skeleton-box {
 		display: block;
 		position: relative;
 		overflow: hidden;
@@ -74,7 +74,6 @@
 		width: 100%;
 		height: 100%;
 		background-color: var(--svelte-ui-skeleton-bg-color);
-		border-radius: var(--svelte-ui-border-radius);
 		display: block;
 	}
 

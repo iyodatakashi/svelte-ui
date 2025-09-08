@@ -13,7 +13,7 @@
 		type: 'buttons',
 		width: '120px',
 		height: '36px',
-		radius: 'var(--svelte-ui-skeleton-button-radius)',
+		radius: 'var(--svelte-ui-skeleton-button-border-radius)',
 		count: 1,
 		align: 'left',
 		animated: true,

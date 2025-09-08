@@ -792,13 +792,13 @@
 	}
 
 	.day-list-item:first-of-type {
-		border-radius: var(--svelte-ui-datepicker-day-label-radius) 0 0
-			var(--svelte-ui-datepicker-day-label-radius);
+		border-radius: var(--svelte-ui-datepicker-day-label-border-radius) 0 0
+			var(--svelte-ui-datepicker-day-label-border-radius);
 	}
 
 	.day-list-item:last-of-type {
-		border-radius: 0 var(--svelte-ui-datepicker-day-label-radius)
-			var(--svelte-ui-datepicker-day-label-radius) 0;
+		border-radius: 0 var(--svelte-ui-datepicker-day-label-border-radius)
+			var(--svelte-ui-datepicker-day-label-border-radius) 0;
 	}
 
 	.date-list-item .date-button {

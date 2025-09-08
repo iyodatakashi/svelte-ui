@@ -200,7 +200,9 @@
 
 	/* IconButton */
 	--svelte-ui-iconbutton-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-iconbutton-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-iconbutton-border-radius-rounded: var(
+		--svelte-ui-border-radius-rounded
+	);
 	--svelte-ui-iconbutton-disabled-opacity: var(--svelte-ui-disabled-opacity);
 
 	/* Input */
@@ -212,7 +214,9 @@
 	--svelte-ui-input-padding-with-icon: var(--svelte-ui-form-padding-with-icon);
 	--svelte-ui-input-padding-with-icon-inline: var(--svelte-ui-form-padding-with-icon-inline);
 	--svelte-ui-input-border-radius: var(--svelte-ui-form-border-radius);
-	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
+	--svelte-ui-input-border-radius-rounded: var(
+		--svelte-ui-form-border-radius-rounded
+	);
 	--svelte-ui-input-disabled-opacity: var(--svelte-ui-disabled-opacity);
 
 	/* Textarea */
@@ -228,7 +232,9 @@
 	--svelte-ui-select-dropdown-icon-right: 8px;
 	--svelte-ui-select-dropdown-icon-size: 18px;
 	--svelte-ui-select-border-radius: var(--svelte-ui-form-border-radius);
-	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
+	--svelte-ui-select-border-radius-rounded: var(
+		--svelte-ui-form-border-radius-rounded
+	);
 
 	/* Checkbox */
 	--svelte-ui-checkbox-size: 16px;
@@ -292,7 +298,9 @@
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;
 	--svelte-ui-colorpicker-text-padding-left: 40px;
-	--svelte-ui-colorpicker-trigger-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
+	--svelte-ui-colorpicker-trigger-border-radius: calc(
+		var(--svelte-ui-border-radius) - 2px
+	);
 	--svelte-ui-colorpicker-trigger-border-style: dashed;
 	--svelte-ui-colorpicker-trigger-border-width: 1px;
 	--svelte-ui-colorpicker-trigger-offset: 4px;
@@ -305,7 +313,9 @@
 	--svelte-ui-combobox-dropdown-icon-size: 18px;
 	--svelte-ui-combobox-dropdown-icon-right: 8px;
 	--svelte-ui-combobox-border-radius: var(--svelte-ui-form-border-radius);
-	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
+	--svelte-ui-combobox-border-radius-rounded: var(
+		--svelte-ui-form-border-radius-rounded
+	);
 
 	/* FileUpload */
 	--svelte-ui-fileupload-bg: var(--base-50-transparent);
@@ -363,10 +373,11 @@
 	--svelte-ui-snackbar-content-gap: 8px;
 
 	/* Skeleton */
-	--svelte-ui-skeleton-text-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-avatar-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-skeleton-image-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-button-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-border-radius: var(--svelte-ui-border-radius)
+		--svelte-ui-skeleton-text-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-avatar-image-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-skeleton-image-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-button-border-radius: var(--svelte-ui-border-radius);
 
 	/* ====================================
    * 共通部品のサイズ、パディングなど
@@ -574,7 +585,7 @@
 	--svelte-ui-datepicker-date-color: var(--svelte-ui-text-color);
 	--svelte-ui-datepicker-day-label-color: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-datepicker-day-label-bg: transparent;
-	--svelte-ui-datepicker-day-label-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-datepicker-day-label-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-datepicker-out-of-month-text-color: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-datepicker-out-of-range-text-color: var(--svelte-ui-text-subtle-color);
 	--svelte-ui-datepicker-out-of-range-bg: var(--svelte-ui-disabled-bg);

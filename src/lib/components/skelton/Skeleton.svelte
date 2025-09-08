@@ -24,14 +24,20 @@
 		width?: string | number;
 		lines?: number;
 		fontSize?: string | number;
+		radius?: string | number;
 	};
 
 	export type SkeletonAvatarConfig = SkeletonPatternCommonConfig & {
 		type: 'avatar';
-		size?: string | number;
+		avatarImageConfig?: SkeletonAvatarImageConfig;
+		textConfig?: SkeletonTextConfig;
 		showName?: boolean;
-		nameWidth?: string | number;
-		fontSize?: string | number;
+	};
+
+	export type SkeletonAvatarImageConfig = SkeletonPatternCommonConfig & {
+		type: 'avatar-image';
+		size?: string | number;
+		radius?: string | number;
 	};
 
 	export type SkeletonArticleConfig = SkeletonPatternCommonConfig & {
@@ -92,7 +98,11 @@
 						<SkeletonText lines={3} />
 					{:else if pattern.type === 'avatar'}
 						<div class="user-list-container">
-							<SkeletonAvatar showName />
+							<SkeletonAvatar
+								showName
+								avatarImageConfig={{ type: 'avatar-image', size: '40px' }}
+								textConfig={{ type: 'text', width: '160px' }}
+							/>
 						</div>
 					{:else if pattern.type === 'article'}
 						<SkeletonArticle />
