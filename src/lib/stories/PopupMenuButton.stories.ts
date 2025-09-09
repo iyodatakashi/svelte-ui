@@ -26,6 +26,10 @@ interface PopupMenuButtonArgs {
 		| 'right-center'
 		| 'right-bottom'
 		| 'auto';
+	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
+	size?: number;
+	color?: string;
+	rounded?: boolean;
 	// 新しいイベントハンドラ
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
@@ -101,6 +105,23 @@ const meta: Meta<PopupMenuButtonArgs> = {
 		children: {
 			control: false,
 			description: 'Custom button content (defaults to more_vert icon)'
+		},
+		variant: {
+			control: 'select',
+			options: ['filled', 'outlined', 'ghost', 'glass'],
+			description: 'Visual style variant of the IconButton'
+		},
+		size: {
+			control: 'number',
+			description: 'Size of the IconButton in pixels'
+		},
+		color: {
+			control: 'color',
+			description: 'Custom color for the IconButton'
+		},
+		rounded: {
+			control: 'boolean',
+			description: 'Whether the IconButton should be rounded'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {

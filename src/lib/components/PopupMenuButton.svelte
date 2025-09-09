@@ -18,6 +18,10 @@
 
 		// スタイル/レイアウト
 		position = 'bottom',
+		variant = 'ghost',
+		size = 32,
+		color,
+		rounded = true,
 
 		// 状態/動作
 		disabled = false,
@@ -83,8 +87,11 @@
 			| 'left-bottom'
 			| 'right-top'
 			| 'right-center'
-			| 'right-bottom'
-			| 'auto';
+			| 'right-bottom';
+		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
+		size?: number;
+		color?: string;
+		rounded?: boolean;
 
 		// 状態/動作
 		disabled?: boolean;
@@ -283,6 +290,10 @@
 	<IconButton
 		{ariaLabel}
 		{disabled}
+		{variant}
+		{size}
+		{color}
+		{rounded}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
