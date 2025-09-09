@@ -70,10 +70,23 @@
 		}
 		return Array.from({ length: pagesToShow }, (_, i) => startPage + i);
 	});
+
+	// 現在のページのアイテム範囲を計算
+	const currentPageRange = $derived.by(() => {
+		const startItem = (currentPageNum - 1) * limit + 1;
+		const endItem = Math.min(currentPageNum * limit, total);
+		return { start: startItem, end: endItem };
+	});
+
+	// 表示用のテキストを生成
+	const rangeText = $derived.by(() => {
+		const { start, end } = currentPageRange;
+		return `${start.toLocaleString()} - ${end.toLocaleString()} / ${total.toLocaleString()}`;
+	});
 </script>
 
 <div class="pagination">
-	<div class="pagination__count">{total.toLocaleString()}</div>
+	<div class="pagination__count">{rangeText}</div>
 	<ul class="pagination__list">
 		<li>
 			<IconButton
@@ -138,11 +151,6 @@
 	}
 	.pagination__count {
 		white-space: nowrap;
-	}
-	.pagination__count::after {
-		content: '件';
-		margin-left: var(--svelte-ui-pagination-count-label-margin);
-		font-size: var(--svelte-ui-font-size-xs);
 	}
 	.pagination__list {
 		display: flex;
