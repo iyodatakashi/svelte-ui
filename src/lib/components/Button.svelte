@@ -93,7 +93,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'filled' | 'outlined' | 'text';
+		variant?: 'filled' | 'outlined' | 'text' | 'glass';
 		size?: 'small' | 'medium' | 'large';
 		color?: string;
 		fullWidth?: boolean;
@@ -159,13 +159,15 @@
 	const backgroundColors = {
 		filled: color,
 		outlined: 'transparent',
-		text: 'transparent'
+		text: 'transparent',
+		glass: 'var(--svelte-ui-button-bg-glass)'
 	};
 
 	const textColors = {
 		filled: 'var(--svelte-ui-button-text-filled)',
 		outlined: color,
-		text: color
+		text: color,
+		glass: 'var(--svelte-ui-button-text-glass)'
 	};
 
 	// =========================================================================
@@ -428,6 +430,11 @@
 	/* Variant styles */
 	.button--outlined {
 		box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
+	}
+
+	.button--glass {
+		backdrop-filter: var(--svelte-ui-glass-blur);
+		-webkit-backdrop-filter: var(--svelte-ui-glass-blur);
 	}
 
 	/* State modifiers */

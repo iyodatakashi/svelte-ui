@@ -9,7 +9,7 @@ interface IconButtonArgs {
 	type?: 'button' | 'submit' | 'reset' | null | undefined;
 	size?: number;
 	fontSize?: number;
-	variant?: 'filled' | 'outlined' | 'text';
+	variant?: 'filled' | 'outlined' | 'text' | 'glass';
 	color?: string;
 	disabled?: boolean;
 	loading?: boolean;
@@ -81,7 +81,7 @@ const meta: Meta<IconButtonArgs> = {
 		},
 		variant: {
 			control: 'select',
-			options: ['filled', 'outlined', 'text'],
+			options: ['filled', 'outlined', 'text', 'glass'],
 			description: 'Visual style variant'
 		},
 		size: {
@@ -301,6 +301,56 @@ export const Outlined: Story = {
 		size: 32,
 		ariaLabel: 'Outlined icon button',
 		children: createChildrenSnippet('home')
+	}
+};
+
+// Glass variant
+export const Glass: Story = {
+	args: {
+		variant: 'glass',
+		size: 32,
+		ariaLabel: 'Glass icon button',
+		children: createChildrenSnippet('tune')
+	}
+};
+
+// Glass variant with different sizes
+export const GlassLarge: Story = {
+	args: {
+		variant: 'glass',
+		size: 48,
+		ariaLabel: 'Large glass icon button',
+		children: createChildrenSnippet('settings')
+	}
+};
+
+// Glass variant with rounded shape
+export const GlassRounded: Story = {
+	args: {
+		variant: 'glass',
+		size: 40,
+		rounded: true,
+		ariaLabel: 'Round glass icon button',
+		children: createChildrenSnippet('more_vert')
+	}
+};
+
+// Glass with background demo
+export const GlassWithBackground: Story = {
+	args: {
+		variant: 'glass',
+		size: 40,
+		ariaLabel: 'Glass with background',
+		children: createChildrenSnippet('star'),
+		customStyle: 'position: relative; z-index: 1;'
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'すりガラス効果を確認するため、ブラウザの開発者ツールでこの要素に背景色やグラデーションを設定してください。例: `background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;`'
+			}
+		}
 	}
 };
 

@@ -99,7 +99,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'filled' | 'outlined' | 'text';
+		variant?: 'filled' | 'outlined' | 'text' | 'glass';
 		size?: number;
 		fontSize?: number;
 		color?: string;
@@ -294,7 +294,8 @@
 		{
 			filled: color || 'var(--svelte-ui-iconbutton-bg-filled)',
 			outlined: 'var(--svelte-ui-iconbutton-bg-outlined)',
-			text: 'var(--svelte-ui-iconbutton-bg-text)'
+			text: 'var(--svelte-ui-iconbutton-bg-text)',
+			glass: 'var(--svelte-ui-iconbutton-bg-glass)'
 		}[variant]
 	);
 
@@ -302,7 +303,8 @@
 		{
 			filled: 'var(--svelte-ui-iconbutton-text-filled)',
 			outlined: color || 'var(--svelte-ui-iconbutton-text-outlined)',
-			text: color || 'var(--svelte-ui-iconbutton-text-text)'
+			text: color || 'var(--svelte-ui-iconbutton-text-text)',
+			glass: 'var(--svelte-ui-iconbutton-text-glass)'
 		}[variant]
 	);
 
@@ -428,6 +430,11 @@
 
 	.iconbutton--outlined {
 		box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
+	}
+
+	.iconbutton--glass {
+		backdrop-filter: var(--svelte-ui-glass-blur);
+		-webkit-backdrop-filter: var(--svelte-ui-glass-blur);
 	}
 
 	.iconbutton:before {

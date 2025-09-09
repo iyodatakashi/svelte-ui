@@ -91,7 +91,7 @@
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
 		color?: string;
-		variant?: 'filled' | 'outlined' | 'text';
+		variant?: 'filled' | 'outlined' | 'text' | 'glass';
 		position?: 'left' | 'center' | 'right';
 		shadow?: boolean;
 		reducedMotion?: boolean;
@@ -257,7 +257,8 @@
 		{
 			filled: color,
 			outlined: 'transparent',
-			text: 'transparent'
+			text: 'transparent',
+			glass: 'var(--svelte-ui-fab-bg-glass)'
 		}[variant]
 	);
 
@@ -265,7 +266,8 @@
 		{
 			filled: 'var(--svelte-ui-button-text-filled)',
 			outlined: color,
-			text: color
+			text: color,
+			glass: 'var(--svelte-ui-fab-text-glass)'
 		}[variant]
 	);
 
@@ -413,6 +415,11 @@
 
 		&.fab--outlined {
 			box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
+		}
+
+		&.fab--glass {
+			backdrop-filter: var(--svelte-ui-glass-blur);
+			-webkit-backdrop-filter: var(--svelte-ui-glass-blur);
 		}
 
 		&.fab--shadow {

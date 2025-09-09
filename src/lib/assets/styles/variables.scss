@@ -428,6 +428,9 @@
 
 	/* Disabled色 */
 	--svelte-ui-disabled-bg: var(--base-50-transparent);
+
+	/* Glass色 */
+	--svelte-ui-glass-bg: var(--base-50-transparent);
 }
 
 /* ====================================
@@ -474,6 +477,9 @@
 
 	/* Disabled色 */
 	--svelte-ui-disabled-bg: var(--white-100-transparent);
+
+	/* Glass色 */
+	--svelte-ui-glass-bg: var(--white-200-transparent);
 }
 
 /* ====================================
@@ -482,25 +488,42 @@
 
 :where(:root),
 [data-theme='dark'] {
+	/* Glass Effect - 共通変数 */
+	--svelte-ui-glass-blur: blur(10px);
+
 	/* Button */
 	--svelte-ui-button-bg-filled: var(--svelte-ui-primary-color);
 	--svelte-ui-button-bg-outlined: transparent;
 	--svelte-ui-button-bg-text: transparent;
+	--svelte-ui-button-bg-glass: var(--svelte-ui-glass-bg);
 	--svelte-ui-button-text-filled: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-button-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-text-text: var(--svelte-ui-primary-color);
+	--svelte-ui-button-text-glass: var(--svelte-ui-primary-color);
 	--svelte-ui-button-border-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-button-focus-color: var(--svelte-ui-focus-color);
 	--svelte-ui-button-label-color: var(--svelte-ui-text-color);
 
+	/* Fab */
+	--svelte-ui-fab-bg-filled: var(--svelte-ui-primary-color);
+	--svelte-ui-fab-bg-outlined: transparent;
+	--svelte-ui-fab-bg-text: transparent;
+	--svelte-ui-fab-bg-glass: var(--svelte-ui-glass-bg);
+	--svelte-ui-fab-text-filled: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-fab-text-outlined: var(--svelte-ui-primary-color);
+	--svelte-ui-fab-text-text: var(--svelte-ui-primary-color);
+	--svelte-ui-fab-text-glass: var(--svelte-ui-primary-color);
+
 	/* IconButton */
 	--svelte-ui-iconbutton-bg-filled: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-bg-outlined: transparent;
 	--svelte-ui-iconbutton-bg-text: transparent;
+	--svelte-ui-iconbutton-bg-glass: var(--svelte-ui-glass-bg);
 	--svelte-ui-iconbutton-text-filled: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-text-text: var(--svelte-ui-primary-color);
+	--svelte-ui-iconbutton-text-glass: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
