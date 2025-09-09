@@ -342,7 +342,7 @@
 	--svelte-ui-pagination-gap: 16px;
 	--svelte-ui-pagination-page-list-gap: 4px;
 	--svelte-ui-pagination-button-size: 32px;
-	--svelte-ui-pagination-button-border-radius: 50%;
+	--svelte-ui-pagination-button-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-pagination-count-label-margin: 0.5em;
 
 	/* Snackbar */
@@ -562,9 +562,16 @@
 	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
 
 	/* Pagination */
-	--svelte-ui-pagination-selected-color: var(--svelte-ui-primary-color);
-	--svelte-ui-pagination-nav-color: var(--svelte-ui-text-color);
-	--svelte-ui-pagination-selected-text-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-pagination-button-bg: transparent;
+	--svelte-ui-pagination-selected-button-bg: var(--svelte-ui-primary-color);
+	--svelte-ui-pagination-button-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-pagination-selected-button-text-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-pagination-button-border-color: var(--svelte-ui-border-color);
+	--svelte-ui-pagination-selected-button-border-color: transparent;
+	--svelte-ui-pagination-count-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-pagination-ellipsis-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-pagination-button-box-shadow: inset 0 0 0 1px var(--svelte-ui-border-color);
+	--svelte-ui-pagination-selected-button-box-shadow: none;
 
 	/* DatepickerCalendar */
 	--svelte-ui-datepicker-today-color: var(--svelte-ui-primary-color);

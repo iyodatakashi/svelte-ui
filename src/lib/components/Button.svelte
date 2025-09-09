@@ -311,7 +311,6 @@
 	disabled={isDisabled}
 	class={buttonClasses}
 	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
-		border-color: {variant === 'outlined' ? color : ''}; 
 		min-width: {minWidth}px; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
@@ -390,7 +389,7 @@
 		line-height: normal;
 		overflow: hidden;
 		cursor: pointer;
-		transition-property: background-color, border-color, color, opacity, transform;
+		transition-property: background-color, box-shadow, color, opacity, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
@@ -428,8 +427,7 @@
 
 	/* Variant styles */
 	.button--outlined {
-		border-style: solid;
-		border-width: var(--svelte-ui-border-width);
+		box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
 	}
 
 	/* State modifiers */

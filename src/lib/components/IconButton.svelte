@@ -333,9 +333,6 @@
 		disabled={isDisabled}
 		class={buttonClasses}
 		style="color: {textColor}; background-color: {backgroundColor}; 
-			border-color: {variant === 'outlined'
-			? color || 'var(--svelte-ui-iconbutton-border-outlined)'
-			: ''}; 
 			width: {size}px; height: {size}px; 
 			{customStyle ?? ''};"
 		onclick={handleClick}
@@ -421,7 +418,7 @@
 		overflow: hidden;
 		color: inherit;
 		cursor: pointer;
-		transition-property: background-color, border-color, color, opacity, transform;
+		transition-property: background-color, box-shadow, color, opacity, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
@@ -430,8 +427,7 @@
 	}
 
 	.iconbutton--outlined {
-		border-style: solid;
-		border-width: var(--svelte-ui-border-width);
+		box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
 	}
 
 	.iconbutton:before {

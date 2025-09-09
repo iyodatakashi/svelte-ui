@@ -454,7 +454,6 @@
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
-					size={32}
 				>
 					{leftIcon}
 				</IconButton>
@@ -484,7 +483,6 @@
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
-					size={32}
 				>
 					{rightIcon}
 				</IconButton>

@@ -287,7 +287,6 @@
 	class:fab--loading={loading}
 	class:fab--no-motion={reducedMotion}
 	style="color: {textColor}; background-color: {backgroundColor}; 
-		border-color: {variant === 'outlined' ? color : ''}; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
 	onfocus={handleFocus}
@@ -360,7 +359,7 @@
 		overflow: hidden;
 		z-index: 1000;
 		cursor: pointer;
-		transition-property: background-color, border-color, color, opacity, transform, box-shadow;
+		transition-property: background-color, box-shadow, color, opacity, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 
 		&.fab--left {
@@ -413,12 +412,19 @@
 		}
 
 		&.fab--outlined {
-			border-style: solid;
-			border-width: var(--svelte-ui-border-width);
+			box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
 		}
 
 		&.fab--shadow {
 			box-shadow:
+				0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+				0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+				0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+		}
+
+		&.fab--outlined.fab--shadow {
+			box-shadow:
+				inset 0 0 0 var(--svelte-ui-border-width) currentColor,
 				0px 3px 5px -1px rgba(0, 0, 0, 0.2),
 				0px 6px 10px 0px rgba(0, 0, 0, 0.14),
 				0px 1px 18px 0px rgba(0, 0, 0, 0.12);
@@ -431,10 +437,26 @@
 					0px 8px 10px 1px rgba(0, 0, 0, 0.14),
 					0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 			}
+
+			&.fab--outlined.fab--shadow:hover {
+				box-shadow:
+					inset 0 0 0 var(--svelte-ui-border-width) currentColor,
+					0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+					0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+					0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+			}
 		}
 
 		&.fab--shadow:active {
 			box-shadow:
+				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
+				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
+				0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+		}
+
+		&.fab--outlined.fab--shadow:active {
+			box-shadow:
+				inset 0 0 0 var(--svelte-ui-border-width) currentColor,
 				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
 				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
 				0px 5px 22px 4px rgba(0, 0, 0, 0.12);

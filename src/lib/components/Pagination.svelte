@@ -129,7 +129,7 @@
 		<li>
 			<IconButton
 				ariaLabel="前のページへ移動"
-				color="var(--svelte-ui-pagination-nav-color)"
+				color="var(--svelte-ui-pagination-button-text-color)"
 				disabled={currentPageNum === 1}
 				onclick={goPrevPage}
 			>
@@ -155,7 +155,7 @@
 		<li>
 			<IconButton
 				ariaLabel="次のページへ移動"
-				color="var(--svelte-ui-pagination-nav-color)"
+				color="var(--svelte-ui-pagination-button-text-color)"
 				disabled={currentPageNum === totalPages}
 				onclick={goNextPage}
 			>
@@ -172,6 +172,7 @@
 		gap: var(--svelte-ui-pagination-gap);
 	}
 	.pagination__count {
+		color: var(--svelte-ui-pagination-count-text-color);
 		white-space: nowrap;
 	}
 	.pagination__list {
@@ -183,15 +184,16 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: var(--svelte-ui-pagination-button-size);
+		min-width: var(--svelte-ui-pagination-button-size);
 		height: var(--svelte-ui-pagination-button-size);
-		padding: 0;
+		padding: 0 4px;
 		background-color: transparent;
 		border: none;
 		border-radius: var(--svelte-ui-pagination-button-border-radius);
+		box-shadow: var(--svelte-ui-pagination-button-box-shadow);
 		line-height: 1px;
 		overflow: hidden;
-		color: var(--svelte-ui-pagination-nav-color);
+		color: var(--svelte-ui-pagination-button-text-color);
 		transition-duration: 0s;
 	}
 	.pagination__button:before {
@@ -216,8 +218,9 @@
 	}
 
 	.pagination__button--selected {
-		background-color: var(--svelte-ui-pagination-selected-color);
-		color: var(--svelte-ui-pagination-selected-text-color);
+		background-color: var(--svelte-ui-pagination-selected-button-bg);
+		box-shadow: var(--svelte-ui-pagination-selected-button-box-shadow);
+		color: var(--svelte-ui-pagination-selected-button-text-color);
 	}
 
 	.pagination__ellipsis {
@@ -226,7 +229,7 @@
 		align-items: center;
 		width: var(--svelte-ui-pagination-button-size);
 		height: var(--svelte-ui-pagination-button-size);
-		color: var(--svelte-ui-pagination-nav-color);
+		color: var(--svelte-ui-pagination-ellipsis-text-color);
 		user-select: none;
 	}
 </style>
