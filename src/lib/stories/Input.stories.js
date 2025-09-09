@@ -62,6 +62,14 @@ const meta = {
 			control: { type: 'boolean' },
 			description: '必須項目'
 		},
+		leftIconAriaLabel: {
+			control: { type: 'text' },
+			description: '左アイコンのaria-label'
+		},
+		rightIconAriaLabel: {
+			control: { type: 'text' },
+			description: '右アイコンのaria-label'
+		},
 		minWidth: {
 			control: { type: 'number' },
 			description: '最小幅'

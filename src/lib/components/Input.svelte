@@ -41,6 +41,8 @@
 		hasRightIcon = false,
 		rightIcon = undefined,
 		leftIcon = undefined,
+		leftIconAriaLabel = '左アイコン',
+		rightIconAriaLabel = '右アイコン',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -128,6 +130,8 @@
 		hasRightIcon?: boolean;
 		rightIcon?: string;
 		leftIcon?: string;
+		leftIconAriaLabel?: string;
+		rightIconAriaLabel?: string;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -447,9 +451,8 @@
 		<div class="input__icon-left">
 			{#if onLeftIconClick}
 				<IconButton
-					ariaLabel="左アイコン"
+					ariaLabel={leftIconAriaLabel}
 					color="var(--svelte-ui-input-icon-color)"
-					variant="text"
 					onclick={onLeftIconClick}
 					tabindex={-1}
 					{iconFilled}
@@ -476,9 +479,8 @@
 		<div class="input__icon-right">
 			{#if onRightIconClick}
 				<IconButton
-					ariaLabel="右アイコン"
+					ariaLabel={rightIconAriaLabel}
 					color="var(--svelte-ui-input-icon-color)"
-					variant="text"
 					onclick={onRightIconClick}
 					tabindex={-1}
 					{iconFilled}

@@ -39,6 +39,7 @@
 		autoResize = true,
 		resizable = false,
 		clearable = false,
+		clearButtonAriaLabel = 'クリア',
 		readonly = false,
 		required = false,
 		iconVariant = 'outlined',
