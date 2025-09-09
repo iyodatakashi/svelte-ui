@@ -567,9 +567,9 @@
 >
 	<div class="header">
 		<div class="prev-button-block">
-			<IconButton ariaLabel={currentLocaleConfig.prevMonthLabel} onclick={goPrev}
-				>chevron_left</IconButton
-			>
+			<IconButton size={36} ariaLabel={currentLocaleConfig.prevMonthLabel} onclick={goPrev}>
+				chevron_left
+			</IconButton>
 		</div>
 		<button
 			class="month-label-button"
@@ -588,7 +588,7 @@
 			{/if}
 		</button>
 		<div class="next-button-block">
-			<IconButton ariaLabel={currentLocaleConfig.nextMonthLabel} onclick={goNext}
+			<IconButton size={36} ariaLabel={currentLocaleConfig.nextMonthLabel} onclick={goNext}
 				>chevron_right</IconButton
 			>
 		</div>
