@@ -35,6 +35,7 @@
 		// 状態/動作
 		duration = 3000,
 		closable = false,
+		closeButtonAriaLabel = 'このメッセージを閉じる',
 
 		// イベントハンドラー
 		onAction
@@ -59,6 +60,7 @@
 		// 状態/動作
 		duration?: number;
 		closable?: boolean;
+		closeButtonAriaLabel?: string;
 		iconVariant?: IconVariant;
 
 		// イベントハンドラー
@@ -177,7 +179,7 @@
 		{#if closable}
 			<div class="snackbar-item__close">
 				<IconButton
-					ariaLabel="このメッセージを閉じる"
+					ariaLabel={closeButtonAriaLabel}
 					iconFilled={true}
 					{iconVariant}
 					color="var(--svelte-ui-text-on-filled-color)"

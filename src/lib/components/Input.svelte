@@ -54,6 +54,7 @@
 		readonly = false,
 		required = false,
 		clearable = false,
+		clearButtonAriaLabel = 'クリア',
 
 		// フォーカスイベント
 		onfocus = () => {},

@@ -113,6 +113,7 @@
 		autoResize?: boolean;
 		resizable?: boolean;
 		clearable?: boolean;
+		clearButtonAriaLabel?: string;
 		readonly?: boolean;
 		required?: boolean;
 		iconVariant?: IconVariant;
@@ -402,9 +403,9 @@
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
 			<div class="textarea__clear-button">
-				<IconButton
-					ariaLabel="クリア"
-					color="var(--svelte-ui-textarea-text-color)"
+			<IconButton
+				ariaLabel={clearButtonAriaLabel}
+				color="var(--svelte-ui-textarea-text-color)"
 					onclick={clear}
 					tabindex={-1}
 					iconFilled={true}

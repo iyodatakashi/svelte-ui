@@ -33,6 +33,7 @@
 		iconGrade = 0,
 		iconOpticalSize = iconSize,
 		iconVariant = 'outlined',
+		removeFileAriaLabel = '画像を削除',
 
 		// フォーカスイベント
 		onfocus = (event: FocusEvent) => {},
@@ -78,6 +79,7 @@
 		iconGrade?: IconGrade;
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
+		removeFileAriaLabel?: string;
 
 		// フォーカスイベント
 		onfocus?: (event: FocusEvent) => void;
@@ -301,7 +303,7 @@
 									e.stopPropagation();
 									removeFile(index);
 								}}
-								ariaLabel="画像を削除"
+								ariaLabel={removeFileAriaLabel}
 								tabindex={-1}
 							>
 								cancel

@@ -27,6 +27,7 @@
 		disabled = false,
 		readonly = false,
 		clearable = false,
+		clearButtonAriaLabel = 'クリア',
 		iconVariant = 'outlined',
 
 		// 入力イベント
@@ -86,6 +87,7 @@
 		disabled?: boolean;
 		readonly?: boolean;
 		clearable?: boolean;
+		clearButtonAriaLabel?: string;
 		iconVariant?: IconVariant;
 
 		// 入力イベント
@@ -349,9 +351,9 @@
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
 			<div class="clear-button-block">
-				<IconButton
-					ariaLabel="クリア"
-					color="var(--svelte-ui-colorpicker-text-color)"
+			<IconButton
+				ariaLabel={clearButtonAriaLabel}
+				color="var(--svelte-ui-colorpicker-text-color)"
 					onclick={clear}
 					tabindex={-1}
 					iconFilled={true}
