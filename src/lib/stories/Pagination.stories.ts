@@ -6,6 +6,10 @@ interface PaginationArgs {
 	total: number;
 	limit: number;
 	currentPageNum: number;
+	visiblePages: number;
+	showCount: boolean;
+	showRange: boolean;
+	showTotal: boolean;
 	onchange: (pageNum: number) => void;
 }
 
@@ -35,6 +39,26 @@ const meta: Meta<PaginationArgs> = {
 			control: 'number',
 			description: '現在のページ番号'
 		},
+		visiblePages: {
+			control: 'number',
+			description: '表示するページボタンの数',
+			defaultValue: 5
+		},
+		showCount: {
+			control: 'boolean',
+			description: 'count表示全体の有無',
+			defaultValue: true
+		},
+		showRange: {
+			control: 'boolean',
+			description: '現在のアイテム範囲（例: "1 - 50"）の表示有無',
+			defaultValue: true
+		},
+		showTotal: {
+			control: 'boolean',
+			description: '総件数（例: "1,000"）の表示有無',
+			defaultValue: true
+		},
 		onchange: {
 			control: false,
 			action: 'page-changed',
@@ -52,6 +76,10 @@ export const Default: Story = {
 		total: 1000,
 		limit: 20,
 		currentPageNum: 1,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -62,6 +90,10 @@ export const LargeDataset: Story = {
 		total: 50000,
 		limit: 100,
 		currentPageNum: 25,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -72,6 +104,10 @@ export const SmallDataset: Story = {
 		total: 150,
 		limit: 20,
 		currentPageNum: 3,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -82,6 +118,10 @@ export const FirstPage: Story = {
 		total: 1000,
 		limit: 50,
 		currentPageNum: 1,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -92,6 +132,10 @@ export const LastPage: Story = {
 		total: 1000,
 		limit: 50,
 		currentPageNum: 20,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -102,6 +146,10 @@ export const MiddlePage: Story = {
 		total: 1000,
 		limit: 50,
 		currentPageNum: 10,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -112,6 +160,10 @@ export const SinglePage: Story = {
 		total: 15,
 		limit: 20,
 		currentPageNum: 1,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -122,6 +174,10 @@ export const FewPages: Story = {
 		total: 85,
 		limit: 20,
 		currentPageNum: 2,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -132,6 +188,10 @@ export const ManyPages: Story = {
 		total: 10000,
 		limit: 10,
 		currentPageNum: 500,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };
@@ -142,6 +202,82 @@ export const HighLimit: Story = {
 		total: 5000,
 		limit: 500,
 		currentPageNum: 5,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
+		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
+	}
+};
+
+// Count Display Variants - count表示のバリエーション
+
+// No Count Display - count表示なし
+export const NoCountDisplay: Story = {
+	args: {
+		total: 1000,
+		limit: 20,
+		currentPageNum: 5,
+		visiblePages: 5,
+		showCount: false,
+		showRange: true,
+		showTotal: true,
+		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
+	}
+};
+
+// Range Only - 範囲のみ表示
+export const RangeOnly: Story = {
+	args: {
+		total: 1000,
+		limit: 20,
+		currentPageNum: 5,
+		visiblePages: 5,
+		showCount: true,
+		showRange: true,
+		showTotal: false,
+		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
+	}
+};
+
+// Total Only - 総件数のみ表示
+export const TotalOnly: Story = {
+	args: {
+		total: 1000,
+		limit: 20,
+		currentPageNum: 5,
+		visiblePages: 5,
+		showCount: true,
+		showRange: false,
+		showTotal: true,
+		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
+	}
+};
+
+// Custom Visible Pages - 表示ページ数カスタム
+export const CustomVisiblePages: Story = {
+	args: {
+		total: 1000,
+		limit: 20,
+		currentPageNum: 10,
+		visiblePages: 7,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
+		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
+	}
+};
+
+// Minimal Visible Pages - 最小表示ページ数
+export const MinimalVisiblePages: Story = {
+	args: {
+		total: 1000,
+		limit: 20,
+		currentPageNum: 10,
+		visiblePages: 3,
+		showCount: true,
+		showRange: true,
+		showTotal: true,
 		onchange: (pageNum: number) => console.log('Page changed to:', pageNum)
 	}
 };

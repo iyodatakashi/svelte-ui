@@ -14,7 +14,12 @@
 		currentPageNum = 1,
 		visiblePages = 5,
 
-		// 入力イベント
+		// 状態/動作
+		showCount = true,
+		showRange = true,
+		showTotal = true,
+
+		// イベントハンドラー
 		onchange = () => {}
 	}: {
 		// 基本プロパティ
@@ -23,7 +28,12 @@
 		currentPageNum: number;
 		visiblePages?: number;
 
-		// 入力イベント
+		// 状態/動作
+		showCount?: boolean;
+		showRange?: boolean;
+		showTotal?: boolean;
+
+		// イベントハンドラー
 		onchange: (pageNum: number) => void;
 	} = $props();
 
@@ -118,13 +128,27 @@
 
 	// 表示用のテキストを生成
 	const rangeText = $derived.by(() => {
+		if (!showCount) return '';
+
 		const { start, end } = currentPageRange;
-		return `${start.toLocaleString()} - ${end.toLocaleString()} / ${total.toLocaleString()}`;
+		const parts: string[] = [];
+
+		if (showRange) {
+			parts.push(`${start.toLocaleString()} - ${end.toLocaleString()}`);
+		}
+
+		if (showTotal) {
+			parts.push(total.toLocaleString());
+		}
+
+		return parts.join(' / ');
 	});
 </script>
 
 <div class="pagination">
-	<div class="pagination__count">{rangeText}</div>
+	{#if showCount && rangeText}
+		<div class="pagination__count">{rangeText}</div>
+	{/if}
 	<ul class="pagination__list">
 		<li>
 			<button
