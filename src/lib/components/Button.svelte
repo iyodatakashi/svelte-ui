@@ -21,7 +21,7 @@
 
 		// スタイル/レイアウト
 		customStyle,
-		variant = 'text',
+		variant = 'ghost',
 		size = 'medium',
 		color = 'var(--svelte-ui-primary-color)',
 		fullWidth = false,
@@ -93,7 +93,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'filled' | 'outlined' | 'text' | 'glass';
+		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
 		size?: 'small' | 'medium' | 'large';
 		color?: string;
 		fullWidth?: boolean;
@@ -159,14 +159,14 @@
 	const backgroundColors = {
 		filled: color,
 		outlined: 'transparent',
-		text: 'transparent',
+		ghost: 'transparent',
 		glass: 'var(--svelte-ui-button-bg-glass)'
 	};
 
 	const textColors = {
 		filled: 'var(--svelte-ui-button-text-filled)',
 		outlined: color,
-		text: color,
+		ghost: color,
 		glass: 'var(--svelte-ui-button-text-glass)'
 	};
 

@@ -23,7 +23,7 @@ interface ButtonArgs {
 	rounded?: boolean;
 	icon?: string;
 	color?: string;
-	variant?: 'filled' | 'outlined' | 'text';
+	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
 	size?: 'small' | 'medium' | 'large';
 	reducedMotion?: boolean;
 	ariaLabel?: string;
@@ -81,7 +81,7 @@ const meta: Meta<ButtonArgs> = {
 		},
 		variant: {
 			control: 'select',
-			options: ['filled', 'outlined', 'text'],
+			options: ['filled', 'outlined', 'ghost', 'glass'],
 			description: 'Visual style variant'
 		},
 		size: {
@@ -261,10 +261,10 @@ const createChildrenSnippet = (text: string) =>
 		render: () => text
 	}));
 
-// Default (text variant, medium)
+// Default (ghost variant, medium)
 export const Default: Story = {
 	args: {
-		variant: 'text',
+		variant: 'ghost',
 		size: 'medium',
 		children: createChildrenSnippet('Default Button')
 	}

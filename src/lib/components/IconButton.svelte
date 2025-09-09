@@ -21,7 +21,7 @@
 
 		// スタイル/レイアウト
 		customStyle,
-		variant = 'text',
+		variant = 'ghost',
 		size = 32,
 		fontSize = size * 0.75,
 		color,
@@ -99,7 +99,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'filled' | 'outlined' | 'text' | 'glass';
+		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
 		size?: number;
 		fontSize?: number;
 		color?: string;
@@ -294,7 +294,7 @@
 		{
 			filled: color || 'var(--svelte-ui-iconbutton-bg-filled)',
 			outlined: 'var(--svelte-ui-iconbutton-bg-outlined)',
-			text: 'var(--svelte-ui-iconbutton-bg-text)',
+			ghost: 'var(--svelte-ui-iconbutton-bg-ghost)',
 			glass: 'var(--svelte-ui-iconbutton-bg-glass)'
 		}[variant]
 	);
@@ -303,7 +303,7 @@
 		{
 			filled: 'var(--svelte-ui-iconbutton-text-filled)',
 			outlined: color || 'var(--svelte-ui-iconbutton-text-outlined)',
-			text: color || 'var(--svelte-ui-iconbutton-text-text)',
+			ghost: color || 'var(--svelte-ui-iconbutton-text-ghost)',
 			glass: 'var(--svelte-ui-iconbutton-text-glass)'
 		}[variant]
 	);

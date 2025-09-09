@@ -8,7 +8,7 @@ interface FabArgs {
 	children?: Snippet;
 	icon?: string;
 	color?: string;
-	variant?: 'filled' | 'outlined' | 'text';
+	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
 	position?: 'left' | 'center' | 'right';
 	shadow?: boolean;
 	disabled?: boolean;
@@ -62,6 +62,11 @@ const meta: Meta<FabArgs> = {
 		props: args
 	}),
 	argTypes: {
+		variant: {
+			control: 'select',
+			options: ['filled', 'outlined', 'ghost', 'glass'],
+			description: 'Visual style variant'
+		},
 		position: {
 			control: 'select',
 			options: ['left', 'center', 'right'],

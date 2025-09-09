@@ -9,7 +9,7 @@ interface IconButtonArgs {
 	type?: 'button' | 'submit' | 'reset' | null | undefined;
 	size?: number;
 	fontSize?: number;
-	variant?: 'filled' | 'outlined' | 'text' | 'glass';
+	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
 	color?: string;
 	disabled?: boolean;
 	loading?: boolean;
@@ -81,7 +81,7 @@ const meta: Meta<IconButtonArgs> = {
 		},
 		variant: {
 			control: 'select',
-			options: ['filled', 'outlined', 'text', 'glass'],
+			options: ['filled', 'outlined', 'ghost', 'glass'],
 			description: 'Visual style variant'
 		},
 		size: {
@@ -273,10 +273,10 @@ const createChildrenSnippet = (iconName: string) =>
 		render: () => iconName
 	}));
 
-// Default (text, medium)
+// Default (ghost, medium)
 export const Default: Story = {
 	args: {
-		variant: 'text',
+		variant: 'ghost',
 		size: 32,
 		ariaLabel: 'Default icon button',
 		iconFilled: true,
@@ -395,7 +395,7 @@ export const Loading: Story = {
 // Icon fill
 export const FilledIcon: Story = {
 	args: {
-		variant: 'text',
+		variant: 'ghost',
 		iconFilled: true,
 		ariaLabel: 'Filled heart button',
 		children: createChildrenSnippet('favorite')
@@ -405,7 +405,7 @@ export const FilledIcon: Story = {
 // Badge
 export const WithBadge: Story = {
 	args: {
-		variant: 'text',
+		variant: 'ghost',
 		showBadge: true,
 		badgeCount: 5,
 		badgeVariant: 'count',
@@ -447,7 +447,7 @@ export const Pressed: Story = {
 // Accessibility example
 export const Accessible: Story = {
 	args: {
-		variant: 'text',
+		variant: 'ghost',
 		ariaLabel: 'お気に入りに追加/削除',
 		ariaPressed: false,
 		children: createChildrenSnippet('favorite')

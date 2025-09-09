@@ -91,7 +91,7 @@
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
 		color?: string;
-		variant?: 'filled' | 'outlined' | 'text' | 'glass';
+		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
 		position?: 'left' | 'center' | 'right';
 		shadow?: boolean;
 		reducedMotion?: boolean;
@@ -257,7 +257,7 @@
 		{
 			filled: color,
 			outlined: 'transparent',
-			text: 'transparent',
+			ghost: 'transparent',
 			glass: 'var(--svelte-ui-fab-bg-glass)'
 		}[variant]
 	);
@@ -266,7 +266,7 @@
 		{
 			filled: 'var(--svelte-ui-button-text-filled)',
 			outlined: color,
-			text: color,
+			ghost: color,
 			glass: 'var(--svelte-ui-fab-text-glass)'
 		}[variant]
 	);
