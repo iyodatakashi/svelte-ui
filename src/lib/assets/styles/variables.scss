@@ -570,7 +570,7 @@
 	--svelte-ui-pagination-selected-button-border-color: transparent;
 	--svelte-ui-pagination-count-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-pagination-ellipsis-text-color: var(--svelte-ui-text-color);
-	--svelte-ui-pagination-button-box-shadow: inset 0 0 0 1px var(--svelte-ui-border-color);
+	--svelte-ui-pagination-button-box-shadow: none /*inset 0 0 0 1px var(--svelte-ui-border-color)*/;
 	--svelte-ui-pagination-selected-button-box-shadow: none;
 
 	/* DatepickerCalendar */

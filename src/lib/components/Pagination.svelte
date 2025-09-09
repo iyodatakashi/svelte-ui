@@ -1,7 +1,7 @@
 <!-- Pagination.svelte -->
 
 <script lang="ts">
-	import IconButton from './IconButton.svelte';
+	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 
 	// =========================================================================
@@ -127,14 +127,14 @@
 	<div class="pagination__count">{rangeText}</div>
 	<ul class="pagination__list">
 		<li>
-			<IconButton
-				ariaLabel="前のページへ移動"
-				color="var(--svelte-ui-pagination-button-text-color)"
+			<button
+				class="pagination__button"
 				disabled={currentPageNum === 1}
+				aria-label="前のページへ移動"
 				onclick={goPrevPage}
 			>
-				chevron_left
-			</IconButton>
+				<Icon>chevron_left</Icon>
+			</button>
 		</li>
 		{#each pageItems as item, index (item.type === 'page' ? `page-${item.value}` : `ellipsis-${index}`)}
 			<li>
@@ -153,14 +153,14 @@
 			</li>
 		{/each}
 		<li>
-			<IconButton
-				ariaLabel="次のページへ移動"
-				color="var(--svelte-ui-pagination-button-text-color)"
+			<button
+				class="pagination__button"
 				disabled={currentPageNum === totalPages}
+				aria-label="次のページへ移動"
 				onclick={goNextPage}
 			>
-				chevron_right
-			</IconButton>
+				<Icon>chevron_right</Icon>
+			</button>
 		</li>
 	</ul>
 </div>
@@ -221,6 +221,16 @@
 		background-color: var(--svelte-ui-pagination-selected-button-bg);
 		box-shadow: var(--svelte-ui-pagination-selected-button-box-shadow);
 		color: var(--svelte-ui-pagination-selected-button-text-color);
+	}
+
+	.pagination__button:disabled {
+		opacity: 0.5;
+		cursor: not-allowed;
+		pointer-events: none;
+	}
+
+	.pagination__button:disabled:before {
+		opacity: 0;
 	}
 
 	.pagination__ellipsis {
