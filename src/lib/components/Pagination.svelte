@@ -12,6 +12,7 @@
 		total,
 		limit = 100,
 		currentPageNum = 1,
+		visiblePages = 5,
 
 		// 入力イベント
 		onchange = () => {}
@@ -20,12 +21,11 @@
 		total: number;
 		limit: number;
 		currentPageNum: number;
+		visiblePages?: number;
 
 		// 入力イベント
 		onchange: (pageNum: number) => void;
 	} = $props();
-
-	const MAX_VISIBLE_PAGES = 7;
 
 	// =========================================================================
 	// Methods
@@ -62,13 +62,51 @@
 	// =========================================================================
 	const totalPages = $derived(Math.ceil(total / limit));
 
-	const pageList: number[] = $derived.by(() => {
-		const pagesToShow = Math.min(totalPages, MAX_VISIBLE_PAGES);
-		let startPage = Math.max(currentPageNum - Math.floor(pagesToShow / 2), 1);
-		if (startPage + pagesToShow - 1 > totalPages) {
-			startPage = totalPages - pagesToShow + 1;
+	// ページリストとエリプシスを含む表示アイテムを生成
+	const pageItems = $derived.by(() => {
+		const items: Array<{ type: 'page' | 'ellipsis'; value: number | null }> = [];
+
+		if (totalPages <= visiblePages + 2) {
+			// 総ページ数が少ない場合は全て表示
+			return Array.from({ length: totalPages }, (_, i) => ({ type: 'page', value: i + 1 }));
 		}
-		return Array.from({ length: pagesToShow }, (_, i) => startPage + i);
+
+		// 現在のページを中心とした連続するページ範囲を計算
+		const half = Math.floor(visiblePages / 2);
+		let start = Math.max(1, currentPageNum - half);
+		let end = Math.min(totalPages, start + visiblePages - 1);
+
+		// 右端に寄りすぎた場合の調整
+		if (end === totalPages && end - start + 1 < visiblePages) {
+			start = Math.max(1, totalPages - visiblePages + 1);
+		}
+
+		// 1ページ目を追加（範囲に含まれていない場合）
+		if (start > 1) {
+			items.push({ type: 'page', value: 1 });
+
+			// ギャップがある場合はエリプシスを追加
+			if (start > 2) {
+				items.push({ type: 'ellipsis', value: null });
+			}
+		}
+
+		// メインの連続ページ範囲を追加
+		for (let i = start; i <= end; i++) {
+			items.push({ type: 'page', value: i });
+		}
+
+		// 最終ページを追加（範囲に含まれていない場合）
+		if (end < totalPages) {
+			// ギャップがある場合はエリプシスを追加
+			if (end < totalPages - 1) {
+				items.push({ type: 'ellipsis', value: null });
+			}
+
+			items.push({ type: 'page', value: totalPages });
+		}
+
+		return items;
 	});
 
 	// 現在のページのアイテム範囲を計算
@@ -90,16 +128,6 @@
 	<ul class="pagination__list">
 		<li>
 			<IconButton
-				ariaLabel="最初のページへ移動"
-				color="var(--svelte-ui-pagination-nav-color)"
-				disabled={currentPageNum === 1}
-				onclick={goFirstPage}
-			>
-				first_page
-			</IconButton>
-		</li>
-		<li>
-			<IconButton
 				ariaLabel="前のページへ移動"
 				color="var(--svelte-ui-pagination-nav-color)"
 				disabled={currentPageNum === 1}
@@ -108,16 +136,20 @@
 				chevron_left
 			</IconButton>
 		</li>
-		{#each pageList as page (page)}
+		{#each pageItems as item, index (item.type === 'page' ? `page-${item.value}` : `ellipsis-${index}`)}
 			<li>
-				<button
-					class="pagination__button"
-					class:pagination__button--selected={page === currentPageNum}
-					aria-label={`${page}ページ目へ移動`}
-					onclick={() => handleClick(page)}
-				>
-					{page}
-				</button>
+				{#if item.type === 'page'}
+					<button
+						class="pagination__button"
+						class:pagination__button--selected={item.value === currentPageNum}
+						aria-label={`${item.value}ページ目へ移動`}
+						onclick={() => handleClick(item.value!)}
+					>
+						{item.value}
+					</button>
+				{:else}
+					<span class="pagination__ellipsis" aria-label="省略されたページ">...</span>
+				{/if}
 			</li>
 		{/each}
 		<li>
@@ -128,16 +160,6 @@
 				onclick={goNextPage}
 			>
 				chevron_right
-			</IconButton>
-		</li>
-		<li>
-			<IconButton
-				ariaLabel="最後のページへ移動"
-				color="var(--svelte-ui-pagination-nav-color)"
-				disabled={currentPageNum === totalPages}
-				onclick={goLastPage}
-			>
-				last_page
 			</IconButton>
 		</li>
 	</ul>
@@ -196,5 +218,15 @@
 	.pagination__button--selected {
 		background-color: var(--svelte-ui-pagination-selected-color);
 		color: var(--svelte-ui-pagination-selected-text-color);
+	}
+
+	.pagination__ellipsis {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: var(--svelte-ui-pagination-button-size);
+		height: var(--svelte-ui-pagination-button-size);
+		color: var(--svelte-ui-pagination-nav-color);
+		user-select: none;
 	}
 </style>
