@@ -285,8 +285,6 @@
 	const previewWidthStyle = $derived(getStyleFromNumber(width));
 	const previewHeightStyle = $derived(getStyleFromNumber(height));
 
-	$inspect(previewWidthStyle);
-
 	onDestroy(() => {
 		cleanupObjectUrls();
 	});
