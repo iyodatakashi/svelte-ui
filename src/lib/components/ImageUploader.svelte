@@ -6,6 +6,7 @@
 	import { announceToScreenReader } from '../utils/accessibility';
 	import { getStyleFromNumber } from '../utils/style';
 	import { onDestroy } from 'svelte';
+	import ImageUploaderPreview from './ImageUploaderPreview.svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
@@ -36,6 +37,9 @@
 		iconOpticalSize = iconSize,
 		iconVariant = 'outlined',
 		removeFileAriaLabel = '画像を削除',
+
+		// 状態/動作
+		adaptiveSize = false,
 
 		// フォーカスイベント
 		onfocus = (event: FocusEvent) => {},
@@ -72,6 +76,7 @@
 		width?: string | number;
 		height?: string | number;
 		rounded?: boolean;
+		adaptiveSize?: boolean;
 
 		// アイコン系
 		icon?: string;
@@ -247,19 +252,13 @@
 				dt.items.add(files[i]);
 			}
 		}
-		files = dt.files.length > 0 ? dt.files : undefined;
-	};
-
-	const getImageUrl = (file: File): string => {
-		// キャッシュから既存のURLを取得
-		if (urlCache.has(file)) {
-			return urlCache.get(file)!;
+		if (dt.files.length > 0) {
+			files = dt.files;
+		} else {
+			// 空の場合は空のFileListを作成
+			const emptyDt = new DataTransfer();
+			files = emptyDt.files;
 		}
-
-		// 新しいURLを作成してキャッシュに保存
-		const url = URL.createObjectURL(file);
-		urlCache.set(file, url);
-		return url;
 	};
 
 	const cleanupObjectUrls = () => {
@@ -291,29 +290,15 @@
 </script>
 
 {#snippet preview(file: File, index: number)}
-	<div class="image-uploader__preview">
-		<img
-			src={getImageUrl(file)}
-			alt="選択された画像: {file.name}"
-			class="image-uploader__preview-image"
-			class:image-uploader__preview-image--rounded={rounded}
-		/>
-		<div class="image-uploader__delete-button">
-			<IconButton
-				iconFilled={true}
-				size={24}
-				color="var(--svelte-ui-text-color)"
-				onclick={(e) => {
-					e.stopPropagation();
-					removeFile(index);
-				}}
-				ariaLabel={removeFileAriaLabel}
-				tabindex={-1}
-			>
-				cancel
-			</IconButton>
-		</div>
-	</div>
+	<ImageUploaderPreview
+		{file}
+		{width}
+		{height}
+		{adaptiveSize}
+		{rounded}
+		{removeFileAriaLabel}
+		onRemove={() => removeFile(index)}
+	/>
 {/snippet}
 
 <div
@@ -335,7 +320,6 @@
 		class:image-uploader__button--hover={isHover}
 		class:image-uploader__button--has-images={files && files.length > 0}
 		class:image-uploader__button--rounded={rounded}
-		style="width: {previewWidthStyle}; height: {previewHeightStyle};"
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -425,8 +409,10 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: var(--image-uploader-button-width);
-		height: var(--image-uploader-button-height);
+		width: fit-content;
+		height: fit-content;
+		max-width: 100%;
+		min-width: var(--image-uploader-button-width);
 		min-height: var(--image-uploader-button-height);
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
@@ -486,44 +472,6 @@
 		gap: 16px;
 		color: var(--svelte-ui-text-subtle-color);
 		text-align: center;
-	}
-
-	.image-uploader__preview {
-		position: relative;
-		width: var(--image-uploader-button-width);
-		height: var(--image-uploader-button-height);
-		min-height: var(--image-uploader-button-height);
-		border-radius: var(--svelte-ui-border-radius);
-		background-color: var(--svelte-ui-surface-color);
-	}
-
-	.image-uploader__preview-image {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-		border-radius: var(--svelte-ui-border-radius);
-	}
-
-	.image-uploader__preview-image--rounded {
-		border-radius: var(--svelte-ui-border-radius-rounded);
-	}
-
-	.image-uploader__delete-button {
-		position: absolute;
-		top: 4px;
-		right: 4px;
-		background-color: var(--svelte-ui-surface-color);
-		border-radius: var(--svelte-ui-border-radius-rounded);
-		opacity: 0;
-		transition: opacity var(--svelte-ui-transition-duration);
-		z-index: 10;
-	}
-
-	@media (hover: hover) {
-		.image-uploader__preview:hover .image-uploader__delete-button {
-			opacity: 1;
-		}
 	}
 
 	.error-message {

@@ -18,9 +18,9 @@
 export const getStyleFromNumber = (
 	value: string | number | undefined,
 	defaultValue?: string
-): string => {
+): string | undefined => {
 	if (value === undefined || value === null) {
-		return defaultValue || '';
+		return defaultValue;
 	}
 	return typeof value === 'number' ? `${value}px` : value;
 };

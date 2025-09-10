@@ -9,6 +9,7 @@ interface ImageUploaderArgs {
 	width?: string | number;
 	height?: string | number;
 	rounded?: boolean;
+	adaptiveSize?: boolean;
 	icon?: string;
 	placeholder?: string;
 	// 新しいイベントハンドラ
@@ -65,6 +66,11 @@ const meta: Meta<ImageUploaderArgs> = {
 		rounded: {
 			control: 'boolean',
 			description: 'Make the component circular'
+		},
+		adaptiveSize: {
+			control: 'boolean',
+			description:
+				'Adjust preview size based on image aspect ratio. Width uses specified value, height adjusts to maintain aspect ratio. If image width is smaller than specified width, uses original image width.'
 		},
 		icon: {
 			control: 'text',
@@ -143,8 +149,7 @@ export const WithSize: Story = {
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 200,
-		height: 200,
-		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
+		height: 200
 	}
 };
 
@@ -154,8 +159,7 @@ export const SmallSize: Story = {
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 120,
-		height: 120,
-		placeholder: '画像を選択'
+		height: 120
 	}
 };
 
@@ -165,8 +169,7 @@ export const Rectangle: Story = {
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 300,
-		height: 200,
-		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
+		height: 200
 	}
 };
 
@@ -177,8 +180,7 @@ export const Rounded: Story = {
 		maxFileSize: 5 * 1024 * 1024,
 		width: 150,
 		height: 150,
-		rounded: true,
-		placeholder: '画像を選択'
+		rounded: true
 	}
 };
 
@@ -187,8 +189,7 @@ export const CustomIcon: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
-		icon: 'photo_camera',
-		placeholder: '写真を撮影または選択'
+		icon: 'photo_camera'
 	}
 };
 
@@ -197,8 +198,7 @@ export const CustomPlaceholder: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
-		icon: 'add_photo_alternate',
-		placeholder: '<strong>画像をアップロード</strong><br />JPG, PNG, GIF対応'
+		icon: 'add_photo_alternate'
 	}
 };
 
@@ -210,18 +210,7 @@ export const AvatarUploader: Story = {
 		width: 120,
 		height: 120,
 		rounded: true,
-		icon: 'person',
-		placeholder: 'アバター画像'
-	}
-};
-
-export const DocumentUploader: Story = {
-	args: {
-		accept: '.pdf,.doc,.docx',
-		multiple: true,
-		maxFileSize: 10 * 1024 * 1024,
-		icon: 'description',
-		placeholder: 'ドキュメントを選択<br />PDF, DOC, DOCX対応'
+		icon: 'person'
 	}
 };
 
@@ -230,8 +219,7 @@ export const CustomAccept: Story = {
 		accept: '.jpg,.jpeg,.png,.svg',
 		multiple: false,
 		maxFileSize: 2 * 1024 * 1024,
-		icon: 'image',
-		placeholder: 'JPG, PNG画像のみ'
+		icon: 'image'
 	}
 };
 
@@ -240,8 +228,7 @@ export const SmallMaxSize: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 1 * 1024 * 1024, // 1MB
-		icon: 'image',
-		placeholder: '画像を選択<br />最大1MB'
+		icon: 'image'
 	}
 };
 
@@ -253,8 +240,7 @@ export const Playground: Story = {
 		width: undefined,
 		height: undefined,
 		rounded: false,
-		icon: 'image',
-		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
+		icon: 'image'
 	}
 };
 
@@ -263,8 +249,7 @@ export const SVGSupport: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
-		icon: 'image',
-		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択<br /><small>SVG対応</small>'
+		icon: 'image'
 	}
 };
 
@@ -273,8 +258,7 @@ export const SVGOnly: Story = {
 		accept: '.svg',
 		multiple: false,
 		maxFileSize: 2 * 1024 * 1024,
-		icon: 'code',
-		placeholder: 'SVGファイルを選択'
+		icon: 'code'
 	}
 };
 
@@ -286,8 +270,7 @@ export const ResponsiveWidth: Story = {
 		maxFileSize: 5 * 1024 * 1024,
 		width: 'calc(100vw - 80px)',
 		height: 200,
-		icon: 'image',
-		placeholder: 'レスポンシブ幅<br />calc(100vw - 80px)'
+		icon: 'image'
 	}
 };
 
@@ -298,8 +281,7 @@ export const PercentageWidth: Story = {
 		maxFileSize: 5 * 1024 * 1024,
 		width: '80%',
 		height: 150,
-		icon: 'image',
-		placeholder: 'パーセント幅<br />80%'
+		icon: 'image'
 	}
 };
 
@@ -308,8 +290,7 @@ export const AllImageFormats: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg,.bmp,.tiff,.ico',
 		multiple: true,
 		maxFileSize: 10 * 1024 * 1024,
-		icon: 'collections',
-		placeholder: '全画像形式対応<br />JPG, PNG, GIF, WebP, SVG, BMP, TIFF, ICO'
+		icon: 'collections'
 	}
 };
 
@@ -320,7 +301,18 @@ export const NumericSizeTest: Story = {
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 150,
-		height: 100,
-		placeholder: '150px × 100px test'
+		height: 100
+	}
+};
+
+// アダプティブサイズテスト
+export const AdaptiveSizeTest: Story = {
+	args: {
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
+		multiple: false,
+		maxFileSize: 5 * 1024 * 1024,
+		width: 200,
+		height: 150,
+		adaptiveSize: true
 	}
 };
