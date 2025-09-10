@@ -124,9 +124,7 @@ export const Default: Story = {
 	args: {
 		accept: '.jpg,.jpeg,.png,.gif,.webp',
 		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		icon: 'image',
-		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
+		maxFileSize: 5 * 1024 * 1024
 	}
 };
 
@@ -134,9 +132,7 @@ export const Multiple: Story = {
 	args: {
 		accept: '.jpg,.jpeg,.png,.gif,.webp',
 		multiple: true,
-		maxFileSize: 5 * 1024 * 1024,
-		icon: 'image',
-		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
+		maxFileSize: 5 * 1024 * 1024
 	}
 };
 
@@ -147,7 +143,6 @@ export const WithSize: Story = {
 		maxFileSize: 5 * 1024 * 1024,
 		width: 200,
 		height: 200,
-		icon: 'image',
 		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
 	}
 };
@@ -159,7 +154,6 @@ export const SmallSize: Story = {
 		maxFileSize: 5 * 1024 * 1024,
 		width: 120,
 		height: 120,
-		icon: 'image',
 		placeholder: '画像を選択'
 	}
 };
@@ -171,7 +165,6 @@ export const Rectangle: Story = {
 		maxFileSize: 5 * 1024 * 1024,
 		width: 300,
 		height: 200,
-		icon: 'image',
 		placeholder: '画像をドラッグ＆ドロップ<br />または画像を選択'
 	}
 };
@@ -184,7 +177,6 @@ export const Rounded: Story = {
 		width: 150,
 		height: 150,
 		rounded: true,
-		icon: 'image',
 		placeholder: '画像を選択'
 	}
 };

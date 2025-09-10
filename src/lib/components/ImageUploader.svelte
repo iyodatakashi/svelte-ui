@@ -4,6 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import { onDestroy } from 'svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
@@ -14,7 +15,7 @@
 		files = $bindable(),
 		multiple = false,
 		maxFileSize = 5 * 1024 * 1024,
-		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択',
+		placeholder = '',
 
 		// HTML属性系
 		id = `imageuploader-${Math.random().toString(36).substring(2, 15)}`,
@@ -26,8 +27,8 @@
 		rounded = false,
 
 		// アイコン系
-		icon = 'image',
-		iconSize = 48,
+		icon = 'add_photo_alternate',
+		iconSize = 32,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -56,7 +57,7 @@
 		onpointerleave = (event: PointerEvent) => {}
 	}: {
 		// 基本プロパティ
-		files?: FileList;
+		files?: FileList | undefined;
 		multiple?: boolean;
 		maxFileSize?: number;
 		placeholder?: string;
@@ -106,6 +107,7 @@
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
+	let createdUrls: string[] = $state([]);
 
 	// =========================================================================
 	// Effects
@@ -230,7 +232,14 @@
 	};
 
 	const createImageUrl = (file: File): string => {
-		return URL.createObjectURL(file);
+		const url = URL.createObjectURL(file);
+		createdUrls.push(url);
+		return url;
+	};
+
+	const cleanupObjectUrls = () => {
+		createdUrls.forEach((url) => URL.revokeObjectURL(url));
+		createdUrls = [];
 	};
 
 	export const reset = () => {
@@ -238,24 +247,60 @@
 			fileInputRef.value = '';
 			files = undefined;
 			errorMessage = '';
+			cleanupObjectUrls();
 		}
 	};
+
+	onDestroy(() => {
+		cleanupObjectUrls();
+	});
 </script>
+
+{#snippet preview(file: File, index: number)}
+	<div class="image-uploader__preview">
+		<img
+			src={createImageUrl(file)}
+			alt="選択された画像: {file.name}"
+			class="image-uploader__preview-image"
+			class:image-uploader__preview-image--rounded={rounded}
+		/>
+		<div class="image-uploader__delete-button">
+			<IconButton
+				iconFilled={true}
+				size={24}
+				color="var(--svelte-ui-text-color)"
+				onclick={(e) => {
+					e.stopPropagation();
+					removeFile(index);
+				}}
+				ariaLabel={removeFileAriaLabel}
+				tabindex={-1}
+			>
+				cancel
+			</IconButton>
+		</div>
+	</div>
+{/snippet}
 
 <div
 	class="image-uploader"
-	class:rounded={rounded && !multiple}
+	class:image-uploader--multiple={multiple}
 	style="
 		--image-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
-		--image-uploader-height: {height}px
+		{height ? `--image-uploader-height: ${height}px;` : ''}
 	"
 >
+	{#if multiple}
+		{#each files as file, index}
+			{@render preview(file, index)}
+		{/each}
+	{/if}
 	<button
 		bind:this={dropAreaRef}
-		class="image-uploader"
-		class:hover={isHover}
-		class:has-images={files && files.length > 0}
-		class:rounded={rounded && !multiple}
+		class="image-uploader__button"
+		class:image-uploader__button--hover={isHover}
+		class:image-uploader__button--has-images={files && files.length > 0}
+		class:image-uploader__button--rounded={rounded}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -287,31 +332,9 @@
 			}
 		}}
 		aria-label="画像をアップロード"
-		aria-describedby={`${id}-help`}
 	>
-		{#if files && files.length > 0}
-			<div class="image-uploader__preview" class:single={!multiple}>
-				{#each files as file, index}
-					<div class="image-preview-item" class:single={!multiple}>
-						<img src={createImageUrl(file)} alt={file.name} class="preview-image" />
-						<div class="image-uploader__delete-button">
-							<IconButton
-								iconFilled={true}
-								size={24}
-								color="var(--svelte-ui-text-color)"
-								onclick={(e) => {
-									e.stopPropagation();
-									removeFile(index);
-								}}
-								ariaLabel={removeFileAriaLabel}
-								tabindex={-1}
-							>
-								cancel
-							</IconButton>
-						</div>
-					</div>
-				{/each}
-			</div>
+		{#if !multiple && files && files.length > 0}
+			{@render preview(files[0], 0)}
 		{:else}
 			<div class="description">
 				<Icon
@@ -337,7 +360,7 @@
 		bind:this={fileInputRef}
 		{accept}
 		{multiple}
-		class="upload-file-input"
+		class="image-uploader__input"
 		{id}
 		type="file"
 		onchange={(event) => {
@@ -356,14 +379,20 @@
 		height: var(--image-uploader-width, 100%);
 	}
 
-	.image-uploader {
+	.image-uploader--multiple {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
+	}
+
+	.image-uploader__button {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: 100%;
-		height: 100%;
+		width: 120px;
+		height: 120px;
 		min-height: 120px;
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
@@ -372,34 +401,31 @@
 		transition: background-color var(--svelte-ui-transition-duration);
 	}
 
-	.image-uploader.rounded {
-		border-radius: var(--svelte-ui-border-radius-rounded);
-	}
-
-	.image-uploader::before {
+	.image-uploader__button::before {
 		content: '';
 		display: block;
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: calc(100% - 2px);
-		height: calc(100% - 2px);
+		width: 100%;
+		height: 100%;
 		border: dashed 1px var(--svelte-ui-border-color);
 		border-radius: var(--svelte-ui-border-radius);
 		transition: border-color var(--svelte-ui-transition-duration);
 	}
 
-	.image-uploader.rounded::before {
+	.image-uploader__button--rounded,
+	.image-uploader__button--rounded::before {
 		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	@media (hover: hover) {
-		.image-uploader:hover {
+		.image-uploader__button:hover {
 			background-color: var(--svelte-ui-fileupload-hover-bg);
 		}
 
-		.image-uploader:hover::before,
-		.image-uploader.hover::before {
+		.image-uploader__button:hover::before,
+		.image-uploader__button--hover::before {
 			border-color: var(--svelte-ui-primary-color);
 		}
 	}
@@ -409,12 +435,12 @@
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.image-uploader.hover {
+	.image-uploader__button--hover {
 		background-color: var(--svelte-ui-fileupload-hover-bg);
 		border-color: var(--svelte-ui-primary-color);
 	}
 
-	.image-uploader.has-images {
+	.image-uploader__button--has-images {
 		padding: 0;
 		min-height: auto;
 	}
@@ -429,42 +455,23 @@
 	}
 
 	.image-uploader__preview {
-		display: flex;
-		justify-content: start;
-		flex-wrap: wrap;
-		gap: 8px;
-		width: 100%;
-		padding: 8px;
-	}
-
-	.image-preview-container.single {
-		height: 100%;
-		padding: 0;
-	}
-
-	.image-preview-item {
 		position: relative;
 		width: 120px;
 		height: 120px;
 		border-radius: var(--svelte-ui-border-radius);
-		overflow: hidden;
 		background-color: var(--svelte-ui-surface-color);
 	}
 
-	.image-preview-item.single {
-		width: 100%;
-		height: auto;
-	}
-
-	.image-uploader.rounded .image-preview-item .preview-image {
-		border-radius: var(--svelte-ui-border-radius-rounded);
-	}
-
-	.preview-image {
+	.image-uploader__preview-image {
 		width: 100%;
 		height: 100%;
 		object-fit: cover;
 		object-position: center;
+		border-radius: var(--svelte-ui-border-radius);
+	}
+
+	.image-uploader__preview-image--rounded {
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	.image-uploader__delete-button {
@@ -479,7 +486,7 @@
 	}
 
 	@media (hover: hover) {
-		.image-preview-item:hover .image-uploader__delete-button {
+		.image-uploader__preview:hover .image-uploader__delete-button {
 			opacity: 1;
 		}
 	}
@@ -493,7 +500,7 @@
 		font-size: var(--svelte-ui-font-size-sm);
 	}
 
-	.upload-file-input {
+	.image-uploader__input {
 		display: none;
 	}
 </style>
