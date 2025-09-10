@@ -507,9 +507,9 @@
 	popover="manual"
 	bind:this={popupRef}
 	class="popup"
-	class:fade-out={!isOpen}
-	class:mobile={isMobile}
-	class:fullscreen={shouldUseFullscreen}
+	class:popup--fade-out={!isOpen}
+	class:popup--mobile={isMobile}
+	class:popup--fullscreen={shouldUseFullscreen}
 	{role}
 	aria-label={ariaLabel}
 	aria-labelledby={ariaLabelledby}
@@ -575,8 +575,8 @@
 		}
 	}
 
-	:popover-open.fade-out,
-	:popover-open.fade-out::backdrop {
+	:popover-open.popup--fade-out,
+	:popover-open.popup--fade-out::backdrop {
 		animation: fadeOut 300ms forwards;
 	}
 
@@ -596,7 +596,7 @@
 	/* =============================================
 	 * Mobile-specific styles
 	 * ============================================= */
-	:popover-open.mobile {
+	:popover-open.popup--mobile {
 		position: fixed;
 		inset: 0;
 		width: 100%;
@@ -609,7 +609,7 @@
 		z-index: var(--svelte-ui-z-modal);
 	}
 
-	:popover-open.mobile.fullscreen {
+	:popover-open.popup--mobile.popup--fullscreen {
 		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
 			env(safe-area-inset-left);
 	}
@@ -620,8 +620,8 @@
 		left: 0;
 		right: 0;
 		background: var(--svelte-ui-surface-color);
-		border-top-left-border-radius: var(--svelte-ui-popup-mobile-border-radius);
-		border-top-right-border-radius: var(--svelte-ui-popup-mobile-border-radius);
+		border-top-left-radius: var(--svelte-ui-popup-mobile-border-radius);
+		border-top-right-radius: var(--svelte-ui-popup-mobile-border-radius);
 		max-height: 90vh;
 		overflow: hidden;
 		animation: slideUpMobile 300ms ease-out;
@@ -646,7 +646,7 @@
 		}
 	}
 
-	:popover-open.mobile.fullscreen.fade-out .popup__mobile {
+	:popover-open.popup--mobile.popup--fullscreen.popup--fade-out .popup__mobile {
 		animation: slideDownMobile 300ms ease-in;
 	}
 
@@ -675,8 +675,8 @@
 	@media (prefers-reduced-motion: reduce) {
 		:popover-open,
 		:popover-open::backdrop,
-		:popover-open.fade-out,
-		:popover-open.fade-out::backdrop {
+		:popover-open.popup--fade-out,
+		:popover-open.popup--fade-out::backdrop {
 			animation-duration: 0.01s;
 		}
 	}
