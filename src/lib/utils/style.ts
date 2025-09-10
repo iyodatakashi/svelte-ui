@@ -15,9 +15,12 @@
  * getStyleFromNumber("50%") // "50%"
  * getStyleFromNumber("2rem") // "2rem"
  */
-export const getStyleFromNumber = (value: string | number | undefined): string => {
+export const getStyleFromNumber = (
+	value: string | number | undefined,
+	defaultValue?: string
+): string => {
 	if (value === undefined || value === null) {
-		return '';
+		return defaultValue || '';
 	}
 	return typeof value === 'number' ? `${value}px` : value;
 };

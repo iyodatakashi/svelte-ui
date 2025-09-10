@@ -23,8 +23,8 @@
 		accept = '.jpg,.jpeg,.png,.gif,.webp,.svg',
 
 		// スタイル/レイアウト
-		width = undefined,
-		height = undefined,
+		width = '120px',
+		height = '120px',
 		rounded = false,
 
 		// アイコン系
@@ -279,6 +279,14 @@
 		}
 	};
 
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const previewWidthStyle = $derived(getStyleFromNumber(width));
+	const previewHeightStyle = $derived(getStyleFromNumber(height));
+
+	$inspect(previewWidthStyle);
+
 	onDestroy(() => {
 		cleanupObjectUrls();
 	});
@@ -314,9 +322,9 @@
 	class="image-uploader"
 	class:image-uploader--multiple={multiple}
 	style="
-		--image-uploader-width: {getStyleFromNumber(width) || '100%'};
-		{height ? `--image-uploader-height: ${getStyleFromNumber(height)};` : ''}
-	"
+			--image-uploader-button-width: {previewWidthStyle};
+			--image-uploader-button-height: {previewHeightStyle};
+		"
 >
 	{#if multiple}
 		{#each files as file, index}
@@ -329,6 +337,7 @@
 		class:image-uploader__button--hover={isHover}
 		class:image-uploader__button--has-images={files && files.length > 0}
 		class:image-uploader__button--rounded={rounded}
+		style="width: {previewWidthStyle}; height: {previewHeightStyle};"
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -403,8 +412,7 @@
 <style>
 	.image-uploader {
 		position: relative;
-		width: var(--image-uploader-width, 100%);
-		height: var(--image-uploader-width, 100%);
+		width: 100%;
 	}
 
 	.image-uploader--multiple {
@@ -419,9 +427,9 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: 120px;
-		height: 120px;
-		min-height: 120px;
+		width: var(--image-uploader-button-width);
+		height: var(--image-uploader-button-height);
+		min-height: var(--image-uploader-button-height);
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
 		border-radius: var(--svelte-ui-border-radius);
@@ -484,8 +492,9 @@
 
 	.image-uploader__preview {
 		position: relative;
-		width: 120px;
-		height: 120px;
+		width: var(--image-uploader-button-width);
+		height: var(--image-uploader-button-height);
+		min-height: var(--image-uploader-button-height);
 		border-radius: var(--svelte-ui-border-radius);
 		background-color: var(--svelte-ui-surface-color);
 	}

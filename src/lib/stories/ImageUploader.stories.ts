@@ -56,11 +56,11 @@ const meta: Meta<ImageUploaderArgs> = {
 		},
 		width: {
 			control: 'text',
-			description: 'Fixed width in pixels or a percentage'
+			description: 'Button and preview width (default: 120px)'
 		},
 		height: {
-			control: 'number',
-			description: 'Fixed height in pixels'
+			control: 'text',
+			description: 'Button and preview height (default: 120px)'
 		},
 		rounded: {
 			control: 'boolean',
@@ -310,5 +310,17 @@ export const AllImageFormats: Story = {
 		maxFileSize: 10 * 1024 * 1024,
 		icon: 'collections',
 		placeholder: '全画像形式対応<br />JPG, PNG, GIF, WebP, SVG, BMP, TIFF, ICO'
+	}
+};
+
+// デバッグ用: 数値サイズテスト
+export const NumericSizeTest: Story = {
+	args: {
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
+		multiple: false,
+		maxFileSize: 5 * 1024 * 1024,
+		width: 150,
+		height: 100,
+		placeholder: '150px × 100px test'
 	}
 };
