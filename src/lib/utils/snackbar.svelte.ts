@@ -6,7 +6,7 @@ export type SnackbarItem = {
 	id: string;
 	message?: string;
 	children?: Snippet;
-	type: 'info' | 'success' | 'warning' | 'error';
+	type: 'info' | 'success' | 'warning' | 'error' | 'default';
 	variant?: 'filled' | 'outlined';
 	color?: string;
 	textColor?: string;
@@ -120,6 +120,13 @@ class SnackbarManager {
 		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'message' | 'createdAt'>>
 	): string {
 		return this.show({ message, type: 'info', ...options });
+	}
+
+	default(
+		message: string,
+		options?: Partial<Omit<SnackbarItem, 'id' | 'type' | 'message' | 'createdAt'>>
+	): string {
+		return this.show({ message, type: 'default', ...options });
 	}
 
 	// カスタムコンテンツ用メソッド

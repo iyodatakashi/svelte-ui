@@ -173,8 +173,8 @@
 
 	/* State Colors */
 	--svelte-ui-success-color: #12b073;
-	--svelte-ui-error-color: #c4272c;
-	--svelte-ui-danger-color: #d32f2f;
+	--svelte-ui-error-color: #f54d4d;
+	--svelte-ui-danger-color: #f54d4d;
 	--svelte-ui-warning-color: #f57c00;
 	--svelte-ui-info-color: #13a3b4;
 
@@ -634,27 +634,40 @@
 	--svelte-ui-loadingspinner-size: 32px;
 
 	/* Snackbar */
-	--svelte-ui-snackbar-bg: var(--svelte-ui-surface-color);
-	--svelte-ui-snackbar-text-color: var(--svelte-ui-text-color);
-	--svelte-ui-snackbar-action-color: var(--svelte-ui-primary-color);
-	--svelte-ui-snackbar-action-hover-bg: rgba(var(--svelte-ui-primary-rgb), 0.1);
+	--svelte-ui-snackbar-default-filled-bg: var(--svelte-ui-text-color);
+	--svelte-ui-snackbar-default-filled-text-color: var(--svelte-ui-surface-color);
 
-	/* Snackbar Type Colors */
-	--svelte-ui-snackbar-info-bg: var(--svelte-ui-info-color);
-	--svelte-ui-snackbar-info-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-info-icon-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-info-filled-bg: var(--svelte-ui-info-color);
+	--svelte-ui-snackbar-info-filled-text-color: var(--svelte-ui-text-on-filled-color);
 
-	--svelte-ui-snackbar-success-bg: var(--svelte-ui-success-color);
-	--svelte-ui-snackbar-success-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-success-icon-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-success-filled-bg: var(--svelte-ui-success-color);
+	--svelte-ui-snackbar-success-filled-text-color: var(--svelte-ui-text-on-filled-color);
 
-	--svelte-ui-snackbar-warning-bg: var(--svelte-ui-warning-color);
-	--svelte-ui-snackbar-warning-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-warning-icon-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-warning-filled-bg: var(--svelte-ui-warning-color);
+	--svelte-ui-snackbar-warning-filled-text-color: var(--svelte-ui-text-on-filled-color);
 
-	--svelte-ui-snackbar-error-bg: var(--svelte-ui-error-color);
-	--svelte-ui-snackbar-error-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-error-icon-color: var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-snackbar-error-filled-bg: var(--svelte-ui-error-color);
+	--svelte-ui-snackbar-error-filled-text-color: var(--svelte-ui-text-on-filled-color);
+
+	--svelte-ui-snackbar-default-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-default-outlined-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-snackbar-default-outlined-border-color: var(--svelte-ui-border-color);
+
+	--svelte-ui-snackbar-info-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-info-outlined-text-color: var(--svelte-ui-info-color);
+	--svelte-ui-snackbar-info-outlined-border-color: var(--svelte-ui-info-color);
+
+	--svelte-ui-snackbar-success-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-success-outlined-text-color: var(--svelte-ui-success-color);
+	--svelte-ui-snackbar-success-outlined-border-color: var(--svelte-ui-success-color);
+
+	--svelte-ui-snackbar-warning-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-warning-outlined-text-color: var(--svelte-ui-warning-color);
+	--svelte-ui-snackbar-warning-outlined-border-color: var(--svelte-ui-warning-color);
+
+	--svelte-ui-snackbar-error-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-error-outlined-text-color: var(--svelte-ui-error-color);
+	--svelte-ui-snackbar-error-outlined-border-color: var(--svelte-ui-error-color);
 
 	/* Skeleton */
 	--svelte-ui-skeleton-bg-color: var(--svelte-ui-skeleton-color);

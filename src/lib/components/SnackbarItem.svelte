@@ -45,7 +45,7 @@
 
 		// 基本プロパティ
 		message?: string;
-		type?: 'info' | 'success' | 'warning' | 'error';
+		type?: 'info' | 'success' | 'warning' | 'error' | 'default';
 		actionLabel?: string;
 
 		// HTML属性系
@@ -74,7 +74,8 @@
 		info: 'info',
 		success: 'check_circle',
 		warning: 'warning',
-		error: 'error'
+		error: 'error',
+		default: null // アイコンなし
 	};
 
 	let snackbarRef: HTMLDivElement;
@@ -153,9 +154,11 @@
 		aria-atomic="true"
 		aria-hidden={!visible}
 	>
-		<div class="snackbar__icon" aria-hidden="true">
-			<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
-		</div>
+		{#if typeIcons[type]}
+			<div class="snackbar__icon" aria-hidden="true">
+				<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
+			</div>
+		{/if}
 
 		<div class="snackbar__content">
 			{#if children}
@@ -182,7 +185,9 @@
 					ariaLabel={closeButtonAriaLabel}
 					iconFilled={true}
 					{iconVariant}
-					color="var(--svelte-ui-text-on-filled-color)"
+					color={variant === 'filled'
+						? textColor || `var(--svelte-ui-snackbar-${type}-filled-text-color)`
+						: color || `var(--svelte-ui-snackbar-${type}-outlined-text-color)`}
 					size={24}
 					onclick={handleClose}
 				>
@@ -267,8 +272,6 @@
 		max-width: var(--svelte-ui-snackbar-max-width);
 		padding: var(--svelte-ui-snackbar-padding);
 
-		background-color: var(--svelte-ui-snackbar-bg);
-		color: var(--svelte-ui-snackbar-text-color);
 		border-radius: var(--svelte-ui-snackbar-border-radius);
 		box-shadow: var(--svelte-ui-snackbar-shadow);
 
@@ -317,80 +320,103 @@
 
 	/* Type variants - filled */
 	.snackbar-item__content--filled.snackbar-item__content--info {
-		background-color: var(--custom-color, var(--svelte-ui-snackbar-info-bg));
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-info-text-color));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-info-filled-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-info-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--info .snackbar-item__icon {
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-info-icon-color));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-info-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--success {
-		background-color: var(--custom-color, var(--svelte-ui-snackbar-success-bg));
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-success-text-color));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-success-filled-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-success-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--success .snackbar-item__icon {
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-success-icon-color));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-success-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--warning {
-		background-color: var(--custom-color, var(--svelte-ui-snackbar-warning-bg));
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-warning-text-color));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-warning-filled-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-warning-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--warning .snackbar-item__icon {
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-warning-icon-color));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-warning-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--error {
-		background-color: var(--custom-color, var(--svelte-ui-snackbar-error-bg));
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-error-text-color));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-error-filled-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-error-filled-text-color));
 	}
 
 	.snackbar-item__content--filled.snackbar-item__content--error .snackbar-item__icon {
-		color: var(--custom-text-color, var(--svelte-ui-snackbar-error-icon-color));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-error-filled-text-color));
+	}
+
+	.snackbar-item__content--filled.snackbar-item__content--default {
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-default-filled-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-default-filled-text-color));
+	}
+
+	.snackbar-item__content--filled.snackbar-item__content--default .snackbar-item__icon {
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-default-filled-text-color));
 	}
 
 	/* Type variants - outlined */
-	.snackbar-item__content--outlined {
-		box-shadow: inset 0 0 0 1px currentColor;
-		background-color: var(--svelte-ui-surface-color, #ffffff);
-	}
-
 	.snackbar-item__content--outlined.snackbar-item__content--info {
-		box-shadow: inset 0 0 0 1px var(--custom-color, var(--svelte-ui-snackbar-info-bg));
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-info-bg)));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-info-outlined-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-info-outlined-text-color));
+		box-shadow: inset 0 0 0 1px
+			var(--custom-color, var(--svelte-ui-snackbar-info-outlined-border-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--info .snackbar-item__icon {
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-info-bg)));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-info-outlined-text-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--success {
-		box-shadow: inset 0 0 0 1px var(--custom-color, var(--svelte-ui-snackbar-success-bg));
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-success-bg)));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-success-outlined-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-success-outlined-text-color));
+		box-shadow: inset 0 0 0 1px
+			var(--custom-color, var(--svelte-ui-snackbar-success-outlined-border-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--success .snackbar-item__icon {
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-success-bg)));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-success-outlined-text-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--warning {
-		box-shadow: inset 0 0 0 1px var(--custom-color, var(--svelte-ui-snackbar-warning-bg));
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-warning-bg)));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-warning-outlined-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-warning-outlined-text-color));
+		box-shadow: inset 0 0 0 1px
+			var(--custom-color, var(--svelte-ui-snackbar-warning-outlined-border-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--warning .snackbar-item__icon {
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-warning-bg)));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-warning-outlined-text-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--error {
-		box-shadow: inset 0 0 0 1px var(--custom-color, var(--svelte-ui-snackbar-error-bg));
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-error-bg)));
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-error-outlined-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-error-outlined-text-color));
+		box-shadow: inset 0 0 0 1px
+			var(--custom-color, var(--svelte-ui-snackbar-error-outlined-border-color));
 	}
 
 	.snackbar-item__content--outlined.snackbar-item__content--error .snackbar-item__icon {
-		color: var(--custom-text-color, var(--custom-color, var(--svelte-ui-snackbar-error-bg)));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-error-outlined-text-color));
+	}
+
+	.snackbar-item__content--outlined.snackbar-item__content--default {
+		background-color: var(--custom-color, var(--svelte-ui-snackbar-default-outlined-bg));
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-default-outlined-text-color));
+		box-shadow: inset 0 0 0 1px
+			var(--custom-color, var(--svelte-ui-snackbar-default-outlined-border-color));
+	}
+
+	.snackbar-item__content--outlined.snackbar-item__content--default .snackbar-item__icon {
+		color: var(--custom-text-color, var(--svelte-ui-snackbar-default-outlined-text-color));
 	}
 </style>
