@@ -79,12 +79,16 @@
 	</div>
 
 	{#snippet footer()}
-		<Button variant="outlined" onclick={handleCancel}>
+		<Button variant="ghost" color="var(--svelte-ui-text-color)" onclick={handleCancel}>
 			{cancelText}
 		</Button>
 		<Button
 			variant="filled"
-			color={variant === 'danger' ? '#d32f2f' : variant === 'warning' ? '#f57c00' : '#1976d2'}
+			color={variant === 'danger'
+				? 'var(--svelte-ui-danger-color)'
+				: variant === 'warning'
+					? 'var(--svelte-ui-warning-color)'
+					: undefined}
 			onclick={handleConfirm}
 		>
 			{confirmText}
