@@ -293,18 +293,13 @@
 	const isChecked: boolean = $derived(currentValue === value);
 
 	const containerClasses = $derived(
-		[
-			'radio-container',
-			`radio-container--${size}`,
-			disabled && 'radio-container--disabled',
-			reducedMotion && 'radio-container--no-motion'
-		]
+		['radio', `radio--${size}`, disabled && 'radio--disabled', reducedMotion && 'radio--no-motion']
 			.filter(Boolean)
 			.join(' ')
 	);
 </script>
 
-<div class={containerClasses} data-testid="radio-container">
+<div class={containerClasses} data-testid="radio">
 	<input
 		type="radio"
 		checked={isChecked}
@@ -349,14 +344,14 @@
 </div>
 
 <style>
-	.radio-container {
+	.radio {
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
 		contain: layout;
 	}
 
-	.radio-container input[type='radio'] {
+	.radio input[type='radio'] {
 		position: absolute;
 		width: 16px;
 		height: 16px;
@@ -366,7 +361,7 @@
 		cursor: pointer;
 	}
 
-	.radio-container--disabled input[type='radio'] {
+	.radio--disabled input[type='radio'] {
 		cursor: not-allowed;
 	}
 
@@ -394,7 +389,7 @@
 		}
 	}
 
-	.radio-container--disabled .radio-label {
+	.radio--disabled .radio-label {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
@@ -440,8 +435,8 @@
 
 	/* Hover states */
 	@media (hover: hover) {
-		.radio-container:not(.radio-container--disabled) .radio-label:hover::after,
-		.radio-container:not(.radio-container--disabled) .radio-label:hover::before {
+		.radio:not(.radio--disabled) .radio-label:hover::after,
+		.radio:not(.radio--disabled) .radio-label:hover::before {
 			border-color: var(--svelte-ui-radio-hover-color);
 		}
 	}
@@ -458,30 +453,30 @@
 	}
 
 	/* Size variants */
-	.radio-container--small {
+	.radio--small {
 		font-size: var(--svelte-ui-font-size-sm);
 	}
 
-	.radio-container--small .radio-label {
+	.radio--small .radio-label {
 		padding: var(--svelte-ui-radio-padding-sm);
 		min-height: var(--svelte-ui-radio-min-height-sm);
 	}
 
-	.radio-container--small .radio-label.no-label {
+	.radio--small .radio-label.no-label {
 		padding-left: 16px;
 		min-height: 12px;
 	}
 
-	.radio-container--small .radio-label::after {
+	.radio--small .radio-label::after {
 		width: var(--svelte-ui-radio-size-sm);
 		height: var(--svelte-ui-radio-size-sm);
 	}
 
-	.radio-container--small .radio-label::before {
+	.radio--small .radio-label::before {
 		left: calc(var(--svelte-ui-radio-size-sm) / 2);
 	}
 
-	.radio-container--small input[type='radio']:checked + .radio-label::before {
+	.radio--small input[type='radio']:checked + .radio-label::before {
 		left: calc((var(--svelte-ui-radio-size-sm) - var(--svelte-ui-radio-dot-size-sm)) / 2);
 		width: var(--svelte-ui-radio-dot-size-sm);
 		height: var(--svelte-ui-radio-dot-size-sm);
@@ -489,35 +484,35 @@
 
 	/* Mobile touch targets for small */
 	@media (hover: none) and (pointer: coarse) {
-		.radio-container--small .radio-label {
+		.radio--small .radio-label {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 	}
 
-	.radio-container--large {
+	.radio--large {
 		font-size: var(--svelte-ui-font-size-lg);
 	}
 
-	.radio-container--large .radio-label {
+	.radio--large .radio-label {
 		padding: var(--svelte-ui-radio-padding-lg);
 		min-height: var(--svelte-ui-radio-min-height-lg);
 	}
 
-	.radio-container--large .radio-label.no-label {
+	.radio--large .radio-label.no-label {
 		padding-left: 24px;
 		min-height: 20px;
 	}
 
-	.radio-container--large .radio-label::after {
+	.radio--large .radio-label::after {
 		width: var(--svelte-ui-radio-size-lg);
 		height: var(--svelte-ui-radio-size-lg);
 	}
 
-	.radio-container--large .radio-label::before {
+	.radio--large .radio-label::before {
 		left: calc(var(--svelte-ui-radio-size-lg) / 2);
 	}
 
-	.radio-container--large input[type='radio']:checked + .radio-label::before {
+	.radio--large input[type='radio']:checked + .radio-label::before {
 		left: calc((var(--svelte-ui-radio-size-lg) - var(--svelte-ui-radio-dot-size-lg)) / 2);
 		width: var(--svelte-ui-radio-dot-size-lg);
 		height: var(--svelte-ui-radio-dot-size-lg);
@@ -525,14 +520,14 @@
 
 	/* Mobile touch targets for large */
 	@media (hover: none) and (pointer: coarse) {
-		.radio-container--large .radio-label {
+		.radio--large .radio-label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
 
 	/* Reduced motion */
-	.radio-container--no-motion .radio-label::before,
-	.radio-container--no-motion .radio-label::after {
+	.radio--no-motion .radio-label::before,
+	.radio--no-motion .radio-label::after {
 		transition-duration: 0.01s;
 	}
 

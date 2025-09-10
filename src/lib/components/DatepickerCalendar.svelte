@@ -595,7 +595,7 @@
 	</div>
 
 	{#if viewMode === 'month'}
-		<div class="month-selection-container">
+		<div class="datepicker-calendar__month-selection">
 			<div class="month-selection-grid">
 				{#each monthNames as monthName, index}
 					<button
@@ -713,7 +713,7 @@
 		}
 	}
 
-	.month-selection-container {
+	.datepicker-calendar__month-selection {
 		padding: 8px 0;
 	}
 

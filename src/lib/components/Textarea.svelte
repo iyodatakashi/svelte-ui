@@ -353,7 +353,7 @@
 	>
 		{@html htmlValue}
 	</div>
-	<div class="textarea__input-container">
+	<div class="textarea__input">
 		<textarea
 			{id}
 			{name}
@@ -403,9 +403,9 @@
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
 			<div class="textarea__clear-button">
-			<IconButton
-				ariaLabel={clearButtonAriaLabel}
-				color="var(--svelte-ui-textarea-text-color)"
+				<IconButton
+					ariaLabel={clearButtonAriaLabel}
+					color="var(--svelte-ui-textarea-text-color)"
 					onclick={clear}
 					tabindex={-1}
 					iconFilled={true}
@@ -429,7 +429,7 @@
 		max-width: 100%;
 	}
 
-	.textarea__input-container {
+	.textarea__input {
 		position: absolute;
 		top: 0;
 		left: 0;

@@ -243,7 +243,7 @@
 </script>
 
 <div
-	class="image-uploader-container"
+	class="image-uploader"
 	class:rounded={rounded && !multiple}
 	style="
 		--image-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
@@ -290,11 +290,11 @@
 		aria-describedby={`${id}-help`}
 	>
 		{#if files && files.length > 0}
-			<div class="image-preview-container" class:single={!multiple}>
+			<div class="image-uploader__preview" class:single={!multiple}>
 				{#each files as file, index}
 					<div class="image-preview-item" class:single={!multiple}>
 						<img src={createImageUrl(file)} alt={file.name} class="preview-image" />
-						<div class="delete-button-container">
+						<div class="image-uploader__delete-button">
 							<IconButton
 								iconFilled={true}
 								size={24}
@@ -350,7 +350,7 @@
 </div>
 
 <style>
-	.image-uploader-container {
+	.image-uploader {
 		position: relative;
 		width: var(--image-uploader-width, 100%);
 		height: var(--image-uploader-width, 100%);
@@ -428,7 +428,7 @@
 		text-align: center;
 	}
 
-	.image-preview-container {
+	.image-uploader__preview {
 		display: flex;
 		justify-content: start;
 		flex-wrap: wrap;
@@ -467,7 +467,7 @@
 		object-position: center;
 	}
 
-	.delete-button-container {
+	.image-uploader__delete-button {
 		position: absolute;
 		top: 4px;
 		right: 4px;
@@ -479,7 +479,7 @@
 	}
 
 	@media (hover: hover) {
-		.image-preview-item:hover .delete-button-container {
+		.image-preview-item:hover .image-uploader__delete-button {
 			opacity: 1;
 		}
 	}

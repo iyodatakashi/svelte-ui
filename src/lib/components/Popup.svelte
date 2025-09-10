@@ -521,7 +521,7 @@
 	}}
 >
 	{#if shouldUseFullscreen}
-		<div class="popup__mobile-container">
+		<div class="popup__mobile">
 			<div class="popup__mobile-content">
 				{@render children()}
 			</div>
@@ -614,7 +614,7 @@
 			env(safe-area-inset-left);
 	}
 
-	.popup__mobile-container {
+	.popup__mobile {
 		position: absolute;
 		bottom: 0;
 		left: 0;
@@ -646,7 +646,7 @@
 		}
 	}
 
-	:popover-open.mobile.fullscreen.fade-out .popup__mobile-container {
+	:popover-open.mobile.fullscreen.fade-out .popup__mobile {
 		animation: slideDownMobile 300ms ease-in;
 	}
 
@@ -661,7 +661,7 @@
 
 	/* Responsive design adjustments */
 	@media (max-width: 480px) {
-		.popup__mobile-container {
+		.popup__mobile {
 			border-radius: 0;
 			max-height: 100vh;
 		}

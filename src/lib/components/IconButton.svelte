@@ -317,19 +317,19 @@
 
 	const buttonClasses = $derived(
 		[
-			'iconbutton',
-			`iconbutton--${variant}`,
-			rounded && 'iconbutton--rounded',
-			pressed && 'iconbutton--pressed',
-			loading && 'iconbutton--loading',
-			reducedMotion && 'iconbutton--no-motion'
+			'icon-button__button',
+			`icon-button__button--${variant}`,
+			rounded && 'icon-button__button--rounded',
+			pressed && 'icon-button__button--pressed',
+			loading && 'icon-button__button--loading',
+			reducedMotion && 'icon-button__button--no-motion'
 		]
 			.filter(Boolean)
 			.join(' ')
 	);
 </script>
 
-<div class="iconbutton-container" data-testid="iconbutton-container">
+<div class="icon-button" data-testid="icon-button">
 	<button
 		{type}
 		disabled={isDisabled}
@@ -370,11 +370,11 @@
 		{...restProps}
 	>
 		{#if loading}
-			<div class="iconbutton__loading">
+			<div class="icon-button__loading">
 				<LoadingSpinner size={size * 0.5} strokeWidth={2} color="currentColor" />
 			</div>
 		{:else}
-			<div class="iconbutton__icon" class:iconbutton__icon--hidden={loading}>
+			<div class="icon-button__icon" class:icon-button__icon--hidden={loading}>
 				<Icon
 					filled={true}
 					size={fontSize}
@@ -391,7 +391,7 @@
 
 	{#if hasBadge && (badgeVariant === 'dot' || badgeCount > 0)}
 		<div
-			class="iconbutton__badge iconbutton__badge--{badgeVariant}"
+			class="icon-button__badge icon-button__badge--{badgeVariant}"
 			style="background-color: {badgeColor || 'var(--badge-color)'}"
 			aria-label={badgeVariant === 'count' ? `${badgeCount}件の通知` : '新しい通知があります'}
 			aria-live="polite"
@@ -402,12 +402,12 @@
 </div>
 
 <style>
-	.iconbutton-container {
+	.icon-button {
 		position: relative;
 		display: block;
 	}
 
-	.iconbutton {
+	.icon-button__button {
 		display: flex;
 		justify-content: center;
 		align-items: center;
@@ -424,20 +424,20 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
-	.iconbutton--rounded {
+	.icon-button__button--rounded {
 		border-radius: var(--svelte-ui-iconbutton-border-radius-rounded);
 	}
 
-	.iconbutton--outlined {
+	.icon-button__button--outlined {
 		box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
 	}
 
-	.iconbutton--glass {
+	.icon-button__button--glass {
 		backdrop-filter: var(--svelte-ui-glass-blur);
 		-webkit-backdrop-filter: var(--svelte-ui-glass-blur);
 	}
 
-	.iconbutton:before {
+	.icon-button__button:before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -453,39 +453,39 @@
 	}
 
 	@media (hover: hover) {
-		.iconbutton:hover:before {
+		.icon-button__button:hover:before {
 			opacity: 1;
 		}
 	}
 
-	.iconbutton:focus-visible {
+	.icon-button__button:focus-visible {
 		outline: var(--svelte-ui-focus-outline);
 		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
 
-	.iconbutton--pressed {
+	.icon-button__button--pressed {
 		transform: scale(0.95);
 	}
 
-	.iconbutton--pressed:before {
+	.icon-button__button--pressed:before {
 		opacity: 0.12;
 	}
 
-	.iconbutton:disabled {
+	.icon-button__button:disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 		pointer-events: none;
 	}
 
-	.iconbutton--loading {
+	.icon-button__button--loading {
 		cursor: wait;
 	}
 
-	.iconbutton > * {
+	.icon-button__button > * {
 		z-index: 1;
 	}
 
-	.iconbutton__icon {
+	.icon-button__button__icon {
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -493,11 +493,11 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
-	.iconbutton__icon--hidden {
+	.icon-button__button__icon--hidden {
 		opacity: 0;
 	}
 
-	.iconbutton__loading {
+	.icon-button__button__loading {
 		position: absolute;
 		top: 50%;
 		left: 50%;
@@ -507,7 +507,7 @@
 		justify-content: center;
 	}
 
-	.iconbutton__badge {
+	.icon-button__button__badge {
 		position: absolute;
 		top: -2px;
 		right: -2px;
@@ -523,37 +523,37 @@
 		z-index: 2;
 	}
 
-	.iconbutton__badge--dot {
+	.icon-button__button__badge--dot {
 		width: 8px;
 		height: 8px;
 		min-width: unset;
 	}
 
-	.iconbutton__badge--count {
+	.icon-button__button__badge--count {
 		min-width: 16px;
 		height: 16px;
 		padding: 0 4px;
 		border-radius: 8px;
 	}
 
-	.iconbutton--no-motion,
-	.iconbutton--no-motion:before,
-	.iconbutton--no-motion .iconbutton__icon {
+	.icon-button__button--no-motion,
+	.icon-button__button--no-motion:before,
+	.icon-button__button--no-motion .iconbutton__icon {
 		transition-duration: 0.01s;
 	}
 
-	.iconbutton--no-motion.iconbutton--pressed {
+	.icon-button__button--no-motion.iconbutton--pressed {
 		transform: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.iconbutton,
-		.iconbutton:before,
-		.iconbutton__icon {
+		.icon-button__button,
+		.icon-button__button:before,
+		.icon-button__button__icon {
 			transition-duration: 0.01s;
 		}
 
-		.iconbutton--pressed {
+		.icon-button__button--pressed {
 			transform: none;
 		}
 	}

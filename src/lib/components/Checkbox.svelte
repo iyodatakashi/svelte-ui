@@ -130,10 +130,10 @@
 	// =========================================================================
 	const containerClasses = $derived(
 		[
-			'checkbox-container',
-			`checkbox-container--${size}`,
-			disabled && 'checkbox-container--disabled',
-			reducedMotion && 'checkbox-container--no-motion'
+			'checkbox',
+			`checkbox--${size}`,
+			disabled && 'checkbox--disabled',
+			reducedMotion && 'checkbox--no-motion'
 		]
 			.filter(Boolean)
 			.join(' ')
@@ -271,7 +271,7 @@
 	};
 </script>
 
-<div class={containerClasses} data-testid="checkbox-container">
+<div class={containerClasses} data-testid="checkbox">
 	<input
 		type="checkbox"
 		bind:checked={value}
@@ -321,14 +321,14 @@
 	/* =========================================================================
 	   Base Styles
 	   ========================================================================= */
-	.checkbox-container {
+	.checkbox {
 		display: flex;
 		flex-direction: column;
 		gap: 4px;
 		contain: layout;
 	}
 
-	.checkbox-container input[type='checkbox'] {
+	.checkbox input[type='checkbox'] {
 		position: absolute;
 		width: 16px;
 		height: 16px;
@@ -401,49 +401,49 @@
 	/* =========================================================================
 	   Size Variants
 	   ========================================================================= */
-	.checkbox-container--small {
+	.checkbox--small {
 		font-size: var(--svelte-ui-font-size-sm);
 	}
 
-	.checkbox-container--small .checkbox-label {
+	.checkbox--small .checkbox-label {
 		padding: var(--svelte-ui-checkbox-padding-sm);
 		min-height: var(--svelte-ui-checkbox-min-height-sm);
 	}
 
-	.checkbox-container--small .checkbox-label::before {
+	.checkbox--small .checkbox-label::before {
 		width: var(--svelte-ui-checkbox-size-sm);
 		height: var(--svelte-ui-checkbox-size-sm);
 	}
 
-	.checkbox-container--small .checkbox-label::after {
+	.checkbox--small .checkbox-label::after {
 		font-size: var(--svelte-ui-checkbox-icon-size-sm);
 	}
 
-	.checkbox-container--small input[type='checkbox']:checked + .checkbox-label::after,
-	.checkbox-container--small input[type='checkbox']:indeterminate + .checkbox-label::after {
+	.checkbox--small input[type='checkbox']:checked + .checkbox-label::after,
+	.checkbox--small input[type='checkbox']:indeterminate + .checkbox-label::after {
 		width: var(--svelte-ui-checkbox-icon-width-sm);
 	}
 
-	.checkbox-container--large {
+	.checkbox--large {
 		font-size: var(--svelte-ui-font-size-lg);
 	}
 
-	.checkbox-container--large .checkbox-label {
+	.checkbox--large .checkbox-label {
 		padding: var(--svelte-ui-checkbox-padding-lg);
 		min-height: var(--svelte-ui-checkbox-min-height-lg);
 	}
 
-	.checkbox-container--large .checkbox-label::before {
+	.checkbox--large .checkbox-label::before {
 		width: var(--svelte-ui-checkbox-size-lg);
 		height: var(--svelte-ui-checkbox-size-lg);
 	}
 
-	.checkbox-container--large .checkbox-label::after {
+	.checkbox--large .checkbox-label::after {
 		font-size: var(--svelte-ui-checkbox-icon-size-lg);
 	}
 
-	.checkbox-container--large input[type='checkbox']:checked + .checkbox-label::after,
-	.checkbox-container--large input[type='checkbox']:indeterminate + .checkbox-label::after {
+	.checkbox--large input[type='checkbox']:checked + .checkbox-label::after,
+	.checkbox--large input[type='checkbox']:indeterminate + .checkbox-label::after {
 		width: var(--svelte-ui-checkbox-icon-width-lg);
 	}
 
@@ -451,11 +451,11 @@
 	   State Modifiers
 	   ========================================================================= */
 	/* Disabled state */
-	.checkbox-container--disabled input[type='checkbox'] {
+	.checkbox--disabled input[type='checkbox'] {
 		cursor: not-allowed;
 	}
 
-	.checkbox-container--disabled .checkbox-label {
+	.checkbox--disabled .checkbox-label {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
@@ -479,7 +479,7 @@
 
 	/* Hover states */
 	@media (hover: hover) {
-		.checkbox-container:not(.checkbox-container--disabled) .checkbox-label:hover::before {
+		.checkbox:not(.checkbox--disabled) .checkbox-label:hover::before {
 			border-color: var(--svelte-ui-checkbox-hover-color);
 		}
 	}
@@ -506,18 +506,18 @@
 			min-height: var(--svelte-ui-touch-target);
 		}
 
-		.checkbox-container--small .checkbox-label {
+		.checkbox--small .checkbox-label {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
-		.checkbox-container--large .checkbox-label {
+		.checkbox--large .checkbox-label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
 
 	/* Reduced motion */
-	.checkbox-container--no-motion .checkbox-label::before,
-	.checkbox-container--no-motion .checkbox-label::after {
+	.checkbox--no-motion .checkbox-label::before,
+	.checkbox--no-motion .checkbox-label::after {
 		transition-duration: 0.01s;
 	}
 

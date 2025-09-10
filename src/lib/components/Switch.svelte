@@ -268,12 +268,12 @@
 </script>
 
 <div
-	class="switch-container"
-	class:switch-container--small={size === 'small'}
-	class:switch-container--medium={size === 'medium'}
-	class:switch-container--large={size === 'large'}
-	class:switch-container--disabled={disabled}
-	class:switch-container--reduced-motion={reducedMotion}
+	class="switch"
+	class:switch--small={size === 'small'}
+	class:switch--medium={size === 'medium'}
+	class:switch--large={size === 'large'}
+	class:switch--disabled={disabled}
+	class:switch--reduced-motion={reducedMotion}
 >
 	<input
 		bind:this={inputRef}
@@ -335,7 +335,7 @@
 	/* =============================================
  * 基本構造・レイアウト
  * ============================================= */
-	.switch-container {
+	.switch {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--svelte-ui-switch-gap);
@@ -348,7 +348,7 @@
 	/* =============================================
  * サイズバリエーション
  * ============================================= */
-	.switch-container--small {
+	.switch--small {
 		--switch-width: var(--svelte-ui-switch-width-sm);
 		--switch-height: var(--svelte-ui-switch-height-sm);
 		--switch-thumb-size: var(--svelte-ui-switch-thumb-size-sm);
@@ -357,7 +357,7 @@
 		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
 	}
 
-	.switch-container--medium {
+	.switch--medium {
 		--switch-width: var(--svelte-ui-switch-width);
 		--switch-height: var(--svelte-ui-switch-height);
 		--switch-thumb-size: var(--svelte-ui-switch-thumb-size);
@@ -366,7 +366,7 @@
 		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
 	}
 
-	.switch-container--large {
+	.switch--large {
 		--switch-width: var(--svelte-ui-switch-width-lg);
 		--switch-height: var(--svelte-ui-switch-height-lg);
 		--switch-thumb-size: var(--svelte-ui-switch-thumb-size-lg);
@@ -465,7 +465,7 @@
 	/* =============================================
  * アニメーション無効化
  * ============================================= */
-	.switch-container--reduced-motion {
+	.switch--reduced-motion {
 		* {
 			transition: none !important;
 			animation: none !important;

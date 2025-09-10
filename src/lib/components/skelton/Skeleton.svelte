@@ -84,27 +84,27 @@
 	// $derived
 	// =========================================================================
 
-	const containerClasses = $derived(['skeleton-container', className].filter(Boolean).join(' '));
+	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
 
 	const gapStyle = $derived(typeof gap === 'number' ? `${gap}px` : gap);
 	const itemGapStyle = $derived(typeof itemGap === 'number' ? `${itemGap}px` : itemGap);
 </script>
 
 <div class={containerClasses} style={customStyle}>
-	<div class="skeleton-items-container" style="gap: {gapStyle};">
+	<div class="skeleton__items" style="gap: {gapStyle};">
 		{#each Array(repeat) as _, index}
 			<div class="item" style="gap: {itemGapStyle};">
 				{#each patterns as patternConfig}
 					{#if patternConfig.type === 'text'}
 						<SkeletonText textConfig={patternConfig} {animated} />
 					{:else if patternConfig.type === 'avatar'}
-						<div class="user-list-container">
+						<div class="skeleton__user-list">
 							<SkeletonAvatar avatarConfig={patternConfig} {animated} />
 						</div>
 					{:else if patternConfig.type === 'article'}
 						<SkeletonArticle articleConfig={patternConfig} {animated} />
 					{:else if patternConfig.type === 'buttons'}
-						<div class="buttons-container">
+						<div class="skeleton__buttons">
 							<SkeletonButtons buttonsConfig={patternConfig} {animated} />
 						</div>
 					{/if}
@@ -115,13 +115,13 @@
 </div>
 
 <style lang="scss">
-	.skeleton-container {
+	.skeleton {
 		display: block;
 		width: 100%;
 		max-width: 100%;
 	}
 
-	.skeleton-items-container {
+	.skeleton__items {
 		display: flex;
 		flex-direction: column;
 		width: 100%;

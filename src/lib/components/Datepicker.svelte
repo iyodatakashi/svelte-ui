@@ -493,11 +493,7 @@
 	);
 </script>
 
-<div
-	bind:this={containerElement}
-	class="datepicker-container"
-	class:datepicker-container--full-width={fullWidth}
->
+<div bind:this={containerElement} class="datepicker" class:datepicker--full-width={fullWidth}>
 	<Input
 		bind:this={inputRef}
 		value={displayValue}
@@ -566,12 +562,12 @@
 </Popup>
 
 <style lang="scss">
-	.datepicker-container {
+	.datepicker {
 		position: relative;
 		display: inline-block;
 		width: auto;
 
-		&.datepicker-container--full-width {
+		&.datepicker--full-width {
 			display: block;
 			width: 100%;
 		}

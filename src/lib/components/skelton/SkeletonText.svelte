@@ -53,7 +53,7 @@
 	style="font-size: {fontSizeStyle}; {mergedTextConfig.customStyle}"
 >
 	{#each Array(mergedTextConfig.lines) as _, index}
-		<div class="skeleton-box-container" style="width: {widthStyle}">
+		<div class="skeleton-text__box" style="width: {widthStyle}">
 			<SkeletonBox
 				width="100%"
 				height="1em"
@@ -71,7 +71,7 @@
 		height: 100%;
 	}
 
-	.skeleton-box-container {
+	.skeleton-text__box {
 		display: inline-block;
 		position: relative;
 		width: 100%;
