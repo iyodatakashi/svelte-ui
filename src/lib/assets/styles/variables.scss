@@ -416,6 +416,7 @@
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--white);
 	--svelte-ui-surface-accent-color: var(--base-50-transparent);
+	--svelte-ui-surface-inverse-color: var(--base-800-transparent);
 
 	/* スケルトン色 */
 	--svelte-ui-skeleton-color: var(--base-200-transparent);
@@ -468,6 +469,7 @@
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--base-900);
 	--svelte-ui-surface-accent-color: var(--white-50-transparent);
+	--svelte-ui-surface-inverse-color: var(--white-800-transparent);
 
 	/* スケルトン色 */
 	--svelte-ui-skeleton-color: var(--white-200-transparent);
@@ -656,8 +658,8 @@
 	--svelte-ui-loadingspinner-size: 32px;
 
 	/* Snackbar */
-	--svelte-ui-snackbar-default-filled-bg: var(--svelte-ui-text-color);
-	--svelte-ui-snackbar-default-filled-text-color: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-default-filled-bg: var(--svelte-ui-surface-inverse-color);
+	--svelte-ui-snackbar-default-filled-text-color: var(--svelte-ui-text-inverse-color);
 
 	--svelte-ui-snackbar-info-filled-bg: var(--svelte-ui-info-color);
 	--svelte-ui-snackbar-info-filled-text-color: var(--svelte-ui-text-on-filled-color);
