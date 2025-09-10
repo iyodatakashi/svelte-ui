@@ -24,8 +24,8 @@
 		isOpen = $bindable(false),
 
 		// イベントハンドラー
-		onConfirm = () => {},
-		onCancel = () => {}
+		onConfirm = () => {}, // No params for type inference
+		onCancel = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
 		title?: string;

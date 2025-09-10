@@ -41,24 +41,24 @@
 		adaptiveSize = false,
 
 		// フォーカスイベント
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
 
 		// キーボードイベント
-		onkeydown = (event: KeyboardEvent) => {},
-		onkeyup = (event: KeyboardEvent) => {},
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
 
 		// マウスイベント
-		onmouseenter = (event: MouseEvent) => {},
-		onmouseleave = (event: MouseEvent) => {},
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
 
 		// タッチイベント
-		ontouchstart = (event: TouchEvent) => {},
-		ontouchend = (event: TouchEvent) => {},
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
 
 		// ポインターイベント
-		onpointerenter = (event: PointerEvent) => {},
-		onpointerleave = (event: PointerEvent) => {}
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
 		files?: FileList | undefined;

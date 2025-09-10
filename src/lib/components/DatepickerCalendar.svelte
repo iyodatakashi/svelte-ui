@@ -35,7 +35,7 @@
 		mode = 'single',
 
 		// 入力イベント
-		onchange = () => {},
+		onchange = () => {}, // No params for type inference
 		onOpen,
 		onClose
 	}: {

@@ -50,7 +50,7 @@
 		ariaDescribedby,
 
 		// イベントハンドラー
-		onOpen = () => {},
+		onOpen = () => {}, // No params for type inference
 		onClose = () => {}
 	}: {
 		// Snippet

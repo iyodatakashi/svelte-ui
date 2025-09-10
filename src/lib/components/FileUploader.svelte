@@ -4,6 +4,7 @@
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import { getStyleFromNumber } from '../utils/style';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
@@ -36,24 +37,24 @@
 		removeFileAriaLabel = 'ファイルを削除',
 
 		// フォーカスイベント
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
 
 		// キーボードイベント
-		onkeydown = (event: KeyboardEvent) => {},
-		onkeyup = (event: KeyboardEvent) => {},
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
 
 		// マウスイベント
-		onmouseenter = (event: MouseEvent) => {},
-		onmouseleave = (event: MouseEvent) => {},
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
 
 		// タッチイベント
-		ontouchstart = (event: TouchEvent) => {},
-		ontouchend = (event: TouchEvent) => {},
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
 
 		// ポインターイベント
-		onpointerenter = (event: PointerEvent) => {},
-		onpointerleave = (event: PointerEvent) => {}
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
 		files?: FileList;
@@ -67,7 +68,7 @@
 
 		// スタイル/レイアウト
 		width?: string | number;
-		height?: number;
+		height?: string | number;
 		rounded?: boolean;
 
 		// アイコン系
@@ -233,10 +234,10 @@
 <button
 	bind:this={dropAreaRef}
 	class="file-uploader"
-	class:hover={isHover}
+	class:file-uploader--hover={isHover}
 	class:rounded
 	style="
-		--file-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
+		--file-uploader-width: {getStyleFromNumber(width) || '100%'};
 		--file-uploader-height: {height}px
 	"
 	onclick={handleClick}
@@ -371,7 +372,7 @@
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
-	.hover {
+	.file-uploader--hover {
 		background-color: var(--svelte-ui-fileupload-hover-bg);
 		border-color: var(--svelte-ui-primary-color);
 	}
@@ -388,7 +389,7 @@
 	.upload-file-input {
 		display: none;
 	}
-	.file-uploader.hover::before {
+	.file-uploader--hover::before {
 		border-color: var(--svelte-ui-primary-color);
 	}
 

@@ -55,37 +55,37 @@
 		ariaPressed,
 
 		// フォーカスイベント
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
 
 		// キーボードイベント
-		onkeydown = (event: KeyboardEvent) => {},
-		onkeyup = (event: KeyboardEvent) => {},
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
 
 		// マウスイベント
 		onclick,
-		onmousedown = (event: MouseEvent) => {},
-		onmouseup = (event: MouseEvent) => {},
-		onmouseenter = (event: MouseEvent) => {},
-		onmouseleave = (event: MouseEvent) => {},
-		onmouseover = (event: MouseEvent) => {},
-		onmouseout = (event: MouseEvent) => {},
-		oncontextmenu = (event: MouseEvent) => {},
-		onauxclick = (event: MouseEvent) => {},
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
 
 		// タッチイベント
-		ontouchstart = (event: TouchEvent) => {},
-		ontouchend = (event: TouchEvent) => {},
-		ontouchmove = (event: TouchEvent) => {},
-		ontouchcancel = (event: TouchEvent) => {},
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
 
 		// ポインターイベント
-		onpointerdown = (event: PointerEvent) => {},
-		onpointerup = (event: PointerEvent) => {},
-		onpointerenter = (event: PointerEvent) => {},
-		onpointerleave = (event: PointerEvent) => {},
-		onpointermove = (event: PointerEvent) => {},
-		onpointercancel = (event: PointerEvent) => {},
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
 
 		// その他
 		...restProps
