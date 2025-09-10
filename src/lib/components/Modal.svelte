@@ -171,6 +171,12 @@
 
 			announceOpenClose(componentType, true, title || ariaLabel || '');
 		}, 0);
+
+		// 自動フォーカス時の枠線制御用クラス
+		dialogRef.classList.add('modal-opening');
+		setTimeout(() => {
+			dialogRef?.classList.remove('modal-opening');
+		}, 100); // 短い時間で制御
 	};
 
 	export const close = (title?: string): void => {
@@ -239,6 +245,22 @@
 
 	.modal:focus {
 		outline: none;
+	}
+
+	/* Modal内の要素のフォーカス枠線をコントロール */
+	.modal *:focus {
+		outline: none;
+	}
+
+	/* キーボードナビゲーション時のみフォーカス枠線を表示 */
+	.modal *:focus-visible {
+		outline: var(--svelte-ui-focus-outline-outer);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
+	}
+
+	/* 自動フォーカス時の枠線制御用 */
+	.modal.modal-opening *:focus {
+		outline: none !important;
 	}
 
 	.modal-contents {
