@@ -306,18 +306,18 @@
 <div
 	class="color-picker
 	focus-style-{focusStyle}"
-	class:full-width={fullWidth}
-	class:rounded
-	class:clearable
-	class:disabled
-	class:is-focused={isFocused}
+	class:color-picker--full-width={fullWidth}
+	class:color-picker--rounded={rounded}
+	class:color-picker--clearable={clearable}
+	class:color-picker--disabled={disabled}
+	class:color-picker--focused={isFocused}
 	style={customStyle}
 >
-	<form class:full-width={fullWidth} onsubmit={handleSubmit}>
+	<form class:color-picker--full-width={fullWidth} onsubmit={handleSubmit}>
 		<input
 			bind:value={localValue}
 			type="text"
-			class="text-input"
+			class="color-picker__input"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -350,10 +350,10 @@
 		/>
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
-			<div class="clear-button-block">
-			<IconButton
-				ariaLabel={clearButtonAriaLabel}
-				color="var(--svelte-ui-colorpicker-text-color)"
+			<div class="color-picker__clear-button">
+				<IconButton
+					ariaLabel={clearButtonAriaLabel}
+					color="var(--svelte-ui-colorpicker-text-color)"
 					onclick={clear}
 					tabindex={-1}
 					iconFilled={true}
@@ -364,7 +364,7 @@
 		{/if}
 	</form>
 
-	<div class="color-picker-trigger">
+	<div class="color-picker__trigger">
 		<input
 			type="color"
 			bind:value
@@ -374,11 +374,11 @@
 			onclick={handleClick}
 			onkeydown={handleKeydown}
 			{disabled}
-			class="color-input"
+			class="color-picker__color-input"
 			{...inputAttributes}
 			{...restProps}
 		/>
-		<div class="color-display" style="background-color: {value};"></div>
+		<div class="color-picker__color-display" style="background-color: {value};"></div>
 	</div>
 </div>
 
@@ -409,7 +409,7 @@
 	/* =============================================
  * 基本コンポーネント
  * ============================================= */
-	.text-input {
+	.color-picker__input {
 		width: 100%;
 		min-width: 1em;
 		padding: 0 12px 0 var(--svelte-ui-colorpicker-text-padding-left);
@@ -431,7 +431,7 @@
 		}
 	}
 
-	.color-picker-trigger {
+	.color-picker__trigger {
 		position: absolute;
 		left: var(--svelte-ui-colorpicker-trigger-offset);
 		display: inline-block;
@@ -452,7 +452,7 @@
 		}
 	}
 
-	.color-input {
+	.color-picker__color-input {
 		opacity: 0;
 		position: absolute;
 		width: 100%;
@@ -463,7 +463,7 @@
 		cursor: pointer;
 	}
 
-	.color-display {
+	.color-picker__color-display {
 		display: block;
 		width: 100%;
 		height: 100%;
@@ -473,7 +473,7 @@
 		z-index: 1;
 	}
 
-	.clear-button-block {
+	.color-picker__clear-button {
 		position: absolute;
 		top: 50%;
 		right: 8px;
@@ -486,7 +486,7 @@
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
-	.color-picker.full-width {
+	.color-picker--full-width {
 		width: 100%;
 
 		form {
@@ -497,14 +497,14 @@
 	/* =============================================
  * 機能バリエーション：clearable
  * ============================================= */
-	.clearable {
-		.text-input {
+	.color-picker--clearable {
+		.color-picker__input {
 			padding-right: var(--svelte-ui-clear-button-right-spacing);
 		}
 	}
 
 	@media (hover: hover) {
-		.color-picker:hover .clear-button-block {
+		.color-picker:hover .color-picker__clear-button {
 			opacity: 1;
 			pointer-events: all;
 		}
@@ -513,50 +513,49 @@
 	/* =============================================
  * プレースホルダー・テキスト表示
  * ============================================= */
-	input::placeholder {
+	.color-picker__input::placeholder {
 		color: var(--svelte-ui-colorpicker-placeholder-color);
 	}
 
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.focus-style-border .text-input:focus-visible {
+	.focus-style-border .color-picker__input:focus-visible {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.focus-style-background .text-input:focus-visible {
+	.focus-style-background .color-picker__input:focus-visible {
 		background: var(--svelte-ui-hover-overlay);
 	}
 
 	/* =============================================
  * 状態管理（disabled, focused等）
  * ============================================= */
-	.disabled {
+	.color-picker--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
 
-		.color-input {
+		.color-picker__color-input {
 			cursor: not-allowed;
 			pointer-events: none;
 		}
 	}
 
-	.text-input:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
+	.color-picker__input:disabled {
 		cursor: not-allowed;
 	}
 
 	/* =============================================
  * 状態管理（readonly等）
  * ============================================= */
-	.color-picker:has(.text-input[readonly]) {
-		.color-input,
-		.color-picker-trigger {
+	.color-picker:has(.color-picker__input[readonly]) {
+		.color-picker__color-input,
+		.color-picker__trigger {
 			pointer-events: none;
 		}
 
-		.text-input[readonly] {
+		.color-picker__input[readonly] {
 			background-color: var(--svelte-ui-input-readonly-bg);
 		}
 	}
@@ -565,14 +564,14 @@
  * デザインバリアント：default
  * ============================================= */
 	.color-picker {
-		.text-input {
+		.color-picker__input {
 			background-color: var(--svelte-ui-colorpicker-bg);
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
 				var(--svelte-ui-colorpicker-border-color);
 			color: var(--svelte-ui-colorpicker-text-color);
 		}
 
-		.color-picker-trigger::before {
+		.color-picker__trigger::before {
 			border-color: var(--svelte-ui-colorpicker-trigger-border-color);
 		}
 	}
@@ -580,21 +579,17 @@
 	/* =============================================
  * デザインバリアント：rounded
  * ============================================= */
-	.color-picker.rounded {
-		.text-input {
+	.color-picker--rounded {
+		.color-picker__input {
 			border-radius: var(--svelte-ui-input-border-radius-rounded);
 		}
 
-		.color-display {
+		.color-picker__color-display {
 			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
 
-		.color-picker-trigger::before {
+		.color-picker__trigger::before {
 			border-radius: var(--svelte-ui-border-radius-rounded);
-		}
-
-		&.clearable .text-input {
-			padding-right: var(--svelte-ui-clear-button-right-spacing);
 		}
 	}
 </style>
