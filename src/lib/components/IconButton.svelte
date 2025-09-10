@@ -538,18 +538,18 @@
 
 	.icon-button__button--no-motion,
 	.icon-button__button--no-motion:before,
-	.icon-button__button--no-motion .iconbutton__icon {
+	.icon-button__button--no-motion .icon-button__icon {
 		transition-duration: 0.01s;
 	}
 
-	.icon-button__button--no-motion.iconbutton--pressed {
+	.icon-button__button--no-motion.icon-button__button--pressed {
 		transform: none;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
 		.icon-button__button,
 		.icon-button__button:before,
-		.icon-button__button__icon {
+		.icon-button__icon {
 			transition-duration: 0.01s;
 		}
 
