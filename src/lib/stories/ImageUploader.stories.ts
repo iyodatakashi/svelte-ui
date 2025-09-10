@@ -7,7 +7,7 @@ interface ImageUploaderArgs {
 	multiple?: boolean;
 	maxFileSize?: number;
 	width?: string | number;
-	height?: number;
+	height?: string | number;
 	rounded?: boolean;
 	icon?: string;
 	placeholder?: string;
@@ -31,7 +31,8 @@ const meta: Meta<ImageUploaderArgs> = {
 		layout: 'padded',
 		docs: {
 			description: {
-				component: 'An image uploader component with drag & drop support and preview functionality.'
+				component:
+					'An image uploader component with drag & drop support and preview functionality. Supports JPG, PNG, GIF, WebP, and SVG formats.'
 			}
 		}
 	},
@@ -43,7 +44,7 @@ const meta: Meta<ImageUploaderArgs> = {
 		},
 		accept: {
 			control: 'text',
-			description: 'Accepted file types'
+			description: 'Accepted file types (supports .jpg, .jpeg, .png, .gif, .webp, .svg)'
 		},
 		multiple: {
 			control: 'boolean',
@@ -122,7 +123,7 @@ type Story = StoryObj<ImageUploaderArgs>;
 
 export const Default: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024
 	}
@@ -130,7 +131,7 @@ export const Default: Story = {
 
 export const Multiple: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: true,
 		maxFileSize: 5 * 1024 * 1024
 	}
@@ -138,7 +139,7 @@ export const Multiple: Story = {
 
 export const WithSize: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 200,
@@ -149,7 +150,7 @@ export const WithSize: Story = {
 
 export const SmallSize: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 120,
@@ -160,7 +161,7 @@ export const SmallSize: Story = {
 
 export const Rectangle: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 300,
@@ -171,7 +172,7 @@ export const Rectangle: Story = {
 
 export const Rounded: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 150,
@@ -183,7 +184,7 @@ export const Rounded: Story = {
 
 export const CustomIcon: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		icon: 'photo_camera',
@@ -193,7 +194,7 @@ export const CustomIcon: Story = {
 
 export const CustomPlaceholder: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		icon: 'add_photo_alternate',
@@ -203,7 +204,7 @@ export const CustomPlaceholder: Story = {
 
 export const AvatarUploader: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png',
+		accept: '.jpg,.jpeg,.png,.svg',
 		multiple: false,
 		maxFileSize: 2 * 1024 * 1024,
 		width: 120,
@@ -226,7 +227,7 @@ export const DocumentUploader: Story = {
 
 export const CustomAccept: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png',
+		accept: '.jpg,.jpeg,.png,.svg',
 		multiple: false,
 		maxFileSize: 2 * 1024 * 1024,
 		icon: 'image',
@@ -236,7 +237,7 @@ export const CustomAccept: Story = {
 
 export const SmallMaxSize: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 1 * 1024 * 1024, // 1MB
 		icon: 'image',
@@ -246,7 +247,7 @@ export const SmallMaxSize: Story = {
 
 export const Playground: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: undefined,
@@ -280,7 +281,7 @@ export const SVGOnly: Story = {
 // Responsive width examples
 export const ResponsiveWidth: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: 'calc(100vw - 80px)',
@@ -292,7 +293,7 @@ export const ResponsiveWidth: Story = {
 
 export const PercentageWidth: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp',
+		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
 		width: '80%',

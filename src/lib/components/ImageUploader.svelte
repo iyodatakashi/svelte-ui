@@ -20,7 +20,7 @@
 
 		// HTML属性系
 		id = `imageuploader-${Math.random().toString(36).substring(2, 15)}`,
-		accept = '.jpg,.jpeg,.png,.gif,.webp',
+		accept = '.jpg,.jpeg,.png,.gif,.webp,.svg',
 
 		// スタイル/レイアウト
 		width = undefined,
@@ -108,7 +108,7 @@
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
-	let createdUrls: string[] = $state([]);
+	let urlCache = new Map<File, string>();
 
 	// =========================================================================
 	// Effects
@@ -177,8 +177,18 @@
 	};
 
 	const validateFile = (file: File): boolean => {
-		if (!file.type.startsWith('image/')) {
-			errorMessage = '画像ファイルを選択してください';
+		// サポートされる画像タイプ
+		const supportedTypes = [
+			'image/jpeg',
+			'image/jpg',
+			'image/png',
+			'image/gif',
+			'image/webp',
+			'image/svg+xml'
+		];
+
+		if (!supportedTypes.includes(file.type)) {
+			errorMessage = 'サポートされていないファイル形式です';
 			return false;
 		}
 
@@ -223,6 +233,14 @@
 	const removeFile = (index: number) => {
 		if (!files) return;
 
+		// 削除されるファイルのURLをクリーンアップ
+		const fileToRemove = files[index];
+		if (fileToRemove && urlCache.has(fileToRemove)) {
+			const url = urlCache.get(fileToRemove)!;
+			URL.revokeObjectURL(url);
+			urlCache.delete(fileToRemove);
+		}
+
 		const dt = new DataTransfer();
 		for (let i = 0; i < files.length; i++) {
 			if (i !== index) {
@@ -232,15 +250,24 @@
 		files = dt.files.length > 0 ? dt.files : undefined;
 	};
 
-	const createImageUrl = (file: File): string => {
+	const getImageUrl = (file: File): string => {
+		// キャッシュから既存のURLを取得
+		if (urlCache.has(file)) {
+			return urlCache.get(file)!;
+		}
+
+		// 新しいURLを作成してキャッシュに保存
 		const url = URL.createObjectURL(file);
-		createdUrls.push(url);
+		urlCache.set(file, url);
 		return url;
 	};
 
 	const cleanupObjectUrls = () => {
-		createdUrls.forEach((url) => URL.revokeObjectURL(url));
-		createdUrls = [];
+		// キャッシュされたすべてのURLを解放
+		for (const url of urlCache.values()) {
+			URL.revokeObjectURL(url);
+		}
+		urlCache.clear();
 	};
 
 	export const reset = () => {
@@ -260,7 +287,7 @@
 {#snippet preview(file: File, index: number)}
 	<div class="image-uploader__preview">
 		<img
-			src={createImageUrl(file)}
+			src={getImageUrl(file)}
 			alt="選択された画像: {file.name}"
 			class="image-uploader__preview-image"
 			class:image-uploader__preview-image--rounded={rounded}
