@@ -18,7 +18,7 @@
 		placeholder = 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
 
 		// HTML属性系
-		id = `fileuploader-${Math.random().toString(36).substring(2, 15)}`,
+		id = `file-uploader-${Math.random().toString(36).substring(2, 15)}`,
 		accept = '',
 
 		// スタイル/レイアウト
@@ -28,7 +28,7 @@
 
 		// アイコン系
 		icon = 'upload',
-		iconSize = 48,
+		iconSize = 32,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -274,7 +274,7 @@
 	aria-describedby={`${id}-help`}
 >
 	{#if files && files.length > 0}
-		<div class="description with-file">
+		<div class="file-uploader__description file-uploader__description--with-file">
 			<Icon
 				size={iconSize}
 				filled={iconFilled}
@@ -283,34 +283,32 @@
 				opticalSize={iconOpticalSize}
 				variant={iconVariant}>{icon}</Icon
 			>
-			<ul class="file-list">
+			<ul class="file-uploader__file-list">
 				{#each files as file, index}
-					<li>
+					<li class="file-uploader__file-list-item">
 						{file.name}
-						{#if multiple}
-							<IconButton
-								size={24}
-								iconFilled={true}
-								iconWeight={300}
-								color="var(--svelte-ui-text-color)"
-								onclick={(e) => {
-									e.stopPropagation();
-									removeFile(index);
-								}}
-								ariaLabel={removeFileAriaLabel}
-								tabindex={-1}
-							>
-								close
-							</IconButton>
-						{/if}
+						<IconButton
+							size={24}
+							iconFilled={true}
+							iconWeight={300}
+							color="var(--svelte-ui-text-color)"
+							onclick={(e) => {
+								e.stopPropagation();
+								removeFile(index);
+							}}
+							ariaLabel={removeFileAriaLabel}
+							tabindex={-1}
+						>
+							cancel
+						</IconButton>
 					</li>
 				{/each}
 			</ul>
 		</div>
 	{:else}
-		<div class="description">
+		<div class="file-uploader__description">
 			<Icon
-				size={48}
+				size={iconSize}
 				filled={iconFilled}
 				weight={iconWeight}
 				grade={iconGrade}
@@ -322,7 +320,7 @@
 	{/if}
 
 	{#if errorMessage}
-		<div class="error-message" role="alert" aria-live="polite">
+		<div class="file-uploader__error-message" role="alert" aria-live="polite">
 			{errorMessage}
 		</div>
 	{/if}
@@ -331,7 +329,7 @@
 		bind:this={fileInputRef}
 		{accept}
 		{multiple}
-		class="upload-file-input"
+		class="file-uploader__input"
 		{id}
 		type="file"
 		onchange={(event) => {
@@ -350,50 +348,72 @@
 		justify-content: center;
 		align-items: center;
 		gap: 16px;
+		position: relative;
 		width: var(--file-uploader-width, 100%);
 		height: var(--file-uploader-height);
 		min-height: 100px;
 		padding: 16px;
-		background-color: var(--svelte-ui-fileupload-bg);
-		border: dashed 1px var(--svelte-ui-border-color);
+		background-color: var(--svelte-ui-file-uploader-bg);
 		border-radius: var(--svelte-ui-border-radius);
+	}
+
+	.file-uploader::before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		border: var(--svelte-ui-file-uploader-border-style) var(--svelte-ui-file-uploader-border-width)
+			var(--svelte-ui-file-uploader-border-color);
+		border-radius: var(--svelte-ui-border-radius);
+		transition-property: background-color border-color;
+		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
 	.file-uploader.rounded {
 		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
-	.file-uploader:hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
-		border-color: var(--svelte-ui-primary-color);
+	@media (hover: hover) {
+		.file-uploader:hover::before,
+		.file-uploader--hover::before {
+			background-color: var(--svelte-ui-file-uploader-hover-bg);
+			border-color: var(--svelte-ui-file-uploader-hover-border-color);
+		}
 	}
 
 	.file-uploader:focus-visible {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
-	.file-uploader--hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
-		border-color: var(--svelte-ui-primary-color);
-	}
-	.description {
+
+	.file-uploader__description {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 16px;
 		color: var(--svelte-ui-text-subtle-color);
 	}
-	.description.with-file {
+
+	.file-uploader__description--with-file {
 		color: var(--svelte-ui-text-color);
 	}
-	.upload-file-input {
+
+	.file-uploader__input {
 		display: none;
 	}
-	.file-uploader--hover::before {
-		border-color: var(--svelte-ui-primary-color);
+
+	@media (hover: hover) {
+		.file-uploader:hover .file-uploader__description,
+		.file-uploader--hover .file-uploader__description {
+			color: var(--svelte-ui-file-uploader-hover-color);
+		}
 	}
 
-	.error-message {
+	.file-uploader__error-message {
 		margin-top: 8px;
 		padding: 8px 12px;
 		background-color: var(--svelte-ui-error-container-color);
@@ -402,23 +422,22 @@
 		font-size: var(--svelte-ui-font-size-sm);
 	}
 
-	.file-list {
+	.file-uploader__file-list {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 8px;
 		list-style: none;
 		padding: 0;
 		margin: 0;
 		width: 100%;
 	}
 
-	.file-list li {
+	.file-uploader__file-list-item {
 		display: flex;
 		align-items: center;
 		gap: 8px;
-		padding: 4px 0;
-	}
-
-	@media (hover: hover) {
-		.file-uploader:hover {
-			background-color: var(--svelte-ui-fileupload-hover-bg);
-		}
+		padding: 4px 4px 4px 12px;
+		background-color: var(--svelte-ui-file-uploader-item-bg);
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 </style>

@@ -72,6 +72,7 @@
 
 <div
 	class="image-uploader-preview"
+	class:image-uploader-preview--rounded={rounded}
 	class:image-uploader-preview--adaptive={adaptiveSize}
 	style={imageSizeStyle}
 >
@@ -104,9 +105,6 @@
 <style>
 	.image-uploader-preview {
 		position: relative;
-		border-radius: var(--svelte-ui-border-radius);
-		background-color: var(--svelte-ui-surface-color);
-		overflow: hidden;
 	}
 
 	.image-uploader-preview__image {
@@ -115,15 +113,27 @@
 		height: 100%;
 		object-fit: cover;
 		object-position: center;
-		border-radius: var(--svelte-ui-border-radius);
+		border-radius: var(--svelte-ui-image-uploader-preview-border-radius);
 	}
 
 	.image-uploader-preview--adaptive .image-uploader-preview__image {
 		object-fit: contain;
 	}
 
+	.image-uploader-preview::after {
+		content: '';
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border-radius: var(--svelte-ui-image-uploader-preview-border-radius);
+		box-shadow: inset 0 0 0 var(--svelte-ui-border-width) var(--svelte-ui-border-weak-color);
+	}
+
+	.image-uploader-preview--rounded::after,
 	.image-uploader-preview__image--rounded {
-		border-radius: var(--svelte-ui-border-radius-rounded);
+		border-radius: var(--svelte-ui-image-uploader-preview-border-radius-rounded);
 	}
 
 	.image-uploader-preview__delete {

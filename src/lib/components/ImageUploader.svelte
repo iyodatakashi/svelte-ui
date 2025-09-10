@@ -358,7 +358,7 @@
 		{#if !multiple && files && files.length > 0}
 			{@render preview(files[0], 0)}
 		{:else}
-			<div class="description">
+			<div class="image-uploader__description">
 				<Icon
 					size={iconSize}
 					filled={iconFilled}
@@ -373,7 +373,7 @@
 	</button>
 
 	{#if errorMessage}
-		<div class="error-message" role="alert" aria-live="polite">
+		<div class="image-uploader__error-message" role="alert" aria-live="polite">
 			{errorMessage}
 		</div>
 	{/if}
@@ -403,7 +403,7 @@
 	.image-uploader--multiple {
 		display: flex;
 		flex-wrap: wrap;
-		gap: 8px;
+		gap: var(--svelte-ui-image-uploader-preview-gap);
 	}
 
 	.image-uploader__button {
@@ -430,9 +430,12 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		border: dashed 1px var(--svelte-ui-border-color);
+		background-color: transparent;
+		border: var(--svelte-ui-image-uploader-border-style)
+			var(--svelte-ui-image-uploader-border-width) var(--svelte-ui-image-uploader-border-color);
 		border-radius: var(--svelte-ui-border-radius);
-		transition: border-color var(--svelte-ui-transition-duration);
+		transition-property: background-color border-color;
+		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
 	.image-uploader__button--rounded,
@@ -441,13 +444,10 @@
 	}
 
 	@media (hover: hover) {
-		.image-uploader__button:hover {
-			background-color: var(--svelte-ui-fileupload-hover-bg);
-		}
-
 		.image-uploader__button:hover::before,
 		.image-uploader__button--hover::before {
-			border-color: var(--svelte-ui-primary-color);
+			background-color: var(--svelte-ui-image-uploader-hover-bg);
+			border-color: var(--svelte-ui-image-uploader-hover-border-color);
 		}
 	}
 
@@ -457,15 +457,21 @@
 	}
 
 	.image-uploader__button--hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
+		background-color: var(--svelte-ui-image-uploader-hover-bg);
 		border-color: var(--svelte-ui-primary-color);
 	}
 
 	.image-uploader__button--has-images {
 		padding: 0;
+		background: transparent;
+
+		&::before {
+			background: transparent;
+			border: none;
+		}
 	}
 
-	.description {
+	.image-uploader__description {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -474,7 +480,14 @@
 		text-align: center;
 	}
 
-	.error-message {
+	@media (hover: hover) {
+		.image-uploader__button:hover .image-uploader__description,
+		.image-uploader__button--hover .image-uploader__description {
+			color: var(--svelte-ui-image-uploader-hover-color);
+		}
+	}
+
+	.image-uploader__error-message {
 		margin-top: 8px;
 		padding: 8px 12px;
 		background-color: var(--svelte-ui-error-container-color);
