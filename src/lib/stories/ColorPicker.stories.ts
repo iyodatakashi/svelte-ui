@@ -154,6 +154,8 @@ const meta = {
 
 export default meta;
 
+// Note: Test hover on RoundedClearable story to verify clear button visibility
+
 // Default
 export const Default = {
 	args: {
@@ -167,6 +169,15 @@ export const Rounded = {
 	args: {
 		value: '#1abc9c',
 		rounded: true
+	}
+};
+
+// Rounded + Clearable
+export const RoundedClearable = {
+	args: {
+		value: '#e74c3c',
+		rounded: true,
+		clearable: true
 	}
 };
 
