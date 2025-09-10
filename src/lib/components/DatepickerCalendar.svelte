@@ -599,13 +599,15 @@
 			<div class="month-selection-grid">
 				{#each monthNames as monthName, index}
 					<button
-						class="month-button"
-						class:is-current={index === dayjs().month() && month.year() === dayjs().year()}
-						class:is-selected={month
+						class="datepicker-calendar__month-button"
+						class:datepicker-calendar__month-button--current={index === dayjs().month() &&
+							month.year() === dayjs().year()}
+						class:datepicker-calendar__month-button--selected={month
 							.month(index)
 							.startOf('month')
 							.isSame(selectedYearMonth, 'month')}
-						class:is-focused={isKeyboardActive && index === focusedMonth}
+						class:datepicker-calendar__month-button--focused={isKeyboardActive &&
+							index === focusedMonth}
 						onclick={(event) => {
 							event.stopPropagation();
 							focusedMonth = index;
@@ -632,25 +634,33 @@
 					<div class="date-row" role="row">
 						{#each week as date}
 							<div
-								class="date-list-item"
-								class:is-selected={mode === 'single' && isSelected(date)}
-								class:is-range-start={isRangeStart(date)}
-								class:is-range-end={isRangeEnd(date)}
-								class:is-range-middle={isRangeMiddle(date)}
-								class:is-range-single={isRangeSingle(date)}
-								class:is-range-preview-start={isRangePreviewStart(date)}
-								class:is-range-preview-end={isRangePreviewEnd(date)}
-								class:is-range-preview-middle={isRangePreviewMiddle(date)}
-								class:is-range-preview-single={isRangePreviewSingle(date)}
-								class:out-of-month={isOutOfMonth(date)}
-								class:out-of-range={isOutOfRange(date)}
-								class:today={isToday(date)}
-								class:is-focused={focusedDateKey === date.startOf('day').format('YYYY-MM-DD')}
+								class="datepicker-calendar__date-item"
+								class:datepicker-calendar__date-item--selected={mode === 'single' &&
+									isSelected(date)}
+								class:datepicker-calendar__date-item--range-start={isRangeStart(date)}
+								class:datepicker-calendar__date-item--range-end={isRangeEnd(date)}
+								class:datepicker-calendar__date-item--range-middle={isRangeMiddle(date)}
+								class:datepicker-calendar__date-item--range-single={isRangeSingle(date)}
+								class:datepicker-calendar__date-item--range-preview-start={isRangePreviewStart(
+									date
+								)}
+								class:datepicker-calendar__date-item--range-preview-end={isRangePreviewEnd(date)}
+								class:datepicker-calendar__date-item--range-preview-middle={isRangePreviewMiddle(
+									date
+								)}
+								class:datepicker-calendar__date-item--range-preview-single={isRangePreviewSingle(
+									date
+								)}
+								class:datepicker-calendar__date-item--out-of-month={isOutOfMonth(date)}
+								class:datepicker-calendar__date-item--out-of-range={isOutOfRange(date)}
+								class:datepicker-calendar__date-item--today={isToday(date)}
+								class:datepicker-calendar__date-item--focused={focusedDateKey ===
+									date.startOf('day').format('YYYY-MM-DD')}
 								role="gridcell"
 							>
 								<button
 									id={getDateId(date)}
-									class="date-button"
+									class="datepicker-calendar__date-button"
 									aria-current={isToday(date) ? 'date' : undefined}
 									aria-pressed={isSelected(date)}
 									aria-label={`${date.locale(locale).format('YYYY/MM/DD')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
@@ -723,7 +733,7 @@
 		gap: 8px;
 	}
 
-	.month-button {
+	.datepicker-calendar__month-button {
 		padding: 8px;
 		border-radius: var(--svelte-ui-border-radius);
 		background-color: var(--svelte-ui-surface-color);
@@ -743,18 +753,18 @@
 			outline-offset: var(--svelte-ui-focus-outline-offset);
 		}
 
-		&.is-current {
+		&--current {
 			font-weight: bold;
 			color: var(--svelte-ui-datepicker-current-color);
 		}
 
-		&.is-selected {
+		&--selected {
 			background-color: var(--svelte-ui-datepicker-selected-color);
 			color: var(--svelte-ui-datepicker-selected-text-color);
 			border-color: var(--svelte-ui-datepicker-selected-color);
 		}
 
-		&.is-focused {
+		&--focused {
 			outline: var(--svelte-ui-focus-outline);
 			outline-offset: var(--svelte-ui-focus-outline-offset);
 		}
@@ -778,7 +788,7 @@
 	}
 
 	.day-list-item,
-	.date-list-item {
+	.datepicker-calendar__date-item {
 		display: flex;
 		justify-content: center;
 		padding: 2px 0;
@@ -801,40 +811,46 @@
 			var(--svelte-ui-datepicker-day-label-border-radius) 0;
 	}
 
-	.date-list-item .date-button {
+	.datepicker-calendar__date-item .datepicker-calendar__date-button {
 		color: var(--svelte-ui-datepicker-date-color);
 	}
 
-	.date-list-item.out-of-month .date-button {
+	.datepicker-calendar__date-item--out-of-month .datepicker-calendar__date-button {
 		color: var(--svelte-ui-datepicker-out-of-month-text-color);
 	}
-	.date-list-item.today .date-button {
+	.datepicker-calendar__date-item--today .datepicker-calendar__date-button {
 		font-weight: bold;
 		color: var(--svelte-ui-datepicker-today-color);
 	}
-	.date-list-item.is-selected .date-button {
+	.datepicker-calendar__date-item--selected .datepicker-calendar__date-button {
 		background-color: var(--svelte-ui-datepicker-selected-color);
 		color: var(--svelte-ui-datepicker-selected-text-color);
 	}
 
+	@media (hover: hover) {
+		.datepicker-calendar__date-button:hover {
+			background: var(--svelte-ui-hover-overlay);
+		}
+	}
+
 	/* 期間選択の帯状表示 */
-	.date-list-item.is-range-start,
-	.date-list-item.is-range-end,
-	.date-list-item.is-range-middle,
-	.date-list-item.is-range-single,
-	.date-list-item.is-range-preview-start,
-	.date-list-item.is-range-preview-end,
-	.date-list-item.is-range-preview-middle,
-	.date-list-item.is-range-preview-single {
+	.datepicker-calendar__date-item--range-start,
+	.datepicker-calendar__date-item--range-end,
+	.datepicker-calendar__date-item--range-middle,
+	.datepicker-calendar__date-item--range-single,
+	.datepicker-calendar__date-item--range-preview-start,
+	.datepicker-calendar__date-item--range-preview-end,
+	.datepicker-calendar__date-item--range-preview-middle,
+	.datepicker-calendar__date-item--range-preview-single {
 		position: relative;
 	}
 
-	.date-list-item.is-range-start::before,
-	.date-list-item.is-range-end::before,
-	.date-list-item.is-range-middle::before,
-	.date-list-item.is-range-preview-start::before,
-	.date-list-item.is-range-preview-end::before,
-	.date-list-item.is-range-preview-middle::before {
+	.datepicker-calendar__date-item--range-start::before,
+	.datepicker-calendar__date-item--range-end::before,
+	.datepicker-calendar__date-item--range-middle::before,
+	.datepicker-calendar__date-item--range-preview-start::before,
+	.datepicker-calendar__date-item--range-preview-end::before,
+	.datepicker-calendar__date-item--range-preview-middle::before {
 		content: '';
 		position: absolute;
 		top: 50%;
@@ -845,45 +861,45 @@
 	}
 
 	/* 範囲プレビュー用の背景色調整 */
-	.date-list-item.is-range-preview-start::before,
-	.date-list-item.is-range-preview-end::before,
-	.date-list-item.is-range-preview-middle::before,
-	.date-list-item.is-range-preview-single::before {
+	.datepicker-calendar__date-item--range-preview-start::before,
+	.datepicker-calendar__date-item--range-preview-end::before,
+	.datepicker-calendar__date-item--range-preview-middle::before,
+	.datepicker-calendar__date-item--range-preview-single::before {
 		background-color: var(--svelte-ui-hover-overlay);
 	}
 
 	/* 範囲開始日 */
-	.date-list-item.is-range-start::before,
-	.date-list-item.is-range-preview-start::before {
+	.datepicker-calendar__date-item--range-start::before,
+	.datepicker-calendar__date-item--range-preview-start::before {
 		left: 50%;
 		right: 0;
 	}
 
 	/* 範囲終了日 */
-	.date-list-item.is-range-end::before,
-	.date-list-item.is-range-preview-end::before {
+	.datepicker-calendar__date-item--range-end::before,
+	.datepicker-calendar__date-item--range-preview-end::before {
 		left: 0;
 		right: 50%;
 	}
 
 	/* 範囲中間日 */
-	.date-list-item.is-range-middle::before,
-	.date-list-item.is-range-preview-middle::before {
+	.datepicker-calendar__date-item--range-middle::before,
+	.datepicker-calendar__date-item--range-preview-middle::before {
 		left: 0;
 		right: 0;
 		border-radius: 0;
 	}
 
 	/* 単一日選択（開始日と終了日が同じ） */
-	.date-list-item.is-range-single::before,
-	.date-list-item.is-range-preview-single::before {
+	.datepicker-calendar__date-item--range-single::before,
+	.datepicker-calendar__date-item--range-preview-single::before {
 		display: none;
 	}
 
 	/* 範囲内の日付ボタンスタイル */
-	.date-list-item.is-range-start .date-button,
-	.date-list-item.is-range-end .date-button,
-	.date-list-item.is-range-single .date-button {
+	.datepicker-calendar__date-item--range-start .datepicker-calendar__date-button,
+	.datepicker-calendar__date-item--range-end .datepicker-calendar__date-button,
+	.datepicker-calendar__date-item--range-single .datepicker-calendar__date-button {
 		background-color: var(--svelte-ui-datepicker-range-color);
 		color: var(--svelte-ui-datepicker-selected-text-color);
 		font-weight: bold;
@@ -891,7 +907,7 @@
 		position: relative;
 	}
 
-	.date-list-item.is-range-middle .date-button {
+	.datepicker-calendar__date-item--range-middle .datepicker-calendar__date-button {
 		background-color: transparent;
 		color: var(--svelte-ui-datepicker-date-color);
 		z-index: 1;
@@ -899,9 +915,9 @@
 	}
 
 	/* 範囲プレビュー用のボタンスタイル */
-	.date-list-item.is-range-preview-start .date-button,
-	.date-list-item.is-range-preview-end .date-button,
-	.date-list-item.is-range-preview-single .date-button {
+	.datepicker-calendar__date-item--range-preview-start .datepicker-calendar__date-button,
+	.datepicker-calendar__date-item--range-preview-end .datepicker-calendar__date-button,
+	.datepicker-calendar__date-item--range-preview-single .datepicker-calendar__date-button {
 		background-color: var(--svelte-ui-datepicker-range-color);
 		color: var(--svelte-ui-datepicker-selected-text-color);
 		font-weight: bold;
@@ -909,41 +925,35 @@
 		position: relative;
 	}
 
-	.date-list-item.is-range-preview-middle .date-button {
+	.datepicker-calendar__date-item--range-preview-middle .datepicker-calendar__date-button {
 		background-color: transparent;
 		z-index: 1;
 		position: relative;
 	}
-	.date-list-item.out-of-range {
+	.datepicker-calendar__date-item--out-of-range {
 		background: var(--svelte-ui-datepicker-out-of-range-bg);
 		pointer-events: none;
-		.date-button {
+		.datepicker-calendar__date-button {
 			color: var(--svelte-ui-datepicker-out-of-range-text-color);
 		}
 	}
 
-	.date-button:focus-visible {
+	.datepicker-calendar__date-button:focus-visible {
 		outline: var(--svelte-ui-focus-outline);
 		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
 
-	.date-list-item.is-focused .date-button {
+	.datepicker-calendar__date-item--focused .datepicker-calendar__date-button {
 		outline: var(--svelte-ui-focus-outline);
 		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
 
-	.date-button {
+	.datepicker-calendar__date-button {
 		width: 36px;
 		height: 36px;
 		padding: 0;
 		background: transparent;
 		border: none;
 		border-radius: 18px;
-	}
-
-	@media (hover: hover) {
-		.date-button:hover {
-			background: var(--svelte-ui-hover-overlay);
-		}
 	}
 </style>
