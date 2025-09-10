@@ -3,6 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
+	import { getStyleFromNumber } from '../utils/style';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
@@ -122,8 +123,8 @@
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
-		minWidth?: number | null;
-		maxWidth?: number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
 		rounded?: boolean;
 		customStyle?: string;
 
@@ -375,7 +376,7 @@
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
-	style="max-width: {maxWidth}px; min-width: {minWidth}px"
+	style="max-width: {getStyleFromNumber(maxWidth)}; min-width: {getStyleFromNumber(minWidth)}"
 >
 	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
 	{#if inline}

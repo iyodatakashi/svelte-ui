@@ -38,6 +38,7 @@ export * from './utils/accessibility';
 export * from './utils/formatText';
 export * from './utils/mobile';
 export * from './utils/snackbar.svelte';
+export * from './utils/style';
 
 // Types
 export type { MenuItem } from './types/MenuItem';

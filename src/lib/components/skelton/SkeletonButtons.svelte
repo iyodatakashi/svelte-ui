@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
+	import { getStyleFromNumber } from '../../utils/style';
 	import type { SkeletonButtonsConfig } from './Skeleton.svelte';
 
 	let {
@@ -27,16 +28,8 @@
 		...buttonsConfig
 	});
 
-	const widthStyle = $derived(
-		typeof mergedButtonsConfig.width === 'number'
-			? `${mergedButtonsConfig.width}px`
-			: mergedButtonsConfig.width
-	);
-	const heightStyle = $derived(
-		typeof mergedButtonsConfig.height === 'number'
-			? `${mergedButtonsConfig.height}px`
-			: mergedButtonsConfig.height
-	);
+	const widthStyle = $derived(getStyleFromNumber(mergedButtonsConfig.width));
+	const heightStyle = $derived(getStyleFromNumber(mergedButtonsConfig.height));
 	const radiusStyle = $derived(
 		typeof mergedButtonsConfig.radius === 'number'
 			? `${mergedButtonsConfig.radius}px`

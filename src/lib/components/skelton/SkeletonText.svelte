@@ -1,5 +1,6 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
+	import { getStyleFromNumber } from '../../utils/style';
 	import type { SkeletonTextConfig } from './Skeleton.svelte';
 
 	// =========================================================================
@@ -38,10 +39,6 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-
-	const getStyleFromNumber = (value: string | number) => {
-		return typeof value === 'number' ? `${value}px` : value;
-	};
 
 	const widthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
 	const fontSizeStyle = $derived(getStyleFromNumber(mergedTextConfig.fontSize));

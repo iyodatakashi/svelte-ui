@@ -3,6 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import { getStyleFromNumber } from '../utils/style';
 
 	// =========================================================================
 	// Props, States & Constants

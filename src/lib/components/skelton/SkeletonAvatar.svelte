@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
+	import { getStyleFromNumber } from '../../utils/style';
 	import type {
 		SkeletonAvatarConfig,
 		SkeletonTextConfig,
@@ -54,10 +55,6 @@
 		...DEFAULT_AVATAR_CONFIG,
 		...avatarConfig
 	});
-
-	const getStyleFromNumber = (value: string | number) => {
-		return typeof value === 'number' ? `${value}px` : value;
-	};
 
 	const avatarImageSizeStyle = $derived(getStyleFromNumber(mergedAvatarImageConfig.size));
 	const nameWidthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));

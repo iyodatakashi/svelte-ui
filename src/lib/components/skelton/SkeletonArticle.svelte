@@ -1,6 +1,7 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
+	import { getStyleFromNumber } from '../../utils/style';
 	import type {
 		SkeletonArticleConfig,
 		SkeletonThumbnailConfig,
@@ -42,10 +43,6 @@
 		...DEFAULT_TEXT_CONFIG,
 		...(articleConfig.textConfig || {})
 	});
-
-	const getStyleFromNumber = (value: string | number) => {
-		return typeof value === 'number' ? `${value}px` : value;
-	};
 
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const thumbnailWidthStyle = $derived(getStyleFromNumber(mergedThumbnailConfig.width));

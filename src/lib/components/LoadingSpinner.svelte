@@ -1,6 +1,7 @@
 <!-- LoadingSpinner.svelte -->
 
 <script lang="ts">
+	import { getStyleFromNumber } from '../utils/style';
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================

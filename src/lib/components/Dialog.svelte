@@ -15,6 +15,7 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
+	import { getStyleFromNumber } from '../utils/style';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -94,7 +95,7 @@
 	// $derived
 	// =========================================================================
 	const dialogStyles = $derived(
-		`width: ${typeof width === 'number' ? `${width}px` : width}; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
+		`width: ${getStyleFromNumber(width)}; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
 	);
 
 	const bodyStyles = $derived(() => {

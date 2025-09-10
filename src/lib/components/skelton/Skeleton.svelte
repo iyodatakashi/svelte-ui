@@ -3,6 +3,7 @@
 	import SkeletonArticle from './SkeletonArticle.svelte';
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
 	import SkeletonButtons from './SkeletonButtons.svelte';
+	import { getStyleFromNumber } from '../../utils/style';
 
 	// =========================================================================
 	// Props
@@ -86,8 +87,8 @@
 
 	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
 
-	const gapStyle = $derived(typeof gap === 'number' ? `${gap}px` : gap);
-	const itemGapStyle = $derived(typeof itemGap === 'number' ? `${itemGap}px` : itemGap);
+	const gapStyle = $derived(getStyleFromNumber(gap));
+	const itemGapStyle = $derived(getStyleFromNumber(itemGap));
 </script>
 
 <div class={containerClasses} style={customStyle}>

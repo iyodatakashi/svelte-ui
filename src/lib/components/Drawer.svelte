@@ -15,6 +15,7 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
+	import { getStyleFromNumber } from '../utils/style';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -97,8 +98,7 @@
 	// =========================================================================
 	const drawerStyles = $derived(() => {
 		const styles = [];
-		const widthValue = typeof width === 'number' ? `${width}px` : width;
-		styles.push(`width: ${widthValue}`);
+		styles.push(`width: ${getStyleFromNumber(width)}`);
 		styles.push('height: 100%');
 		styles.push('min-height: 100%');
 		styles.push(`${position}: 0`);

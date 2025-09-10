@@ -4,6 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import { getStyleFromNumber } from '../utils/style';
 	import { onDestroy } from 'svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
@@ -69,7 +70,7 @@
 		// スタイル/レイアウト
 
 		width?: string | number;
-		height?: number;
+		height?: string | number;
 		rounded?: boolean;
 
 		// アイコン系
@@ -286,8 +287,8 @@
 	class="image-uploader"
 	class:image-uploader--multiple={multiple}
 	style="
-		--image-uploader-width: {typeof width === 'number' ? `${width}px` : width || '100%'};
-		{height ? `--image-uploader-height: ${height}px;` : ''}
+		--image-uploader-width: {getStyleFromNumber(width) || '100%'};
+		{height ? `--image-uploader-height: ${getStyleFromNumber(height)};` : ''}
 	"
 >
 	{#if multiple}

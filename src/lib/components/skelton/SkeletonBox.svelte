@@ -1,4 +1,6 @@
 <script lang="ts">
+	import { getStyleFromNumber } from '../../utils/style';
+
 	// =========================================================================
 	// Props
 	// =========================================================================
@@ -28,9 +30,9 @@
 		['skeleton-box', animated && 'skeleton-box--animated', className].filter(Boolean).join(' ')
 	);
 
-	const widthStyle = $derived(typeof width === 'number' ? `${width}px` : width);
-	const heightStyle = $derived(typeof height === 'number' ? `${height}px` : height);
-	const radiusStyle = $derived(typeof radius === 'number' ? `${radius}px` : radius);
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const heightStyle = $derived(getStyleFromNumber(height));
+	const radiusStyle = $derived(getStyleFromNumber(radius));
 </script>
 
 <div
