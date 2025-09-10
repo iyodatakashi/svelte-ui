@@ -8,6 +8,8 @@ interface ImageUploaderArgs {
 	maxFileSize?: number;
 	width?: string | number;
 	height?: string | number;
+	maxWidth?: string | number;
+	maxHeight?: string | number;
 	rounded?: boolean;
 	adaptiveSize?: boolean;
 	icon?: string;
@@ -62,6 +64,14 @@ const meta: Meta<ImageUploaderArgs> = {
 		height: {
 			control: 'text',
 			description: 'Button and preview height (default: 120px)'
+		},
+		maxWidth: {
+			control: 'text',
+			description: 'Maximum width for adaptive size mode'
+		},
+		maxHeight: {
+			control: 'text',
+			description: 'Maximum height for adaptive size mode'
 		},
 		rounded: {
 			control: 'boolean',
@@ -311,8 +321,6 @@ export const AdaptiveSizeTest: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
-		width: 200,
-		height: 150,
 		adaptiveSize: true
 	}
 };

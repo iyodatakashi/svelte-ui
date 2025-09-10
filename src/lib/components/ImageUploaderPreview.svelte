@@ -29,70 +29,38 @@
 		return URL.createObjectURL(file);
 	};
 
-	const getImageSize = (file: File): Promise<{ width: number; height: number }> => {
-		return new Promise((resolve) => {
-			const fileKey = file.name + file.size;
-
-			if (imageSizes[fileKey]) {
-				resolve(imageSizes[fileKey]);
-				return;
-			}
-
-			const img = new Image();
-			img.onload = () => {
-				const size = { width: img.naturalWidth, height: img.naturalHeight };
-				imageSizes[fileKey] = size;
-				resolve(size);
-			};
-			img.onerror = () => {
-				const defaultSize = { width: 120, height: 120 };
-				imageSizes[fileKey] = defaultSize;
-				resolve(defaultSize);
-			};
-			img.src = getImageUrl(file);
-		});
-	};
-
-	const previewWidthStyle = $derived(getStyleFromNumber(width));
-	const previewHeightStyle = $derived(getStyleFromNumber(height));
-
-	const getAdaptiveSize = (file: File) => {
-		if (!adaptiveSize) {
-			return {
-				width: previewWidthStyle,
-				height: previewHeightStyle
-			};
-		}
-
+	// 画像サイズを取得してキャッシュに保存
+	const loadImageSize = (file: File) => {
 		const fileKey = file.name + file.size;
-		const cachedSize = imageSizes[fileKey];
-		if (!cachedSize) {
-			return {
-				width: previewWidthStyle,
-				height: previewHeightStyle
-			};
+
+		if (imageSizes[fileKey]) {
+			return; // 既にキャッシュされている
 		}
 
-		const targetWidth = parseInt(previewWidthStyle?.replace('px', '') || '120');
-		const imageWidth = cachedSize.width;
-		const imageHeight = cachedSize.height;
-
-		const actualWidth = Math.min(targetWidth, imageWidth);
-		const aspectRatio = imageHeight / imageWidth;
-		const actualHeight = Math.round(actualWidth * aspectRatio);
-
-		return {
-			width: `${actualWidth}px`,
-			height: `${actualHeight}px`
+		const img = new Image();
+		img.onload = () => {
+			imageSizes[fileKey] = { width: img.naturalWidth, height: img.naturalHeight };
 		};
+		img.onerror = () => {
+			imageSizes[fileKey] = { width: 120, height: 120 };
+		};
+		img.src = getImageUrl(file);
 	};
 
-	const getFileAdaptiveSize = $derived(() => {
-		imageSizes;
-		if (!file) {
-			return { width: '120px', height: '120px' };
+	// adaptiveSizeによる分岐を最初に行う
+	const imageSizeStyle = $derived.by(() => {
+		if (adaptiveSize) {
+			return `
+			  width: 100%;
+        height: auto;
+				max-width:  '100%';
+			`;
+		} else {
+			return `
+				width: ${getStyleFromNumber(width)};
+				height: ${getStyleFromNumber(height)};
+			`;
 		}
-		return getAdaptiveSize(file);
 	});
 
 	onDestroy(() => {
@@ -102,15 +70,18 @@
 	});
 </script>
 
-<div class="image-uploader-preview">
+<div
+	class="image-uploader-preview"
+	class:image-uploader-preview--adaptive={adaptiveSize}
+	style={imageSizeStyle}
+>
 	<img
 		src={getImageUrl(file)}
-		alt="選択された画像: {file.name}"
+		alt={file.name}
 		class="image-uploader-preview__image"
 		class:image-uploader-preview__image--rounded={rounded}
-		style="width: {getFileAdaptiveSize().width}; height: {getFileAdaptiveSize().height};"
 		onload={() => {
-			getImageSize(file);
+			loadImageSize(file);
 		}}
 	/>
 	<div class="image-uploader-preview__delete">
@@ -133,8 +104,6 @@
 <style>
 	.image-uploader-preview {
 		position: relative;
-		width: fit-content;
-		height: fit-content;
 		border-radius: var(--svelte-ui-border-radius);
 		background-color: var(--svelte-ui-surface-color);
 		overflow: hidden;
@@ -142,9 +111,15 @@
 
 	.image-uploader-preview__image {
 		display: block;
+		width: 100%;
+		height: 100%;
 		object-fit: cover;
 		object-position: center;
 		border-radius: var(--svelte-ui-border-radius);
+	}
+
+	.image-uploader-preview--adaptive .image-uploader-preview__image {
+		object-fit: contain;
 	}
 
 	.image-uploader-preview__image--rounded {

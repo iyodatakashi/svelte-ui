@@ -1,7 +1,6 @@
 <!-- ImageUploader.svelte -->
 
 <script lang="ts">
-	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 	import { getStyleFromNumber } from '../utils/style';
@@ -114,6 +113,14 @@
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
 	let urlCache = new Map<File, string>();
+
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
+
+	onDestroy(() => {
+		cleanupObjectUrls();
+	});
 
 	// =========================================================================
 	// Effects
@@ -283,10 +290,6 @@
 	// =========================================================================
 	const previewWidthStyle = $derived(getStyleFromNumber(width));
 	const previewHeightStyle = $derived(getStyleFromNumber(height));
-
-	onDestroy(() => {
-		cleanupObjectUrls();
-	});
 </script>
 
 {#snippet preview(file: File, index: number)}
@@ -318,7 +321,7 @@
 		bind:this={dropAreaRef}
 		class="image-uploader__button"
 		class:image-uploader__button--hover={isHover}
-		class:image-uploader__button--has-images={files && files.length > 0}
+		class:image-uploader__button--has-images={!multiple && files && files.length > 0}
 		class:image-uploader__button--rounded={rounded}
 		onclick={handleClick}
 		onfocus={handleFocus}
@@ -409,8 +412,6 @@
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: fit-content;
-		height: fit-content;
 		max-width: 100%;
 		min-width: var(--image-uploader-button-width);
 		min-height: var(--image-uploader-button-height);
@@ -462,7 +463,6 @@
 
 	.image-uploader__button--has-images {
 		padding: 0;
-		min-height: auto;
 	}
 
 	.description {
