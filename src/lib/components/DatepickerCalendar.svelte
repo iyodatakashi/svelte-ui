@@ -565,7 +565,7 @@
 			</IconButton>
 		</div>
 		<button
-			class="datepicker-calendar__month-label-button"
+			class="datepicker-calendar__header__month-label-button"
 			aria-live="polite"
 			aria-atomic="true"
 			onclick={(event) => {
@@ -580,7 +580,7 @@
 				{month.locale(locale).format(currentLocaleConfig.monthFormat)}
 			{/if}
 		</button>
-		<div class="datepicker-calendar__next-button-block">
+		<div class="datepicker-calendar__header__next-button-block">
 			<IconButton size={36} ariaLabel={currentLocaleConfig.nextMonthLabel} onclick={goNext}
 				>chevron_right</IconButton
 			>
@@ -589,40 +589,38 @@
 
 	{#if viewMode === 'month'}
 		<div class="datepicker-calendar__month-selection">
-			<div class="datepicker-calendar__month-selection-grid">
-				{#each monthNames as monthName, index}
-					<button
-						class="datepicker-calendar__month-button"
-						class:datepicker-calendar__month-button--current={index === dayjs().month() &&
-							month.year() === dayjs().year()}
-						class:datepicker-calendar__month-button--selected={month
-							.month(index)
-							.startOf('month')
-							.isSame(selectedYearMonth, 'month')}
-						class:datepicker-calendar__month-button--focused={isKeyboardActive &&
-							index === focusedMonth}
-						onclick={(event) => {
-							event.stopPropagation();
-							focusedMonth = index;
-							isKeyboardActive = false;
-							selectMonth(index);
-						}}
-					>
-						{monthName}
-					</button>
-				{/each}
-			</div>
+			{#each monthNames as monthName, index}
+				<button
+					class="datepicker-calendar__month-button"
+					class:datepicker-calendar__month-button--current={index === dayjs().month() &&
+						month.year() === dayjs().year()}
+					class:datepicker-calendar__month-button--selected={month
+						.month(index)
+						.startOf('month')
+						.isSame(selectedYearMonth, 'month')}
+					class:datepicker-calendar__month-button--focused={isKeyboardActive &&
+						index === focusedMonth}
+					onclick={(event) => {
+						event.stopPropagation();
+						focusedMonth = index;
+						isKeyboardActive = false;
+						selectMonth(index);
+					}}
+				>
+					{monthName}
+				</button>
+			{/each}
 		</div>
 	{:else}
-		<div class="datepicker-calendar__calendar-grid" role="grid" aria-labelledby="month-label">
+		<div class="datepicker-calendar__date-selection" role="grid" aria-labelledby="month-label">
 			<div class="datepicker-calendar__day-list" role="row">
 				{#each DAY_ARRAY as day}
-					<div class="datepicker-calendar__day-list-item" role="columnheader">
+					<div class="datepicker-calendar__day-item" role="columnheader">
 						{day}
 					</div>
 				{/each}
 			</div>
-			<div class="datepicker-calendar__date-grid">
+			<div class="datepicker-calendar__date-list">
 				{#each dates as date}
 					<div
 						class="datepicker-calendar__date-item"
@@ -682,7 +680,7 @@
 		gap: 16px;
 	}
 
-	.datepicker-calendar__month-label-button {
+	.datepicker-calendar__header__month-label-button {
 		font-size: 1.4rem;
 		font-weight: bold;
 		color: var(--svelte-ui-datepicker-date-color);
@@ -705,7 +703,7 @@
 		}
 	}
 
-	.datepicker-calendar__month-selection-grid {
+	.datepicker-calendar__month-selection {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 8px;
@@ -748,7 +746,7 @@
 		}
 	}
 
-	.datepicker-calendar__calendar-grid {
+	.datepicker-calendar__date-selection {
 		display: flex;
 		flex-direction: column;
 		gap: 8px;
@@ -759,12 +757,12 @@
 		place-items: center stretch;
 	}
 
-	.datepicker-calendar__date-grid {
+	.datepicker-calendar__date-list {
 		display: flex;
 		flex-wrap: wrap;
 	}
 
-	.datepicker-calendar__day-list-item,
+	.datepicker-calendar__day-item,
 	.datepicker-calendar__date-item {
 		display: flex;
 		justify-content: center;
@@ -773,17 +771,17 @@
 		width: calc(100% / 7);
 	}
 
-	.datepicker-calendar__day-list-item {
+	.datepicker-calendar__day-item {
 		background-color: var(--svelte-ui-datepicker-day-label-bg);
 		color: var(--svelte-ui-datepicker-day-label-color);
 	}
 
-	.datepicker-calendar__day-list-item:first-of-type {
+	.datepicker-calendar__day-item:first-of-type {
 		border-radius: var(--svelte-ui-datepicker-day-label-border-radius) 0 0
 			var(--svelte-ui-datepicker-day-label-border-radius);
 	}
 
-	.datepicker-calendar__day-list-item:last-of-type {
+	.datepicker-calendar__day-item:last-of-type {
 		border-radius: 0 var(--svelte-ui-datepicker-day-label-border-radius)
 			var(--svelte-ui-datepicker-day-label-border-radius) 0;
 	}
