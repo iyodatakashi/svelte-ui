@@ -3,6 +3,7 @@
 	import SkeletonMedia from './SkeletonMedia.svelte';
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
 	import SkeletonButton from './SkeletonButton.svelte';
+	import SkeletonHeading from './SkeletonHeading.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
 	import type { SkeletonPatternConfig } from './types';
 	import { isPresetPattern, isTypedPattern } from './types';
@@ -14,16 +15,16 @@
 	let {
 		// 基本プロパティ
 		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
-		presetPatterns,
+		presetPattern,
 		repeat = 1,
 		repeatGap = '24px',
-		itemGap = '8px',
+		itemGap = '24px',
 		className = '',
 		customStyle = '',
 		animated = true
 	}: {
 		patterns?: SkeletonPatternConfig[];
-		presetPatterns?: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
+		presetPattern?: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
 		repeat?: number;
 		repeatGap?: string | number;
 		itemGap?: string | number;
@@ -53,7 +54,9 @@
 				type: 'media',
 				layout: 'vertical',
 				thumbnailConfig: { width: '100%', aspectRatio: '1' },
-				textConfig: { lines: 2 }
+				textConfig: { lines: 2 },
+				repeat: 3,
+				repeatDirection: 'horizontal'
 			}
 		],
 		'video-list': [
@@ -78,7 +81,7 @@
 				width: '120px',
 				repeat: 2,
 				repeatDirection: 'horizontal',
-				repeatGap: '8px'
+				repeatGap: '16px'
 			}
 		]
 	};
@@ -92,22 +95,22 @@
 	// パターン設定をマージ
 	const mergedPatterns = $derived.by(() => {
 		// 最上位のプリセットパターンが指定されている場合はそれを使用
-		if (presetPatterns) {
-			const presetPatternsArray = PRESET_PATTERNS[presetPatterns] || [];
+		if (presetPattern) {
+			const presetPatternsArray = PRESET_PATTERNS[presetPattern] || [];
 			return presetPatternsArray.map((pattern) => ({
 				...DEFAULT_PATTERN_CONFIG,
 				...pattern
 			}));
 		}
 
-		// カスタムパターンを使用（個別のパターンでpresetPatternsも処理）
+		// カスタムパターンを使用（個別のパターンでpresetPatternも処理）
 		return patterns
 			.map((pattern) => {
-				// 型ガードでpresetPatternsかどうかを判定
+				// 型ガードでpresetPatternかどうかを判定
 				if (isPresetPattern(pattern)) {
-					const presetPatternsArray = PRESET_PATTERNS[pattern.presetPatterns] || [];
+					const presetPatternsArray = PRESET_PATTERNS[pattern.presetPattern] || [];
 					// プリセットパターンを展開して、元のパターンの設定で上書き
-					const { presetPatterns: _, ...patternWithoutPreset } = pattern;
+					const { presetPattern: _, ...patternWithoutPreset } = pattern;
 					return presetPatternsArray.map((presetPattern) => ({
 						...DEFAULT_PATTERN_CONFIG,
 						...presetPattern,
@@ -144,7 +147,10 @@
 					>
 						{#each Array(patternRepeat) as _}
 							{#if isTypedPattern(patternConfig)}
-								{#if patternConfig.type === 'text'}
+								{#if patternConfig.type === 'heading'}
+									{@const { type: _, ...headingConfig } = patternConfig}
+									<SkeletonHeading {headingConfig} {animated} />
+								{:else if patternConfig.type === 'text'}
 									<SkeletonText textConfig={patternConfig} {animated} />
 								{:else if patternConfig.type === 'avatar'}
 									<div class="skeleton__user-list">

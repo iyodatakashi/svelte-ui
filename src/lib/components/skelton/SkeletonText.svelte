@@ -65,7 +65,6 @@
 	.skeleton-text {
 		display: block;
 		width: 100%;
-		height: 100%;
 	}
 
 	.skeleton-text__box {

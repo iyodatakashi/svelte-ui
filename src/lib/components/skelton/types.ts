@@ -3,6 +3,7 @@ export type SkeletonPatternConfig =
 	| SkeletonAvatarConfig
 	| SkeletonMediaConfig
 	| SkeletonButtonConfig
+	| SkeletonHeadingConfig
 	| SkeletonPresetConfig;
 
 type SkeletonPatternCommonConfig = {
@@ -58,8 +59,15 @@ export type SkeletonButtonConfig = SkeletonPatternCommonConfig & {
 	align?: 'left' | 'center' | 'right';
 };
 
+export type SkeletonHeadingConfig = SkeletonPatternCommonConfig & {
+	type: 'heading';
+	width?: string | number;
+	fontSize?: string | number;
+	radius?: string | number;
+};
+
 export type SkeletonPresetConfig = {
-	presetPatterns: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
+	presetPattern: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
 	repeat?: number;
 	repeatDirection?: 'horizontal' | 'vertical';
 	repeatGap?: string | number;
@@ -72,7 +80,7 @@ export type SkeletonPresetConfig = {
 export const isPresetPattern = (
 	pattern: SkeletonPatternConfig
 ): pattern is SkeletonPresetConfig => {
-	return 'presetPatterns' in pattern && pattern.presetPatterns !== undefined;
+	return 'presetPattern' in pattern && pattern.presetPattern !== undefined;
 };
 
 export const isTypedPattern = (

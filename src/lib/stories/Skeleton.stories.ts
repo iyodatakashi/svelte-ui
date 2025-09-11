@@ -46,6 +46,12 @@ export const Buttons: Story = {
 	}
 };
 
+export const Heading: Story = {
+	args: {
+		patterns: [{ type: 'heading', width: '300px', fontSize: '2rem' }]
+	}
+};
+
 export const SNSPost: Story = {
 	args: {
 		patterns: [
@@ -109,41 +115,35 @@ export const VerticalMedia: Story = {
 // プリセットパターンのストーリー
 export const ArticleListPreset: Story = {
 	args: {
-		patterns: [
-			{
-				type: 'text',
-				width: '240px',
-				fontSize: '2rem'
-			},
-			{ presetPatterns: 'article-list', repeat: 3 }
-		]
+		patterns: [{ type: 'heading' }, { presetPattern: 'article-list', repeat: 3 }],
+		itemGap: '24px'
 	}
 };
 
 export const ProductListPreset: Story = {
 	args: {
-		presetPatterns: 'product-list',
+		presetPattern: 'product-list',
 		repeat: 4
 	}
 };
 
 export const VideoListPreset: Story = {
 	args: {
-		presetPatterns: 'video-list',
+		presetPattern: 'video-list',
 		repeat: 3
 	}
 };
 
 export const UserListPreset: Story = {
 	args: {
-		presetPatterns: 'user-list',
+		presetPattern: 'user-list',
 		repeat: 5
 	}
 };
 
 export const ButtonGroupPreset: Story = {
 	args: {
-		presetPatterns: 'button-group',
+		presetPattern: 'button-group',
 		repeat: 1
 	}
 };
