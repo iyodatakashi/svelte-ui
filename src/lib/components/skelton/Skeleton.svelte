@@ -17,8 +17,8 @@
 		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
 		presetPattern,
 		repeat = 1,
-		repeatGap = '24px',
-		itemGap = '24px',
+		repeatGap = '64px',
+		itemGap = '16px',
 		className = '',
 		customStyle = '',
 		animated = true
@@ -55,7 +55,7 @@
 				layout: 'vertical',
 				thumbnailConfig: { width: '100%', aspectRatio: '1' },
 				textConfig: { lines: 2 },
-				repeat: 3,
+				repeat: 4,
 				repeatDirection: 'horizontal'
 			}
 		],
