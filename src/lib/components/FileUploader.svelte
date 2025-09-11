@@ -12,7 +12,7 @@
 	// =========================================================================
 	let {
 		// 基本プロパティ
-		files = $bindable(),
+		files = $bindable(new DataTransfer().files),
 		multiple = false,
 		maxFileSize = 5 * 1024 * 1024,
 		placeholder = 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
@@ -57,7 +57,7 @@
 		onpointerleave = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
-		files?: FileList;
+		files: FileList;
 		multiple?: boolean;
 		maxFileSize?: number;
 		placeholder?: string;
