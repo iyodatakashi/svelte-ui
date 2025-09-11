@@ -538,13 +538,6 @@
 		dayjs.locale(locale);
 		return dayjs.weekdaysMin();
 	});
-	const weekRows = $derived.by(() => {
-		const weeks: dayjs.Dayjs[][] = [];
-		for (let i = 0; i < dates.length; i += 7) {
-			weeks.push(dates.slice(i, i + 7));
-		}
-		return weeks;
-	});
 	const isRangePreviewActive = $derived(
 		mode === 'range' &&
 			!isSelectingStart &&
@@ -630,53 +623,42 @@
 				{/each}
 			</div>
 			<div class="datepicker-calendar__date-grid">
-				{#each weekRows as week}
-					<div class="datepicker-calendar__date-row" role="row">
-						{#each week as date}
-							<div
-								class="datepicker-calendar__date-item"
-								class:datepicker-calendar__date-item--selected={mode === 'single' &&
-									isSelected(date)}
-								class:datepicker-calendar__date-item--range-start={isRangeStart(date)}
-								class:datepicker-calendar__date-item--range-end={isRangeEnd(date)}
-								class:datepicker-calendar__date-item--range-middle={isRangeMiddle(date)}
-								class:datepicker-calendar__date-item--range-single={isRangeSingle(date)}
-								class:datepicker-calendar__date-item--range-preview-start={isRangePreviewStart(
-									date
-								)}
-								class:datepicker-calendar__date-item--range-preview-end={isRangePreviewEnd(date)}
-								class:datepicker-calendar__date-item--range-preview-middle={isRangePreviewMiddle(
-									date
-								)}
-								class:datepicker-calendar__date-item--range-preview-single={isRangePreviewSingle(
-									date
-								)}
-								class:datepicker-calendar__date-item--out-of-month={isOutOfMonth(date)}
-								class:datepicker-calendar__date-item--out-of-range={isOutOfRange(date)}
-								class:datepicker-calendar__date-item--today={isToday(date)}
-								class:datepicker-calendar__date-item--focused={focusedDateKey ===
-									date.startOf('day').format('YYYY-MM-DD')}
-								role="gridcell"
-							>
-								<button
-									id={getDateId(date)}
-									class="datepicker-calendar__date-button"
-									aria-current={isToday(date) ? 'date' : undefined}
-									aria-pressed={isSelected(date)}
-									aria-label={`${date.locale(locale).format('YYYY/MM/DD')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
-									aria-disabled={isOutOfRange(date)}
-									onclick={() => {
-										focusedDate = date;
-										isKeyboardActive = false;
-										selectDate(date);
-									}}
-									onmouseenter={() => handleMouseEnter(date)}
-									onmouseleave={handleMouseLeave}
-								>
-									{date.format('D')}
-								</button>
-							</div>
-						{/each}
+				{#each dates as date}
+					<div
+						class="datepicker-calendar__date-item"
+						class:datepicker-calendar__date-item--selected={mode === 'single' && isSelected(date)}
+						class:datepicker-calendar__date-item--range-start={isRangeStart(date)}
+						class:datepicker-calendar__date-item--range-end={isRangeEnd(date)}
+						class:datepicker-calendar__date-item--range-middle={isRangeMiddle(date)}
+						class:datepicker-calendar__date-item--range-single={isRangeSingle(date)}
+						class:datepicker-calendar__date-item--range-preview-start={isRangePreviewStart(date)}
+						class:datepicker-calendar__date-item--range-preview-end={isRangePreviewEnd(date)}
+						class:datepicker-calendar__date-item--range-preview-middle={isRangePreviewMiddle(date)}
+						class:datepicker-calendar__date-item--range-preview-single={isRangePreviewSingle(date)}
+						class:datepicker-calendar__date-item--out-of-month={isOutOfMonth(date)}
+						class:datepicker-calendar__date-item--out-of-range={isOutOfRange(date)}
+						class:datepicker-calendar__date-item--today={isToday(date)}
+						class:datepicker-calendar__date-item--focused={focusedDateKey ===
+							date.startOf('day').format('YYYY-MM-DD')}
+						role="gridcell"
+					>
+						<button
+							id={getDateId(date)}
+							class="datepicker-calendar__date-button"
+							aria-current={isToday(date) ? 'date' : undefined}
+							aria-pressed={isSelected(date)}
+							aria-label={`${date.locale(locale).format('YYYY/MM/DD')}${isToday(date) ? currentLocaleConfig.todayLabel : ''}${isSelected(date) ? currentLocaleConfig.selectedLabel : ''}`}
+							aria-disabled={isOutOfRange(date)}
+							onclick={() => {
+								focusedDate = date;
+								isKeyboardActive = false;
+								selectDate(date);
+							}}
+							onmouseenter={() => handleMouseEnter(date)}
+							onmouseleave={handleMouseLeave}
+						>
+							{date.format('D')}
+						</button>
 					</div>
 				{/each}
 			</div>
@@ -723,10 +705,6 @@
 		}
 	}
 
-	.datepicker-calendar__month-selection {
-		padding: 8px 0;
-	}
-
 	.datepicker-calendar__month-selection-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
@@ -770,21 +748,20 @@
 		}
 	}
 
+	.datepicker-calendar__calendar-grid {
+		display: flex;
+		flex-direction: column;
+		gap: 8px;
+	}
+
 	.datepicker-calendar__day-list {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
+		display: flex;
 		place-items: center stretch;
 	}
 
 	.datepicker-calendar__date-grid {
 		display: flex;
-		flex-direction: column;
-	}
-
-	.datepicker-calendar__date-row {
-		display: grid;
-		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
-		place-items: center stretch;
+		flex-wrap: wrap;
 	}
 
 	.datepicker-calendar__day-list-item,
@@ -793,10 +770,10 @@
 		justify-content: center;
 		padding: 2px 0;
 		font-size: 1rem;
+		width: calc(100% / 7);
 	}
 
 	.datepicker-calendar__day-list-item {
-		margin-bottom: 8px;
 		background-color: var(--svelte-ui-datepicker-day-label-bg);
 		color: var(--svelte-ui-datepicker-day-label-color);
 	}
