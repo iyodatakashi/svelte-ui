@@ -7,8 +7,9 @@
 
 	let {
 		// 基本プロパティ
-		width = '100%',
-		height = '40px',
+		width,
+		height,
+		aspectRatio,
 		radius,
 		animated = true,
 		className = '',
@@ -16,6 +17,7 @@
 	}: {
 		width?: string | number;
 		height?: string | number;
+		aspectRatio?: string | number;
 		radius?: string | number;
 		animated?: boolean;
 		className?: string;
@@ -31,13 +33,20 @@
 	);
 
 	const widthStyle = $derived(getStyleFromNumber(width));
-	const heightStyle = $derived(getStyleFromNumber(height));
+	const heightStyle = $derived(height ? getStyleFromNumber(height) : '');
+	const aspectRatioStyle = $derived(aspectRatio ? getStyleFromNumber(aspectRatio) : '');
 	const radiusStyle = $derived(getStyleFromNumber(radius));
+
+	// heightとaspectRatioの優先順位を制御
+	const finalHeightStyle = $derived(height ? heightStyle : '');
+	const finalAspectRatioStyle = $derived(height ? '' : aspectRatioStyle);
 </script>
 
 <div
 	class={containerClasses}
-	style="width: {widthStyle}; height: {heightStyle}; border-radius: {radiusStyle}; {customStyle}"
+	style="width: {widthStyle}; {heightStyle ? `height: ${heightStyle};` : ''} {aspectRatioStyle
+		? `aspect-ratio: ${aspectRatioStyle};`
+		: ''} border-radius: {radiusStyle}; {customStyle}"
 >
 	<div class="skeleton-box-item"></div>
 </div>

@@ -6,6 +6,24 @@ const meta = {
 	component: Skeleton,
 	parameters: {
 		layout: 'padded'
+	},
+	argTypes: {
+		repeat: {
+			control: 'number',
+			description: 'Number of times to repeat the patterns'
+		},
+		repeatGap: {
+			control: 'text',
+			description: 'Gap between repeated pattern elements'
+		},
+		itemGap: {
+			control: 'text',
+			description: 'Gap between items within a pattern'
+		},
+		animated: {
+			control: 'boolean',
+			description: 'Enable animation'
+		}
 	}
 } satisfies Meta<Skeleton>;
 
@@ -41,7 +59,7 @@ export const Text: Story = {
 
 export const Buttons: Story = {
 	args: {
-		patterns: [{ type: 'button', repeat: 2, direction: 'horizontal', repeatGap: '16px' }],
+		patterns: [{ type: 'button', repeat: 2, repeatDirection: 'horizontal', repeatGap: '16px' }],
 		repeat: 1
 	}
 };
@@ -51,11 +69,9 @@ export const SNSPost: Story = {
 		patterns: [
 			{ type: 'avatar', showName: true },
 			{ type: 'text', lines: 3 },
-			{ type: 'button', repeat: 3, direction: 'horizontal', repeatGap: '12px' }
+			{ type: 'button', repeat: 3, repeatDirection: 'horizontal', repeatGap: '12px' }
 		],
-		repeat: 3,
-		itemGap: '8px',
-		gap: '32px'
+		repeat: 3
 	}
 };
 
@@ -71,12 +87,15 @@ export const ProductList: Story = {
 		patterns: [
 			{
 				type: 'media',
-				thumbnailConfig: { width: '100px', height: '100px' },
-				textConfig: { lines: 2 }
+				thumbnailConfig: { width: '100%', aspectRatio: '16/9' },
+				textConfig: { lines: 2 },
+				layout: 'vertical',
+				repeat: 3,
+				repeatDirection: 'horizontal'
 			}
 		],
-		repeat: 4,
-		gap: '24px'
+		repeat: 2,
+		repeatGap: '24px'
 	}
 };
 
@@ -85,11 +104,22 @@ export const VideoList: Story = {
 		patterns: [
 			{
 				type: 'media',
+				layout: 'horizontal',
 				thumbnailConfig: { width: '160px', height: '90px' },
 				textConfig: { lines: 1 }
 			}
 		],
 		repeat: 3,
-		gap: '20px'
+		repeatGap: '20px'
+	}
+};
+
+export const VerticalMedia: Story = {
+	args: {
+		patterns: [
+			{
+				type: 'media'
+			}
+		]
 	}
 };

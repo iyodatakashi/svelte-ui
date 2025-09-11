@@ -18,7 +18,7 @@
 	type SkeletonPatternCommonConfig = {
 		customStyle?: string;
 		repeat?: number;
-		direction?: 'horizontal' | 'vertical';
+		repeatDirection?: 'horizontal' | 'vertical';
 		repeatGap?: string | number;
 	};
 
@@ -45,14 +45,17 @@
 
 	export type SkeletonMediaConfig = SkeletonPatternCommonConfig & {
 		type: 'media';
-		thumbnailConfig?: SkeletonThumbnailConfig;
-		textConfig?: SkeletonTextConfig;
+		width?: string | number;
+		layout?: 'horizontal' | 'vertical';
+		thumbnailConfig?: Partial<SkeletonThumbnailConfig>;
+		textConfig?: Partial<SkeletonTextConfig>;
 	};
 
 	export type SkeletonThumbnailConfig = SkeletonPatternCommonConfig & {
 		type: 'thumbnail';
 		width?: string | number;
 		height?: string | number;
+		aspectRatio?: string | number;
 		radius?: string | number;
 	};
 
@@ -68,20 +71,26 @@
 		// 基本プロパティ
 		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
 		repeat = 1,
-		gap = '24px',
-		itemGap = '16px',
+		repeatGap = '24px',
+		itemGap = '8px',
 		className = '',
 		customStyle = '',
 		animated = true
 	}: {
 		patterns?: SkeletonPatternConfig[];
 		repeat?: number;
-		gap?: string | number;
+		repeatGap?: string | number;
 		itemGap?: string | number;
 		className?: string;
 		customStyle?: string;
 		animated?: boolean;
 	} = $props();
+
+	const DEFAULT_PATTERN_CONFIG = {
+		repeat: 1,
+		repeatDirection: 'vertical' as const,
+		repeatGap: '24px'
+	};
 
 	// =========================================================================
 	// $derived
@@ -89,21 +98,29 @@
 
 	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
 
-	const gapStyle = $derived(getStyleFromNumber(gap));
+	// パターン設定をマージ
+	const mergedPatterns = $derived(
+		patterns.map((pattern) => ({
+			...DEFAULT_PATTERN_CONFIG,
+			...pattern
+		}))
+	);
+
+	const repeatGapStyle = $derived(getStyleFromNumber(repeatGap));
 	const itemGapStyle = $derived(getStyleFromNumber(itemGap));
 </script>
 
 <div class={containerClasses} style={customStyle}>
-	<div class="skeleton__items" style="gap: {gapStyle};">
+	<div class="skeleton__items" style="gap: {repeatGapStyle};">
 		{#each Array(repeat) as _, index}
 			<div class="item" style="gap: {itemGapStyle};">
-				{#each patterns as patternConfig}
+				{#each mergedPatterns as patternConfig}
 					{@const patternRepeat = patternConfig.repeat || 1}
-					{@const patternDirection = patternConfig.direction || 'vertical'}
+					{@const patternRepeatDirection = patternConfig.repeatDirection || 'vertical'}
 					{@const patternRepeatGap = getStyleFromNumber(patternConfig.repeatGap) || '8px'}
 					<div
 						class="skeleton__pattern"
-						class:skeleton__pattern--horizontal={patternDirection === 'horizontal'}
+						class:skeleton__pattern--horizontal={patternRepeatDirection === 'horizontal'}
 						style="gap: {patternRepeatGap};"
 					>
 						{#each Array(patternRepeat) as _}
@@ -114,7 +131,7 @@
 									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
 								</div>
 							{:else if patternConfig.type === 'media'}
-								<SkeletonMedia mediaConfig={patternConfig} {animated} />
+								<SkeletonMedia width={patternConfig.width} mediaConfig={patternConfig} {animated} />
 							{:else if patternConfig.type === 'button'}
 								<div class="skeleton__button">
 									<SkeletonButton buttonConfig={patternConfig} {animated} />
@@ -133,12 +150,12 @@
 		display: block;
 		width: 100%;
 		max-width: 100%;
+		overflow-x: hidden;
 	}
 
 	.skeleton__items {
 		display: flex;
 		flex-direction: column;
-		width: 100%;
 	}
 
 	.item {
