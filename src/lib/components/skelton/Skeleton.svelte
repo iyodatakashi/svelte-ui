@@ -1,6 +1,6 @@
 <script lang="ts">
 	import SkeletonText from './SkeletonText.svelte';
-	import SkeletonArticle from './SkeletonArticle.svelte';
+	import SkeletonMedia from './SkeletonMedia.svelte';
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
 	import SkeletonButton from './SkeletonButton.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
@@ -12,7 +12,7 @@
 	type SkeletonPatternConfig =
 		| SkeletonTextConfig
 		| SkeletonAvatarConfig
-		| SkeletonArticleConfig
+		| SkeletonMediaConfig
 		| SkeletonButtonConfig;
 
 	type SkeletonPatternCommonConfig = {
@@ -43,8 +43,8 @@
 		radius?: string | number;
 	};
 
-	export type SkeletonArticleConfig = SkeletonPatternCommonConfig & {
-		type: 'article';
+	export type SkeletonMediaConfig = SkeletonPatternCommonConfig & {
+		type: 'media';
 		thumbnailConfig?: SkeletonThumbnailConfig;
 		textConfig?: SkeletonTextConfig;
 	};
@@ -113,8 +113,8 @@
 								<div class="skeleton__user-list">
 									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
 								</div>
-							{:else if patternConfig.type === 'article'}
-								<SkeletonArticle articleConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'media'}
+								<SkeletonMedia mediaConfig={patternConfig} {animated} />
 							{:else if patternConfig.type === 'button'}
 								<div class="skeleton__button">
 									<SkeletonButton buttonConfig={patternConfig} {animated} />

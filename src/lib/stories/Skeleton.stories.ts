@@ -25,9 +25,9 @@ export const AvatarList: Story = {
 	}
 };
 
-export const ArticleList: Story = {
+export const MediaList: Story = {
 	args: {
-		patterns: [{ type: 'article' }],
+		patterns: [{ type: 'media' }],
 		repeat: 3
 	}
 };
@@ -41,7 +41,7 @@ export const Text: Story = {
 
 export const Buttons: Story = {
 	args: {
-		patterns: [{ type: 'button', repeat: 2, direction: 'horizontal' }],
+		patterns: [{ type: 'button', repeat: 2, direction: 'horizontal', repeatGap: '16px' }],
 		repeat: 1
 	}
 };
@@ -51,7 +51,7 @@ export const SNSPost: Story = {
 		patterns: [
 			{ type: 'avatar', showName: true },
 			{ type: 'text', lines: 3 },
-			{ type: 'button', repeat: 3, direction: 'horizontal' }
+			{ type: 'button', repeat: 3, direction: 'horizontal', repeatGap: '12px' }
 		],
 		repeat: 3,
 		itemGap: '8px',
@@ -63,5 +63,33 @@ export const NoAnimation: Story = {
 	args: {
 		patterns: [{ type: 'text' }],
 		animated: false
+	}
+};
+
+export const ProductList: Story = {
+	args: {
+		patterns: [
+			{
+				type: 'media',
+				thumbnailConfig: { width: '100px', height: '100px' },
+				textConfig: { lines: 2 }
+			}
+		],
+		repeat: 4,
+		gap: '24px'
+	}
+};
+
+export const VideoList: Story = {
+	args: {
+		patterns: [
+			{
+				type: 'media',
+				thumbnailConfig: { width: '160px', height: '90px' },
+				textConfig: { lines: 1 }
+			}
+		],
+		repeat: 3,
+		gap: '20px'
 	}
 };

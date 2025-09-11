@@ -3,18 +3,18 @@
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
 	import type {
-		SkeletonArticleConfig,
+		SkeletonMediaConfig,
 		SkeletonThumbnailConfig,
 		SkeletonTextConfig
 	} from './Skeleton.svelte';
 
 	let {
 		width = '100%',
-		articleConfig = {},
+		mediaConfig = {},
 		animated = true
 	}: {
 		width?: string | number;
-		articleConfig?: Partial<SkeletonArticleConfig>;
+		mediaConfig?: Partial<SkeletonMediaConfig>;
 		animated?: boolean;
 	} = $props();
 
@@ -36,12 +36,12 @@
 	// マージされた設定
 	const mergedThumbnailConfig = $derived({
 		...DEFAULT_THUMBNAIL_CONFIG,
-		...(articleConfig.thumbnailConfig || {})
+		...(mediaConfig.thumbnailConfig || {})
 	});
 
 	const mergedTextConfig = $derived({
 		...DEFAULT_TEXT_CONFIG,
-		...(articleConfig.textConfig || {})
+		...(mediaConfig.textConfig || {})
 	});
 
 	const widthStyle = $derived(getStyleFromNumber(width));
@@ -50,7 +50,7 @@
 	const textWidthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
 </script>
 
-<div class="skeleton-article" style="width: {widthStyle}">
+<div class="skeleton-media" style="width: {widthStyle}">
 	<SkeletonBox
 		width={thumbnailWidthStyle}
 		height={thumbnailHeightStyle}
@@ -69,7 +69,7 @@
 </div>
 
 <style>
-	.skeleton-article {
+	.skeleton-media {
 		display: grid;
 		grid-template-columns: auto 1fr;
 		gap: 16px;
