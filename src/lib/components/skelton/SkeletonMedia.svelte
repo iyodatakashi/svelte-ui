@@ -6,7 +6,7 @@
 		SkeletonMediaConfig,
 		SkeletonThumbnailConfig,
 		SkeletonTextConfig
-	} from './Skeleton.svelte';
+	} from './types.ts';
 
 	let {
 		width = '100%',

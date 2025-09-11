@@ -1,0 +1,82 @@
+export type SkeletonPatternConfig =
+	| SkeletonTextConfig
+	| SkeletonAvatarConfig
+	| SkeletonMediaConfig
+	| SkeletonButtonConfig
+	| SkeletonPresetConfig;
+
+type SkeletonPatternCommonConfig = {
+	customStyle?: string;
+	repeat?: number;
+	repeatDirection?: 'horizontal' | 'vertical';
+	repeatGap?: string | number;
+	presetPatterns?: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
+};
+
+export type SkeletonTextConfig = SkeletonPatternCommonConfig & {
+	type: 'text';
+	width?: string | number;
+	lines?: number;
+	fontSize?: string | number;
+	radius?: string | number;
+};
+
+export type SkeletonAvatarConfig = SkeletonPatternCommonConfig & {
+	type: 'avatar';
+	avatarImageConfig?: SkeletonAvatarImageConfig;
+	textConfig?: SkeletonTextConfig;
+	showName?: boolean;
+};
+
+export type SkeletonAvatarImageConfig = SkeletonPatternCommonConfig & {
+	type: 'avatar-image';
+	size?: string | number;
+	radius?: string | number;
+};
+
+export type SkeletonMediaConfig = SkeletonPatternCommonConfig & {
+	type: 'media';
+	width?: string | number;
+	layout?: 'horizontal' | 'vertical';
+	thumbnailConfig?: Partial<SkeletonThumbnailConfig>;
+	textConfig?: Partial<SkeletonTextConfig>;
+};
+
+export type SkeletonThumbnailConfig = SkeletonPatternCommonConfig & {
+	type: 'thumbnail';
+	width?: string | number;
+	height?: string | number;
+	aspectRatio?: string | number;
+	radius?: string | number;
+};
+
+export type SkeletonButtonConfig = SkeletonPatternCommonConfig & {
+	type: 'button';
+	width?: string | number;
+	height?: string | number;
+	radius?: string | number;
+	align?: 'left' | 'center' | 'right';
+};
+
+export type SkeletonPresetConfig = {
+	presetPatterns: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
+	repeat?: number;
+	repeatDirection?: 'horizontal' | 'vertical';
+	repeatGap?: string | number;
+};
+
+// =========================================================================
+// Type Guards
+// =========================================================================
+
+export const isPresetPattern = (
+	pattern: SkeletonPatternConfig
+): pattern is SkeletonPresetConfig => {
+	return 'presetPatterns' in pattern && pattern.presetPatterns !== undefined;
+};
+
+export const isTypedPattern = (
+	pattern: SkeletonPatternConfig
+): pattern is Exclude<SkeletonPatternConfig, SkeletonPresetConfig> => {
+	return 'type' in pattern;
+};

@@ -4,72 +4,17 @@
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
 	import SkeletonButton from './SkeletonButton.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
+	import type { SkeletonPatternConfig } from './types';
+	import { isPresetPattern, isTypedPattern } from './types';
 
 	// =========================================================================
 	// Props
 	// =========================================================================
 
-	type SkeletonPatternConfig =
-		| SkeletonTextConfig
-		| SkeletonAvatarConfig
-		| SkeletonMediaConfig
-		| SkeletonButtonConfig;
-
-	type SkeletonPatternCommonConfig = {
-		customStyle?: string;
-		repeat?: number;
-		repeatDirection?: 'horizontal' | 'vertical';
-		repeatGap?: string | number;
-	};
-
-	export type SkeletonTextConfig = SkeletonPatternCommonConfig & {
-		type: 'text';
-		width?: string | number;
-		lines?: number;
-		fontSize?: string | number;
-		radius?: string | number;
-	};
-
-	export type SkeletonAvatarConfig = SkeletonPatternCommonConfig & {
-		type: 'avatar';
-		avatarImageConfig?: SkeletonAvatarImageConfig;
-		textConfig?: SkeletonTextConfig;
-		showName?: boolean;
-	};
-
-	export type SkeletonAvatarImageConfig = SkeletonPatternCommonConfig & {
-		type: 'avatar-image';
-		size?: string | number;
-		radius?: string | number;
-	};
-
-	export type SkeletonMediaConfig = SkeletonPatternCommonConfig & {
-		type: 'media';
-		width?: string | number;
-		layout?: 'horizontal' | 'vertical';
-		thumbnailConfig?: Partial<SkeletonThumbnailConfig>;
-		textConfig?: Partial<SkeletonTextConfig>;
-	};
-
-	export type SkeletonThumbnailConfig = SkeletonPatternCommonConfig & {
-		type: 'thumbnail';
-		width?: string | number;
-		height?: string | number;
-		aspectRatio?: string | number;
-		radius?: string | number;
-	};
-
-	export type SkeletonButtonConfig = SkeletonPatternCommonConfig & {
-		type: 'button';
-		width?: string | number;
-		height?: string | number;
-		radius?: string | number;
-		align?: 'left' | 'center' | 'right';
-	};
-
 	let {
 		// 基本プロパティ
 		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
+		presetPatterns,
 		repeat = 1,
 		repeatGap = '24px',
 		itemGap = '8px',
@@ -78,6 +23,7 @@
 		animated = true
 	}: {
 		patterns?: SkeletonPatternConfig[];
+		presetPatterns?: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
 		repeat?: number;
 		repeatGap?: string | number;
 		itemGap?: string | number;
@@ -92,6 +38,51 @@
 		repeatGap: '24px'
 	};
 
+	// プリセットパターンの定義
+	const PRESET_PATTERNS: Record<string, SkeletonPatternConfig[]> = {
+		'article-list': [
+			{
+				type: 'media',
+				layout: 'horizontal',
+				thumbnailConfig: { width: '160px', aspectRatio: '4/3' },
+				textConfig: { lines: 3 }
+			}
+		],
+		'product-list': [
+			{
+				type: 'media',
+				layout: 'vertical',
+				thumbnailConfig: { width: '100%', aspectRatio: '1' },
+				textConfig: { lines: 2 }
+			}
+		],
+		'video-list': [
+			{
+				type: 'media',
+				layout: 'vertical',
+				thumbnailConfig: { width: '100%', aspectRatio: '16/9' },
+				textConfig: { lines: 1 },
+				repeat: 3,
+				repeatDirection: 'horizontal'
+			}
+		],
+		'user-list': [
+			{
+				type: 'avatar',
+				showName: true
+			}
+		],
+		'button-group': [
+			{
+				type: 'button',
+				width: '120px',
+				repeat: 2,
+				repeatDirection: 'horizontal',
+				repeatGap: '8px'
+			}
+		]
+	};
+
 	// =========================================================================
 	// $derived
 	// =========================================================================
@@ -99,12 +90,40 @@
 	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
 
 	// パターン設定をマージ
-	const mergedPatterns = $derived(
-		patterns.map((pattern) => ({
-			...DEFAULT_PATTERN_CONFIG,
-			...pattern
-		}))
-	);
+	const mergedPatterns = $derived.by(() => {
+		// 最上位のプリセットパターンが指定されている場合はそれを使用
+		if (presetPatterns) {
+			const presetPatternsArray = PRESET_PATTERNS[presetPatterns] || [];
+			return presetPatternsArray.map((pattern) => ({
+				...DEFAULT_PATTERN_CONFIG,
+				...pattern
+			}));
+		}
+
+		// カスタムパターンを使用（個別のパターンでpresetPatternsも処理）
+		return patterns
+			.map((pattern) => {
+				// 型ガードでpresetPatternsかどうかを判定
+				if (isPresetPattern(pattern)) {
+					const presetPatternsArray = PRESET_PATTERNS[pattern.presetPatterns] || [];
+					// プリセットパターンを展開して、元のパターンの設定で上書き
+					const { presetPatterns: _, ...patternWithoutPreset } = pattern;
+					return presetPatternsArray.map((presetPattern) => ({
+						...DEFAULT_PATTERN_CONFIG,
+						...presetPattern,
+						...patternWithoutPreset
+					}));
+				}
+
+				// 通常のパターン
+				return {
+					...DEFAULT_PATTERN_CONFIG,
+					...pattern
+				};
+			})
+			.flat()
+			.filter(isTypedPattern);
+	});
 
 	const repeatGapStyle = $derived(getStyleFromNumber(repeatGap));
 	const itemGapStyle = $derived(getStyleFromNumber(itemGap));
@@ -124,18 +143,24 @@
 						style="gap: {patternRepeatGap};"
 					>
 						{#each Array(patternRepeat) as _}
-							{#if patternConfig.type === 'text'}
-								<SkeletonText textConfig={patternConfig} {animated} />
-							{:else if patternConfig.type === 'avatar'}
-								<div class="skeleton__user-list">
-									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
-								</div>
-							{:else if patternConfig.type === 'media'}
-								<SkeletonMedia width={patternConfig.width} mediaConfig={patternConfig} {animated} />
-							{:else if patternConfig.type === 'button'}
-								<div class="skeleton__button">
-									<SkeletonButton buttonConfig={patternConfig} {animated} />
-								</div>
+							{#if isTypedPattern(patternConfig)}
+								{#if patternConfig.type === 'text'}
+									<SkeletonText textConfig={patternConfig} {animated} />
+								{:else if patternConfig.type === 'avatar'}
+									<div class="skeleton__user-list">
+										<SkeletonAvatar avatarConfig={patternConfig} {animated} />
+									</div>
+								{:else if patternConfig.type === 'media'}
+									<SkeletonMedia
+										width={patternConfig.width}
+										mediaConfig={patternConfig}
+										{animated}
+									/>
+								{:else if patternConfig.type === 'button'}
+									<div class="skeleton__button">
+										<SkeletonButton buttonConfig={patternConfig} {animated} />
+									</div>
+								{/if}
 							{/if}
 						{/each}
 					</div>

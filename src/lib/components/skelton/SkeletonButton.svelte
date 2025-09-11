@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonButtonConfig } from './Skeleton.svelte';
+	import type { SkeletonButtonConfig } from './types.ts';
 
 	let {
 		buttonConfig = {},

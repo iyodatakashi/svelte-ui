@@ -1,7 +1,7 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonTextConfig } from './Skeleton.svelte';
+	import type { SkeletonTextConfig } from './types.ts';
 
 	// =========================================================================
 	// Props

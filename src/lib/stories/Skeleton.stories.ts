@@ -6,24 +6,6 @@ const meta = {
 	component: Skeleton,
 	parameters: {
 		layout: 'padded'
-	},
-	argTypes: {
-		repeat: {
-			control: 'number',
-			description: 'Number of times to repeat the patterns'
-		},
-		repeatGap: {
-			control: 'text',
-			description: 'Gap between repeated pattern elements'
-		},
-		itemGap: {
-			control: 'text',
-			description: 'Gap between items within a pattern'
-		},
-		animated: {
-			control: 'boolean',
-			description: 'Enable animation'
-		}
 	}
 } satisfies Meta<Skeleton>;
 
@@ -121,5 +103,47 @@ export const VerticalMedia: Story = {
 				type: 'media'
 			}
 		]
+	}
+};
+
+// プリセットパターンのストーリー
+export const ArticleListPreset: Story = {
+	args: {
+		patterns: [
+			{
+				type: 'text',
+				width: '240px',
+				fontSize: '2rem'
+			},
+			{ presetPatterns: 'article-list', repeat: 3 }
+		]
+	}
+};
+
+export const ProductListPreset: Story = {
+	args: {
+		presetPatterns: 'product-list',
+		repeat: 4
+	}
+};
+
+export const VideoListPreset: Story = {
+	args: {
+		presetPatterns: 'video-list',
+		repeat: 3
+	}
+};
+
+export const UserListPreset: Story = {
+	args: {
+		presetPatterns: 'user-list',
+		repeat: 5
+	}
+};
+
+export const ButtonGroupPreset: Story = {
+	args: {
+		presetPatterns: 'button-group',
+		repeat: 1
 	}
 };
