@@ -2,7 +2,7 @@
 	import SkeletonText from './SkeletonText.svelte';
 	import SkeletonArticle from './SkeletonArticle.svelte';
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
-	import SkeletonButtons from './SkeletonButtons.svelte';
+	import SkeletonButton from './SkeletonButton.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
 
 	// =========================================================================
@@ -13,10 +13,13 @@
 		| SkeletonTextConfig
 		| SkeletonAvatarConfig
 		| SkeletonArticleConfig
-		| SkeletonButtonsConfig;
+		| SkeletonButtonConfig;
 
 	type SkeletonPatternCommonConfig = {
 		customStyle?: string;
+		repeat?: number;
+		direction?: 'horizontal' | 'vertical';
+		repeatGap?: string | number;
 	};
 
 	export type SkeletonTextConfig = SkeletonPatternCommonConfig & {
@@ -53,12 +56,11 @@
 		radius?: string | number;
 	};
 
-	export type SkeletonButtonsConfig = SkeletonPatternCommonConfig & {
-		type: 'buttons';
+	export type SkeletonButtonConfig = SkeletonPatternCommonConfig & {
+		type: 'button';
 		width?: string | number;
 		height?: string | number;
 		radius?: string | number;
-		count?: number;
 		align?: 'left' | 'center' | 'right';
 	};
 
@@ -96,19 +98,30 @@
 		{#each Array(repeat) as _, index}
 			<div class="item" style="gap: {itemGapStyle};">
 				{#each patterns as patternConfig}
-					{#if patternConfig.type === 'text'}
-						<SkeletonText textConfig={patternConfig} {animated} />
-					{:else if patternConfig.type === 'avatar'}
-						<div class="skeleton__user-list">
-							<SkeletonAvatar avatarConfig={patternConfig} {animated} />
-						</div>
-					{:else if patternConfig.type === 'article'}
-						<SkeletonArticle articleConfig={patternConfig} {animated} />
-					{:else if patternConfig.type === 'buttons'}
-						<div class="skeleton__buttons">
-							<SkeletonButtons buttonsConfig={patternConfig} {animated} />
-						</div>
-					{/if}
+					{@const patternRepeat = patternConfig.repeat || 1}
+					{@const patternDirection = patternConfig.direction || 'vertical'}
+					{@const patternRepeatGap = getStyleFromNumber(patternConfig.repeatGap) || '8px'}
+					<div
+						class="skeleton__pattern"
+						class:skeleton__pattern--horizontal={patternDirection === 'horizontal'}
+						style="gap: {patternRepeatGap};"
+					>
+						{#each Array(patternRepeat) as _}
+							{#if patternConfig.type === 'text'}
+								<SkeletonText textConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'avatar'}
+								<div class="skeleton__user-list">
+									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
+								</div>
+							{:else if patternConfig.type === 'article'}
+								<SkeletonArticle articleConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'button'}
+								<div class="skeleton__button">
+									<SkeletonButton buttonConfig={patternConfig} {animated} />
+								</div>
+							{/if}
+						{/each}
+					</div>
 				{/each}
 			</div>
 		{/each}
@@ -132,5 +145,16 @@
 		display: flex;
 		flex-direction: column;
 		width: 100%;
+	}
+
+	.skeleton__pattern {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		&--horizontal {
+			flex-direction: row;
+			align-items: center;
+		}
 	}
 </style>

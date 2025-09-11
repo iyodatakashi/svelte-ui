@@ -41,7 +41,7 @@ export const Text: Story = {
 
 export const Buttons: Story = {
 	args: {
-		patterns: [{ type: 'buttons', count: 3 }],
+		patterns: [{ type: 'button', repeat: 2, direction: 'horizontal' }],
 		repeat: 1
 	}
 };
@@ -51,7 +51,7 @@ export const SNSPost: Story = {
 		patterns: [
 			{ type: 'avatar', showName: true },
 			{ type: 'text', lines: 3 },
-			{ type: 'buttons', count: 3 }
+			{ type: 'button', repeat: 3, direction: 'horizontal' }
 		],
 		repeat: 3,
 		itemGap: '8px',
