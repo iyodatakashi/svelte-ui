@@ -565,14 +565,14 @@
 	aria-label={`${month.locale(locale).format(currentLocaleConfig.monthFormat)}${currentLocaleConfig.calendarLabel}`}
 	{id}
 >
-	<div class="header">
+	<div class="datepicker-calendar__header">
 		<div class="prev-button-block">
 			<IconButton size={36} ariaLabel={currentLocaleConfig.prevMonthLabel} onclick={goPrev}>
 				chevron_left
 			</IconButton>
 		</div>
 		<button
-			class="month-label-button"
+			class="datepicker-calendar__month-label-button"
 			aria-live="polite"
 			aria-atomic="true"
 			onclick={(event) => {
@@ -587,7 +587,7 @@
 				{month.locale(locale).format(currentLocaleConfig.monthFormat)}
 			{/if}
 		</button>
-		<div class="next-button-block">
+		<div class="datepicker-calendar__next-button-block">
 			<IconButton size={36} ariaLabel={currentLocaleConfig.nextMonthLabel} onclick={goNext}
 				>chevron_right</IconButton
 			>
@@ -596,7 +596,7 @@
 
 	{#if viewMode === 'month'}
 		<div class="datepicker-calendar__month-selection">
-			<div class="month-selection-grid">
+			<div class="datepicker-calendar__month-selection-grid">
 				{#each monthNames as monthName, index}
 					<button
 						class="datepicker-calendar__month-button"
@@ -621,17 +621,17 @@
 			</div>
 		</div>
 	{:else}
-		<div class="calendar-grid" role="grid" aria-labelledby="month-label">
-			<div class="day-list" role="row">
+		<div class="datepicker-calendar__calendar-grid" role="grid" aria-labelledby="month-label">
+			<div class="datepicker-calendar__day-list" role="row">
 				{#each DAY_ARRAY as day}
-					<div class="day-list-item" role="columnheader">
+					<div class="datepicker-calendar__day-list-item" role="columnheader">
 						{day}
 					</div>
 				{/each}
 			</div>
-			<div class="date-grid">
+			<div class="datepicker-calendar__date-grid">
 				{#each weekRows as week}
-					<div class="date-row" role="row">
+					<div class="datepicker-calendar__date-row" role="row">
 						{#each week as date}
 							<div
 								class="datepicker-calendar__date-item"
@@ -693,14 +693,14 @@
 		padding: 16px;
 	}
 
-	.header {
+	.datepicker-calendar__header {
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
 		gap: 16px;
 	}
 
-	.month-label-button {
+	.datepicker-calendar__month-label-button {
 		font-size: 1.4rem;
 		font-weight: bold;
 		color: var(--svelte-ui-datepicker-date-color);
@@ -727,7 +727,7 @@
 		padding: 8px 0;
 	}
 
-	.month-selection-grid {
+	.datepicker-calendar__month-selection-grid {
 		display: grid;
 		grid-template-columns: repeat(3, 1fr);
 		gap: 8px;
@@ -770,24 +770,24 @@
 		}
 	}
 
-	.day-list {
+	.datepicker-calendar__day-list {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 		place-items: center stretch;
 	}
 
-	.date-grid {
+	.datepicker-calendar__date-grid {
 		display: flex;
 		flex-direction: column;
 	}
 
-	.date-row {
+	.datepicker-calendar__date-row {
 		display: grid;
 		grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr 1fr;
 		place-items: center stretch;
 	}
 
-	.day-list-item,
+	.datepicker-calendar__day-list-item,
 	.datepicker-calendar__date-item {
 		display: flex;
 		justify-content: center;
@@ -795,18 +795,18 @@
 		font-size: 1rem;
 	}
 
-	.day-list-item {
+	.datepicker-calendar__day-list-item {
 		margin-bottom: 8px;
 		background-color: var(--svelte-ui-datepicker-day-label-bg);
 		color: var(--svelte-ui-datepicker-day-label-color);
 	}
 
-	.day-list-item:first-of-type {
+	.datepicker-calendar__day-list-item:first-of-type {
 		border-radius: var(--svelte-ui-datepicker-day-label-border-radius) 0 0
 			var(--svelte-ui-datepicker-day-label-border-radius);
 	}
 
-	.day-list-item:last-of-type {
+	.datepicker-calendar__day-list-item:last-of-type {
 		border-radius: 0 var(--svelte-ui-datepicker-day-label-border-radius)
 			var(--svelte-ui-datepicker-day-label-border-radius) 0;
 	}
