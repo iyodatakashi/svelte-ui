@@ -4,6 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { getStyleFromNumber } from '../utils/style';
+	import { KeyHandler } from '../classes/KeyHandler';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 	import { t } from '../i18n';
@@ -94,6 +95,11 @@
 		// 入力イベント
 		onchange = () => {}, // No params for type inference
 		oninput = () => {}, // No params for type inference
+		onsubmit = () => {}, // No params for type inference
+
+		// IMEイベント
+		oncompositionstart = () => {}, // No params for type inference
+		oncompositionend = () => {}, // No params for type inference
 
 		// アイコンイベント
 		onRightIconClick = () => {}, // No params for type inference
@@ -183,6 +189,11 @@
 		// 入力イベント
 		onchange?: (value: any) => void;
 		oninput?: (value: any) => void;
+		onsubmit?: (value: any) => void;
+
+		// IMEイベント
+		oncompositionstart?: (event: CompositionEvent) => void;
+		oncompositionend?: (event: CompositionEvent) => void;
 
 		// アイコンイベント
 		onRightIconClick?: (event: MouseEvent) => void;
@@ -194,6 +205,20 @@
 
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
+
+	// =========================================================================
+
+	// Keyboard Handler
+	// =========================================================================
+
+	const keyHandler = new KeyHandler({
+		onKeydown: (keyStr, event) => {
+			onkeydown?.(event);
+		},
+		onKeyup: (keyStr, event) => {
+			onkeyup?.(event);
+		}
+	});
 
 	// =========================================================================
 
@@ -220,7 +245,7 @@
 		if (disabled || readonly) return;
 		event.preventDefault();
 		ref?.blur();
-		onchange?.(value);
+		onsubmit?.(value);
 	};
 
 	const handleChange = () => {
@@ -241,16 +266,6 @@
 		if (disabled) return;
 		isFocused = false;
 		onblur?.(event);
-	};
-
-	const handleKeydown = (event: KeyboardEvent) => {
-		if (disabled) return;
-		onkeydown?.(event);
-	};
-
-	const handleKeyup = (event: KeyboardEvent) => {
-		if (disabled) return;
-		onkeyup?.(event);
 	};
 
 	// マウスイベント
@@ -410,8 +425,8 @@
 			oninput={handleInput}
 			onfocus={handleFocus}
 			onblur={handleBlur}
-			onkeydown={handleKeydown}
-			onkeyup={handleKeyup}
+			onkeydown={keyHandler.handleKeydown}
+			onkeyup={keyHandler.handleKeyup}
 			onclick={handleClick}
 			onmousedown={handleMouseDown}
 			onmouseup={handleMouseUp}
