@@ -67,7 +67,7 @@
 		? `aspect-ratio: ${finalAspectRatioStyle};`
 		: ''} border-radius: {radiusStyle}; {customStyle}"
 >
-	<div class="skeleton-box-item"></div>
+	<div class="skeleton-box__content"></div>
 </div>
 
 <style lang="scss">
@@ -77,7 +77,7 @@
 		overflow: hidden;
 
 		&--animated {
-			.skeleton-box-item {
+			.skeleton-box__content {
 				position: relative;
 				overflow: hidden;
 
@@ -100,7 +100,7 @@
 		}
 	}
 
-	.skeleton-box-item {
+	.skeleton-box__content {
 		width: 100%;
 		height: 100%;
 		background-color: var(--svelte-ui-skeleton-bg-color);

@@ -134,7 +134,7 @@
 <div class={containerClasses} style={customStyle}>
 	<div class="skeleton__items" style="gap: {repeatGapStyle};">
 		{#each Array(repeat) as _, index}
-			<div class="item" style="gap: {itemGapStyle};">
+			<div class="skeleton__item" style="gap: {itemGapStyle};">
 				{#each mergedPatterns as patternConfig}
 					{@const patternRepeat = patternConfig.repeat || 1}
 					{@const patternRepeatDirection = patternConfig.repeatDirection || 'vertical'}
@@ -185,7 +185,7 @@
 		flex-direction: column;
 	}
 
-	.item {
+	.skeleton__item {
 		display: flex;
 		flex-direction: column;
 		width: 100%;
