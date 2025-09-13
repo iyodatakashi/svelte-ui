@@ -74,7 +74,13 @@ export type SkeletonHeadingConfig = SkeletonPatternCommonConfig & {
 };
 
 export type SkeletonPresetConfig = SkeletonPatternCommonConfig & {
-	type: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
+	type:
+		| 'article-detail'
+		| 'article-list'
+		| 'product-list'
+		| 'video-list'
+		| 'user-list'
+		| 'button-group';
 };
 
 // =========================================================================
@@ -84,7 +90,12 @@ export type SkeletonPresetConfig = SkeletonPatternCommonConfig & {
 export const isPresetPattern = (
 	pattern: SkeletonPatternConfig
 ): pattern is SkeletonPresetConfig => {
-	return ['article-list', 'product-list', 'video-list', 'user-list', 'button-group'].includes(
-		pattern.type as any
-	);
+	return [
+		'article-detail',
+		'article-list',
+		'product-list',
+		'video-list',
+		'user-list',
+		'button-group'
+	].includes(pattern.type as any);
 };

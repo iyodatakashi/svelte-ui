@@ -13,20 +13,12 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: {
-		patterns: [{ type: 'text', lines: 3 }]
-	}
+	args: {}
 };
 
 export const Box: Story = {
 	args: {
 		patterns: [{ type: 'box' }]
-	}
-};
-
-export const BoxList: Story = {
-	args: {
-		patterns: [{ type: 'box', repeat: 4, repeatDirection: 'horizontal' }]
 	}
 };
 
@@ -64,17 +56,6 @@ export const Heading: Story = {
 	}
 };
 
-export const SNSPost: Story = {
-	args: {
-		patterns: [
-			{ type: 'avatar', showName: true },
-			{ type: 'text', lines: 3 },
-			{ type: 'button', repeat: 3, repeatDirection: 'horizontal', repeatGap: '12px' }
-		],
-		repeat: 3
-	}
-};
-
 export const NoAnimation: Story = {
 	args: {
 		patterns: [{ type: 'text' }],
@@ -82,49 +63,13 @@ export const NoAnimation: Story = {
 	}
 };
 
-export const ProductList: Story = {
-	args: {
-		patterns: [
-			{
-				type: 'media',
-				thumbnailConfig: { width: '100%', aspectRatio: '16/9' },
-				textConfig: { lines: 2 },
-				layout: 'vertical',
-				repeat: 3,
-				repeatDirection: 'horizontal'
-			}
-		],
-		repeat: 2,
-		repeatGap: '24px'
-	}
-};
-
-export const VideoList: Story = {
-	args: {
-		patterns: [
-			{
-				type: 'media',
-				layout: 'horizontal',
-				thumbnailConfig: { width: '160px', height: '90px' },
-				textConfig: { lines: 1 }
-			}
-		],
-		repeat: 3,
-		repeatGap: '20px'
-	}
-};
-
-export const VerticalMedia: Story = {
-	args: {
-		patterns: [
-			{
-				type: 'media'
-			}
-		]
-	}
-};
-
 // プリセットパターンのストーリー
+export const ArticleDetailPreset: Story = {
+	args: {
+		patterns: [{ type: 'article-detail' }]
+	}
+};
+
 export const ArticleListPreset: Story = {
 	args: {
 		patterns: [{ type: 'heading' }, { type: 'article-list', repeat: 3 }],

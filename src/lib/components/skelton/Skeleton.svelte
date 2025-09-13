@@ -15,10 +15,10 @@
 
 	let {
 		// 基本プロパティ
-		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
+		patterns = [{ type: 'box' }] as SkeletonPatternConfig[],
 		repeat = 1,
 		repeatGap = '64px',
-		itemGap = '16px',
+		itemGap = '24px',
 		className = '',
 		customStyle = '',
 		animated = true
@@ -40,6 +40,17 @@
 
 	// プリセットパターンの定義
 	const PRESET_PATTERNS: Record<string, SkeletonPatternConfig[]> = {
+		'article-detail': [
+			{
+				type: 'box'
+			},
+			{ type: 'avatar', showName: true },
+			{
+				type: 'text',
+				lines: 5,
+				repeat: 3
+			}
+		],
 		'article-list': [
 			{
 				type: 'media',
