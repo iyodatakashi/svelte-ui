@@ -11,7 +11,6 @@ type SkeletonPatternCommonConfig = {
 	repeat?: number;
 	repeatDirection?: 'horizontal' | 'vertical';
 	repeatGap?: string | number;
-	presetPatterns?: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
 };
 
 export type SkeletonTextConfig = SkeletonPatternCommonConfig & {
@@ -80,10 +79,4 @@ export const isPresetPattern = (
 	return ['article-list', 'product-list', 'video-list', 'user-list', 'button-group'].includes(
 		pattern.type as any
 	);
-};
-
-export const isTypedPattern = (
-	pattern: SkeletonPatternConfig
-): pattern is Exclude<SkeletonPatternConfig, SkeletonPresetConfig> => {
-	return 'type' in pattern;
 };

@@ -6,7 +6,7 @@
 	import SkeletonHeading from './SkeletonHeading.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
 	import type { SkeletonPatternConfig } from './types';
-	import { isPresetPattern, isTypedPattern } from './types';
+	import { isPresetPattern } from './types';
 
 	// =========================================================================
 	// Props
@@ -15,7 +15,6 @@
 	let {
 		// 基本プロパティ
 		patterns = [{ type: 'text' }] as SkeletonPatternConfig[],
-		presetPattern,
 		repeat = 1,
 		repeatGap = '64px',
 		itemGap = '16px',
@@ -24,7 +23,6 @@
 		animated = true
 	}: {
 		patterns?: SkeletonPatternConfig[];
-		presetPattern?: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
 		repeat?: number;
 		repeatGap?: string | number;
 		itemGap?: string | number;
@@ -94,20 +92,9 @@
 
 	// パターン設定をマージ
 	const mergedPatterns = $derived.by(() => {
-		// 最上位のプリセットパターンが指定されている場合はそれを使用
-		if (presetPattern) {
-			const presetPatternsArray = PRESET_PATTERNS[presetPattern] || [];
-			return presetPatternsArray.map((pattern) => ({
-				...DEFAULT_PATTERN_CONFIG,
-				...pattern,
-				type: presetPattern
-			}));
-		}
-
-		// カスタムパターンを使用（個別のパターンでpresetPatternも処理）
 		return patterns
 			.map((pattern) => {
-				// 型ガードでpresetPatternかどうかを判定
+				// 型ガードでプリセットパターンかどうかを判定
 				if (isPresetPattern(pattern)) {
 					const presetPatternsArray = PRESET_PATTERNS[pattern.type] || [];
 					// プリセットパターンを展開して、元のパターンの設定で上書き
@@ -125,8 +112,7 @@
 					...pattern
 				};
 			})
-			.flat()
-			.filter(isTypedPattern);
+			.flat();
 	});
 
 	const repeatGapStyle = $derived(getStyleFromNumber(repeatGap));
@@ -147,27 +133,21 @@
 						style="gap: {patternRepeatGap};"
 					>
 						{#each Array(patternRepeat) as _}
-							{#if isTypedPattern(patternConfig)}
-								{#if patternConfig.type === 'heading'}
-									{@const { type: _, ...headingConfig } = patternConfig}
-									<SkeletonHeading {headingConfig} {animated} />
-								{:else if patternConfig.type === 'text'}
-									<SkeletonText textConfig={patternConfig} {animated} />
-								{:else if patternConfig.type === 'avatar'}
-									<div class="skeleton__user-list">
-										<SkeletonAvatar avatarConfig={patternConfig} {animated} />
-									</div>
-								{:else if patternConfig.type === 'media'}
-									<SkeletonMedia
-										width={patternConfig.width}
-										mediaConfig={patternConfig}
-										{animated}
-									/>
-								{:else if patternConfig.type === 'button'}
-									<div class="skeleton__button">
-										<SkeletonButton buttonConfig={patternConfig} {animated} />
-									</div>
-								{/if}
+							{#if patternConfig.type === 'heading'}
+								{@const { type: _, ...headingConfig } = patternConfig}
+								<SkeletonHeading {headingConfig} {animated} />
+							{:else if patternConfig.type === 'text'}
+								<SkeletonText textConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'avatar'}
+								<div class="skeleton__user-list">
+									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
+								</div>
+							{:else if patternConfig.type === 'media'}
+								<SkeletonMedia width={patternConfig.width} mediaConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'button'}
+								<div class="skeleton__button">
+									<SkeletonButton buttonConfig={patternConfig} {animated} />
+								</div>
 							{/if}
 						{/each}
 					</div>
