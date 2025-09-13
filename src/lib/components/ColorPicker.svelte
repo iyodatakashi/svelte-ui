@@ -19,7 +19,7 @@
 
 		// スタイル/レイアウト
 		customStyle = '',
-		focusStyle = 'border',
+		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
 
@@ -79,7 +79,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: string;
-		focusStyle?: 'background' | 'border' | 'none';
+		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
 

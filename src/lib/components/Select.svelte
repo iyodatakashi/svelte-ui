@@ -22,7 +22,7 @@
 		// スタイル/レイアウト
 		size = null,
 		variant = 'default',
-		focusStyle = 'border',
+		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
 		customStyle = '',
@@ -84,7 +84,7 @@
 		// スタイル/レイアウト
 		size?: number | null;
 		variant?: 'default' | 'inline';
-		focusStyle?: 'background' | 'border' | 'none';
+		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
 		customStyle?: string;
@@ -400,7 +400,7 @@ select--focus-{focusStyle}"
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.select--focus-border select:focus {
+	.select--focus-outline select:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}

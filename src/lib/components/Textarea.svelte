@@ -108,7 +108,7 @@
 		minHeight?: number | null;
 		maxHeight?: string | number | null;
 		inline?: boolean;
-		focusStyle?: 'background' | 'border' | 'none';
+		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		fullHeight?: boolean;
 		width?: string | number | null;
@@ -578,13 +578,14 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.textarea--focus-border textarea:focus {
+	.textarea--focus-outline textarea:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.textarea--focus-background textarea:focus {
 		background: var(--svelte-ui-hover-overlay);
+		outline: none;
 	}
 
 	/* =============================================

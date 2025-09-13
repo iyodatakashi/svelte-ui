@@ -127,7 +127,7 @@
 
 		// スタイル/レイアウト
 		inline?: boolean;
-		focusStyle?: 'background' | 'border' | 'none';
+		focusStyle?: 'background' | 'outline' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
 		width?: string | number | null;
@@ -697,13 +697,14 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.input--focus-border input:focus {
+	.input--focus-outline input:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.input--focus-background input:focus {
 		background: var(--svelte-ui-hover-overlay);
+		outline: none;
 	}
 
 	/* =============================================

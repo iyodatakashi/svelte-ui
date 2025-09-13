@@ -26,7 +26,7 @@
 		// スタイル/レイアウト
 		customStyle = '',
 		variant = 'default',
-		focusStyle = 'border',
+		focusStyle = 'outline',
 		placeholder = '選択してください',
 		fullWidth = false,
 		minWidth = variant === 'inline' ? null : 120,
@@ -93,7 +93,7 @@
 		// スタイル/レイアウト
 		customStyle?: string;
 		variant?: 'default' | 'inline';
-		focusStyle?: 'background' | 'border' | 'none';
+		focusStyle?: 'background' | 'outline' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
 		minWidth?: number | null;

@@ -37,7 +37,7 @@
 
 		// スタイル/レイアウト
 		variant = 'default',
-		focusStyle = 'border',
+		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
 
@@ -110,7 +110,7 @@
 
 		// スタイル/レイアウト
 		variant?: 'default' | 'inline';
-		focusStyle?: 'background' | 'border' | 'none';
+		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
 
