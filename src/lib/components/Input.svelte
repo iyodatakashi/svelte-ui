@@ -35,6 +35,7 @@
 		focusStyle = 'background',
 		customStyle = '',
 		fullWidth = false,
+		width = null,
 		minWidth = inline ? null : 120,
 		maxWidth = null,
 		rounded = false,
@@ -121,7 +122,7 @@
 		max?: number | null;
 		step?: number | null;
 		size?: number | null;
-		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
+		autocomplete?: HTMLInputElement['autocomplete'] | null;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
@@ -129,6 +130,7 @@
 		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
+		width?: string | number | null;
 		minWidth?: string | number | null;
 		maxWidth?: string | number | null;
 		rounded?: boolean;
@@ -206,7 +208,6 @@
 	let isFocused: boolean = $state(false);
 
 	// =========================================================================
-
 	// Methods
 	// =========================================================================
 	// ユーティリティ
@@ -391,7 +392,9 @@
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
-	style="max-width: {getStyleFromNumber(maxWidth)}; min-width: {getStyleFromNumber(minWidth)}"
+	style="width: {getStyleFromNumber(width)}; max-width: {getStyleFromNumber(
+		maxWidth
+	)}; min-width: {getStyleFromNumber(minWidth)}"
 >
 	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
 	{#if inline}
