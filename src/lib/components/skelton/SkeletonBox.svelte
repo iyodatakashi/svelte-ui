@@ -53,12 +53,18 @@
 	const heightStyle = $derived(getStyleFromNumber(mergedConfig.height));
 	const aspectRatioStyle = $derived(aspectRatio ? getStyleFromNumber(aspectRatio) : '');
 	const radiusStyle = $derived(getStyleFromNumber(mergedConfig.radius));
+
+	// heightとaspectRatioの優先順位を制御
+	const finalHeightStyle = $derived(height ? heightStyle : '');
+	const finalAspectRatioStyle = $derived(height ? '' : aspectRatioStyle);
 </script>
 
 <div
 	class={containerClasses}
-	style="width: {widthStyle}; {heightStyle ? `height: ${heightStyle};` : ''} {aspectRatioStyle
-		? `aspect-ratio: ${aspectRatioStyle};`
+	style="width: {widthStyle}; {finalHeightStyle
+		? `height: ${finalHeightStyle};`
+		: ''} {finalAspectRatioStyle
+		? `aspect-ratio: ${finalAspectRatioStyle};`
 		: ''} border-radius: {radiusStyle}; {customStyle}"
 >
 	<div class="skeleton-box-item"></div>
