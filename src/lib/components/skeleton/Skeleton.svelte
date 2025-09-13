@@ -1,3 +1,5 @@
+<!-- Skeleton.svelte -->
+
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';

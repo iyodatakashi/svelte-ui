@@ -1,3 +1,5 @@
+<!-- SkeletonButton.svelte -->
+
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '../../utils/style';

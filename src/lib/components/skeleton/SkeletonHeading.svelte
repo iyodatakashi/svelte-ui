@@ -1,3 +1,5 @@
+<!-- SkeletonHeading.svelte -->
+
 <script lang="ts">
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
