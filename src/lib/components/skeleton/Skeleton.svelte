@@ -75,7 +75,7 @@
 				type: 'media',
 				layout: 'vertical',
 				thumbnailConfig: { width: '100%', aspectRatio: '16/9' },
-				textConfig: { lines: 1 },
+				textConfig: { lines: 2 },
 				repeat: 3,
 				repeatDirection: 'horizontal'
 			}
@@ -120,20 +120,31 @@
 							...patternWithoutType
 						};
 
-						// mediaパターンの場合、layoutやthumbnailConfigなどをオーバーライド
-						if (presetPattern.type === 'media' && patternWithoutType.layout) {
-							mergedPattern.layout = patternWithoutType.layout;
-						}
-						if (presetPattern.type === 'media' && patternWithoutType.thumbnailConfig) {
+						// ネストしたオブジェクトのマージ処理
+						if (
+							presetPattern.type === 'media' &&
+							'thumbnailConfig' in patternWithoutType &&
+							'thumbnailConfig' in presetPattern
+						) {
 							mergedPattern.thumbnailConfig = {
 								...presetPattern.thumbnailConfig,
 								...patternWithoutType.thumbnailConfig
 							};
 						}
-						if (presetPattern.type === 'media' && patternWithoutType.textConfig) {
+						if ('textConfig' in patternWithoutType && 'textConfig' in presetPattern) {
 							mergedPattern.textConfig = {
 								...presetPattern.textConfig,
 								...patternWithoutType.textConfig
+							};
+						}
+						if (
+							presetPattern.type === 'avatar' &&
+							'avatarImageConfig' in patternWithoutType &&
+							'avatarImageConfig' in presetPattern
+						) {
+							mergedPattern.avatarImageConfig = {
+								...presetPattern.avatarImageConfig,
+								...patternWithoutType.avatarImageConfig
 							};
 						}
 
