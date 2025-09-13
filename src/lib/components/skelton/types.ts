@@ -66,11 +66,8 @@ export type SkeletonHeadingConfig = SkeletonPatternCommonConfig & {
 	radius?: string | number;
 };
 
-export type SkeletonPresetConfig = {
-	presetPattern: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
-	repeat?: number;
-	repeatDirection?: 'horizontal' | 'vertical';
-	repeatGap?: string | number;
+export type SkeletonPresetConfig = SkeletonPatternCommonConfig & {
+	type: 'article-list' | 'product-list' | 'video-list' | 'user-list' | 'button-group';
 };
 
 // =========================================================================
@@ -80,7 +77,9 @@ export type SkeletonPresetConfig = {
 export const isPresetPattern = (
 	pattern: SkeletonPatternConfig
 ): pattern is SkeletonPresetConfig => {
-	return 'presetPattern' in pattern && pattern.presetPattern !== undefined;
+	return ['article-list', 'product-list', 'video-list', 'user-list', 'button-group'].includes(
+		pattern.type as any
+	);
 };
 
 export const isTypedPattern = (

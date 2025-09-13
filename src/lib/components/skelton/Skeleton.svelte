@@ -99,7 +99,8 @@
 			const presetPatternsArray = PRESET_PATTERNS[presetPattern] || [];
 			return presetPatternsArray.map((pattern) => ({
 				...DEFAULT_PATTERN_CONFIG,
-				...pattern
+				...pattern,
+				type: presetPattern
 			}));
 		}
 
@@ -108,13 +109,13 @@
 			.map((pattern) => {
 				// 型ガードでpresetPatternかどうかを判定
 				if (isPresetPattern(pattern)) {
-					const presetPatternsArray = PRESET_PATTERNS[pattern.presetPattern] || [];
+					const presetPatternsArray = PRESET_PATTERNS[pattern.type] || [];
 					// プリセットパターンを展開して、元のパターンの設定で上書き
-					const { presetPattern: _, ...patternWithoutPreset } = pattern;
+					const { type: _, ...patternWithoutType } = pattern;
 					return presetPatternsArray.map((presetPattern) => ({
 						...DEFAULT_PATTERN_CONFIG,
 						...presetPattern,
-						...patternWithoutPreset
+						...patternWithoutType
 					}));
 				}
 

@@ -115,35 +115,34 @@ export const VerticalMedia: Story = {
 // プリセットパターンのストーリー
 export const ArticleListPreset: Story = {
 	args: {
-		patterns: [{ type: 'heading' }, { presetPattern: 'article-list', repeat: 3 }],
+		patterns: [{ type: 'heading' }, { type: 'article-list', repeat: 3 }],
 		itemGap: '24px'
 	}
 };
 
 export const ProductListPreset: Story = {
 	args: {
-		presetPattern: 'product-list',
+		patterns: [{ type: 'product-list' }],
 		repeat: 4
 	}
 };
 
 export const VideoListPreset: Story = {
 	args: {
-		presetPattern: 'video-list',
+		patterns: [{ type: 'video-list' }],
 		repeat: 3
 	}
 };
 
 export const UserListPreset: Story = {
 	args: {
-		presetPattern: 'user-list',
-		repeat: 5
+		patterns: [{ type: 'user-list', repeat: 5 }]
 	}
 };
 
 export const ButtonGroupPreset: Story = {
 	args: {
-		presetPattern: 'button-group',
+		patterns: [{ type: 'button-group' }],
 		repeat: 1
 	}
 };
