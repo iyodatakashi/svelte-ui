@@ -402,7 +402,7 @@
 	   Size Variants
 	   ========================================================================= */
 	.checkbox--small {
-		font-size: var(--svelte-ui-font-size-sm);
+		font-size: inherit;
 	}
 
 	.checkbox--small .checkbox-label {
@@ -425,7 +425,7 @@
 	}
 
 	.checkbox--large {
-		font-size: var(--svelte-ui-font-size-lg);
+		font-size: inherit;
 	}
 
 	.checkbox--large .checkbox-label {

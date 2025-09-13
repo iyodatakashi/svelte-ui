@@ -454,7 +454,7 @@
 
 	/* Size variants */
 	.radio--small {
-		font-size: var(--svelte-ui-font-size-sm);
+		font-size: inherit;
 	}
 
 	.radio--small .radio-label {
@@ -490,7 +490,7 @@
 	}
 
 	.radio--large {
-		font-size: var(--svelte-ui-font-size-lg);
+		font-size: inherit;
 	}
 
 	.radio--large .radio-label {
