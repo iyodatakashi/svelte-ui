@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import Skeleton from '../components/skelton/Skeleton.svelte';
+import Skeleton from '../components/skeleton/Skeleton.svelte';
 
 const meta = {
-	title: 'Components/Skeleton',
+	title: 'UI/Skeleton',
 	component: Skeleton,
 	parameters: {
 		layout: 'padded'

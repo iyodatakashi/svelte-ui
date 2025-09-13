@@ -31,7 +31,7 @@
 	const DEFAULT_BOX_CONFIG = {
 		width: '100%',
 		height: '240px',
-		radius: 'var(--svelte-ui-skeleton-box-border-radius)'
+		radius: 'var(--svelte-ui-skeleton-box-border-radius, 8px)'
 	};
 
 	// =========================================================================
@@ -55,8 +55,10 @@
 	const radiusStyle = $derived(getStyleFromNumber(mergedConfig.radius));
 
 	// heightとaspectRatioの優先順位を制御
-	const finalHeightStyle = $derived(height ? heightStyle : '');
-	const finalAspectRatioStyle = $derived(height ? '' : aspectRatioStyle);
+	const finalHeightStyle = $derived(
+		height ? heightStyle : aspectRatio ? '' : getStyleFromNumber(mergedConfig.height)
+	);
+	const finalAspectRatioStyle = $derived(height ? '' : aspectRatio ? aspectRatioStyle : '');
 </script>
 
 <div
@@ -103,7 +105,7 @@
 	.skeleton-box__content {
 		width: 100%;
 		height: 100%;
-		background-color: var(--svelte-ui-skeleton-bg-color);
+		background-color: var(--svelte-ui-skeleton-bg-color, #e5e7eb);
 		display: block;
 	}
 

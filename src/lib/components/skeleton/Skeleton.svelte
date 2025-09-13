@@ -48,7 +48,7 @@
 			{
 				type: 'text',
 				lines: 5,
-				repeat: 3
+				repeat: 1
 			}
 		],
 		'article-list': [
@@ -56,7 +56,8 @@
 				type: 'media',
 				layout: 'horizontal',
 				thumbnailConfig: { width: '160px', aspectRatio: '4/3' },
-				textConfig: { lines: 3 }
+				textConfig: { lines: 3 },
+				repeat: 3
 			}
 		],
 		'product-list': [
@@ -111,11 +112,33 @@
 					const presetPatternsArray = PRESET_PATTERNS[pattern.type] || [];
 					// プリセットパターンを展開して、元のパターンの設定で上書き
 					const { type: _, ...patternWithoutType } = pattern;
-					return presetPatternsArray.map((presetPattern) => ({
-						...DEFAULT_PATTERN_CONFIG,
-						...presetPattern,
-						...patternWithoutType
-					}));
+					return presetPatternsArray.map((presetPattern) => {
+						// プリセットパターン内の各パターンに対して、ユーザー指定のプロパティを適用
+						const mergedPattern = {
+							...DEFAULT_PATTERN_CONFIG,
+							...presetPattern,
+							...patternWithoutType
+						};
+
+						// mediaパターンの場合、layoutやthumbnailConfigなどをオーバーライド
+						if (presetPattern.type === 'media' && patternWithoutType.layout) {
+							mergedPattern.layout = patternWithoutType.layout;
+						}
+						if (presetPattern.type === 'media' && patternWithoutType.thumbnailConfig) {
+							mergedPattern.thumbnailConfig = {
+								...presetPattern.thumbnailConfig,
+								...patternWithoutType.thumbnailConfig
+							};
+						}
+						if (presetPattern.type === 'media' && patternWithoutType.textConfig) {
+							mergedPattern.textConfig = {
+								...presetPattern.textConfig,
+								...patternWithoutType.textConfig
+							};
+						}
+
+						return mergedPattern;
+					});
 				}
 
 				// 通常のパターン

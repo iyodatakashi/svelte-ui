@@ -186,7 +186,7 @@
 				<h3>Button</h3>
 				<Button variant="filled">Filled Button</Button>
 				<Button variant="outlined">Outlined Button</Button>
-				<Button variant="text">Text Button</Button>
+				<Button variant="ghost">Ghost Button</Button>
 			</div>
 
 			<div class="component-section">

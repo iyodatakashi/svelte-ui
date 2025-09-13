@@ -32,7 +32,7 @@ export type SkeletonTextConfig = SkeletonPatternCommonConfig & {
 export type SkeletonAvatarConfig = SkeletonPatternCommonConfig & {
 	type: 'avatar';
 	avatarImageConfig?: SkeletonAvatarImageConfig;
-	textConfig?: SkeletonTextConfig;
+	textConfig?: Partial<SkeletonTextConfig>;
 	showName?: boolean;
 };
 
@@ -81,6 +81,19 @@ export type SkeletonPresetConfig = SkeletonPatternCommonConfig & {
 		| 'video-list'
 		| 'user-list'
 		| 'button-group';
+	// プリセットパターンでオーバーライド可能なプロパティ
+	layout?: 'horizontal' | 'vertical';
+	width?: string | number;
+	height?: string | number;
+	aspectRatio?: string | number;
+	radius?: string | number;
+	lines?: number;
+	fontSize?: string | number;
+	showName?: boolean;
+	align?: 'left' | 'center' | 'right';
+	thumbnailConfig?: Partial<SkeletonThumbnailConfig>;
+	textConfig?: Partial<SkeletonTextConfig>;
+	avatarImageConfig?: SkeletonAvatarImageConfig;
 };
 
 // =========================================================================
