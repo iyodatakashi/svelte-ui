@@ -32,6 +32,7 @@
 		inline = false,
 		focusStyle = 'background',
 		fullWidth = false,
+		fullHeight = false,
 		width = null,
 		rounded = false,
 		customStyle = '',
@@ -107,6 +108,7 @@
 		inline?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		fullWidth?: boolean;
+		fullHeight?: boolean;
 		width?: string | number | null;
 		rounded?: boolean;
 		customStyle?: string;
@@ -342,6 +344,7 @@
 	textarea--focus-{focusStyle}"
 	class:textarea--inline={inline}
 	class:textarea--full-width={fullWidth}
+	class:textarea--full-height={fullHeight}
 	class:textarea--auto-resize={autoResize}
 	class:textarea--clearable={clearable}
 	class:textarea--rounded={rounded}
@@ -432,9 +435,12 @@
 	.textarea {
 		display: block;
 		position: relative;
-		height: 100%;
 		width: auto;
 		max-width: 100%;
+
+		&.textarea--full-height {
+			height: 100%;
+		}
 	}
 
 	.textarea__input {
