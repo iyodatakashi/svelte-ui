@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import { t } from '../i18n';
 	import { announceToScreenReader } from '../utils/accessibility';
 	import { getStyleFromNumber } from '../utils/style';
 	import { onDestroy } from 'svelte';
@@ -200,12 +201,14 @@
 		];
 
 		if (!supportedTypes.includes(file.type)) {
-			errorMessage = 'Unsupported file format';
+			errorMessage = t('imageUploader.unsupportedFileFormat');
 			return false;
 		}
 
 		if (file.size > maxFileSize) {
-			errorMessage = `ファイルサイズは${(maxFileSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
+			errorMessage = t('imageUploader.fileSizeExceeded', {
+				maxSize: (maxFileSize / 1024 / 1024).toFixed(1)
+			});
 			return false;
 		}
 
@@ -353,7 +356,7 @@
 				handleFileChange(fileList);
 			}
 		}}
-		aria-label="画像をアップロード"
+		aria-label={t('imageUploader.uploadImage')}
 	>
 		{#if !multiple && files && files.length > 0}
 			{@render preview(files[0], 0)}

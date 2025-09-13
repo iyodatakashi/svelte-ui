@@ -6,6 +6,7 @@
 	import { getStyleFromNumber } from '../utils/style';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import { t } from '../i18n';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -438,7 +439,7 @@
 	{#if clearable && !disabled && !readonly}
 		<div class="input__clear-button">
 			<IconButton
-				ariaLabel="クリア"
+				ariaLabel={t('input.clear')}
 				color="var(--svelte-ui-input-text-color)"
 				onclick={clear}
 				tabindex={-1}

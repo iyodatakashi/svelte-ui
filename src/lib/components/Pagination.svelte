@@ -3,6 +3,7 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
+	import { t } from '../i18n';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -154,7 +155,7 @@
 			<button
 				class="pagination__button"
 				disabled={currentPageNum === 1}
-				aria-label="前のページへ移動"
+				aria-label={t('pagination.prevPage')}
 				onclick={goPrevPage}
 			>
 				<Icon>chevron_left</Icon>
@@ -166,13 +167,13 @@
 					<button
 						class="pagination__button"
 						class:pagination__button--selected={item.value === currentPageNum}
-						aria-label={`${item.value}ページ目へ移動`}
+						aria-label={t('pagination.goToPage', { page: item.value })}
 						onclick={() => handleClick(item.value!)}
 					>
 						{item.value}
 					</button>
 				{:else}
-					<span class="pagination__ellipsis" aria-label="省略されたページ">...</span>
+					<span class="pagination__ellipsis" aria-label={t('pagination.ellipsis')}>...</span>
 				{/if}
 			</li>
 		{/each}
@@ -180,7 +181,7 @@
 			<button
 				class="pagination__button"
 				disabled={currentPageNum === totalPages}
-				aria-label="次のページへ移動"
+				aria-label={t('pagination.nextPage')}
 				onclick={goNextPage}
 			>
 				<Icon>chevron_right</Icon>

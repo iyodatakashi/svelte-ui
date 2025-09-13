@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import { t } from '../i18n';
 	import LoadingSpinner from './LoadingSpinner.svelte';
-	import { getStyleFromNumber } from '../utils/style';
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
@@ -394,7 +394,7 @@
 		<div
 			class="icon-button__badge icon-button__badge--{badgeVariant}"
 			style="background-color: {badgeColor || 'var(--badge-color)'}"
-			aria-label={badgeVariant === 'count' ? `${badgeCount}` : 'New'}
+			aria-label={badgeVariant === 'count' ? `${badgeCount}` : t('iconButton.badgeNew')}
 			aria-live="polite"
 		>
 			{badgeVariant === 'count' ? badgeDisplay() : ''}

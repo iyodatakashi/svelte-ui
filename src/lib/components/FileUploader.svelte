@@ -5,6 +5,7 @@
 	import IconButton from './IconButton.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 	import { getStyleFromNumber } from '../utils/style';
+	import { t } from '../i18n';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 
 	// =========================================================================
@@ -34,7 +35,7 @@
 		iconGrade = 0,
 		iconOpticalSize = iconSize,
 		iconVariant = 'outlined',
-		removeFileAriaLabel = 'ファイルを削除',
+		removeFileAriaLabel = t('fileUploader.removeFile'),
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -270,7 +271,7 @@
 			handleFileChange(fileList);
 		}
 	}}
-	aria-label="ファイルをアップロード"
+	aria-label={t('fileUploader.uploadFile')}
 	aria-describedby={`${id}-help`}
 >
 	{#if files && files.length > 0}

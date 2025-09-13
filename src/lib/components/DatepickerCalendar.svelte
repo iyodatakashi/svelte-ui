@@ -13,6 +13,7 @@
 	import 'dayjs/locale/zh-cn';
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
+	import { t } from '../i18n';
 
 	dayjs.extend(localeData);
 	dayjs.extend(isSameOrBefore);
@@ -71,18 +72,18 @@
 		en: {
 			monthFormat: 'MMMM YYYY',
 			yearFormat: 'YYYY',
-			prevMonthLabel: 'Previous month',
-			nextMonthLabel: 'Next month',
-			todayLabel: ' today',
-			selectedLabel: ' selected'
+			prevMonthLabel: t('datepicker.prevMonth'),
+			nextMonthLabel: t('datepicker.nextMonth'),
+			todayLabel: t('datepicker.today'),
+			selectedLabel: t('datepicker.selected')
 		},
 		ja: {
 			monthFormat: 'YYYY年M月',
 			yearFormat: 'YYYY年',
-			prevMonthLabel: '前の月へ移動',
-			nextMonthLabel: '次の月へ移動',
-			todayLabel: ' 今日',
-			selectedLabel: ' 選択済み'
+			prevMonthLabel: t('datepicker.prevMonth'),
+			nextMonthLabel: t('datepicker.nextMonth'),
+			todayLabel: t('datepicker.today'),
+			selectedLabel: t('datepicker.selected')
 		},
 		fr: {
 			monthFormat: 'MMMM YYYY',

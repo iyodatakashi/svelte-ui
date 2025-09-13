@@ -43,7 +43,7 @@
 		restoreFocus = false,
 
 		// ARIA/アクセシビリティ
-		ariaLabel = 'Navigation drawer',
+		ariaLabel = 'Drawer',
 		ariaDescribedby
 	}: {
 		// Snippet

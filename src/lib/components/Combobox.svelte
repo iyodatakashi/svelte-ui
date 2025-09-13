@@ -6,6 +6,7 @@
 	import Popup from './Popup.svelte';
 	import Icon from './Icon.svelte';
 	import { announceSelection } from '../utils/accessibility';
+	import { t } from '../i18n';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -470,7 +471,7 @@
 			id={listboxId}
 			class="combobox__options"
 			role="listbox"
-			aria-label="オプション一覧"
+			aria-label={t('combobox.optionsList')}
 			aria-labelledby={inputId}
 		>
 			{#each filteredOptions as option, index}

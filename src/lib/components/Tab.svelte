@@ -15,7 +15,7 @@
 		customPathMatcher,
 
 		// ARIA/アクセシビリティ
-		ariaLabel = 'Navigation tabs',
+		ariaLabel = 'Tabs',
 		ariaLabelledby
 	}: {
 		// 基本プロパティ
