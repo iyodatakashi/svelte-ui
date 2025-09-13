@@ -128,7 +128,6 @@
 	} = $props();
 
 	let inputRef: HTMLInputElement | undefined = $state();
-	let switchId = `switch-${Math.random().toString(36).substring(2, 15)}`;
 	let errorId = `switch-error-${Math.random().toString(36).substring(2, 15)}`;
 
 	// =========================================================================
@@ -282,7 +281,7 @@
 		class="switch-input"
 		{disabled}
 		{required}
-		id={switchId}
+		{id}
 		{...inputAttributes}
 		onchange={handleChange}
 		onfocus={handleFocus}
@@ -312,7 +311,7 @@
 	/>
 
 	<label
-		for={switchId}
+		for={id}
 		class="switch-label"
 		class:switch-label--small={size === 'small'}
 		class:switch-label--medium={size === 'medium'}
@@ -340,7 +339,7 @@
 		align-items: center;
 		gap: var(--svelte-ui-switch-gap);
 		font-family: var(--svelte-ui-font-family);
-		font-size: var(--svelte-ui-font-size-sm);
+		font-size: inherit;
 		line-height: var(--svelte-ui-line-height);
 		color: var(--svelte-ui-text-color);
 	}
