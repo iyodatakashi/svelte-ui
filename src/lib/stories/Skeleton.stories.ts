@@ -18,6 +18,18 @@ export const Default: Story = {
 	}
 };
 
+export const Box: Story = {
+	args: {
+		patterns: [{ type: 'box' }]
+	}
+};
+
+export const BoxList: Story = {
+	args: {
+		patterns: [{ type: 'box', repeat: 4, repeatDirection: 'horizontal' }]
+	}
+};
+
 export const AvatarList: Story = {
 	args: {
 		patterns: [{ type: 'avatar', showName: true }],

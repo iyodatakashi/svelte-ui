@@ -25,6 +25,16 @@
 	} = $props();
 
 	// =========================================================================
+	// Constants
+	// =========================================================================
+
+	const DEFAULT_BOX_CONFIG = {
+		width: '100%',
+		height: '240px',
+		radius: 'var(--svelte-ui-skeleton-box-border-radius)'
+	};
+
+	// =========================================================================
 	// $derived
 	// =========================================================================
 
@@ -32,14 +42,17 @@
 		['skeleton-box', animated && 'skeleton-box--animated', className].filter(Boolean).join(' ')
 	);
 
-	const widthStyle = $derived(getStyleFromNumber(width));
-	const heightStyle = $derived(height ? getStyleFromNumber(height) : '');
-	const aspectRatioStyle = $derived(aspectRatio ? getStyleFromNumber(aspectRatio) : '');
-	const radiusStyle = $derived(getStyleFromNumber(radius));
+	const mergedConfig = $derived({
+		...DEFAULT_BOX_CONFIG,
+		width: width ?? DEFAULT_BOX_CONFIG.width,
+		height: height ?? DEFAULT_BOX_CONFIG.height,
+		radius: radius ?? DEFAULT_BOX_CONFIG.radius
+	});
 
-	// heightとaspectRatioの優先順位を制御
-	const finalHeightStyle = $derived(height ? heightStyle : '');
-	const finalAspectRatioStyle = $derived(height ? '' : aspectRatioStyle);
+	const widthStyle = $derived(getStyleFromNumber(mergedConfig.width));
+	const heightStyle = $derived(getStyleFromNumber(mergedConfig.height));
+	const aspectRatioStyle = $derived(aspectRatio ? getStyleFromNumber(aspectRatio) : '');
+	const radiusStyle = $derived(getStyleFromNumber(mergedConfig.radius));
 </script>
 
 <div

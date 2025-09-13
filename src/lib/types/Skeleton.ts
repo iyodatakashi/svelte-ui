@@ -1,4 +1,5 @@
 export type SkeletonPatternConfig =
+	| SkeletonBoxConfig
 	| SkeletonTextConfig
 	| SkeletonAvatarConfig
 	| SkeletonMediaConfig
@@ -11,6 +12,13 @@ type SkeletonPatternCommonConfig = {
 	repeat?: number;
 	repeatDirection?: 'horizontal' | 'vertical';
 	repeatGap?: string | number;
+};
+
+export type SkeletonBoxConfig = SkeletonPatternCommonConfig & {
+	type: 'box';
+	width?: string | number;
+	height?: string | number;
+	radius?: string | number;
 };
 
 export type SkeletonTextConfig = SkeletonPatternCommonConfig & {

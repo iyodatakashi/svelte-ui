@@ -371,6 +371,7 @@
 	--svelte-ui-snackbar-content-gap: 8px;
 
 	/* Skeleton */
+	--svelte-ui-skeleton-box-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-skeleton-text-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-skeleton-avatar-image-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-skeleton-image-border-radius: var(--svelte-ui-border-radius);

@@ -1,4 +1,5 @@
 <script lang="ts">
+	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
 	import SkeletonMedia from './SkeletonMedia.svelte';
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
@@ -133,7 +134,10 @@
 						style="gap: {patternRepeatGap};"
 					>
 						{#each Array(patternRepeat) as _}
-							{#if patternConfig.type === 'heading'}
+							{#if patternConfig.type === 'box'}
+								{@const { type: _, width, height, radius, customStyle } = patternConfig}
+								<SkeletonBox {width} {height} {radius} {customStyle} {animated} />
+							{:else if patternConfig.type === 'heading'}
 								{@const { type: _, ...headingConfig } = patternConfig}
 								<SkeletonHeading {headingConfig} {animated} />
 							{:else if patternConfig.type === 'text'}
