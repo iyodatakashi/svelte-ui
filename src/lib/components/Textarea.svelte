@@ -203,6 +203,7 @@
 		onblur?.(event);
 	};
 
+	// キーボードイベント
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (disabled) return;
 		onkeydown?.(event);

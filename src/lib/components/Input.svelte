@@ -4,7 +4,6 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { getStyleFromNumber } from '../utils/style';
-	import { KeyHandler } from '../classes/KeyHandler';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
 	import { t } from '../i18n';
@@ -208,22 +207,9 @@
 
 	// =========================================================================
 
-	// Keyboard Handler
-	// =========================================================================
-
-	const keyHandler = new KeyHandler({
-		onKeydown: (keyStr, event) => {
-			onkeydown?.(event);
-		},
-		onKeyup: (keyStr, event) => {
-			onkeyup?.(event);
-		}
-	});
-
-	// =========================================================================
-
 	// Methods
 	// =========================================================================
+	// ユーティリティ
 	const clear = (): void => {
 		if (disabled || readonly) return;
 		value = undefined;
@@ -241,6 +227,29 @@
 		}
 	};
 
+	// フォーカスイベント
+	const handleFocus = (event: FocusEvent) => {
+		if (disabled) return;
+		isFocused = true;
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		if (disabled) return;
+		isFocused = false;
+		onblur?.(event);
+	};
+
+	// キーボードイベント
+	const handleKeydown = (event: KeyboardEvent) => {
+		onkeydown?.(event);
+	};
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		onkeyup?.(event);
+	};
+
+	// 入力イベント
 	const handleSubmit = (event: SubmitEvent) => {
 		if (disabled || readonly) return;
 		event.preventDefault();
@@ -252,20 +261,10 @@
 		if (disabled || readonly) return;
 		onchange?.(value);
 	};
+
 	const handleInput = () => {
 		if (disabled || readonly) return;
 		oninput?.(value);
-	};
-	const handleFocus = (event: FocusEvent) => {
-		if (disabled) return;
-		isFocused = true;
-		onfocus?.(event);
-	};
-
-	const handleBlur = (event: FocusEvent) => {
-		if (disabled) return;
-		isFocused = false;
-		onblur?.(event);
 	};
 
 	// マウスイベント
@@ -425,8 +424,8 @@
 			oninput={handleInput}
 			onfocus={handleFocus}
 			onblur={handleBlur}
-			onkeydown={keyHandler.handleKeydown}
-			onkeyup={keyHandler.handleKeyup}
+			onkeydown={handleKeydown}
+			onkeyup={handleKeyup}
 			onclick={handleClick}
 			onmousedown={handleMouseDown}
 			onmouseup={handleMouseUp}
