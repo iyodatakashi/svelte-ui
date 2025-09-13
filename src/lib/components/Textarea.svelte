@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
+	import { getStyleFromNumber } from '../utils/style';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/Icon';
 
@@ -31,6 +32,7 @@
 		inline = false,
 		focusStyle = 'background',
 		fullWidth = false,
+		width = null,
 		rounded = false,
 		customStyle = '',
 
@@ -105,6 +107,7 @@
 		inline?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		fullWidth?: boolean;
+		width?: string | number | null;
 		rounded?: boolean;
 		customStyle?: string;
 
@@ -350,7 +353,9 @@
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="{!inline ? `min-height: ${minHeight}px;` : ''} {customStyle}"
+		style="{inline
+			? 'min-height: 1.5em; min-height: 1lh;'
+			: `min-height: ${minHeight}px;`} {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -372,7 +377,9 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="{!inline ? `min-height: ${minHeight}px;` : ''} {customStyle}"
+			style="width: {getStyleFromNumber(width)}; {inline
+				? 'min-height: 1.5em; min-height: 1lh;'
+				: `min-height: ${minHeight}px;`} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
