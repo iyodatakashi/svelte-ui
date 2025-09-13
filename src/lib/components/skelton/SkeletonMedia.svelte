@@ -6,7 +6,7 @@
 		SkeletonMediaConfig,
 		SkeletonThumbnailConfig,
 		SkeletonTextConfig
-	} from './types.ts';
+	} from '../../types/Skeleton';
 
 	let {
 		width = '100%',

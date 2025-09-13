@@ -5,8 +5,8 @@
 	import SkeletonButton from './SkeletonButton.svelte';
 	import SkeletonHeading from './SkeletonHeading.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonPatternConfig } from './types';
-	import { isPresetPattern } from './types';
+	import type { SkeletonPatternConfig } from '../../types/Skeleton';
+	import { isPresetPattern } from '../../types/Skeleton';
 
 	// =========================================================================
 	// Props

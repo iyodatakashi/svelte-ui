@@ -6,7 +6,7 @@
 		SkeletonAvatarConfig,
 		SkeletonTextConfig,
 		SkeletonAvatarImageConfig
-	} from './types.ts';
+	} from '../../types/Skeleton';
 
 	// =========================================================================
 	// Props

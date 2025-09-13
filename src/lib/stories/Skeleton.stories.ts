@@ -7,7 +7,7 @@ const meta = {
 	parameters: {
 		layout: 'padded'
 	}
-} satisfies Meta<Skeleton>;
+} satisfies Meta;
 
 export default meta;
 type Story = StoryObj<typeof meta>;
