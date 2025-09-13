@@ -200,7 +200,7 @@
 		];
 
 		if (!supportedTypes.includes(file.type)) {
-			errorMessage = 'サポートされていないファイル形式です';
+			errorMessage = 'Unsupported file format';
 			return false;
 		}
 

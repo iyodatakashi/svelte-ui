@@ -71,7 +71,6 @@
 		en: {
 			monthFormat: 'MMMM YYYY',
 			yearFormat: 'YYYY',
-			calendarLabel: ' calendar',
 			prevMonthLabel: 'Previous month',
 			nextMonthLabel: 'Next month',
 			todayLabel: ' today',
@@ -80,7 +79,6 @@
 		ja: {
 			monthFormat: 'YYYY年M月',
 			yearFormat: 'YYYY年',
-			calendarLabel: 'のカレンダー',
 			prevMonthLabel: '前の月へ移動',
 			nextMonthLabel: '次の月へ移動',
 			todayLabel: ' 今日',
@@ -89,7 +87,6 @@
 		fr: {
 			monthFormat: 'MMMM YYYY',
 			yearFormat: 'YYYY',
-			calendarLabel: ' calendrier',
 			prevMonthLabel: 'Mois précédent',
 			nextMonthLabel: 'Mois suivant',
 			todayLabel: " aujourd'hui",
@@ -98,7 +95,6 @@
 		de: {
 			monthFormat: 'MMMM YYYY',
 			yearFormat: 'YYYY',
-			calendarLabel: ' Kalender',
 			prevMonthLabel: 'Vorheriger Monat',
 			nextMonthLabel: 'Nächster Monat',
 			todayLabel: ' heute',
@@ -107,7 +103,6 @@
 		es: {
 			monthFormat: 'MMMM YYYY',
 			yearFormat: 'YYYY',
-			calendarLabel: ' calendario',
 			prevMonthLabel: 'Mes anterior',
 			nextMonthLabel: 'Mes siguiente',
 			todayLabel: ' hoy',
@@ -116,7 +111,6 @@
 		'zh-cn': {
 			monthFormat: 'YYYY年M月',
 			yearFormat: 'YYYY年',
-			calendarLabel: '日历',
 			prevMonthLabel: '上个月',
 			nextMonthLabel: '下个月',
 			todayLabel: ' 今天',
@@ -555,7 +549,7 @@
 	bind:this={calendarRef}
 	class="datepicker-calendar"
 	role="grid"
-	aria-label={`${month.locale(locale).format(currentLocaleConfig.monthFormat)}${currentLocaleConfig.calendarLabel}`}
+	aria-label={month.locale(locale).format(currentLocaleConfig.monthFormat)}
 	{id}
 >
 	<div class="datepicker-calendar__header">

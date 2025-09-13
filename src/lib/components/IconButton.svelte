@@ -394,7 +394,7 @@
 		<div
 			class="icon-button__badge icon-button__badge--{badgeVariant}"
 			style="background-color: {badgeColor || 'var(--badge-color)'}"
-			aria-label={badgeVariant === 'count' ? `${badgeCount}件の通知` : '新しい通知があります'}
+			aria-label={badgeVariant === 'count' ? `${badgeCount}` : 'New'}
 			aria-live="polite"
 		>
 			{badgeVariant === 'count' ? badgeDisplay() : ''}
