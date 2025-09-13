@@ -511,10 +511,8 @@
 	--svelte-ui-button-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-text-ghost: var(--svelte-ui-primary-color);
 	--svelte-ui-button-text-glass: var(--svelte-ui-primary-color);
-	--svelte-ui-button-border-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-button-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-button-focus-color: var(--svelte-ui-focus-color);
-	--svelte-ui-button-label-color: var(--svelte-ui-text-color);
 
 	/* Fab */
 	--svelte-ui-fab-bg-filled: var(--svelte-ui-primary-color);
@@ -525,6 +523,8 @@
 	--svelte-ui-fab-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-fab-text-ghost: var(--svelte-ui-primary-color);
 	--svelte-ui-fab-text-glass: var(--svelte-ui-primary-color);
+	--svelte-ui-fab-hover-overlay: var(--svelte-ui-hover-overlay);
+	--svelte-ui-fab-focus-color: var(--svelte-ui-focus-color);
 
 	/* IconButton */
 	--svelte-ui-iconbutton-bg-filled: var(--svelte-ui-primary-color);
@@ -535,7 +535,6 @@
 	--svelte-ui-iconbutton-text-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-text-ghost: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-text-glass: var(--svelte-ui-primary-color);
-	--svelte-ui-iconbutton-border-outlined: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-hover-overlay: var(--svelte-ui-hover-overlay);
 	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
 

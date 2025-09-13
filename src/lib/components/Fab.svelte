@@ -20,7 +20,7 @@
 
 		// スタイル/レイアウト
 		customStyle,
-		color = 'var(--svelte-ui-primary-color)',
+		color,
 		variant = 'filled',
 		position = 'right',
 		shadow = true,
@@ -253,23 +253,19 @@
 	// $derived
 	// =========================================================================
 
-	const backgroundColor = $derived(
-		{
-			filled: color,
-			outlined: 'transparent',
-			ghost: 'transparent',
-			glass: 'var(--svelte-ui-fab-bg-glass)'
-		}[variant]
-	);
+	const backgroundColors = {
+		filled: color ?? 'var(--svelte-ui-fab-bg-filled)',
+		outlined: 'transparent',
+		ghost: 'transparent',
+		glass: 'var(--svelte-ui-fab-bg-glass)'
+	};
 
-	const textColor = $derived(
-		{
-			filled: 'var(--svelte-ui-button-text-filled)',
-			outlined: color,
-			ghost: color,
-			glass: 'var(--svelte-ui-fab-text-glass)'
-		}[variant]
-	);
+	const textColors = {
+		filled: 'var(--svelte-ui-fab-text-filled)',
+		outlined: color ?? 'var(--svelte-ui-fab-text-outlined)',
+		ghost: color ?? 'var(--svelte-ui-fab-text-ghost)',
+		glass: color ?? 'var(--svelte-ui-fab-text-glass)'
+	};
 
 	const hasLabel = $derived(children !== undefined);
 </script>
@@ -288,7 +284,7 @@
 	class:fab--shadow={shadow}
 	class:fab--loading={loading}
 	class:fab--no-motion={reducedMotion}
-	style="color: {textColor}; background-color: {backgroundColor}; 
+	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
 	onfocus={handleFocus}
@@ -389,7 +385,7 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background-color: var(--svelte-ui-button-hover-overlay);
+			background-color: var(--svelte-ui-fab-hover-overlay);
 			opacity: 0;
 			transition-property: opacity;
 			transition-duration: var(--svelte-ui-transition-duration);
@@ -403,7 +399,7 @@
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--svelte-ui-button-focus-color);
+			outline: 2px solid var(--svelte-ui-fab-focus-color);
 			outline-offset: 2px;
 		}
 

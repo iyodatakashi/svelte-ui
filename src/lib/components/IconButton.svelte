@@ -291,23 +291,19 @@
 	// =========================================================================
 	const isDisabled = $derived(disabled || loading);
 
-	const backgroundColor = $derived(
-		{
-			filled: color || 'var(--svelte-ui-iconbutton-bg-filled)',
-			outlined: 'var(--svelte-ui-iconbutton-bg-outlined)',
-			ghost: 'var(--svelte-ui-iconbutton-bg-ghost)',
-			glass: 'var(--svelte-ui-iconbutton-bg-glass)'
-		}[variant]
-	);
+	const backgroundColors = {
+		filled: color ?? 'var(--svelte-ui-iconbutton-bg-filled)',
+		outlined: 'transparent',
+		ghost: 'transparent',
+		glass: 'var(--svelte-ui-iconbutton-bg-glass)'
+	};
 
-	const textColor = $derived(
-		{
-			filled: 'var(--svelte-ui-iconbutton-text-filled)',
-			outlined: color || 'var(--svelte-ui-iconbutton-text-outlined)',
-			ghost: color || 'var(--svelte-ui-iconbutton-text-ghost)',
-			glass: 'var(--svelte-ui-iconbutton-text-glass)'
-		}[variant]
-	);
+	const textColors = {
+		filled: 'var(--svelte-ui-iconbutton-text-filled)',
+		outlined: color ?? 'var(--svelte-ui-iconbutton-text-outlined)',
+		ghost: color ?? 'var(--svelte-ui-iconbutton-text-ghost)',
+		glass: color ?? 'var(--svelte-ui-iconbutton-text-glass)'
+	};
 
 	const badgeDisplay = $derived(() => {
 		if (!hasBadge) return '';
@@ -335,7 +331,7 @@
 		{type}
 		disabled={isDisabled}
 		class={buttonClasses}
-		style="color: {textColor}; background-color: {backgroundColor}; 
+		style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
 			width: {size}px; height: {size}px; 
 			{customStyle ?? ''};"
 		onclick={handleClick}
