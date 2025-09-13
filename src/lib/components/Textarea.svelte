@@ -29,6 +29,7 @@
 		// スタイル/レイアウト
 		rows = 3,
 		minHeight = 36,
+		maxHeight = null,
 		inline = false,
 		focusStyle = 'background',
 		fullWidth = false,
@@ -105,6 +106,7 @@
 		// スタイル/レイアウト
 		rows?: number;
 		minHeight?: number | null;
+		maxHeight?: string | number | null;
 		inline?: boolean;
 		focusStyle?: 'background' | 'border' | 'none';
 		fullWidth?: boolean;
@@ -351,6 +353,7 @@
 	class:textarea--disabled={disabled}
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
+	style={!inline ? `max-height: ${getStyleFromNumber(maxHeight)};` : ''}
 >
 	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->
 	<div
