@@ -23,7 +23,7 @@
 		customStyle,
 		variant = 'ghost',
 		size = 'medium',
-		color = 'var(--svelte-ui-primary-color)',
+		color,
 		fullWidth = false,
 		minWidth = 0,
 		rounded = false,
@@ -157,7 +157,7 @@
 	} = $props();
 
 	const backgroundColors = {
-		filled: color,
+		filled: color ?? 'var(--svelte-ui-button-bg-filled)',
 		outlined: 'transparent',
 		ghost: 'transparent',
 		glass: 'var(--svelte-ui-button-bg-glass)'
@@ -165,9 +165,9 @@
 
 	const textColors = {
 		filled: 'var(--svelte-ui-button-text-filled)',
-		outlined: color,
-		ghost: color,
-		glass: 'var(--svelte-ui-button-text-glass)'
+		outlined: color ?? 'var(--svelte-ui-button-text-outlined)',
+		ghost: color ?? 'var(--svelte-ui-button-text-ghost)',
+		glass: color ?? 'var(--svelte-ui-button-text-glass)'
 	};
 
 	// =========================================================================
