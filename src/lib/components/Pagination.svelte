@@ -15,6 +15,9 @@
 		currentPageNum = 1,
 		visiblePages = 5,
 
+		// HTML属性
+		id,
+
 		// 状態/動作
 		showCount = true,
 		showRange = true,
@@ -28,6 +31,9 @@
 		limit: number;
 		currentPageNum: number;
 		visiblePages?: number;
+
+		// HTML属性
+		id?: string;
 
 		// 状態/動作
 		showCount?: boolean;
@@ -146,7 +152,7 @@
 	});
 </script>
 
-<div class="pagination">
+<div class="pagination" {id}>
 	{#if showCount && rangeText}
 		<div class="pagination__count">{rangeText}</div>
 	{/if}
@@ -180,7 +186,7 @@
 		<li>
 			<button
 				class="pagination__button"
-				disabled={currentPageNum === totalPages}
+				disabled={currentPageNum === totalPages || totalPages === 0}
 				aria-label={t('pagination.nextPage')}
 				onclick={goNextPage}
 			>
