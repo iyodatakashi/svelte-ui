@@ -85,7 +85,7 @@
 	{title}
 	{width}
 	closeIfClickOutside={false}
-	id={id ? `dialog-${id}` : undefined}
+	id={id ? `${id}-dialog` : undefined}
 >
 	<div class="confirm-dialog-message">
 		{@html convertToHtml(message)}

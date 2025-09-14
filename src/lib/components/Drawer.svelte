@@ -143,7 +143,7 @@
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={drawerClasses}
 	customStyles={drawerStyles()}
-	id={id ? `modal-${id}` : undefined}
+	id={id ? `${id}-modal` : undefined}
 >
 	<div class="drawer">
 		{#if header || title}
@@ -151,14 +151,14 @@
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="drawer__title" id={id ? `drawer-title-${id}` : undefined}>
+					<div class="drawer__title" id={id ? `${id}-drawer-title` : undefined}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="drawer__description" id={id ? `drawer-description-${id}` : undefined}>
+			<div class="drawer__description" id={id ? `${id}-drawer-description` : undefined}>
 				{description}
 			</div>
 		{/if}

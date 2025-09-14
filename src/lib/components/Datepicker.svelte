@@ -553,6 +553,7 @@
 	margin={4}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}
+	id={id ? `popup-${id}` : undefined}
 >
 	<DatepickerCalendar
 		bind:this={datapickerCalendarRef}

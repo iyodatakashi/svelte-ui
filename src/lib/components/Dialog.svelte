@@ -134,7 +134,7 @@
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={dialogClasses}
 	customStyles={dialogStyles}
-	id={id ? `modal-${id}` : undefined}
+	id={id ? `${id}-modal` : undefined}
 >
 	<div class="dialog">
 		{#if header || title}
@@ -142,14 +142,14 @@
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="dialog__title" id={id ? `dialog-title-${id}` : undefined}>
+					<div class="dialog__title" id={id ? `${id}-dialog-title` : undefined}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="dialog__description" id={id ? `dialog-description-${id}` : undefined}>
+			<div class="dialog__description" id={id ? `${id}-dialog-description` : undefined}>
 				{description}
 			</div>
 		{/if}
