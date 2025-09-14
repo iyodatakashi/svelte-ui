@@ -552,6 +552,7 @@
 	role="grid"
 	aria-label={month.locale(locale).format(currentLocaleConfig.monthFormat)}
 	{id}
+	data-testid="datepicker-calendar"
 >
 	<div class="datepicker-calendar__header">
 		<div class="prev-button-block">
