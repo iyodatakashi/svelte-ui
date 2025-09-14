@@ -218,6 +218,7 @@
 	aria-label={ariaLabel}
 	aria-labelledby={ariaLabelledby}
 	aria-describedby={ariaDescribedby}
+	data-testid="modal"
 >
 	<div class="modal-contents" bind:this={containerRef}>
 		{#if children}
