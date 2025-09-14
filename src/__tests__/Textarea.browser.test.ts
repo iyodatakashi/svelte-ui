@@ -60,7 +60,7 @@ test('clearable Textarea shows clear button and clears value', async () => {
 	expect(clearButton).toBeTruthy();
 
 	// Click clear button
-	await clearButton!.click();
+	await (clearButton as HTMLElement).click();
 	await expect.element(textarea).toHaveValue('');
 });
 

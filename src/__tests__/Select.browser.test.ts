@@ -1,11 +1,11 @@
 import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Select from '../lib/components/Select.svelte';
-import variables from '../lib/assets/styles/variables.scss?inline';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Select with options', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [
 			{ value: 'option1', label: 'Option 1' },
 			{ value: 'option2', label: 'Option 2' },
@@ -18,6 +18,7 @@ test('renders Select with options', async () => {
 
 test('Select can be selected and changed', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [
 			{ value: 'option1', label: 'Option 1' },
 			{ value: 'option2', label: 'Option 2' }
@@ -38,6 +39,7 @@ test('Select can be selected and changed', async () => {
 
 test('disabled Select is not interactable', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'option1', label: 'Option 1' }],
 		disabled: true,
 		id: 'select-disabled'
@@ -52,6 +54,7 @@ test('disabled Select is not interactable', async () => {
 	// Disabled select should not trigger change events
 	let changeCalled = false;
 	const screen2 = render(Select, {
+		value: '',
 		options: [{ value: 'option1', label: 'Option 1' }],
 		disabled: true,
 		id: 'select-disabled-2',
@@ -72,6 +75,7 @@ test('disabled Select is not interactable', async () => {
 test('Select variants render correctly', async () => {
 	// Test default variant (no special class)
 	const screenDefault = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		variant: 'default',
 		id: 'select-default'
@@ -82,6 +86,7 @@ test('Select variants render correctly', async () => {
 
 	// Test inline variant
 	const screenInline = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		variant: 'inline',
 		id: 'select-inline'
@@ -95,6 +100,7 @@ test('Select focus and blur events work correctly', async () => {
 	let blurCalled = false;
 
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		id: 'select-focus-blur',
 		onfocus: () => {
@@ -114,6 +120,7 @@ test('Select focus and blur events work correctly', async () => {
 
 test('Select required attribute works correctly', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		required: true,
 		id: 'select-required'
@@ -124,6 +131,7 @@ test('Select required attribute works correctly', async () => {
 
 test('Select name attribute works correctly', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		name: 'test-select',
 		id: 'select-name'
@@ -134,6 +142,7 @@ test('Select name attribute works correctly', async () => {
 
 test('Select placeholder works correctly', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		placeholder: 'Choose an option'
 	});
@@ -144,6 +153,7 @@ test('Select placeholder works correctly', async () => {
 
 test('Select with fullWidth renders correctly', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		fullWidth: true
 	});
@@ -153,6 +163,7 @@ test('Select with fullWidth renders correctly', async () => {
 
 test('Select with rounded renders correctly', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }],
 		rounded: true
 	});
@@ -162,6 +173,7 @@ test('Select with rounded renders correctly', async () => {
 
 test('Select CSS variables used are defined (computed) in the page', async () => {
 	const screen = render(Select, {
+		value: '',
 		options: [{ value: 'test', label: 'Test' }]
 	});
 	const wrapper = screen.getByTestId('select');
