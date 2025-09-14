@@ -21,8 +21,8 @@
 
 #### サイズバリエーション
 
-- `small`、`medium`、`large`のクラスが正しく適用される
-- クラスは`data-testid`を持つコンテナ要素で確認
+- コンポーネントがサポートするサイズバリエーション（`small`、`medium`、`large`など）のクラスが正しく適用される
+- サイズプロパティが存在するコンポーネントのみえ
 
 #### イベントハンドリング
 
@@ -45,9 +45,61 @@
 
 #### セレクタの使用
 
-- `getByRole()`: セマンティックな要素の取得
+**重要: 複数のコンポーネントが存在する場合の要素取得**
+
+- **単一コンポーネントの場合**: `getByRole()` を使用可能
+- **複数コンポーネントの場合**: 必ず各コンポーネントに一意の `id` を指定し、`querySelector('#id')` で取得
+- **理由**: `getByRole()` は複数の同じロール要素がある場合、一意に特定できない
+
+**具体的な使用方法**:
+
+```typescript
+// ❌ 間違い: 複数コンポーネントでgetByRoleを使用
+const select1 = screen.getByRole('combobox'); // どちらのselectか不明
+const select2 = screen.getByRole('combobox'); // 同じ要素を取得してしまう可能性
+
+// ✅ 正しい: 各コンポーネントにidを指定
+const screen1 = render(Component, { id: 'component-1' });
+const screen2 = render(Component, { id: 'component-2' });
+const element1 = screen1.container.querySelector('#component-1');
+const element2 = screen2.container.querySelector('#component-2');
+```
+
+**実践例: イベントテストでの使用**:
+
+```typescript
+// 複数のSelectコンポーネントでイベントテスト
+const screen1 = render(Select, {
+  options: [...],
+  id: 'select-disabled-1',
+  disabled: true
+});
+const screen2 = render(Select, {
+  options: [...],
+  id: 'select-disabled-2',
+  disabled: true
+});
+
+// 各selectを個別に取得してテスト
+const select1 = screen1.container.querySelector('#select-disabled-1') as HTMLSelectElement;
+const select2 = screen2.container.querySelector('#select-disabled-2') as HTMLSelectElement;
+
+select1.dispatchEvent(new Event('change'));
+select2.dispatchEvent(new Event('change'));
+```
+
+**その他のセレクタ**:
+
 - `querySelector()`: 特定のIDやクラスでの要素取得
 - `data-testid`: コンテナ要素の取得
+- クラス確認は適切な要素（コンテナ要素や対象要素）で行う
+
+**よくある間違いと対策**:
+
+- ❌ `getByRole('combobox').element()` - 複数要素がある場合に失敗
+- ✅ `querySelector('#unique-id')` - 一意の要素を確実に取得
+- ❌ 同じidを複数のコンポーネントで使用 - テストが不安定になる
+- ✅ 各テストケースで一意のidを使用 - テストの独立性を保証
 
 #### イベントの実行
 
@@ -145,7 +197,7 @@ test('disabled [Component] is not interactable', async () => {
 });
 
 test('[Component] sizes render correctly', async () => {
-	// サイズバリエーションテスト
+	// サイズバリエーションテスト（サイズプロパティが存在する場合のみ）
 });
 
 test('[Component] events work correctly', async () => {
