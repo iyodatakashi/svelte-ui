@@ -31,7 +31,7 @@
 		minHeight = 36,
 		maxHeight = null,
 		inline = false,
-		focusStyle = 'background',
+		focusStyle = 'outline',
 		fullWidth = false,
 		fullHeight = false,
 		width = null,
@@ -508,12 +508,6 @@
 		-moz-appearance: none;
 		appearance: none;
 
-		&:focus,
-		&:focus-visible {
-			outline: var(--svelte-ui-focus-outline-inner);
-			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-		}
-
 		&:not(.resizable) {
 			resize: none;
 		}
@@ -585,6 +579,10 @@
 
 	.textarea--focus-background textarea:focus {
 		background: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.textarea--focus-none textarea:focus {
 		outline: none;
 	}
 

@@ -32,7 +32,7 @@
 
 		// スタイル/レイアウト
 		inline = false,
-		focusStyle = 'background',
+		focusStyle = 'outline',
 		customStyle = '',
 		fullWidth = false,
 		width = null,
@@ -562,12 +562,6 @@
 		line-height: inherit;
 		text-align: inherit;
 
-		&:focus,
-		&:focus-visible {
-			outline: var(--svelte-ui-focus-outline-inner);
-			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-		}
-
 		&[type='number'] {
 			text-align: right;
 			&::-webkit-outer-spin-button,
@@ -704,6 +698,10 @@
 
 	.input--focus-background input:focus {
 		background: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.input--focus-none input:focus {
 		outline: none;
 	}
 

@@ -17,19 +17,12 @@
 
 <div class="container">
 	<label for="input1">インプット1</label>
-	<Input
-		id="input1"
-		inline
-		focusStyle="outline"
-		bind:value
-		minWidth={300}
-		width="50%"
-		onsubmit={handleChange}
-	/>
+	<Input id="input1" inline bind:value minWidth={300} width="50%" onsubmit={handleChange} />
+	<Textarea id="textarea1" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
 
 	<div class="textarea">
-		<label for="textarea1">textarea</label>
-		<Textarea id="textarea1" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
+		<label for="textarea2">textarea</label>
+		<Textarea id="textarea2" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
 		<label for="radio1">radio1</label>
 		<Radio id="radio1" name="hoge" value="hoge" bind:currentValue={value} onsubmit={handleChange}
 			>hoge</Radio
