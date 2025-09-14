@@ -7,6 +7,7 @@
 	import Icon from './Icon.svelte';
 	import { announceSelection } from '../utils/accessibility';
 	import { t } from '../i18n';
+	import type { Option } from '../types/options';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -15,7 +16,7 @@
 		// 基本プロパティ
 		name,
 		value = $bindable(),
-		options = [],
+		options = [] as Option[],
 
 		// HTML属性系
 		inputAttributes,
@@ -82,7 +83,7 @@
 		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
-		options: (string | number | null)[];
+		options: Option[];
 
 		// HTML属性系
 		inputAttributes?: HTMLInputAttributes | undefined;
@@ -171,7 +172,9 @@
 		if (searchTerm !== '') {
 			inputValue = searchTerm;
 		} else {
-			inputValue = value !== null && value !== undefined ? String(value) : '';
+			// valueに対応するオプションのlabelを表示
+			const selectedOption = options.find((option) => option.value === value);
+			inputValue = selectedOption ? selectedOption.label : '';
 		}
 	});
 
@@ -179,22 +182,22 @@
 	// Methods
 	// =========================================================================
 	// オプションを選択
-	const selectOption = (option: string | number | null) => {
-		value = option;
+	const selectOption = (option: Option) => {
+		value = option.value;
 		searchTerm = '';
 		popupRef?.close();
 		highlightedIndex = -1;
 		isFocused = false;
 
 		// inputValueも更新
-		inputValue = option !== null && option !== undefined ? String(option) : '';
+		inputValue = option.label;
 
 		// スクリーンリーダーアナウンス
-		if (option !== null && option !== undefined) {
-			announceSelection(String(option));
+		if (option.value !== null && option.value !== undefined) {
+			announceSelection(option.label);
 		}
 
-		onchange?.(option);
+		onchange?.(option.value);
 	};
 
 	// input要素のフォーカス/クリック時
@@ -204,7 +207,8 @@
 		isFocused = true;
 		popupRef?.open();
 		if (filterable) {
-			searchTerm = value !== null && value !== undefined ? String(value) : '';
+			const selectedOption = options.find((option) => option.value === value);
+			searchTerm = selectedOption ? selectedOption.label : '';
 		}
 		highlightedIndex = -1;
 		onfocus(event);
@@ -255,13 +259,43 @@
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (disabled) return;
 		onkeydown(event);
-		// TODO: キーボードナビゲーション実装
-		// ArrowDown, ArrowUp, Enter, Escape等の処理
+
+		switch (event.key) {
+			case 'ArrowDown':
+				event.preventDefault();
+				if (!isFocused) {
+					isFocused = true;
+					popupRef?.open();
+				}
+				highlightedIndex = Math.min(highlightedIndex + 1, filteredOptions.length - 1);
+				break;
+			case 'ArrowUp':
+				event.preventDefault();
+				if (!isFocused) {
+					isFocused = true;
+					popupRef?.open();
+				}
+				highlightedIndex = Math.max(highlightedIndex - 1, -1);
+				break;
+			case 'Enter':
+				event.preventDefault();
+				if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
+					selectOption(filteredOptions[highlightedIndex]);
+				}
+				break;
+			case 'Escape':
+				event.preventDefault();
+				searchTerm = '';
+				highlightedIndex = -1;
+				popupRef?.close();
+				isFocused = false;
+				break;
+		}
 	};
 
 	const handleKeyup = (event: KeyboardEvent) => {
 		if (disabled) return;
-		onkeydown(event);
+		onkeyup(event);
 	};
 
 	// マウスイベント
@@ -385,7 +419,7 @@
 	const filteredOptions = $derived.by(() => {
 		if (!filterable || !searchTerm) return options;
 		return options.filter((option) =>
-			option === null ? false : String(option).toLowerCase().includes(searchTerm.toLowerCase())
+			option.label.toLowerCase().includes(searchTerm.toLowerCase())
 		);
 	});
 </script>
@@ -481,9 +515,11 @@
 						type="button"
 						class="combobox__option"
 						class:combobox__option--highlighted={index === highlightedIndex}
-						class:combobox__option--selected={option === value}
+						class:combobox__option--selected={option.value === value}
+						class:combobox__option--disabled={option.disabled}
 						role="option"
-						aria-selected={option === value}
+						aria-selected={option.value === value}
+						disabled={option.disabled}
 						onmousedown={(event) => {
 							event.preventDefault();
 							event.stopPropagation();
@@ -491,7 +527,7 @@
 						}}
 						onmouseenter={() => (highlightedIndex = index)}
 					>
-						{option ?? '（空の値）'}
+						{option.label}
 					</button>
 				</div>
 			{:else}
