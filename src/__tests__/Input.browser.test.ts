@@ -1,329 +1,123 @@
-import { test, expect } from '@playwright/test';
+import { test, expect, vi } from 'vitest';
+import { render } from 'vitest-browser-svelte';
+import Input from '../lib/components/Input.svelte';
 
-test.describe('Input Component - Browser Tests', () => {
-	test('should render Input component in browser', async ({ page }) => {
-		// テスト用のHTMLページを作成
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Test input" id="test-input" />
-				</div>
-			</body>
-			</html>
-		`);
+test('renders Input and updates value on typing', async () => {
+	const screen = render(Input, { placeholder: 'Type here', value: '' });
+	const textbox = screen.getByRole('textbox');
 
-		// 入力フィールドが存在することを確認
-		const input = page.locator('input[type="text"]');
-		await expect(input).toBeVisible();
-		await expect(input).toHaveAttribute('placeholder', 'Test input');
-		await expect(input).toHaveAttribute('id', 'test-input');
+	await expect.element(textbox).toBeVisible();
+	await expect.element(textbox).toHaveAttribute('placeholder', 'Type here');
+
+	await textbox.fill('Hello World');
+	await expect.element(textbox).toHaveValue('Hello World');
+});
+
+test('disabled Input is not interactable', async () => {
+	const screen = render(Input, { disabled: true, value: '' });
+	const textbox = screen.getByRole('textbox');
+
+	await expect.element(textbox).toBeDisabled();
+	// Disabled inputs should not gain focus programmatically
+	(textbox.element() as HTMLInputElement).focus();
+	await expect.element(textbox).not.toHaveFocus();
+});
+
+test('readonly Input is focusable but not editable', async () => {
+	const screen = render(Input, { readonly: true, value: 'Initial' });
+	const textbox = screen.getByRole('textbox');
+
+	await expect.element(textbox).toHaveAttribute('readonly');
+	(textbox.element() as HTMLInputElement).focus();
+	await expect.element(textbox).toHaveFocus();
+	await expect.element(textbox).toHaveValue('Initial');
+});
+
+// Required attribute
+test('required Input is marked as required', async () => {
+	const screen = render(Input, { required: true, value: '' });
+	const textbox = screen.getByRole('textbox');
+	await expect.element(textbox).toBeRequired();
+});
+
+// Maxlength enforcement
+test('maxlength limits typed characters', async () => {
+	const screen = render(Input, { maxlength: 3, value: '' });
+	const textbox = screen.getByRole('textbox');
+	await textbox.fill('Hello');
+	await expect.element(textbox).toHaveValue('Hel');
+});
+
+// Clearable behavior
+test('clearable resets value when clear button is clicked', async () => {
+	const screen = render(Input, { clearable: true, value: 'ABC' });
+	const textbox = screen.getByRole('textbox');
+	await expect.element(textbox).toHaveValue('ABC');
+
+	// Find clear button inside the input wrapper
+	const clearButton = screen.container.querySelector(
+		'.input__clear-button button'
+	) as HTMLButtonElement | null;
+	if (!clearButton) throw new Error('Clear button not found');
+	clearButton.click();
+
+	await expect.element(textbox).toHaveValue('');
+});
+
+// Submit handler receives current value
+test('onsubmit receives current value', async () => {
+	const onsubmit = vi.fn();
+	const screen = render(Input, { value: 'SubmitMe', onsubmit });
+	const form = screen.container.querySelector('form') as HTMLFormElement | null;
+	if (!form) throw new Error('Form not found');
+
+	form.requestSubmit();
+	// onsubmit is called synchronously in handler
+	expect(onsubmit).toHaveBeenCalledWith('SubmitMe');
+});
+
+// input/change events
+test('oninput and onchange receive latest value', async () => {
+	const oninput = vi.fn();
+	const onchange = vi.fn();
+	const screen = render(Input, { value: '', oninput, onchange });
+	const textbox = screen.getByRole('textbox');
+
+	await textbox.fill('A');
+	expect(oninput).toHaveBeenCalledWith('A');
+
+	// Trigger change by blurring the input
+	(textbox.element() as HTMLInputElement).blur();
+	expect(onchange).toHaveBeenCalledWith('A');
+});
+
+// Icon click handlers
+test('left and right icon click handlers are called', async () => {
+	const onLeftIconClick = vi.fn();
+	const onRightIconClick = vi.fn();
+	const screen = render(Input, {
+		leftIcon: 'search',
+		rightIcon: 'close',
+		leftIconAriaLabel: 'Left',
+		rightIconAriaLabel: 'Right',
+		onLeftIconClick,
+		onRightIconClick,
+		value: ''
 	});
 
-	test('should handle user input', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Type here" id="test-input" />
-				</div>
-			</body>
-			</html>
-		`);
+	await screen.getByRole('button', { name: 'Left' }).click();
+	await screen.getByRole('button', { name: 'Right' }).click();
 
-		const input = page.locator('input[type="text"]');
-		await input.fill('Hello World');
-		await expect(input).toHaveValue('Hello World');
-	});
+	expect(onLeftIconClick).toHaveBeenCalledTimes(1);
+	expect(onRightIconClick).toHaveBeenCalledTimes(1);
+});
 
-	test('should handle different input types', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="email" placeholder="Email" id="email-input" />
-					<input type="password" placeholder="Password" id="password-input" />
-					<input type="number" placeholder="Number" id="number-input" />
-				</div>
-			</body>
-			</html>
-		`);
+// Focus class toggles on wrapper
+test('focus toggles input--focused class on wrapper', async () => {
+	const screen = render(Input, { value: '' });
+	const textbox = screen.getByRole('textbox');
+	const wrapper = screen.getByTestId('input');
 
-		// Email input
-		const emailInput = page.locator('#email-input');
-		await expect(emailInput).toHaveAttribute('type', 'email');
-		await emailInput.fill('test@example.com');
-		await expect(emailInput).toHaveValue('test@example.com');
-
-		// Password input
-		const passwordInput = page.locator('#password-input');
-		await expect(passwordInput).toHaveAttribute('type', 'password');
-		await passwordInput.fill('secret123');
-		await expect(passwordInput).toHaveValue('secret123');
-
-		// Number input
-		const numberInput = page.locator('#number-input');
-		await expect(numberInput).toHaveAttribute('type', 'number');
-		await numberInput.fill('42');
-		await expect(numberInput).toHaveValue('42');
-	});
-
-	test('should handle disabled state', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Disabled input" disabled />
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input[type="text"]');
-		await expect(input).toBeDisabled();
-		await expect(input).toHaveAttribute('disabled');
-	});
-
-	test('should handle readonly state', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Readonly input" readonly value="Readonly value" />
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input[type="text"]');
-		await expect(input).toHaveAttribute('readonly');
-		await expect(input).toHaveValue('Readonly value');
-	});
-
-	test('should handle required state', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Required input" required />
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input[type="text"]');
-		await expect(input).toHaveAttribute('required');
-	});
-
-	test('should handle focus events', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Focus test" id="focus-input" />
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('#focus-input');
-		await input.focus();
-		await expect(input).toBeFocused();
-	});
-
-	test('should handle maxlength attribute', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Max length test" maxlength="5" />
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input[type="text"]');
-		await expect(input).toHaveAttribute('maxlength', '5');
-
-		// 最大文字数を超えて入力しても制限されることを確認
-		await input.fill('123456789');
-		await expect(input).toHaveValue('12345');
-	});
-
-	test('should handle pattern attribute', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-			</head>
-			<body>
-				<div id="app">
-					<input type="text" placeholder="Pattern test" pattern="[0-9]+" />
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input[type="text"]');
-		await expect(input).toHaveAttribute('pattern', '[0-9]+');
-	});
-
-	test('should handle focusStyle="outline"', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-				<style>
-					.input--focus-outline input:focus {
-						outline: 2px solid #2196F3;
-						outline-offset: 2px;
-					}
-					.input--focus-background input:focus {
-						background: rgba(33, 150, 243, 0.1);
-						outline: none;
-					}
-					.input--focus-none input:focus {
-						outline: none;
-					}
-				</style>
-			</head>
-			<body>
-				<div id="app">
-					<div class="input--focus-outline">
-						<input placeholder="Outline focus test" />
-					</div>
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input');
-		await input.focus();
-		await expect(input).toBeFocused();
-
-		// outlineスタイルが適用されていることを確認
-		const outline = await input.evaluate((el) => {
-			const styles = window.getComputedStyle(el);
-			return styles.outline;
-		});
-		expect(outline).not.toBe('none');
-	});
-
-	test('should handle focusStyle="background"', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-				<style>
-					.input--focus-outline input:focus {
-						outline: 2px solid #2196F3;
-						outline-offset: 2px;
-					}
-					.input--focus-background input:focus {
-						background: rgba(33, 150, 243, 0.1);
-						outline: none;
-					}
-					.input--focus-none input:focus {
-						outline: none;
-					}
-				</style>
-			</head>
-			<body>
-				<div id="app">
-					<div class="input--focus-background">
-						<input placeholder="Background focus test" />
-					</div>
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input');
-		await input.focus();
-		await expect(input).toBeFocused();
-
-		// outlineがnoneであることを確認
-		const outline = await input.evaluate((el) => {
-			const styles = window.getComputedStyle(el);
-			return styles.outline;
-		});
-		expect(outline).toMatch(/none/);
-	});
-
-	test('should handle focusStyle="none"', async ({ page }) => {
-		await page.setContent(`
-			<!DOCTYPE html>
-			<html>
-			<head>
-				<title>Input Test</title>
-				<style>
-					.input--focus-outline input:focus {
-						outline: 2px solid #2196F3;
-						outline-offset: 2px;
-					}
-					.input--focus-background input:focus {
-						background: rgba(33, 150, 243, 0.1);
-						outline: none;
-					}
-					.input--focus-none input:focus {
-						outline: none;
-					}
-				</style>
-			</head>
-			<body>
-				<div id="app">
-					<div class="input--focus-none">
-						<input placeholder="None focus test" />
-					</div>
-				</div>
-			</body>
-			</html>
-		`);
-
-		const input = page.locator('input');
-		await input.focus();
-		await expect(input).toBeFocused();
-
-		// outlineがnoneであることを確認
-		const outline = await input.evaluate((el) => {
-			const styles = window.getComputedStyle(el);
-			return styles.outline;
-		});
-		expect(outline).toMatch(/none/);
-	});
+	await textbox.click();
+	await expect.element(wrapper).toHaveClass(/input--focused/);
 });
