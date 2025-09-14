@@ -20,7 +20,7 @@
 		placeholder = '',
 
 		// HTML属性系
-		id = `imageuploader-${Math.random().toString(36).substring(2, 15)}`,
+		id = `image-uploader-${Math.random().toString(36).substring(2, 15)}`,
 		accept = '.jpg,.jpeg,.png,.gif,.webp,.svg',
 
 		// スタイル/レイアウト
@@ -311,10 +311,13 @@
 <div
 	class="image-uploader"
 	class:image-uploader--multiple={multiple}
+	class:image-uploader--rounded={rounded}
+	class:image-uploader--adaptive={adaptiveSize}
 	style="
 			--image-uploader-button-width: {previewWidthStyle};
 			--image-uploader-button-height: {previewHeightStyle};
 		"
+	data-testid="image-uploader"
 >
 	{#if multiple}
 		{#each files as file, index}

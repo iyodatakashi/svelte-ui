@@ -11,6 +11,7 @@
 		rounded?: boolean;
 		removeFileAriaLabel?: string;
 		onRemove: () => void;
+		id?: string;
 	};
 
 	let {
@@ -20,7 +21,8 @@
 		adaptiveSize = false,
 		rounded = false,
 		removeFileAriaLabel = 'ファイルを削除',
-		onRemove
+		onRemove,
+		id
 	}: ImagePreviewProps = $props();
 
 	let imageSizes = $state<Record<string, { width: number; height: number }>>({});
