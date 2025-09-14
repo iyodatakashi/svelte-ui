@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import type { MenuItem } from '../types/MenuItem';
+	import type { MenuItem } from '../types/menuItem';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	// =========================================================================
@@ -45,6 +45,7 @@
 	role="tab"
 	aria-selected={isSelected}
 	tabindex={0}
+	data-testid="tab-item"
 >
 	{#if tabItem.icon}
 		<div class="tab-item__icon">

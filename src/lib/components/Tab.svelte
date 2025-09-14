@@ -145,6 +145,7 @@
 	aria-labelledby={ariaLabelledby}
 	tabindex="-1"
 	onkeydown={handleKeyDown}
+	data-testid="tab"
 >
 	{#each tabItems as tabItem, index}
 		<div class="tab__item">
