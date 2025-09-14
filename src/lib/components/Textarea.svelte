@@ -353,6 +353,7 @@
 	class:textarea--disabled={disabled}
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
+	data-testid="textarea"
 	style={!inline ? `max-height: ${getStyleFromNumber(maxHeight)};` : ''}
 >
 	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->

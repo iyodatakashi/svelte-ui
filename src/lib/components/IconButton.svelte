@@ -362,7 +362,7 @@
 		aria-describedby={ariaDescribedby}
 		aria-pressed={ariaPressed !== undefined ? ariaPressed : pressed ? 'true' : undefined}
 		aria-busy={loading ? 'true' : undefined}
-		data-testid="iconbutton"
+		data-testid="icon-button"
 		{...buttonAttributes}
 		{...restProps}
 	>

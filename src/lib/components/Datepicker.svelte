@@ -493,7 +493,12 @@
 	);
 </script>
 
-<div bind:this={containerElement} class="datepicker" class:datepicker--full-width={fullWidth}>
+<div
+	bind:this={containerElement}
+	class="datepicker"
+	class:datepicker--full-width={fullWidth}
+	data-testid="datepicker"
+>
 	<Input
 		bind:this={inputRef}
 		value={displayValue}

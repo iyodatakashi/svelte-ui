@@ -273,6 +273,7 @@
 	class:switch--large={size === 'large'}
 	class:switch--disabled={disabled}
 	class:switch--reduced-motion={reducedMotion}
+	data-testid="switch"
 >
 	<input
 		bind:this={inputRef}

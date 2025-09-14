@@ -279,6 +279,7 @@ select--focus-{focusStyle}"
 	class:select--disabled={disabled}
 	class:select--focused={isFocused}
 	class:select--rounded={rounded}
+	data-testid="select"
 >
 	<select
 		bind:this={selectRef}

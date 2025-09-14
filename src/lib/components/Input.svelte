@@ -392,6 +392,7 @@
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
+	data-testid="input"
 	style="width: {getStyleFromNumber(width)}; max-width: {getStyleFromNumber(
 		maxWidth
 	)}; min-width: {getStyleFromNumber(minWidth)}"

@@ -5,10 +5,18 @@
 	import Checkbox from '$lib/components/Checkbox.svelte';
 	import Switch from '$lib/components/Switch.svelte';
 	import Button from '$lib/components/Button.svelte';
+	import Select from '$lib/components/Select.svelte';
+	import Combobox from '$lib/components/Combobox.svelte';
+	import ColorPicker from '$lib/components/ColorPicker.svelte';
 	import Skeleton from '$lib/components/skeleton/Skeleton.svelte';
 	let value: string = $state('');
 	let value2: string = $state('');
 	let checked: boolean = $state(false);
+	let color: string = $state('');
+	const options = [
+		{ value: 'hoge', label: 'ほげ' },
+		{ value: 'fuga', label: 'ふが' }
+	];
 
 	const handleChange = (newValue: string) => {
 		console.log(newValue);
@@ -19,7 +27,9 @@
 	<label for="input1">インプット1</label>
 	<Input id="input1" inline bind:value minWidth={300} width="50%" onsubmit={handleChange} />
 	<Textarea id="textarea1" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
-
+	<Select bind:value {options} />
+	<Combobox bind:value {options} />
+	<ColorPicker bind:value={color} rounded clearable />
 	<div class="textarea">
 		<label for="textarea2">textarea</label>
 		<Textarea id="textarea2" bind:value={value2} maxHeight={120} onsubmit={handleChange} />

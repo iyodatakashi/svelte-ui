@@ -401,6 +401,7 @@
 	aria-controls={listboxId}
 	aria-haspopup="listbox"
 	aria-owns={listboxId}
+	data-testid="combobox"
 >
 	<!-- Inputコンポーネントを使用 -->
 	<Input
