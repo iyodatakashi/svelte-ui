@@ -76,7 +76,7 @@ describe('Input Component', () => {
 				placeholder: '',
 				type: 'text',
 				inline: false,
-				focusStyle: 'background',
+				focusStyle: 'outline',
 				fullWidth: false,
 				rounded: false,
 				disabled: false,

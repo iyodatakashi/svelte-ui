@@ -200,4 +200,130 @@ test.describe('Input Component - Browser Tests', () => {
 		const input = page.locator('input[type="text"]');
 		await expect(input).toHaveAttribute('pattern', '[0-9]+');
 	});
+
+	test('should handle focusStyle="outline"', async ({ page }) => {
+		await page.setContent(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Input Test</title>
+				<style>
+					.input--focus-outline input:focus {
+						outline: 2px solid #2196F3;
+						outline-offset: 2px;
+					}
+					.input--focus-background input:focus {
+						background: rgba(33, 150, 243, 0.1);
+						outline: none;
+					}
+					.input--focus-none input:focus {
+						outline: none;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="app">
+					<div class="input--focus-outline">
+						<input placeholder="Outline focus test" />
+					</div>
+				</div>
+			</body>
+			</html>
+		`);
+
+		const input = page.locator('input');
+		await input.focus();
+		await expect(input).toBeFocused();
+
+		// outlineスタイルが適用されていることを確認
+		const outline = await input.evaluate((el) => {
+			const styles = window.getComputedStyle(el);
+			return styles.outline;
+		});
+		expect(outline).not.toBe('none');
+	});
+
+	test('should handle focusStyle="background"', async ({ page }) => {
+		await page.setContent(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Input Test</title>
+				<style>
+					.input--focus-outline input:focus {
+						outline: 2px solid #2196F3;
+						outline-offset: 2px;
+					}
+					.input--focus-background input:focus {
+						background: rgba(33, 150, 243, 0.1);
+						outline: none;
+					}
+					.input--focus-none input:focus {
+						outline: none;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="app">
+					<div class="input--focus-background">
+						<input placeholder="Background focus test" />
+					</div>
+				</div>
+			</body>
+			</html>
+		`);
+
+		const input = page.locator('input');
+		await input.focus();
+		await expect(input).toBeFocused();
+
+		// outlineがnoneであることを確認
+		const outline = await input.evaluate((el) => {
+			const styles = window.getComputedStyle(el);
+			return styles.outline;
+		});
+		expect(outline).toMatch(/none/);
+	});
+
+	test('should handle focusStyle="none"', async ({ page }) => {
+		await page.setContent(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Input Test</title>
+				<style>
+					.input--focus-outline input:focus {
+						outline: 2px solid #2196F3;
+						outline-offset: 2px;
+					}
+					.input--focus-background input:focus {
+						background: rgba(33, 150, 243, 0.1);
+						outline: none;
+					}
+					.input--focus-none input:focus {
+						outline: none;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="app">
+					<div class="input--focus-none">
+						<input placeholder="None focus test" />
+					</div>
+				</div>
+			</body>
+			</html>
+		`);
+
+		const input = page.locator('input');
+		await input.focus();
+		await expect(input).toBeFocused();
+
+		// outlineがnoneであることを確認
+		const outline = await input.evaluate((el) => {
+			const styles = window.getComputedStyle(el);
+			return styles.outline;
+		});
+		expect(outline).toMatch(/none/);
+	});
 });

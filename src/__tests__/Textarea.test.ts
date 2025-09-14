@@ -97,7 +97,7 @@ describe('Textarea Component', () => {
 				minHeight: 36,
 				maxHeight: null,
 				inline: false,
-				focusStyle: 'background',
+				focusStyle: 'outline',
 				fullWidth: false,
 				fullHeight: false,
 				width: null,

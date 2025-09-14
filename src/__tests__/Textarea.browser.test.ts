@@ -264,4 +264,130 @@ test.describe('Textarea Component - Browser Tests', () => {
 		const textarea = page.locator('textarea');
 		await expect(textarea).toHaveAttribute('wrap', 'soft');
 	});
+
+	test('should handle focusStyle="outline"', async ({ page }) => {
+		await page.setContent(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Textarea Test</title>
+				<style>
+					.textarea--focus-outline textarea:focus {
+						outline: 2px solid #2196F3;
+						outline-offset: 2px;
+					}
+					.textarea--focus-background textarea:focus {
+						background: rgba(33, 150, 243, 0.1);
+						outline: none;
+					}
+					.textarea--focus-none textarea:focus {
+						outline: none;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="app">
+					<div class="textarea--focus-outline">
+						<textarea placeholder="Outline focus test"></textarea>
+					</div>
+				</div>
+			</body>
+			</html>
+		`);
+
+		const textarea = page.locator('textarea');
+		await textarea.focus();
+		await expect(textarea).toBeFocused();
+
+		// outlineスタイルが適用されていることを確認
+		const outline = await textarea.evaluate((el) => {
+			const styles = window.getComputedStyle(el);
+			return styles.outline;
+		});
+		expect(outline).not.toBe('none');
+	});
+
+	test('should handle focusStyle="background"', async ({ page }) => {
+		await page.setContent(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Textarea Test</title>
+				<style>
+					.textarea--focus-outline textarea:focus {
+						outline: 2px solid #2196F3;
+						outline-offset: 2px;
+					}
+					.textarea--focus-background textarea:focus {
+						background: rgba(33, 150, 243, 0.1);
+						outline: none;
+					}
+					.textarea--focus-none textarea:focus {
+						outline: none;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="app">
+					<div class="textarea--focus-background">
+						<textarea placeholder="Background focus test"></textarea>
+					</div>
+				</div>
+			</body>
+			</html>
+		`);
+
+		const textarea = page.locator('textarea');
+		await textarea.focus();
+		await expect(textarea).toBeFocused();
+
+		// outlineがnoneであることを確認
+		const outline = await textarea.evaluate((el) => {
+			const styles = window.getComputedStyle(el);
+			return styles.outline;
+		});
+		expect(outline).toMatch(/none/);
+	});
+
+	test('should handle focusStyle="none"', async ({ page }) => {
+		await page.setContent(`
+			<!DOCTYPE html>
+			<html>
+			<head>
+				<title>Textarea Test</title>
+				<style>
+					.textarea--focus-outline textarea:focus {
+						outline: 2px solid #2196F3;
+						outline-offset: 2px;
+					}
+					.textarea--focus-background textarea:focus {
+						background: rgba(33, 150, 243, 0.1);
+						outline: none;
+					}
+					.textarea--focus-none textarea:focus {
+						outline: none;
+					}
+				</style>
+			</head>
+			<body>
+				<div id="app">
+					<div class="textarea--focus-none">
+						<textarea placeholder="None focus test"></textarea>
+					</div>
+				</div>
+			</body>
+			</html>
+		`);
+
+		const textarea = page.locator('textarea');
+		await textarea.focus();
+		await expect(textarea).toBeFocused();
+
+		// outlineがnoneであることを確認
+		const outline = await textarea.evaluate((el) => {
+			const styles = window.getComputedStyle(el);
+			return styles.outline;
+		});
+		expect(outline).toMatch(/none/);
+	});
 });
