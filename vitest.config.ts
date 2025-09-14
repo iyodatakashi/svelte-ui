@@ -10,6 +10,7 @@ export default defineConfig({
 		}
 	},
 	test: {
+		pool: 'browser',
 		browser: {
 			enabled: true,
 			provider: 'playwright',
