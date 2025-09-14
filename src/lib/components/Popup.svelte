@@ -32,6 +32,9 @@
 		// 基本プロパティ
 		role = 'menu',
 
+		// HTML属性
+		id,
+
 		// スタイル/レイアウト
 		position = 'bottom',
 		margin = 8,
@@ -61,6 +64,9 @@
 
 		// 基本プロパティ
 		role?: string;
+
+		// HTML属性
+		id?: string;
 
 		// スタイル/レイアウト
 		position?:
@@ -102,7 +108,7 @@
 	} = $props();
 
 	let popupRef: HTMLDivElement | undefined = $state();
-	let popupId: string = $state(`popup-${Math.random().toString(36).substring(2, 15)}`);
+	let popupId: string = $state(id || `popup-${Math.random().toString(36).substring(2, 15)}`);
 	let previousActiveElement: HTMLElement | null = null;
 	let isMobile: boolean = $state(false);
 	let shouldUseFullscreen: boolean = $state(false);
