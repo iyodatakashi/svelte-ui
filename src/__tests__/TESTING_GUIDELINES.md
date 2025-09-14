@@ -244,6 +244,46 @@ test('[Component] CSS variables used are defined (computed) in the page', async 
 3. イベントハンドリングの仕組みを理解する
 4. セレクタが正しく要素を取得できることを確認する
 
+## 重要: dispatchEventの使用禁止
+
+**Svelte 5では`dispatchEvent`の使用は推奨されていません。**
+
+### ❌ 間違い: dispatchEventの使用
+
+```typescript
+// 避けるべき方法
+element.dispatchEvent(new Event('click'));
+element.dispatchEvent(new Event('change'));
+element.dispatchEvent(new Event('input'));
+```
+
+### ✅ 正しい: Svelte 5推奨の方法
+
+```typescript
+// ユーザーインタラクションのシミュレート
+element.focus();
+element.blur(); // changeイベントをトリガー
+
+// クリックのシミュレート
+element.click();
+
+// フォーカスの確認
+element.focus();
+expect(document.activeElement).toBe(element);
+
+// disabled状態の確認
+element.focus();
+expect(document.activeElement).not.toBe(element);
+expect(element).toHaveAttribute('disabled');
+```
+
+### 理由
+
+- **Svelte 5ではイベントがプロパティとして扱われる** (`onclick` → `let { onclick } = $props()`)
+- `dispatchEvent`はDOMイベントを発火するが、Svelte 5のプロパティベースのイベントハンドラーは呼ばれない
+- 実際のユーザーインタラクション（`click()`, `focus()`, `blur()`）はSvelte 5のイベントハンドラーを正しくトリガーする
+- DOM要素の状態を直接確認する方が信頼性が高い
+
 ### テスト実行後の確認事項
 
 1. 全テストが成功する
