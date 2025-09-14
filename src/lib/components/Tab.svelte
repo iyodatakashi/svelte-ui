@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import TabItem from './TabItem.svelte';
-	import type { MenuItem } from '../types/MenuItem';
+	import type { MenuItem } from '../types/menuItem';
 
 	// =========================================================================
 	// Props, States & Constants
