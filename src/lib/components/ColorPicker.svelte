@@ -315,7 +315,7 @@
 	style={customStyle}
 >
 	<Input
-		{id}
+		id={id ? `${id}-input` : undefined}
 		bind:value={localValue}
 		type="text"
 		placeholder=""
