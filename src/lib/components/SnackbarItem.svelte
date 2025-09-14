@@ -143,6 +143,7 @@
 <div
 	bind:this={snackbarRef}
 	class="snackbar-item snackbar-item--{position} {visible ? '' : 'snackbar-item--hidden'}"
+	data-testid="snackbar-item"
 >
 	<div
 		class="snackbar-item__content snackbar-item__content--{type} snackbar-item__content--{variant} snackbar-item__content--{position} {visible

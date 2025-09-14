@@ -74,7 +74,7 @@
 
 <!-- Snackbar Top Items -->
 {#if topItems.length > 0}
-	<div class="snackbar snackbar--top">
+	<div class="snackbar snackbar--top" data-testid="snackbar">
 		{#each topItems as item, index (item.id)}
 			{@render snackbarItemSnippet(item, index)}
 		{/each}
@@ -83,7 +83,7 @@
 
 <!-- Snackbar Bottom Items -->
 {#if bottomItems.length > 0}
-	<div class="snackbar snackbar--bottom">
+	<div class="snackbar snackbar--bottom" data-testid="snackbar">
 		{#each bottomItems as item, index (item.id)}
 			{@render snackbarItemSnippet(item, index)}
 		{/each}
