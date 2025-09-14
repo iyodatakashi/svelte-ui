@@ -8,7 +8,7 @@
 		SkeletonMediaConfig,
 		SkeletonThumbnailConfig,
 		SkeletonTextConfig
-	} from '../../types/Skeleton';
+	} from '../../types/skeleton';
 
 	let {
 		width = '100%',

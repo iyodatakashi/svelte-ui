@@ -3,7 +3,7 @@
 <script lang="ts">
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonHeadingConfig } from '../../types/Skeleton';
+	import type { SkeletonHeadingConfig } from '../../types/skeleton';
 
 	// =========================================================================
 	// Props

@@ -3,7 +3,7 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonButtonConfig } from '../../types/Skeleton';
+	import type { SkeletonButtonConfig } from '../../types/skeleton';
 
 	let {
 		buttonConfig = {},
