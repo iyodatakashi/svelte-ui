@@ -93,7 +93,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
 		size?: 'small' | 'medium' | 'large';
 		color?: string;
 		fullWidth?: boolean;

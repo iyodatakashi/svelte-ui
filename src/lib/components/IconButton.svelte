@@ -100,7 +100,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
 		size?: number;
 		fontSize?: number;
 		color?: string;

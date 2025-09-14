@@ -91,7 +91,7 @@
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
 		color?: string;
-		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
 		position?: 'left' | 'center' | 'right';
 		shadow?: boolean;
 		reducedMotion?: boolean;
@@ -254,16 +254,16 @@
 	// =========================================================================
 
 	const backgroundColors = {
+		ghost: 'transparent',
 		filled: color ?? 'var(--svelte-ui-fab-bg-filled)',
 		outlined: 'transparent',
-		ghost: 'transparent',
 		glass: 'var(--svelte-ui-fab-bg-glass)'
 	};
 
 	const textColors = {
+		ghost: color ?? 'var(--svelte-ui-fab-text-ghost)',
 		filled: 'var(--svelte-ui-fab-text-filled)',
 		outlined: color ?? 'var(--svelte-ui-fab-text-outlined)',
-		ghost: color ?? 'var(--svelte-ui-fab-text-ghost)',
 		glass: color ?? 'var(--svelte-ui-fab-text-glass)'
 	};
 
@@ -277,6 +277,8 @@
 	{...restProps}
 	class="fab"
 	class:fab--outlined={variant === 'outlined'}
+	class:fab--filled={variant === 'filled'}
+	class:fab--glass={variant === 'glass'}
 	class:fab--without-label={!hasLabel}
 	class:fab--left={position === 'left'}
 	class:fab--center={position === 'center'}

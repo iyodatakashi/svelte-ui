@@ -62,7 +62,7 @@
 		onpointercancel = () => {}, // No params for type inference
 
 		// ARIA/アクセシビリティ
-		ariaLabel = 'Menu'
+		ariaLabel
 	}: {
 		// Snippet
 		children?: Snippet;
@@ -88,7 +88,7 @@
 			| 'right-top'
 			| 'right-center'
 			| 'right-bottom';
-		variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
 		size?: number;
 		color?: string;
 		rounded?: boolean;
