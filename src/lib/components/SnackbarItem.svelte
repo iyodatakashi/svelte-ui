@@ -4,7 +4,7 @@
 	import { onMount } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import { snackbar } from '../utils/snackbar.svelte';
-	import type { IconVariant } from '$lib/types/Icon';
+	import type { IconVariant } from '$lib/types/icon';
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';

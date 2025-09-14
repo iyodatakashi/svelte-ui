@@ -3,6 +3,7 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
+	import type { Option } from '../types/options';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -73,7 +74,7 @@
 		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
-		options: any[];
+		options: Option[];
 
 		// HTML属性系
 		id?: string | null;

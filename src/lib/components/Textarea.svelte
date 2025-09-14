@@ -4,7 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '../utils/style';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
-	import type { IconVariant } from '$lib/types/Icon';
+	import type { IconVariant } from '$lib/types/icon';
 
 	// =========================================================================
 	// Props, States & Constants

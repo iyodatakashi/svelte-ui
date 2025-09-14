@@ -7,7 +7,7 @@
 	import { getStyleFromNumber } from '../utils/style';
 	import { onDestroy } from 'svelte';
 	import ImageUploaderPreview from './ImageUploaderPreview.svelte';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	// =========================================================================
 	// Props, States & Constants

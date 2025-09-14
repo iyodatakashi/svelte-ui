@@ -15,7 +15,7 @@
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import { announceToScreenReader } from '../utils/accessibility';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	dayjs.extend(localeData);
 

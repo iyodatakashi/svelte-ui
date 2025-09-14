@@ -6,7 +6,7 @@
 	import type { MenuItem } from '../types/MenuItem';
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	// =========================================================================
 	// Props, States & Constants

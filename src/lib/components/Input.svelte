@@ -5,7 +5,7 @@
 	import Icon from './Icon.svelte';
 	import { getStyleFromNumber } from '../utils/style';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { t } from '../i18n';
 
 	// =========================================================================

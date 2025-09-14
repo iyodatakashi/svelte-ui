@@ -6,7 +6,7 @@
 	import { announceToScreenReader } from '../utils/accessibility';
 	import { getStyleFromNumber } from '../utils/style';
 	import { t } from '../i18n';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	// =========================================================================
 	// Props, States & Constants

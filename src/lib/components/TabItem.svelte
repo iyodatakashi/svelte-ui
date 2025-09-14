@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import type { MenuItem } from '../types/MenuItem';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	// =========================================================================
 	// Props, States & Constants

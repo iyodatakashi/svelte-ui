@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/Icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { getStyleFromNumber } from '../utils/style';
 
 	// =========================================================================

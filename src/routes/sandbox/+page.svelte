@@ -28,7 +28,7 @@
 	<Input id="input1" inline bind:value minWidth={300} width="50%" onsubmit={handleChange} />
 	<Textarea id="textarea1" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
 	<Select bind:value {options} />
-	<Combobox bind:value {options} />
+	<Combobox bind:value {options} onchange={handleChange} />
 	<ColorPicker bind:value={color} rounded clearable />
 	<div class="textarea">
 		<label for="textarea2">textarea</label>

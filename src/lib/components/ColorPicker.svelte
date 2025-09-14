@@ -4,7 +4,7 @@
 	import { untrack } from 'svelte';
 	import Input from './Input.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
-	import type { IconVariant } from '$lib/types/Icon';
+	import type { IconVariant } from '$lib/types/icon';
 
 	// =========================================================================
 	// Props, States & Constants
