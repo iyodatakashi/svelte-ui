@@ -302,6 +302,7 @@
 		{height}
 		{adaptiveSize}
 		{rounded}
+		id={id ? `${id}-preview-${index}` : undefined}
 		{removeFileAriaLabel}
 		onRemove={() => removeFile(index)}
 	/>
