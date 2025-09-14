@@ -3,7 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import PopupMenu from './PopupMenu.svelte';
-	import type { MenuItem } from '../types/MenuItem';
+	import type { MenuItem } from '../types/menuItem';
 	import type { SvelteComponent, Snippet } from 'svelte';
 
 	// =========================================================================
@@ -15,6 +15,9 @@
 
 		// 基本プロパティ
 		menuItems,
+
+		// HTML属性
+		id,
 
 		// スタイル/レイアウト
 		position = 'bottom',
@@ -69,6 +72,9 @@
 
 		// 基本プロパティ
 		menuItems: (MenuItem | 'separator')[];
+
+		// HTML属性
+		id?: string;
 
 		// スタイル/レイアウト
 		position?:
@@ -286,7 +292,7 @@
 	};
 </script>
 
-<div class="button-block" bind:this={anchorRef}>
+<div class="button-block" bind:this={anchorRef} {id}>
 	<IconButton
 		{ariaLabel}
 		{disabled}
@@ -294,6 +300,9 @@
 		{size}
 		{color}
 		{rounded}
+		aria-haspopup="menu"
+		aria-expanded={popupMenuRef?.isOpen ? 'true' : 'false'}
+		aria-controls={popupMenuRef ? `${id}-menu-popup` : undefined}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -317,9 +326,6 @@
 		onpointerleave={handlePointerLeave}
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
-		aria-haspopup="menu"
-		aria-expanded="false"
-		aria-controls="{buttonId}-menu"
 		id={buttonId}
 	>
 		{#if children}
@@ -338,6 +344,7 @@
 	{position}
 	{mobileFullscreen}
 	{mobileBehavior}
+	id={id ? `${id}-menu` : undefined}
 />
 
 <style lang="scss">
