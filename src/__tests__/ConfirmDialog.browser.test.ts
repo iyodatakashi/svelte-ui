@@ -267,8 +267,8 @@ test.describe('ConfirmDialog Component - Browser Tests', () => {
 		const confirmButton = page.locator('button').filter({ hasText: 'Confirm' });
 		await confirmButton.click();
 
-		const confirmClicked = await page.evaluate(() => window.confirmClicked);
-		expect(confirmClicked).toBe(true);
+		const confirmButtonClicked = await page.evaluate(() => window.confirmClicked);
+		expect(confirmButtonClicked).toBe(true);
 	});
 
 	test('should handle cancel button click', async ({ page }) => {

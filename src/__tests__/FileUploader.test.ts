@@ -130,8 +130,8 @@ describe('FileUploader Component', () => {
 	it('should support max file size', () => {
 		// maxFileSize型のテスト
 		expect(typeof 1024).toBe('number');
-		expect(typeof 5 * 1024 * 1024).toBe('number');
-		expect(typeof 10 * 1024 * 1024).toBe('number');
+		expect(typeof (5 * 1024 * 1024)).toBe('number');
+		expect(typeof (10 * 1024 * 1024)).toBe('number');
 	});
 
 	it('should support placeholder', () => {

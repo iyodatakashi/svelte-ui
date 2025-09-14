@@ -66,8 +66,8 @@ test.describe('IconButton Component - Browser Tests', () => {
 		const button = page.locator('button');
 		await button.click();
 
-		const clickCount = await page.evaluate(() => window.clickCount);
-		expect(clickCount).toBe(1);
+		const iconButtonClickCount = await page.evaluate(() => window.clickCount);
+		expect(iconButtonClickCount).toBe(1);
 	});
 
 	test('should support different variants', async ({ page }) => {

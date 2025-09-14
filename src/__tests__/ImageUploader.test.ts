@@ -9,7 +9,7 @@ describe('ImageUploader Component', () => {
 
 	it('should have correct default props', () => {
 		const expectedDefaults = {
-			files: new DataTransfer().files,
+			files: null, // DataTransfer is not available in Node.js environment
 			multiple: false,
 			maxFileSize: 5 * 1024 * 1024,
 			placeholder: '',
@@ -125,8 +125,8 @@ describe('ImageUploader Component', () => {
 	it('should support max file size', () => {
 		// maxFileSize型のテスト
 		expect(typeof 1024).toBe('number');
-		expect(typeof 5 * 1024 * 1024).toBe('number');
-		expect(typeof 10 * 1024 * 1024).toBe('number');
+		expect(typeof (5 * 1024 * 1024)).toBe('number');
+		expect(typeof (10 * 1024 * 1024)).toBe('number');
 	});
 
 	it('should support placeholder', () => {

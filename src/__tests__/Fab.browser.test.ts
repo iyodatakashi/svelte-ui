@@ -66,8 +66,8 @@ test.describe('Fab Component - Browser Tests', () => {
 		const fab = page.locator('button');
 		await fab.click();
 
-		const clickCount = await page.evaluate(() => window.clickCount);
-		expect(clickCount).toBe(1);
+		const fabClickCount = await page.evaluate(() => window.clickCount);
+		expect(fabClickCount).toBe(1);
 	});
 
 	test('should support different variants', async ({ page }) => {
