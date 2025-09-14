@@ -18,6 +18,9 @@
 		// 基本プロパティ
 		menuItems,
 
+		// HTML属性
+		id,
+
 		// スタイル/レイアウト
 		position = 'bottom',
 
@@ -57,6 +60,7 @@
 			| 'right-bottom'
 			| 'auto';
 		menuItems: (MenuItem | 'separator')[];
+		id?: string;
 		ariaLabel?: string;
 		mobileFullscreen?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
@@ -242,6 +246,7 @@
 	role="menu"
 	{mobileFullscreen}
 	{mobileBehavior}
+	id={id ? `${id}-popup` : undefined}
 >
 	<div
 		class="popup-menu"
@@ -250,6 +255,7 @@
 		aria-label={ariaLabel}
 		aria-activedescendant={activeIndex >= 0 ? getMenuItemId(activeIndex) : undefined}
 		tabindex="-1"
+		{id}
 	>
 		<ul class="popup-menu__list" role="none">
 			{#each menuItems as item, index}
