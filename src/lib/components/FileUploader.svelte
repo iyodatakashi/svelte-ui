@@ -241,6 +241,7 @@
 		--file-uploader-width: {getStyleFromNumber(width) || '100%'};
 		--file-uploader-height: {height}px
 	"
+	data-testid="file-uploader"
 	onclick={handleClick}
 	onfocus={handleFocus}
 	onblur={handleBlur}
