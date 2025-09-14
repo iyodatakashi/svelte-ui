@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import IconButton from './IconButton.svelte';
+	import Input from './Input.svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/Icon';
 
@@ -311,58 +311,51 @@
 	class:color-picker--clearable={clearable}
 	class:color-picker--disabled={disabled}
 	class:color-picker--focused={isFocused}
+	data-testid="color-picker"
 	style={customStyle}
 >
-	<form class:color-picker--full-width={fullWidth} onsubmit={handleSubmit}>
-		<input
-			bind:value={localValue}
-			type="text"
-			class="color-picker__input"
-			onchange={handleChange}
-			oninput={handleInput}
-			onfocus={handleFocus}
-			onblur={handleBlur}
-			onclick={handleClick}
-			onkeydown={handleKeydown}
-			onkeyup={handleKeyup}
-			onmousedown={handleMouseDown}
-			onmouseup={handleMouseUp}
-			onmouseenter={handleMouseEnter}
-			onmouseleave={handleMouseLeave}
-			onmouseover={handleMouseOver}
-			onmouseout={handleMouseOut}
-			oncontextmenu={handleContextMenu}
-			onauxclick={handleAuxClick}
-			ontouchstart={handleTouchStart}
-			ontouchend={handleTouchEnd}
-			ontouchmove={handleTouchMove}
-			ontouchcancel={handleTouchCancel}
-			onpointerdown={handlePointerDown}
-			onpointerup={handlePointerUp}
-			onpointerenter={handlePointerEnter}
-			onpointerleave={handlePointerLeave}
-			onpointermove={handlePointerMove}
-			onpointercancel={handlePointerCancel}
-			{disabled}
-			{readonly}
-			{...inputAttributes}
-			{...restProps}
-		/>
-		<!-- クリアボタン -->
-		{#if clearable && !disabled && !readonly}
-			<div class="color-picker__clear-button">
-				<IconButton
-					ariaLabel={clearButtonAriaLabel}
-					color="var(--svelte-ui-colorpicker-text-color)"
-					onclick={clear}
-					tabindex={-1}
-					iconFilled={true}
-					{iconVariant}
-					size={24}>cancel</IconButton
-				>
-			</div>
-		{/if}
-	</form>
+	<Input
+		{id}
+		bind:value={localValue}
+		type="text"
+		placeholder=""
+		{disabled}
+		{readonly}
+		{clearable}
+		{clearButtonAriaLabel}
+		{focusStyle}
+		{fullWidth}
+		{rounded}
+		customStyle={`padding-left: var(--svelte-ui-colorpicker-text-padding-left); ${customStyle}`}
+		{inputAttributes}
+		onchange={handleChange}
+		oninput={handleInput}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onclick={handleClick}
+		onkeydown={handleKeydown}
+		onkeyup={handleKeyup}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
+		onsubmit={handleSubmit}
+		{...restProps}
+	/>
 
 	<div class="color-picker__trigger">
 		<input
@@ -395,41 +388,9 @@
 		max-width: 100%;
 	}
 
-	form {
-		padding: inherit;
-		border: none;
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		position: relative;
-	}
-
 	/* =============================================
  * 基本コンポーネント
  * ============================================= */
-	.color-picker__input {
-		width: 100%;
-		min-width: 1em;
-		padding: 0 12px 0 var(--svelte-ui-colorpicker-text-padding-left);
-		background: transparent;
-		border: none;
-		background-color: var(--svelte-ui-colorpicker-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-colorpicker-border-color);
-		border-radius: var(--svelte-ui-input-border-radius);
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		min-height: var(--svelte-ui-input-height);
-
-		&:focus,
-		&:focus-visible {
-			outline: none;
-		}
-	}
 
 	.color-picker__trigger {
 		position: absolute;
@@ -488,45 +449,17 @@
  * ============================================= */
 	.color-picker--full-width {
 		width: 100%;
-
-		form {
-			width: 100%;
-		}
 	}
 
 	/* =============================================
  * 機能バリエーション：clearable
  * ============================================= */
-	.color-picker--clearable {
-		.color-picker__input {
-			padding-right: var(--svelte-ui-clear-button-right-spacing);
-		}
-	}
 
 	@media (hover: hover) {
 		.color-picker:hover .color-picker__clear-button {
 			opacity: 1;
 			pointer-events: all;
 		}
-	}
-
-	/* =============================================
- * プレースホルダー・テキスト表示
- * ============================================= */
-	.color-picker__input::placeholder {
-		color: var(--svelte-ui-colorpicker-placeholder-color);
-	}
-
-	/* =============================================
- * フォーカス効果バリエーション
- * ============================================= */
-	.focus-style-border .color-picker__input:focus-visible {
-		outline: var(--svelte-ui-focus-outline-inner);
-		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-	}
-
-	.focus-style-background .color-picker__input:focus-visible {
-		background: var(--svelte-ui-hover-overlay);
 	}
 
 	/* =============================================
@@ -542,10 +475,6 @@
 		}
 	}
 
-	.color-picker__input:disabled {
-		cursor: not-allowed;
-	}
-
 	/* =============================================
  * 状態管理（readonly等）
  * ============================================= */
@@ -554,23 +483,12 @@
 		.color-picker__trigger {
 			pointer-events: none;
 		}
-
-		.color-picker__input[readonly] {
-			background-color: var(--svelte-ui-input-readonly-bg);
-		}
 	}
 
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.color-picker {
-		.color-picker__input {
-			background-color: var(--svelte-ui-colorpicker-bg);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
-				var(--svelte-ui-colorpicker-border-color);
-			color: var(--svelte-ui-colorpicker-text-color);
-		}
-
 		.color-picker__trigger::before {
 			border-color: var(--svelte-ui-colorpicker-trigger-border-color);
 		}
@@ -580,10 +498,6 @@
  * デザインバリアント：rounded
  * ============================================= */
 	.color-picker--rounded {
-		.color-picker__input {
-			border-radius: var(--svelte-ui-input-border-radius-rounded);
-		}
-
 		.color-picker__color-display {
 			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
