@@ -314,6 +314,7 @@
 	aria-label={ariaLabel || (hasLabel ? undefined : 'Floating Action Button')}
 	aria-describedby={ariaDescribedby}
 	aria-busy={loading ? 'true' : undefined}
+	data-testid="fab"
 >
 	{#if loading}
 		<div class="fab__loading">
