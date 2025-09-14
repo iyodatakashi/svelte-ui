@@ -3,6 +3,7 @@ import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import Checkbox from '../lib/components/Checkbox.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
+import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Checkbox with label content', async () => {
 	const screen = render(ComponentWrapper, {

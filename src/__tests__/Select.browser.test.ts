@@ -2,6 +2,7 @@ import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Select from '../lib/components/Select.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
+import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Select with options', async () => {
 	const screen = render(Select, {
@@ -153,22 +154,6 @@ test('Select with rounded renders correctly', async () => {
 	const container = screen.container.querySelector('[data-testid="select"]');
 	expect(container).toHaveClass('select--rounded');
 });
-
-function collectCssVarNames(element: Element): string[] {
-	const vars = new Set<string>();
-	const walk = (el: Element) => {
-		const style = (el as HTMLElement).style;
-		for (let i = 0; i < style.length; i++) {
-			const prop = style.item(i);
-			const val = style.getPropertyValue(prop);
-			const matches = val.match(/var\((--svelte-ui-[^)]+)\)/g) || [];
-			matches.forEach((m) => vars.add(m.replace(/var\(|\)/g, '')));
-		}
-		Array.from(el.children).forEach((c) => walk(c));
-	};
-	walk(element);
-	return Array.from(vars);
-}
 
 test('Select CSS variables used are defined (computed) in the page', async () => {
 	const screen = render(Select, {

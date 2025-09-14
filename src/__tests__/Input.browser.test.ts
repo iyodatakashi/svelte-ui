@@ -2,6 +2,7 @@ import { test, expect, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Input from '../lib/components/Input.svelte';
 import '../lib/assets/styles/variables.scss';
+import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Input and updates value on typing', async () => {
 	const screen = render(Input, { placeholder: 'Type here', value: '' });
@@ -165,21 +166,6 @@ test('inline auto-resize expands width with content length', async () => {
 
 // CSS Variables presence test for Input
 // Walk styles and ensure every var(--svelte-ui-*) resolves to a non-empty computed value
-function collectCssVarNames(element: Element): string[] {
-	const vars = new Set<string>();
-	const walk = (el: Element) => {
-		const style = (el as HTMLElement).style;
-		for (let i = 0; i < style.length; i++) {
-			const prop = style.item(i);
-			const val = style.getPropertyValue(prop);
-			const matches = val.match(/var\((--svelte-ui-[^)]+)\)/g) || [];
-			matches.forEach((m) => vars.add(m.replace(/var\(|\)/g, '')));
-		}
-		Array.from(el.children).forEach((c) => walk(c));
-	};
-	walk(element);
-	return Array.from(vars);
-}
 
 test('Input CSS variables used are defined (computed) in the page', async () => {
 	const screen = render(Input, { value: '', placeholder: 'Check CSS vars' });

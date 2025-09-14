@@ -2,6 +2,7 @@ import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Textarea from '../lib/components/Textarea.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
+import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Textarea and updates value on typing', async () => {
 	const screen = render(Textarea, { placeholder: 'Type here', value: '' });

@@ -3,6 +3,7 @@ import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import Radio from '../lib/components/Radio.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
+import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Radio with label content', async () => {
 	const screen = render(ComponentWrapper, {
