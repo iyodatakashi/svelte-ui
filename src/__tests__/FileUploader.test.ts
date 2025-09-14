@@ -9,7 +9,7 @@ describe('FileUploader Component', () => {
 
 	it('should have correct default props', () => {
 		const expectedDefaults = {
-			files: new DataTransfer().files,
+			files: null, // DataTransfer is not available in Node.js environment
 			multiple: false,
 			maxFileSize: 5 * 1024 * 1024,
 			placeholder: 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
