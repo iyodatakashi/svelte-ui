@@ -693,7 +693,7 @@
 		}
 
 		&:focus-visible {
-			outline: var(--svelte-ui-focus-outline);
+			outline: var(--svelte-ui-focus-outline-outer);
 			outline-offset: var(--svelte-ui-focus-outline-offset);
 		}
 	}
@@ -720,7 +720,7 @@
 		}
 
 		&:focus-visible {
-			outline: var(--svelte-ui-focus-outline);
+			outline: var(--svelte-ui-focus-outline-outer);
 			outline-offset: var(--svelte-ui-focus-outline-offset);
 		}
 
@@ -736,7 +736,7 @@
 		}
 
 		&--focused {
-			outline: var(--svelte-ui-focus-outline);
+			outline: var(--svelte-ui-focus-outline-outer);
 			outline-offset: var(--svelte-ui-focus-outline-offset);
 		}
 	}
@@ -909,12 +909,12 @@
 	}
 
 	.datepicker-calendar__date-button:focus-visible {
-		outline: var(--svelte-ui-focus-outline);
+		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
 
 	.datepicker-calendar__date-item--focused .datepicker-calendar__date-button {
-		outline: var(--svelte-ui-focus-outline);
+		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset);
 	}
 

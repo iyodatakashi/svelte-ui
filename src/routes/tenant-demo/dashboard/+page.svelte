@@ -190,7 +190,7 @@
 	}
 
 	.test-link:hover {
-		background: var(--svelte-ui-primary-color-hover);
+		background: var(--svelte-ui-hover-overlay);
 	}
 
 	.test-link.current {

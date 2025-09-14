@@ -353,7 +353,6 @@
 		border-radius: var(--svelte-ui-button-border-radius-rounded);
 		font-size: inherit;
 		font-family: inherit;
-		color: var(--svelte-ui-button-label-color);
 		line-height: normal;
 		text-align: center;
 		overflow: hidden;

@@ -456,8 +456,8 @@
 	}
 
 	.icon-button__button:focus-visible {
-		outline: var(--svelte-ui-focus-outline);
-		outline-offset: var(--svelte-ui-focus-outline-offset);
+		outline: var(--svelte-ui-focus-outline-outer);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
 	.icon-button__button--pressed {
