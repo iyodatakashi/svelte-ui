@@ -167,7 +167,7 @@
 	const itemGapStyle = $derived(getStyleFromNumber(itemGap));
 </script>
 
-<div class={containerClasses} style={customStyle}>
+<div class={containerClasses} style={customStyle} data-testid="skeleton">
 	<div class="skeleton__items" style="gap: {repeatGapStyle};">
 		{#each Array(repeat) as _, index}
 			<div class="skeleton__item" style="gap: {itemGapStyle};">
