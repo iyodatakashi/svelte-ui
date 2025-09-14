@@ -30,6 +30,9 @@
 		title = '',
 		description,
 
+		// HTML属性
+		id,
+
 		// スタイル/レイアウト
 		width = 240,
 		position = 'left',
@@ -54,6 +57,9 @@
 		// 基本プロパティ
 		title?: string;
 		description?: string;
+
+		// HTML属性
+		id?: string;
 
 		// スタイル/レイアウト
 		width?: string | number;
@@ -137,6 +143,7 @@
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={drawerClasses}
 	customStyles={drawerStyles()}
+	id={id ? `modal-${id}` : undefined}
 >
 	<div class="drawer">
 		{#if header || title}
@@ -144,14 +151,14 @@
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="drawer__title" id="drawer-title">
+					<div class="drawer__title" id={id ? `drawer-title-${id}` : undefined}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="drawer__description" id="drawer-description">
+			<div class="drawer__description" id={id ? `drawer-description-${id}` : undefined}>
 				{description}
 			</div>
 		{/if}

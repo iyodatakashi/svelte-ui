@@ -30,6 +30,9 @@
 		title = '',
 		description,
 
+		// HTML属性
+		id,
+
 		// スタイル/レイアウト
 		width = 320,
 		bodyStyle = '',
@@ -53,6 +56,9 @@
 		// 基本プロパティ
 		title?: string;
 		description?: string;
+
+		// HTML属性
+		id?: string;
 
 		// スタイル/レイアウト
 		width?: string | number;
@@ -128,6 +134,7 @@
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={dialogClasses}
 	customStyles={dialogStyles}
+	id={id ? `modal-${id}` : undefined}
 >
 	<div class="dialog">
 		{#if header || title}
@@ -135,14 +142,14 @@
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="dialog__title" id="dialog-title">
+					<div class="dialog__title" id={id ? `dialog-title-${id}` : undefined}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="dialog__description" id="dialog-description">
+			<div class="dialog__description" id={id ? `dialog-description-${id}` : undefined}>
 				{description}
 			</div>
 		{/if}

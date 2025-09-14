@@ -16,6 +16,9 @@
 		confirmText = 'Confirm',
 		cancelText = 'Cancel',
 
+		// HTML属性
+		id,
+
 		// スタイル/レイアウト
 		variant = 'info',
 		width = 400,
@@ -32,6 +35,9 @@
 		message?: string;
 		confirmText?: string;
 		cancelText?: string;
+
+		// HTML属性
+		id?: string;
 
 		// スタイル/レイアウト
 		variant?: 'info' | 'warning' | 'danger';
@@ -73,7 +79,14 @@
 	};
 </script>
 
-<Dialog bind:this={dialogRef} bind:isOpen {title} {width} closeIfClickOutside={false}>
+<Dialog
+	bind:this={dialogRef}
+	bind:isOpen
+	{title}
+	{width}
+	closeIfClickOutside={false}
+	id={id ? `dialog-${id}` : undefined}
+>
 	<div class="confirm-dialog-message">
 		{@html convertToHtml(message)}
 	</div>

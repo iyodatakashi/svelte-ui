@@ -37,7 +37,10 @@
 		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaLabelledby,
-		ariaDescribedby
+		ariaDescribedby,
+
+		// HTML属性
+		id
 	}: {
 		// Snippet
 		children?: Snippet;
@@ -58,6 +61,9 @@
 		ariaLabel?: string;
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
+
+		// HTML属性
+		id?: string;
 	} = $props();
 
 	let dialogRef: HTMLDialogElement;
@@ -219,6 +225,7 @@
 	aria-labelledby={ariaLabelledby}
 	aria-describedby={ariaDescribedby}
 	data-testid="modal"
+	{id}
 >
 	<div class="modal-contents" bind:this={containerRef}>
 		{#if children}
