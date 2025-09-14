@@ -61,6 +61,7 @@
 		"@chromatic-com/storybook": "^4.0.1",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
+		"@playwright/test": "^1.55.0",
 		"@storybook/addon-a11y": "^9.0.14",
 		"@storybook/addon-docs": "^9.0.14",
 		"@storybook/addon-svelte-csf": "^5.0.4",
