@@ -31,7 +31,6 @@
 		// ARIA/アクセシビリティ
 		ariaLabel,
 		decorative = true,
-		reducedMotion = false,
 
 		// その他
 		...restProps
@@ -55,9 +54,8 @@
 		opticalSize?: IconOpticalSize;
 		variant?: IconVariant;
 
-		// ARIA/アクセシビ理知
+		// ARIA/アクセシビリティ
 		ariaLabel?: string;
-		reducedMotion?: boolean;
 		decorative?: boolean;
 
 		// その他
@@ -67,9 +65,7 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const iconClasses = $derived(
-		[`material-symbols-${variant}`, reducedMotion && 'icon--no-motion'].filter(Boolean).join(' ')
-	);
+	const iconClasses = $derived(`material-symbols-${variant}`);
 
 	const fontVariationSettings = $derived(
 		`'FILL' ${filled ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${opticalSize}`
@@ -89,7 +85,14 @@
 	);
 </script>
 
-<i class={iconClasses} style={iconStyle} {title} {...ariaAttributes} {...restProps}>
+<i
+	class={iconClasses}
+	style={iconStyle}
+	{title}
+	{...ariaAttributes}
+	{...restProps}
+	data-testid="icon"
+>
 	{@render children()}
 </i>
 
@@ -100,6 +103,7 @@
 		style="width: {size}px; height: {size}px; font-size: {size}px; {customStyle}"
 		{...ariaAttributes}
 		{...restProps}
+		data-testid="icon-fallback"
 	>
 		{fallbackText}
 	</span>
@@ -137,11 +141,6 @@
 		transition-property: color, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 		transition-timing-function: ease;
-	}
-
-	/* Reduced motion */
-	.icon--no-motion {
-		transition: none;
 	}
 
 	/* Prefers reduced motion */
