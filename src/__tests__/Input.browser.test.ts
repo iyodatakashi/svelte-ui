@@ -1,6 +1,7 @@
 import { test, expect, vi } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Input from '../lib/components/Input.svelte';
+import '../lib/assets/styles/variables.scss';
 
 test('renders Input and updates value on typing', async () => {
 	const screen = render(Input, { placeholder: 'Type here', value: '' });
@@ -120,4 +121,105 @@ test('focus toggles input--focused class on wrapper', async () => {
 
 	await textbox.click();
 	await expect.element(wrapper).toHaveClass(/input--focused/);
+});
+
+// Focus style variants apply correct class and focus state
+test('focusStyle outline applies correct classes on focus', async () => {
+	const screen = render(Input, { value: '', focusStyle: 'outline' });
+	const textbox = screen.getByRole('textbox');
+	const wrapper = screen.getByTestId('input');
+	await expect.element(wrapper).toHaveClass(/input--focus-outline/);
+	await textbox.click();
+	await expect.element(wrapper).toHaveClass(/input--focused/);
+});
+
+test('focusStyle background applies correct classes on focus', async () => {
+	const screen = render(Input, { value: '', focusStyle: 'background' });
+	const textbox = screen.getByRole('textbox');
+	const wrapper = screen.getByTestId('input');
+	await expect.element(wrapper).toHaveClass(/input--focus-background/);
+	await textbox.click();
+	await expect.element(wrapper).toHaveClass(/input--focused/);
+});
+
+test('focusStyle none applies correct classes on focus', async () => {
+	const screen = render(Input, { value: '', focusStyle: 'none' });
+	const textbox = screen.getByRole('textbox');
+	const wrapper = screen.getByTestId('input');
+	await expect.element(wrapper).toHaveClass(/input--focus-none/);
+	await textbox.click();
+	await expect.element(wrapper).toHaveClass(/input--focused/);
+});
+
+// Inline auto-resize should expand width as content grows
+test('inline auto-resize expands width with content length', async () => {
+	const screen = render(Input, { inline: true, value: 'A' });
+	const wrapper = screen.getByTestId('input');
+	const width1 = (wrapper.element() as HTMLElement).getBoundingClientRect().width;
+
+	await screen.rerender({ inline: true, value: 'This is a much longer text' });
+	const width2 = (wrapper.element() as HTMLElement).getBoundingClientRect().width;
+
+	expect(width2).toBeGreaterThan(width1);
+});
+
+// CSS Variables presence test for Input
+// Walk styles and ensure every var(--svelte-ui-*) resolves to a non-empty computed value
+function collectCssVarNames(element: Element): string[] {
+	const vars = new Set<string>();
+	const walk = (el: Element) => {
+		const style = (el as HTMLElement).style;
+		for (let i = 0; i < style.length; i++) {
+			const prop = style.item(i);
+			const val = style.getPropertyValue(prop);
+			const matches = val.match(/var\((--svelte-ui-[^)]+)\)/g) || [];
+			matches.forEach((m) => vars.add(m.replace(/var\(|\)/g, '')));
+		}
+		Array.from(el.children).forEach((c) => walk(c));
+	};
+	walk(element);
+	return Array.from(vars);
+}
+
+test('Input CSS variables used are defined (computed) in the page', async () => {
+	const screen = render(Input, { value: '', placeholder: 'Check CSS vars' });
+	const wrapper = screen.getByTestId('input');
+	const usedVars = new Set<string>();
+
+	// Collect from inline styles and descendants
+	collectCssVarNames(wrapper.element()).forEach((v) => usedVars.add(v));
+
+	// Also check a list of expected variables this component relies on via stylesheets
+	const expectedVars = [
+		'--svelte-ui-input-height',
+		'--svelte-ui-input-padding',
+		'--svelte-ui-input-padding-left',
+		'--svelte-ui-input-icon-space',
+		'--svelte-ui-input-icon-space-inline',
+		'--svelte-ui-input-border-radius',
+		'--svelte-ui-input-border-radius-rounded',
+		'--svelte-ui-input-disabled-opacity',
+		'--svelte-ui-clear-button-transition',
+		'--svelte-ui-clear-button-right-spacing',
+		'--svelte-ui-select-dropdown-icon-size',
+		'--svelte-ui-input-icon-color',
+		'--svelte-ui-input-placeholder-color',
+		'--svelte-ui-input-text-color',
+		'--svelte-ui-input-bg',
+		'--svelte-ui-input-border-color',
+		'--svelte-ui-hover-overlay',
+		'--svelte-ui-input-icon-space-inline'
+	];
+	expectedVars.forEach((v) => usedVars.add(v));
+
+	// Validate each variable resolves to a non-empty value
+	const root = document.documentElement;
+	for (const varName of usedVars) {
+		const value = getComputedStyle(root).getPropertyValue(varName).trim();
+		// Some variables might be resolved on elements; try wrapper as fallback
+		const fallback = getComputedStyle(wrapper.element() as HTMLElement)
+			.getPropertyValue(varName)
+			.trim();
+		await expect(value || fallback, `CSS var ${varName} should be defined`).not.toBe('');
+	}
 });
