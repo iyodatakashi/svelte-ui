@@ -557,7 +557,7 @@
 	--svelte-ui-dialog-description-font-size: 0.875rem;
 	--svelte-ui-dialog-description-padding: 0.5rem 1rem;
 	--svelte-ui-dialog-footer-padding: 8px;
-	--svelte-ui-dialog-border-color: var(--svelte-ui-border-weak-color);
+	--svelte-ui-dialog-border: solid 1px var(--svelte-ui-border-weak-color);
 	--svelte-ui-dialog-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-dialog-title-color: var(--svelte-ui-text-color);
 	--svelte-ui-dialog-description-color: var(--svelte-ui-text-subtle-color);
@@ -572,6 +572,7 @@
 	--svelte-ui-drawer-description-font-size: 0.875rem;
 	--svelte-ui-drawer-description-padding: 0.5rem 1rem;
 	--svelte-ui-drawer-footer-padding: 8px;
+	--svelte-ui-drawer-border: 1px solid var(--svelte-ui-border-weak-color);
 	--svelte-ui-drawer-title-color: var(--svelte-ui-text-color);
 	--svelte-ui-drawer-description-color: var(--svelte-ui-text-subtle-color);
 

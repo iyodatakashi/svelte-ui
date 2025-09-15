@@ -123,7 +123,7 @@
 	});
 
 	const drawerClasses = $derived(
-		['drawer', position, scrollable && 'scrollable'].filter(Boolean).join(' ')
+		['drawer', `drawer--${position}`, scrollable && 'drawer--scrollable'].filter(Boolean).join(' ')
 	);
 
 	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
@@ -145,7 +145,7 @@
 	customStyles={drawerStyles()}
 	id={id ? `${id}-modal` : undefined}
 >
-	<div class="drawer">
+	<div class="drawer drawer--{position} {scrollable ? 'drawer--scrollable' : ''}">
 		{#if header || title}
 			<div class="drawer__header">
 				{#if header}
@@ -263,27 +263,27 @@
 		}
 	}
 
-	:global(.drawer.right.fade-in) {
+	:global(.drawer--right.fade-in) {
 		animation: fadeInFromRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.right.fade-in::backdrop) {
+	:global(.drawer--right.fade-in::backdrop) {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.left.fade-in) {
+	:global(.drawer--left.fade-in) {
 		animation: fadeInFromLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.left.fade-in::backdrop) {
+	:global(.drawer--left.fade-in::backdrop) {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.left.fade-out) {
+	:global(.drawer--left.fade-out) {
 		animation: fadeOutToLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.right.fade-out) {
+	:global(.drawer--right.fade-out) {
 		animation: fadeOutToRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
@@ -297,6 +297,15 @@
 		justify-content: stretch;
 		height: 100%;
 		overflow: hidden;
+	}
+
+	/* Position-based borders */
+	.drawer--left {
+		border-right: var(--svelte-ui-drawer-border);
+	}
+
+	.drawer--right {
+		border-left: var(--svelte-ui-drawer-border);
 	}
 
 	.drawer__header {
@@ -339,7 +348,7 @@
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 
-	:global(.drawer.scrollable) {
+	.drawer--scrollable {
 		.drawer__header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
@@ -362,12 +371,12 @@
 		:global(.drawer.fade-in::backdrop),
 		:global(.drawer.fade-out),
 		:global(.drawer.fade-out::backdrop),
-		:global(.drawer.left.fade-in),
-		:global(.drawer.left.fade-in::backdrop),
-		:global(.drawer.left.fade-out),
-		:global(.drawer.right.fade-in),
-		:global(.drawer.right.fade-in::backdrop),
-		:global(.drawer.right.fade-out) {
+		:global(.drawer--left.fade-in),
+		:global(.drawer--left.fade-in::backdrop),
+		:global(.drawer--left.fade-out),
+		:global(.drawer--right.fade-in),
+		:global(.drawer--right.fade-in::backdrop),
+		:global(.drawer--right.fade-out) {
 			animation-duration: 0.01s;
 		}
 	}

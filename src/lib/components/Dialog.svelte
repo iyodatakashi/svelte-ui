@@ -176,7 +176,7 @@
 		flex-direction: column;
 		justify-content: stretch;
 		max-height: calc(100dvh - 2em - 6px);
-		border: solid 1px var(--svelte-ui-dialog-border-color);
+		border: var(--svelte-ui-dialog-border);
 		border-radius: var(--svelte-ui-dialog-border-radius);
 		overflow: hidden;
 	}
