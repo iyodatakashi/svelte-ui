@@ -6,6 +6,7 @@
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
+	import { getStyleFromNumber } from '../utils/style';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -97,7 +98,7 @@
 		size?: 'small' | 'medium' | 'large';
 		color?: string;
 		fullWidth?: boolean;
-		minWidth?: number;
+		minWidth?: string | number;
 		rounded?: boolean;
 		popup?: boolean;
 
@@ -313,7 +314,7 @@
 	disabled={isDisabled}
 	class={buttonClasses}
 	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
-		min-width: {minWidth}px; 
+		min-width: {getStyleFromNumber(minWidth)}; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
 	onauxclick={handleAuxClick}
