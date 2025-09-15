@@ -389,7 +389,7 @@
 	{#if hasBadge && (badgeVariant === 'dot' || badgeCount > 0)}
 		<div
 			class="icon-button__badge icon-button__badge--{badgeVariant}"
-			style="background-color: {badgeColor || 'var(--badge-color)'}"
+			style="background-color: {badgeColor || 'var(--svelte-ui-badge-bg)'}"
 			aria-label={badgeVariant === 'count' ? `${badgeCount}` : t('iconButton.badgeNew')}
 			aria-live="polite"
 		>
@@ -402,6 +402,7 @@
 	.icon-button {
 		position: relative;
 		display: block;
+		width: fit-content;
 	}
 
 	.icon-button__button {
@@ -504,29 +505,28 @@
 		justify-content: center;
 	}
 
-	.icon-button__button__badge {
+	.icon-button__badge {
 		position: absolute;
 		top: -2px;
 		right: -2px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
-		font-size: var(--badge-font-size);
-		font-weight: 600;
-		color: var(--badge-text-color);
+		font-size: var(--svelte-ui-badge-font-size);
+		color: var(--svelte-ui-badge-text-color);
 		line-height: 1;
 		text-align: center;
 		border-radius: var(--svelte-ui-border-radius-rounded);
 		z-index: 2;
 	}
 
-	.icon-button__button__badge--dot {
+	.icon-button__badge--dot {
 		width: 8px;
 		height: 8px;
 		min-width: unset;
 	}
 
-	.icon-button__button__badge--count {
+	.icon-button__badge--count {
 		min-width: 16px;
 		height: 16px;
 		padding: 0 4px;

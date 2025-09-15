@@ -20,7 +20,7 @@ interface IconButtonArgs {
 	customStyle?: string;
 	rounded?: boolean;
 	pressed?: boolean;
-	showBadge?: boolean;
+	hasBadge?: boolean;
 	badgeCount?: number;
 	badgeVariant?: 'dot' | 'count';
 	badgeColor?: string;
@@ -113,7 +113,7 @@ const meta: Meta<IconButtonArgs> = {
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant style'
 		},
-		showBadge: {
+		hasBadge: {
 			control: 'boolean',
 			description: 'Whether to show a badge'
 		},
@@ -402,14 +402,25 @@ export const FilledIcon: Story = {
 	}
 };
 
-// Badge
+// Badge with count
 export const WithBadge: Story = {
 	args: {
 		variant: 'ghost',
-		showBadge: true,
+		hasBadge: true,
 		badgeCount: 5,
 		badgeVariant: 'count',
 		ariaLabel: 'Notifications (5 unread)',
+		children: createChildrenSnippet('notifications')
+	}
+};
+
+// Badge with dot
+export const WithDotBadge: Story = {
+	args: {
+		variant: 'ghost',
+		hasBadge: true,
+		badgeVariant: 'dot',
+		ariaLabel: 'New notifications',
 		children: createChildrenSnippet('notifications')
 	}
 };
@@ -475,7 +486,7 @@ export const Playground: Story = {
 		rounded: true,
 		pressed: false,
 		iconFilled: false,
-		showBadge: false,
+		hasBadge: false,
 		badgeCount: 0,
 		badgeVariant: 'count',
 		badgeMax: 99,

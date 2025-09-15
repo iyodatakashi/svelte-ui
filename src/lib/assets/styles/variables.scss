@@ -236,19 +236,11 @@
 	--svelte-ui-glass-bg: var(--white-200-transparent);
 }
 
-/* ====================================
- * コンポーネント変数
- * ==================================== */
-
 :where(:root),
 [data-theme='dark'] {
 	/* ====================================
    * 共通の変数（サイズ、トランジション、ボーダー半径など）
    * ==================================== */
-
-	/* 基本的なトランジション */
-	--svelte-ui-transition-duration-fast: 0.15s;
-	--svelte-ui-transition-duration: 0.3s;
 
 	/* ボーダー半径 */
 	--svelte-ui-border-radius: 4px;
@@ -270,7 +262,11 @@
 	--svelte-ui-touch-target: 44px;
 	--svelte-ui-touch-target-lg: 48px;
 
-	/* Z-index */
+	/* 基本的なトランジション */
+	--svelte-ui-transition-duration-fast: 0.15s;
+	--svelte-ui-transition-duration: 0.3s;
+
+	/* z-index */
 	--svelte-ui-z-dropdown: 1000;
 	--svelte-ui-z-modal: 1050;
 	--svelte-ui-z-popover: 1060;
@@ -278,7 +274,9 @@
 	--svelte-ui-z-toast: 1080;
 
 	/* Form Controls - 共通 */
+	--svelte-ui-form-height-sm: : 28px;
 	--svelte-ui-form-height: 36px;
+	--svelte-ui-form-height-lg: : 44px;
 	--svelte-ui-form-padding: 0 12px;
 	--svelte-ui-form-padding-left: 12px;
 	--svelte-ui-form-icon-space: 40px;
@@ -288,10 +286,14 @@
 	--svelte-ui-form-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-form-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
 
+	/* ====================================
+   * コンポーネント変数
+   * ==================================== */
+
 	/* Button */
-	--svelte-ui-button-height-sm: 28px;
-	--svelte-ui-button-height: 36px;
-	--svelte-ui-button-height-lg: 44px;
+	--svelte-ui-button-height-sm: var(--svelte-ui-form-height-sm);
+	--svelte-ui-button-height: var(--svelte-ui-form-height);
+	--svelte-ui-button-height-lg: var(--svelte-ui-form-height-lg);
 	--svelte-ui-button-padding-sm: 0 8px;
 	--svelte-ui-button-padding: 0 12px;
 	--svelte-ui-button-padding-lg: 0 16px;
@@ -358,7 +360,7 @@
 	--svelte-ui-input-icon-color: var(--svelte-ui-text-subtle-color);
 
 	/* Textarea */
-	--svelte-ui-textarea-min-height: 36px;
+	--svelte-ui-textarea-min-height: var(--svelte-ui-form-height);
 	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - 1.8em) / 2) 12px;
 	--svelte-ui-textarea-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
@@ -649,11 +651,9 @@
 	--svelte-ui-clear-button-right-spacing: 36px;
 
 	/* Badge */
-	--badge-font-size: 12px;
-	--badge-text-color: var(--svelte-ui-text-on-filled-color);
-	--badge-color: var(--svelte-ui-primary-color);
-	--badge-text-color: var(--svelte-ui-text-on-filled-color);
-	--badge-color: var(--svelte-ui-primary-color);
+	--svelte-ui-badge-font-size: var(--svelte-ui-font-size-sm);
+	--svelte-ui-badge-bg: var(--svelte-ui-surface-inverse-color);
+	--svelte-ui-badge-text-color: var(--svelte-ui-text-inverse-color);
 
 	/* フォーカススタイル */
 	/* 外側フォーカススタイル（要素の外側に2px離して表示） */
