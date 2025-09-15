@@ -265,8 +265,15 @@ const createChildrenSnippet = (text: string) =>
 export const Default: Story = {
 	args: {
 		variant: 'ghost',
-		size: 'medium',
-		children: createChildrenSnippet('Default Button')
+		children: createChildrenSnippet('Default (Ghost Button)')
+	}
+};
+
+// Filled variant
+export const Ghost: Story = {
+	args: {
+		variant: 'ghost',
+		children: createChildrenSnippet('Ghost Button')
 	}
 };
 
@@ -274,7 +281,6 @@ export const Default: Story = {
 export const Filled: Story = {
 	args: {
 		variant: 'filled',
-		size: 'medium',
 		children: createChildrenSnippet('Filled Button')
 	}
 };
@@ -283,8 +289,23 @@ export const Filled: Story = {
 export const Outlined: Story = {
 	args: {
 		variant: 'outlined',
-		size: 'medium',
 		children: createChildrenSnippet('Outlined Button')
+	}
+};
+
+export const Glass: Story = {
+	args: {
+		variant: 'glass',
+		children: createChildrenSnippet('Glass Button')
+	}
+};
+
+// Rounded
+export const Rounded: Story = {
+	args: {
+		variant: 'filled',
+		rounded: true,
+		children: createChildrenSnippet('Rounded Button')
 	}
 };
 
@@ -331,6 +352,16 @@ export const WithIcon: Story = {
 	}
 };
 
+// Popup
+export const Popup: Story = {
+	args: {
+		variant: 'filled',
+		popup: true,
+		ariaExpanded: false,
+		children: createChildrenSnippet('Options')
+	}
+};
+
 // Custom color
 export const CustomColor: Story = {
 	args: {
@@ -352,35 +383,6 @@ export const FullWidth: Story = {
 	}
 };
 
-// Rounded
-export const Rounded: Story = {
-	args: {
-		variant: 'filled',
-		rounded: true,
-		children: createChildrenSnippet('Rounded Button')
-	}
-};
-
-// Popup
-export const Popup: Story = {
-	args: {
-		variant: 'outlined',
-		popup: true,
-		ariaExpanded: false,
-		children: createChildrenSnippet('Options')
-	}
-};
-
-// Accessibility example
-export const Accessible: Story = {
-	args: {
-		variant: 'filled',
-		ariaLabel: 'Save document as PDF',
-		icon: 'download',
-		children: createChildrenSnippet('Download PDF')
-	}
-};
-
 // Reduced motion
 export const ReducedMotion: Story = {
 	args: {
@@ -388,37 +390,4 @@ export const ReducedMotion: Story = {
 		reducedMotion: true,
 		children: createChildrenSnippet('No Animation')
 	}
-};
-
-// Playground (全props操作用)
-export const Playground: Story = {
-	args: {
-		type: 'button',
-		variant: 'filled',
-		size: 'medium',
-
-		disabled: false,
-		loading: false,
-		fullWidth: false,
-		rounded: false,
-		popup: false,
-		iconFilled: false,
-		reducedMotion: false,
-		icon: '',
-		color: 'var(--svelte-ui-primary-color)',
-		customStyle: '',
-		minWidth: 0,
-		tabindex: null,
-		ariaLabel: '',
-		ariaDescribedby: '',
-		ariaExpanded: false
-		// children は除外してコントロールの問題を回避
-	},
-	render: (args) => ({
-		Component: Button,
-		props: {
-			...args,
-			children: createChildrenSnippet('Customizable Button')
-		}
-	})
 };
