@@ -170,7 +170,7 @@ test('Fab with shadow renders correctly', async () => {
 	const screen = render(ComponentWrapper, {
 		component: Fab,
 		children: 'Shadow Fab',
-		shadow: true,
+		hasShadow: true,
 		id: 'fab-shadow'
 	});
 	const fab = screen.getByTestId('fab');

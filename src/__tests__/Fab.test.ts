@@ -14,7 +14,7 @@ describe('Fab Component', () => {
 			color: undefined,
 			variant: 'filled',
 			position: 'right',
-			shadow: false,
+			hasShadow: false,
 			icon: '',
 			iconFilled: false,
 			iconWeight: 300,
@@ -32,7 +32,7 @@ describe('Fab Component', () => {
 		expect(typeof expectedDefaults.type).toBe('string');
 		expect(typeof expectedDefaults.variant).toBe('string');
 		expect(typeof expectedDefaults.position).toBe('string');
-		expect(typeof expectedDefaults.shadow).toBe('boolean');
+		expect(typeof expectedDefaults.hasShadow).toBe('boolean');
 		expect(typeof expectedDefaults.icon).toBe('string');
 		expect(typeof expectedDefaults.iconFilled).toBe('boolean');
 		expect(typeof expectedDefaults.iconWeight).toBe('number');
@@ -70,7 +70,7 @@ describe('Fab Component', () => {
 	});
 
 	it('should handle boolean props correctly', () => {
-		const booleanProps = ['shadow', 'iconFilled', 'disabled', 'loading', 'reducedMotion'];
+		const booleanProps = ['hasShadow', 'iconFilled', 'disabled', 'loading', 'reducedMotion'];
 
 		booleanProps.forEach((prop) => {
 			expect(typeof true).toBe('boolean');
@@ -185,7 +185,7 @@ describe('Fab Component', () => {
 		});
 	});
 
-	it('should handle shadow prop correctly', () => {
+	it('should handle hasShadow prop correctly', () => {
 		expect(typeof true).toBe('boolean');
 		expect(typeof false).toBe('boolean');
 	});

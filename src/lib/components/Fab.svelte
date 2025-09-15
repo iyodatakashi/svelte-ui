@@ -23,7 +23,7 @@
 		color,
 		variant = 'filled',
 		position = 'right',
-		shadow = false,
+		hasShadow = false,
 
 		// アイコン関連
 		icon = '',
@@ -93,7 +93,7 @@
 		color?: string;
 		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
 		position?: 'left' | 'center' | 'right';
-		shadow?: boolean;
+		hasShadow?: boolean;
 		reducedMotion?: boolean;
 		ariaLabel?: string;
 		ariaDescribedby?: string;
@@ -283,7 +283,7 @@
 	class:fab--left={position === 'left'}
 	class:fab--center={position === 'center'}
 	class:fab--right={position === 'right'}
-	class:fab--shadow={shadow}
+	class:fab--shadow={hasShadow}
 	class:fab--loading={loading}
 	class:fab--no-motion={reducedMotion}
 	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
