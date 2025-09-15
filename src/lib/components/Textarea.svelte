@@ -532,7 +532,7 @@
 
 	.textarea--auto-resize {
 		textarea {
-			overflow: hidden;
+			overflow-y: auto;
 		}
 	}
 
