@@ -673,7 +673,6 @@
 		display: flex;
 		justify-content: space-between;
 		align-items: center;
-		gap: 16px;
 	}
 
 	.datepicker-calendar__header__month-label-button {
