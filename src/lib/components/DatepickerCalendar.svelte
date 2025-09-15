@@ -867,6 +867,20 @@
 	}
 
 	/* 範囲内の日付ボタンスタイル */
+	.datepicker-calendar__date-item--out-of-range {
+		background: var(--svelte-ui-datepicker-out-of-range-bg);
+		pointer-events: none;
+		.datepicker-calendar__date-button {
+			color: var(--svelte-ui-datepicker-out-of-range-text-color);
+		}
+
+		// 範囲外でも選択状態の日付は選択色を優先（単一選択のみ）
+		&.datepicker-calendar__date-item--selected .datepicker-calendar__date-button {
+			color: var(--svelte-ui-datepicker-selected-text-color);
+		}
+	}
+
+	/* レンジ選択のスタイル（out-of-rangeより後に定義して優先度を上げる） */
 	.datepicker-calendar__date-item--range-start .datepicker-calendar__date-button,
 	.datepicker-calendar__date-item--range-end .datepicker-calendar__date-button,
 	.datepicker-calendar__date-item--range-single .datepicker-calendar__date-button {
@@ -899,13 +913,6 @@
 		background-color: transparent;
 		z-index: 1;
 		position: relative;
-	}
-	.datepicker-calendar__date-item--out-of-range {
-		background: var(--svelte-ui-datepicker-out-of-range-bg);
-		pointer-events: none;
-		.datepicker-calendar__date-button {
-			color: var(--svelte-ui-datepicker-out-of-range-text-color);
-		}
 	}
 
 	.datepicker-calendar__date-button:focus-visible {
