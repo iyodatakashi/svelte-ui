@@ -23,7 +23,7 @@
 		color,
 		variant = 'filled',
 		position = 'right',
-		shadow = true,
+		shadow = false,
 
 		// アイコン関連
 		icon = '',

@@ -37,6 +37,9 @@
 		iconVariant = 'outlined',
 		removeFileAriaLabel = t('fileUploader.removeFile'),
 
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
 		onblur = () => {}, // No params for type inference

@@ -14,7 +14,7 @@ describe('Fab Component', () => {
 			color: undefined,
 			variant: 'filled',
 			position: 'right',
-			shadow: true,
+			shadow: false,
 			icon: '',
 			iconFilled: false,
 			iconWeight: 300,
