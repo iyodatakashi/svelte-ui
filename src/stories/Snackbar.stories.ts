@@ -1,6 +1,6 @@
 import type { StoryObj } from '@storybook/sveltekit';
 import Snackbar from '../lib/components/Snackbar.svelte';
-import { snackbarManager } from '../utils/snackbar.svelte';
+import { snackbarManager } from '../lib/utils/snackbar.svelte';
 
 // グローバルWindow型を拡張
 declare global {
