@@ -10,8 +10,6 @@
  *    - カラーパレット（base, primary, white）
  *    - 共通変数（トランジション、ボーダー半径、タイポグラフィ）
  *    - 基本色変数（--svelte-ui-primary-color, --svelte-ui-success-color等）
- *    - 各コンポーネントのサイズ・パディング等の固定値
- *      ※ テーマに関係なく固定値のため、ここに配置
  * 
  * 2. ライトテーマ（:where(:root)内）
  *    - テキスト色、ボーダー色、背景色等の基本テーマ色
@@ -19,7 +17,8 @@
  * 3. ダークテーマ（[data-theme='dark']）
  *    - ライトテーマで定義された色変数を上書き
  * 
- * 4. コンポーネント色変数（:where(:root), [data-theme='dark']）
+ * 4. コンポーネント変数（:where(:root), [data-theme='dark']）
+ *    - サイズ・パディング等の固定値
  *    - ライト・ダーク両テーマで共有される色変数
  *    - 各コンポーネントの色変数（Button, Input, Checkbox, Radio, Switch等）
  *    - テーマで定義された色（--svelte-ui-text-color等）を参照する
@@ -120,52 +119,6 @@
 	--white-950-transparent: rgba(255, 255, 255, 0.95);
 
 	/* ====================================
-   * 共通の変数（サイズ、トランジション、ボーダー半径など）
-   * ==================================== */
-
-	/* 基本的なトランジション */
-	--svelte-ui-transition-duration-fast: 0.15s;
-	--svelte-ui-transition-duration: 0.3s;
-
-	/* ボーダー半径 */
-	--svelte-ui-border-radius: 4px;
-	--svelte-ui-border-radius-rounded: 999px;
-
-	/* ボーダー幅 */
-	--svelte-ui-border-width: 1px;
-	--svelte-ui-border-width-thick: 2px;
-
-	/* タイポグラフィ */
-	--svelte-ui-font-size-xs: 0.75rem;
-	--svelte-ui-font-size-sm: 0.875rem;
-	--svelte-ui-font-size: 1rem;
-	--svelte-ui-font-size-lg: 1.125rem;
-	--svelte-ui-font-size-xl: 1.25rem;
-
-	/* Mobile Touch Size */
-	--svelte-ui-touch-target-sm: 36px;
-	--svelte-ui-touch-target: 44px;
-	--svelte-ui-touch-target-lg: 48px;
-
-	/* Z-index */
-	--svelte-ui-z-dropdown: 1000;
-	--svelte-ui-z-modal: 1050;
-	--svelte-ui-z-popover: 1060;
-	--svelte-ui-z-tooltip: 1070;
-	--svelte-ui-z-toast: 1080;
-
-	/* Form Controls - 共通 */
-	--svelte-ui-form-height: 36px;
-	--svelte-ui-form-padding: 0 12px;
-	--svelte-ui-form-padding-left: 12px;
-	--svelte-ui-form-icon-space: 40px;
-	--svelte-ui-form-icon-space-inline: 32px;
-	--svelte-ui-form-padding-with-icon: 0 var(--svelte-ui-form-icon-space) 0 12px;
-	--svelte-ui-form-padding-with-icon-inline: 0 var(--svelte-ui-form-icon-space-inline) 0 12px;
-	--svelte-ui-form-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-form-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
-
-	/* ====================================
    * 基本の色変数
    * ==================================== */
 
@@ -180,216 +133,6 @@
 
 	/* Disabled State */
 	--svelte-ui-disabled-opacity: 0.5;
-
-	/* ====================================
-   * 各コンポーネントのサイズ、パディングなど
-   * ==================================== */
-
-	/* Button */
-	--svelte-ui-button-height-sm: 28px;
-	--svelte-ui-button-height: 36px;
-	--svelte-ui-button-height-lg: 44px;
-	--svelte-ui-button-padding-sm: 0 8px;
-	--svelte-ui-button-padding: 0 12px;
-	--svelte-ui-button-padding-lg: 0 16px;
-	--svelte-ui-button-font-size-sm: 14px;
-	--svelte-ui-button-font-size: inherit;
-	--svelte-ui-button-font-size-lg: 16px;
-	--svelte-ui-button-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-button-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-button-disabled-opacity: var(--svelte-ui-disabled-opacity);
-
-	/* IconButton */
-	--svelte-ui-iconbutton-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-iconbutton-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-iconbutton-disabled-opacity: var(--svelte-ui-disabled-opacity);
-
-	/* Input */
-	--svelte-ui-input-height: var(--svelte-ui-form-height);
-	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
-	--svelte-ui-input-padding-left: var(--svelte-ui-form-padding-left);
-	--svelte-ui-input-icon-space: var(--svelte-ui-form-icon-space);
-	--svelte-ui-input-icon-space-inline: var(--svelte-ui-form-icon-space-inline);
-	--svelte-ui-input-padding-with-icon: var(--svelte-ui-form-padding-with-icon);
-	--svelte-ui-input-padding-with-icon-inline: var(--svelte-ui-form-padding-with-icon-inline);
-	--svelte-ui-input-border-radius: var(--svelte-ui-form-border-radius);
-	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
-	--svelte-ui-input-disabled-opacity: var(--svelte-ui-disabled-opacity);
-
-	/* Textarea */
-	--svelte-ui-textarea-min-height: 36px;
-	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - 1.8em) / 2) 12px;
-	--svelte-ui-textarea-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
-
-	/* Select */
-	--svelte-ui-select-height: var(--svelte-ui-form-height);
-	--svelte-ui-select-padding: var(--svelte-ui-form-padding-with-icon);
-	--svelte-ui-select-padding-inline: var(--svelte-ui-form-padding-with-icon-inline);
-	--svelte-ui-select-dropdown-icon-right: 8px;
-	--svelte-ui-select-dropdown-icon-size: 18px;
-	--svelte-ui-select-border-radius: var(--svelte-ui-form-border-radius);
-	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
-
-	/* Checkbox */
-	--svelte-ui-checkbox-size: 16px;
-	--svelte-ui-checkbox-size-sm: 14px;
-	--svelte-ui-checkbox-size-lg: 20px;
-	--svelte-ui-checkbox-min-height: 20px;
-	--svelte-ui-checkbox-min-height-sm: 16px;
-	--svelte-ui-checkbox-min-height-lg: 24px;
-	--svelte-ui-checkbox-padding: 0 0 0 24px;
-	--svelte-ui-checkbox-padding-sm: 0 0 0 20px;
-	--svelte-ui-checkbox-padding-lg: 0 0 0 28px;
-	--svelte-ui-checkbox-border-radius: 2px;
-	--svelte-ui-checkbox-border-width: 2px;
-	--svelte-ui-checkbox-icon-size: 1rem;
-	--svelte-ui-checkbox-icon-size-sm: 0.875rem;
-	--svelte-ui-checkbox-icon-size-lg: 1.25rem;
-	--svelte-ui-checkbox-icon-width: 16px;
-	--svelte-ui-checkbox-icon-width-sm: 14px;
-	--svelte-ui-checkbox-icon-width-lg: 20px;
-	--svelte-ui-checkbox-disabled-opacity: var(--svelte-ui-disabled-opacity);
-
-	/* Switch */
-	--svelte-ui-switch-width: 40px;
-	--svelte-ui-switch-width-sm: 32px;
-	--svelte-ui-switch-width-lg: 48px;
-	--svelte-ui-switch-height: 24px; /* width * 0.5 + 4 */
-	--svelte-ui-switch-height-sm: 20px; /* width * 0.5 + 4 */
-	--svelte-ui-switch-height-lg: 28px; /* width * 0.5 + 4 */
-	--svelte-ui-switch-thumb-margin: 2px;
-	--svelte-ui-switch-thumb-size: calc(
-		var(--svelte-ui-switch-height) - var(--svelte-ui-switch-thumb-margin) * 2
-	);
-	--svelte-ui-switch-thumb-size-sm: calc(
-		var(--svelte-ui-switch-height-sm) - var(--svelte-ui-switch-thumb-margin) * 2
-	);
-	--svelte-ui-switch-thumb-size-lg: calc(
-		var(--svelte-ui-switch-height-lg) - var(--svelte-ui-switch-thumb-margin) * 2
-	);
-	--svelte-ui-switch-gap: 8px;
-	--svelte-ui-switch-disabled-opacity: var(--svelte-ui-disabled-opacity);
-	--svelte-ui-switch-border-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-switch-thumb-border-radius: var(--svelte-ui-border-radius-rounded);
-
-	/* Radio */
-	--svelte-ui-radio-size: 16px;
-	--svelte-ui-radio-size-sm: 14px;
-	--svelte-ui-radio-size-lg: 20px;
-	--svelte-ui-radio-dot-size: 8px;
-	--svelte-ui-radio-dot-size-sm: 7px;
-	--svelte-ui-radio-dot-size-lg: 10px;
-	--svelte-ui-radio-border-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-radio-border-width: 2px;
-	--svelte-ui-radio-min-height: 20px;
-	--svelte-ui-radio-min-height-sm: 16px;
-	--svelte-ui-radio-min-height-lg: 24px;
-	--svelte-ui-radio-padding: 0 0 0 24px;
-	--svelte-ui-radio-padding-sm: 0 0 0 20px;
-	--svelte-ui-radio-padding-lg: 0 0 0 28px;
-	--svelte-ui-radio-disabled-opacity: var(--svelte-ui-disabled-opacity);
-
-	/* ColorPicker */
-	--svelte-ui-colorpicker-trigger-size: 28px;
-	--svelte-ui-colorpicker-text-padding-left: 40px;
-	--svelte-ui-colorpicker-trigger-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
-	--svelte-ui-colorpicker-trigger-border-style: dashed;
-	--svelte-ui-colorpicker-trigger-border-width: 1px;
-	--svelte-ui-colorpicker-trigger-offset: 4px;
-
-	/* Combobox */
-	--svelte-ui-combobox-min-width: 120px;
-	--svelte-ui-combobox-max-width: 400px;
-	--svelte-ui-combobox-options-max-height: 200px;
-	--svelte-ui-combobox-option-padding: 8px 12px;
-	--svelte-ui-combobox-dropdown-icon-size: 18px;
-	--svelte-ui-combobox-dropdown-icon-right: 8px;
-	--svelte-ui-combobox-border-radius: var(--svelte-ui-form-border-radius);
-	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
-
-	/* FileUploader */
-	--svelte-ui-file-uploader-border-width: 2px;
-	--svelte-ui-file-uploader-border-style: dashed;
-
-	/* ImageUploader */
-	--svelte-ui-image-uploader-border-width: 2px;
-	--svelte-ui-image-uploader-border-style: dashed;
-	--svelte-ui-image-uploader-preview-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-image-uploader-preview-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-image-uploader-preview-gap: 16px;
-
-	/* Popup */
-	--svelte-ui-popup-mobile-margin: 16px;
-	--svelte-ui-popup-mobile-border-radius: 12px;
-
-	/* Dialog */
-	--svelte-ui-dialog-gap: 16px;
-	--svelte-ui-dialog-gap-sm: 8px;
-	--svelte-ui-dialog-padding: 16px 24px;
-	--svelte-ui-dialog-body-padding: 24px;
-	--svelte-ui-dialog-header-height: 56px;
-	--svelte-ui-dialog-title-font-size: 1.4rem;
-	--svelte-ui-dialog-description-font-size: 0.875rem;
-	--svelte-ui-dialog-description-padding: 0.5rem 1rem;
-	--svelte-ui-dialog-footer-padding: 8px;
-	--svelte-ui-dialog-border-radius: var(--svelte-ui-border-radius);
-
-	/* Drawer */
-	--svelte-ui-drawer-gap: 16px;
-	--svelte-ui-drawer-gap-sm: 8px;
-	--svelte-ui-drawer-padding: 16px 24px;
-	--svelte-ui-drawer-body-padding: 24px;
-	--svelte-ui-drawer-header-height: 56px;
-	--svelte-ui-drawer-title-font-size: 1.4rem;
-	--svelte-ui-drawer-description-font-size: 0.875rem;
-	--svelte-ui-drawer-description-padding: 0.5rem 1rem;
-	--svelte-ui-drawer-footer-padding: 8px;
-
-	/* Pagination */
-	--svelte-ui-pagination-gap: 16px;
-	--svelte-ui-pagination-page-list-gap: 4px;
-	--svelte-ui-pagination-button-size: 32px;
-	--svelte-ui-pagination-button-border-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-pagination-count-label-margin: 0.5em;
-
-	/* Snackbar */
-	--svelte-ui-snackbar-min-width: 300px;
-	--svelte-ui-snackbar-max-width: 500px;
-	--svelte-ui-snackbar-padding: 12px 16px;
-	--svelte-ui-snackbar-item-spacing: 12px;
-	--svelte-ui-snackbar-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-snackbar-offset: 24px;
-	--svelte-ui-snackbar-z-index: 9999;
-	--svelte-ui-snackbar-font-size: var(--svelte-ui-font-size);
-	--svelte-ui-snackbar-line-height: 1.4;
-	--svelte-ui-snackbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-	--svelte-ui-snackbar-action-font-size: var(--svelte-ui-font-size-xs);
-	--svelte-ui-snackbar-action-font-weight: 600;
-	--svelte-ui-snackbar-action-padding: 4px 8px;
-	--svelte-ui-snackbar-action-border-radius: 4px;
-	--svelte-ui-snackbar-content-gap: 8px;
-
-	/* Skeleton */
-	--svelte-ui-skeleton-box-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-text-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-avatar-image-border-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-skeleton-image-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-button-border-radius: var(--svelte-ui-border-radius);
-
-	/* ====================================
-   * 共通部品のサイズ、パディングなど
-   * ==================================== */
-	/* ClearButton */
-	--svelte-ui-clear-button-transition: opacity 0.3s ease;
-	--svelte-ui-clear-button-top-textarea: 8px;
-	--svelte-ui-clear-button-right-textarea: 8px;
-	--svelte-ui-clear-button-right-spacing: 36px;
-
-	/* Badge */
-	--badge-font-size: 12px;
-	--badge-text-color: var(--svelte-ui-text-on-filled-color);
-	--badge-color: var(--svelte-ui-primary-color);
 
 	/* ====================================
    * ライトテーマ用の色変数
@@ -494,15 +237,70 @@
 }
 
 /* ====================================
- * コンポーネント色変数
+ * コンポーネント変数
  * ==================================== */
 
 :where(:root),
 [data-theme='dark'] {
-	/* Glass Effect - 共通変数 */
-	--svelte-ui-glass-blur: blur(10px);
+	/* ====================================
+   * 共通の変数（サイズ、トランジション、ボーダー半径など）
+   * ==================================== */
+
+	/* 基本的なトランジション */
+	--svelte-ui-transition-duration-fast: 0.15s;
+	--svelte-ui-transition-duration: 0.3s;
+
+	/* ボーダー半径 */
+	--svelte-ui-border-radius: 4px;
+	--svelte-ui-border-radius-rounded: 999px;
+
+	/* ボーダー幅 */
+	--svelte-ui-border-width: 1px;
+	--svelte-ui-border-width-thick: 2px;
+
+	/* タイポグラフィ */
+	--svelte-ui-font-size-xs: 0.75rem;
+	--svelte-ui-font-size-sm: 0.875rem;
+	--svelte-ui-font-size: 1rem;
+	--svelte-ui-font-size-lg: 1.125rem;
+	--svelte-ui-font-size-xl: 1.25rem;
+
+	/* Mobile Touch Size */
+	--svelte-ui-touch-target-sm: 36px;
+	--svelte-ui-touch-target: 44px;
+	--svelte-ui-touch-target-lg: 48px;
+
+	/* Z-index */
+	--svelte-ui-z-dropdown: 1000;
+	--svelte-ui-z-modal: 1050;
+	--svelte-ui-z-popover: 1060;
+	--svelte-ui-z-tooltip: 1070;
+	--svelte-ui-z-toast: 1080;
+
+	/* Form Controls - 共通 */
+	--svelte-ui-form-height: 36px;
+	--svelte-ui-form-padding: 0 12px;
+	--svelte-ui-form-padding-left: 12px;
+	--svelte-ui-form-icon-space: 40px;
+	--svelte-ui-form-icon-space-inline: 32px;
+	--svelte-ui-form-padding-with-icon: 0 var(--svelte-ui-form-icon-space) 0 12px;
+	--svelte-ui-form-padding-with-icon-inline: 0 var(--svelte-ui-form-icon-space-inline) 0 12px;
+	--svelte-ui-form-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-form-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
 
 	/* Button */
+	--svelte-ui-button-height-sm: 28px;
+	--svelte-ui-button-height: 36px;
+	--svelte-ui-button-height-lg: 44px;
+	--svelte-ui-button-padding-sm: 0 8px;
+	--svelte-ui-button-padding: 0 12px;
+	--svelte-ui-button-padding-lg: 0 16px;
+	--svelte-ui-button-font-size-sm: 14px;
+	--svelte-ui-button-font-size: inherit;
+	--svelte-ui-button-font-size-lg: 16px;
+	--svelte-ui-button-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-button-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-button-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-button-bg-filled: var(--svelte-ui-primary-color);
 	--svelte-ui-button-bg-outlined: transparent;
 	--svelte-ui-button-bg-ghost: transparent;
@@ -527,6 +325,9 @@
 	--svelte-ui-fab-focus-color: var(--svelte-ui-focus-color);
 
 	/* IconButton */
+	--svelte-ui-iconbutton-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-iconbutton-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-iconbutton-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-iconbutton-bg-filled: var(--svelte-ui-primary-color);
 	--svelte-ui-iconbutton-bg-outlined: transparent;
 	--svelte-ui-iconbutton-bg-ghost: transparent;
@@ -539,6 +340,16 @@
 	--svelte-ui-iconbutton-focus-color: var(--svelte-ui-focus-color);
 
 	/* Input */
+	--svelte-ui-input-height: var(--svelte-ui-form-height);
+	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
+	--svelte-ui-input-padding-left: var(--svelte-ui-form-padding-left);
+	--svelte-ui-input-icon-space: var(--svelte-ui-form-icon-space);
+	--svelte-ui-input-icon-space-inline: var(--svelte-ui-form-icon-space-inline);
+	--svelte-ui-input-padding-with-icon: var(--svelte-ui-form-padding-with-icon);
+	--svelte-ui-input-padding-with-icon-inline: var(--svelte-ui-form-padding-with-icon-inline);
+	--svelte-ui-input-border-radius: var(--svelte-ui-form-border-radius);
+	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
+	--svelte-ui-input-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-input-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-input-readonly-bg: var(--svelte-ui-form-bg);
@@ -547,12 +358,23 @@
 	--svelte-ui-input-icon-color: var(--svelte-ui-text-subtle-color);
 
 	/* Textarea */
+	--svelte-ui-textarea-min-height: 36px;
+	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - 1.8em) / 2) 12px;
+	--svelte-ui-textarea-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
 	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-textarea-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-textarea-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-textarea-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Select */
+	--svelte-ui-select-height: var(--svelte-ui-form-height);
+	--svelte-ui-select-padding: var(--svelte-ui-form-padding-with-icon);
+	--svelte-ui-select-padding-inline: var(--svelte-ui-form-padding-with-icon-inline);
+	--svelte-ui-select-dropdown-icon-right: 8px;
+	--svelte-ui-select-dropdown-icon-size: 18px;
+	--svelte-ui-select-border-radius: var(--svelte-ui-form-border-radius);
+	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-select-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-select-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-select-text-color: var(--svelte-ui-text-color);
@@ -560,6 +382,24 @@
 	--svelte-ui-select-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Checkbox */
+	--svelte-ui-checkbox-size: 16px;
+	--svelte-ui-checkbox-size-sm: 14px;
+	--svelte-ui-checkbox-size-lg: 20px;
+	--svelte-ui-checkbox-min-height: 20px;
+	--svelte-ui-checkbox-min-height-sm: 16px;
+	--svelte-ui-checkbox-min-height-lg: 24px;
+	--svelte-ui-checkbox-padding: 0 0 0 24px;
+	--svelte-ui-checkbox-padding-sm: 0 0 0 20px;
+	--svelte-ui-checkbox-padding-lg: 0 0 0 28px;
+	--svelte-ui-checkbox-border-radius: 2px;
+	--svelte-ui-checkbox-border-width: 2px;
+	--svelte-ui-checkbox-icon-size: 1rem;
+	--svelte-ui-checkbox-icon-size-sm: 0.875rem;
+	--svelte-ui-checkbox-icon-size-lg: 1.25rem;
+	--svelte-ui-checkbox-icon-width: 16px;
+	--svelte-ui-checkbox-icon-width-sm: 14px;
+	--svelte-ui-checkbox-icon-width-lg: 20px;
+	--svelte-ui-checkbox-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-checkbox-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-checkbox-checked-color);
 	--svelte-ui-checkbox-icon-color: var(--svelte-ui-text-on-filled-color);
@@ -567,18 +407,59 @@
 	--svelte-ui-checkbox-checked-color: var(--svelte-ui-primary-color);
 
 	/* Switch */
+	--svelte-ui-switch-width: 40px;
+	--svelte-ui-switch-width-sm: 32px;
+	--svelte-ui-switch-width-lg: 48px;
+	--svelte-ui-switch-height: 24px; /* width * 0.5 + 4 */
+	--svelte-ui-switch-height-sm: 20px; /* width * 0.5 + 4 */
+	--svelte-ui-switch-height-lg: 28px; /* width * 0.5 + 4 */
+	--svelte-ui-switch-thumb-margin: 2px;
+	--svelte-ui-switch-thumb-size: calc(
+		var(--svelte-ui-switch-height) - var(--svelte-ui-switch-thumb-margin) * 2
+	);
+	--svelte-ui-switch-thumb-size-sm: calc(
+		var(--svelte-ui-switch-height-sm) - var(--svelte-ui-switch-thumb-margin) * 2
+	);
+	--svelte-ui-switch-thumb-size-lg: calc(
+		var(--svelte-ui-switch-height-lg) - var(--svelte-ui-switch-thumb-margin) * 2
+	);
+	--svelte-ui-switch-gap: 8px;
+	--svelte-ui-switch-disabled-opacity: var(--svelte-ui-disabled-opacity);
+	--svelte-ui-switch-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-switch-thumb-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-switch-inactive-color: var(--svelte-ui-inactive-color);
 	--svelte-ui-switch-active-color: var(--svelte-ui-primary-color);
 	--svelte-ui-switch-thumb-color: var(--svelte-ui-handle-color);
 	--svelte-ui-switch-hover-overlay: var(--svelte-ui-hover-overlay);
 
 	/* Radio */
+	--svelte-ui-radio-size: 16px;
+	--svelte-ui-radio-size-sm: 14px;
+	--svelte-ui-radio-size-lg: 20px;
+	--svelte-ui-radio-dot-size: 8px;
+	--svelte-ui-radio-dot-size-sm: 7px;
+	--svelte-ui-radio-dot-size-lg: 10px;
+	--svelte-ui-radio-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-radio-border-width: 2px;
+	--svelte-ui-radio-min-height: 20px;
+	--svelte-ui-radio-min-height-sm: 16px;
+	--svelte-ui-radio-min-height-lg: 24px;
+	--svelte-ui-radio-padding: 0 0 0 24px;
+	--svelte-ui-radio-padding-sm: 0 0 0 20px;
+	--svelte-ui-radio-padding-lg: 0 0 0 28px;
+	--svelte-ui-radio-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
 	--svelte-ui-radio-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-radio-checked-color: var(--svelte-ui-primary-color);
 
 	/* ColorPicker */
+	--svelte-ui-colorpicker-trigger-size: 28px;
+	--svelte-ui-colorpicker-text-padding-left: 40px;
+	--svelte-ui-colorpicker-trigger-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
+	--svelte-ui-colorpicker-trigger-border-style: dashed;
+	--svelte-ui-colorpicker-trigger-border-width: 1px;
+	--svelte-ui-colorpicker-trigger-offset: 4px;
 	--svelte-ui-colorpicker-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-colorpicker-trigger-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-colorpicker-bg: var(--svelte-ui-form-bg);
@@ -586,6 +467,14 @@
 	--svelte-ui-colorpicker-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Combobox */
+	--svelte-ui-combobox-min-width: 120px;
+	--svelte-ui-combobox-max-width: 400px;
+	--svelte-ui-combobox-options-max-height: 200px;
+	--svelte-ui-combobox-option-padding: 8px 12px;
+	--svelte-ui-combobox-dropdown-icon-size: 18px;
+	--svelte-ui-combobox-dropdown-icon-right: 8px;
+	--svelte-ui-combobox-border-radius: var(--svelte-ui-form-border-radius);
+	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-combobox-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-combobox-bg: var(--svelte-ui-surface-color);
 	--svelte-ui-combobox-text-color: var(--svelte-ui-text-color);
@@ -595,6 +484,8 @@
 	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
 
 	/* FileUploader */
+	--svelte-ui-file-uploader-border-width: 2px;
+	--svelte-ui-file-uploader-border-style: dashed;
 	--svelte-ui-file-uploader-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-file-uploader-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-file-uploader-hover-bg: var(--svelte-ui-hover-overlay);
@@ -603,6 +494,11 @@
 	--svelte-ui-file-uploader-item-bg: var(--svelte-ui-form-bg);
 
 	/* ImageUploader */
+	--svelte-ui-image-uploader-border-width: 2px;
+	--svelte-ui-image-uploader-border-style: dashed;
+	--svelte-ui-image-uploader-preview-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-image-uploader-preview-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-image-uploader-preview-gap: 16px;
 	--svelte-ui-image-uploader-bg: var(--base-50-transparent);
 	--svelte-ui-image-uploader-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-image-uploader-hover-bg: var(--svelte-ui-hover-overlay);
@@ -610,6 +506,11 @@
 	--svelte-ui-image-uploader-hover-color: var(--svelte-ui-primary-color);
 
 	/* Pagination */
+	--svelte-ui-pagination-gap: 16px;
+	--svelte-ui-pagination-page-list-gap: 4px;
+	--svelte-ui-pagination-button-size: 32px;
+	--svelte-ui-pagination-button-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-pagination-count-label-margin: 0.5em;
 	--svelte-ui-pagination-button-bg: transparent;
 	--svelte-ui-pagination-selected-button-bg: var(--svelte-ui-primary-color);
 	--svelte-ui-pagination-button-text-color: var(--svelte-ui-text-color);
@@ -636,6 +537,8 @@
 	--svelte-ui-datepicker-selected-text-color: var(--svelte-ui-text-on-filled-color);
 
 	/* Popup */
+	--svelte-ui-popup-mobile-margin: 16px;
+	--svelte-ui-popup-mobile-border-radius: 12px;
 	--svelte-ui-popup-focus-color: var(--svelte-ui-primary-color);
 
 	/* PopupMenu */
@@ -643,13 +546,29 @@
 	--svelte-ui-popupmenu-text-color: var(--svelte-ui-text-color);
 
 	/* Dialog */
+	--svelte-ui-dialog-gap: 16px;
+	--svelte-ui-dialog-gap-sm: 8px;
+	--svelte-ui-dialog-padding: 16px 24px;
+	--svelte-ui-dialog-body-padding: 24px;
+	--svelte-ui-dialog-header-height: 56px;
+	--svelte-ui-dialog-title-font-size: 1.4rem;
+	--svelte-ui-dialog-description-font-size: 0.875rem;
+	--svelte-ui-dialog-description-padding: 0.5rem 1rem;
+	--svelte-ui-dialog-footer-padding: 8px;
+	--svelte-ui-dialog-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-dialog-title-color: var(--svelte-ui-text-color);
 	--svelte-ui-dialog-description-color: var(--svelte-ui-text-subtle-color);
 
-	/* ConfirmDialog */
-	--svelte-ui-confirmdialog-text-color: var(--svelte-ui-text-color);
-
 	/* Drawer */
+	--svelte-ui-drawer-gap: 16px;
+	--svelte-ui-drawer-gap-sm: 8px;
+	--svelte-ui-drawer-padding: 16px 24px;
+	--svelte-ui-drawer-body-padding: 24px;
+	--svelte-ui-drawer-header-height: 56px;
+	--svelte-ui-drawer-title-font-size: 1.4rem;
+	--svelte-ui-drawer-description-font-size: 0.875rem;
+	--svelte-ui-drawer-description-padding: 0.5rem 1rem;
+	--svelte-ui-drawer-footer-padding: 8px;
 	--svelte-ui-drawer-title-color: var(--svelte-ui-text-color);
 	--svelte-ui-drawer-description-color: var(--svelte-ui-text-subtle-color);
 
@@ -658,42 +577,63 @@
 	--svelte-ui-loadingspinner-size: 32px;
 
 	/* Snackbar */
+	--svelte-ui-snackbar-min-width: 300px;
+	--svelte-ui-snackbar-max-width: 500px;
+	--svelte-ui-snackbar-padding: 12px 16px;
+	--svelte-ui-snackbar-item-spacing: 12px;
+	--svelte-ui-snackbar-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-snackbar-offset: 24px;
+	--svelte-ui-snackbar-z-index: 9999;
+	--svelte-ui-snackbar-font-size: var(--svelte-ui-font-size);
+	--svelte-ui-snackbar-line-height: 1.4;
+	--svelte-ui-snackbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	--svelte-ui-snackbar-action-font-size: var(--svelte-ui-font-size-xs);
+	--svelte-ui-snackbar-action-font-weight: 600;
+	--svelte-ui-snackbar-action-padding: 4px 8px;
+	--svelte-ui-snackbar-action-border-radius: 4px;
+	--svelte-ui-snackbar-content-gap: 8px;
+
+	/* Snackbar default */
 	--svelte-ui-snackbar-default-filled-bg: var(--svelte-ui-surface-inverse-color);
 	--svelte-ui-snackbar-default-filled-text-color: var(--svelte-ui-text-inverse-color);
-
-	--svelte-ui-snackbar-info-filled-bg: var(--svelte-ui-info-color);
-	--svelte-ui-snackbar-info-filled-text-color: var(--svelte-ui-text-on-filled-color);
-
-	--svelte-ui-snackbar-success-filled-bg: var(--svelte-ui-success-color);
-	--svelte-ui-snackbar-success-filled-text-color: var(--svelte-ui-text-on-filled-color);
-
-	--svelte-ui-snackbar-warning-filled-bg: var(--svelte-ui-warning-color);
-	--svelte-ui-snackbar-warning-filled-text-color: var(--svelte-ui-text-on-filled-color);
-
-	--svelte-ui-snackbar-error-filled-bg: var(--svelte-ui-error-color);
-	--svelte-ui-snackbar-error-filled-text-color: var(--svelte-ui-text-on-filled-color);
-
 	--svelte-ui-snackbar-default-outlined-bg: var(--svelte-ui-surface-color);
 	--svelte-ui-snackbar-default-outlined-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-snackbar-default-outlined-border-color: var(--svelte-ui-border-color);
 
+	/* Snackbar info */
+	--svelte-ui-snackbar-info-filled-bg: var(--svelte-ui-info-color);
+	--svelte-ui-snackbar-info-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-info-outlined-bg: var(--svelte-ui-surface-color);
 	--svelte-ui-snackbar-info-outlined-text-color: var(--svelte-ui-info-color);
 	--svelte-ui-snackbar-info-outlined-border-color: var(--svelte-ui-info-color);
 
+	/* Snackbar success */
+	--svelte-ui-snackbar-success-filled-bg: var(--svelte-ui-success-color);
+	--svelte-ui-snackbar-success-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-success-outlined-bg: var(--svelte-ui-surface-color);
 	--svelte-ui-snackbar-success-outlined-text-color: var(--svelte-ui-success-color);
 	--svelte-ui-snackbar-success-outlined-border-color: var(--svelte-ui-success-color);
 
+	/* Snackbar warning */
+	--svelte-ui-snackbar-warning-filled-bg: var(--svelte-ui-warning-color);
+	--svelte-ui-snackbar-warning-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-warning-outlined-bg: var(--svelte-ui-surface-color);
 	--svelte-ui-snackbar-warning-outlined-text-color: var(--svelte-ui-warning-color);
 	--svelte-ui-snackbar-warning-outlined-border-color: var(--svelte-ui-warning-color);
 
+	/* Snackbar error */
+	--svelte-ui-snackbar-error-filled-bg: var(--svelte-ui-error-color);
+	--svelte-ui-snackbar-error-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-error-outlined-bg: var(--svelte-ui-surface-color);
 	--svelte-ui-snackbar-error-outlined-text-color: var(--svelte-ui-error-color);
 	--svelte-ui-snackbar-error-outlined-border-color: var(--svelte-ui-error-color);
 
 	/* Skeleton */
+	--svelte-ui-skeleton-box-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-text-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-avatar-image-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-skeleton-image-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-button-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-skeleton-bg-color: var(--svelte-ui-skeleton-color);
 	--svelte-ui-skeleton-text-bg-color: var(--svelte-ui-skeleton-color);
 	--svelte-ui-skeleton-image-bg-color: var(--svelte-ui-skeleton-color);
@@ -702,7 +642,16 @@
 	--svelte-ui-skeleton-textarea-bg-color: var(--svelte-ui-skeleton-color);
 	--svelte-ui-skeleton-avatar-bg-color: var(--svelte-ui-skeleton-color);
 
+	/* ClearButton */
+	--svelte-ui-clear-button-transition: opacity 0.3s ease;
+	--svelte-ui-clear-button-top-textarea: 8px;
+	--svelte-ui-clear-button-right-textarea: 8px;
+	--svelte-ui-clear-button-right-spacing: 36px;
+
 	/* Badge */
+	--badge-font-size: 12px;
+	--badge-text-color: var(--svelte-ui-text-on-filled-color);
+	--badge-color: var(--svelte-ui-primary-color);
 	--badge-text-color: var(--svelte-ui-text-on-filled-color);
 	--badge-color: var(--svelte-ui-primary-color);
 
@@ -714,6 +663,9 @@
 	/* 内側フォーカススタイル（要素の内側に表示） */
 	--svelte-ui-focus-outline-inner: 2px solid var(--svelte-ui-focus-color);
 	--svelte-ui-focus-outline-offset-inner: -2px;
+
+	/* Glass Effect */
+	--svelte-ui-glass-blur: blur(10px);
 }
 
 /* ====================================
@@ -744,7 +696,7 @@
 		/* ===== フォーカス色・太さの上書き ===== */
 		--svelte-ui-focus-outline-outer: 3px solid CanvasText;
 		--svelte-ui-focus-outline-inner: 3px solid CanvasText;
-		--svelte-ui-focus-outline-offset-outer: 2px;
+		--svelte-ui-focus-outline-offset-outer: 3px;
 		--svelte-ui-focus-outline-offset-inner: -3px;
 
 		/* Button */

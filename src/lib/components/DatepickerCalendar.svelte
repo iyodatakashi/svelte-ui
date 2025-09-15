@@ -695,7 +695,7 @@
 
 		&:focus-visible {
 			outline: var(--svelte-ui-focus-outline-outer);
-			outline-offset: var(--svelte-ui-focus-outline-offset);
+			outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 		}
 	}
 
@@ -722,7 +722,7 @@
 
 		&:focus-visible {
 			outline: var(--svelte-ui-focus-outline-outer);
-			outline-offset: var(--svelte-ui-focus-outline-offset);
+			outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 		}
 
 		&--current {
@@ -738,7 +738,7 @@
 
 		&--focused {
 			outline: var(--svelte-ui-focus-outline-outer);
-			outline-offset: var(--svelte-ui-focus-outline-offset);
+			outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 		}
 	}
 
@@ -911,12 +911,12 @@
 
 	.datepicker-calendar__date-button:focus-visible {
 		outline: var(--svelte-ui-focus-outline-outer);
-		outline-offset: var(--svelte-ui-focus-outline-offset);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
 	.datepicker-calendar__date-item--focused .datepicker-calendar__date-button {
 		outline: var(--svelte-ui-focus-outline-outer);
-		outline-offset: var(--svelte-ui-focus-outline-offset);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
 	.datepicker-calendar__date-button {
