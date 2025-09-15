@@ -368,7 +368,7 @@
 		border-radius: var(--svelte-ui-checkbox-border-radius);
 		background-color: transparent;
 		transition-property: background-color, border-color, opacity;
-		transition-duration: var(--svelte-ui-transition-duration-fast);
+		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
 	/* Check mark container */
