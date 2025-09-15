@@ -161,7 +161,8 @@
 	};
 
 	const handleChange = (event?: Event): void => {
-		if (!localValue.startsWith('#')) {
+		// 空文字列の場合はそのまま処理
+		if (localValue && !localValue.startsWith('#')) {
 			localValue = '#' + localValue;
 		}
 
