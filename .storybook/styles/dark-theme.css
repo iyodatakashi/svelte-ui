@@ -1,0 +1,5 @@
+/* ダークテーマ用のスタイル */
+[data-theme='dark'] {
+	background-color: var(--svelte-ui-surface-color);
+	color: var(--svelte-ui-text-color);
+}

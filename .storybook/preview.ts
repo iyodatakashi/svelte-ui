@@ -4,6 +4,8 @@ import '../src/lib/assets/styles/import.scss';
 // Optional styles for Storybook
 import '../src/lib/assets/styles/optional/reset.scss';
 import '../src/lib/assets/styles/optional/fonts.scss';
+// Dark theme styles for Preview area
+import './styles/dark-theme.css';
 
 const withTheme = (Story, context) => {
 	const theme = context.globals.theme || 'light';
