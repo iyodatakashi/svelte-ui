@@ -323,6 +323,11 @@
 	// $derived
 	// =========================================================================
 
+	// min-heightスタイルの計算
+	const minHeightStyle = $derived(
+		inline ? 'min-height: 1.6em; min-height: 1lh;' : `min-height: ${minHeight}px;`
+	);
+
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
 		if (typeof value === 'string' && value !== '') {
@@ -360,9 +365,7 @@
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="{inline
-			? 'min-height: 1.5em; min-height: 1lh;'
-			: `min-height: ${minHeight}px;`} {customStyle}"
+		style="{minHeightStyle} {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -384,9 +387,7 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="width: {getStyleFromNumber(width)}; {inline
-				? 'min-height: 1.5em; min-height: 1lh;'
-				: `min-height: ${minHeight}px;`} {customStyle}"
+			style="width: {getStyleFromNumber(width)}; {minHeightStyle} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
