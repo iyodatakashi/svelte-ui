@@ -11,6 +11,7 @@ const config: StorybookConfig = {
 		'@chromatic-com/storybook',
 		'@storybook/addon-docs',
 		'@storybook/addon-a11y',
+		'@storybook/addon-themes',
 		{
 			name: '@storybook/addon-vitest',
 			options: {
