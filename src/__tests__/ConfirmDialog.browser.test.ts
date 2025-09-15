@@ -103,9 +103,9 @@ test('ConfirmDialog with custom text renders correctly', async () => {
 		component: ConfirmDialog,
 		isOpen: true,
 		title: 'Custom Title',
-		message: 'Custom message content',
-		confirmText: 'Yes, proceed',
-		cancelText: 'No, cancel',
+		description: 'Custom description content',
+		confirmLabel: 'Yes, proceed',
+		cancelLabel: 'No, cancel',
 		id: 'custom-dialog-test'
 	});
 	const modal = screen.getByTestId('modal');
@@ -126,12 +126,34 @@ test('ConfirmDialog with custom width renders correctly', async () => {
 	expect(modal).toBeInTheDocument();
 });
 
-test('ConfirmDialog with HTML message renders correctly', async () => {
+test('ConfirmDialog with HTML description renders correctly', async () => {
 	const screen = render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
-		message: '<strong>Bold text</strong> and <em>italic text</em>',
+		description: '<strong>Bold text</strong> and <em>italic text</em>',
 		id: 'html-dialog-test'
+	});
+	const modal = screen.getByTestId('modal');
+	expect(modal).toBeInTheDocument();
+});
+
+test('ConfirmDialog with closeIfClickOutside=false renders correctly', async () => {
+	const screen = render(ComponentWrapper, {
+		component: ConfirmDialog,
+		isOpen: true,
+		closeIfClickOutside: false,
+		id: 'no-close-dialog-test'
+	});
+	const modal = screen.getByTestId('modal');
+	expect(modal).toBeInTheDocument();
+});
+
+test('ConfirmDialog with closeIfClickOutside=true renders correctly', async () => {
+	const screen = render(ComponentWrapper, {
+		component: ConfirmDialog,
+		isOpen: true,
+		closeIfClickOutside: true,
+		id: 'close-dialog-test'
 	});
 	const modal = screen.getByTestId('modal');
 	expect(modal).toBeInTheDocument();

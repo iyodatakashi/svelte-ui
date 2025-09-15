@@ -12,9 +12,9 @@
 	let {
 		// 基本プロパティ
 		title = 'Confirm',
-		message = 'Are you sure you want to proceed?',
-		confirmText = 'Confirm',
-		cancelText = 'Cancel',
+		description = 'Are you sure?',
+		confirmLabel = 'Confirm',
+		cancelLabel = 'Cancel',
 
 		// HTML属性
 		id,
@@ -25,6 +25,7 @@
 
 		// 状態/動作
 		isOpen = $bindable(false),
+		closeIfClickOutside = true,
 
 		// イベントハンドラー
 		onConfirm = () => {}, // No params for type inference
@@ -32,9 +33,9 @@
 	}: {
 		// 基本プロパティ
 		title?: string;
-		message?: string;
-		confirmText?: string;
-		cancelText?: string;
+		description?: string;
+		confirmLabel?: string;
+		cancelLabel?: string;
 
 		// HTML属性
 		id?: string;
@@ -45,6 +46,7 @@
 
 		// 状態/動作
 		isOpen?: boolean;
+		closeIfClickOutside?: boolean;
 
 		// イベントハンドラー
 		onConfirm?: () => void;
@@ -84,16 +86,16 @@
 	bind:isOpen
 	{title}
 	{width}
-	closeIfClickOutside={false}
+	{closeIfClickOutside}
 	id={id ? `${id}-dialog` : undefined}
 >
 	<div class="confirm-dialog-message">
-		{@html convertToHtml(message)}
+		{@html convertToHtml(description)}
 	</div>
 
 	{#snippet footer()}
 		<Button variant="ghost" color="var(--svelte-ui-text-color)" onclick={handleCancel}>
-			{cancelText}
+			{cancelLabel}
 		</Button>
 		<Button
 			variant="filled"
@@ -104,7 +106,7 @@
 					: undefined}
 			onclick={handleConfirm}
 		>
-			{confirmText}
+			{confirmLabel}
 		</Button>
 	{/snippet}
 </Dialog>

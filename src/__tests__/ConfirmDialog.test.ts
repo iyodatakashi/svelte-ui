@@ -10,22 +10,24 @@ describe('ConfirmDialog Component', () => {
 	it('should have correct default props', () => {
 		const expectedDefaults = {
 			title: 'Confirm',
-			message: 'Are you sure you want to proceed?',
-			confirmText: 'Confirm',
-			cancelText: 'Cancel',
+			description: 'Are you sure?',
+			confirmLabel: 'Confirm',
+			cancelLabel: 'Cancel',
 			variant: 'info',
 			width: 400,
-			isOpen: false
+			isOpen: false,
+			closeIfClickOutside: true
 		};
 
 		// デフォルト値の型チェック
 		expect(typeof expectedDefaults.title).toBe('string');
-		expect(typeof expectedDefaults.message).toBe('string');
-		expect(typeof expectedDefaults.confirmText).toBe('string');
-		expect(typeof expectedDefaults.cancelText).toBe('string');
+		expect(typeof expectedDefaults.description).toBe('string');
+		expect(typeof expectedDefaults.confirmLabel).toBe('string');
+		expect(typeof expectedDefaults.cancelLabel).toBe('string');
 		expect(typeof expectedDefaults.variant).toBe('string');
 		expect(typeof expectedDefaults.width).toBe('number');
 		expect(typeof expectedDefaults.isOpen).toBe('boolean');
+		expect(typeof expectedDefaults.closeIfClickOutside).toBe('boolean');
 	});
 
 	it('should accept valid variant values', () => {
@@ -38,7 +40,7 @@ describe('ConfirmDialog Component', () => {
 	});
 
 	it('should handle string props correctly', () => {
-		const stringProps = ['title', 'message', 'confirmText', 'cancelText', 'variant'];
+		const stringProps = ['title', 'description', 'confirmLabel', 'cancelLabel', 'variant'];
 
 		stringProps.forEach((prop) => {
 			expect(typeof 'test').toBe('string');
@@ -56,7 +58,7 @@ describe('ConfirmDialog Component', () => {
 	});
 
 	it('should handle boolean props correctly', () => {
-		const booleanProps = ['isOpen'];
+		const booleanProps = ['isOpen', 'closeIfClickOutside'];
 
 		booleanProps.forEach((prop) => {
 			expect(typeof true).toBe('boolean');
@@ -70,21 +72,21 @@ describe('ConfirmDialog Component', () => {
 		expect(typeof 'Delete Item').toBe('string');
 	});
 
-	it('should support message', () => {
-		// message型のテスト
+	it('should support description', () => {
+		// description型のテスト
 		expect(typeof 'Are you sure?').toBe('string');
 		expect(typeof 'This action cannot be undone.').toBe('string');
 	});
 
-	it('should support confirm text', () => {
-		// confirmText型のテスト
+	it('should support confirm label', () => {
+		// confirmLabel型のテスト
 		expect(typeof 'Yes').toBe('string');
 		expect(typeof 'Delete').toBe('string');
 		expect(typeof 'Save').toBe('string');
 	});
 
-	it('should support cancel text', () => {
-		// cancelText型のテスト
+	it('should support cancel label', () => {
+		// cancelLabel型のテスト
 		expect(typeof 'No').toBe('string');
 		expect(typeof 'Cancel').toBe('string');
 		expect(typeof 'Close').toBe('string');
@@ -158,16 +160,16 @@ describe('ConfirmDialog Component', () => {
 		});
 	});
 
-	it('should support custom button texts', () => {
-		// カスタムボタンテキストのテスト
+	it('should support custom button labels', () => {
+		// カスタムボタンラベルのテスト
 		expect(typeof 'Custom Confirm').toBe('string');
 		expect(typeof 'Custom Cancel').toBe('string');
 	});
 
-	it('should support custom title and message', () => {
-		// カスタムタイトルとメッセージのテスト
+	it('should support custom title and description', () => {
+		// カスタムタイトルと説明のテスト
 		expect(typeof 'Custom Title').toBe('string');
-		expect(typeof 'Custom message with details.').toBe('string');
+		expect(typeof 'Custom description with details.').toBe('string');
 	});
 
 	it('should support different widths', () => {
