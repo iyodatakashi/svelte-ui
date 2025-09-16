@@ -13,7 +13,7 @@
 	// =========================================================================
 	let {
 		// 基本プロパティ
-		files = $bindable(new DataTransfer().files),
+		value = $bindable(new DataTransfer().files),
 		multiple = false,
 		maxFileSize = 5 * 1024 * 1024,
 		placeholder = 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
@@ -61,7 +61,7 @@
 		onpointerleave = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
-		files: FileList;
+		value: FileList;
 		multiple?: boolean;
 		maxFileSize?: number;
 		placeholder?: string;
@@ -84,6 +84,9 @@
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
 		removeFileAriaLabel?: string;
+
+		// 入力イベント
+		onchange?: (value: FileList | null) => void;
 
 		// フォーカスイベント
 		onfocus?: (event: FocusEvent) => void;
@@ -115,9 +118,9 @@
 	// Effects
 	// =========================================================================
 	$effect(() => {
-		if (files && files.length > 0) {
-			const fileCount = files.length;
-			const fileNames = Array.from(files)
+		if (value && value.length > 0) {
+			const fileCount = value.length;
+			const fileNames = Array.from(value)
 				.map((file) => file.name)
 				.join(', ');
 			announceToScreenReader(`${fileCount} file${fileCount > 1 ? 's' : ''} selected: ${fileNames}`);
@@ -176,15 +179,15 @@
 	};
 
 	const removeFile = (index: number) => {
-		if (!files) return;
+		if (!value) return;
 
 		const dt = new DataTransfer();
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0; i < value.length; i++) {
 			if (i !== index) {
-				dt.items.add(files[i]);
+				dt.items.add(value[i]);
 			}
 		}
-		files = dt.files.length > 0 ? dt.files : undefined;
+		value = dt.files.length > 0 ? dt.files : undefined;
 	};
 
 	const validateFile = (file: File): boolean => {
@@ -214,22 +217,23 @@
 			const dataTransfer = new DataTransfer();
 
 			// multipleの場合は既存のファイルを保持して追加
-			if (multiple && files) {
-				for (let i = 0; i < files.length; i++) {
-					dataTransfer.items.add(files[i]);
+			if (multiple && value) {
+				for (let i = 0; i < value.length; i++) {
+					dataTransfer.items.add(value[i]);
 				}
 			}
 
 			// 新しく選択されたファイルのみを追加
 			validFiles.forEach((file) => dataTransfer.items.add(file));
-			files = dataTransfer.files;
+			value = dataTransfer.files;
+			onchange(value);
 		}
 	};
 
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
-			files = undefined;
+			value = undefined;
 			errorMessage = '';
 		}
 	};
@@ -278,7 +282,7 @@
 	aria-label={t('fileUploader.uploadFile')}
 	aria-describedby={`${id}-help`}
 >
-	{#if files && files.length > 0}
+	{#if value && value.length > 0}
 		<div class="file-uploader__description file-uploader__description--with-file">
 			<Icon
 				size={iconSize}
@@ -289,7 +293,7 @@
 				variant={iconVariant}>{icon}</Icon
 			>
 			<ul class="file-uploader__file-list">
-				{#each files as file, index}
+				{#each value as file, index}
 					<li class="file-uploader__file-list-item">
 						{file.name}
 						<IconButton
