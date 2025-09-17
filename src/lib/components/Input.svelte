@@ -41,7 +41,6 @@
 		rounded = false,
 
 		// アイコン関連
-		hasRightIcon = false,
 		rightIcon = undefined,
 		leftIcon = undefined,
 		leftIconAriaLabel = '左アイコン',
@@ -57,7 +56,7 @@
 		readonly = false,
 		required = false,
 		clearable = false,
-		clearButtonAriaLabel = 'クリア',
+		clearButtonAriaLabel = t('input.clear'),
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -102,8 +101,8 @@
 		oncompositionend = () => {}, // No params for type inference
 
 		// アイコンイベント
-		onRightIconClick = () => {}, // No params for type inference
-		onLeftIconClick = () => {}, // No params for type inference
+		onRightIconClick,
+		onLeftIconClick,
 
 		// その他
 		...restProps
@@ -137,7 +136,6 @@
 		customStyle?: string;
 
 		// アイコン関連
-		hasRightIcon?: boolean;
 		rightIcon?: string;
 		leftIcon?: string;
 		leftIconAriaLabel?: string;
@@ -390,8 +388,8 @@
 	class:input--auto-resize={inline}
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
-	class:input--has-icon-right={hasRightIcon || rightIcon}
-	class:input--has-icon-left={leftIcon}
+	class:input--has-right-icon={!!rightIcon}
+	class:input--has-left-icon={!!leftIcon}
 	class:input--rounded={rounded}
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
@@ -464,7 +462,7 @@
 				onclick={clear}
 				tabindex={-1}
 				iconFilled={true}
-				size={24}>cancel</IconButton
+				fontSize={18}>cancel</IconButton
 			>
 		</div>
 	{/if}
@@ -484,15 +482,17 @@
 					{leftIcon}
 				</IconButton>
 			{:else}
-				<Icon
-					filled={iconFilled}
-					weight={iconWeight}
-					grade={iconGrade}
-					opticalSize={iconOpticalSize}
-					variant={iconVariant}
-				>
-					{leftIcon}
-				</Icon>
+				<div class="input__normal-icon">
+					<Icon
+						filled={iconFilled}
+						weight={iconWeight}
+						grade={iconGrade}
+						opticalSize={iconOpticalSize}
+						variant={iconVariant}
+					>
+						{leftIcon}
+					</Icon>
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -512,15 +512,17 @@
 					{rightIcon}
 				</IconButton>
 			{:else}
-				<Icon
-					filled={iconFilled}
-					weight={iconWeight}
-					grade={iconGrade}
-					opticalSize={iconOpticalSize}
-					variant={iconVariant}
-				>
-					{rightIcon}
-				</Icon>
+				<div class="input__normal-icon">
+					<Icon
+						filled={iconFilled}
+						weight={iconWeight}
+						grade={iconGrade}
+						opticalSize={iconOpticalSize}
+						variant={iconVariant}
+					>
+						{rightIcon}
+					</Icon>
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -608,10 +610,17 @@
 	.input__clear-button {
 		position: absolute;
 		top: 50%;
-		right: 0;
+		right: 4px;
+		width: 32px;
+		height: 32px;
 		transform: translate(0, -50%);
 		opacity: 0;
 		transition: var(--svelte-ui-clear-button-transition);
+	}
+
+	/* rightIconがある場合はクリアボタンを左にずらす */
+	.input--clearable.input--has-right-icon .input__clear-button {
+		right: 40px;
 	}
 
 	@media (hover: hover) {
@@ -620,32 +629,53 @@
 		}
 	}
 
+	@media (hover: none) {
+		.input__clear-button {
+			opacity: 1;
+		}
+	}
+
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		position: absolute;
 		top: 50%;
-		left: 0;
-		width: 40px;
+		left: 4px;
+		width: 32px;
+		height: 32px;
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-input-icon-color);
-		pointer-events: auto;
+		pointer-events: none;
 		z-index: 1;
+	}
+
+	/* 左側アイコンにクリックハンドラーがある場合はクリック可能にする */
+	.input--has-left-icon-clickable .input__icon-left {
+		pointer-events: auto;
+		cursor: pointer;
 	}
 
 	.input__icon-right {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		position: absolute;
 		top: 50%;
-		right: 0;
-		width: 40px;
+		right: 4px;
+		width: 32px;
+		height: 32px;
 		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-input-icon-color);
-		pointer-events: auto;
+		pointer-events: none;
 		z-index: 1;
+	}
+
+	/* 通常のアイコン（ボタンではない）はクリック不可 */
+	.input__normal-icon {
+		pointer-events: none;
 	}
 
 	/* =============================================
@@ -669,14 +699,14 @@
 		}
 	}
 
-	.input--has-icon-right {
+	.input--has-right-icon {
 		input,
 		.input__display-text {
 			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
-	.input--has-icon-left {
+	.input--has-left-icon {
 		input,
 		.input__display-text {
 			padding-left: var(--svelte-ui-input-icon-space);
@@ -756,25 +786,9 @@
 			color: var(--svelte-ui-input-text-color);
 		}
 
-		.input__clear-button {
-			right: 8px;
-		}
-
 		&.input--clearable {
 			input {
-				padding-right: var(--svelte-ui-clear-button-right-spacing);
-			}
-		}
-
-		&.input--has-icon-right {
-			input {
-				padding-right: var(--svelte-ui-input-icon-space);
-			}
-		}
-
-		&.input--has-icon-left {
-			input {
-				padding-left: var(--svelte-ui-input-icon-space);
+				padding-right: calc(var(--svelte-ui-input-icon-space) + var(--svelte-ui-input-icon-space));
 			}
 		}
 	}
@@ -804,14 +818,14 @@
 			height: 100%;
 		}
 
-		&.input--has-icon-right {
+		&.input--has-right-icon {
 			input,
 			.input__display-text {
 				padding-right: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 
-		&.input--has-icon-left {
+		&.input--has-left-icon {
 			input,
 			.input__display-text {
 				padding-left: var(--svelte-ui-input-icon-space-inline);
