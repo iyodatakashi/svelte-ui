@@ -623,7 +623,7 @@
 
 	/* rightIconがある場合はクリアボタンを左にずらす */
 	.input--clearable.input--has-right-icon .input__clear-button {
-		right: 40px;
+		right: 36px;
 	}
 
 	@media (hover: hover) {

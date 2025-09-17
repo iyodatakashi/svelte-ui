@@ -4,10 +4,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
-	import Icon from './Icon.svelte';
 	import { announceSelection } from '../utils/accessibility';
 	import { t } from '../i18n';
-	import type { Option } from '../types/options';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -16,7 +14,7 @@
 		// 基本プロパティ
 		name,
 		value = $bindable(),
-		options = [] as Option[],
+		options = [] as string[],
 
 		// HTML属性系
 		inputAttributes,
@@ -84,7 +82,7 @@
 		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
-		options: Option[];
+		options: string[];
 
 		// HTML属性系
 		inputAttributes?: HTMLInputAttributes | undefined;
@@ -168,49 +166,31 @@
 	// =========================================================================
 	// $effect
 	// =========================================================================
-	// inputValueとvalueの同期（オプション選択時のみ）
-	$effect(() => {
-		// オプション選択時のみ、inputValueを更新
-		if (value !== null && value !== undefined) {
-			const selectedOption = options.find((option) => option.value === value);
-			if (selectedOption && inputValue !== selectedOption.label) {
-				inputValue = selectedOption.label;
-			}
-		}
-	});
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
 	// オプションを選択
-	const selectOption = (option: Option) => {
-		value = option.value;
-		inputValue = '';
+	const selectOption = (option: string) => {
+		value = option;
+		inputValue = option;
 		popupRef?.close();
 		highlightedIndex = -1;
 		isFocused = false;
 
-		// inputValueも更新
-		inputValue = option.label;
-
 		// スクリーンリーダーアナウンス
-		if (option.value !== null && option.value !== undefined) {
-			announceSelection(option.label);
+		if (option !== null && option !== undefined) {
+			announceSelection(option);
 		}
 
-		onchange?.(option.value);
+		onchange?.(option);
 	};
 
 	// input要素のフォーカス/クリック時
 	const handleInputFocus = (event: FocusEvent) => {
 		if (disabled) return;
-
 		isFocused = true;
 		popupRef?.open();
-		if (filterable) {
-			const selectedOption = options.find((option) => option.value === value);
-			inputValue = selectedOption ? selectedOption.label : '';
-		}
 		highlightedIndex = -1;
 		onfocus(event);
 	};
@@ -224,59 +204,28 @@
 			inputValue = currentInputValue;
 		}
 
-		// 数値として解析を試行し、失敗した場合は文字列として扱う
-		const numericValue = Number(currentInputValue);
-		value = !isNaN(numericValue) && currentInputValue !== '' ? numericValue : currentInputValue;
-
+		// 入力中はvalueを更新しない（入力値をそのまま保持）
 		highlightedIndex = -1;
 		popupRef?.open();
-		oninput?.(value);
+		oninput?.(currentInputValue);
 	};
 
 	// 値確定ハンドラー
 	const handleChange = (currentValue: string | number | undefined) => {
 		if (disabled || readonly) return;
 
-		// undefinedの場合はクリア処理
-		if (currentValue === undefined) {
-			value = null;
-			inputValue = '';
-			onchange?.(null);
-			return;
-		}
-
-		const currentInputValue = String(currentValue || '');
-
-		// 空の値の場合はnullを設定（クリア）
-		if (currentInputValue === '') {
-			value = null;
-			inputValue = ''; // inputValueもリセット
-			onchange?.(null);
-			return;
-		}
-
-		// 入力値をそのまま保持（新規入力の場合）
-		inputValue = currentInputValue;
-
-		const numericValue = Number(currentInputValue);
-		const finalValue =
-			!isNaN(numericValue) && currentInputValue !== '' ? numericValue : currentInputValue;
-		value = finalValue;
-		onchange?.(finalValue);
+		value = currentValue;
+		onchange?.(value);
 	};
+
 	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
 		// クリック時にもポップアップを開く
 		if (!isFocused) {
 			isFocused = true;
 			popupRef?.open();
-			if (filterable) {
-				inputValue = value !== null && value !== undefined ? String(value) : '';
-			}
 			highlightedIndex = -1;
 		}
-		// Inputにフォーカスを移す（外側クリック検出のため）
-		inputRef?.focus();
 		onclick?.(event);
 	};
 
@@ -419,10 +368,6 @@
 	const handlePopupClose = () => {
 		isFocused = false;
 		highlightedIndex = -1;
-		// 検索語をリセット（Popupのアニメーション完了後）
-		if (value !== null && value !== undefined) {
-			inputValue = '';
-		}
 	};
 	const handleBlur = (event: FocusEvent) => {
 		if (disabled) return;
@@ -443,9 +388,7 @@
 	// フィルタリングされたオプション
 	const filteredOptions = $derived.by(() => {
 		if (!filterable || !inputValue) return options;
-		return options.filter((option) =>
-			option.label.toLowerCase().includes(inputValue.toLowerCase())
-		);
+		return options.filter((option) => option.toLowerCase().includes(inputValue.toLowerCase()));
 	});
 </script>
 
@@ -536,11 +479,9 @@
 						type="button"
 						class="combobox__option"
 						class:combobox__option--highlighted={index === highlightedIndex}
-						class:combobox__option--selected={option.value === value}
-						class:combobox__option--disabled={option.disabled}
+						class:combobox__option--selected={option === value}
 						role="option"
-						aria-selected={option.value === value}
-						disabled={option.disabled}
+						aria-selected={option === value}
 						onmousedown={(event) => {
 							event.preventDefault();
 							event.stopPropagation();
@@ -548,7 +489,7 @@
 						}}
 						onmouseenter={() => (highlightedIndex = index)}
 					>
-						{option.label}
+						{option}
 					</button>
 				</div>
 			{:else}
