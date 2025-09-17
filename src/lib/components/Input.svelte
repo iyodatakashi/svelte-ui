@@ -618,12 +618,12 @@
 		height: 32px;
 		transform: translate(0, -50%);
 		opacity: 0;
-		transition: var(--svelte-ui-clear-button-transition);
+		transition: var(--svelte-ui-transition-duration);
 	}
 
 	/* rightIconがある場合はクリアボタンを左にずらす */
 	.input--clearable.input--has-right-icon .input__clear-button {
-		right: var(--svelte-ui-form-icon-space);
+		right: var(--svelte-ui-input-icon-spacing);
 	}
 
 	@media (hover: hover) {
@@ -701,8 +701,9 @@
 		}
 
 		&.input--clearable {
-			input {
-				padding-right: calc(var(--svelte-ui-input-icon-space) + var(--svelte-ui-input-icon-space));
+			input,
+			.input__display-text {
+				padding-right: calc(var(--svelte-ui-input-icon-spacing-double));
 			}
 		}
 	}
@@ -735,14 +736,14 @@
 		&.input--has-right-icon {
 			input,
 			.input__display-text {
-				padding-right: var(--svelte-ui-input-icon-space-inline);
+				padding-right: var(--svelte-ui-input-icon-spaceing-inline);
 			}
 		}
 
 		&.input--has-left-icon {
 			input,
 			.input__display-text {
-				padding-left: var(--svelte-ui-input-icon-space-inline);
+				padding-left: var(--svelte-ui-input-icon-spaceing-inline);
 			}
 		}
 
@@ -774,21 +775,21 @@
 	.input--clearable {
 		input,
 		.input__display-text {
-			padding-right: 24px;
+			padding-right: var(--svelte-ui-input-icon-spacing);
 		}
 	}
 
 	.input.input--has-right-icon {
 		input,
 		.input__display-text {
-			padding-right: var(--svelte-ui-input-icon-space);
+			padding-right: var(--svelte-ui-input-icon-spacing);
 		}
 	}
 
 	.input.input--has-left-icon {
 		input,
 		.input__display-text {
-			padding-left: var(--svelte-ui-input-icon-space);
+			padding-left: var(--svelte-ui-input-icon-spacing);
 		}
 	}
 

@@ -279,7 +279,8 @@
 	--svelte-ui-form-height-lg: 44px;
 	--svelte-ui-form-padding: 0 12px;
 	--svelte-ui-form-padding-left: 12px;
-	--svelte-ui-form-icon-space: 40px;
+	--svelte-ui-form-icon-offset: 4px;
+	--svelte-ui-form-icon-width: 32px;
 	--svelte-ui-form-icon-space-inline: 32px;
 	--svelte-ui-form-padding-with-icon: 0 var(--svelte-ui-form-icon-space) 0 12px;
 	--svelte-ui-form-padding-with-icon-inline: 0 var(--svelte-ui-form-icon-space-inline) 0 12px;
@@ -346,12 +347,17 @@
 	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
 	--svelte-ui-input-padding-left: var(--svelte-ui-form-padding-left);
 	--svelte-ui-input-icon-space: var(--svelte-ui-form-icon-space);
-	--svelte-ui-input-icon-space-inline: var(--svelte-ui-form-icon-space-inline);
-	--svelte-ui-input-padding-with-icon: var(--svelte-ui-form-padding-with-icon);
-	--svelte-ui-input-padding-with-icon-inline: var(--svelte-ui-form-padding-with-icon-inline);
 	--svelte-ui-input-border-radius: var(--svelte-ui-form-border-radius);
 	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-input-disabled-opacity: var(--svelte-ui-disabled-opacity);
+	--svelte-ui-input-icon-spacing: calc(
+		var(--svelte-ui-form-icon-width) + var(--svelte-ui-form-icon-offset)
+	);
+	--svelte-ui-input-icon-spacing-inline: var(--svelte-ui-form-icon-width);
+	--svelte-ui-input-icon-spacing-double: calc(
+		var(--svelte-ui-form-icon-width) * 2 + var(--svelte-ui-form-icon-offset)
+	);
+	--svelte-ui-input-icon-spacing-double-inline: calc(var(--svelte-ui-form-icon-width) * 2);
 	--svelte-ui-input-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-input-readonly-bg: var(--svelte-ui-form-bg);
@@ -368,6 +374,18 @@
 	--svelte-ui-textarea-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-textarea-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-textarea-placeholder-color: var(--svelte-ui-text-placeholder-color);
+	--svelte-ui-textarea-icon-spacing: calc(
+		var(--svelte-ui-form-icon-width) + var(--svelte-ui-form-icon-offset)
+	);
+	--svelte-ui-textarea-icon-spacing-inline: var(--svelte-ui-form-icon-width);
+	--svelte-ui-textarea-icon-top: 2px;
+	--svelte-ui-textarea-icon-top-inline: -2px;
+	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
+	--svelte-ui-textarea-border-color: var(--svelte-ui-border-weak-color);
+	--svelte-ui-textarea-readonly-bg: var(--svelte-ui-form-bg);
+	--svelte-ui-textarea-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-textarea-placeholder-color: var(--svelte-ui-text-placeholder-color);
+	--svelte-ui-textarea-icon-color: var(--svelte-ui-text-subtle-color);
 
 	/* Select */
 	--svelte-ui-select-height: var(--svelte-ui-form-height);
@@ -645,12 +663,6 @@
 	--svelte-ui-skeleton-input-bg-color: var(--svelte-ui-skeleton-color);
 	--svelte-ui-skeleton-textarea-bg-color: var(--svelte-ui-skeleton-color);
 	--svelte-ui-skeleton-avatar-bg-color: var(--svelte-ui-skeleton-color);
-
-	/* ClearButton */
-	--svelte-ui-clear-button-transition: opacity 0.3s ease;
-	--svelte-ui-clear-button-top-textarea: 8px;
-	--svelte-ui-clear-button-right-textarea: 8px;
-	--svelte-ui-clear-button-right-spacing: 36px;
 
 	/* Badge */
 	--svelte-ui-badge-font-size: var(--svelte-ui-font-size-sm);

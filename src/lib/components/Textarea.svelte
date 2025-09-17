@@ -3,6 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '../utils/style';
+	import { t } from '../i18n';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 
@@ -43,7 +44,7 @@
 		autoResize = true,
 		resizable = false,
 		clearable = false,
-		clearButtonAriaLabel = 'クリア',
+		clearButtonAriaLabel = t('input.clear'),
 		readonly = false,
 		required = false,
 		iconVariant = 'outlined',
@@ -425,11 +426,14 @@
 				<IconButton
 					ariaLabel={clearButtonAriaLabel}
 					color="var(--svelte-ui-textarea-text-color)"
-					onclick={clear}
+					onclick={(event) => {
+						event.stopPropagation();
+						clear();
+					}}
 					tabindex={-1}
 					iconFilled={true}
 					{iconVariant}
-					size={24}>cancel</IconButton
+					fontSize={18}>cancel</IconButton
 				>
 			</div>
 		{/if}
@@ -518,12 +522,12 @@
 		}
 	}
 
-	.textarea__clear-button {
+	.textarea--clearable .textarea__clear-button {
 		position: absolute;
-		top: var(--svelte-ui-clear-button-top-textarea);
-		right: var(--svelte-ui-clear-button-right-textarea);
+		top: var(--svelte-ui-textarea-icon-top);
+		right: 4px;
 		opacity: 0;
-		transition: var(--svelte-ui-clear-button-transition);
+		transition: var(--svelte-ui-transition-duration);
 	}
 
 	/* =============================================
@@ -556,12 +560,18 @@
 	.textarea--clearable {
 		textarea,
 		.textarea__display-text {
-			padding-right: var(--svelte-ui-clear-button-right-spacing);
+			padding-right: var(--svelte-ui-textarea-icon-spacing);
 		}
 	}
 
 	@media (hover: hover) {
-		:hover .textarea__clear-button {
+		.textarea--clearable:hover .textarea__clear-button {
+			opacity: 1;
+		}
+	}
+
+	@media (hover: none) {
+		.textarea--clearable .textarea__clear-button {
 			opacity: 1;
 		}
 	}
@@ -646,6 +656,12 @@
 			border-radius: var(--svelte-ui-textarea-border-radius);
 			color: var(--svelte-ui-textarea-text-color);
 		}
+
+		&.textarea--clearable {
+			textarea {
+				padding-right: var(--svelte-ui-textarea-icon-spacing);
+			}
+		}
 	}
 
 	/* =============================================
@@ -677,6 +693,10 @@
 			textarea {
 				opacity: 1;
 			}
+		}
+
+		&.textarea--clearable .textarea__clear-button {
+			top: var(--svelte-ui-textarea-icon-top-inline);
 		}
 	}
 </style>
