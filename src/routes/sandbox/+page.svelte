@@ -54,7 +54,7 @@
 	};
 </script>
 
-<div class="container" data-theme="dark">
+<div class="container" data-theme="light">
 	<Fab icon="add" variant="glass" shadow position="center" onclick={open}>ほげ</Fab>
 	<div class="container-inner">
 		<Button onclick={open}>オープン</Button>
@@ -92,7 +92,7 @@
 			iconFilled
 		/>
 
-		<FileUploader bind:value={fileList} onchange={handleChangeFileList} />
+		<FileUploader bind:value={fileList} multiple onchange={handleChangeFileList} />
 
 		<div class="textarea">
 			<label for="textarea2">textarea</label>

@@ -297,28 +297,28 @@
 				opticalSize={iconOpticalSize}
 				variant={iconVariant}>{icon}</Icon
 			>
-			<ul class="file-uploader__file-list">
-				{#each value as file, index}
-					<li class="file-uploader__file-list-item">
-						{file.name}
-						<IconButton
-							size={24}
-							iconFilled={true}
-							iconWeight={300}
-							color="var(--svelte-ui-text-color)"
-							onclick={(e) => {
-								e.stopPropagation();
-								removeFile(index);
-							}}
-							ariaLabel={removeFileAriaLabel}
-							tabindex={-1}
-						>
-							cancel
-						</IconButton>
-					</li>
-				{/each}
-			</ul>
 		</div>
+		<ul class="file-uploader__file-list">
+			{#each value as file, index}
+				<li class="file-uploader__file-list-item">
+					{file.name}
+					<IconButton
+						size={24}
+						iconFilled={true}
+						iconWeight={300}
+						color="var(--svelte-ui-text-color)"
+						onclick={(e) => {
+							e.stopPropagation();
+							removeFile(index);
+						}}
+						ariaLabel={removeFileAriaLabel}
+						tabindex={-1}
+					>
+						cancel
+					</IconButton>
+				</li>
+			{/each}
+		</ul>
 	{:else}
 		<div class="file-uploader__description">
 			<Icon
@@ -412,10 +412,6 @@
 		color: var(--svelte-ui-text-subtle-color);
 	}
 
-	.file-uploader__description--with-file {
-		color: var(--svelte-ui-text-color);
-	}
-
 	.file-uploader__input {
 		display: none;
 	}
@@ -438,6 +434,7 @@
 
 	.file-uploader__file-list {
 		display: flex;
+		justify-content: center;
 		flex-wrap: wrap;
 		gap: 8px;
 		list-style: none;
