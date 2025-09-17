@@ -8,68 +8,138 @@
 	import Select from '$lib/components/Select.svelte';
 	import Combobox from '$lib/components/Combobox.svelte';
 	import ColorPicker from '$lib/components/ColorPicker.svelte';
+	import ConfirmDialog from '$lib/components/ConfirmDialog.svelte';
+	import Datepicker from '$lib/components/Datepicker.svelte';
+	import Dialog from '$lib/components/Dialog.svelte';
+	import Drawer from '$lib/components/Drawer.svelte';
 	import Skeleton from '$lib/components/skeleton/Skeleton.svelte';
+	import type { SvelteComponent } from 'svelte';
+	import Fab from '$lib/components/Fab.svelte';
+	import FileUploader from '$lib/components/FileUploader.svelte';
+	import ImageUploader from '$lib/components/ImageUploader.svelte';
+
 	let value: string = $state('');
 	let value2: string = $state('');
 	let checked: boolean = $state(false);
 	let color: string = $state('');
+	let dialogRef: SvelteComponent | undefined = $state();
+	let confirmDialogRef: SvelteComponent | undefined = $state();
+	let drawerRef: SvelteComponent | undefined = $state();
+	let date: Date = $state(new Date());
+	let range: { start: Date; end: Date } = $state({
+		start: new Date(),
+		end: new Date('2025-11-28')
+	});
+	let fileList: FileList | undefined = $state();
+
 	const options = [
 		{ value: 'hoge', label: 'ほげ' },
 		{ value: 'fuga', label: 'ふが' }
 	];
 
-	const handleChange = (newValue: string) => {
+	const handleChange = (newValue: Date) => {
 		console.log(newValue);
+	};
+
+	const handleChangeFileList = (newValue: FileList) => {
+		console.log(newValue);
+	};
+
+	const open = () => {
+		drawerRef?.open();
+	};
+
+	const handleConfirm = () => {
+		console.log('Confirm');
 	};
 </script>
 
-<div class="container">
-	<label for="input1">インプット1</label>
-	<Input id="input1" inline bind:value minWidth={300} width="50%" onsubmit={handleChange} />
-	<Textarea id="textarea1" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
-	<Select bind:value {options} />
-	<Combobox bind:value {options} onchange={handleChange} />
-	<ColorPicker bind:value={color} rounded clearable />
-	<div class="textarea">
-		<label for="textarea2">textarea</label>
-		<Textarea id="textarea2" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
-		<label for="radio1">radio1</label>
-		<Radio id="radio1" name="hoge" value="hoge" bind:currentValue={value} onsubmit={handleChange}
-			>hoge</Radio
-		>
-		<label for="radio2">radio2</label>
-		<Radio id="radio2" name="hoge" value="fuga" bind:currentValue={value} onsubmit={handleChange}
-			>fuga</Radio
-		>
+<div class="container" data-theme="dark">
+	<Fab icon="add" variant="glass" shadow position="center" onclick={open}>ほげ</Fab>
+	<div class="container-inner">
+		<Button onclick={open}>オープン</Button>
+		<label for="input1">インプット1</label>
+		<Input id="input1" inline bind:value minWidth={300} width="50%" onsubmit={handleChange} />
+		<Textarea id="textarea1" bind:value={value2} onsubmit={handleChange} />
+		<Select bind:value {options} />
+		<Combobox bind:value {options} onchange={handleChange} />
+		<ColorPicker bind:value={color} rounded clearable />
 
-		<label for="checkbox">checkbox</label>
-		<Checkbox id="checkbox" bind:value={checked}>ちぇき</Checkbox>
+		<ConfirmDialog
+			bind:this={confirmDialogRef}
+			title="いいの？"
+			confirmLabel="はい"
+			cancelLabel="いやん"
+			onConfirm={handleConfirm}
+		/>
+		<Dialog bind:this={dialogRef} title="タイトル" scrollable
+			>ほげ
+			{#snippet footer()}
+				<Button color="var(--svelte-ui-text-color)">キャンセル</Button>
+				<Button variant="filled" minWidth="120px">OK</Button>
+			{/snippet}
+		</Dialog>
+		<Drawer bind:this={drawerRef} position="left" title="ちあて" scrollable={false}>ほげ</Drawer>
 
-		<label for="switch">switch</label>
-		<Switch id="switch" bind:value={checked}>すいっち</Switch>
+		<Datepicker
+			bind:value={range}
+			locale="en"
+			onchange={handleChange}
+			mode="range"
+			hasIcon
+			minDate={new Date('2025-10-01')}
+			maxDate={new Date('2025-12-30')}
+			iconFilled
+		/>
 
-		<div class="button">
-			<Button variant="filled" icon="add" rounded>完了</Button>
+		<FileUploader bind:value={fileList} onchange={handleChangeFileList} />
+
+		<div class="textarea">
+			<label for="textarea2">textarea</label>
+			<Textarea id="textarea2" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
+			<label for="radio1">radio1</label>
+			<Radio id="radio1" name="hoge" value="hoge" bind:currentValue={value} onsubmit={handleChange}
+				>hoge</Radio
+			>
+			<label for="radio2">radio2</label>
+			<Radio id="radio2" name="hoge" value="fuga" bind:currentValue={value} onsubmit={handleChange}
+				>fuga</Radio
+			>
+
+			<label for="checkbox">checkbox</label>
+			<Checkbox id="checkbox" bind:value={checked}>ちぇき</Checkbox>
+
+			<label for="switch">switch</label>
+			<Switch id="switch" bind:value={checked}>すいっち</Switch>
+
+			<div class="button">
+				<Button variant="filled" icon="add" rounded>完了</Button>
+			</div>
 		</div>
-	</div>
 
-	<br />
-	<Skeleton
-		patterns={[
-			{ type: 'avatar', showName: true },
-			{
-				type: 'article-list',
-				lines: 3,
-				thumbnailConfig: { width: 300, aspectRatio: '16/9' }
-			}
-		]}
-	/>
+		<br />
+		<Skeleton
+			patterns={[
+				{ type: 'avatar', showName: true },
+				{
+					type: 'article-list',
+					lines: 3,
+					thumbnailConfig: { width: 300, aspectRatio: '16/9' }
+				}
+			]}
+		/>
+	</div>
 </div>
 
 <style>
 	.container {
-		padding: 32px;
 		width: 100%;
+	}
+
+	.container-inner {
+		padding: 32px;
+		background: var(--svelte-ui-surface-color);
+		color: var(--svelte-ui-text-color);
 	}
 
 	.textarea {

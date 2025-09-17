@@ -253,19 +253,19 @@
 	// $derived
 	// =========================================================================
 
-	const backgroundColors = {
+	const backgroundColors = $derived({
 		ghost: 'transparent',
 		filled: color ?? 'var(--svelte-ui-fab-bg-filled)',
 		outlined: 'transparent',
 		glass: 'var(--svelte-ui-fab-bg-glass)'
-	};
+	});
 
-	const textColors = {
+	const textColors = $derived({
 		ghost: color ?? 'var(--svelte-ui-fab-text-ghost)',
 		filled: 'var(--svelte-ui-fab-text-filled)',
 		outlined: color ?? 'var(--svelte-ui-fab-text-outlined)',
 		glass: color ?? 'var(--svelte-ui-fab-text-glass)'
-	};
+	});
 
 	const hasLabel = $derived(children !== undefined);
 </script>

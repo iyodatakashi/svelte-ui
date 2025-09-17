@@ -291,19 +291,19 @@
 	// =========================================================================
 	const isDisabled = $derived(disabled || loading);
 
-	const backgroundColors = {
+	const backgroundColors = $derived({
 		filled: color ?? 'var(--svelte-ui-iconbutton-bg-filled)',
 		outlined: 'transparent',
 		ghost: 'transparent',
 		glass: 'var(--svelte-ui-iconbutton-bg-glass)'
-	};
+	});
 
-	const textColors = {
+	const textColors = $derived({
 		filled: 'var(--svelte-ui-iconbutton-text-filled)',
 		outlined: color ?? 'var(--svelte-ui-iconbutton-text-outlined)',
 		ghost: color ?? 'var(--svelte-ui-iconbutton-text-ghost)',
 		glass: color ?? 'var(--svelte-ui-iconbutton-text-glass)'
-	};
+	});
 
 	const badgeDisplay = $derived(() => {
 		if (!hasBadge) return '';

@@ -157,19 +157,19 @@
 		[key: string]: any;
 	} = $props();
 
-	const backgroundColors = {
+	const backgroundColors = $derived({
 		filled: color ?? 'var(--svelte-ui-button-bg-filled)',
 		outlined: 'transparent',
 		ghost: 'transparent',
 		glass: 'var(--svelte-ui-button-bg-glass)'
-	};
+	});
 
-	const textColors = {
+	const textColors = $derived({
 		filled: 'var(--svelte-ui-button-text-filled)',
 		outlined: color ?? 'var(--svelte-ui-button-text-outlined)',
 		ghost: color ?? 'var(--svelte-ui-button-text-ghost)',
 		glass: color ?? 'var(--svelte-ui-button-text-glass)'
-	};
+	});
 
 	// =========================================================================
 	// Methods
