@@ -328,6 +328,9 @@
 		inline ? 'min-height: 1.6em; min-height: 1lh;' : `min-height: ${minHeight}px;`
 	);
 
+	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
+	const widthStyle = $derived(getStyleFromNumber(width));
+
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
 		if (typeof value === 'string' && value !== '') {
@@ -359,7 +362,7 @@
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
 	data-testid="textarea"
-	style={!inline ? `max-height: ${getStyleFromNumber(maxHeight)};` : ''}
+	style={!inline ? `max-height: ${maxHeightStyle};` : ''}
 >
 	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->
 	<div
@@ -387,7 +390,7 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="width: {getStyleFromNumber(width)}; {minHeightStyle} {customStyle}"
+			style="width: {widthStyle}; {minHeightStyle} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}

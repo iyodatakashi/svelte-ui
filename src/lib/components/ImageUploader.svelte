@@ -14,7 +14,7 @@
 	// =========================================================================
 	let {
 		// 基本プロパティ
-		value = $bindable(new DataTransfer().files),
+		value = $bindable(),
 		multiple = false,
 		maxFileSize = 5 * 1024 * 1024,
 		placeholder = '',
@@ -65,7 +65,7 @@
 		onpointerleave = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
-		value: FileList;
+		value: FileList | undefined;
 		multiple?: boolean;
 		maxFileSize?: number;
 		placeholder?: string;

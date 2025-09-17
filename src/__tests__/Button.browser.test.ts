@@ -255,3 +255,79 @@ test('Button CSS variables used are defined (computed) in the page', async () =>
 		expect(finalValue).not.toBe('inherit');
 	}
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Button color property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Button,
+		children: 'Test',
+		color: 'red'
+	});
+
+	const button = screen.getByRole('button');
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: red'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Button,
+		children: 'Test',
+		color: 'blue'
+	});
+
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: blue'));
+});
+
+test('Button minWidth property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Button,
+		children: 'Test',
+		minWidth: 100
+	});
+
+	const button = screen.getByRole('button');
+	await expect
+		.element(button)
+		.toHaveAttribute('style', expect.stringContaining('min-width: 100px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Button,
+		children: 'Test',
+		minWidth: 200
+	});
+
+	await expect
+		.element(button)
+		.toHaveAttribute('style', expect.stringContaining('min-width: 200px'));
+});
+
+test('Button multiple properties change reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Button,
+		children: 'Test',
+		color: 'red',
+		minWidth: 100
+	});
+
+	const button = screen.getByRole('button');
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: red'));
+	await expect
+		.element(button)
+		.toHaveAttribute('style', expect.stringContaining('min-width: 100px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Button,
+		children: 'Test',
+		color: 'blue',
+		minWidth: 200
+	});
+
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: blue'));
+	await expect
+		.element(button)
+		.toHaveAttribute('style', expect.stringContaining('min-width: 200px'));
+});

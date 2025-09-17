@@ -226,3 +226,29 @@ test('Fab CSS variables used are defined (computed) in the page', async () => {
 		expect(finalValue).not.toBe('inherit');
 	}
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Fab color property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Fab,
+		children: 'add',
+		ariaLabel: 'Add',
+		color: 'red'
+	});
+
+	const button = screen.getByRole('button');
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: red'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Fab,
+		children: 'add',
+		ariaLabel: 'Add',
+		color: 'blue'
+	});
+
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: blue'));
+});

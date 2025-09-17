@@ -146,3 +146,29 @@ test('FileUploader - CSS変数', async () => {
 	const computedStyle = getComputedStyle(uploader!);
 	expect(computedStyle.getPropertyValue('--file-uploader-width')).toBeTruthy();
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('FileUploader width property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: FileUploader,
+		width: 200
+	});
+
+	const uploader = screen.getByTestId('file-uploader');
+	await expect
+		.element(uploader)
+		.toHaveAttribute('style', expect.stringContaining('--file-uploader-width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: FileUploader,
+		width: 300
+	});
+
+	await expect
+		.element(uploader)
+		.toHaveAttribute('style', expect.stringContaining('--file-uploader-width: 300px'));
+});

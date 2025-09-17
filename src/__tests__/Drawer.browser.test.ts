@@ -81,7 +81,7 @@ test('Drawer - 位置指定', async () => {
 	});
 
 	const leftDrawer = container.querySelector('[data-testid="modal"]');
-	expect(leftDrawer).toHaveClass('left');
+	expect(leftDrawer).toHaveClass('drawer--left');
 
 	// 右側
 	const { container: container2 } = await render(ComponentWrapper, {
@@ -93,7 +93,7 @@ test('Drawer - 位置指定', async () => {
 	});
 
 	const rightDrawer = container2.querySelector('[data-testid="modal"]');
-	expect(rightDrawer).toHaveClass('right');
+	expect(rightDrawer).toHaveClass('drawer--right');
 });
 
 test('Drawer - パディングなし', async () => {
@@ -119,7 +119,7 @@ test('Drawer - スクロール可能', async () => {
 	});
 
 	const drawer = container.querySelector('[data-testid="modal"]');
-	expect(drawer).toHaveClass('scrollable');
+	expect(drawer).toHaveClass('drawer--scrollable');
 });
 
 test('Drawer - カスタムスタイル', async () => {
@@ -172,4 +172,28 @@ test('Drawer - CSS変数', async () => {
 
 	// DrawerコンポーネントはModalを内包しているため、実際のCSS変数を確認
 	expect(drawer).toHaveStyle('width: 240px'); // デフォルト幅
+});
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Drawer width property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Drawer,
+		width: 200,
+		isOpen: true
+	});
+
+	const modal = screen.container.querySelector('[data-testid="modal"]');
+	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Drawer,
+		width: 300,
+		isOpen: true
+	});
+
+	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 300px'));
 });

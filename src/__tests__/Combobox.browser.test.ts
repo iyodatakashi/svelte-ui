@@ -242,3 +242,55 @@ test('Combobox CSS variables used are defined (computed) in the page', async () 
 		expect(finalValue).not.toBe('inherit');
 	}
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Combobox maxWidth property changes reactively', async () => {
+	const screen = render(Combobox, {
+		maxWidth: 200,
+		minWidth: 100,
+		options: []
+	});
+
+	const combobox = screen.getByTestId('combobox');
+	await expect
+		.element(combobox)
+		.toHaveAttribute('style', expect.stringContaining('max-width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		maxWidth: 300,
+		minWidth: 100,
+		options: []
+	});
+
+	await expect
+		.element(combobox)
+		.toHaveAttribute('style', expect.stringContaining('max-width: 300px'));
+});
+
+test('Combobox minWidth property changes reactively', async () => {
+	const screen = render(Combobox, {
+		maxWidth: 200,
+		minWidth: 100,
+		options: []
+	});
+
+	const combobox = screen.getByTestId('combobox');
+	await expect
+		.element(combobox)
+		.toHaveAttribute('style', expect.stringContaining('min-width: 100px'));
+
+	// プロパティを更新
+	screen.rerender({
+		maxWidth: 200,
+		minWidth: 150,
+		options: []
+	});
+
+	await expect
+		.element(combobox)
+		.toHaveAttribute('style', expect.stringContaining('min-width: 150px'));
+});

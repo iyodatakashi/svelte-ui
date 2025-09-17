@@ -226,3 +226,43 @@ test('should not reference undefined CSS variables', async () => {
 
 	document.head.removeChild(style);
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Textarea width property changes reactively', async () => {
+	const screen = render(Textarea, {
+		width: 200
+	});
+
+	const textarea = screen.container.querySelector('textarea');
+	await expect.element(textarea).toHaveAttribute('style', expect.stringContaining('width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		width: 300
+	});
+
+	await expect.element(textarea).toHaveAttribute('style', expect.stringContaining('width: 300px'));
+});
+
+test('Textarea maxHeight property changes reactively', async () => {
+	const screen = render(Textarea, {
+		maxHeight: 200
+	});
+
+	const container = screen.getByTestId('textarea');
+	await expect
+		.element(container)
+		.toHaveAttribute('style', expect.stringContaining('max-height: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		maxHeight: 300
+	});
+
+	await expect
+		.element(container)
+		.toHaveAttribute('style', expect.stringContaining('max-height: 300px'));
+});

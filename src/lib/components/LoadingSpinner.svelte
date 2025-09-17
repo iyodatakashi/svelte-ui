@@ -46,6 +46,7 @@
 	style:--circumference={circumference}
 	style:--half-circumference={halfCircumference}
 	style:--negative-half-circumference={negativeHalfCircumference}
+	data-testid="loading-spinner"
 >
 	<svg viewBox="0 0 {size} {size}" width={size} height={size}>
 		<circle cx={size / 2} cy={size / 2} r={radius} style:stroke-width={strokeWidth} />

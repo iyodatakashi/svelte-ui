@@ -376,6 +376,10 @@
 		}
 		return String(value);
 	};
+
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
+	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
 </script>
 
 <div
@@ -393,9 +397,7 @@
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
 	data-testid="input"
-	style="width: {getStyleFromNumber(width)}; max-width: {getStyleFromNumber(
-		maxWidth
-	)}; min-width: {getStyleFromNumber(minWidth)}"
+	style="width: {widthStyle}; max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
 >
 	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
 	{#if inline}

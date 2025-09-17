@@ -20,10 +20,12 @@ test('ColorPicker can be changed and value updates', async () => {
 		},
 		id: 'colorpicker-change'
 	});
-	const colorInput = screen.container.querySelector('#colorpicker-change') as HTMLInputElement;
+	const colorInput = screen.container.querySelector(
+		'#colorpicker-change-input'
+	) as HTMLInputElement;
 
-	// Initial state should be empty (ColorPicker may set default value to '#')
-	expect(colorInput.value).toBe('#');
+	// Initial state should be empty
+	expect(colorInput.value).toBe('');
 
 	// Simulate user input by directly setting the value and triggering input event
 	colorInput.value = '#ff0000';
@@ -41,7 +43,9 @@ test('disabled ColorPicker is not interactable', async () => {
 		id: 'colorpicker-disabled'
 	});
 	const colorPicker = screen.getByTestId('color-picker');
-	const colorInput = screen.container.querySelector('#colorpicker-disabled') as HTMLInputElement;
+	const colorInput = screen.container.querySelector(
+		'#colorpicker-disabled-input'
+	) as HTMLInputElement;
 
 	expect(colorPicker).toHaveClass('color-picker--disabled');
 	expect(colorInput).toHaveAttribute('disabled');
@@ -61,7 +65,7 @@ test('disabled ColorPicker is not interactable', async () => {
 		id: 'colorpicker-disabled-2'
 	});
 	const colorInput2 = screen2.container.querySelector(
-		'#colorpicker-disabled-2'
+		'#colorpicker-disabled-2-input'
 	) as HTMLInputElement;
 	// Try to interact with disabled color picker
 	// Disabled elements should not respond to user interactions
@@ -78,7 +82,7 @@ test('ColorPicker variants render correctly', async () => {
 		value: '#ff0000',
 		id: 'colorpicker-default'
 	});
-	const colorPickerDefault = screenDefault.container.querySelector('#colorpicker-default');
+	const colorPickerDefault = screenDefault.container.querySelector('#colorpicker-default-input');
 	expect(colorPickerDefault).toBeInTheDocument();
 
 	// Test with fullWidth
@@ -87,7 +91,9 @@ test('ColorPicker variants render correctly', async () => {
 		fullWidth: true,
 		id: 'colorpicker-fullwidth'
 	});
-	const colorPickerFullWidth = screenFullWidth.container.querySelector('#colorpicker-fullwidth');
+	const colorPickerFullWidth = screenFullWidth.container.querySelector(
+		'#colorpicker-fullwidth-input'
+	);
 	expect(colorPickerFullWidth).toBeInTheDocument();
 
 	// Test with rounded
@@ -96,7 +102,7 @@ test('ColorPicker variants render correctly', async () => {
 		rounded: true,
 		id: 'colorpicker-rounded'
 	});
-	const colorPickerRounded = screenRounded.container.querySelector('#colorpicker-rounded');
+	const colorPickerRounded = screenRounded.container.querySelector('#colorpicker-rounded-input');
 	expect(colorPickerRounded).toBeInTheDocument();
 });
 
@@ -114,7 +120,9 @@ test('ColorPicker focus and blur events work correctly', async () => {
 			blurCalled = true;
 		}
 	});
-	const colorInput = screen.container.querySelector('#colorpicker-focus-blur') as HTMLInputElement;
+	const colorInput = screen.container.querySelector(
+		'#colorpicker-focus-blur-input'
+	) as HTMLInputElement;
 	colorInput.focus();
 	expect(focusCalled).toBe(true);
 
@@ -140,7 +148,9 @@ test('ColorPicker with readonly renders correctly', async () => {
 		readonly: true,
 		id: 'colorpicker-readonly'
 	});
-	const colorInput = screen.container.querySelector('#colorpicker-readonly') as HTMLInputElement;
+	const colorInput = screen.container.querySelector(
+		'#colorpicker-readonly-input'
+	) as HTMLInputElement;
 	expect(colorInput).toHaveAttribute('readonly');
 });
 
@@ -153,7 +163,7 @@ test('ColorPicker input event works correctly', async () => {
 		},
 		id: 'colorpicker-input'
 	});
-	const colorInput = screen.container.querySelector('#colorpicker-input') as HTMLInputElement;
+	const colorInput = screen.container.querySelector('#colorpicker-input-input') as HTMLInputElement;
 
 	// Simulate user input by typing
 	colorInput.value = '#00ff00';

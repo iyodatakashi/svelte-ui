@@ -209,3 +209,79 @@ test('Input CSS variables used are defined (computed) in the page', async () => 
 		await expect(value || fallback, `CSS var ${varName} should be defined`).not.toBe('');
 	}
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Input width property changes reactively', async () => {
+	const screen = render(Input, {
+		width: 200
+	});
+
+	const input = screen.getByTestId('input');
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		width: 300
+	});
+
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('width: 300px'));
+});
+
+test('Input maxWidth property changes reactively', async () => {
+	const screen = render(Input, {
+		maxWidth: 200
+	});
+
+	const input = screen.getByTestId('input');
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('max-width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		maxWidth: 300
+	});
+
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('max-width: 300px'));
+});
+
+test('Input minWidth property changes reactively', async () => {
+	const screen = render(Input, {
+		minWidth: 200
+	});
+
+	const input = screen.getByTestId('input');
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('min-width: 200px'));
+
+	// プロパティを更新
+	screen.rerender({
+		minWidth: 300
+	});
+
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('min-width: 300px'));
+});
+
+test('Input multiple properties change reactively', async () => {
+	const screen = render(Input, {
+		width: 200,
+		maxWidth: 300,
+		minWidth: 100
+	});
+
+	const input = screen.getByTestId('input');
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('width: 200px'));
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('max-width: 300px'));
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('min-width: 100px'));
+
+	// プロパティを更新
+	screen.rerender({
+		width: 250,
+		maxWidth: 350,
+		minWidth: 150
+	});
+
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('width: 250px'));
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('max-width: 350px'));
+	await expect.element(input).toHaveAttribute('style', expect.stringContaining('min-width: 150px'));
+});

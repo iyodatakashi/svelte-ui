@@ -210,3 +210,53 @@ test('IconButton CSS variables used are defined (computed) in the page', async (
 		expect(finalValue).not.toBe('inherit');
 	}
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('IconButton color property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: IconButton,
+		children: 'home',
+		ariaLabel: 'Home',
+		color: 'red'
+	});
+
+	const button = screen.getByRole('button');
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: red'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: IconButton,
+		children: 'home',
+		ariaLabel: 'Home',
+		color: 'blue'
+	});
+
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('color: blue'));
+});
+
+test('IconButton size property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: IconButton,
+		children: 'home',
+		ariaLabel: 'Home',
+		size: 32
+	});
+
+	const button = screen.getByRole('button');
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('width: 32px'));
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('height: 32px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: IconButton,
+		children: 'home',
+		ariaLabel: 'Home',
+		size: 48
+	});
+
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('width: 48px'));
+	await expect.element(button).toHaveAttribute('style', expect.stringContaining('height: 48px'));
+});

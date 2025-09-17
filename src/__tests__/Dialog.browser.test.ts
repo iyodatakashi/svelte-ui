@@ -37,7 +37,7 @@ test('Dialog with title renders correctly', async () => {
 		title: 'Test Dialog Title',
 		id: 'dialog-title-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-title-test');
+	const modal = screen.container.querySelector('#dialog-title-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -49,7 +49,7 @@ test('Dialog with description renders correctly', async () => {
 		description: 'This is a test description',
 		id: 'dialog-description-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-description-test');
+	const modal = screen.container.querySelector('#dialog-description-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -60,7 +60,7 @@ test('Dialog with custom width renders correctly', async () => {
 		width: 600,
 		id: 'dialog-width-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-width-test');
+	const modal = screen.container.querySelector('#dialog-width-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -71,7 +71,7 @@ test('Dialog with no padding renders correctly', async () => {
 		noPadding: true,
 		id: 'dialog-no-padding-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-no-padding-test');
+	const modal = screen.container.querySelector('#dialog-no-padding-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -82,7 +82,7 @@ test('Dialog with scrollable content renders correctly', async () => {
 		scrollable: true,
 		id: 'dialog-scrollable-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-scrollable-test');
+	const modal = screen.container.querySelector('#dialog-scrollable-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -93,7 +93,7 @@ test('Dialog with closeIfClickOutside disabled renders correctly', async () => {
 		closeIfClickOutside: false,
 		id: 'dialog-no-close-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-no-close-test');
+	const modal = screen.container.querySelector('#dialog-no-close-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -104,7 +104,7 @@ test('Dialog with restoreFocus enabled renders correctly', async () => {
 		restoreFocus: true,
 		id: 'dialog-restore-focus-test'
 	});
-	const modal = screen.container.querySelector('#modal-dialog-restore-focus-test');
+	const modal = screen.container.querySelector('#dialog-restore-focus-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
@@ -147,4 +147,28 @@ test('Dialog CSS variables used are defined (computed) in the page', async () =>
 		expect(finalValue).not.toBe('unset');
 		expect(finalValue).not.toBe('inherit');
 	}
+});
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Dialog width property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Dialog,
+		width: 400,
+		isOpen: true
+	});
+
+	const modal = screen.container.querySelector('[data-testid="modal"]');
+	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 400px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Dialog,
+		width: 500,
+		isOpen: true
+	});
+
+	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 500px'));
 });

@@ -275,3 +275,51 @@ test('renders Icon with default values', async () => {
 		.element(icon)
 		.toHaveStyle("font-variation-settings: 'FILL' 0, 'wght' 300, 'GRAD' 0, 'opsz' 24");
 });
+
+// =========================================================================
+// リアクティブ性テスト
+// =========================================================================
+
+test('Icon size property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Icon,
+		children: 'home',
+		size: 24
+	});
+
+	const icon = screen.container.querySelector('i');
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('width: 24px'));
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('height: 24px'));
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('font-size: 24px'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Icon,
+		children: 'home',
+		size: 32
+	});
+
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('width: 32px'));
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('height: 32px'));
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('font-size: 32px'));
+});
+
+test('Icon color property changes reactively', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Icon,
+		children: 'home',
+		color: 'red'
+	});
+
+	const icon = screen.container.querySelector('i');
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('color: red'));
+
+	// プロパティを更新
+	screen.rerender({
+		component: Icon,
+		children: 'home',
+		color: 'blue'
+	});
+
+	await expect.element(icon).toHaveAttribute('style', expect.stringContaining('color: blue'));
+});

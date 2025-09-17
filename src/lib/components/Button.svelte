@@ -307,6 +307,8 @@
 			.filter(Boolean)
 			.join(' ')
 	);
+
+	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
 </script>
 
 <button
@@ -314,7 +316,7 @@
 	disabled={isDisabled}
 	class={buttonClasses}
 	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
-		min-width: {getStyleFromNumber(minWidth)}; 
+		min-width: {minWidthStyle}; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
 	onauxclick={handleAuxClick}
