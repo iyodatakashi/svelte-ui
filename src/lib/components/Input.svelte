@@ -211,9 +211,9 @@
 	// ユーティリティ
 	const clear = (): void => {
 		if (disabled || readonly) return;
-		value = undefined;
 		ref?.focus();
-		onchange?.(value);
+		onchange?.(undefined);
+		value = undefined;
 	};
 
 	export const focus = () => {
@@ -459,7 +459,10 @@
 			<IconButton
 				ariaLabel={t('input.clear')}
 				color="var(--svelte-ui-input-text-color)"
-				onclick={clear}
+				onclick={(event) => {
+					event.stopPropagation();
+					clear();
+				}}
 				tabindex={-1}
 				iconFilled={true}
 				fontSize={18}>cancel</IconButton

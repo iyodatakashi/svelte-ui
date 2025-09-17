@@ -39,6 +39,7 @@
 		readonly = false,
 		required = false,
 		filterable = true,
+		clearable = false,
 
 		// 入力イベント
 		onchange = () => {}, // No params for type inference
@@ -106,6 +107,7 @@
 		readonly?: boolean;
 		required?: boolean;
 		filterable?: boolean;
+		clearable?: boolean;
 
 		// 入力イベント
 		onchange?: (value: any) => void;
@@ -148,14 +150,13 @@
 		[key: string]: any;
 	} = $props();
 
-	let searchTerm = $state('');
+	let inputValue = $state('');
 	let inputRef = $state<any>();
 	let listElement = $state<HTMLDivElement>();
 	let comboboxElement = $state<HTMLDivElement>();
 	let popupRef = $state<any>();
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
-	let inputValue = $state('');
 	let comboboxRef = $state<HTMLDivElement>();
 
 	// 各要素のIDを生成
@@ -167,14 +168,14 @@
 	// =========================================================================
 	// $effect
 	// =========================================================================
-	// inputValueとvalueの同期
+	// inputValueとvalueの同期（オプション選択時のみ）
 	$effect(() => {
-		if (searchTerm !== '') {
-			inputValue = searchTerm;
-		} else {
-			// valueに対応するオプションのlabelを表示
+		// オプション選択時のみ、inputValueを更新
+		if (value !== null && value !== undefined) {
 			const selectedOption = options.find((option) => option.value === value);
-			inputValue = selectedOption ? selectedOption.label : '';
+			if (selectedOption && inputValue !== selectedOption.label) {
+				inputValue = selectedOption.label;
+			}
 		}
 	});
 
@@ -184,7 +185,7 @@
 	// オプションを選択
 	const selectOption = (option: Option) => {
 		value = option.value;
-		searchTerm = '';
+		inputValue = '';
 		popupRef?.close();
 		highlightedIndex = -1;
 		isFocused = false;
@@ -208,7 +209,7 @@
 		popupRef?.open();
 		if (filterable) {
 			const selectedOption = options.find((option) => option.value === value);
-			searchTerm = selectedOption ? selectedOption.label : '';
+			inputValue = selectedOption ? selectedOption.label : '';
 		}
 		highlightedIndex = -1;
 		onfocus(event);
@@ -220,7 +221,7 @@
 		const currentInputValue = String(currentValue || '');
 
 		if (filterable) {
-			searchTerm = currentInputValue;
+			inputValue = currentInputValue;
 		}
 
 		// 数値として解析を試行し、失敗した場合は文字列として扱う
@@ -235,9 +236,32 @@
 	// 値確定ハンドラー
 	const handleChange = (currentValue: string | number | undefined) => {
 		if (disabled || readonly) return;
-		const inputValue = String(currentValue || '');
-		const numericValue = Number(inputValue);
-		const finalValue = !isNaN(numericValue) && inputValue !== '' ? numericValue : inputValue;
+
+		// undefinedの場合はクリア処理
+		if (currentValue === undefined) {
+			value = null;
+			inputValue = '';
+			onchange?.(null);
+			return;
+		}
+
+		const currentInputValue = String(currentValue || '');
+
+		// 空の値の場合はnullを設定（クリア）
+		if (currentInputValue === '') {
+			value = null;
+			inputValue = ''; // inputValueもリセット
+			onchange?.(null);
+			return;
+		}
+
+		// 入力値をそのまま保持（新規入力の場合）
+		inputValue = currentInputValue;
+
+		const numericValue = Number(currentInputValue);
+		const finalValue =
+			!isNaN(numericValue) && currentInputValue !== '' ? numericValue : currentInputValue;
+		value = finalValue;
 		onchange?.(finalValue);
 	};
 	const handleClick = (event: MouseEvent) => {
@@ -247,7 +271,7 @@
 			isFocused = true;
 			popupRef?.open();
 			if (filterable) {
-				searchTerm = value !== null && value !== undefined ? String(value) : '';
+				inputValue = value !== null && value !== undefined ? String(value) : '';
 			}
 			highlightedIndex = -1;
 		}
@@ -285,7 +309,7 @@
 				break;
 			case 'Escape':
 				event.preventDefault();
-				searchTerm = '';
+				inputValue = '';
 				highlightedIndex = -1;
 				popupRef?.close();
 				isFocused = false;
@@ -397,13 +421,14 @@
 		highlightedIndex = -1;
 		// 検索語をリセット（Popupのアニメーション完了後）
 		if (value !== null && value !== undefined) {
-			searchTerm = '';
+			inputValue = '';
 		}
 	};
 	const handleBlur = (event: FocusEvent) => {
 		if (disabled) return;
 		// フォーカスが外れたらisFocusedをfalseにする
 		isFocused = false;
+
 		// 少し遅延させてからポップアップを閉じる（オプション選択時の処理のため）
 		setTimeout(() => {
 			popupRef?.close();
@@ -417,9 +442,9 @@
 
 	// フィルタリングされたオプション
 	const filteredOptions = $derived.by(() => {
-		if (!filterable || !searchTerm) return options;
+		if (!filterable || !inputValue) return options;
 		return options.filter((option) =>
-			option.label.toLowerCase().includes(searchTerm.toLowerCase())
+			option.label.toLowerCase().includes(inputValue.toLowerCase())
 		);
 	});
 </script>
@@ -451,6 +476,8 @@
 		{disabled}
 		{readonly}
 		{required}
+		{clearable}
+		rightIcon={variant !== 'inline' ? 'arrow_drop_down' : undefined}
 		{tabindex}
 		{maxlength}
 		{rounded}
@@ -485,12 +512,6 @@
 		aria-autocomplete="list"
 		aria-controls={listboxId}
 	/>
-	<!-- ドロップダウンアイコン -->
-	{#if variant !== 'inline'}
-		<div class="combobox__dropdown-icon" aria-hidden="true">
-			<Icon>arrow_drop_down</Icon>
-		</div>
-	{/if}
 	<!-- オプションリスト -->
 	<Popup
 		bind:this={popupRef}
@@ -550,19 +571,6 @@
 
 	.combobox--full-width {
 		width: 100%;
-	}
-
-	/* =============================================
- * ドロップダウンアイコン
- * ============================================= */
-	.combobox__dropdown-icon {
-		position: absolute;
-		top: 50%;
-		right: var(--svelte-ui-combobox-dropdown-icon-right);
-		transform: translateY(-50%);
-		font-size: var(--svelte-ui-combobox-dropdown-icon-size);
-		color: var(--svelte-ui-combobox-dropdown-icon-color);
-		pointer-events: none;
 	}
 
 	/* =============================================
