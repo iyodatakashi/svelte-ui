@@ -623,7 +623,7 @@
 
 	/* rightIconがある場合はクリアボタンを左にずらす */
 	.input--clearable.input--has-right-icon .input__clear-button {
-		right: 36px;
+		right: var(--svelte-ui-form-icon-space);
 	}
 
 	@media (hover: hover) {
@@ -679,95 +679,6 @@
 	/* 通常のアイコン（ボタンではない）はクリック不可 */
 	.input__normal-icon {
 		pointer-events: none;
-	}
-
-	/* =============================================
- * レイアウトバリエーション
- * ============================================= */
-	.input--auto-resize {
-		width: fit-content;
-	}
-
-	.input--full-width {
-		width: 100%;
-	}
-
-	/* =============================================
- * 機能バリエーション
- * ============================================= */
-	.input--clearable {
-		input,
-		.input__display-text {
-			padding-right: 24px;
-		}
-	}
-
-	.input--has-right-icon {
-		input,
-		.input__display-text {
-			padding-right: var(--svelte-ui-input-icon-space);
-		}
-	}
-
-	.input--has-left-icon {
-		input,
-		.input__display-text {
-			padding-left: var(--svelte-ui-input-icon-space);
-		}
-	}
-
-	/* =============================================
- * プレースホルダー・テキスト表示
- * ============================================= */
-	input::placeholder,
-	.input__display-text:empty::before {
-		color: var(--svelte-ui-input-placeholder-color);
-	}
-
-	/* =============================================
- * フォーカス効果バリエーション
- * ============================================= */
-	.input--focus-outline input:focus {
-		outline: var(--svelte-ui-focus-outline-inner);
-		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-	}
-
-	.input--focus-background input:focus {
-		background: var(--svelte-ui-hover-overlay);
-		outline: none;
-	}
-
-	.input--focus-none input:focus {
-		outline: none;
-	}
-
-	/* =============================================
- * 状態管理（disabled, readonly等）
- * ============================================= */
-	.input--disabled {
-		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
-
-		.input__icon-left,
-		.input__icon-right {
-			opacity: var(--svelte-ui-button-disabled-opacity);
-		}
-	}
-
-	.input--readonly {
-		input {
-			cursor: default;
-		}
-	}
-
-	input:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
-	}
-
-	input[readonly] {
-		background-color: var(--svelte-ui-input-readonly-bg);
-		cursor: default;
 	}
 
 	/* =============================================
@@ -844,5 +755,94 @@
 				opacity: 1;
 			}
 		}
+	}
+
+	/* =============================================
+ * レイアウトバリエーション
+ * ============================================= */
+	.input--auto-resize {
+		width: fit-content;
+	}
+
+	.input--full-width {
+		width: 100%;
+	}
+
+	/* =============================================
+ * 機能バリエーション
+ * ============================================= */
+	.input--clearable {
+		input,
+		.input__display-text {
+			padding-right: 24px;
+		}
+	}
+
+	.input.input--has-right-icon {
+		input,
+		.input__display-text {
+			padding-right: var(--svelte-ui-input-icon-space);
+		}
+	}
+
+	.input.input--has-left-icon {
+		input,
+		.input__display-text {
+			padding-left: var(--svelte-ui-input-icon-space);
+		}
+	}
+
+	/* =============================================
+ * プレースホルダー・テキスト表示
+ * ============================================= */
+	input::placeholder,
+	.input__display-text:empty::before {
+		color: var(--svelte-ui-input-placeholder-color);
+	}
+
+	/* =============================================
+ * フォーカス効果バリエーション
+ * ============================================= */
+	.input--focus-outline input:focus {
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+	}
+
+	.input--focus-background input:focus {
+		background: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.input--focus-none input:focus {
+		outline: none;
+	}
+
+	/* =============================================
+ * 状態管理（disabled, readonly等）
+ * ============================================= */
+	.input--disabled {
+		opacity: var(--svelte-ui-input-disabled-opacity);
+		pointer-events: none;
+
+		.input__icon-left,
+		.input__icon-right {
+			opacity: var(--svelte-ui-button-disabled-opacity);
+		}
+	}
+
+	.input--readonly {
+		input {
+			cursor: default;
+		}
+	}
+
+	input:disabled {
+		opacity: var(--svelte-ui-button-disabled-opacity);
+		cursor: not-allowed;
+	}
+
+	input[readonly] {
+		background-color: var(--svelte-ui-input-readonly-bg);
+		cursor: default;
 	}
 </style>
