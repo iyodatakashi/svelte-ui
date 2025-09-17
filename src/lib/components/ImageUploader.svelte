@@ -36,7 +36,7 @@
 		iconGrade = 0,
 		iconOpticalSize = iconSize,
 		iconVariant = 'outlined',
-		removeFileAriaLabel = '画像を削除',
+		removeFileAriaLabel = t('imageUploader.removeFile'),
 
 		// 状態/動作
 		adaptiveSize = false,

@@ -11,11 +11,14 @@ export const en = {
 	imageUploader: {
 		unsupportedFileFormat: 'Unsupported file format',
 		fileSizeExceeded: 'File size must be {{maxSize}}MB or less',
-		uploadImage: 'Upload image'
+		uploadImage: 'Upload image',
+		removeFile: 'Remove image'
 	},
 	fileUploader: {
 		removeFile: 'Remove file',
-		uploadFile: 'Upload file'
+		uploadFile: 'Upload file',
+		placeholder: 'Drag & drop files here<br />or click to select',
+		maxFileSizeError: 'File size must be {{maxSize}}MB or less'
 	},
 	combobox: {
 		optionsList: 'Options list'

@@ -3,6 +3,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import Input from './Input.svelte';
+	import { t } from '../i18n';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 
@@ -27,7 +28,7 @@
 		disabled = false,
 		readonly = false,
 		clearable = false,
-		clearButtonAriaLabel = 'クリア',
+		clearButtonAriaLabel = t('input.clear'),
 		iconVariant = 'outlined',
 
 		// 入力イベント
@@ -435,14 +436,14 @@
 		z-index: 1;
 	}
 
-	.color-picker__clear-button {
+	.color-picker--clearable .color-picker__clear-button {
 		position: absolute;
 		top: 50%;
-		right: 8px;
+		right: 48px;
 		height: fit-content;
 		transform: translate(0, -50%);
 		opacity: 0;
-		transition: var(--svelte-ui-clear-button-transition);
+		transition: var(--svelte-ui-transition-duration);
 	}
 
 	/* =============================================
@@ -457,7 +458,14 @@
  * ============================================= */
 
 	@media (hover: hover) {
-		.color-picker:hover .color-picker__clear-button {
+		.color-picker--clearable:hover .color-picker__clear-button {
+			opacity: 1;
+			pointer-events: all;
+		}
+	}
+
+	@media (hover: none) {
+		.color-picker--clearable .color-picker__clear-button {
 			opacity: 1;
 			pointer-events: all;
 		}

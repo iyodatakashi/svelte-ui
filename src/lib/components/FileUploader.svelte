@@ -16,7 +16,7 @@
 		value = $bindable(),
 		multiple = false,
 		maxFileSize = 5 * 1024 * 1024,
-		placeholder = 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
+		placeholder = t('fileUploader.placeholder'),
 
 		// HTML属性系
 		id = `file-uploader-${Math.random().toString(36).substring(2, 15)}`,
@@ -192,7 +192,9 @@
 
 	const validateFile = (file: File): boolean => {
 		if (file.size > maxFileSize) {
-			errorMessage = `ファイルサイズは${(maxFileSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
+			errorMessage = t('fileUploader.maxFileSizeError', {
+				maxSize: (maxFileSize / 1024 / 1024).toFixed(1)
+			});
 			return false;
 		}
 

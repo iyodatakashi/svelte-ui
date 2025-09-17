@@ -20,7 +20,7 @@
 		height = '120px',
 		adaptiveSize = false,
 		rounded = false,
-		removeFileAriaLabel = 'ファイルを削除',
+		removeFileAriaLabel,
 		onRemove,
 		id
 	}: ImagePreviewProps = $props();

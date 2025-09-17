@@ -11,11 +11,14 @@ export const ja = {
 	imageUploader: {
 		unsupportedFileFormat: 'サポートされていないファイル形式です',
 		fileSizeExceeded: 'ファイルサイズは{{maxSize}}MB以下にしてください',
-		uploadImage: '画像をアップロード'
+		uploadImage: '画像をアップロード',
+		removeFile: '画像を削除'
 	},
 	fileUploader: {
 		removeFile: 'ファイルを削除',
-		uploadFile: 'ファイルをアップロード'
+		uploadFile: 'ファイルをアップロード',
+		placeholder: 'ファイルをドラッグ＆ドロップ<br />またはファイルを選択',
+		maxFileSizeError: 'ファイルサイズは{{maxSize}}MB以下にしてください'
 	},
 	combobox: {
 		optionsList: 'オプション一覧'
