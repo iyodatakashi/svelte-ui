@@ -235,7 +235,7 @@
 
 		switch (event.key) {
 			case 'ArrowDown':
-				event.preventDefault();
+				event?.preventDefault?.();
 				if (!isFocused) {
 					isFocused = true;
 					popupRef?.open();
@@ -243,7 +243,7 @@
 				highlightedIndex = Math.min(highlightedIndex + 1, filteredOptions.length - 1);
 				break;
 			case 'ArrowUp':
-				event.preventDefault();
+				event?.preventDefault?.();
 				if (!isFocused) {
 					isFocused = true;
 					popupRef?.open();
@@ -251,13 +251,13 @@
 				highlightedIndex = Math.max(highlightedIndex - 1, -1);
 				break;
 			case 'Enter':
-				event.preventDefault();
+				event?.preventDefault?.();
 				if (highlightedIndex >= 0 && highlightedIndex < filteredOptions.length) {
 					selectOption(filteredOptions[highlightedIndex]);
 				}
 				break;
 			case 'Escape':
-				event.preventDefault();
+				event?.preventDefault?.();
 				inputValue = '';
 				highlightedIndex = -1;
 				popupRef?.close();
@@ -483,8 +483,8 @@
 						role="option"
 						aria-selected={option === value}
 						onmousedown={(event) => {
-							event.preventDefault();
-							event.stopPropagation();
+							event?.preventDefault?.();
+							event?.stopPropagation?.();
 							selectOption(option);
 						}}
 						onmouseenter={() => (highlightedIndex = index)}

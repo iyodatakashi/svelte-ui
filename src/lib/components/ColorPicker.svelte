@@ -157,7 +157,7 @@
 	// =========================================================================
 
 	const handleSubmit = (event: SubmitEvent) => {
-		event.preventDefault();
+		event?.preventDefault?.();
 		handleChange();
 	};
 
@@ -189,12 +189,6 @@
 		if (disabled) return;
 		isFocused = false;
 		onblur(event);
-	};
-
-	const clear = (): void => {
-		if (disabled) return;
-		value = '';
-		onchange(value);
 	};
 
 	const handleClick = (event: MouseEvent) => {

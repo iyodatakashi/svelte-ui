@@ -293,7 +293,7 @@
 				if (allowDirectInput && event.key === 'Enter') {
 					return; // Inputコンポーネントの処理に任せる
 				}
-				event.preventDefault();
+				event?.preventDefault?.();
 				openedViaKeyboard = true;
 				open();
 				break;

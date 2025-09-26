@@ -251,7 +251,7 @@
 	// 入力イベント
 	const handleSubmit = (event: SubmitEvent) => {
 		if (disabled || readonly) return;
-		event.preventDefault();
+		event?.preventDefault?.();
 		ref?.blur();
 		onsubmit?.(value);
 	};
