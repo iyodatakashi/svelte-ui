@@ -272,6 +272,7 @@
 	class:switch--medium={size === 'medium'}
 	class:switch--large={size === 'large'}
 	class:switch--disabled={disabled}
+	class:switch--checked={value}
 	class:switch--reduced-motion={reducedMotion}
 	data-testid="switch"
 >
@@ -311,18 +312,11 @@
 		{...restProps}
 	/>
 
-	<label
-		for={id}
-		class="switch__label"
-		class:switch__label--small={size === 'small'}
-		class:switch__label--medium={size === 'medium'}
-		class:switch__label--large={size === 'large'}
-		class:switch__label--disabled={disabled}
-		class:switch__label--checked={value}
-	>
-		<span class="switch__track">
-			<span class="switch-thumb"></span>
-		</span>
+	<label for={id} class="switch__track">
+		<span class="switch-thumb"></span>
+	</label>
+
+	<label for={id} class="switch__label">
 		{#if children}
 			{@render children()}
 		{/if}
@@ -418,11 +412,11 @@
 			filter var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
 
-		.switch__label--checked & {
+		.switch--checked & {
 			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));
 		}
 
-		.switch__label--disabled & {
+		.switch--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
 	}
@@ -440,13 +434,13 @@
 		border-radius: var(--switch-thumb-border-radius);
 		transition: transform var(--svelte-ui-transition-duration) ease;
 
-		.switch__label--checked & {
+		.switch--checked & {
 			transform: translateX(
 				calc(var(--switch-width) - var(--switch-thumb-size) - var(--switch-thumb-margin) * 2)
 			);
 		}
 
-		.switch__label--disabled & {
+		.switch--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
 	}
@@ -464,7 +458,7 @@
 	/* =============================================
  * フォーカス状態
  * ============================================= */
-	.switch-input:focus-visible + .switch__label .switch__track {
+	.switch-input:focus-visible + .switch__track {
 		outline: 2px solid var(--svelte-ui-focus-color);
 		outline-offset: 2px;
 	}

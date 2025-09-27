@@ -314,11 +314,11 @@
 	/>
 	<label for={id} class="checkbox__icon"></label>
 
-	<label for={id} class="checkbox__label">
-		{#if children}
+	{#if children}
+		<label for={id} class="checkbox__label">
 			{@render children()}
-		{/if}
-	</label>
+		</label>
+	{/if}
 </div>
 
 <style>
@@ -344,9 +344,6 @@
 	}
 
 	.checkbox__label {
-		display: inline-flex;
-		align-items: center;
-		padding: var(--svelte-ui-checkbox-padding);
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
