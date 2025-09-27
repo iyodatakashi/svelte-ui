@@ -313,20 +313,18 @@
 
 	<label
 		for={id}
-		class="switch-label"
-		class:switch-label--small={size === 'small'}
-		class:switch-label--medium={size === 'medium'}
-		class:switch-label--large={size === 'large'}
-		class:switch-label--disabled={disabled}
-		class:switch-label--checked={value}
+		class="switch__label"
+		class:switch__label--small={size === 'small'}
+		class:switch__label--medium={size === 'medium'}
+		class:switch__label--large={size === 'large'}
+		class:switch__label--disabled={disabled}
+		class:switch__label--checked={value}
 	>
-		<span class="switch-track">
+		<span class="switch__track">
 			<span class="switch-thumb"></span>
 		</span>
 		{#if children}
-			<span class="switch-text">
-				{@render children()}
-			</span>
+			{@render children()}
 		{/if}
 	</label>
 </div>
@@ -394,7 +392,7 @@
 	/* =============================================
  * ラベル
  * ============================================= */
-	.switch-label {
+	.switch__label {
 		display: inline-flex;
 		align-items: center;
 		gap: var(--svelte-ui-switch-gap);
@@ -409,7 +407,7 @@
 	/* =============================================
  * スイッチトラック
  * ============================================= */
-	.switch-track {
+	.switch__track {
 		position: relative;
 		width: var(--switch-width);
 		height: var(--switch-height);
@@ -420,11 +418,11 @@
 			filter var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
 
-		.switch-label--checked & {
+		.switch__label--checked & {
 			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));
 		}
 
-		.switch-label--disabled & {
+		.switch__label--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
 	}
@@ -442,24 +440,15 @@
 		border-radius: var(--switch-thumb-border-radius);
 		transition: transform var(--svelte-ui-transition-duration) ease;
 
-		.switch-label--checked & {
+		.switch__label--checked & {
 			transform: translateX(
 				calc(var(--switch-width) - var(--switch-thumb-size) - var(--switch-thumb-margin) * 2)
 			);
 		}
 
-		.switch-label--disabled & {
+		.switch__label--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
-	}
-
-	/* =============================================
- * テキスト
- * ============================================= */
-	.switch-text {
-		font-size: inherit;
-		line-height: inherit;
-		color: inherit;
 	}
 
 	/* =============================================
@@ -475,7 +464,7 @@
 	/* =============================================
  * フォーカス状態
  * ============================================= */
-	.switch-input:focus-visible + .switch-label .switch-track {
+	.switch-input:focus-visible + .switch__label .switch__track {
 		outline: 2px solid var(--svelte-ui-focus-color);
 		outline-offset: 2px;
 	}

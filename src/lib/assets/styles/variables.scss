@@ -345,7 +345,6 @@
 	/* Input */
 	--svelte-ui-input-height: var(--svelte-ui-form-height);
 	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
-	--svelte-ui-input-padding-left: var(--svelte-ui-form-padding-left);
 	--svelte-ui-input-icon-space: var(--svelte-ui-form-icon-space);
 	--svelte-ui-input-border-radius: var(--svelte-ui-form-border-radius);
 	--svelte-ui-input-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
@@ -389,10 +388,12 @@
 
 	/* Select */
 	--svelte-ui-select-height: var(--svelte-ui-form-height);
-	--svelte-ui-select-padding: var(--svelte-ui-form-padding-with-icon);
-	--svelte-ui-select-padding-inline: var(--svelte-ui-form-padding-with-icon-inline);
-	--svelte-ui-select-dropdown-icon-right: 8px;
-	--svelte-ui-select-dropdown-icon-size: 18px;
+	--svelte-ui-select-padding: var(--svelte-ui-form-padding);
+	--svelte-ui-select-padding-inline: var(--svelte-ui-form-padding-inline);
+	--svelte-ui-select-icon-spacing: calc(
+		var(--svelte-ui-form-icon-width) + var(--svelte-ui-form-icon-offset)
+	);
+	--svelte-ui-select-icon-spacing-inline: var(--svelte-ui-form-icon-width);
 	--svelte-ui-select-border-radius: var(--svelte-ui-form-border-radius);
 	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-select-bg: var(--svelte-ui-form-bg);
@@ -408,11 +409,9 @@
 	--svelte-ui-checkbox-min-height: 20px;
 	--svelte-ui-checkbox-min-height-sm: 16px;
 	--svelte-ui-checkbox-min-height-lg: 24px;
-	--svelte-ui-checkbox-padding: 0 0 0 24px;
-	--svelte-ui-checkbox-padding-sm: 0 0 0 20px;
-	--svelte-ui-checkbox-padding-lg: 0 0 0 28px;
 	--svelte-ui-checkbox-border-radius: 2px;
 	--svelte-ui-checkbox-border-width: 2px;
+	--svelte-ui-checkbox-gap: 8px;
 	--svelte-ui-checkbox-icon-size: 1rem;
 	--svelte-ui-checkbox-icon-size-sm: 0.875rem;
 	--svelte-ui-checkbox-icon-size-lg: 1.25rem;

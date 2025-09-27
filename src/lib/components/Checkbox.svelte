@@ -67,11 +67,13 @@
 		// その他
 		...restProps
 	}: {
+		// Snippet
+		children?: Snippet;
+
 		// 基本プロパティ
 		name?: string;
 		value: boolean;
 		indeterminate?: boolean;
-		children?: Snippet;
 
 		// HTML属性系
 		id?: string;
@@ -310,11 +312,13 @@
 		{...inputAttributes}
 		{...restProps}
 	/>
-	{#if children}
-		<label for={id} class="checkbox-label">
+	<label for={id} class="checkbox__icon"></label>
+
+	<label for={id} class="checkbox__label">
+		{#if children}
 			{@render children()}
-		</label>
-	{/if}
+		{/if}
+	</label>
 </div>
 
 <style>
@@ -323,8 +327,9 @@
 	   ========================================================================= */
 	.checkbox {
 		display: flex;
-		flex-direction: column;
-		gap: 4px;
+		align-items: center;
+		gap: var(--svelte-ui-checkbox-gap);
+		width: fit-content;
 		contain: layout;
 	}
 
@@ -338,9 +343,8 @@
 		cursor: pointer;
 	}
 
-	.checkbox-label {
-		position: relative;
-		display: flex;
+	.checkbox__label {
+		display: inline-flex;
 		align-items: center;
 		padding: var(--svelte-ui-checkbox-padding);
 		white-space: nowrap;
@@ -350,18 +354,9 @@
 		min-height: var(--svelte-ui-checkbox-min-height);
 	}
 
-	.checkbox-label::before,
-	.checkbox-label::after {
-		position: absolute;
-		content: '';
-		display: block;
-		top: 50%;
-		transform: translateY(-50%);
-	}
-
 	/* Checkbox box */
-	.checkbox-label::before {
-		left: 0;
+	.checkbox__icon {
+		position: relative;
 		width: var(--svelte-ui-checkbox-size);
 		height: var(--svelte-ui-checkbox-size);
 		border: var(--svelte-ui-checkbox-border-width) solid var(--svelte-ui-checkbox-border-color);
@@ -369,12 +364,16 @@
 		background-color: transparent;
 		transition-property: background-color, border-color, opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
+		flex-shrink: 0;
 	}
 
-	/* Check mark container */
-	.checkbox-label::after {
+	/* Check mark */
+	.checkbox__icon::after {
 		content: 'check';
-		left: 0;
+		position: absolute;
+		top: 50%;
+		left: 50%;
+		transform: translate(-50%, -50%);
 		width: 0;
 		overflow: hidden;
 		font-size: var(--svelte-ui-checkbox-icon-size);
@@ -405,22 +404,22 @@
 		font-size: inherit;
 	}
 
-	.checkbox--small .checkbox-label {
+	.checkbox--small .checkbox__label {
 		padding: var(--svelte-ui-checkbox-padding-sm);
 		min-height: var(--svelte-ui-checkbox-min-height-sm);
 	}
 
-	.checkbox--small .checkbox-label::before {
+	.checkbox--small .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-sm);
 		height: var(--svelte-ui-checkbox-size-sm);
 	}
 
-	.checkbox--small .checkbox-label::after {
+	.checkbox--small .checkbox__icon::after {
 		font-size: var(--svelte-ui-checkbox-icon-size-sm);
 	}
 
-	.checkbox--small input[type='checkbox']:checked + .checkbox-label::after,
-	.checkbox--small input[type='checkbox']:indeterminate + .checkbox-label::after {
+	.checkbox--small input[type='checkbox']:checked + .checkbox__icon::after,
+	.checkbox--small input[type='checkbox']:indeterminate + .checkbox__icon::after {
 		width: var(--svelte-ui-checkbox-icon-width-sm);
 	}
 
@@ -428,22 +427,22 @@
 		font-size: inherit;
 	}
 
-	.checkbox--large .checkbox-label {
+	.checkbox--large .checkbox__label {
 		padding: var(--svelte-ui-checkbox-padding-lg);
 		min-height: var(--svelte-ui-checkbox-min-height-lg);
 	}
 
-	.checkbox--large .checkbox-label::before {
+	.checkbox--large .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-lg);
 		height: var(--svelte-ui-checkbox-size-lg);
 	}
 
-	.checkbox--large .checkbox-label::after {
+	.checkbox--large .checkbox__icon::after {
 		font-size: var(--svelte-ui-checkbox-icon-size-lg);
 	}
 
-	.checkbox--large input[type='checkbox']:checked + .checkbox-label::after,
-	.checkbox--large input[type='checkbox']:indeterminate + .checkbox-label::after {
+	.checkbox--large input[type='checkbox']:checked + .checkbox__icon::after,
+	.checkbox--large input[type='checkbox']:indeterminate + .checkbox__icon::after {
 		width: var(--svelte-ui-checkbox-icon-width-lg);
 	}
 
@@ -455,13 +454,13 @@
 		cursor: not-allowed;
 	}
 
-	.checkbox--disabled .checkbox-label {
+	.checkbox--disabled .checkbox__label {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
 
 	/* Checked state */
-	input[type='checkbox']:checked + .checkbox-label::after {
+	input[type='checkbox']:checked + .checkbox__icon::after {
 		width: var(--svelte-ui-checkbox-icon-width);
 		opacity: 1;
 		transition-delay:
@@ -469,7 +468,7 @@
 	}
 
 	/* Indeterminate state */
-	input[type='checkbox']:indeterminate + .checkbox-label::after {
+	input[type='checkbox']:indeterminate + .checkbox__icon::after {
 		content: 'remove';
 		width: var(--svelte-ui-checkbox-icon-width);
 		opacity: 1;
@@ -479,20 +478,20 @@
 
 	/* Hover states */
 	@media (hover: hover) {
-		.checkbox:not(.checkbox--disabled) .checkbox-label:hover::before {
+		.checkbox:not(.checkbox--disabled):hover .checkbox__icon {
 			border-color: var(--svelte-ui-checkbox-hover-color);
 		}
 	}
 
 	/* Focus states */
-	input[type='checkbox']:focus-visible + .checkbox-label::before {
+	input[type='checkbox']:focus-visible + .checkbox__icon {
 		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
 	/* Checked/Indeterminate background */
-	input[type='checkbox']:checked + .checkbox-label::before,
-	input[type='checkbox']:indeterminate + .checkbox-label::before {
+	input[type='checkbox']:checked + .checkbox__icon,
+	input[type='checkbox']:indeterminate + .checkbox__icon {
 		background-color: var(--svelte-ui-checkbox-bg-checked);
 		border-color: transparent;
 	}
@@ -502,29 +501,29 @@
 	   ========================================================================= */
 	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.checkbox-label {
+		.checkbox__label {
 			min-height: var(--svelte-ui-touch-target);
 		}
 
-		.checkbox--small .checkbox-label {
+		.checkbox--small .checkbox__label {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
-		.checkbox--large .checkbox-label {
+		.checkbox--large .checkbox__label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
 
 	/* Reduced motion */
-	.checkbox--no-motion .checkbox-label::before,
-	.checkbox--no-motion .checkbox-label::after {
+	.checkbox--no-motion .checkbox__icon,
+	.checkbox--no-motion .checkbox__icon::after {
 		transition-duration: 0.01s;
 	}
 
 	/* Prefers reduced motion */
 	@media (prefers-reduced-motion: reduce) {
-		.checkbox-label::before,
-		.checkbox-label::after {
+		.checkbox__icon,
+		.checkbox__icon::after {
 			transition-duration: 0.01s;
 		}
 	}
