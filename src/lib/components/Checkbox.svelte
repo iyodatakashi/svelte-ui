@@ -369,10 +369,10 @@
 		content: 'check';
 		position: absolute;
 		top: 50%;
-		left: -2px;
-		transform: translateY(-50%);
-		width: 0;
-		overflow: hidden;
+		left: 50%;
+		transform: translate(-50%, -50%);
+		width: fit-content;
+		clip-path: inset(0 100% 0 0);
 		font-size: var(--svelte-ui-checkbox-icon-size);
 		font-family: 'Material Symbols Outlined';
 		font-weight: bold;
@@ -389,7 +389,7 @@
 		font-feature-settings: 'liga';
 		-webkit-font-smoothing: antialiased;
 		opacity: 0;
-		transition-property: width, opacity;
+		transition-property: clip-path, opacity;
 		transition-delay: 0s, 0s;
 		transition-duration: var(--svelte-ui-transition-duration), var(--svelte-ui-transition-duration);
 	}
@@ -415,11 +415,6 @@
 		font-size: var(--svelte-ui-checkbox-icon-size-sm);
 	}
 
-	.checkbox--small input[type='checkbox']:checked + .checkbox__icon::after,
-	.checkbox--small input[type='checkbox']:indeterminate + .checkbox__icon::after {
-		width: var(--svelte-ui-checkbox-icon-width-sm);
-	}
-
 	.checkbox--large {
 		font-size: inherit;
 	}
@@ -438,11 +433,6 @@
 		font-size: var(--svelte-ui-checkbox-icon-size-lg);
 	}
 
-	.checkbox--large input[type='checkbox']:checked + .checkbox__icon::after,
-	.checkbox--large input[type='checkbox']:indeterminate + .checkbox__icon::after {
-		width: var(--svelte-ui-checkbox-icon-width-lg);
-	}
-
 	/* =========================================================================
 	   State Modifiers
 	   ========================================================================= */
@@ -459,6 +449,7 @@
 	/* Checked state */
 	input[type='checkbox']:checked + .checkbox__icon::after {
 		width: var(--svelte-ui-checkbox-icon-width);
+		clip-path: inset(0 0 0 0);
 		opacity: 1;
 		transition-delay:
 			var(--svelte-ui-transition-duration-fast), var(--svelte-ui-transition-duration-fast);
