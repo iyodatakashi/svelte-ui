@@ -372,8 +372,8 @@
 		content: 'check';
 		position: absolute;
 		top: 50%;
-		left: 50%;
-		transform: translate(-50%, -50%);
+		left: -2px;
+		transform: translateY(-50%);
 		width: 0;
 		overflow: hidden;
 		font-size: var(--svelte-ui-checkbox-icon-size);
