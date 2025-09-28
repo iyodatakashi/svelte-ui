@@ -444,7 +444,6 @@
 	--svelte-ui-switch-active-color: var(--svelte-ui-primary-color);
 	--svelte-ui-switch-thumb-color: var(--svelte-ui-handle-color);
 	--svelte-ui-switch-hover-overlay: var(--svelte-ui-hover-overlay);
-
 	/* Radio */
 	--svelte-ui-radio-size: 16px;
 	--svelte-ui-radio-size-sm: 14px;
@@ -465,6 +464,19 @@
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
 	--svelte-ui-radio-hover-color: var(--svelte-ui-primary-color);
 	--svelte-ui-radio-checked-color: var(--svelte-ui-primary-color);
+
+	/* Slider */
+	--svelte-ui-slider-track-height: 6px;
+	--svelte-ui-slider-track-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-slider-track-background: var(--svelte-ui-inactive-color);
+	--svelte-ui-slider-thumb-size: 20px;
+	--svelte-ui-slider-thumb-size-mobile: 24px;
+	--svelte-ui-slider-thumb-border-radius: 50%;
+	--svelte-ui-slider-thumb-background: var(--svelte-ui-primary-color);
+	--svelte-ui-slider-thumb-border: 2px solid var(--svelte-ui-text-on-filled-color);
+	--svelte-ui-slider-thumb-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+	--svelte-ui-slider-thumb-focus-shadow: var(--svelte-ui-focus-outline-outer);
+	--svelte-ui-slider-thumb-hover-transform: scale(1.1);
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;
@@ -747,6 +759,16 @@
 		/* Switch */
 		--svelte-ui-switch-inactive-color: CanvasText;
 		--svelte-ui-switch-active-color: Highlight;
+
+		/* Slider */
+		--svelte-ui-slider-track-background: CanvasText;
+		--svelte-ui-slider-thumb-background: Highlight;
+		--svelte-ui-slider-thumb-border: 2px solid HighlightText;
+		--svelte-ui-slider-thumb-focus-shadow: 0 0 0 3px Highlight;
+		--svelte-ui-slider-custom-thumb-background: Highlight;
+		--svelte-ui-slider-custom-thumb-border: 2px solid HighlightText;
+		--svelte-ui-slider-custom-thumb-focus-shadow: 0 0 0 3px Highlight;
+		--svelte-ui-slider-custom-thumb-color: HighlightText;
 
 		/* Radio */
 		--svelte-ui-radio-border-color: CanvasText;
