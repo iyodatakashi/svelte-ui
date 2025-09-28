@@ -468,15 +468,12 @@
 	/* Slider */
 	--svelte-ui-slider-track-height: 6px;
 	--svelte-ui-slider-track-border-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-slider-track-background: var(--svelte-ui-inactive-color);
+	--svelte-ui-slider-track-background: var(--svelte-ui-border-weak-color);
 	--svelte-ui-slider-thumb-size: 20px;
 	--svelte-ui-slider-thumb-size-mobile: 24px;
-	--svelte-ui-slider-thumb-border-radius: 50%;
+	--svelte-ui-slider-thumb-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-slider-thumb-background: var(--svelte-ui-primary-color);
-	--svelte-ui-slider-thumb-border: 2px solid var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-slider-thumb-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-	--svelte-ui-slider-thumb-focus-shadow: var(--svelte-ui-focus-outline-outer);
-	--svelte-ui-slider-thumb-hover-transform: scale(1.1);
+	--svelte-ui-slider-thumb-border: none;
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;

@@ -334,7 +334,7 @@
 	.slider {
 		display: inline-block;
 		position: relative;
-		width: 100%;
+		width: auto;
 		max-width: 100%;
 	}
 
@@ -349,7 +349,7 @@
 		width: 100%;
 		height: var(--svelte-ui-slider-track-height);
 		margin: 0;
-		background: var(--base-100-transparent);
+		background: var(--svelte-ui-slider-track-background);
 		border-radius: var(--svelte-ui-slider-track-border-radius);
 		outline: none;
 		-webkit-appearance: none;
