@@ -132,7 +132,7 @@
 		[key: string]: any;
 	} = $props();
 
-	let localValue: string = $state(value);
+	let localValue: string | undefined = $state(value);
 	let prevValue: string = $state('');
 	let isFocused: boolean = $state(false);
 
@@ -149,6 +149,17 @@
 
 			/* value が更新されたらonchangeを実行 */
 			handleChange();
+		});
+	});
+
+	$effect(() => {
+		localValue;
+		untrack(() => {
+			/* localValue がクリアされた時に value もクリア */
+			if (localValue === '' || localValue === undefined) {
+				value = '';
+				prevValue = '';
+			}
 		});
 	});
 
