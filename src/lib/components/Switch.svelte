@@ -330,7 +330,6 @@
 	.switch {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--svelte-ui-switch-gap);
 		font-family: var(--svelte-ui-font-family);
 		font-size: inherit;
 		line-height: var(--svelte-ui-line-height);
@@ -389,7 +388,7 @@
 	.switch__label {
 		display: inline-flex;
 		align-items: center;
-		gap: var(--svelte-ui-switch-gap);
+		padding-left: var(--svelte-ui-switch-gap);
 		cursor: pointer;
 		user-select: none;
 		&--disabled {
@@ -411,6 +410,7 @@
 			background-color var(--svelte-ui-transition-duration) ease,
 			filter var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
+		cursor: pointer;
 
 		.switch--checked & {
 			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));

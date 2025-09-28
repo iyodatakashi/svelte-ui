@@ -336,19 +336,20 @@
 		{...inputAttributes}
 		{...restProps}
 	/>
-	<label for={id} class={`radio-label ${!!children ? 'with-label' : 'no-label'}`}>
-		{#if children}
+	<label for={id} class="radio__icon"></label>
+
+	{#if children}
+		<label for={id} class="radio__label">
 			{@render children()}
-		{/if}
-	</label>
+		</label>
+	{/if}
 </div>
 
 <style>
 	.radio {
 		display: flex;
-		flex-direction: column;
-		gap: 4px;
-		contain: layout;
+		align-items: center;
+		width: fit-content;
 	}
 
 	.radio input[type='radio'] {
@@ -361,11 +362,19 @@
 		cursor: pointer;
 	}
 
+	.radio__label {
+		white-space: nowrap;
+		font-size: inherit;
+		color: inherit;
+		cursor: pointer;
+		min-height: var(--svelte-ui-checkbox-min-height);
+	}
+
 	.radio--disabled input[type='radio'] {
 		cursor: not-allowed;
 	}
 
-	.radio-label {
+	.radio__icon {
 		position: relative;
 		display: flex;
 		align-items: center;
@@ -377,25 +386,20 @@
 		min-height: var(--svelte-ui-radio-min-height);
 	}
 
-	.radio-label.no-label {
-		padding-left: 20px;
-		min-height: 16px;
-	}
-
 	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.radio-label {
+		.radio__label {
 			min-height: var(--svelte-ui-touch-target);
 		}
 	}
 
-	.radio--disabled .radio-label {
+	.radio--disabled .radio__label {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
 
-	.radio-label::before,
-	.radio-label::after {
+	.radio__icon::before,
+	.radio__icon::after {
 		position: absolute;
 		content: '';
 		display: block;
@@ -404,7 +408,7 @@
 	}
 
 	/* Radio button outer circle */
-	.radio-label::after {
+	.radio__icon::after {
 		left: 0;
 		width: var(--svelte-ui-radio-size);
 		height: var(--svelte-ui-radio-size);
@@ -416,7 +420,7 @@
 	}
 
 	/* Radio button inner dot */
-	.radio-label::before {
+	.radio__icon::before {
 		left: calc(var(--svelte-ui-radio-size) / 2);
 		width: 0;
 		height: 0;
@@ -427,7 +431,7 @@
 	}
 
 	/* Checked state */
-	input[type='radio']:checked + .radio-label::before {
+	input[type='radio']:checked + .radio__icon::before {
 		left: calc((var(--svelte-ui-radio-size) - var(--svelte-ui-radio-dot-size)) / 2);
 		width: var(--svelte-ui-radio-dot-size);
 		height: var(--svelte-ui-radio-dot-size);
@@ -435,19 +439,19 @@
 
 	/* Hover states */
 	@media (hover: hover) {
-		.radio:not(.radio--disabled) .radio-label:hover::after,
-		.radio:not(.radio--disabled) .radio-label:hover::before {
+		.radio:not(.radio--disabled) .radio__icon:hover::after,
+		.radio:not(.radio--disabled) .radio__icon:hover::before {
 			border-color: var(--svelte-ui-radio-hover-color);
 		}
 	}
 
 	/* Checked state */
-	input[type='radio']:checked + .radio-label::after {
+	input[type='radio']:checked + .radio__icon::after {
 		border-color: var(--svelte-ui-radio-hover-color);
 	}
 
 	/* Focus state */
-	input[type='radio']:focus-visible + .radio-label::after {
+	input[type='radio']:focus-visible + .radio__icon::after {
 		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
@@ -457,26 +461,21 @@
 		font-size: inherit;
 	}
 
-	.radio--small .radio-label {
+	.radio--small .radio__icon {
 		padding: var(--svelte-ui-radio-padding-sm);
 		min-height: var(--svelte-ui-radio-min-height-sm);
 	}
 
-	.radio--small .radio-label.no-label {
-		padding-left: 16px;
-		min-height: 12px;
-	}
-
-	.radio--small .radio-label::after {
+	.radio--small .radio__icon::after {
 		width: var(--svelte-ui-radio-size-sm);
 		height: var(--svelte-ui-radio-size-sm);
 	}
 
-	.radio--small .radio-label::before {
+	.radio--small .radio__icon::before {
 		left: calc(var(--svelte-ui-radio-size-sm) / 2);
 	}
 
-	.radio--small input[type='radio']:checked + .radio-label::before {
+	.radio--small input[type='radio']:checked + .radio__icon::before {
 		left: calc((var(--svelte-ui-radio-size-sm) - var(--svelte-ui-radio-dot-size-sm)) / 2);
 		width: var(--svelte-ui-radio-dot-size-sm);
 		height: var(--svelte-ui-radio-dot-size-sm);
@@ -484,7 +483,7 @@
 
 	/* Mobile touch targets for small */
 	@media (hover: none) and (pointer: coarse) {
-		.radio--small .radio-label {
+		.radio--small .radio__icon {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 	}
@@ -493,26 +492,21 @@
 		font-size: inherit;
 	}
 
-	.radio--large .radio-label {
+	.radio--large .radio__icon {
 		padding: var(--svelte-ui-radio-padding-lg);
 		min-height: var(--svelte-ui-radio-min-height-lg);
 	}
 
-	.radio--large .radio-label.no-label {
-		padding-left: 24px;
-		min-height: 20px;
-	}
-
-	.radio--large .radio-label::after {
+	.radio--large .radio__icon::after {
 		width: var(--svelte-ui-radio-size-lg);
 		height: var(--svelte-ui-radio-size-lg);
 	}
 
-	.radio--large .radio-label::before {
+	.radio--large .radio__icon::before {
 		left: calc(var(--svelte-ui-radio-size-lg) / 2);
 	}
 
-	.radio--large input[type='radio']:checked + .radio-label::before {
+	.radio--large input[type='radio']:checked + .radio__icon::before {
 		left: calc((var(--svelte-ui-radio-size-lg) - var(--svelte-ui-radio-dot-size-lg)) / 2);
 		width: var(--svelte-ui-radio-dot-size-lg);
 		height: var(--svelte-ui-radio-dot-size-lg);
@@ -520,21 +514,21 @@
 
 	/* Mobile touch targets for large */
 	@media (hover: none) and (pointer: coarse) {
-		.radio--large .radio-label {
+		.radio--large .radio__icon {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
 
 	/* Reduced motion */
-	.radio--no-motion .radio-label::before,
-	.radio--no-motion .radio-label::after {
+	.radio--no-motion .radio__icon::before,
+	.radio--no-motion .radio__icon::after {
 		transition-duration: 0.01s;
 	}
 
 	/* Prefers reduced motion */
 	@media (prefers-reduced-motion: reduce) {
-		.radio-label::before,
-		.radio-label::after {
+		.radio__icon::before,
+		.radio__icon::after {
 			transition-duration: 0.01s;
 		}
 	}

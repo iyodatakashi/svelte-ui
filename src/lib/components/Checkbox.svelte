@@ -328,7 +328,6 @@
 	.checkbox {
 		display: flex;
 		align-items: center;
-		gap: var(--svelte-ui-checkbox-gap);
 		width: fit-content;
 		contain: layout;
 	}
@@ -344,11 +343,12 @@
 	}
 
 	.checkbox__label {
+		min-height: var(--svelte-ui-checkbox-min-height);
+		padding-left: var(--svelte-ui-checkbox-gap);
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
 		cursor: pointer;
-		min-height: var(--svelte-ui-checkbox-min-height);
 	}
 
 	/* Checkbox box */
@@ -362,6 +362,7 @@
 		transition-property: background-color, border-color, opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
 		flex-shrink: 0;
+		cursor: pointer;
 	}
 
 	/* Check mark */
@@ -402,7 +403,6 @@
 	}
 
 	.checkbox--small .checkbox__label {
-		padding: var(--svelte-ui-checkbox-padding-sm);
 		min-height: var(--svelte-ui-checkbox-min-height-sm);
 	}
 
@@ -420,7 +420,6 @@
 	}
 
 	.checkbox--large .checkbox__label {
-		padding: var(--svelte-ui-checkbox-padding-lg);
 		min-height: var(--svelte-ui-checkbox-min-height-lg);
 	}
 
