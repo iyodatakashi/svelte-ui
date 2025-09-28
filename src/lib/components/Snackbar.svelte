@@ -105,11 +105,11 @@
 	}
 
 	.snackbar--top {
-		top: calc(var(--svelte-ui-snackbar-offset) - var(--svelte-ui-snackbar-item-spacing));
+		top: calc(var(--svelte-ui-snackbar-offset) - var(--svelte-ui-snackbar-item-space));
 	}
 
 	.snackbar--bottom {
-		bottom: calc(var(--svelte-ui-snackbar-offset) - var(--svelte-ui-snackbar-item-spacing));
+		bottom: calc(var(--svelte-ui-snackbar-offset) - var(--svelte-ui-snackbar-item-space));
 		flex-direction: column-reverse;
 	}
 

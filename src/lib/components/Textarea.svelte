@@ -560,7 +560,7 @@
 	.textarea--clearable {
 		textarea,
 		.textarea__display-text {
-			padding-right: var(--svelte-ui-textarea-icon-spacing);
+			padding-right: var(--svelte-ui-textarea-icon-space);
 		}
 	}
 
@@ -659,7 +659,7 @@
 
 		&.textarea--clearable {
 			textarea {
-				padding-right: var(--svelte-ui-textarea-icon-spacing);
+				padding-right: var(--svelte-ui-textarea-icon-space);
 			}
 		}
 	}

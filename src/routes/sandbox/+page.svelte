@@ -64,9 +64,9 @@
 		<label for="input1">インプット1</label>
 		<Input
 			id="input1"
-			hasRightIcon
-			inline
 			clearable
+			inline
+			rightIcon="add"
 			bind:value
 			minWidth={300}
 			width="50%"

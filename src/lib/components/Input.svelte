@@ -623,7 +623,7 @@
 
 	/* rightIconがある場合はクリアボタンを左にずらす */
 	.input--clearable.input--has-right-icon .input__clear-button {
-		right: var(--svelte-ui-input-icon-spacing);
+		right: var(--svelte-ui-input-icon-space);
 	}
 
 	@media (hover: hover) {
@@ -700,10 +700,31 @@
 			color: var(--svelte-ui-input-text-color);
 		}
 
+		&.input--has-left-icon {
+			input,
+			.input__display-text {
+				padding-left: var(--svelte-ui-input-icon-space);
+			}
+		}
+
+		&.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space);
+			}
+		}
+
 		&.input--clearable {
 			input,
 			.input__display-text {
-				padding-right: calc(var(--svelte-ui-input-icon-spacing-double));
+				padding-right: var(--svelte-ui-input-icon-space);
+			}
+		}
+
+		&.input--clearable.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-double);
 			}
 		}
 	}
@@ -733,17 +754,31 @@
 			height: 100%;
 		}
 
-		&.input--has-right-icon {
-			input,
-			.input__display-text {
-				padding-right: var(--svelte-ui-input-icon-spaceing-inline);
-			}
-		}
-
 		&.input--has-left-icon {
 			input,
 			.input__display-text {
-				padding-left: var(--svelte-ui-input-icon-spaceing-inline);
+				padding-left: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.input--clearable {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.input--clearable.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
 
@@ -775,21 +810,21 @@
 	.input--clearable {
 		input,
 		.input__display-text {
-			padding-right: var(--svelte-ui-input-icon-spacing);
+			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
 	.input.input--has-right-icon {
 		input,
 		.input__display-text {
-			padding-right: var(--svelte-ui-input-icon-spacing);
+			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
 	.input.input--has-left-icon {
 		input,
 		.input__display-text {
-			padding-left: var(--svelte-ui-input-icon-spacing);
+			padding-left: var(--svelte-ui-input-icon-space);
 		}
 	}
 

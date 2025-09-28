@@ -107,7 +107,7 @@
 				currentRect.height +
 				parseInt(
 					getComputedStyle(document.documentElement)
-						.getPropertyValue('--svelte-ui-snackbar-item-spacing')
+						.getPropertyValue('--svelte-ui-snackbar-item-space')
 						.replace('px', '')
 				);
 			const requiredMargin = -containerHeight;
@@ -246,11 +246,11 @@
 	}
 
 	.snackbar-item--bottom {
-		padding-bottom: var(--svelte-ui-snackbar-item-spacing);
+		padding-bottom: var(--svelte-ui-snackbar-item-space);
 	}
 
 	.snackbar-item--top {
-		padding-top: var(--svelte-ui-snackbar-item-spacing);
+		padding-top: var(--svelte-ui-snackbar-item-space);
 	}
 
 	.snackbar-item--hidden {
