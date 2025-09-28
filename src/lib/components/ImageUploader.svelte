@@ -95,24 +95,24 @@
 		onchange?: (value: FileList | null) => void;
 
 		// フォーカスイベント
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
 
 		// キーボードイベント
-		onkeydown?: (event: KeyboardEvent) => void;
-		onkeyup?: (event: KeyboardEvent) => void;
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
 
 		// マウスイベント
-		onmouseenter?: (event: MouseEvent) => void;
-		onmouseleave?: (event: MouseEvent) => void;
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
 
 		// タッチイベント
-		ontouchstart?: (event: TouchEvent) => void;
-		ontouchend?: (event: TouchEvent) => void;
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
 
 		// ポインターイベント
-		onpointerenter?: (event: PointerEvent) => void;
-		onpointerleave?: (event: PointerEvent) => void;
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;

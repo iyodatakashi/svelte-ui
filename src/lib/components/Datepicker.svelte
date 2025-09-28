@@ -135,29 +135,29 @@
 		oninput?: (value: string) => void;
 
 		// フォーカスイベント
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
-		onkeyup?: (event: KeyboardEvent) => void;
-		onclick?: (event: MouseEvent) => void;
-		onmousedown?: (event: MouseEvent) => void;
-		onmouseup?: (event: MouseEvent) => void;
-		onmouseenter?: (event: MouseEvent) => void;
-		onmouseleave?: (event: MouseEvent) => void;
-		onmouseover?: (event: MouseEvent) => void;
-		onmouseout?: (event: MouseEvent) => void;
-		oncontextmenu?: (event: MouseEvent) => void;
-		onauxclick?: (event: MouseEvent) => void;
-		ontouchstart?: (event: TouchEvent) => void;
-		ontouchend?: (event: TouchEvent) => void;
-		ontouchmove?: (event: TouchEvent) => void;
-		ontouchcancel?: (event: TouchEvent) => void;
-		onpointerdown?: (event: PointerEvent) => void;
-		onpointerup?: (event: PointerEvent) => void;
-		onpointerenter?: (event: PointerEvent) => void;
-		onpointerleave?: (event: PointerEvent) => void;
-		onpointermove?: (event: PointerEvent) => void;
-		onpointercancel?: (event: PointerEvent) => void;
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
 
 		// その他
 		[key: string]: any;
