@@ -439,8 +439,8 @@
 
 	/* Hover states */
 	@media (hover: hover) {
-		.radio:not(.radio--disabled) .radio__icon:hover::after,
-		.radio:not(.radio--disabled) .radio__icon:hover::before {
+		.radio:not(.radio--disabled):hover .radio__icon::after,
+		.radio:not(.radio--disabled):hover .radio__icon::before {
 			border-color: var(--svelte-ui-radio-hover-color);
 		}
 	}
