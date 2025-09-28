@@ -3,6 +3,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -23,8 +24,13 @@
 		inputAttributes,
 
 		// スタイル/レイアウト
-		customStyle = '',
+		thumbColor = null,
+		thumbSize = null,
+		width = null,
 		fullWidth = false,
+		customStyle = '',
+
+		// 状態/動作
 		disabled = false,
 
 		// フォーカスイベント
@@ -82,8 +88,13 @@
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
-		customStyle?: string;
+		thumbColor?: string | null;
+		thumbSize?: string | number | null;
+		width?: string | number | null;
 		fullWidth?: boolean;
+		customStyle?: string;
+
+		// 状態/動作
 		disabled?: boolean;
 
 		// フォーカスイベント
@@ -269,6 +280,17 @@
 
 	// パーセンテージ計算
 	const percentage = $derived(((value - min) / (max - min)) * 100);
+
+	// スタイル計算
+	const widthStyle = $derived(getStyleFromNumber(width));
+
+	const thumbColorStyle = $derived(
+		thumbColor ? `--svelte-ui-slider-thumb-background: ${thumbColor};` : ''
+	);
+
+	const thumbSizeStyle = $derived(
+		thumbSize ? `--svelte-ui-slider-thumb-size: ${getStyleFromNumber(thumbSize)};` : ''
+	);
 </script>
 
 <div
@@ -278,7 +300,7 @@
 	class:slider--focused={isFocused}
 	class:slider--has-custom-thumb={customThumb}
 	data-testid="slider"
-	style={customStyle}
+	style="width: {widthStyle}; {thumbColorStyle} {thumbSizeStyle} {customStyle}"
 >
 	<input
 		{id}
