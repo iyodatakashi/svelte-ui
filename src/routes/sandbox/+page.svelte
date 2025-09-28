@@ -20,6 +20,7 @@
 
 	let value: string = $state('');
 	let value2: string = $state('');
+	let comboboxValue: string = $state('');
 	let checked: boolean = $state(false);
 	let color: string = $state('');
 	let dialogRef: SvelteComponent | undefined = $state();
@@ -36,6 +37,8 @@
 		{ value: 'hoge', label: 'ほげ' },
 		{ value: 'fuga', label: 'ふが' }
 	];
+
+	const comboboxOptions = ['ほげ', 'ふが'];
 
 	const handleChange = (newValue: Date) => {
 		console.log(newValue);
@@ -59,10 +62,19 @@
 	<div class="container-inner">
 		<Button onclick={open}>オープン</Button>
 		<label for="input1">インプット1</label>
-		<Input id="input1" inline bind:value minWidth={300} width="50%" onsubmit={handleChange} />
-		<Textarea id="textarea1" bind:value={value2} onsubmit={handleChange} />
+		<Input
+			id="input1"
+			hasRightIcon
+			inline
+			clearable
+			bind:value
+			minWidth={300}
+			width="50%"
+			onsubmit={handleChange}
+		/>
+		<Textarea id="textarea1" bind:value={value2} clearable onsubmit={handleChange} />
 		<Select bind:value {options} />
-		<Combobox bind:value {options} onchange={handleChange} />
+		<Combobox bind:value={comboboxValue} options={comboboxOptions} onchange={handleChange} />
 		<ColorPicker bind:value={color} rounded clearable />
 
 		<ConfirmDialog
@@ -83,7 +95,7 @@
 
 		<Datepicker
 			bind:value={range}
-			locale="en"
+			locale="ja"
 			onchange={handleChange}
 			mode="range"
 			hasIcon
@@ -98,16 +110,26 @@
 			<label for="textarea2">textarea</label>
 			<Textarea id="textarea2" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
 			<label for="radio1">radio1</label>
-			<Radio id="radio1" name="hoge" value="hoge" bind:currentValue={value} onsubmit={handleChange}
-				>hoge</Radio
+			<Radio
+				id="radio1"
+				name="hoge"
+				value="hoge"
+				size="large"
+				bind:currentValue={value}
+				onsubmit={handleChange}>hoge</Radio
 			>
 			<label for="radio2">radio2</label>
-			<Radio id="radio2" name="hoge" value="fuga" bind:currentValue={value} onsubmit={handleChange}
-				>fuga</Radio
+			<Radio
+				id="radio2"
+				name="hoge"
+				value="fuga"
+				size="small"
+				bind:currentValue={value}
+				onsubmit={handleChange}>fuga</Radio
 			>
 
 			<label for="checkbox">checkbox</label>
-			<Checkbox id="checkbox" bind:value={checked}>ちぇき</Checkbox>
+			<Checkbox id="checkbox" bind:value={checked}>チェックボックス</Checkbox>
 
 			<label for="switch">switch</label>
 			<Switch id="switch" bind:value={checked}>すいっち</Switch>
