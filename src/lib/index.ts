@@ -22,6 +22,7 @@ export { default as PopupMenu } from './components/PopupMenu.svelte';
 export { default as PopupMenuButton } from './components/PopupMenuButton.svelte';
 export { default as Radio } from './components/Radio.svelte';
 export { default as Select } from './components/Select.svelte';
+export { default as Slider } from './components/Slider.svelte';
 export { default as Snackbar } from './components/Snackbar.svelte';
 export { default as SnackbarItem } from './components/SnackbarItem.svelte';
 export { default as Skeleton } from './components/skeleton/Skeleton.svelte';
@@ -41,4 +42,4 @@ export * from './utils/snackbar.svelte';
 export * from './utils/style';
 
 // Types
-export type { MenuItem } from './types/MenuItem';
+export type { MenuItem } from './types/menuItem';

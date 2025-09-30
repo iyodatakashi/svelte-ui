@@ -24,10 +24,11 @@
 		inputAttributes,
 
 		// スタイル/レイアウト
-		thumbColor = null,
-		thumbSize = null,
 		width = null,
 		fullWidth = false,
+		thumbColor = null,
+		thumbWidth = null,
+		thumbHeight = null,
 		customStyle = '',
 
 		// 状態/動作
@@ -88,10 +89,11 @@
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
-		thumbColor?: string | null;
-		thumbSize?: string | number | null;
 		width?: string | number | null;
 		fullWidth?: boolean;
+		thumbColor?: string | null;
+		thumbWidth?: string | number | null;
+		thumbHeight?: string | number | null;
 		customStyle?: string;
 
 		// 状態/動作
@@ -282,14 +284,24 @@
 	const percentage = $derived(((value - min) / (max - min)) * 100);
 
 	// スタイル計算
-	const widthStyle = $derived(getStyleFromNumber(width));
-
 	const thumbColorStyle = $derived(
 		thumbColor ? `--svelte-ui-slider-thumb-background: ${thumbColor};` : ''
 	);
 
-	const thumbSizeStyle = $derived(
-		thumbSize ? `--svelte-ui-slider-thumb-size: ${getStyleFromNumber(thumbSize)};` : ''
+	const thumbWidthStyle = $derived(
+		thumbWidth ? `--svelte-ui-slider-thumb-width: ${getStyleFromNumber(thumbWidth)};` : ''
+	);
+
+	const thumbHeightStyle = $derived(
+		thumbHeight ? `--svelte-ui-slider-thumb-height: ${getStyleFromNumber(thumbHeight)};` : ''
+	);
+
+	const sliderWidthStyle = $derived(width ? `width: ${getStyleFromNumber(width)};` : '');
+
+	const sliderHeightStyle = $derived(
+		thumbHeight
+			? `height: ${getStyleFromNumber(thumbHeight)};`
+			: 'height: var(--svelte-ui-slider-thumb-height);'
 	);
 </script>
 
@@ -300,7 +312,7 @@
 	class:slider--focused={isFocused}
 	class:slider--has-custom-thumb={customThumb}
 	data-testid="slider"
-	style="width: {widthStyle}; {thumbColorStyle} {thumbSizeStyle} {customStyle}"
+	style="{sliderWidthStyle} {sliderHeightStyle} {thumbColorStyle} {thumbWidthStyle} {thumbHeightStyle} {customStyle}"
 >
 	<input
 		{id}
@@ -354,10 +366,13 @@
 	 * 基本構造・レイアウト
 	 * ============================================= */
 	.slider {
-		display: inline-block;
+		display: flex;
+		align-items: center;
 		position: relative;
 		width: auto;
 		max-width: 100%;
+		box-sizing: border-box;
+		line-height: 0;
 	}
 
 	.slider--full-width {
@@ -400,8 +415,8 @@
 	.slider__input::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
-		width: var(--svelte-ui-slider-thumb-size);
-		height: var(--svelte-ui-slider-thumb-size);
+		width: var(--svelte-ui-slider-thumb-width);
+		height: var(--svelte-ui-slider-thumb-height);
 		background: var(--svelte-ui-slider-thumb-background);
 		border-radius: var(--svelte-ui-slider-thumb-border-radius);
 		border: var(--svelte-ui-slider-thumb-border);
@@ -410,8 +425,8 @@
 	}
 
 	.slider__input::-moz-range-thumb {
-		width: var(--svelte-ui-slider-thumb-size);
-		height: var(--svelte-ui-slider-thumb-size);
+		width: var(--svelte-ui-slider-thumb-width);
+		height: var(--svelte-ui-slider-thumb-height);
 		background: var(--svelte-ui-slider-thumb-background);
 		border-radius: var(--svelte-ui-slider-thumb-border-radius);
 		border: var(--svelte-ui-slider-thumb-border);
@@ -436,8 +451,10 @@
 	.slider__custom-thumb {
 		position: absolute;
 		top: 50%;
+		left: 0;
 		transform: translate(-50%, -50%);
 		pointer-events: none;
+		z-index: 1;
 	}
 
 	.slider--has-custom-thumb .slider__input::-webkit-slider-thumb {

@@ -469,11 +469,14 @@
 	--svelte-ui-slider-track-height: 6px;
 	--svelte-ui-slider-track-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-slider-track-background: var(--svelte-ui-border-weak-color);
-	--svelte-ui-slider-thumb-size: 20px;
-	--svelte-ui-slider-thumb-size-mobile: 24px;
+	--svelte-ui-slider-thumb-width: 18px;
+	--svelte-ui-slider-thumb-height: 18px;
+	--svelte-ui-slider-thumb-width-mobile: 24px;
+	--svelte-ui-slider-thumb-height-mobile: 24px;
 	--svelte-ui-slider-thumb-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-slider-thumb-background: var(--svelte-ui-primary-color);
 	--svelte-ui-slider-thumb-border: none;
+	--svelte-ui-slider-thumb-shadow: none;
 
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;
