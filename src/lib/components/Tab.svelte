@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import TabItem from './TabItem.svelte';
-	import type { MenuItem } from '../types/menuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -14,6 +14,11 @@
 		pathPrefix = '',
 		customPathMatcher,
 
+		// スタイル/レイアウト
+		textColor = 'var(--svelte-ui-text-subtle-color)',
+		selectedTextColor = 'var(--svelte-ui-primary-color)',
+		selectedBarColor = 'var(--svelte-ui-primary-color)',
+
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Tabs',
 		ariaLabelledby
@@ -22,6 +27,11 @@
 		tabItems: MenuItem[];
 		pathPrefix?: string;
 		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+
+		// スタイル/レイアウト
+		textColor?: string;
+		selectedTextColor?: string;
+		selectedBarColor?: string;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -149,7 +159,13 @@
 >
 	{#each tabItems as tabItem, index}
 		<div class="tab__item">
-			<TabItem {tabItem} isSelected={index === selectedTabIndex} />
+			<TabItem
+				{tabItem}
+				isSelected={index === selectedTabIndex}
+				{textColor}
+				{selectedTextColor}
+				{selectedBarColor}
+			/>
 		</div>
 	{/each}
 </div>

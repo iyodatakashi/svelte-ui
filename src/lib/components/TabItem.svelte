@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import type { MenuItem } from '../types/menuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	// =========================================================================
@@ -12,6 +12,11 @@
 	let {
 		// 基本プロパティ
 		tabItem,
+
+		// スタイル/レイアウト
+		textColor,
+		selectedTextColor,
+		selectedBarColor,
 
 		// アイコン関連
 		iconFilled = false,
@@ -25,6 +30,11 @@
 	}: {
 		// 基本プロパティ
 		tabItem: MenuItem;
+
+		// スタイル/レイアウト
+		textColor: string;
+		selectedTextColor: string;
+		selectedBarColor: string;
 
 		// アイコン関連
 		iconFilled?: boolean;
@@ -42,6 +52,7 @@
 	href={tabItem.href}
 	class="tab-item"
 	class:tab-item--selected={isSelected}
+	style="--text-color: {textColor}; --selected-text-color: {selectedTextColor}; --selected-bar-color: {selectedBarColor}"
 	role="tab"
 	aria-selected={isSelected}
 	tabindex={0}
@@ -74,7 +85,7 @@
 		position: relative;
 		height: 100%;
 		padding: 0 16px;
-		color: var(--svelte-ui-text-subtle-color);
+		color: var(--text-color);
 		white-space: nowrap;
 		text-decoration: none;
 		transition-property: background-color, color, outline;
@@ -115,7 +126,7 @@
 		bottom: 0;
 		width: calc(100% - 32px);
 		height: 4px;
-		background-color: var(--svelte-ui-primary-color);
+		background-color: var(--selected-bar-color);
 		border-radius: 3px 3px 0 0;
 		opacity: 0;
 		transition-property: opacity;
@@ -123,7 +134,7 @@
 	}
 
 	.tab-item--selected {
-		color: var(--svelte-ui-primary-color);
+		color: var(--selected-text-color);
 		background-color: transparent;
 	}
 
