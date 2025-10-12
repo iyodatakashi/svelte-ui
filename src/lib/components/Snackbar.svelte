@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import { snackbarManager, type SnackbarItem as SnackbarData } from '../utils/snackbar.svelte';
+	import { snackbarManager, type SnackbarItem as SnackbarData } from '$lib/utils/snackbar.svelte';
 	import SnackbarItem from './SnackbarItem.svelte';
 
 	// =========================================================================

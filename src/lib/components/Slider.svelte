@@ -1,7 +1,6 @@
 <!-- Slider.svelte -->
 
 <script lang="ts">
-	import type { Snippet } from 'svelte';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { getStyleFromNumber } from '$lib/utils/style';
 
@@ -9,9 +8,6 @@
 	// Props, States & Constants
 	// =========================================================================
 	let {
-		// Snippet
-		customThumb,
-
 		// 基本プロパティ
 		value = $bindable(0),
 		name,
@@ -74,9 +70,6 @@
 		// その他
 		...restProps
 	}: {
-		// Snippet
-		customThumb?: Snippet;
-
 		// 基本プロパティ
 		value?: number;
 		name?: string;
@@ -310,7 +303,6 @@
 	class:slider--full-width={fullWidth}
 	class:slider--disabled={disabled}
 	class:slider--focused={isFocused}
-	class:slider--has-custom-thumb={customThumb}
 	data-testid="slider"
 	style="{sliderWidthStyle} {sliderHeightStyle} {thumbColorStyle} {thumbWidthStyle} {thumbHeightStyle} {customStyle}"
 >
@@ -353,12 +345,6 @@
 		{...inputAttributes}
 		{...restProps}
 	/>
-
-	{#if customThumb}
-		<div class="slider__custom-thumb" style="left: {percentage}%">
-			{@render customThumb()}
-		</div>
-	{/if}
 </div>
 
 <style>
@@ -441,31 +427,6 @@
 	}
 
 	.slider__input:focus-visible::-moz-range-thumb {
-		outline: var(--svelte-ui-focus-outline-outer);
-		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
-	}
-
-	/* =============================================
-	 * カスタムthumb
-	 * ============================================= */
-	.slider__custom-thumb {
-		position: absolute;
-		top: 50%;
-		left: 0;
-		transform: translate(-50%, -50%);
-		pointer-events: none;
-		z-index: 1;
-	}
-
-	.slider--has-custom-thumb .slider__input::-webkit-slider-thumb {
-		opacity: 0;
-	}
-
-	.slider--has-custom-thumb .slider__input::-moz-range-thumb {
-		opacity: 0;
-	}
-
-	.slider__input:focus-visible + .slider__custom-thumb {
 		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}

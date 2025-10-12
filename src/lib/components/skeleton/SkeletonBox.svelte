@@ -1,7 +1,7 @@
 <!-- SkeletonBox.svelte -->
 
 <script lang="ts">
-	import { getStyleFromNumber } from '../../utils/style';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
 	// =========================================================================
 	// Props

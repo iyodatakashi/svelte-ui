@@ -3,10 +3,10 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
-	import { getStyleFromNumber } from '../utils/style';
+	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-	import { t } from '../i18n';
+	import { t } from '$lib/i18n';
 
 	// =========================================================================
 	// Props, States & Constants

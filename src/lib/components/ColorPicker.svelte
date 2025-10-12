@@ -3,7 +3,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import Input from './Input.svelte';
-	import { t } from '../i18n';
+	import { t } from '$lib/i18n';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 

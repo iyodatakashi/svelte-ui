@@ -3,12 +3,12 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
-	import { getStyleFromNumber } from '../../utils/style';
+	import { getStyleFromNumber } from '$lib/utils/style';
 	import type {
 		SkeletonMediaConfig,
 		SkeletonThumbnailConfig,
 		SkeletonTextConfig
-	} from '../../types/skeleton';
+	} from '$lib/types/skeleton';
 
 	let {
 		width = '100%',

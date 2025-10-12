@@ -4,8 +4,8 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
-	import { announceSelection } from '../utils/accessibility';
-	import { t } from '../i18n';
+	import { announceSelection } from '$lib/utils/accessibility';
+	import { t } from '$lib/i18n';
 
 	// =========================================================================
 	// Props, States & Constants

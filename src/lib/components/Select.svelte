@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
-	import type { Option } from '../types/options';
+	import type { Option } from '$lib/types/options';
 
 	// =========================================================================
 	// Props, States & Constants

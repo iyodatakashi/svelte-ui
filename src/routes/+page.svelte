@@ -7,8 +7,8 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { onMount } from 'svelte';
 	import Tab from '$lib/components/Tab.svelte';
-	import Fab from '../lib/components/Fab.svelte';
-	import type { MenuItem } from '../lib/types/MenuItem';
+	import Fab from '$lib/components/Fab.svelte';
+	import type { MenuItem } from '$lib/types/MenuItem';
 	import Icon from '$lib/components/Icon.svelte';
 
 	let theme = $state('light');

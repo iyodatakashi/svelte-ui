@@ -13,7 +13,7 @@
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
-	import { announceToScreenReader } from '../utils/accessibility';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 

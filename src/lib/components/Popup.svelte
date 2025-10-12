@@ -16,8 +16,8 @@
 
 	import type { Snippet } from 'svelte';
 	import { onDestroy, tick, onMount } from 'svelte';
-	import { isMobileDevice, disableBodyScroll, getViewportSize } from '../utils/mobile';
-	import { announceOpenClose } from '../utils/accessibility';
+	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
+	import { announceOpenClose } from '$lib/utils/accessibility';
 
 	// =========================================================================
 	// Props, States & Constants

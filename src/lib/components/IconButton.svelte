@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import { t } from '../i18n';
+	import { t } from '$lib/i18n';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';

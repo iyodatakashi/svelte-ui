@@ -1,7 +1,7 @@
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import IconButton from './IconButton.svelte';
-	import { getStyleFromNumber } from '../utils/style';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
 	type ImagePreviewProps = {
 		file: File;

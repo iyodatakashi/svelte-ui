@@ -2,9 +2,9 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import { t } from '../i18n';
-	import { announceToScreenReader } from '../utils/accessibility';
-	import { getStyleFromNumber } from '../utils/style';
+	import { t } from '$lib/i18n';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { getStyleFromNumber } from '$lib/utils/style';
 	import { onDestroy } from 'svelte';
 	import ImageUploaderPreview from './ImageUploaderPreview.svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';

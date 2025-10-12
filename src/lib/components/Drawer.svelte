@@ -15,7 +15,7 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
-	import { getStyleFromNumber } from '../utils/style';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
 	// =========================================================================
 	// Props, States & Constants

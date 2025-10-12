@@ -112,3 +112,13 @@ export const isPresetPattern = (
 		'button-group'
 	].includes(pattern.type as any);
 };
+
+export const isMediaPattern = (pattern: SkeletonPatternConfig): pattern is SkeletonMediaConfig => {
+	return pattern.type === 'media';
+};
+
+export const isAvatarPattern = (
+	pattern: SkeletonPatternConfig
+): pattern is SkeletonAvatarConfig => {
+	return pattern.type === 'avatar';
+};

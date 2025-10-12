@@ -3,7 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import PopupMenu from './PopupMenu.svelte';
-	import type { MenuItem } from '../types/menuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
 	import type { SvelteComponent, Snippet } from 'svelte';
 
 	// =========================================================================

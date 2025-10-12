@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Dialog from './Dialog.svelte';
 	import Button from './Button.svelte';
-	import { convertToHtml } from '../utils/formatText';
+	import { convertToHtml } from '$lib/utils/formatText';
 	import type { SvelteComponent } from 'svelte';
 
 	// =========================================================================

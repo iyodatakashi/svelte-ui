@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
-	import { getStyleFromNumber } from '../utils/style';
-	import { t } from '../i18n';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import { t } from '$lib/i18n';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 

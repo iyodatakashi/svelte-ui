@@ -3,7 +3,7 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
 	import Icon from './Icon.svelte';
-	import type { MenuItem } from '../types/menuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
 
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';

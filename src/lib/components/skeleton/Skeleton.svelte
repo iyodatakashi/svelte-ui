@@ -7,9 +7,9 @@
 	import SkeletonAvatar from './SkeletonAvatar.svelte';
 	import SkeletonButton from './SkeletonButton.svelte';
 	import SkeletonHeading from './SkeletonHeading.svelte';
-	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonPatternConfig } from '../../types/skeleton';
-	import { isPresetPattern } from '../../types/skeleton';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import type { SkeletonPatternConfig, SkeletonPresetConfig } from '$lib/types/skeleton';
+	import { isPresetPattern, isMediaPattern, isAvatarPattern } from '$lib/types/skeleton';
 
 	// =========================================================================
 	// Props
@@ -114,39 +114,37 @@
 					const presetPatternsArray = PRESET_PATTERNS[pattern.type] || [];
 					// プリセットパターンを展開して、元のパターンの設定で上書き
 					const { type: _, ...patternWithoutType } = pattern;
+					const typedPatternWithoutType = patternWithoutType as Omit<SkeletonPresetConfig, 'type'>;
 					return presetPatternsArray.map((presetPattern) => {
 						// プリセットパターン内の各パターンに対して、ユーザー指定のプロパティを適用
 						const mergedPattern = {
 							...DEFAULT_PATTERN_CONFIG,
 							...presetPattern,
-							...patternWithoutType
-						};
+							...typedPatternWithoutType
+						} as SkeletonPatternConfig;
 
-						// ネストしたオブジェクトのマージ処理
-						if (
-							presetPattern.type === 'media' &&
-							'thumbnailConfig' in patternWithoutType &&
-							'thumbnailConfig' in presetPattern
-						) {
-							mergedPattern.thumbnailConfig = {
+						// ネストしたオブジェクトのマージ処理（型ガードで型を絞り込む）
+						if (isMediaPattern(presetPattern) && 'thumbnailConfig' in typedPatternWithoutType) {
+							(mergedPattern as typeof presetPattern).thumbnailConfig = {
 								...presetPattern.thumbnailConfig,
-								...patternWithoutType.thumbnailConfig
+								...typedPatternWithoutType.thumbnailConfig
 							};
 						}
-						if ('textConfig' in patternWithoutType && 'textConfig' in presetPattern) {
-							mergedPattern.textConfig = {
-								...presetPattern.textConfig,
-								...patternWithoutType.textConfig
-							};
-						}
+
 						if (
-							presetPattern.type === 'avatar' &&
-							'avatarImageConfig' in patternWithoutType &&
-							'avatarImageConfig' in presetPattern
+							(isMediaPattern(presetPattern) || isAvatarPattern(presetPattern)) &&
+							'textConfig' in typedPatternWithoutType
 						) {
-							mergedPattern.avatarImageConfig = {
+							(mergedPattern as typeof presetPattern).textConfig = {
+								...presetPattern.textConfig,
+								...typedPatternWithoutType.textConfig
+							};
+						}
+
+						if (isAvatarPattern(presetPattern) && 'avatarImageConfig' in typedPatternWithoutType) {
+							(mergedPattern as typeof presetPattern).avatarImageConfig = {
 								...presetPattern.avatarImageConfig,
-								...patternWithoutType.avatarImageConfig
+								...typedPatternWithoutType.avatarImageConfig
 							};
 						}
 

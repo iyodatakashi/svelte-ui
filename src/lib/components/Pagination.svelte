@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import { announceToScreenReader } from '../utils/accessibility';
-	import { t } from '../i18n';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { t } from '$lib/i18n';
 
 	// =========================================================================
 	// Props, States & Constants

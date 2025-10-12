@@ -13,7 +13,7 @@
 	import 'dayjs/locale/zh-cn';
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
-	import { t } from '../i18n';
+	import { t } from '$lib/i18n';
 
 	dayjs.extend(localeData);
 	dayjs.extend(isSameOrBefore);

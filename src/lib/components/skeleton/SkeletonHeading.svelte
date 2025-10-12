@@ -2,8 +2,8 @@
 
 <script lang="ts">
 	import SkeletonText from './SkeletonText.svelte';
-	import { getStyleFromNumber } from '../../utils/style';
-	import type { SkeletonHeadingConfig } from '../../types/skeleton';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import type { SkeletonHeadingConfig } from '$lib/types/skeleton';
 
 	// =========================================================================
 	// Props
