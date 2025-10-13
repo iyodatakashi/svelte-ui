@@ -346,6 +346,10 @@
 </div>
 
 <style>
+	/* =============================================
+	 * Base Styles
+   * ============================================= */
+
 	.radio {
 		display: flex;
 		align-items: center;
@@ -362,7 +366,10 @@
 		cursor: pointer;
 	}
 
+	/* Label */
 	.radio__label {
+		display: flex;
+		align-items: center;
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
@@ -370,10 +377,7 @@
 		min-height: var(--svelte-ui-checkbox-min-height);
 	}
 
-	.radio--disabled input[type='radio'] {
-		cursor: not-allowed;
-	}
-
+	/* Icon */
 	.radio__icon {
 		position: relative;
 		display: flex;
@@ -384,18 +388,6 @@
 		color: inherit;
 		cursor: pointer;
 		min-height: var(--svelte-ui-radio-min-height);
-	}
-
-	/* Mobile touch targets */
-	@media (hover: none) and (pointer: coarse) {
-		.radio__label {
-			min-height: var(--svelte-ui-touch-target);
-		}
-	}
-
-	.radio--disabled .radio__label {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
 	}
 
 	.radio__icon::before,
@@ -437,6 +429,18 @@
 		height: var(--svelte-ui-radio-dot-size);
 	}
 
+	/* =============================================
+   * Status
+   * ============================================= */
+	.radio--disabled input[type='radio'] {
+		cursor: not-allowed;
+	}
+
+	.radio--disabled .radio__label {
+		opacity: var(--svelte-ui-button-disabled-opacity);
+		cursor: not-allowed;
+	}
+
 	/* Hover states */
 	@media (hover: hover) {
 		.radio:not(.radio--disabled):hover .radio__icon::after,
@@ -455,6 +459,10 @@
 		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
+
+	/* =========================================================================
+	 * Size Variants
+	 * ========================================================================= */
 
 	/* Size variants */
 	.radio--small {
@@ -481,13 +489,6 @@
 		height: var(--svelte-ui-radio-dot-size-sm);
 	}
 
-	/* Mobile touch targets for small */
-	@media (hover: none) and (pointer: coarse) {
-		.radio--small .radio__icon {
-			min-height: var(--svelte-ui-touch-target-sm);
-		}
-	}
-
 	.radio--large {
 		font-size: inherit;
 	}
@@ -512,9 +513,21 @@
 		height: var(--svelte-ui-radio-dot-size-lg);
 	}
 
-	/* Mobile touch targets for large */
+	/* =========================================================================
+	 * Motion & Media Queries
+	 * ========================================================================= */
+
+	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.radio--large .radio__icon {
+		.radio__label {
+			min-height: var(--svelte-ui-touch-target);
+		}
+
+		.radio--small .radio__label {
+			min-height: var(--svelte-ui-touch-target-sm);
+		}
+
+		.radio--large .radio__label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}

@@ -323,8 +323,9 @@
 
 <style>
 	/* =========================================================================
-	   Base Styles
-	   ========================================================================= */
+	 * Base Styles
+	 * ========================================================================= */
+
 	.checkbox {
 		display: flex;
 		align-items: center;
@@ -337,13 +338,16 @@
 		width: 16px;
 		height: 16px;
 		margin: 0;
-		line-height: 1px;
 		opacity: 0;
 		cursor: pointer;
 	}
 
+	/* Label */
 	.checkbox__label {
+		display: flex;
+		align-items: center;
 		min-height: var(--svelte-ui-checkbox-min-height);
+		height: 1em;
 		padding-left: var(--svelte-ui-checkbox-gap);
 		white-space: nowrap;
 		font-size: inherit;
@@ -396,45 +400,9 @@
 	}
 
 	/* =========================================================================
-	   Size Variants
-	   ========================================================================= */
-	.checkbox--small {
-		font-size: inherit;
-	}
-
-	.checkbox--small .checkbox__label {
-		min-height: var(--svelte-ui-checkbox-min-height-sm);
-	}
-
-	.checkbox--small .checkbox__icon {
-		width: var(--svelte-ui-checkbox-size-sm);
-		height: var(--svelte-ui-checkbox-size-sm);
-	}
-
-	.checkbox--small .checkbox__icon::after {
-		font-size: var(--svelte-ui-checkbox-icon-size-sm);
-	}
-
-	.checkbox--large {
-		font-size: inherit;
-	}
-
-	.checkbox--large .checkbox__label {
-		min-height: var(--svelte-ui-checkbox-min-height-lg);
-	}
-
-	.checkbox--large .checkbox__icon {
-		width: var(--svelte-ui-checkbox-size-lg);
-		height: var(--svelte-ui-checkbox-size-lg);
-	}
-
-	.checkbox--large .checkbox__icon::after {
-		font-size: var(--svelte-ui-checkbox-icon-size-lg);
-	}
-
-	/* =========================================================================
 	   State Modifiers
 	   ========================================================================= */
+
 	/* Disabled state */
 	.checkbox--disabled input[type='checkbox'] {
 		cursor: not-allowed;
@@ -484,8 +452,47 @@
 	}
 
 	/* =========================================================================
-	   Motion & Media Queries
-	   ========================================================================= */
+	 * Size Variants
+	 * ========================================================================= */
+
+	.checkbox--small {
+		font-size: inherit;
+	}
+
+	.checkbox--small .checkbox__label {
+		min-height: var(--svelte-ui-checkbox-min-height-sm);
+	}
+
+	.checkbox--small .checkbox__icon {
+		width: var(--svelte-ui-checkbox-size-sm);
+		height: var(--svelte-ui-checkbox-size-sm);
+	}
+
+	.checkbox--small .checkbox__icon::after {
+		font-size: var(--svelte-ui-checkbox-icon-size-sm);
+	}
+
+	.checkbox--large {
+		font-size: inherit;
+	}
+
+	.checkbox--large .checkbox__label {
+		min-height: var(--svelte-ui-checkbox-min-height-lg);
+	}
+
+	.checkbox--large .checkbox__icon {
+		width: var(--svelte-ui-checkbox-size-lg);
+		height: var(--svelte-ui-checkbox-size-lg);
+	}
+
+	.checkbox--large .checkbox__icon::after {
+		font-size: var(--svelte-ui-checkbox-icon-size-lg);
+	}
+
+	/* =========================================================================
+	 * Motion & Media Queries
+	 * ========================================================================= */
+
 	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
 		.checkbox__label {

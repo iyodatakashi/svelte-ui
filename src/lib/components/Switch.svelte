@@ -316,7 +316,7 @@
 		<span class="switch-thumb"></span>
 	</label>
 
-	<label for={id} class="switch__label">
+	<label for={id} class="switch__label" class:switch__label--disabled={disabled}>
 		{#if children}
 			{@render children()}
 		{/if}
@@ -325,8 +325,9 @@
 
 <style lang="scss">
 	/* =============================================
- * 基本構造・レイアウト
- * ============================================= */
+	 * Base Styles
+   * ============================================= */
+
 	.switch {
 		display: inline-flex;
 		align-items: center;
@@ -336,9 +337,80 @@
 		color: var(--svelte-ui-text-color);
 	}
 
-	/* =============================================
- * サイズバリエーション
- * ============================================= */
+	.switch-input {
+		position: absolute;
+		opacity: 0;
+		width: 1px;
+		height: 1px;
+		margin: -1px;
+		padding: 0;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
+	// ラベル
+	.switch__label {
+		display: inline-flex;
+		align-items: center;
+		padding-left: var(--svelte-ui-switch-gap);
+		cursor: pointer;
+		user-select: none;
+		&--disabled {
+			cursor: not-allowed;
+			opacity: 0.5;
+		}
+	}
+
+	// スイッチトラック
+	.switch__track {
+		position: relative;
+		width: var(--switch-width);
+		height: var(--switch-height);
+		background-color: var(--svelte-ui-switch-inactive-color);
+		border-radius: var(--switch-border-radius);
+		transition:
+			background-color var(--svelte-ui-transition-duration) ease,
+			filter var(--svelte-ui-transition-duration) ease;
+		flex-shrink: 0;
+		cursor: pointer;
+
+		.switch--checked & {
+			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));
+		}
+
+		.switch--disabled & {
+			opacity: var(--svelte-ui-switch-disabled-opacity);
+		}
+	}
+
+	// スイッチサム（丸い部分）
+	.switch-thumb {
+		position: absolute;
+		top: var(--switch-thumb-margin);
+		left: var(--switch-thumb-margin);
+		width: var(--switch-thumb-size);
+		height: var(--switch-thumb-size);
+		background-color: var(--svelte-ui-switch-thumb-color);
+		border-radius: var(--switch-thumb-border-radius);
+		transition: transform var(--svelte-ui-transition-duration) ease;
+
+		.switch--checked & {
+			transform: translateX(
+				calc(var(--switch-width) - var(--switch-thumb-size) - var(--switch-thumb-margin) * 2)
+			);
+		}
+
+		.switch--disabled & {
+			opacity: var(--svelte-ui-switch-disabled-opacity);
+		}
+	}
+
+	/* =========================================================================
+	 * Size Variants
+	 * ========================================================================= */
+
 	.switch--small {
 		--switch-width: var(--svelte-ui-switch-width-sm);
 		--switch-height: var(--svelte-ui-switch-height-sm);
@@ -367,99 +439,36 @@
 	}
 
 	/* =============================================
- * 入力要素
- * ============================================= */
-	.switch-input {
-		position: absolute;
-		opacity: 0;
-		width: 1px;
-		height: 1px;
-		margin: -1px;
-		padding: 0;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
-	}
-
-	/* =============================================
- * ラベル
- * ============================================= */
-	.switch__label {
-		display: inline-flex;
-		align-items: center;
-		padding-left: var(--svelte-ui-switch-gap);
-		cursor: pointer;
-		user-select: none;
-		&--disabled {
-			cursor: not-allowed;
-			opacity: 0.5;
-		}
-	}
-
-	/* =============================================
- * スイッチトラック
- * ============================================= */
-	.switch__track {
-		position: relative;
-		width: var(--switch-width);
-		height: var(--switch-height);
-		background-color: var(--svelte-ui-switch-inactive-color);
-		border-radius: var(--switch-border-radius);
-		transition:
-			background-color var(--svelte-ui-transition-duration) ease,
-			filter var(--svelte-ui-transition-duration) ease;
-		flex-shrink: 0;
-		cursor: pointer;
-
-		.switch--checked & {
-			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));
-		}
-
-		.switch--disabled & {
-			opacity: var(--svelte-ui-switch-disabled-opacity);
-		}
-	}
-
-	/* =============================================
- * スイッチサム（丸い部分）
- * ============================================= */
-	.switch-thumb {
-		position: absolute;
-		top: var(--switch-thumb-margin);
-		left: var(--switch-thumb-margin);
-		width: var(--switch-thumb-size);
-		height: var(--switch-thumb-size);
-		background-color: var(--svelte-ui-switch-thumb-color);
-		border-radius: var(--switch-thumb-border-radius);
-		transition: transform var(--svelte-ui-transition-duration) ease;
-
-		.switch--checked & {
-			transform: translateX(
-				calc(var(--switch-width) - var(--switch-thumb-size) - var(--switch-thumb-margin) * 2)
-			);
-		}
-
-		.switch--disabled & {
-			opacity: var(--svelte-ui-switch-disabled-opacity);
-		}
-	}
-
-	/* =============================================
- * アニメーション無効化
- * ============================================= */
-	.switch--reduced-motion {
-		* {
-			transition: none !important;
-			animation: none !important;
-		}
-	}
-
-	/* =============================================
  * フォーカス状態
  * ============================================= */
 	.switch-input:focus-visible + .switch__track {
 		outline: 2px solid var(--svelte-ui-focus-color);
 		outline-offset: 2px;
+	}
+
+	/* =========================================================================
+	 * Motion & Media Queries
+	 * ========================================================================= */
+
+	/* Mobile touch targets */
+	@media (hover: none) and (pointer: coarse) {
+		.switch__label {
+			min-height: var(--svelte-ui-touch-target);
+		}
+
+		.switch--small .switch__label {
+			min-height: var(--svelte-ui-touch-target-sm);
+		}
+
+		.switch--large .switch__label {
+			min-height: var(--svelte-ui-touch-target-lg);
+		}
+	}
+
+	.switch--reduced-motion {
+		* {
+			transition: none !important;
+			animation: none !important;
+		}
 	}
 </style>
