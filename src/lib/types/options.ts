@@ -3,7 +3,9 @@
 // =========================================================================
 
 export type Option = {
-	value: string | number | null;
+	value: OptionValue;
 	label: string;
 	disabled?: boolean;
 };
+
+export type OptionValue = string | number | null;
