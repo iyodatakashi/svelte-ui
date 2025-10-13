@@ -1,5 +1,6 @@
 export { default as Button } from './components/Button.svelte';
 export { default as Checkbox } from './components/Checkbox.svelte';
+export { default as CheckboxGroup } from './components/CheckboxGroup.svelte';
 export { default as ColorPicker } from './components/ColorPicker.svelte';
 export { default as Combobox } from './components/Combobox.svelte';
 export { default as ConfirmDialog } from './components/ConfirmDialog.svelte';
@@ -20,6 +21,7 @@ export { default as Popup } from './components/Popup.svelte';
 export { default as PopupMenu } from './components/PopupMenu.svelte';
 export { default as PopupMenuButton } from './components/PopupMenuButton.svelte';
 export { default as Radio } from './components/Radio.svelte';
+export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Select } from './components/Select.svelte';
 export { default as Slider } from './components/Slider.svelte';
 export { default as Snackbar } from './components/Snackbar.svelte';
