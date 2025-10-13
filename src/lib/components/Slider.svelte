@@ -456,13 +456,18 @@
 	 * ============================================= */
 	@media (max-width: 768px) {
 		.slider__input::-webkit-slider-thumb {
-			width: var(--svelte-ui-slider-thumb-size-mobile);
-			height: var(--svelte-ui-slider-thumb-size-mobile);
+			width: var(--svelte-ui-slider-thumb-width-mobile);
+			height: var(--svelte-ui-slider-thumb-height-mobile);
 		}
 
 		.slider__input::-moz-range-thumb {
-			width: var(--svelte-ui-slider-thumb-size-mobile);
-			height: var(--svelte-ui-slider-thumb-size-mobile);
+			width: var(--svelte-ui-slider-thumb-width-mobile);
+			height: var(--svelte-ui-slider-thumb-height-mobile);
+		}
+
+		:global(.slider__custom-thumb) {
+			width: var(--svelte-ui-slider-custom-thumb-size-mobile);
+			height: var(--svelte-ui-slider-custom-thumb-size-mobile);
 		}
 	}
 </style>
