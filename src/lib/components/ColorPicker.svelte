@@ -317,6 +317,7 @@
 	class:color-picker--rounded={rounded}
 	class:color-picker--clearable={clearable}
 	class:color-picker--disabled={disabled}
+	class:color-picker--readonly={readonly}
 	class:color-picker--focused={isFocused}
 	data-testid="color-picker"
 	style={customStyle}
@@ -441,39 +442,11 @@
 		z-index: 1;
 	}
 
-	.color-picker--clearable .color-picker__clear-button {
-		position: absolute;
-		top: 50%;
-		right: 48px;
-		height: fit-content;
-		transform: translate(0, -50%);
-		opacity: 0;
-		transition: var(--svelte-ui-transition-duration);
-	}
-
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
 	.color-picker--full-width {
 		width: 100%;
-	}
-
-	/* =============================================
- * 機能バリエーション：clearable
- * ============================================= */
-
-	@media (hover: hover) {
-		.color-picker--clearable:hover .color-picker__clear-button {
-			opacity: 1;
-			pointer-events: all;
-		}
-	}
-
-	@media (hover: none) {
-		.color-picker--clearable .color-picker__clear-button {
-			opacity: 1;
-			pointer-events: all;
-		}
 	}
 
 	/* =============================================
@@ -492,7 +465,7 @@
 	/* =============================================
  * 状態管理（readonly等）
  * ============================================= */
-	.color-picker:has(.color-picker__input[readonly]) {
+	.color-picker--readonly {
 		.color-picker__color-input,
 		.color-picker__trigger {
 			pointer-events: none;

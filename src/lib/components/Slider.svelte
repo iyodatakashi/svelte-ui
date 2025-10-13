@@ -464,10 +464,5 @@
 			width: var(--svelte-ui-slider-thumb-size-mobile);
 			height: var(--svelte-ui-slider-thumb-size-mobile);
 		}
-
-		.slider__custom-thumb {
-			width: var(--svelte-ui-slider-custom-thumb-size-mobile);
-			height: var(--svelte-ui-slider-custom-thumb-size-mobile);
-		}
 	}
 </style>
