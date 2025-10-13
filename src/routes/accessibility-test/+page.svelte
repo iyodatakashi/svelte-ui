@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Tab from '$lib/components/Tab.svelte';
-	import type { MenuItem } from '$lib/types/MenuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
 
 	const mainTabs: MenuItem[] = [
 		{

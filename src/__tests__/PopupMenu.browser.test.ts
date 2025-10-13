@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import PopupMenu from '../lib/components/PopupMenu.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
-import type { MenuItem } from '../lib/types/MenuItem';
+import type { MenuItem } from '../lib/types/menuItem';
 
 // テスト用のメニューアイテムを作成
 const createMenuItems = (): (MenuItem | 'separator')[] => [

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import type { MenuItem } from '../types/MenuItem';
+import type { MenuItem } from '../lib/types/menuItem';
 import PopupMenu from '../lib/components/PopupMenu.svelte';
 
 // 型安全性のための明示的な型定義

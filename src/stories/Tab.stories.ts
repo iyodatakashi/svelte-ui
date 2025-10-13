@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Tab from '../lib/components/Tab.svelte';
-import type { MenuItem } from '../types/MenuItem';
+import type { MenuItem } from '../lib/types/menuItem';
 
 // 型安全性のための明示的な型定義
 interface TabArgs {

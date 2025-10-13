@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Tab from '$lib/components/Tab.svelte';
-	import type { MenuItem } from '$lib/types/MenuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
 	import { page } from '$app/stores';
 	import { browser } from '$app/environment';
 	import { beforeNavigate, goto } from '$app/navigation';

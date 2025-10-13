@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import type { MenuItem } from '../types/MenuItem';
+import type { MenuItem } from '../lib/types/menuItem';
 import PopupMenuButton from '../lib/components/PopupMenuButton.svelte';
 
 // 型安全性のための明示的な型定義
