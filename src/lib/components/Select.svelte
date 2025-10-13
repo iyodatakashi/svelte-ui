@@ -437,7 +437,7 @@ select--focus-{focusStyle}"
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
-	.select:not(.inline) {
+	.select:not(.select--inline) {
 		select {
 			min-height: var(--svelte-ui-select-height);
 			background-color: var(--svelte-ui-select-bg);
@@ -453,7 +453,7 @@ select--focus-{focusStyle}"
 	/* =============================================
  * デザインバリアント：inline
  * ============================================= */
-	.select.inline {
+	.select.select--inline {
 		select {
 			padding: inherit;
 			padding-right: var(--svelte-ui-input-icon-space-inline);

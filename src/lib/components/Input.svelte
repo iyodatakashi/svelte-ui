@@ -390,6 +390,7 @@
 	class:input--clearable={clearable}
 	class:input--has-right-icon={!!rightIcon}
 	class:input--has-left-icon={!!leftIcon}
+	class:input--has-left-icon-clickable={!!leftIcon && !!onLeftIconClick}
 	class:input--rounded={rounded}
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
