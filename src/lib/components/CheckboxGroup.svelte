@@ -11,7 +11,7 @@
 
 		// スタイル/レイアウト
 		direction = 'vertical',
-		gap = '8px',
+		gap = '0',
 		wrap = false,
 		minOptionWidth,
 

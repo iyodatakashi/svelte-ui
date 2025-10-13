@@ -347,7 +347,6 @@
 		display: flex;
 		align-items: center;
 		min-height: var(--svelte-ui-checkbox-min-height);
-		height: 1em;
 		padding-left: var(--svelte-ui-checkbox-gap);
 		white-space: nowrap;
 		font-size: inherit;
