@@ -82,24 +82,7 @@
 
 		&--animated {
 			.skeleton-box__content {
-				position: relative;
-				overflow: hidden;
-
-				&::before {
-					content: '';
-					position: absolute;
-					top: 0;
-					left: -100%;
-					width: 100%;
-					height: 100%;
-					background: linear-gradient(
-						90deg,
-						transparent,
-						var(--svelte-ui-skeleton-shimmer-color),
-						transparent
-					);
-					animation: skeleton-shimmer 1.5s infinite;
-				}
+				animation: skeleton-pulse 4s infinite;
 			}
 		}
 	}
@@ -111,12 +94,17 @@
 		display: block;
 	}
 
-	@keyframes skeleton-shimmer {
+	@keyframes skeleton-pulse {
 		0% {
-			left: -100%;
+			opacity: 1;
+			animation-timing-function: ease-in-out;
+		}
+		50% {
+			opacity: 0.5;
+			animation-timing-function: ease-in-out;
 		}
 		100% {
-			left: 100%;
+			opacity: 1;
 		}
 	}
 </style>
