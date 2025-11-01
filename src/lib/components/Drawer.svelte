@@ -123,7 +123,9 @@
 	});
 
 	const drawerClasses = $derived(
-		['drawer', `drawer--${position}`, scrollable && 'drawer--scrollable'].filter(Boolean).join(' ')
+		['drawer-wrapper', `drawer-wrapper--${position}`, scrollable && 'drawer-wrapper--scrollable']
+			.filter(Boolean)
+			.join(' ')
 	);
 
 	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
@@ -176,7 +178,7 @@
 </Modal>
 
 <style lang="scss">
-	:global(.drawer) {
+	:global(.drawer-wrapper) {
 		width: 100%;
 		height: 100%;
 		min-height: 100%;
@@ -186,7 +188,7 @@
 		color: var(--svelte-ui-drawer-title-color);
 	}
 
-	:global(.drawer:-internal-dialog-in-top-layer) {
+	:global(.drawer-wrapper:-internal-dialog-in-top-layer) {
 		max-height: none;
 		max-width: none;
 		width: 100%;
@@ -263,31 +265,31 @@
 		}
 	}
 
-	:global(.drawer--right.fade-in) {
+	:global(.drawer-wrapper--right.fade-in) {
 		animation: fadeInFromRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer--right.fade-in::backdrop) {
+	:global(.drawer-wrapper--right.fade-in::backdrop) {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer--left.fade-in) {
+	:global(.drawer-wrapper--left.fade-in) {
 		animation: fadeInFromLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer--left.fade-in::backdrop) {
+	:global(.drawer-wrapper--left.fade-in::backdrop) {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer--left.fade-out) {
+	:global(.drawer-wrapper--left.fade-out) {
 		animation: fadeOutToLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer--right.fade-out) {
+	:global(.drawer-wrapper--right.fade-out) {
 		animation: fadeOutToRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.fade-out::backdrop) {
+	:global(.drawer-wrapper.fade-out::backdrop) {
 		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
@@ -367,16 +369,16 @@
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		:global(.drawer.fade-in),
-		:global(.drawer.fade-in::backdrop),
-		:global(.drawer.fade-out),
-		:global(.drawer.fade-out::backdrop),
-		:global(.drawer--left.fade-in),
-		:global(.drawer--left.fade-in::backdrop),
-		:global(.drawer--left.fade-out),
-		:global(.drawer--right.fade-in),
-		:global(.drawer--right.fade-in::backdrop),
-		:global(.drawer--right.fade-out) {
+		:global(.drawer-wrapper.fade-in),
+		:global(.drawer-wrapper.fade-in::backdrop),
+		:global(.drawer-wrapper.fade-out),
+		:global(.drawer-wrapper.fade-out::backdrop),
+		:global(.drawer-wrapper--left.fade-in),
+		:global(.drawer-wrapper--left.fade-in::backdrop),
+		:global(.drawer-wrapper--left.fade-out),
+		:global(.drawer-wrapper--right.fade-in),
+		:global(.drawer-wrapper--right.fade-in::backdrop),
+		:global(.drawer-wrapper--right.fade-out) {
 			animation-duration: 0.01s;
 		}
 	}

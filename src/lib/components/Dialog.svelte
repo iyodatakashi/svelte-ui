@@ -115,7 +115,7 @@
 		return styles.join('; ');
 	});
 
-	const dialogClasses = $derived(['dialog', scrollable && 'scrollable'].filter(Boolean).join(' '));
+	const dialogClasses = $derived([scrollable && 'scrollable'].filter(Boolean).join(' ')); // dialogクラス自体はcustomClassに含めない
 
 	const ariaLabelledby = $derived(title ? 'dialog-title' : undefined);
 	const ariaDescribedbyValue = $derived(
@@ -136,7 +136,7 @@
 	customStyles={dialogStyles}
 	id={id ? `${id}-modal` : undefined}
 >
-	<div class="dialog">
+	<div class="dialog {scrollable ? 'scrollable' : ''}">
 		{#if header || title}
 			<div class="dialog__header">
 				{#if header}
@@ -167,10 +167,6 @@
 </Modal>
 
 <style lang="scss">
-	:global(.dialog) {
-		color: var(--svelte-ui-dialog-title-color);
-	}
-
 	.dialog {
 		display: flex;
 		flex-direction: column;
@@ -220,7 +216,7 @@
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 
-	:global(.dialog.scrollable) {
+	:global(.scrollable) {
 		.dialog__header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
