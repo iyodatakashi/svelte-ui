@@ -117,8 +117,4 @@
 		pointer-events: auto;
 		position: relative;
 	}
-
-	.snackbar__item :global(.snackbar-item__content) {
-		margin-bottom: 0;
-	}
 </style>

@@ -17,6 +17,9 @@
 	import Fab from '$lib/components/Fab.svelte';
 	import FileUploader from '$lib/components/FileUploader.svelte';
 	import ImageUploader from '$lib/components/ImageUploader.svelte';
+	import Slider from '$lib/components/Slider.svelte';
+	import CheckboxGroup from '$lib/components/CheckboxGroup.svelte';
+	import RadioGroup from '$lib/components/RadioGroup.svelte';
 
 	let value: string = $state('');
 	let value2: string = $state('');
@@ -32,10 +35,17 @@
 		end: new Date('2025-11-28')
 	});
 	let fileList: FileList | undefined = $state();
+	let multiSelectValues: string[] = $state([]);
 
 	const options = [
-		{ value: 'hoge', label: 'ほげ' },
-		{ value: 'fuga', label: 'ふが' }
+		{ value: 'hoge', label: 'ほげほげ' },
+		{ value: 'fuga', label: 'ふがほほがえあが' },
+		{ value: 'hoge1', label: 'ほげ' },
+		{ value: 'fuga1', label: 'ふが' },
+		{ value: 'hoge2', label: 'ほげ' },
+		{ value: 'fuga2', label: 'ふが' },
+		{ value: 'hoge3', label: 'ほげ' },
+		{ value: 'fuga3', label: 'ふが' }
 	];
 
 	const comboboxOptions = ['ほげ', 'ふが'];
@@ -60,17 +70,17 @@
 <div class="container" data-theme="light">
 	<Fab icon="add" variant="glass" shadow position="center" onclick={open}>ほげ</Fab>
 	<div class="container-inner">
+		<Slider width={300} min={100} max={300}></Slider>
 		<Button onclick={open}>オープン</Button>
 		<label for="input1">インプット1</label>
 		<Input
 			id="input1"
 			clearable
-			inline
-			rightIcon="add"
 			bind:value
 			minWidth={300}
 			width="50%"
 			onsubmit={handleChange}
+			onclick={handleChange}
 		/>
 		<Textarea id="textarea1" bind:value={value2} clearable onsubmit={handleChange} />
 		<Select bind:value {options} />
@@ -130,6 +140,32 @@
 
 			<label for="checkbox">checkbox</label>
 			<Checkbox id="checkbox" bind:value={checked}>チェックボックス</Checkbox>
+
+			Radioグループ
+			<RadioGroup
+				bind:value
+				{options}
+				direction="horizontal"
+				gap="0 32px"
+				minOptionWidth="120px"
+				wrap
+				onchange={() => {
+					console.log($state.snapshot(value));
+				}}
+			/>
+
+			Checkboxグループ
+			<CheckboxGroup
+				bind:value={multiSelectValues}
+				{options}
+				direction="horizontal"
+				gap="8px 32px"
+				minOptionWidth="120px"
+				wrap
+				onchange={() => {
+					console.log($state.snapshot(multiSelectValues));
+				}}
+			/>
 
 			<label for="switch">switch</label>
 			<Switch id="switch" bind:value={checked}>すいっち</Switch>
