@@ -158,15 +158,13 @@
 	data-testid="tab"
 >
 	{#each tabItems as tabItem, index}
-		<div class="tab__item">
-			<TabItem
-				{tabItem}
-				isSelected={index === selectedTabIndex}
-				{textColor}
-				{selectedTextColor}
-				{selectedBarColor}
-			/>
-		</div>
+		<TabItem
+			{tabItem}
+			isSelected={index === selectedTabIndex}
+			{textColor}
+			{selectedTextColor}
+			{selectedBarColor}
+		/>
 	{/each}
 </div>
 
@@ -174,8 +172,10 @@
 	.tab {
 		display: flex;
 		justify-content: start;
+		position: relative;
 		width: 100%;
 		height: 100%;
+		min-height: 36px;
 		overflow-x: auto;
 		overflow-y: visible;
 		-ms-overflow-style: none;
@@ -184,10 +184,5 @@
 	}
 	.tab::-webkit-scrollbar {
 		display: none;
-	}
-	.tab__item {
-		display: block;
-		height: 100%;
-		flex-shrink: 0;
 	}
 </style>

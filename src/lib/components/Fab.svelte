@@ -495,8 +495,12 @@
 		}
 
 		.fab__label {
+			display: block;
 			white-space: nowrap;
 			user-select: none;
+			text-align: center;
+			text-box-trim: trim-both;
+			text-box-edge: cap alphabetic;
 			transition-property: opacity;
 			transition-duration: var(--svelte-ui-transition-duration);
 		}

@@ -70,7 +70,7 @@
 		</div>
 	{/if}
 	{#if tabItem.title}
-		<div class="tab-item__text">
+		<div class="tab-item__label">
 			{tabItem.title}
 		</div>
 	{/if}
@@ -83,8 +83,7 @@
 		align-items: center;
 		gap: 8px;
 		position: relative;
-		height: 100%;
-		padding: 0 16px;
+		padding: 8px 16px;
 		color: var(--text-color);
 		white-space: nowrap;
 		text-decoration: none;
@@ -140,5 +139,10 @@
 
 	.tab-item--selected::before {
 		opacity: 1;
+	}
+
+	.tab-item__label {
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 	}
 </style>
