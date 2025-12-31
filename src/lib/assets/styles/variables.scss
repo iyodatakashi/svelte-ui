@@ -299,6 +299,7 @@
 	--svelte-ui-button-font-size-sm: 14px;
 	--svelte-ui-button-font-size: inherit;
 	--svelte-ui-button-font-size-lg: 16px;
+	--svelte-ui-button-line-height: 1.2em;
 	--svelte-ui-button-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-button-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-button-disabled-opacity: var(--svelte-ui-disabled-opacity);
@@ -412,6 +413,7 @@
 	--svelte-ui-checkbox-icon-size: 1rem;
 	--svelte-ui-checkbox-icon-size-sm: 0.875rem;
 	--svelte-ui-checkbox-icon-size-lg: 1.25rem;
+	--svelte-ui-checkbox-line-height: 1.2em;
 	--svelte-ui-checkbox-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-checkbox-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-checkbox-bg-checked: var(--svelte-ui-checkbox-checked-color);
@@ -437,6 +439,7 @@
 		var(--svelte-ui-switch-height-lg) - var(--svelte-ui-switch-thumb-margin) * 2
 	);
 	--svelte-ui-switch-gap: 8px;
+	--svelte-ui-switch-line-height: 1.2em;
 	--svelte-ui-switch-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-switch-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-switch-thumb-border-radius: var(--svelte-ui-border-radius-rounded);
@@ -460,6 +463,7 @@
 	--svelte-ui-radio-padding: 0 0 0 24px;
 	--svelte-ui-radio-padding-sm: 0 0 0 20px;
 	--svelte-ui-radio-padding-lg: 0 0 0 28px;
+	--svelte-ui-radio-line-height: 1.2em;
 	--svelte-ui-radio-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);

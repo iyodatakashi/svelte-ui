@@ -374,6 +374,7 @@
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
+		line-height: var(--svelte-ui-radio-line-height);
 		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;

@@ -504,6 +504,7 @@
 		width: 100%;
 		display: block;
 		text-align: center;
+		line-height: var(--svelte-ui-button-line-height);
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
 		transition-property: opacity;

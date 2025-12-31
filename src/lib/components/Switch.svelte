@@ -329,12 +329,10 @@
    * ============================================= */
 
 	.switch {
-		display: inline-flex;
+		display: flex;
 		align-items: center;
-		font-family: var(--svelte-ui-font-family);
-		font-size: inherit;
-		line-height: var(--svelte-ui-line-height);
-		color: var(--svelte-ui-text-color);
+		width: fit-content;
+		contain: layout;
 	}
 
 	.switch-input {
@@ -352,10 +350,12 @@
 
 	// ラベル
 	.switch__label {
-		display: inline-flex;
-		align-items: center;
+		display: block;
 		padding-left: var(--svelte-ui-switch-gap);
+		line-height: var(--svelte-ui-checkbox-line-height);
 		cursor: pointer;
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 		user-select: none;
 		&--disabled {
 			cursor: not-allowed;
