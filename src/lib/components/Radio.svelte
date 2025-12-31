@@ -371,6 +371,7 @@
 	/* Label */
 	.radio__label {
 		display: block;
+		padding-left: var(--svelte-ui-checkbox-gap);
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
@@ -385,7 +386,7 @@
 		position: relative;
 		display: flex;
 		align-items: center;
-		padding: var(--svelte-ui-radio-padding);
+		width: var(--svelte-ui-radio-size);
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
@@ -473,7 +474,7 @@
 	}
 
 	.radio--small .radio__icon {
-		padding: var(--svelte-ui-radio-padding-sm);
+		width: var(--svelte-ui-radio-size-sm);
 		min-height: var(--svelte-ui-radio-min-height-sm);
 	}
 
@@ -497,7 +498,7 @@
 	}
 
 	.radio--large .radio__icon {
-		padding: var(--svelte-ui-radio-padding-lg);
+		width: var(--svelte-ui-radio-size-lg);
 		min-height: var(--svelte-ui-radio-min-height-lg);
 	}
 

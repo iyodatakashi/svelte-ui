@@ -352,6 +352,7 @@
 	.switch__label {
 		display: block;
 		padding-left: var(--svelte-ui-switch-gap);
+		white-space: nowrap;
 		line-height: var(--svelte-ui-checkbox-line-height);
 		cursor: pointer;
 		text-box-trim: trim-both;
