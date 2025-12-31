@@ -55,7 +55,7 @@
 		<div class="skeleton-text__line" style="width: {widthStyle}">
 			<SkeletonBox
 				width="100%"
-				height="1em"
+				height="1.2em"
 				radius="var(--svelte-ui-skeleton-text-border-radius)"
 				{animated}
 			/>
