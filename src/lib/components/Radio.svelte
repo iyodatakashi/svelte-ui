@@ -371,7 +371,7 @@
 	/* Label */
 	.radio__label {
 		display: block;
-		padding-left: var(--svelte-ui-checkbox-gap);
+		padding-left: var(--svelte-ui-radio-gap);
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
