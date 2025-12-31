@@ -354,6 +354,8 @@
 		display: flex;
 		align-items: center;
 		width: fit-content;
+		min-height: var(--svelte-ui-radio-min-height);
+		contain: layout;
 	}
 
 	.radio input[type='radio'] {
@@ -368,13 +370,13 @@
 
 	/* Label */
 	.radio__label {
-		display: flex;
-		align-items: center;
+		display: block;
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
 		cursor: pointer;
-		min-height: var(--svelte-ui-checkbox-min-height);
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 	}
 
 	/* Icon */

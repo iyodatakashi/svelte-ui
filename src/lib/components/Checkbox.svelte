@@ -330,6 +330,7 @@
 		display: flex;
 		align-items: center;
 		width: fit-content;
+		min-height: var(--svelte-ui-checkbox-min-height);
 		contain: layout;
 	}
 
@@ -344,14 +345,14 @@
 
 	/* Label */
 	.checkbox__label {
-		display: flex;
-		align-items: center;
-		min-height: var(--svelte-ui-checkbox-min-height);
+		display: block;
 		padding-left: var(--svelte-ui-checkbox-gap);
 		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
 		cursor: pointer;
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 	}
 
 	/* Checkbox box */
