@@ -502,9 +502,10 @@
 
 	.button__label {
 		width: 100%;
-		display: flex;
-		align-items: center;
-		justify-content: center;
+		display: block;
+		text-align: center;
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 		transition-property: opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
