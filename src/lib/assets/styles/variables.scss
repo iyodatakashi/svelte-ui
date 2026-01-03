@@ -404,9 +404,9 @@
 	--svelte-ui-checkbox-size: 16px;
 	--svelte-ui-checkbox-size-sm: 14px;
 	--svelte-ui-checkbox-size-lg: 20px;
-	--svelte-ui-checkbox-min-height: 20px;
-	--svelte-ui-checkbox-min-height-sm: 16px;
-	--svelte-ui-checkbox-min-height-lg: 24px;
+	--svelte-ui-checkbox-min-height: 1.8em;
+	--svelte-ui-checkbox-min-height-sm: 1.6em;
+	--svelte-ui-checkbox-min-height-lg: 2.2em;
 	--svelte-ui-checkbox-border-radius: 2px;
 	--svelte-ui-checkbox-border-width: 2px;
 	--svelte-ui-checkbox-gap: 8px;
@@ -457,9 +457,9 @@
 	--svelte-ui-radio-dot-size-lg: 10px;
 	--svelte-ui-radio-border-radius: var(--svelte-ui-border-radius-rounded);
 	--svelte-ui-radio-border-width: 2px;
-	--svelte-ui-radio-min-height: 20px;
-	--svelte-ui-radio-min-height-sm: 16px;
-	--svelte-ui-radio-min-height-lg: 24px;
+	--svelte-ui-radio-min-height: 1.8em;
+	--svelte-ui-radio-min-height-sm: 1.6em;
+	--svelte-ui-radio-min-height-lg: 2.2em;
 	--svelte-ui-radio-gap: 8px;
 	--svelte-ui-radio-line-height: 1.2em;
 	--svelte-ui-radio-disabled-opacity: var(--svelte-ui-disabled-opacity);
