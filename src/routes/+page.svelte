@@ -7,8 +7,8 @@
 	import Dialog from '$lib/components/Dialog.svelte';
 	import { onMount } from 'svelte';
 	import Tab from '$lib/components/Tab.svelte';
-	import Fab from '../lib/components/Fab.svelte';
-	import type { MenuItem } from '../lib/types/MenuItem';
+	import Fab from '$lib/components/Fab.svelte';
+	import type { MenuItem } from '$lib/types/menuItem';
 	import Icon from '$lib/components/Icon.svelte';
 
 	let theme = $state('light');
@@ -186,7 +186,7 @@
 				<h3>Button</h3>
 				<Button variant="filled">Filled Button</Button>
 				<Button variant="outlined">Outlined Button</Button>
-				<Button variant="text">Text Button</Button>
+				<Button variant="ghost">Ghost Button</Button>
 			</div>
 
 			<div class="component-section">

@@ -1,16 +1,18 @@
-# Svelte UI Component Library
+# Svelte UI
 
-A modern, accessible Svelte component library with built-in TypeScript support and Material Design-inspired styling.
+A Svelte component library with TypeScript support and Material Design-inspired styling.
+
+> **⚠️ Preview Release**: This library is in preview. APIs may change before the stable 1.0 release.
 
 ## Features
 
-- 🎨 **Material Design-inspired** components
-- ♿ **Accessibility-first** design with ARIA support
-- 📱 **Mobile-responsive** with touch-optimized interactions
-- 🌙 **Dark mode** support
-- 🔧 **TypeScript** ready
-- 🎯 **Zero dependencies** (except peer dependencies)
-- 📦 **Tree-shakeable** exports
+- Material Design-inspired components
+- ARIA support and keyboard navigation
+- Touch-optimized for mobile devices
+- Dark mode and high contrast mode support
+- TypeScript definitions included
+- Tree-shakeable ES modules
+- Built with Svelte 5 runes API
 
 ## Installation
 
@@ -54,16 +56,19 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 	import { Button, Input, Dialog } from '@14ch/svelte-ui';
 
 	let dialogRef;
-	let inputValue = '';
+	let inputValue = $state('');
 </script>
 
 <Input bind:value={inputValue} placeholder="Enter your name" />
 
 <Button onclick={() => dialogRef.open()}>Open Dialog</Button>
 
-<Dialog bind:this={dialogRef}>
-	<h2>Hello {inputValue}!</h2>
+<Dialog bind:this={dialogRef} title="Greeting">
+	<p>Hello {inputValue}!</p>
 	<p>Welcome to Svelte UI Component Library.</p>
+	{#snippet footer()}
+		<Button onclick={() => dialogRef.close()}>Close</Button>
+	{/snippet}
 </Dialog>
 ```
 
@@ -75,9 +80,13 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 - `Input` - Text input with validation support
 - `Textarea` - Multi-line text input
 - `Checkbox` - Checkbox with custom styling
+- `CheckboxGroup` - Multiple checkbox selection group
 - `Radio` - Radio button groups
+- `RadioGroup` - Radio button group wrapper
 - `Select` - Dropdown selection
 - `Combobox` - Searchable dropdown
+- `Slider` - Range slider input
+- `Switch` - Toggle switch
 - `ColorPicker` - Color selection input
 - `Datepicker` - Date selection with calendar
 - `FileUploader` - File upload with drag & drop
@@ -87,22 +96,32 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 
 - `Tab` / `TabItem` - Tab navigation
 - `Pagination` - Page navigation
-- `Fab` - Floating Action Button
 
-### Feedback & Overlays
+### Modals
 
 - `Dialog` - Modal dialogs
-- `Drawer` - Side panel
+- `ConfirmDialog` - Confirmation dialogs
+- `Drawer` - Side drawer
+
+### Popups & Menus
+
 - `Popup` - Popover content
 - `PopupMenu` / `PopupMenuButton` - Context menus
-- `ConfirmDialog` - Confirmation dialogs
+
+### Notifications & Feedback
+
+- `Snackbar` / `SnackbarItem` - Toast notifications
 - `LoadingSpinner` - Loading indicators
 
-### Utilities
+### Skeleton Loaders
+
+- `Skeleton` - Loading placeholders with preset patterns
+
+### Icons & Buttons
 
 - `Icon` - Material Symbols icons
 - `IconButton` - Icon-based buttons
-- `Modal` - Base modal component
+- `Fab` - Floating Action Button
 
 ## Component Examples
 
@@ -137,9 +156,9 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 <script>
 	import { Input, Checkbox, Button } from '@14ch/svelte-ui';
 
-	let email = '';
-	let password = '';
-	let agreed = false;
+	let email = $state('');
+	let password = $state('');
+	let agreed = $state(false);
 
 	const handleSubmit = () => {
 		if (!email || !password || !agreed) {
@@ -157,6 +176,46 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 <Checkbox bind:value={agreed}>I agree to the terms and conditions</Checkbox>
 
 <Button onclick={handleSubmit} disabled={!agreed}>Sign Up</Button>
+```
+
+### Checkbox & Radio Groups
+
+```svelte
+<script>
+	import { CheckboxGroup, RadioGroup } from '@14ch/svelte-ui';
+
+	const options = [
+		{ label: 'Option 1', value: 'opt1' },
+		{ label: 'Option 2', value: 'opt2' },
+		{ label: 'Option 3', value: 'opt3' }
+	];
+
+	let selectedCheckboxes = $state([]);
+	let selectedRadio = $state(null);
+</script>
+
+<CheckboxGroup bind:value={selectedCheckboxes} {options} direction="vertical" gap="16px" />
+
+<RadioGroup bind:value={selectedRadio} {options} direction="horizontal" gap="24px" />
+```
+
+### Skeleton Loaders
+
+```svelte
+<script>
+	import { Skeleton, SkeletonBox, SkeletonText, SkeletonAvatar } from '@14ch/svelte-ui';
+</script>
+
+<!-- Using preset patterns -->
+<Skeleton patterns={[{ type: 'article-list' }]} repeat={3} />
+<Skeleton patterns={[{ type: 'product-list' }]} repeat={4} />
+
+<!-- Using individual components for custom layouts -->
+<div>
+	<SkeletonAvatar showName={true} />
+	<SkeletonBox width="100%" height="200px" />
+	<SkeletonText lines={3} />
+</div>
 ```
 
 ### Dialog with Confirmation
@@ -178,9 +237,7 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 	};
 </script>
 
-<Button variant="outlined" color="var(--svelte-ui-error-color)" onclick={handleDelete}>
-	Delete Item
-</Button>
+<Button variant="outlined" onclick={handleDelete}>Delete Item</Button>
 
 <ConfirmDialog
 	bind:this={confirmDialogRef}
@@ -189,6 +246,39 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 	onconfirm={onConfirm}
 	oncancel={() => confirmDialogRef.close()}
 />
+```
+
+## Dark Theme
+
+Apply dark mode by setting the `data-theme` attribute:
+
+```svelte
+<script>
+	import { Button } from '@14ch/svelte-ui';
+	import { onMount } from 'svelte';
+
+	let theme = $state('light');
+
+	const toggleTheme = () => {
+		theme = theme === 'light' ? 'dark' : 'light';
+		document.body.setAttribute('data-theme', theme);
+	};
+
+	onMount(() => {
+		document.body.setAttribute('data-theme', theme);
+	});
+</script>
+
+<Button onclick={toggleTheme}>Toggle Theme</Button>
+```
+
+You can also apply dark mode to specific sections:
+
+```svelte
+<div data-theme="dark">
+	<!-- This section and its children will use dark mode -->
+	<Button>Dark Mode Button</Button>
+</div>
 ```
 
 ## Customization
@@ -207,13 +297,16 @@ The library uses CSS custom properties for easy theming:
 }
 ```
 
-### Dark Mode
+### Customizing Dark Mode Colors
+
+You can customize dark mode colors by overriding CSS variables:
 
 ```css
 [data-theme='dark'] {
+	--svelte-ui-primary-color: #90caf9;
 	--svelte-ui-surface-color: #121212;
 	--svelte-ui-text-color: #ffffff;
-	/* ... other dark mode colors */
+	/* ... customize other colors as needed */
 }
 ```
 
@@ -247,50 +340,29 @@ This library is built with accessibility in mind:
 - Firefox 78+
 - Safari 14+
 
-## Development
-
-### Prerequisites
-
-- Node.js 18+
-- npm/pnpm/yarn
-
-### Setup
-
-```bash
-git clone <repository-url>
-cd svelte-ui
-npm install
-```
-
-### Commands
-
-```bash
-npm run dev          # Start development server
-npm run build        # Build for production
-npm run package      # Build library package
-npm run storybook    # Start Storybook
-npm run test         # Run tests
-npm run lint         # Lint code
-```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch (`git checkout -b feature/amazing-feature`)
-3. Commit your changes (`git commit -m 'Add some amazing feature'`)
-4. Push to the branch (`git push origin feature/amazing-feature`)
-5. Open a Pull Request
-
 ## License
 
 MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
 
+### v0.0.3
+
+- Improved text vertical alignment in Button, Fab, TabItem, Checkbox, and Radio components using `text-box-trim`
+- Text labels now appear more visually centered within their containers
+
+### v0.0.2
+
+(Previous release notes...)
+
 ### v0.0.1
 
 - Initial release
-- Core component library with 25+ components
+- 40+ components (Button, Input, Dialog, Skeleton loaders, etc.)
+- CheckboxGroup and RadioGroup
+- Skeleton component with preset patterns
 - Material Design-inspired styling
-- Full TypeScript support
-- Accessibility features
+- TypeScript support
+- ARIA, keyboard navigation, screen reader support
+- High contrast mode support
+- Svelte 5 runes API

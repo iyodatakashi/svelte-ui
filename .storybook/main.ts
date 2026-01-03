@@ -11,7 +11,13 @@ const config: StorybookConfig = {
 		'@chromatic-com/storybook',
 		'@storybook/addon-docs',
 		'@storybook/addon-a11y',
-		'@storybook/addon-vitest'
+		'@storybook/addon-themes',
+		{
+			name: '@storybook/addon-vitest',
+			options: {
+				configFile: './vitest.config.ts'
+			}
+		}
 	],
 	framework: {
 		name: '@storybook/sveltekit',

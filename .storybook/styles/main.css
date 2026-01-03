@@ -1,0 +1,14 @@
+/* Storybook標準テーマ切り替え */
+.sb-show-main {
+	transition: background-color 0.3s ease;
+}
+
+/* ダークテーマ時のPreviewエリア背景 */
+[data-theme='dark'] .sb-show-main {
+	background-color: var(--svelte-ui-surface-color);
+}
+
+/* ライトテーマ時のPreviewエリア背景 */
+[data-theme='light'] .sb-show-main {
+	background-color: var(--svelte-ui-surface-color);
+}

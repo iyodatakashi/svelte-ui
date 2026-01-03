@@ -2,24 +2,49 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import type { MenuItem } from '../types/MenuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 
 	let {
+		// 基本プロパティ
 		tabItem,
-		isSelected = false,
+
+		// スタイル/レイアウト
+		textColor,
+		selectedTextColor,
+		selectedBarColor,
+
+		// アイコン関連
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
-		iconVariant = 'outlined'
+		iconOpticalSize = 24,
+		iconVariant = 'outlined',
+
+		// 状態/動作
+		isSelected = false
 	}: {
+		// 基本プロパティ
 		tabItem: MenuItem;
-		isSelected?: boolean;
+
+		// スタイル/レイアウト
+		textColor: string;
+		selectedTextColor: string;
+		selectedBarColor: string;
+
+		// アイコン関連
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
+		isSelected?: boolean;
 	} = $props();
 </script>
 
@@ -27,9 +52,11 @@
 	href={tabItem.href}
 	class="tab-item"
 	class:tab-item--selected={isSelected}
+	style="--text-color: {textColor}; --selected-text-color: {selectedTextColor}; --selected-bar-color: {selectedBarColor}"
 	role="tab"
 	aria-selected={isSelected}
 	tabindex={0}
+	data-testid="tab-item"
 >
 	{#if tabItem.icon}
 		<div class="tab-item__icon">
@@ -43,7 +70,7 @@
 		</div>
 	{/if}
 	{#if tabItem.title}
-		<div class="tab-item__text">
+		<div class="tab-item__label">
 			{tabItem.title}
 		</div>
 	{/if}
@@ -56,9 +83,8 @@
 		align-items: center;
 		gap: 8px;
 		position: relative;
-		height: 100%;
-		padding: 0 16px;
-		color: var(--svelte-ui-text-subtle-color);
+		padding: 8px 16px;
+		color: var(--text-color);
 		white-space: nowrap;
 		text-decoration: none;
 		transition-property: background-color, color, outline;
@@ -99,7 +125,7 @@
 		bottom: 0;
 		width: calc(100% - 32px);
 		height: 4px;
-		background-color: var(--svelte-ui-primary-color);
+		background-color: var(--selected-bar-color);
 		border-radius: 3px 3px 0 0;
 		opacity: 0;
 		transition-property: opacity;
@@ -107,11 +133,16 @@
 	}
 
 	.tab-item--selected {
-		color: var(--svelte-ui-primary-color);
+		color: var(--selected-text-color);
 		background-color: transparent;
 	}
 
 	.tab-item--selected::before {
 		opacity: 1;
+	}
+
+	.tab-item__label {
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 	}
 </style>

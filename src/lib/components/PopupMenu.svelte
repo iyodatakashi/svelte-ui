@@ -3,31 +3,42 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
 	import Icon from './Icon.svelte';
-	import type { MenuItem } from '../types/MenuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
+
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
-	// ブラウザ標準APIを使用したナビゲーション関数
-	const goto = (url: string) => {
-		if (typeof window !== 'undefined') {
-			window.location.href = url;
-		}
-	};
-
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
+		// DOM参照
 		anchorElement,
-		position = 'bottom',
-		menuItems,
-		ariaLabel = 'Menu',
-		mobileFullscreen = true,
 
+		// 基本プロパティ
+		menuItems,
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
+		position = 'bottom',
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		mobileFullscreen = true,
 		mobileBehavior = 'auto',
+
+		// アイコン関連
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
-		iconVariant = 'outlined'
+		iconOpticalSize = 24,
+		iconVariant = 'outlined',
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Menu'
 	}: {
 		isOpen?: boolean;
 		anchorElement: HTMLElement;
@@ -50,42 +61,32 @@
 			| 'right-bottom'
 			| 'auto';
 		menuItems: (MenuItem | 'separator')[];
+		id?: string;
 		ariaLabel?: string;
 		mobileFullscreen?: boolean;
-
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 	} = $props();
 
-	// 変数定義
 	let popupRef: SvelteComponent | undefined = $state();
 	let menuContainerRef: HTMLDivElement | undefined = $state();
 	let menuItemRefs: HTMLButtonElement[] = $state([]);
 	let activeIndex: number = $state(-1);
 	let menuId: string = $state(`menu-${Math.random().toString(36).substring(2, 15)}`);
 
-	// $derived
-	// Filter out separators to get only actionable items
-	const actionableItems: { item: MenuItem; originalIndex: number }[] = $derived(
-		menuItems
-			.map((item, index) => ({ item, originalIndex: index }))
-			.filter(
-				(entry): entry is { item: MenuItem; originalIndex: number } => entry.item !== 'separator'
-			)
-	);
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const goto = (url: string) => {
+		if (typeof window !== 'undefined') {
+			window.location.href = url;
+		}
+	};
 
-	// ライフサイクルフック
-	// (現在は使用していない)
-
-	// $effect
-	// (現在は使用していない)
-
-	// メソッド
-	// Generate unique IDs for menu items
 	const getMenuItemId = (index: number): string => `${menuId}-item-${index}`;
 
 	const handleClick = (event: MouseEvent, item: MenuItem | 'separator') => {
@@ -136,7 +137,6 @@
 				close();
 				break;
 			case 'Tab':
-				// Allow tab to close the menu and move focus naturally
 				close();
 				break;
 		}
@@ -182,7 +182,6 @@
 	};
 
 	const announceMenuOpened = () => {
-		// Create a temporary announcement for screen readers
 		const announcement = document.createElement('div');
 		announcement.setAttribute('aria-live', 'polite');
 		announcement.setAttribute('aria-atomic', 'true');
@@ -190,35 +189,25 @@
 		announcement.textContent = `${ariaLabel} opened with ${actionableItems.length} items`;
 		document.body.appendChild(announcement);
 
-		// Remove after announcement
 		setTimeout(() => {
 			document.body.removeChild(announcement);
 		}, 1000);
 	};
 
 	const handlePopupOpen = () => {
-		// Menu opened
-		activeIndex = 0; // Start with first item
+		activeIndex = 0;
 		tick().then(() => {
-			// Focus the menu container for keyboard navigation
 			menuContainerRef?.focus();
 		});
 
-		// Add keyboard event listener
 		document.addEventListener('keydown', handleKeyDown);
-
-		// Announce to screen readers
 		announceMenuOpened();
 	};
 
 	const handlePopupClose = () => {
-		// Menu closed
 		activeIndex = -1;
-
-		// Remove keyboard event listener
 		document.removeEventListener('keydown', handleKeyDown);
 
-		// Return focus to anchor element
 		if (anchorElement) {
 			anchorElement.focus();
 		}
@@ -235,6 +224,17 @@
 	export const toggle = () => {
 		popupRef?.toggle();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const actionableItems: { item: MenuItem; originalIndex: number }[] = $derived(
+		menuItems
+			.map((item, index) => ({ item, originalIndex: index }))
+			.filter(
+				(entry): entry is { item: MenuItem; originalIndex: number } => entry.item !== 'separator'
+			)
+	);
 </script>
 
 <Popup
@@ -247,6 +247,7 @@
 	role="menu"
 	{mobileFullscreen}
 	{mobileBehavior}
+	id={id ? `${id}-popup` : undefined}
 >
 	<div
 		class="popup-menu"
@@ -255,6 +256,7 @@
 		aria-label={ariaLabel}
 		aria-activedescendant={activeIndex >= 0 ? getMenuItemId(activeIndex) : undefined}
 		tabindex="-1"
+		{id}
 	>
 		<ul class="popup-menu__list" role="none">
 			{#each menuItems as item, index}
@@ -395,7 +397,7 @@
 	}
 
 	/* Enhanced mobile menu styles */
-	:global(.mobile .popup-menu) {
+	:global(.popup--mobile) .popup-menu {
 		border-radius: 0;
 		box-shadow: none;
 		background: transparent;
@@ -404,7 +406,7 @@
 		min-width: auto;
 	}
 
-	:global(.mobile.fullscreen .popup-menu) {
+	:global(.popup--mobile.popup--fullscreen) .popup-menu {
 		background: var(--svelte-ui-surface-color);
 		border-radius: var(--svelte-ui-popup-mobile-border-radius);
 		box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 10%);
@@ -412,11 +414,11 @@
 		padding: 0;
 	}
 
-	:global(.mobile.fullscreen .popup-menu__list) {
+	:global(.popup--mobile.popup--fullscreen) .popup-menu__list {
 		padding: 16px 0;
 	}
 
-	:global(.mobile.fullscreen .popup-menu__button) {
+	:global(.popup--mobile.popup--fullscreen) .popup-menu__button {
 		padding: 16px 24px;
 		font-size: 1.1rem;
 		min-height: var(--svelte-ui-touch-target-lg);

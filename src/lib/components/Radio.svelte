@@ -2,73 +2,148 @@
 
 <script lang="ts">
 	import { type Snippet } from 'svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
+		children,
+
+		// 基本プロパティ
 		name = '',
 		value = '',
 		currentValue = $bindable(null),
-		children,
+
+		// HTML属性系
+		id = `radio-${Math.random().toString(36).substring(2, 15)}`,
+		inputAttributes,
+
+		// スタイル/レイアウト
+		size = 'medium',
+
+		// 状態/動作
 		disabled = false,
 		required = false,
-		readonly = false,
-		error = null,
-		success = null,
-		size = 'medium',
 		reducedMotion = false,
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
-		onchange = (value: string | number | boolean) => {},
-		onclick = (event: MouseEvent) => {},
-		onkeydown = (event: KeyboardEvent) => {},
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onclick = () => {}, // No params for type inference
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// その他
 		...restProps
 	}: {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
 		name: string;
 		value: string | number | boolean;
 		currentValue: string | number | boolean | null;
-		children?: Snippet;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
 		disabled?: boolean;
 		required?: boolean;
-		readonly?: boolean;
-		error?: string | null;
-		success?: string | null;
-		size?: 'small' | 'medium' | 'large';
 		reducedMotion?: boolean;
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
-		onchange?: (value: string | number | boolean) => void;
-		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
+
+		// 入力イベント
+		onchange?: (value: any) => void;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
-	const id = `radio-${Math.random().toString(36).substring(2, 15)}`;
-	const isChecked: boolean = $derived(currentValue === value);
+	// =========================================================================
 
+	// Methods
+	// =========================================================================
 	const handleFocus = (event: FocusEvent) => {
+		if (disabled) return;
 		onfocus(event);
 	};
 
 	const handleBlur = (event: FocusEvent) => {
+		if (disabled) return;
 		onblur(event);
 	};
 
-	const handleChange = (event: Event) => {
-		if (readonly || disabled) return;
-
-		const target = event.target as HTMLInputElement;
-		if (target.checked) {
-			currentValue = value;
-			onchange(value);
-		}
-	};
-
-	const handleClick = (event: MouseEvent) =>
-		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
-
 	const handleKeydown = (event: KeyboardEvent) => {
-		if (disabled || readonly) return;
+		if (disabled) return;
 
-		// Arrow key navigation for radio group
 		if (
 			event.key === 'ArrowUp' ||
 			event.key === 'ArrowDown' ||
@@ -99,22 +174,132 @@
 		onkeydown(event);
 	};
 
-	// CSS classes based on state
+	const handleKeyup = (event: KeyboardEvent) => {
+		onkeyup(event);
+	};
+
+	// マウスイベント
+	const handleClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onclick?.(event);
+	};
+
+	const handleMouseDown = (event: MouseEvent) => {
+		if (disabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (disabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onauxclick?.(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchcancel?.(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointercancel?.(event);
+	};
+
+	// 変更イベント
+	const handleChange = (event: Event) => {
+		if (disabled) return;
+
+		const target = event.target as HTMLInputElement;
+		if (target.checked) {
+			currentValue = value;
+			onchange(value);
+		}
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const isChecked: boolean = $derived(currentValue === value);
+
 	const containerClasses = $derived(
-		[
-			'radio-container',
-			`radio-container--${size}`,
-			disabled && 'radio-container--disabled',
-			error && 'radio-container--error',
-			success && 'radio-container--success',
-			reducedMotion && 'radio-container--no-motion'
-		]
+		['radio', `radio--${size}`, disabled && 'radio--disabled', reducedMotion && 'radio--no-motion']
 			.filter(Boolean)
 			.join(' ')
 	);
 </script>
 
-<div class={containerClasses} data-testid="radio-container">
+<div class={containerClasses} data-testid="radio">
 	<input
 		type="radio"
 		checked={isChecked}
@@ -123,41 +308,57 @@
 		{value}
 		{disabled}
 		{required}
-		{readonly}
-		aria-describedby={error ? `${id}-error` : success ? `${id}-success` : undefined}
+		aria-describedby={undefined}
 		onfocus={handleFocus}
 		onblur={handleBlur}
-		onchange={handleChange}
-		onclick={handleClick}
 		onkeydown={handleKeydown}
+		onkeyup={handleKeyup}
+		onclick={handleClick}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
+		onchange={handleChange}
+		{...inputAttributes}
 		{...restProps}
 	/>
-	<label for={id} class={`radio-label ${!!children ? 'with-label' : 'no-label'}`}>
-		{#if children}
+	<label for={id} class="radio__icon"></label>
+
+	{#if children}
+		<label for={id} class="radio__label">
 			{@render children()}
-		{/if}
-	</label>
-	{#if error}
-		<div id="{id}-error" class="radio-message radio-message--error" role="alert">
-			{error}
-		</div>
-	{/if}
-	{#if success}
-		<div id="{id}-success" class="radio-message radio-message--success">
-			{success}
-		</div>
+		</label>
 	{/if}
 </div>
 
 <style>
-	.radio-container {
+	/* =============================================
+	 * Base Styles
+   * ============================================= */
+
+	.radio {
 		display: flex;
-		flex-direction: column;
-		gap: 4px;
+		align-items: center;
+		width: fit-content;
+		min-height: var(--svelte-ui-radio-min-height);
 		contain: layout;
 	}
 
-	.radio-container input[type='radio'] {
+	.radio input[type='radio'] {
 		position: absolute;
 		width: 16px;
 		height: 16px;
@@ -167,41 +368,34 @@
 		cursor: pointer;
 	}
 
-	.radio-container--disabled input[type='radio'] {
-		cursor: not-allowed;
+	/* Label */
+	.radio__label {
+		display: block;
+		padding-left: var(--svelte-ui-radio-gap);
+		white-space: nowrap;
+		font-size: inherit;
+		color: inherit;
+		line-height: var(--svelte-ui-radio-line-height);
+		cursor: pointer;
+		text-box-trim: trim-both;
+		text-box-edge: cap alphabetic;
 	}
 
-	.radio-label {
+	/* Icon */
+	.radio__icon {
 		position: relative;
 		display: flex;
 		align-items: center;
-		padding: var(--svelte-ui-radio-padding);
+		width: var(--svelte-ui-radio-size);
 		white-space: nowrap;
 		font-size: inherit;
-		color: var(--svelte-ui-radio-label-color);
+		color: inherit;
 		cursor: pointer;
 		min-height: var(--svelte-ui-radio-min-height);
 	}
 
-	.radio-label.no-label {
-		padding-left: 20px;
-		min-height: 16px;
-	}
-
-	/* Mobile touch targets */
-	@media (hover: none) and (pointer: coarse) {
-		.radio-label {
-			min-height: var(--svelte-ui-touch-target);
-		}
-	}
-
-	.radio-container--disabled .radio-label {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
-	}
-
-	.radio-label::before,
-	.radio-label::after {
+	.radio__icon::before,
+	.radio__icon::after {
 		position: absolute;
 		content: '';
 		display: block;
@@ -210,7 +404,7 @@
 	}
 
 	/* Radio button outer circle */
-	.radio-label::after {
+	.radio__icon::after {
 		left: 0;
 		width: var(--svelte-ui-radio-size);
 		height: var(--svelte-ui-radio-size);
@@ -222,7 +416,7 @@
 	}
 
 	/* Radio button inner dot */
-	.radio-label::before {
+	.radio__icon::before {
 		left: calc(var(--svelte-ui-radio-size) / 2);
 		width: 0;
 		height: 0;
@@ -233,173 +427,125 @@
 	}
 
 	/* Checked state */
-	input[type='radio']:checked + .radio-label::before {
+	input[type='radio']:checked + .radio__icon::before {
 		left: calc((var(--svelte-ui-radio-size) - var(--svelte-ui-radio-dot-size)) / 2);
 		width: var(--svelte-ui-radio-dot-size);
 		height: var(--svelte-ui-radio-dot-size);
 	}
 
+	/* =============================================
+   * Status
+   * ============================================= */
+	.radio--disabled input[type='radio'] {
+		cursor: not-allowed;
+	}
+
+	.radio--disabled .radio__label {
+		opacity: var(--svelte-ui-button-disabled-opacity);
+		cursor: not-allowed;
+	}
+
 	/* Hover states */
 	@media (hover: hover) {
-		.radio-container:not(.radio-container--disabled) .radio-label:hover::after,
-		.radio-container:not(.radio-container--disabled) .radio-label:hover::before {
+		.radio:not(.radio--disabled):hover .radio__icon::after,
+		.radio:not(.radio--disabled):hover .radio__icon::before {
 			border-color: var(--svelte-ui-radio-hover-color);
-		}
-
-		/* Error state hover override */
-		.radio-container--error:not(.radio-container--disabled) .radio-label:hover::after {
-			border-color: var(--svelte-ui-radio-error-hover-color);
-		}
-
-		/* Success state hover override */
-		.radio-container--success:not(.radio-container--disabled) .radio-label:hover::after {
-			border-color: var(--svelte-ui-radio-success-hover-color);
 		}
 	}
 
 	/* Checked state */
-	input[type='radio']:checked + .radio-label::after {
+	input[type='radio']:checked + .radio__icon::after {
 		border-color: var(--svelte-ui-radio-hover-color);
 	}
 
 	/* Focus state */
-	input[type='radio']:focus-visible + .radio-label::after {
+	input[type='radio']:focus-visible + .radio__icon::after {
 		outline: var(--svelte-ui-focus-outline-outer);
 		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
+	/* =========================================================================
+	 * Size Variants
+	 * ========================================================================= */
+
 	/* Size variants */
-	.radio-container--small {
-		font-size: var(--svelte-ui-font-size-sm);
+	.radio--small {
+		font-size: inherit;
 	}
 
-	.radio-container--small .radio-label {
-		padding: var(--svelte-ui-radio-padding-sm);
+	.radio--small .radio__icon {
+		width: var(--svelte-ui-radio-size-sm);
 		min-height: var(--svelte-ui-radio-min-height-sm);
 	}
 
-	.radio-container--small .radio-label.no-label {
-		padding-left: 16px;
-		min-height: 12px;
-	}
-
-	.radio-container--small .radio-label::after {
+	.radio--small .radio__icon::after {
 		width: var(--svelte-ui-radio-size-sm);
 		height: var(--svelte-ui-radio-size-sm);
 	}
 
-	.radio-container--small .radio-label::before {
+	.radio--small .radio__icon::before {
 		left: calc(var(--svelte-ui-radio-size-sm) / 2);
 	}
 
-	.radio-container--small input[type='radio']:checked + .radio-label::before {
+	.radio--small input[type='radio']:checked + .radio__icon::before {
 		left: calc((var(--svelte-ui-radio-size-sm) - var(--svelte-ui-radio-dot-size-sm)) / 2);
 		width: var(--svelte-ui-radio-dot-size-sm);
 		height: var(--svelte-ui-radio-dot-size-sm);
 	}
 
-	/* Mobile touch targets for small */
-	@media (hover: none) and (pointer: coarse) {
-		.radio-container--small .radio-label {
-			min-height: var(--svelte-ui-touch-target-sm);
-		}
+	.radio--large {
+		font-size: inherit;
 	}
 
-	.radio-container--large {
-		font-size: var(--svelte-ui-font-size-lg);
-	}
-
-	.radio-container--large .radio-label {
-		padding: var(--svelte-ui-radio-padding-lg);
+	.radio--large .radio__icon {
+		width: var(--svelte-ui-radio-size-lg);
 		min-height: var(--svelte-ui-radio-min-height-lg);
 	}
 
-	.radio-container--large .radio-label.no-label {
-		padding-left: 24px;
-		min-height: 20px;
-	}
-
-	.radio-container--large .radio-label::after {
+	.radio--large .radio__icon::after {
 		width: var(--svelte-ui-radio-size-lg);
 		height: var(--svelte-ui-radio-size-lg);
 	}
 
-	.radio-container--large .radio-label::before {
+	.radio--large .radio__icon::before {
 		left: calc(var(--svelte-ui-radio-size-lg) / 2);
 	}
 
-	.radio-container--large input[type='radio']:checked + .radio-label::before {
+	.radio--large input[type='radio']:checked + .radio__icon::before {
 		left: calc((var(--svelte-ui-radio-size-lg) - var(--svelte-ui-radio-dot-size-lg)) / 2);
 		width: var(--svelte-ui-radio-dot-size-lg);
 		height: var(--svelte-ui-radio-dot-size-lg);
 	}
 
-	/* Mobile touch targets for large */
+	/* =========================================================================
+	 * Motion & Media Queries
+	 * ========================================================================= */
+
+	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.radio-container--large .radio-label {
+		.radio__label {
+			min-height: var(--svelte-ui-touch-target);
+		}
+
+		.radio--small .radio__label {
+			min-height: var(--svelte-ui-touch-target-sm);
+		}
+
+		.radio--large .radio__label {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
 
-	/* Error state */
-	.radio-container--error .radio-label::after {
-		border-color: var(--svelte-ui-radio-error-border-color);
-	}
-
-	.radio-container--error input[type='radio']:checked + .radio-label::after {
-		border-color: var(--svelte-ui-radio-error-border-color);
-	}
-
-	.radio-container--error:not(.radio-container--disabled) .radio-label:hover::after {
-		border-color: var(--svelte-ui-radio-error-border-color);
-	}
-
-	.radio-container--error input[type='radio']:checked + .radio-label::before {
-		background-color: var(--svelte-ui-radio-error-checked-color);
-	}
-
-	/* Success state */
-	.radio-container--success .radio-label::after {
-		border-color: var(--svelte-ui-radio-success-border-color);
-	}
-
-	.radio-container--success input[type='radio']:checked + .radio-label::after {
-		border-color: var(--svelte-ui-radio-success-border-color);
-	}
-
-	.radio-container--success:not(.radio-container--disabled) .radio-label:hover::after {
-		border-color: var(--svelte-ui-radio-success-border-color);
-	}
-
-	.radio-container--success input[type='radio']:checked + .radio-label::before {
-		background-color: var(--svelte-ui-radio-success-checked-color);
-	}
-
-	/* Message styles */
-	.radio-message {
-		font-size: var(--svelte-ui-font-size-xs);
-		margin-top: 2px;
-		margin-left: var(--svelte-ui-checkbox-message-offset);
-	}
-
-	.radio-message--error {
-		color: var(--svelte-ui-radio-error-message-color);
-	}
-
-	.radio-message--success {
-		color: var(--svelte-ui-radio-success-message-color);
-	}
-
 	/* Reduced motion */
-	.radio-container--no-motion .radio-label::before,
-	.radio-container--no-motion .radio-label::after {
+	.radio--no-motion .radio__icon::before,
+	.radio--no-motion .radio__icon::after {
 		transition-duration: 0.01s;
 	}
 
 	/* Prefers reduced motion */
 	@media (prefers-reduced-motion: reduce) {
-		.radio-label::before,
-		.radio-label::after {
+		.radio__icon::before,
+		.radio__icon::after {
 			transition-duration: 0.01s;
 		}
 	}

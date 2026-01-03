@@ -3,202 +3,470 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
+	import { t } from '$lib/i18n';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		name,
 		value = $bindable(),
-		type = 'text',
-		customStyle = '',
-		variant = 'default',
-		focusStyle = 'background',
 		placeholder = '',
-		fullWidth = false,
-		minWidth = variant === 'inline' ? null : 120,
-		maxWidth = null,
+
+		// HTML属性系
+		id = null,
+		type = 'text',
+		tabindex = null,
+		maxlength = null,
+		pattern = null,
 		min = null,
 		max = null,
 		step = null,
-		maxlength = null,
-		pattern = null,
-		clearable = false,
-		hasRightIcon = false,
+		size = null,
+		autocomplete = null,
+		inputAttributes,
+
+		// スタイル/レイアウト
+		inline = false,
+		focusStyle = 'outline',
+		customStyle = '',
+		fullWidth = false,
+		width = null,
+		minWidth = inline ? null : 120,
+		maxWidth = null,
+		rounded = false,
+
+		// アイコン関連
 		rightIcon = undefined,
 		leftIcon = undefined,
+		leftIconAriaLabel = '左アイコン',
+		rightIconAriaLabel = '右アイコン',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
+		iconOpticalSize = 24,
 		iconVariant = 'outlined',
-		rounded = false,
+
+		// 状態/動作
 		disabled = false,
 		readonly = false,
 		required = false,
-		id = null,
-		tabindex = null,
-		size = null,
-		autocomplete = null,
-		onchange = (value: string | number | undefined) => {},
-		oninput = (value: string | number | undefined) => {},
-		onfocus = () => {},
-		onblur = () => {},
-		onclick = () => {},
-		onkeydown = () => {},
-		onRightIconClick = () => {},
-		onLeftIconClick = () => {}
+		clearable = false,
+		clearButtonAriaLabel = t('input.clear'),
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onclick = () => {}, // No params for type inference
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+		oninput = () => {}, // No params for type inference
+		onsubmit = () => {}, // No params for type inference
+
+		// IMEイベント
+		oncompositionstart = () => {}, // No params for type inference
+		oncompositionend = () => {}, // No params for type inference
+
+		// アイコンイベント
+		onRightIconClick,
+		onLeftIconClick,
+
+		// その他
+		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: string | number | undefined;
-		type?: 'text' | 'password' | 'number';
-		customStyle?: string;
-		variant?: 'default' | 'inline';
-		focusStyle?: 'background' | 'border' | 'none';
-		placeholder?: string;
-		fullWidth?: boolean;
-		minWidth?: number | null;
-		maxWidth?: number | null;
+
+		// HTML属性系
+		id?: string | null;
+		type?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'number';
+		tabindex?: number | null;
+		maxlength?: number | null;
+		pattern?: string | null;
 		min?: number | null;
 		max?: number | null;
 		step?: number | null;
-		maxlength?: number | null;
-		pattern?: string | null;
-		clearable?: boolean;
-		hasRightIcon?: boolean;
+		size?: number | null;
+		autocomplete?: HTMLInputElement['autocomplete'] | null;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		placeholder?: string;
+		fullWidth?: boolean;
+		width?: string | number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
+		rounded?: boolean;
+		customStyle?: string;
+
+		// アイコン関連
 		rightIcon?: string;
 		leftIcon?: string;
+		leftIconAriaLabel?: string;
+		rightIconAriaLabel?: string;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
-		rounded?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
 		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
-		id?: string | null;
-		tabindex?: number | null;
-		size?: number | null;
-		autocomplete?: HTMLInputElement['autocomplete'] | null | undefined;
-		onchange?: (value: string | number | undefined) => void;
-		oninput?: (value: string | number | undefined) => void;
-		onfocus?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
-		onblur?: (event: FocusEvent & { currentTarget: HTMLInputElement }) => void;
-		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
-		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLInputElement }) => void;
-		onRightIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
-		onLeftIconClick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
+		clearable?: boolean;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
+
+		// 入力イベント
+		onchange?: (value: any) => void;
+		oninput?: (value: any) => void;
+		onsubmit?: (value: any) => void;
+
+		// IMEイベント
+		oncompositionstart?: Function; // No params for type inference
+		oncompositionend?: Function; // No params for type inference
+
+		// アイコンイベント
+		onRightIconClick?: Function; // No params for type inference
+		onLeftIconClick?: Function; // No params for type inference
+
+		// その他
+		[key: string]: any;
 	} = $props();
+
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
-	// 表示用の値をフォーマット（inlineモードでの省略表示用）
-	const getDisplayValue = (): string => {
-		if (value === undefined) return '';
-		// 数値型の場合はコンマ区切りで表示
-		if (type === 'number' && typeof value === 'number') {
-			return value.toLocaleString();
-		}
-		return String(value);
-	};
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	// ユーティリティ
 	const clear = (): void => {
 		if (disabled || readonly) return;
-		value = undefined;
 		ref?.focus();
-		onchange?.(value);
+		onchange?.(undefined);
+		value = undefined;
 	};
-	// 外部からフォーカスを当てる（キャレットを先頭に移動）
+
 	export const focus = () => {
 		if (ref) {
 			ref.focus();
-			// テキスト系の場合、キャレットを先頭に移動
 			if (type !== 'number') {
 				ref.setSelectionRange?.(0, 0);
 			}
 			ref.scrollTop = 0;
 		}
 	};
-	// Enterキー押下時の処理（フォーカスを外してonchangeを発火）
+
+	// フォーカスイベント
+	const handleFocus = (event: FocusEvent) => {
+		if (disabled) return;
+		isFocused = true;
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		if (disabled) return;
+		isFocused = false;
+		onblur?.(event);
+	};
+
+	// キーボードイベント
+	const handleKeydown = (event: KeyboardEvent) => {
+		onkeydown?.(event);
+	};
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		onkeyup?.(event);
+	};
+
+	// 入力イベント
 	const handleSubmit = (event: SubmitEvent) => {
-		event.preventDefault();
+		if (disabled || readonly) return;
+		event?.preventDefault?.();
 		ref?.blur();
+		onsubmit?.(value);
+	};
+
+	const handleChange = () => {
+		if (disabled || readonly) return;
 		onchange?.(value);
 	};
-	const handleChange = () => onchange?.(value);
-	const handleInput = () => oninput?.(value);
-	const handleFocus = (event: FocusEvent) => {
-		isFocused = true;
-		onfocus?.(event as FocusEvent & { currentTarget: HTMLInputElement });
+
+	const handleInput = () => {
+		if (disabled || readonly) return;
+		oninput?.(value);
 	};
-	const handleBlur = (event: FocusEvent) => {
-		isFocused = false;
-		onblur?.(event as FocusEvent & { currentTarget: HTMLInputElement });
+
+	// マウスイベント
+	const handleClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onclick?.(event);
 	};
-	const handleClick = (event: MouseEvent) =>
-		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
-	const handleKeydown = (event: KeyboardEvent) =>
-		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLInputElement });
+
+	const handleMouseDown = (event: MouseEvent) => {
+		if (disabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (disabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onauxclick?.(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchcancel?.(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointercancel?.(event);
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const getDisplayValue = (): string => {
+		if (value === undefined) return '';
+		if (type === 'number' && typeof value === 'number') {
+			return value.toLocaleString();
+		}
+		return String(value);
+	};
+
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
+	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
 </script>
 
 <div
 	class="input
 	input--focus-{focusStyle}
 	input--type-{type}"
-	class:input--inline={variant === 'inline'}
-	class:input--auto-resize={variant === 'inline'}
+	class:input--inline={inline}
+	class:input--auto-resize={inline}
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
-	class:input--has-icon-right={hasRightIcon || rightIcon}
-	class:input--has-icon-left={leftIcon}
+	class:input--has-right-icon={!!rightIcon}
+	class:input--has-left-icon={!!leftIcon}
+	class:input--has-left-icon-clickable={!!leftIcon && !!onLeftIconClick}
 	class:input--rounded={rounded}
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
-	style="max-width: {maxWidth}px; min-width: {minWidth}px"
+	data-testid="input"
+	style="width: {widthStyle}; max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
 >
 	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
-	{#if variant === 'inline'}
+	{#if inline}
 		<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
 			{getDisplayValue()}
 		</div>
 	{/if}
 	<!-- 入力用フォーム -->
 	<form onsubmit={handleSubmit}>
-		<label>
-			<input
-				{id}
-				{name}
-				bind:value
-				bind:this={ref}
-				{type}
-				style={customStyle}
-				{placeholder}
-				{autocomplete}
-				{min}
-				{max}
-				{step}
-				{maxlength}
-				{pattern}
-				{disabled}
-				{readonly}
-				{required}
-				{tabindex}
-				{size}
-				onchange={handleChange}
-				oninput={handleInput}
-				onfocus={handleFocus}
-				onblur={handleBlur}
-				onclick={handleClick}
-				onkeydown={handleKeydown}
-			/>
-		</label>
+		<input
+			{id}
+			{name}
+			bind:value
+			bind:this={ref}
+			{type}
+			style={customStyle}
+			{placeholder}
+			{autocomplete}
+			{min}
+			{max}
+			{step}
+			{maxlength}
+			{pattern}
+			{disabled}
+			{readonly}
+			{required}
+			{tabindex}
+			{size}
+			onchange={handleChange}
+			oninput={handleInput}
+			onfocus={handleFocus}
+			onblur={handleBlur}
+			onkeydown={handleKeydown}
+			onkeyup={handleKeyup}
+			onclick={handleClick}
+			onmousedown={handleMouseDown}
+			onmouseup={handleMouseUp}
+			onmouseenter={handleMouseEnter}
+			onmouseleave={handleMouseLeave}
+			onmouseover={handleMouseOver}
+			onmouseout={handleMouseOut}
+			oncontextmenu={handleContextMenu}
+			onauxclick={handleAuxClick}
+			ontouchstart={handleTouchStart}
+			ontouchend={handleTouchEnd}
+			ontouchmove={handleTouchMove}
+			ontouchcancel={handleTouchCancel}
+			onpointerdown={handlePointerDown}
+			onpointerup={handlePointerUp}
+			onpointerenter={handlePointerEnter}
+			onpointerleave={handlePointerLeave}
+			onpointermove={handlePointerMove}
+			onpointercancel={handlePointerCancel}
+			{...inputAttributes}
+			{...restProps}
+		/>
 	</form>
 	<!-- クリアボタン -->
 	{#if clearable && !disabled && !readonly}
 		<div class="input__clear-button">
 			<IconButton
-				ariaLabel="クリア"
+				ariaLabel={t('input.clear')}
 				color="var(--svelte-ui-input-text-color)"
-				onclick={clear}
+				onclick={(event) => {
+					event.stopPropagation();
+					clear();
+				}}
 				tabindex={-1}
 				iconFilled={true}
-				size={24}>cancel</IconButton
+				fontSize={18}>cancel</IconButton
 			>
 		</div>
 	{/if}
@@ -208,27 +476,27 @@
 		<div class="input__icon-left">
 			{#if onLeftIconClick}
 				<IconButton
-					ariaLabel="左アイコン"
-					color="var(--svelte-ui-select-icon-color)"
-					variant="text"
+					ariaLabel={leftIconAriaLabel}
+					color="var(--svelte-ui-input-icon-color)"
 					onclick={onLeftIconClick}
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
-					size={32}
 				>
 					{leftIcon}
 				</IconButton>
 			{:else}
-				<Icon
-					filled={iconFilled}
-					weight={iconWeight}
-					grade={iconGrade}
-					opticalSize={iconOpticalSize}
-					variant={iconVariant}
-				>
-					{leftIcon}
-				</Icon>
+				<div class="input__normal-icon">
+					<Icon
+						filled={iconFilled}
+						weight={iconWeight}
+						grade={iconGrade}
+						opticalSize={iconOpticalSize}
+						variant={iconVariant}
+					>
+						{leftIcon}
+					</Icon>
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -238,27 +506,27 @@
 		<div class="input__icon-right">
 			{#if onRightIconClick}
 				<IconButton
-					ariaLabel="右アイコン"
-					color="var(--svelte-ui-select-icon-color)"
-					variant="text"
+					ariaLabel={rightIconAriaLabel}
+					color="var(--svelte-ui-input-icon-color)"
 					onclick={onRightIconClick}
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
-					size={32}
 				>
 					{rightIcon}
 				</IconButton>
 			{:else}
-				<Icon
-					filled={iconFilled}
-					weight={iconWeight}
-					grade={iconGrade}
-					opticalSize={iconOpticalSize}
-					variant={iconVariant}
-				>
-					{rightIcon}
-				</Icon>
+				<div class="input__normal-icon">
+					<Icon
+						filled={iconFilled}
+						weight={iconWeight}
+						grade={iconGrade}
+						opticalSize={iconOpticalSize}
+						variant={iconVariant}
+					>
+						{rightIcon}
+					</Icon>
+				</div>
 			{/if}
 		</div>
 	{/if}
@@ -287,14 +555,6 @@
 		opacity: 0;
 	}
 
-	label {
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-	}
-
 	/* =============================================
  * 基本コンポーネント
  * ============================================= */
@@ -310,11 +570,6 @@
 		color: inherit;
 		line-height: inherit;
 		text-align: inherit;
-
-		&:focus,
-		&:focus-visible {
-			outline: none;
-		}
 
 		&[type='number'] {
 			text-align: right;
@@ -359,10 +614,17 @@
 	.input__clear-button {
 		position: absolute;
 		top: 50%;
-		right: 0;
+		right: 4px;
+		width: 32px;
+		height: 32px;
 		transform: translate(0, -50%);
 		opacity: 0;
-		transition: var(--svelte-ui-clear-button-transition);
+		transition: var(--svelte-ui-transition-duration);
+	}
+
+	/* rightIconがある場合はクリアボタンを左にずらす */
+	.input--clearable.input--has-right-icon .input__clear-button {
+		right: var(--svelte-ui-input-icon-space);
 	}
 
 	@media (hover: hover) {
@@ -371,32 +633,165 @@
 		}
 	}
 
+	@media (hover: none) {
+		.input__clear-button {
+			opacity: 1;
+		}
+	}
+
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		position: absolute;
 		top: 50%;
-		left: 0;
-		width: 40px;
+		left: 4px;
+		width: 32px;
+		height: 32px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-size);
-		color: var(--svelte-ui-select-icon-color);
-		pointer-events: auto;
+		font-size: var(--svelte-ui-select-dropdown-icon-size);
+		color: var(--svelte-ui-input-icon-color);
+		pointer-events: none;
 		z-index: 1;
+	}
+
+	/* 左側アイコンにクリックハンドラーがある場合はクリック可能にする */
+	.input--has-left-icon-clickable .input__icon-left {
+		pointer-events: auto;
+		cursor: pointer;
 	}
 
 	.input__icon-right {
 		display: flex;
 		justify-content: center;
+		align-items: center;
 		position: absolute;
 		top: 50%;
-		right: 0;
-		width: 40px;
+		right: 4px;
+		width: 32px;
+		height: 32px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-size);
-		color: var(--svelte-ui-select-icon-color);
-		pointer-events: auto;
+		font-size: var(--svelte-ui-select-dropdown-icon-size);
+		color: var(--svelte-ui-input-icon-color);
+		pointer-events: none;
 		z-index: 1;
+	}
+
+	/* 通常のアイコン（ボタンではない）はクリック不可 */
+	.input__normal-icon {
+		pointer-events: none;
+	}
+
+	/* =============================================
+ * デザインバリアント：default
+ * ============================================= */
+	.input:not(.input--inline) {
+		form {
+			position: static;
+			opacity: 1;
+		}
+
+		input {
+			min-height: var(--svelte-ui-input-height);
+			padding: var(--svelte-ui-input-padding);
+			background-color: var(--svelte-ui-input-bg);
+			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
+			border: none;
+			border-radius: var(--svelte-ui-input-border-radius);
+			color: var(--svelte-ui-input-text-color);
+		}
+
+		&.input--has-left-icon {
+			input,
+			.input__display-text {
+				padding-left: var(--svelte-ui-input-icon-space);
+			}
+		}
+
+		&.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space);
+			}
+		}
+
+		&.input--clearable {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space);
+			}
+		}
+
+		&.input--clearable.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-double);
+			}
+		}
+	}
+
+	/* =============================================
+ * デザインバリアント：rounded
+ * ============================================= */
+	.input--rounded:not(.input--inline) {
+		input {
+			border-radius: var(--svelte-ui-input-border-radius-rounded);
+		}
+	}
+
+	/* =============================================
+ * デザインバリアント：inline
+ * ============================================= */
+	.input--inline {
+		&.input--type-number .input__display-text {
+			text-align: right;
+		}
+
+		form {
+			position: absolute;
+			top: 0;
+			left: 0;
+			width: 100%;
+			height: 100%;
+		}
+
+		&.input--has-left-icon {
+			input,
+			.input__display-text {
+				padding-left: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.input--clearable {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-inline);
+			}
+		}
+
+		&.input--clearable.input--has-right-icon {
+			input,
+			.input__display-text {
+				padding-right: var(--svelte-ui-input-icon-space-double-inline);
+			}
+		}
+
+		&.input--focused {
+			.input__display-text {
+				opacity: 0;
+			}
+
+			form {
+				opacity: 1;
+			}
+		}
 	}
 
 	/* =============================================
@@ -416,18 +811,18 @@
 	.input--clearable {
 		input,
 		.input__display-text {
-			padding-right: 24px;
+			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
-	.input--has-icon-right {
+	.input.input--has-right-icon {
 		input,
 		.input__display-text {
 			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
-	.input--has-icon-left {
+	.input.input--has-left-icon {
 		input,
 		.input__display-text {
 			padding-left: var(--svelte-ui-input-icon-space);
@@ -445,13 +840,18 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.input--focus-border input:focus {
+	.input--focus-outline input:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.input--focus-background input:focus {
 		background: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.input--focus-none input:focus {
+		outline: none;
 	}
 
 	/* =============================================
@@ -481,98 +881,5 @@
 	input[readonly] {
 		background-color: var(--svelte-ui-input-readonly-bg);
 		cursor: default;
-	}
-
-	/* =============================================
- * デザインバリアント：default
- * ============================================= */
-	.input:not(.input--inline) {
-		form {
-			position: static;
-			opacity: 1;
-		}
-
-		input {
-			min-height: var(--svelte-ui-input-height);
-			padding: var(--svelte-ui-input-padding);
-			background-color: var(--svelte-ui-input-bg);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
-			border: none;
-			border-radius: var(--svelte-ui-input-border-radius);
-			color: var(--svelte-ui-input-text-color);
-		}
-
-		.input__clear-button {
-			right: 8px;
-		}
-
-		&.input--clearable {
-			input {
-				padding-right: var(--svelte-ui-clear-button-padding-adjustment);
-			}
-		}
-
-		&.input--has-icon-right {
-			input {
-				padding-right: var(--svelte-ui-input-icon-space);
-			}
-		}
-
-		&.input--has-icon-left {
-			input {
-				padding-left: var(--svelte-ui-input-icon-space);
-			}
-		}
-	}
-
-	/* =============================================
- * デザインバリアント：rounded
- * ============================================= */
-	.input--rounded:not(.input--inline) {
-		input {
-			border-radius: var(--svelte-ui-input-border-radius-rounded);
-		}
-	}
-
-	/* =============================================
- * デザインバリアント：inline
- * ============================================= */
-	.input--inline {
-		&.input--type-number .input__display-text {
-			text-align: right;
-		}
-
-		form,
-		label {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
-
-		&.input--has-icon-right {
-			input,
-			.input__display-text {
-				padding-right: var(--svelte-ui-input-icon-space-inline);
-			}
-		}
-
-		&.input--has-icon-left {
-			input,
-			.input__display-text {
-				padding-left: var(--svelte-ui-input-icon-space-inline);
-			}
-		}
-
-		&.input--focused {
-			.input__display-text {
-				opacity: 0;
-			}
-
-			form {
-				opacity: 1;
-			}
-		}
 	}
 </style>

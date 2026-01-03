@@ -2,7 +2,45 @@
 
 <script lang="ts">
 	import TabItem from './TabItem.svelte';
-	import type { MenuItem } from '../types/MenuItem';
+	import type { MenuItem } from '$lib/types/menuItem';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
+	let {
+		// 基本プロパティ
+		tabItems = [],
+		pathPrefix = '',
+		customPathMatcher,
+
+		// スタイル/レイアウト
+		textColor = 'var(--svelte-ui-text-subtle-color)',
+		selectedTextColor = 'var(--svelte-ui-primary-color)',
+		selectedBarColor = 'var(--svelte-ui-primary-color)',
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Tabs',
+		ariaLabelledby
+	}: {
+		// 基本プロパティ
+		tabItems: MenuItem[];
+		pathPrefix?: string;
+		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+
+		// スタイル/レイアウト
+		textColor?: string;
+		selectedTextColor?: string;
+		selectedBarColor?: string;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaLabelledby?: string;
+	} = $props();
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
 
 	// ブラウザ標準APIを使用した現在パス取得
 	const getCurrentPath = () => {
@@ -11,23 +49,6 @@
 		}
 		return '';
 	};
-
-	let {
-		tabItems = [],
-		ariaLabel = 'Navigation tabs',
-		ariaLabelledby,
-		pathPrefix = '',
-		customPathMatcher
-	}: {
-		tabItems: MenuItem[];
-		ariaLabel?: string;
-		ariaLabelledby?: string;
-		pathPrefix?: string;
-		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
-	} = $props();
-
-	// 現在のパスを取得
-	const currentPath = $derived(getCurrentPath());
 
 	// パスの正規化処理
 	const normalizePath = (path: string): string => {
@@ -69,19 +90,6 @@
 		return normalizedCurrentPath !== '' && normalizedCurrentPath.startsWith(itemHref);
 	};
 
-	// アクティブなタブのインデックスを現在のパスに基づいて計算
-	const selectedTabIndex = $derived.by(() => {
-		for (let i = 0; i < tabItems.length; i++) {
-			const item = tabItems[i];
-			if (!item.href) continue;
-
-			if (matchPath(currentPath, item.href, item)) {
-				return i;
-			}
-		}
-		return -1;
-	});
-
 	// シンプルなキーボードナビゲーション
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (tabItems.length === 0) return;
@@ -118,6 +126,26 @@
 
 		tabs[nextIndex]?.focus();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	// 現在のパスを取得
+	const currentPath = $derived(getCurrentPath());
+
+	// アクティブなタブのインデックスを現在のパスに基づいて計算
+	const selectedTabIndex = $derived.by(() => {
+		for (let i = 0; i < tabItems.length; i++) {
+			const item = tabItems[i];
+			if (!item.href) continue;
+
+			if (matchPath(currentPath, item.href, item)) {
+				return i;
+			}
+		}
+		return -1;
+	});
 </script>
 
 <div
@@ -127,11 +155,16 @@
 	aria-labelledby={ariaLabelledby}
 	tabindex="-1"
 	onkeydown={handleKeyDown}
+	data-testid="tab"
 >
 	{#each tabItems as tabItem, index}
-		<div class="tab__item">
-			<TabItem {tabItem} isSelected={index === selectedTabIndex} />
-		</div>
+		<TabItem
+			{tabItem}
+			isSelected={index === selectedTabIndex}
+			{textColor}
+			{selectedTextColor}
+			{selectedBarColor}
+		/>
 	{/each}
 </div>
 
@@ -139,8 +172,10 @@
 	.tab {
 		display: flex;
 		justify-content: start;
+		position: relative;
 		width: 100%;
 		height: 100%;
+		min-height: 36px;
 		overflow-x: auto;
 		overflow-y: visible;
 		-ms-overflow-style: none;
@@ -149,10 +184,5 @@
 	}
 	.tab::-webkit-scrollbar {
 		display: none;
-	}
-	.tab__item {
-		display: block;
-		height: 100%;
-		flex-shrink: 0;
 	}
 </style>

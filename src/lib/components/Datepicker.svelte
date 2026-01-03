@@ -13,111 +13,241 @@
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
-	import { announceToScreenReader } from '../utils/accessibility';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
 	dayjs.extend(localeData);
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
 	let {
+		// 基本プロパティ
 		value = $bindable(),
-		variant = 'default',
 		format,
 		nullString = '',
-		isDateRange = false,
-		showIcon = false,
-		disabled = false,
-		focusStyle = 'border',
-		allowDirectInput = false,
+		locale = 'en',
+		rangeSeparator = ' - ',
+
+		// HTML属性系
+		id = `datepicker-${Math.random().toString(36).substring(2, 15)}`,
+		inputAttributes,
+
+		// スタイル/レイアウト
+		variant = 'default',
+		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
-		onchange = () => {},
-		onfocus = () => {},
-		onblur = () => {},
+
+		// アイコン関連
+		hasIcon = false,
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = 24,
+		iconVariant = 'outlined',
+
+		// 状態/動作
+		disabled = false,
+		mode = 'single',
+		allowDirectInput = false,
 		openIfClicked = true,
 		minDate,
 		maxDate,
-		locale = 'en',
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+		oninput = () => {}, // No params for type inference
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onclick = () => {}, // No params for type inference
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		value: Date | { start: Date; end: Date } | undefined;
-		variant?: 'default' | 'inline';
 		format?: string;
 		nullString?: string;
-		isDateRange?: boolean;
-		showIcon?: boolean;
-		disabled?: boolean;
-		focusStyle?: 'background' | 'border' | 'none';
-		allowDirectInput?: boolean;
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		rangeSeparator?: string;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		variant?: 'default' | 'inline';
+		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
-		onchange?: Function;
-		onfocus?: Function;
-		onblur?: Function;
+
+		// アイコン関連
+		hasIcon?: boolean;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
+		disabled?: boolean;
+		mode?: 'single' | 'range';
+		allowDirectInput?: boolean;
 		openIfClicked?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
-		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+
+		// 入力イベント
+		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
+		oninput?: (value: string) => void;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
+
+		// その他
 		[key: string]: any;
 	} = $props();
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let inputRef: any = $state();
 	let containerElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
 	let openedViaKeyboard: boolean = $state(false);
-	const calendarId = `datepicker-calendar-${Math.random().toString(36).substring(2, 15)}`;
+	let displayValue = $state('');
 
-	// 言語別設定
+	const calendarId = `${id}-calendar`;
+
+	// =========================================================================
+
 	const localeConfig = {
 		en: {
 			defaultFormat: 'MM/DD/YYYY (ddd)',
+			rangeFormat: 'MM/DD/YYYY',
 			selectDateLabel: 'Select a date. Current value:',
 			notSelected: 'Not selected',
 			directInputPlaceholder: 'Enter date'
 		},
 		ja: {
 			defaultFormat: 'YYYY/M/D（ddd）',
+			rangeFormat: 'YYYY/M/D',
 			selectDateLabel: '日付を選択してください。現在の値:',
 			notSelected: '未選択',
 			directInputPlaceholder: '日付を入力してください'
 		},
 		fr: {
 			defaultFormat: 'DD/MM/YYYY (ddd)',
+			rangeFormat: 'DD/MM/YYYY',
 			selectDateLabel: 'Sélectionnez une date. Valeur actuelle :',
 			notSelected: 'Non sélectionné',
 			directInputPlaceholder: 'Saisir la date'
 		},
 		de: {
 			defaultFormat: 'DD.MM.YYYY (ddd)',
+			rangeFormat: 'DD.MM.YYYY',
 			selectDateLabel: 'Wählen Sie ein Datum. Aktueller Wert:',
 			notSelected: 'Nicht ausgewählt',
 			directInputPlaceholder: 'Datum eingeben'
 		},
 		es: {
 			defaultFormat: 'DD/MM/YYYY (ddd)',
+			rangeFormat: 'DD/MM/YYYY',
 			selectDateLabel: 'Seleccione una fecha. Valor actual:',
 			notSelected: 'No seleccionado',
 			directInputPlaceholder: 'Introducir fecha'
 		},
 		'zh-cn': {
 			defaultFormat: 'YYYY/M/D（ddd）',
+			rangeFormat: 'YYYY/M/D',
 			selectDateLabel: '请选择日期。当前值：',
 			notSelected: '未选择',
 			directInputPlaceholder: '请输入日期'
 		}
 	};
 
-	// 現在のlocale設定を取得
-	const currentLocaleConfig = $derived(localeConfig[locale]);
-	const finalFormat = $derived(format || currentLocaleConfig.defaultFormat);
-
-	// dayjsのlocaleを設定
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		dayjs.locale(locale);
 	});
-	const handleChange = () => {
-		popupRef?.close();
 
+	$effect(() => {
+		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
+
+		if (mode === 'range' && value && 'start' in value && 'end' in value) {
+			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
+		} else if (mode === 'single' && value && value instanceof Date) {
+			displayValue = formatWithLocale(value);
+		} else {
+			displayValue = '';
+		}
+	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const handleChange = () => {
 		// スクリーンリーダーアナウンス
 		if (value) {
-			if (isDateRange && typeof value === 'object' && 'start' in value && 'end' in value) {
+			if (mode === 'range' && typeof value === 'object' && 'start' in value && 'end' in value) {
 				const startDate = dayjs(value.start).format(finalFormat);
 				const endDate = dayjs(value.end).format(finalFormat);
 				announceToScreenReader(`Date range selected: ${startDate} to ${endDate}`);
@@ -128,16 +258,33 @@
 		}
 
 		onchange(value);
+
+		// 単一日付選択時、または範囲選択時の終了日選択時にポップアップを閉じる
+		if (
+			mode === 'single' ||
+			(mode === 'range' &&
+				value &&
+				typeof value === 'object' &&
+				'start' in value &&
+				'end' in value &&
+				value.end)
+		) {
+			popupRef?.close();
+		}
 	};
-	const handleClick = () => {
-		if (openIfClicked && !disabled) {
+
+	const handleClick = (event: MouseEvent) => {
+		if (disabled) return;
+		if (openIfClicked) {
 			openedViaKeyboard = false;
 			open();
 		}
+		onclick?.(event);
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		if (disabled) return;
+		onkeydown(event);
 
 		switch (event.key) {
 			case 'Enter':
@@ -146,7 +293,7 @@
 				if (allowDirectInput && event.key === 'Enter') {
 					return; // Inputコンポーネントの処理に任せる
 				}
-				event.preventDefault();
+				event?.preventDefault?.();
 				openedViaKeyboard = true;
 				open();
 				break;
@@ -165,28 +312,117 @@
 				break;
 		}
 	};
-	export const open = () => {
-		datapickerCalendarRef?.reset();
-		popupRef?.open();
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		if (disabled) return;
+		onkeyup(event);
 	};
 
-	export const close = () => {
-		popupRef?.close();
+	const handleInput = (event: Event) => {
+		if (disabled) return;
+		const target = event.target as HTMLInputElement;
+		oninput?.(target.value);
 	};
 
-	export const toggle = () => {
-		datapickerCalendarRef?.reset();
-		popupRef?.toggle();
+	// マウスイベント
+	const handleMouseDown = (event: MouseEvent) => {
+		if (disabled) return;
+		onmousedown?.(event);
 	};
 
-	// Popupが開いた時のコールバック
+	const handleMouseUp = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (disabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onauxclick?.(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchcancel?.(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointercancel?.(event);
+	};
+
 	const handlePopupOpen = () => {
 		// DatepickerCalendarのイベントハンドラーを有効にする
 		datapickerCalendarRef?.handlePopupOpen();
 		// キーボードで開いた場合は、最初のキーボード操作時にフォーカス表示が有効になる
 	};
 
-	// Popupが閉じた時のコールバック
 	const handlePopupClose = () => {
 		// DatepickerCalendarのイベントハンドラーを無効にする
 		datapickerCalendarRef?.handlePopupClose();
@@ -194,22 +430,22 @@
 		openedViaKeyboard = false;
 	};
 
-	// 入力欄のフォーカスハンドラー
-	const handleFocus = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
+	const handleFocus = (event: FocusEvent) => {
+		if (disabled) return;
 		// キーボードでのフォーカス時のみPopupを開く
 		// クリック時は handleClick で処理
 		onfocus(event);
 	};
 
-	// 入力欄のブラーハンドラー
-	const handleBlur = (event: FocusEvent & { currentTarget: HTMLInputElement }) => {
-		// Popupのクリックアウト機能に依存するため、ここでは自動クローズしない
+	const handleBlur = (event: FocusEvent) => {
+		if (disabled) return;
+		// Popupの外側クリック機能に依存するため、ここでは自動クローズしない
 		// フォーカスイベントのみをハンドルする
 		onblur(event);
 	};
 
-	// 直接入力時のハンドラー
 	const handleInputChange = (inputValue: string | number | undefined) => {
+		if (disabled) return;
 		if (!allowDirectInput) return;
 
 		const inputStr = String(inputValue || '');
@@ -226,24 +462,30 @@
 			onchange(value);
 		}
 	};
-	// 表示用の値を計算
-	let displayValue = $state('');
 
-	$effect(() => {
-		// dayjsインスタンスの作成時にlocaleを適用
-		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
+	export const open = () => {
+		datapickerCalendarRef?.reset();
+		popupRef?.open();
+	};
 
-		if (isDateRange && value && 'start' in value && 'end' in value) {
-			displayValue = `${formatWithLocale(value.start)} - ${formatWithLocale(value.end)}`;
-		} else if (!isDateRange && value && value instanceof Date) {
-			displayValue = formatWithLocale(value);
-		} else {
-			// 値がない場合は常に空文字を返す（placeholderで表示するため）
-			displayValue = '';
-		}
-	});
+	export const close = () => {
+		popupRef?.close();
+	};
 
-	// プレースホルダーテキストを決定
+	export const toggle = () => {
+		datapickerCalendarRef?.reset();
+		popupRef?.toggle();
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	const currentLocaleConfig = $derived(localeConfig[locale]);
+	const finalFormat = $derived(
+		format ||
+			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
+	);
 	const placeholderText = $derived(
 		allowDirectInput
 			? nullString || currentLocaleConfig.directInputPlaceholder
@@ -251,7 +493,12 @@
 	);
 </script>
 
-<div bind:this={containerElement} class="datepicker-container">
+<div
+	bind:this={containerElement}
+	class="datepicker"
+	class:datepicker--full-width={fullWidth}
+	data-testid="datepicker"
+>
 	<Input
 		bind:this={inputRef}
 		value={displayValue}
@@ -262,38 +509,73 @@
 		{disabled}
 		readonly={!allowDirectInput}
 		placeholder={placeholderText}
-		rightIcon={showIcon ? (isDateRange ? 'date_range' : 'calendar_today') : undefined}
+		rightIcon={hasIcon ? (mode === 'range' ? 'date_range' : 'calendar_today') : undefined}
+		{iconFilled}
+		{iconWeight}
+		{iconGrade}
+		{iconOpticalSize}
+		{iconVariant}
 		onRightIconClick={handleClick}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onchange={handleInputChange}
+		oninput={handleInput}
 		onkeydown={handleKeyDown}
+		onkeyup={handleKeyup}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
+		{id}
+		{inputAttributes}
 		{...restProps}
 	/>
 </div>
 <Popup
 	bind:this={popupRef}
 	anchorElement={containerElement}
+	position="bottom"
+	margin={4}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}
+	id={id ? `${id}-popup` : undefined}
 >
 	<DatepickerCalendar
 		bind:this={datapickerCalendarRef}
 		bind:value
-		{isDateRange}
+		{mode}
+		onchange={handleChange}
 		{minDate}
 		{maxDate}
 		{locale}
-		onchange={handleChange}
 		id={calendarId}
 	/>
 </Popup>
 
 <style lang="scss">
-	.datepicker-container {
+	.datepicker {
 		position: relative;
 		display: inline-block;
 		width: auto;
+
+		&.datepicker--full-width {
+			display: block;
+			width: 100%;
+		}
 	}
 </style>

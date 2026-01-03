@@ -2,65 +2,335 @@
 
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import { t } from '$lib/i18n';
+	import type { HTMLTextareaAttributes } from 'svelte/elements';
+	import type { IconVariant } from '$lib/types/icon';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
 	let {
+		// 基本プロパティ
 		name = '',
 		value = $bindable(),
-		customStyle = '',
-		variant = 'default',
-
-		focusStyle = 'background',
 		placeholder = '',
-		fullWidth = false,
-		autoResize = true,
+
+		// HTML属性系
+		id = null,
+		tabindex = null,
+		maxlength = null,
+		autocomplete = null,
+		wrap = null,
+		spellcheck = null,
+		autocapitalize = null,
+		textareaAttributes,
+
+		// スタイル/レイアウト
 		rows = 3,
 		minHeight = 36,
+		maxHeight = null,
+		inline = false,
+		focusStyle = 'outline',
+		fullWidth = false,
+		fullHeight = false,
+		width = null,
+		rounded = false,
+		customStyle = '',
+
+		// 状態/動作
+		disabled = false,
+		autoResize = true,
 		resizable = false,
 		clearable = false,
-		rounded = false,
-		disabled = false,
+		clearButtonAriaLabel = t('input.clear'),
 		readonly = false,
 		required = false,
-		id = null,
-		maxlength = null,
-		tabindex = null,
-		onchange = (value: string | undefined) => {},
-		oninput = (value: string | undefined) => {},
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
-		onclick = (event: MouseEvent) => {},
-		onkeydown = (event: KeyboardEvent) => {},
+		iconVariant = 'outlined',
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onclick = () => {}, // No params for type inference
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+		oninput = () => {}, // No params for type inference
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		name?: string;
 		value: string | undefined;
-		customStyle?: string;
-		variant?: 'default' | 'inline';
-
-		focusStyle?: 'background' | 'border' | 'none';
 		placeholder?: string;
-		fullWidth?: boolean;
-		autoResize?: boolean;
+
+		// HTML属性系
+		id?: string | null;
+		tabindex?: number | null;
+		maxlength?: number | null;
+		autocomplete?: HTMLTextareaAttributes['autocomplete'];
+		wrap?: 'soft' | 'hard' | null;
+		spellcheck?: boolean | null;
+		autocapitalize?: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | null;
+		textareaAttributes?: HTMLTextareaAttributes | undefined;
+
+		// スタイル/レイアウト
 		rows?: number;
 		minHeight?: number | null;
+		maxHeight?: string | number | null;
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		fullWidth?: boolean;
+		fullHeight?: boolean;
+		width?: string | number | null;
+		rounded?: boolean;
+		customStyle?: string;
+
+		// 状態/動作
+		disabled?: boolean;
+		autoResize?: boolean;
 		resizable?: boolean;
 		clearable?: boolean;
-		rounded?: boolean;
-		disabled?: boolean;
+		clearButtonAriaLabel?: string;
 		readonly?: boolean;
 		required?: boolean;
-		id?: string | null;
-		maxlength?: number | null;
-		tabindex?: number | null;
-		onchange?: (value: string | undefined) => void;
-		oninput?: (value: string | undefined) => void;
-		onfocus?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
-		onblur?: (event: FocusEvent & { currentTarget: HTMLTextAreaElement }) => void;
-		onclick?: (event: MouseEvent & { currentTarget: HTMLTextAreaElement }) => void;
-		onkeydown?: (event: KeyboardEvent & { currentTarget: HTMLTextAreaElement }) => void;
+		iconVariant?: IconVariant;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
+
+		// 入力イベント
+		onchange?: (value: any) => void;
+		oninput?: (value: any) => void;
+
+		// その他
 		[key: string]: any;
 	} = $props();
+
 	let ref: HTMLTextAreaElement | null = null;
 	let isFocused: boolean = $state(false);
+
+	// =========================================================================
+
+	// Methods
+	// =========================================================================
+
+	const clear = (): void => {
+		if (disabled || readonly) return;
+		value = undefined;
+		ref?.focus();
+		onchange?.(value);
+	};
+
+	// 外部からフォーカスを当てる（キャレットを先頭に移動）
+	export const focus = () => {
+		if (ref) {
+			ref.focus();
+			ref.setSelectionRange(0, 0);
+			ref.scrollTop = 0;
+		}
+	};
+
+	const handleChange = () => {
+		if (disabled || readonly) return;
+		onchange?.(value);
+	};
+	const handleInput = () => {
+		if (disabled || readonly) return;
+		oninput?.(value);
+	};
+	const handleFocus = (event: FocusEvent) => {
+		if (disabled) return;
+		isFocused = true;
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		if (disabled) return;
+		isFocused = false;
+		onblur?.(event);
+	};
+
+	// キーボードイベント
+	const handleKeydown = (event: KeyboardEvent) => {
+		if (disabled) return;
+		onkeydown?.(event);
+	};
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		if (disabled) return;
+		onkeyup?.(event);
+	};
+
+	// マウスイベント
+	const handleClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onclick?.(event);
+	};
+
+	const handleMouseDown = (event: MouseEvent) => {
+		if (disabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (disabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onauxclick?.(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchcancel?.(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointercancel?.(event);
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	// min-heightスタイルの計算
+	const minHeightStyle = $derived(
+		inline ? 'min-height: 1.6em; min-height: 1lh;' : `min-height: ${minHeight}px;`
+	);
+
+	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
+	const widthStyle = $derived(getStyleFromNumber(width));
 
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
@@ -78,57 +348,32 @@
 			return value ?? '';
 		}
 	});
-	const clear = (): void => {
-		if (disabled || readonly) return;
-		value = undefined;
-		ref?.focus();
-		onchange?.(value);
-	};
-	// 外部からフォーカスを当てる（キャレットを先頭に移動）
-	export const focus = () => {
-		if (ref) {
-			ref.focus();
-			ref.setSelectionRange(0, 0);
-			ref.scrollTop = 0;
-		}
-	};
-	const handleChange = () => onchange?.(value);
-	const handleInput = () => oninput?.(value);
-	const handleFocus = (event: FocusEvent) => {
-		isFocused = true;
-		onfocus?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
-	};
-	const handleBlur = (event: FocusEvent) => {
-		isFocused = false;
-		onblur?.(event as FocusEvent & { currentTarget: HTMLTextAreaElement });
-	};
-	const handleClick = (event: MouseEvent) =>
-		onclick?.(event as MouseEvent & { currentTarget: HTMLTextAreaElement });
-	const handleKeydown = (event: KeyboardEvent) =>
-		onkeydown?.(event as KeyboardEvent & { currentTarget: HTMLTextAreaElement });
 </script>
 
 <div
 	class="textarea
 	textarea--focus-{focusStyle}"
-	class:textarea--inline={variant === 'inline'}
+	class:textarea--inline={inline}
 	class:textarea--full-width={fullWidth}
+	class:textarea--full-height={fullHeight}
 	class:textarea--auto-resize={autoResize}
 	class:textarea--clearable={clearable}
 	class:textarea--rounded={rounded}
 	class:textarea--disabled={disabled}
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
+	data-testid="textarea"
+	style={!inline ? `max-height: ${maxHeightStyle};` : ''}
 >
 	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="min-height: {minHeight}px; {customStyle}"
+		style="{minHeightStyle} {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
-	<label>
+	<div class="textarea__input">
 		<textarea
 			{id}
 			{name}
@@ -141,30 +386,58 @@
 			{required}
 			{maxlength}
 			{tabindex}
+			{autocomplete}
+			{wrap}
+			{spellcheck}
+			{autocapitalize}
 			class:resizable
-			style={customStyle}
+			style="width: {widthStyle}; {minHeightStyle} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
 			onblur={handleBlur}
-			onclick={handleClick}
 			onkeydown={handleKeydown}
+			onkeyup={handleKeyup}
+			onclick={handleClick}
+			onmousedown={handleMouseDown}
+			onmouseup={handleMouseUp}
+			onmouseenter={handleMouseEnter}
+			onmouseleave={handleMouseLeave}
+			onmouseover={handleMouseOver}
+			onmouseout={handleMouseOut}
+			oncontextmenu={handleContextMenu}
+			onauxclick={handleAuxClick}
+			ontouchstart={handleTouchStart}
+			ontouchend={handleTouchEnd}
+			ontouchmove={handleTouchMove}
+			ontouchcancel={handleTouchCancel}
+			onpointerdown={handlePointerDown}
+			onpointerup={handlePointerUp}
+			onpointerenter={handlePointerEnter}
+			onpointerleave={handlePointerLeave}
+			onpointermove={handlePointerMove}
+			onpointercancel={handlePointerCancel}
+			{...textareaAttributes}
 			{...restProps}
 		></textarea>
 		<!-- クリアボタン -->
 		{#if clearable && !disabled && !readonly}
 			<div class="textarea__clear-button">
 				<IconButton
-					ariaLabel="クリア"
+					ariaLabel={clearButtonAriaLabel}
 					color="var(--svelte-ui-textarea-text-color)"
-					onclick={clear}
+					onclick={(event) => {
+						event.stopPropagation();
+						clear();
+					}}
 					tabindex={-1}
 					iconFilled={true}
-					size={24}>cancel</IconButton
+					{iconVariant}
+					fontSize={18}>cancel</IconButton
 				>
 			</div>
 		{/if}
-	</label>
+	</div>
 </div>
 
 <style>
@@ -174,12 +447,15 @@
 	.textarea {
 		display: block;
 		position: relative;
-		height: 100%;
 		width: auto;
 		max-width: 100%;
+
+		&.textarea--full-height {
+			height: 100%;
+		}
 	}
 
-	label {
+	.textarea__input {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -241,21 +517,17 @@
 		-moz-appearance: none;
 		appearance: none;
 
-		&:focus {
-			outline: none;
-		}
-
 		&:not(.resizable) {
 			resize: none;
 		}
 	}
 
-	.textarea__clear-button {
+	.textarea--clearable .textarea__clear-button {
 		position: absolute;
-		top: var(--svelte-ui-clear-button-top-textarea);
-		right: var(--svelte-ui-clear-button-right-textarea);
+		top: var(--svelte-ui-textarea-icon-top);
+		right: 4px;
 		opacity: 0;
-		transition: var(--svelte-ui-clear-button-transition);
+		transition: var(--svelte-ui-transition-duration);
 	}
 
 	/* =============================================
@@ -267,18 +539,13 @@
 
 	.textarea--auto-resize {
 		textarea {
-			overflow: hidden;
+			overflow-y: auto;
 		}
 	}
 
 	.textarea:not(.textarea--auto-resize) {
 		.textarea__display-text {
 			display: none;
-		}
-
-		label {
-			position: static;
-			height: auto;
 		}
 
 		textarea {
@@ -293,12 +560,18 @@
 	.textarea--clearable {
 		textarea,
 		.textarea__display-text {
-			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
+			padding-right: var(--svelte-ui-textarea-icon-space);
 		}
 	}
 
 	@media (hover: hover) {
-		:hover .textarea__clear-button {
+		.textarea--clearable:hover .textarea__clear-button {
+			opacity: 1;
+		}
+	}
+
+	@media (hover: none) {
+		.textarea--clearable .textarea__clear-button {
 			opacity: 1;
 		}
 	}
@@ -314,13 +587,18 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.textarea--focus-border textarea:focus {
+	.textarea--focus-outline textarea:focus {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.textarea--focus-background textarea:focus {
 		background: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.textarea--focus-none textarea:focus {
+		outline: none;
 	}
 
 	/* =============================================
@@ -378,6 +656,12 @@
 			border-radius: var(--svelte-ui-textarea-border-radius);
 			color: var(--svelte-ui-textarea-text-color);
 		}
+
+		&.textarea--clearable {
+			textarea {
+				padding-right: var(--svelte-ui-textarea-icon-space);
+			}
+		}
 	}
 
 	/* =============================================
@@ -409,6 +693,10 @@
 			textarea {
 				opacity: 1;
 			}
+		}
+
+		&.textarea--clearable .textarea__clear-button {
+			top: var(--svelte-ui-textarea-icon-top-inline);
 		}
 	}
 </style>

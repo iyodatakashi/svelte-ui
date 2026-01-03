@@ -4,37 +4,17 @@ import '../src/lib/assets/styles/import.scss';
 // Optional styles for Storybook
 import '../src/lib/assets/styles/optional/reset.scss';
 import '../src/lib/assets/styles/optional/fonts.scss';
-
-const withTheme = (Story, context) => {
-	const theme = context.globals.theme || 'light';
-	if (typeof document !== 'undefined') {
-		document.body.setAttribute('data-theme', theme);
-		const main = document.querySelector('.sb-show-main') as HTMLElement | null;
-		if (main) {
-			main.style.background = theme === 'dark' ? '#232220' : '#fafafa';
-		}
-	}
-	return Story();
-};
+// Storybook main styles
+import './styles/main.css';
+// Dark theme styles for Preview area
+import './styles/dark-theme.css';
+// Theme plugin
+import { withTheme, themeParameters } from './plugins/theme-plugin';
 
 const preview: Preview = {
 	decorators: [withTheme],
-	globalTypes: {
-		theme: {
-			name: 'Theme',
-			description: 'Global theme for components',
-			defaultValue: 'light',
-			toolbar: {
-				icon: 'circlehollow',
-				items: [
-					{ value: 'light', title: 'Light' },
-					{ value: 'dark', title: 'Dark' }
-				],
-				showName: true
-			}
-		}
-	},
 	parameters: {
+		...themeParameters,
 		controls: {
 			matchers: {
 				color: /(background|color)$/i,

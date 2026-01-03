@@ -3,40 +3,79 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
 		children,
-		buttonAttributes,
+
+		// HTML属性系
 		type = 'button',
+		buttonAttributes,
+
+		// スタイル/レイアウト
 		customStyle,
-		disabled = false,
-		loading = false,
+		color,
+		variant = 'filled',
+		position = 'right',
+		hasShadow = false,
+
+		// アイコン関連
 		icon = '',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
 		iconOpticalSize = null,
 		iconVariant = 'outlined',
-		color = 'var(--svelte-ui-primary-color)',
-		variant = 'filled',
-		position = 'right',
-		shadow = true,
-		reducedMotion = false,
+
+		// 状態/動作
+		disabled = false,
+		loading = false,
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaDescribedby,
+		reducedMotion = false,
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
 		onclick,
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
-		onkeydown = (event: KeyboardEvent) => {},
-		onmousedown,
-		onmouseup,
-		onmouseleave,
-		ontouchstart,
-		ontouchend,
-		ontouchcancel,
-		oncontextmenu,
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// その他
 		...restProps
 	}: {
 		children?: Snippet;
@@ -47,88 +86,235 @@
 		loading?: boolean;
 		icon?: string;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
 		color?: string;
-		variant?: 'filled' | 'outlined' | 'text';
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
 		position?: 'left' | 'center' | 'right';
-		shadow?: boolean;
+		hasShadow?: boolean;
 		reducedMotion?: boolean;
 		ariaLabel?: string;
 		ariaDescribedby?: string;
-		onclick?: (event: MouseEvent & { currentTarget: HTMLButtonElement }) => void;
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
-		onmousedown?: (event: MouseEvent) => void;
-		onmouseup?: (event: MouseEvent) => void;
-		onmouseleave?: (event: MouseEvent) => void;
-		ontouchstart?: (event: TouchEvent) => void;
-		ontouchend?: (event: TouchEvent) => void;
-		ontouchcancel?: (event: TouchEvent) => void;
-		oncontextmenu?: (event: any) => void;
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
 		[key: string]: any;
 	} = $props();
 
-	const isDisabled = $derived(disabled || loading);
-
-	const backgroundColor = {
-		filled: color,
-		outlined: 'transparent',
-		text: 'transparent'
-	}[variant];
-
-	const textColor = {
-		filled: 'var(--svelte-ui-button-text-filled)',
-		outlined: color,
-		text: color
-	}[variant];
-
-	const hasLabel = children !== undefined;
-
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = (event: MouseEvent) => {
-		if (isDisabled) return;
-		if (onclick) onclick(event as MouseEvent & { currentTarget: HTMLButtonElement });
+		if (disabled || loading) return;
+		if (onclick) onclick(event);
 	};
 
-	const handleFocus = (event: FocusEvent) => onfocus(event);
-	const handleBlur = (event: FocusEvent) => onblur(event);
-	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
+	const handleFocus = (event: FocusEvent) => {
+		onfocus(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		onblur(event);
+	};
+
+	const handleKeydown = (event: KeyboardEvent) => {
+		onkeydown(event);
+	};
+
+	const handleKeyup = (event: KeyboardEvent) => {
+		onkeyup(event);
+	};
+
+	// マウスイベント
+	const handleMouseDown = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onmousedown(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onmouseup(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onmouseenter(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onmouseleave(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onmouseover(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onmouseout(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		oncontextmenu(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (disabled || loading) return;
+		onauxclick(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (disabled || loading) return;
+		ontouchstart(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (disabled || loading) return;
+		ontouchend(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (disabled || loading) return;
+		ontouchmove(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (disabled || loading) return;
+		ontouchcancel(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (disabled || loading) return;
+		onpointerdown(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (disabled || loading) return;
+		onpointerup(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (disabled || loading) return;
+		onpointerenter(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (disabled || loading) return;
+		onpointerleave(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (disabled || loading) return;
+		onpointermove(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (disabled || loading) return;
+		onpointercancel(event);
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	const backgroundColors = $derived({
+		ghost: 'transparent',
+		filled: color ?? 'var(--svelte-ui-fab-bg-filled)',
+		outlined: 'transparent',
+		glass: 'var(--svelte-ui-fab-bg-glass)'
+	});
+
+	const textColors = $derived({
+		ghost: color ?? 'var(--svelte-ui-fab-text-ghost)',
+		filled: 'var(--svelte-ui-fab-text-filled)',
+		outlined: color ?? 'var(--svelte-ui-fab-text-outlined)',
+		glass: color ?? 'var(--svelte-ui-fab-text-glass)'
+	});
+
+	const hasLabel = $derived(children !== undefined);
 </script>
 
 <button
 	{type}
-	disabled={isDisabled}
+	disabled={disabled || loading}
 	{...buttonAttributes}
+	{...restProps}
 	class="fab"
 	class:fab--outlined={variant === 'outlined'}
+	class:fab--filled={variant === 'filled'}
+	class:fab--glass={variant === 'glass'}
 	class:fab--without-label={!hasLabel}
 	class:fab--left={position === 'left'}
 	class:fab--center={position === 'center'}
 	class:fab--right={position === 'right'}
-	class:fab--shadow={shadow}
+	class:fab--shadow={hasShadow}
 	class:fab--loading={loading}
 	class:fab--no-motion={reducedMotion}
-	style="color: {textColor}; background-color: {backgroundColor}; 
-		border-color: {variant === 'outlined' ? color : ''}; 
+	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
 		{customStyle ?? ''};"
 	onclick={handleClick}
 	onfocus={handleFocus}
 	onblur={handleBlur}
 	onkeydown={handleKeydown}
-	{onmousedown}
-	{onmouseup}
-	{onmouseleave}
-	{ontouchstart}
-	{ontouchend}
-	{ontouchcancel}
-	{oncontextmenu}
+	onkeyup={handleKeyup}
+	onmousedown={handleMouseDown}
+	onmouseup={handleMouseUp}
+	onmouseenter={handleMouseEnter}
+	onmouseleave={handleMouseLeave}
+	onmouseover={handleMouseOver}
+	onmouseout={handleMouseOut}
+	oncontextmenu={handleContextMenu}
+	onauxclick={handleAuxClick}
+	ontouchstart={handleTouchStart}
+	ontouchend={handleTouchEnd}
+	ontouchmove={handleTouchMove}
+	ontouchcancel={handleTouchCancel}
+	onpointerdown={handlePointerDown}
+	onpointerup={handlePointerUp}
+	onpointerenter={handlePointerEnter}
+	onpointerleave={handlePointerLeave}
+	onpointermove={handlePointerMove}
+	onpointercancel={handlePointerCancel}
 	aria-label={ariaLabel || (hasLabel ? undefined : 'Floating Action Button')}
 	aria-describedby={ariaDescribedby}
 	aria-busy={loading ? 'true' : undefined}
-	{...restProps}
+	data-testid="fab"
 >
 	{#if loading}
 		<div class="fab__loading">
@@ -168,13 +354,12 @@
 		border-radius: var(--svelte-ui-button-border-radius-rounded);
 		font-size: inherit;
 		font-family: inherit;
-		color: var(--svelte-ui-button-label-color);
 		line-height: normal;
 		text-align: center;
 		overflow: hidden;
 		z-index: 1000;
 		cursor: pointer;
-		transition-property: background-color, border-color, color, opacity, transform, box-shadow;
+		transition-property: background-color, box-shadow, color, opacity, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 
 		&.fab--left {
@@ -202,7 +387,7 @@
 			left: 0;
 			width: 100%;
 			height: 100%;
-			background-color: var(--svelte-ui-button-hover-overlay);
+			background-color: var(--svelte-ui-fab-hover-overlay);
 			opacity: 0;
 			transition-property: opacity;
 			transition-duration: var(--svelte-ui-transition-duration);
@@ -216,7 +401,7 @@
 		}
 
 		&:focus-visible {
-			outline: 2px solid var(--svelte-ui-button-focus-color);
+			outline: 2px solid var(--svelte-ui-fab-focus-color);
 			outline-offset: 2px;
 		}
 
@@ -227,12 +412,24 @@
 		}
 
 		&.fab--outlined {
-			border-style: solid;
-			border-width: var(--svelte-ui-border-width);
+			box-shadow: inset 0 0 0 var(--svelte-ui-border-width) currentColor;
+		}
+
+		&.fab--glass {
+			backdrop-filter: var(--svelte-ui-glass-blur);
+			-webkit-backdrop-filter: var(--svelte-ui-glass-blur);
 		}
 
 		&.fab--shadow {
 			box-shadow:
+				0px 3px 5px -1px rgba(0, 0, 0, 0.2),
+				0px 6px 10px 0px rgba(0, 0, 0, 0.14),
+				0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+		}
+
+		&.fab--outlined.fab--shadow {
+			box-shadow:
+				inset 0 0 0 var(--svelte-ui-border-width) currentColor,
 				0px 3px 5px -1px rgba(0, 0, 0, 0.2),
 				0px 6px 10px 0px rgba(0, 0, 0, 0.14),
 				0px 1px 18px 0px rgba(0, 0, 0, 0.12);
@@ -245,10 +442,26 @@
 					0px 8px 10px 1px rgba(0, 0, 0, 0.14),
 					0px 3px 14px 2px rgba(0, 0, 0, 0.12);
 			}
+
+			&.fab--outlined.fab--shadow:hover {
+				box-shadow:
+					inset 0 0 0 var(--svelte-ui-border-width) currentColor,
+					0px 5px 5px -3px rgba(0, 0, 0, 0.2),
+					0px 8px 10px 1px rgba(0, 0, 0, 0.14),
+					0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+			}
 		}
 
 		&.fab--shadow:active {
 			box-shadow:
+				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
+				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
+				0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+		}
+
+		&.fab--outlined.fab--shadow:active {
+			box-shadow:
+				inset 0 0 0 var(--svelte-ui-border-width) currentColor,
 				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
 				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
 				0px 5px 22px 4px rgba(0, 0, 0, 0.12);
@@ -282,8 +495,12 @@
 		}
 
 		.fab__label {
+			display: block;
 			white-space: nowrap;
 			user-select: none;
+			text-align: center;
+			text-box-trim: trim-both;
+			text-box-edge: cap alphabetic;
 			transition-property: opacity;
 			transition-duration: var(--svelte-ui-transition-duration);
 		}

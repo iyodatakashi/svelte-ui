@@ -3,33 +3,61 @@
 <script lang="ts">
 	import Dialog from './Dialog.svelte';
 	import Button from './Button.svelte';
-	import { convertToHtml } from '../utils/formatText';
+	import { convertToHtml } from '$lib/utils/formatText';
 	import type { SvelteComponent } from 'svelte';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
+		// 基本プロパティ
 		title = 'Confirm',
-		message = 'Are you sure you want to proceed?',
-		confirmText = 'Confirm',
-		cancelText = 'Cancel',
+		description = 'Are you sure?',
+		confirmLabel = 'Confirm',
+		cancelLabel = 'Cancel',
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
 		variant = 'info',
 		width = 400,
-		onConfirm = () => {},
-		onCancel = () => {}
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		closeIfClickOutside = true,
+
+		// イベントハンドラー
+		onConfirm = () => {}, // No params for type inference
+		onCancel = () => {} // No params for type inference
 	}: {
-		isOpen?: boolean;
+		// 基本プロパティ
 		title?: string;
-		message?: string;
-		confirmText?: string;
-		cancelText?: string;
+		description?: string;
+		confirmLabel?: string;
+		cancelLabel?: string;
+
+		// HTML属性
+		id?: string;
+
+		// スタイル/レイアウト
 		variant?: 'info' | 'warning' | 'danger';
-		width?: number;
+		width?: string | number;
+
+		// 状態/動作
+		isOpen?: boolean;
+		closeIfClickOutside?: boolean;
+
+		// イベントハンドラー
 		onConfirm?: () => void;
 		onCancel?: () => void;
 	} = $props();
 
 	let dialogRef: SvelteComponent | undefined = $state();
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleConfirm = (): void => {
 		onConfirm();
 		close();
@@ -53,21 +81,32 @@
 	};
 </script>
 
-<Dialog bind:this={dialogRef} bind:isOpen {title} {width} closeIfClickOutside={false}>
+<Dialog
+	bind:this={dialogRef}
+	bind:isOpen
+	{title}
+	{width}
+	{closeIfClickOutside}
+	id={id ? `${id}-dialog` : undefined}
+>
 	<div class="confirm-dialog-message">
-		{@html convertToHtml(message)}
+		{@html convertToHtml(description)}
 	</div>
 
 	{#snippet footer()}
-		<Button variant="outlined" onclick={handleCancel}>
-			{cancelText}
+		<Button variant="ghost" color="var(--svelte-ui-text-color)" onclick={handleCancel}>
+			{cancelLabel}
 		</Button>
 		<Button
 			variant="filled"
-			color={variant === 'danger' ? '#d32f2f' : variant === 'warning' ? '#f57c00' : '#1976d2'}
+			color={variant === 'danger'
+				? 'var(--svelte-ui-danger-color)'
+				: variant === 'warning'
+					? 'var(--svelte-ui-warning-color)'
+					: undefined}
 			onclick={handleConfirm}
 		>
-			{confirmText}
+			{confirmLabel}
 		</Button>
 	{/snippet}
 </Dialog>
@@ -75,8 +114,5 @@
 <style lang="scss">
 	.confirm-dialog-message {
 		padding: 16px 0;
-		font-size: 16px;
-		line-height: 1.5;
-		color: var(--svelte-ui-confirmdialog-text-color);
 	}
 </style>

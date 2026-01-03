@@ -13,37 +13,66 @@
 	 * This prevents state synchronization bugs and ensures consistent behavior.
 	 */
 	import type { Snippet } from 'svelte';
-	import { announceOpenClose } from '../utils/accessibility';
+	import { announceOpenClose } from '$lib/utils/accessibility';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// Snippet
+		children,
+
+		// 基本プロパティ
+		componentType = 'Modal',
+
+		// スタイル/レイアウト
+		customClass = '',
+		customStyles = '',
+
+		// 状態/動作
 		isOpen = $bindable(false),
 		closeIfClickOutside = true,
 		restoreFocus = false,
-		componentType = 'Modal',
+
+		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaLabelledby,
 		ariaDescribedby,
-		customClass = '',
-		customStyles = '',
-		children
+
+		// HTML属性
+		id
 	}: {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
+		componentType?: string;
+
+		// スタイル/レイアウト
+		customClass?: string;
+		customStyles?: string;
+
+		// 状態/動作
 		isOpen?: boolean;
 		closeIfClickOutside?: boolean;
 		restoreFocus?: boolean;
-		componentType?: string;
+
+		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
-		customClass?: string;
-		customStyles?: string;
-		children?: Snippet;
+
+		// HTML属性
+		id?: string;
 	} = $props();
 
 	let dialogRef: HTMLDialogElement;
 	let containerRef: HTMLDivElement;
 	let previousActiveElement: HTMLElement | null = null;
 
-	// 外側クリックでのクローズ
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
 		if (!dialogRef || !isOpen) return;
 
@@ -64,7 +93,6 @@
 		};
 	});
 
-	// ESCキーでのクローズ
 	$effect(() => {
 		if (!isOpen || !dialogRef) return;
 
@@ -81,7 +109,6 @@
 		};
 	});
 
-	// フォーカストラップ
 	$effect(() => {
 		if (!isOpen || !dialogRef) return;
 
@@ -98,13 +125,11 @@
 			const lastElement = focusableElements[focusableElements.length - 1] as HTMLElement;
 
 			if (event.shiftKey) {
-				// Shift + Tab
 				if (document.activeElement === firstElement) {
 					event.preventDefault();
 					lastElement?.focus();
 				}
 			} else {
-				// Tab
 				if (document.activeElement === lastElement) {
 					event.preventDefault();
 					firstElement?.focus();
@@ -121,7 +146,6 @@
 		};
 	});
 
-	// 開閉状態の同期
 	$effect(() => {
 		if (dialogRef) {
 			if (isOpen) {
@@ -132,6 +156,9 @@
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	export const open = (title?: string): void => {
 		if (!dialogRef) return;
 
@@ -143,15 +170,19 @@
 		dialogRef.showModal();
 
 		setTimeout(() => {
-			// 最初のフォーカス可能要素にフォーカス
 			const firstFocusableElement = dialogRef?.querySelector(
 				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
 			) as HTMLElement;
 			firstFocusableElement?.focus();
 
-			// スクリーンリーダーにモーダルが開いたことをアナウンス
 			announceOpenClose(componentType, true, title || ariaLabel || '');
 		}, 0);
+
+		// 自動フォーカス時の枠線制御用クラス
+		dialogRef.classList.add('modal-opening');
+		setTimeout(() => {
+			dialogRef?.classList.remove('modal-opening');
+		}, 100); // 短い時間で制御
 	};
 
 	export const close = (title?: string): void => {
@@ -161,7 +192,6 @@
 		dialogRef.classList.add('fade-out');
 		dialogRef.addEventListener('animationend', closeEnd, { once: true });
 
-		// スクリーンリーダーにモーダルが閉じたことをアナウンス
 		announceOpenClose(componentType, false, title || ariaLabel || '');
 	};
 
@@ -171,7 +201,6 @@
 		dialogRef.close();
 		dialogRef.classList.remove('fade-out');
 
-		// オプションが有効な場合のみ元の要素にフォーカスを戻す
 		if (restoreFocus && previousActiveElement) {
 			previousActiveElement.focus();
 		}
@@ -195,6 +224,8 @@
 	aria-label={ariaLabel}
 	aria-labelledby={ariaLabelledby}
 	aria-describedby={ariaDescribedby}
+	data-testid="modal"
+	{id}
 >
 	<div class="modal-contents" bind:this={containerRef}>
 		{#if children}
@@ -222,6 +253,22 @@
 
 	.modal:focus {
 		outline: none;
+	}
+
+	/* Modal内の要素のフォーカス枠線をコントロール */
+	.modal *:focus {
+		outline: none;
+	}
+
+	/* キーボードナビゲーション時のみフォーカス枠線を表示 */
+	.modal *:focus-visible {
+		outline: var(--svelte-ui-focus-outline-outer);
+		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
+	}
+
+	/* 自動フォーカス時の枠線制御用 */
+	.modal.modal-opening *:focus {
+		outline: none !important;
 	}
 
 	.modal-contents {

@@ -2,58 +2,271 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
-	import { announceToScreenReader } from '../utils/accessibility';
+	import IconButton from './IconButton.svelte';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import { t } from '$lib/i18n';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		files = $bindable(),
+		// 基本プロパティ
+		value = $bindable(),
+		multiple = false,
+		maxFileSize = 5 * 1024 * 1024,
+		placeholder = t('fileUploader.placeholder'),
+
+		// HTML属性系
+		id = `file-uploader-${Math.random().toString(36).substring(2, 15)}`,
 		accept = '',
+
+		// スタイル/レイアウト
+		width = undefined,
+		height = undefined,
+		rounded = false,
+
+		// アイコン系
+		icon = 'upload',
+		iconSize = 32,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
-		iconVariant = 'outlined'
+		iconOpticalSize = iconSize,
+		iconVariant = 'outlined',
+		removeFileAriaLabel = t('fileUploader.removeFile'),
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {} // No params for type inference
 	}: {
-		files: FileList | undefined;
-		accept: string;
+		// 基本プロパティ
+		value: FileList | undefined;
+		multiple?: boolean;
+		maxFileSize?: number;
+		placeholder?: string;
+
+		// HTML属性系
+		id?: string;
+		accept?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		height?: string | number;
+		rounded?: boolean;
+
+		// アイコン系
+		icon?: string;
+		iconSize?: number;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+		removeFileAriaLabel?: string;
+
+		// 入力イベント
+		onchange?: (value: FileList | null) => void;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
 	} = $props();
+
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
+	let errorMessage: string = $state('');
 
-	const fileUploadId = `fileupload-${Math.random().toString(36).substring(2, 15)}`;
-
-	// ファイル選択時のアナウンス
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
-		if (files && files.length > 0) {
-			const fileCount = files.length;
-			const fileNames = Array.from(files)
+		if (value && value.length > 0) {
+			const fileCount = value.length;
+			const fileNames = Array.from(value)
 				.map((file) => file.name)
 				.join(', ');
 			announceToScreenReader(`${fileCount} file${fileCount > 1 ? 's' : ''} selected: ${fileNames}`);
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = () => {
 		fileInputRef?.click();
 	};
+
+	const handleFocus = (event: FocusEvent) => {
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		onblur?.(event);
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		onkeydown?.(event);
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			handleClick();
+		}
+	};
+
+	const handleKeyUp = (event: KeyboardEvent) => {
+		onkeyup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		onmouseleave?.(event);
+	};
+
+	const handleTouchStart = (event: TouchEvent) => {
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		ontouchend?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		onpointerleave?.(event);
+	};
+
+	const removeFile = (index: number) => {
+		if (!value) return;
+
+		const dt = new DataTransfer();
+		for (let i = 0; i < value.length; i++) {
+			if (i !== index) {
+				dt.items.add(value[i]);
+			}
+		}
+		value = dt.files.length > 0 ? dt.files : undefined;
+	};
+
+	const validateFile = (file: File): boolean => {
+		if (file.size > maxFileSize) {
+			errorMessage = t('fileUploader.maxFileSizeError', {
+				maxSize: (maxFileSize / 1024 / 1024).toFixed(1)
+			});
+			return false;
+		}
+
+		errorMessage = '';
+		return true;
+	};
+
+	const handleFileChange = (fileList: FileList | null) => {
+		if (!fileList) return;
+
+		const validFiles: File[] = [];
+		for (let i = 0; i < fileList.length; i++) {
+			const file = fileList[i];
+			if (validateFile(file)) {
+				validFiles.push(file);
+			}
+			// 無効なファイルは単純にスキップ
+		}
+
+		// 有効なファイルがある場合のみ更新
+		if (validFiles.length > 0) {
+			const dataTransfer = new DataTransfer();
+
+			// multipleの場合は既存のファイルを保持して追加
+			if (multiple && value) {
+				for (let i = 0; i < value.length; i++) {
+					dataTransfer.items.add(value[i]);
+				}
+			}
+
+			// 新しく選択されたファイルのみを追加
+			validFiles.forEach((file) => dataTransfer.items.add(file));
+			value = dataTransfer.files;
+			onchange(value);
+		}
+	};
+
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
-			files = undefined;
+			value = undefined;
+			errorMessage = '';
 		}
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const widthStyle = $derived(getStyleFromNumber(width) || '100%');
 </script>
 
 <button
 	bind:this={dropAreaRef}
 	class="file-uploader"
-	class:hover={isHover}
+	class:file-uploader--hover={isHover}
+	class:rounded
+	style="
+		--file-uploader-width: {widthStyle};
+		--file-uploader-height: {height}px
+	"
+	data-testid="file-uploader"
 	onclick={handleClick}
+	onfocus={handleFocus}
+	onblur={handleBlur}
+	onkeydown={handleKeyDown}
+	onkeyup={handleKeyUp}
+	onmouseenter={handleMouseEnter}
+	onmouseleave={handleMouseLeave}
+	ontouchstart={handleTouchStart}
+	ontouchend={handleTouchEnd}
+	onpointerenter={handlePointerEnter}
+	onpointerleave={handlePointerLeave}
 	ondragover={(event) => {
 		event.stopPropagation();
 		event.preventDefault();
@@ -69,49 +282,78 @@
 		event.preventDefault();
 		isHover = false;
 		const fileList = event.dataTransfer?.files;
-		if (typeof fileList !== 'undefined') {
-			files = fileList;
+		if (fileList) {
+			handleFileChange(fileList);
 		}
 	}}
-	aria-label="ファイルをアップロード"
-	aria-describedby={`${fileUploadId}-help`}
+	aria-label={t('fileUploader.uploadFile')}
+	aria-describedby={`${id}-help`}
 >
-	{#if files && files.length > 0}
-		<div class="description with-file">
+	{#if value && value.length > 0}
+		<div class="file-uploader__description file-uploader__description--with-file">
 			<Icon
-				size={48}
+				size={iconSize}
 				filled={iconFilled}
 				weight={iconWeight}
 				grade={iconGrade}
 				opticalSize={iconOpticalSize}
-				variant={iconVariant}>draft</Icon
+				variant={iconVariant}>{icon}</Icon
 			>
-			<ul class="file-list">
-				{#each files as file}
-					<li>{file.name}</li>
-				{/each}
-			</ul>
 		</div>
+		<ul class="file-uploader__file-list">
+			{#each value as file, index}
+				<li class="file-uploader__file-list-item">
+					{file.name}
+					<IconButton
+						size={24}
+						iconFilled={true}
+						iconWeight={300}
+						color="var(--svelte-ui-text-color)"
+						onclick={(e) => {
+							e.stopPropagation();
+							removeFile(index);
+						}}
+						ariaLabel={removeFileAriaLabel}
+						tabindex={-1}
+					>
+						cancel
+					</IconButton>
+				</li>
+			{/each}
+		</ul>
 	{:else}
-		<div class="description">
+		<div class="file-uploader__description">
 			<Icon
-				size={48}
+				size={iconSize}
 				filled={iconFilled}
 				weight={iconWeight}
 				grade={iconGrade}
 				opticalSize={iconOpticalSize}
-				variant={iconVariant}>draft</Icon
+				variant={iconVariant}>{icon}</Icon
 			>
-			ファイルをドラッグ＆ドロップ<br />またはファイルを選択
+			{@html placeholder}
 		</div>
 	{/if}
+
+	{#if errorMessage}
+		<div class="file-uploader__error-message" role="alert" aria-live="polite">
+			{errorMessage}
+		</div>
+	{/if}
+
 	<input
 		bind:this={fileInputRef}
 		{accept}
-		class="upload-file-input"
-		id={fileUploadId}
+		{multiple}
+		class="file-uploader__input"
+		{id}
 		type="file"
-		bind:files
+		onchange={(event) => {
+			const target = event.target as HTMLInputElement;
+			if (target.files && target.files.length > 0) {
+				handleFileChange(target.files);
+			}
+		}}
 	/>
 </button>
 
@@ -122,47 +364,93 @@
 		justify-content: center;
 		align-items: center;
 		gap: 16px;
-		width: 100%;
+		position: relative;
+		width: var(--file-uploader-width, 100%);
+		height: var(--file-uploader-height);
 		min-height: 100px;
 		padding: 16px;
-		background-color: var(--svelte-ui-fileupload-bg);
-		border: dashed 1px var(--svelte-ui-border-color);
-		border-radius: 4px;
+		background-color: var(--svelte-ui-file-uploader-bg);
+		border-radius: var(--svelte-ui-border-radius);
 	}
 
-	.file-uploader:hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
-		border-color: var(--svelte-ui-primary-color);
+	.file-uploader::before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		border: var(--svelte-ui-file-uploader-border-style) var(--svelte-ui-file-uploader-border-width)
+			var(--svelte-ui-file-uploader-border-color);
+		border-radius: var(--svelte-ui-border-radius);
+		transition-property: background-color border-color;
+		transition-duration: var(--svelte-ui-transition-duration);
+	}
+
+	.file-uploader.rounded {
+		border-radius: var(--svelte-ui-border-radius-rounded);
+	}
+
+	@media (hover: hover) {
+		.file-uploader:hover::before,
+		.file-uploader--hover::before {
+			background-color: var(--svelte-ui-file-uploader-hover-bg);
+			border-color: var(--svelte-ui-file-uploader-hover-border-color);
+		}
 	}
 
 	.file-uploader:focus-visible {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
-	.hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
-		border-color: var(--svelte-ui-primary-color);
-	}
-	.description {
+
+	.file-uploader__description {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
 		gap: 16px;
 		color: var(--svelte-ui-text-subtle-color);
 	}
-	.description.with-file {
-		color: var(--svelte-ui-text-color);
-	}
-	.upload-file-input {
+
+	.file-uploader__input {
 		display: none;
-	}
-	.file-uploader.hover::before {
-		border-color: var(--svelte-ui-primary-color);
 	}
 
 	@media (hover: hover) {
-		.file-uploader:hover {
-			background-color: var(--svelte-ui-fileupload-hover-bg);
+		.file-uploader:hover .file-uploader__description,
+		.file-uploader--hover .file-uploader__description {
+			color: var(--svelte-ui-file-uploader-hover-color);
 		}
+	}
+
+	.file-uploader__error-message {
+		margin-top: 8px;
+		padding: 8px 12px;
+		background-color: var(--svelte-ui-error-container-color);
+		color: var(--svelte-ui-error-color);
+		border-radius: var(--svelte-ui-border-radius);
+		font-size: var(--svelte-ui-font-size-sm);
+	}
+
+	.file-uploader__file-list {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+	}
+
+	.file-uploader__file-list-item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 4px 4px 12px;
+		background-color: var(--svelte-ui-file-uploader-item-bg);
+		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 </style>

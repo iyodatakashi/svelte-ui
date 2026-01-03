@@ -2,7 +2,7 @@
 	"name": "@14ch/svelte-ui",
 	"description": "Modern Svelte UI components library with TypeScript support",
 	"private": false,
-	"version": "0.0.1",
+	"version": "0.0.3",
 	"type": "module",
 	"keywords": [
 		"svelte",
@@ -16,11 +16,11 @@
 	"license": "MIT",
 	"repository": {
 		"type": "git",
-		"url": "git+https://github.com/14ch/svelte-ui.git"
+		"url": "git+https://github.com/iyodatakashi/svelte-ui.git"
 	},
-	"homepage": "https://github.com/14ch/svelte-ui#readme",
+	"homepage": "https://github.com/iyodatakashi/svelte-ui#readme",
 	"bugs": {
-		"url": "https://github.com/14ch/svelte-ui/issues"
+		"url": "https://github.com/iyodatakashi/svelte-ui/issues"
 	},
 	"main": "dist/index.js",
 	"exports": {
@@ -36,6 +36,7 @@
 		"dist/types/",
 		"dist/utils/",
 		"dist/assets/",
+		"dist/i18n/",
 		"dist/index.js",
 		"dist/index.d.ts"
 	],
@@ -53,42 +54,43 @@
 		"lint": "prettier --check . && eslint .",
 		"test:unit": "vitest",
 		"test": "npm run test:unit -- --run",
+		"test:browser": "vitest --config vitest.config.ts --run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
 		"prepublishOnly": "npm run package"
 	},
 	"devDependencies": {
-		"@chromatic-com/storybook": "^4.0.1",
+		"@chromatic-com/storybook": "^4.1.1",
 		"@eslint/compat": "^1.2.5",
 		"@eslint/js": "^9.18.0",
-		"@storybook/addon-a11y": "^9.0.14",
-		"@storybook/addon-docs": "^9.0.14",
-		"@storybook/addon-svelte-csf": "^5.0.4",
-		"@storybook/addon-vitest": "^9.0.14",
-		"@storybook/sveltekit": "^9.0.14",
+		"@storybook/addon-a11y": "^9.1.5",
+		"@storybook/addon-docs": "^9.1.5",
+		"@storybook/addon-svelte-csf": "^5.0.8",
+		"@storybook/addon-themes": "^9.1.5",
+		"@storybook/addon-vitest": "^9.1.5",
+		"@storybook/sveltekit": "^9.1.5",
 		"@sveltejs/adapter-static": "^3.0.8",
 		"@sveltejs/kit": "^2.16.0",
 		"@sveltejs/package": "^2.3.7",
 		"@sveltejs/vite-plugin-svelte": "^5.0.0",
 		"@types/node": "^20",
-		"@vitest/browser": "^3.2.3",
+		"@vitest/browser": "3.2.4",
 		"@vitest/coverage-v8": "^3.2.4",
 		"eslint": "^9.18.0",
 		"eslint-config-prettier": "^10.0.1",
-		"eslint-plugin-storybook": "^9.0.14",
+		"eslint-plugin-storybook": "^9.1.5",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
-		"playwright": "^1.53.0",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
-		"storybook": "^9.0.14",
+		"storybook": "^9.1.5",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
 		"typescript": "^5.0.0",
 		"typescript-eslint": "^8.20.0",
 		"vite": "^6.2.6",
-		"vitest": "^3.2.3",
-		"vitest-browser-svelte": "^0.1.0"
+		"vitest": "3.2.4",
+		"vitest-browser-svelte": "^1.1.0"
 	},
 	"dependencies": {
 		"dayjs": "^1.11.13",

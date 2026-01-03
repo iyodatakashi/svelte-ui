@@ -1,28 +1,37 @@
 <!-- LoadingSpinner.svelte -->
 
 <script lang="ts">
+	import { getStyleFromNumber } from '$lib/utils/style';
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		speed = 1,
+		// スタイル/レイアウト
 		size = 32,
 		color,
 		strokeWidth = 3,
+
+		// 状態/動作
+		speed = 1,
 		reducedMotion = false
 	}: {
-		speed?: number;
+		// スタイル/レイアウト
 		size?: number;
 		color?: string;
 		strokeWidth?: number;
+
+		// 状態/動作
+		speed?: number;
 		reducedMotion?: boolean;
 	} = $props();
 
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	const radius = $derived((size - strokeWidth) / 2);
-
-	// 円周の動的計算
 	const circumference = $derived(2 * Math.PI * radius);
-	const halfCircumference = $derived(circumference / 2);
-	const negativeHalfCircumference = $derived(-circumference / 2);
-
-	// speedによる動的計算
+	const halfCircumference = $derived((circumference * 3) / 4);
+	const negativeHalfCircumference = $derived(-halfCircumference);
 	const growDuration = $derived(1.6 / speed);
 	const rotateDuration = $derived(0.8 / speed);
 </script>
@@ -37,6 +46,7 @@
 	style:--circumference={circumference}
 	style:--half-circumference={halfCircumference}
 	style:--negative-half-circumference={negativeHalfCircumference}
+	data-testid="loading-spinner"
 >
 	<svg viewBox="0 0 {size} {size}" width={size} height={size}>
 		<circle cx={size / 2} cy={size / 2} r={radius} style:stroke-width={strokeWidth} />

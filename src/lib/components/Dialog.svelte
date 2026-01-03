@@ -15,65 +15,112 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
-		title = '',
-		scrollable = false,
-		closeIfClickOutside = true,
-		width = 320,
-		restoreFocus = false,
-		ariaDescribedby,
-		description,
+		// Snippet
 		header,
 		children,
-		footer
+		footer,
+
+		// 基本プロパティ
+		title = '',
+		description,
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
+		width = 320,
+		bodyStyle = '',
+		noPadding = false,
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		scrollable = false,
+		closeIfClickOutside = true,
+		restoreFocus = false,
+
+		// ARIA/アクセシビリティ
+		ariaLabel,
+		ariaDescribedby
 	}: {
-		isOpen?: boolean;
-		title?: string;
-		scrollable?: boolean;
-		closeIfClickOutside?: boolean;
-		width?: number;
-		restoreFocus?: boolean;
-		ariaDescribedby?: string;
-		description?: string;
+		// Snippet
 		header?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+
+		// HTML属性
+		id?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		bodyStyle?: string;
+		noPadding?: boolean;
+
+		// 状態/動作
+		isOpen?: boolean;
+		scrollable?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaDescribedby?: string;
 	} = $props();
 
 	let modalRef: Modal;
 
-	// Dialog固有のスタイル
-	const dialogStyles = $derived(
-		`width: ${width}px; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
-	);
-
-	// Dialog固有のクラス
-	const dialogClasses = $derived(['dialog', scrollable && 'scrollable'].filter(Boolean).join(' '));
-
-	// aria属性
-	const ariaLabelledby = $derived(title ? 'dialog-title' : undefined);
-	const ariaDescribedbyValue = $derived(
-		ariaDescribedby || (description ? 'dialog-description' : undefined)
-	);
-
-	// 外部からのAPI（後方互換性のため）
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	export const open = (): void => {
-		modalRef?.open(title);
+		modalRef?.open(title || ariaLabel);
 	};
 
 	export const close = (): void => {
-		modalRef?.close(title);
+		modalRef?.close(title || ariaLabel);
 	};
 
 	export const toggle = (): void => {
-		modalRef?.toggle(title);
+		modalRef?.toggle(title || ariaLabel);
 	};
 
 	export const closeEnd = (): void => {
 		modalRef?.closeEnd();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const dialogStyles = $derived(
+		`width: ${getStyleFromNumber(width)}; border-radius: var(--svelte-ui-dialog-border-radius); overflow: hidden;`
+	);
+
+	const bodyStyles = $derived(() => {
+		const styles = [];
+		if (noPadding) {
+			styles.push('padding: 0');
+		}
+		if (bodyStyle) {
+			styles.push(bodyStyle);
+		}
+		return styles.join('; ');
+	});
+
+	const dialogClasses = $derived([scrollable && 'scrollable'].filter(Boolean).join(' ')); // dialogクラス自体はcustomClassに含めない
+
+	const ariaLabelledby = $derived(title ? 'dialog-title' : undefined);
+	const ariaDescribedbyValue = $derived(
+		ariaDescribedby || (description ? 'dialog-description' : undefined)
+	);
 </script>
 
 <Modal
@@ -82,30 +129,32 @@
 	{closeIfClickOutside}
 	{restoreFocus}
 	componentType="Dialog"
+	{ariaLabel}
 	{ariaLabelledby}
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={dialogClasses}
 	customStyles={dialogStyles}
+	id={id ? `${id}-modal` : undefined}
 >
-	<div class="dialog">
+	<div class="dialog {scrollable ? 'scrollable' : ''}">
 		{#if header || title}
 			<div class="dialog__header">
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="dialog__title" id="dialog-title">
+					<div class="dialog__title" id={id ? `${id}-dialog-title` : undefined}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="dialog__description" id="dialog-description">
+			<div class="dialog__description" id={id ? `${id}-dialog-description` : undefined}>
 				{description}
 			</div>
 		{/if}
 		{#if children}
-			<div class="dialog__body">
+			<div class="dialog__body" style={bodyStyles()}>
 				{@render children()}
 			</div>
 		{/if}
@@ -118,15 +167,13 @@
 </Modal>
 
 <style lang="scss">
-	:global(.dialog) {
-		color: var(--svelte-ui-dialog-title-color);
-	}
-
 	.dialog {
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
 		max-height: calc(100dvh - 2em - 6px);
+		border: var(--svelte-ui-dialog-border);
+		border-radius: var(--svelte-ui-dialog-border-radius);
 		overflow: hidden;
 	}
 
@@ -169,7 +216,7 @@
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 
-	:global(.dialog.scrollable) {
+	:global(.scrollable) {
 		.dialog__header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
@@ -184,18 +231,5 @@
 		.dialog__footer {
 			border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
-	}
-
-	/* Screen reader only content */
-	:global(.sr-only) {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
 	}
 </style>

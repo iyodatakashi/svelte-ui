@@ -2,41 +2,144 @@
 
 <script lang="ts">
 	import { untrack } from 'svelte';
-	import IconButton from './IconButton.svelte';
+	import Input from './Input.svelte';
+	import { t } from '$lib/i18n';
+	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { IconVariant } from '$lib/types/icon';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
+		// 基本プロパティ
 		value = $bindable(''),
-		disabled = false,
+
+		// HTML属性系
+		id = `colorpicker-${Math.random().toString(36).substring(2, 15)}`,
+		inputAttributes,
+
+		// スタイル/レイアウト
+		customStyle = '',
+		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
+
+		// 状態/動作
+		disabled = false,
+		readonly = false,
 		clearable = false,
-		focusStyle = 'border',
-		customStyle = '',
-		onchange = (value: string) => {},
-		onfocus = (event: FocusEvent) => {},
-		onblur = (event: FocusEvent) => {},
-		onclick = (event: MouseEvent) => {},
-		onkeydown = (event: KeyboardEvent) => {},
+		clearButtonAriaLabel = t('input.clear'),
+		iconVariant = 'outlined',
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+		oninput = () => {}, // No params for type inference
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onclick = () => {}, // No params for type inference
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// その他
 		...restProps
 	}: {
+		// 基本プロパティ
 		value?: string;
-		disabled?: boolean;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		customStyle?: string;
+		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
+
+		// 状態/動作
+		disabled?: boolean;
+		readonly?: boolean;
 		clearable?: boolean;
-		focusStyle?: 'background' | 'border' | 'none';
-		customStyle?: string;
-		onchange?: (value: string) => void;
-		onfocus?: (event: FocusEvent) => void;
-		onblur?: (event: FocusEvent) => void;
-		onclick?: (event: MouseEvent & { currentTarget: HTMLInputElement }) => void;
-		onkeydown?: (event: KeyboardEvent) => void;
+		clearButtonAriaLabel?: string;
+		iconVariant?: IconVariant;
+
+		// 入力イベント
+		onchange?: (value: any) => void;
+		oninput?: (value: any) => void;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onclick?: Function; // No params for type inference
+		onmousedown?: Function; // No params for type inference
+		onmouseup?: Function; // No params for type inference
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+		onmouseover?: Function; // No params for type inference
+		onmouseout?: Function; // No params for type inference
+		oncontextmenu?: Function; // No params for type inference
+		onauxclick?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+		ontouchmove?: Function; // No params for type inference
+		ontouchcancel?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerdown?: Function; // No params for type inference
+		onpointerup?: Function; // No params for type inference
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
+		onpointermove?: Function; // No params for type inference
+		onpointercancel?: Function; // No params for type inference
+
+		// その他
 		[key: string]: any;
 	} = $props();
 
-	let localValue: string = $state(value);
+	let localValue: string | undefined = $state(value);
 	let prevValue: string = $state('');
 	let isFocused: boolean = $state(false);
+
+	// =========================================================================
+
+	// $effect
+	// =========================================================================
 
 	$effect(() => {
 		value;
@@ -49,13 +152,29 @@
 		});
 	});
 
+	$effect(() => {
+		localValue;
+		untrack(() => {
+			/* localValue がクリアされた時に value もクリア */
+			if (localValue === '' || localValue === undefined) {
+				value = '';
+				prevValue = '';
+			}
+		});
+	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+
 	const handleSubmit = (event: SubmitEvent) => {
-		event.preventDefault();
+		event?.preventDefault?.();
 		handleChange();
 	};
 
 	const handleChange = (event?: Event): void => {
-		if (!localValue.startsWith('#')) {
+		// 空文字列の場合はそのまま処理
+		if (localValue && !localValue.startsWith('#')) {
 			localValue = '#' + localValue;
 		}
 
@@ -66,66 +185,187 @@
 		}
 	};
 
+	const handleInput = (event?: Event): void => {
+		if (disabled) return;
+		oninput?.(localValue);
+	};
+
 	const handleFocus = (event: FocusEvent): void => {
+		if (disabled) return;
 		isFocused = true;
 		onfocus(event);
 	};
 
 	const handleBlur = (event: FocusEvent): void => {
+		if (disabled) return;
 		isFocused = false;
 		onblur(event);
 	};
 
-	const clear = (): void => {
+	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
-		value = '';
-		onchange(value);
+		onclick?.(event);
+	};
+	const handleKeydown = (event: KeyboardEvent) => {
+		if (disabled) return;
+		onkeydown(event);
 	};
 
-	const handleClick = (event: MouseEvent) =>
-		onclick?.(event as MouseEvent & { currentTarget: HTMLInputElement });
-	const handleKeydown = (event: KeyboardEvent) => onkeydown(event);
+	const handleKeyup = (event: KeyboardEvent) => {
+		if (disabled) return;
+		onkeyup(event);
+	};
+
+	// マウスイベント
+	const handleMouseDown = (event: MouseEvent) => {
+		if (disabled) return;
+		onmousedown?.(event);
+	};
+
+	const handleMouseUp = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseleave?.(event);
+	};
+
+	const handleMouseOver = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseover?.(event);
+	};
+
+	const handleMouseOut = (event: MouseEvent) => {
+		if (disabled) return;
+		onmouseout?.(event);
+	};
+
+	const handleContextMenu = (event: MouseEvent) => {
+		if (disabled) return;
+		oncontextmenu?.(event);
+	};
+
+	const handleAuxClick = (event: MouseEvent) => {
+		if (disabled) return;
+		onauxclick?.(event);
+	};
+
+	// タッチイベント
+	const handleTouchStart = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchend?.(event);
+	};
+
+	const handleTouchMove = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchmove?.(event);
+	};
+
+	const handleTouchCancel = (event: TouchEvent) => {
+		if (disabled) return;
+		ontouchcancel?.(event);
+	};
+
+	// ポインターイベント
+	const handlePointerDown = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerdown?.(event);
+	};
+
+	const handlePointerUp = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerup?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointerleave?.(event);
+	};
+
+	const handlePointerMove = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointermove?.(event);
+	};
+
+	const handlePointerCancel = (event: PointerEvent) => {
+		if (disabled) return;
+		onpointercancel?.(event);
+	};
 </script>
 
 <div
 	class="color-picker
 	focus-style-{focusStyle}"
-	class:full-width={fullWidth}
-	class:rounded
-	class:clearable
-	class:disabled
-	class:is-focused={isFocused}
+	class:color-picker--full-width={fullWidth}
+	class:color-picker--rounded={rounded}
+	class:color-picker--clearable={clearable}
+	class:color-picker--disabled={disabled}
+	class:color-picker--readonly={readonly}
+	class:color-picker--focused={isFocused}
+	data-testid="color-picker"
 	style={customStyle}
 >
-	<form class:full-width={fullWidth} onsubmit={handleSubmit}>
-		<input
-			bind:value={localValue}
-			type="text"
-			class="text-input"
-			onchange={handleChange}
-			onfocus={handleFocus}
-			onblur={handleBlur}
-			onclick={handleClick}
-			onkeydown={handleKeydown}
-			{disabled}
-			{...restProps}
-		/>
-		<!-- クリアボタン -->
-		{#if clearable && !disabled}
-			<div class="clear-button-block">
-				<IconButton
-					ariaLabel="クリア"
-					color="var(--svelte-ui-colorpicker-text-color)"
-					onclick={clear}
-					tabindex={-1}
-					iconFilled={true}
-					size={24}>cancel</IconButton
-				>
-			</div>
-		{/if}
-	</form>
+	<Input
+		id={id ? `${id}-input` : undefined}
+		bind:value={localValue}
+		type="text"
+		placeholder=""
+		{disabled}
+		{readonly}
+		{clearable}
+		{clearButtonAriaLabel}
+		{focusStyle}
+		{fullWidth}
+		{rounded}
+		customStyle={`padding-left: var(--svelte-ui-colorpicker-text-padding-left); ${customStyle}`}
+		{inputAttributes}
+		onchange={handleChange}
+		oninput={handleInput}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onclick={handleClick}
+		onkeydown={handleKeydown}
+		onkeyup={handleKeyup}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
+		onsubmit={handleSubmit}
+		{...restProps}
+	/>
 
-	<div class="custom-color-picker">
+	<div class="color-picker__trigger">
 		<input
 			type="color"
 			bind:value
@@ -135,10 +375,11 @@
 			onclick={handleClick}
 			onkeydown={handleKeydown}
 			{disabled}
-			class="color-input"
+			class="color-picker__color-input"
+			{...inputAttributes}
 			{...restProps}
 		/>
-		<div class="color-display" style="background-color: {value};"></div>
+		<div class="color-picker__color-display" style="background-color: {value};"></div>
 	</div>
 </div>
 
@@ -155,189 +396,101 @@
 		max-width: 100%;
 	}
 
-	form {
-		padding: inherit;
-		border: none;
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		position: relative;
-	}
-
 	/* =============================================
  * 基本コンポーネント
  * ============================================= */
-	.text-input {
-		width: 100%;
-		min-width: 1em;
-		padding: 0 12px 0 var(--svelte-ui-colorpicker-input-padding-left);
-		background: transparent;
-		border: none;
-		background-color: var(--svelte-ui-colorpicker-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-colorpicker-border-color);
-		border-radius: var(--svelte-ui-input-border-radius);
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		min-height: var(--svelte-ui-input-height);
 
-		&:focus,
-		&:focus-visible {
-			outline: none;
-		}
-	}
-
-	.custom-color-picker {
+	.color-picker__trigger {
 		position: absolute;
-		left: var(--svelte-ui-colorpicker-offset);
+		left: var(--svelte-ui-colorpicker-trigger-offset);
 		display: inline-block;
-		width: var(--svelte-ui-colorpicker-size);
-		height: var(--svelte-ui-colorpicker-size);
+		width: var(--svelte-ui-colorpicker-trigger-size);
+		height: var(--svelte-ui-colorpicker-trigger-size);
+		padding: 0;
 
 		&::before {
 			content: '';
 			display: block;
 			position: absolute;
-			width: calc(100% - 2px);
-			height: calc(100% - 2px);
-			border: var(--svelte-ui-colorpicker-border-style) var(--svelte-ui-colorpicker-border-width)
-				var(--svelte-ui-colorpicker-border-color);
-			border-radius: var(--svelte-ui-colorpicker-border-radius);
+			width: 100%;
+			height: 100%;
+			border: var(--svelte-ui-colorpicker-trigger-border-style)
+				var(--svelte-ui-colorpicker-trigger-border-width)
+				var(--svelte-ui-colorpicker-trigger-border-color);
+			border-radius: var(--svelte-ui-colorpicker-trigger-border-radius);
 		}
 	}
 
-	.color-input {
+	.color-picker__color-input {
 		opacity: 0;
 		position: absolute;
 		width: 100%;
 		height: 100%;
+		padding: 0;
 		z-index: 2;
 		pointer-events: auto;
 		cursor: pointer;
 	}
 
-	.color-display {
+	.color-picker__color-display {
 		display: block;
 		width: 100%;
 		height: 100%;
 		cursor: pointer;
 		position: relative;
-		border-radius: var(--svelte-ui-colorpicker-border-radius);
+		border-radius: var(--svelte-ui-colorpicker-trigger-border-radius);
 		z-index: 1;
-	}
-
-	.clear-button-block {
-		position: absolute;
-		top: 50%;
-		right: 8px;
-		height: fit-content;
-		transform: translate(0, -50%);
-		opacity: 0;
-		transition: var(--svelte-ui-clear-button-transition);
 	}
 
 	/* =============================================
  * レイアウトバリエーション
  * ============================================= */
-	.color-picker.full-width {
+	.color-picker--full-width {
 		width: 100%;
-
-		form {
-			width: 100%;
-		}
-	}
-
-	/* =============================================
- * 機能バリエーション：clearable
- * ============================================= */
-	.clearable {
-		.text-input {
-			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
-		}
-	}
-
-	@media (hover: hover) {
-		.color-picker:hover .clear-button-block {
-			opacity: 1;
-			pointer-events: all;
-		}
-	}
-
-	/* =============================================
- * プレースホルダー・テキスト表示
- * ============================================= */
-	input::placeholder {
-		color: var(--svelte-ui-colorpicker-placeholder-color);
-	}
-
-	/* =============================================
- * フォーカス効果バリエーション
- * ============================================= */
-	.focus-style-border .text-input:focus-visible {
-		outline: var(--svelte-ui-focus-outline-inner);
-		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-	}
-
-	.focus-style-background .text-input:focus-visible {
-		background: var(--svelte-ui-hover-overlay);
 	}
 
 	/* =============================================
  * 状態管理（disabled, focused等）
  * ============================================= */
-	.disabled {
+	.color-picker--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
 
-		.color-input {
+		.color-picker__color-input {
 			cursor: not-allowed;
 			pointer-events: none;
 		}
 	}
 
-	.text-input:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
+	/* =============================================
+ * 状態管理（readonly等）
+ * ============================================= */
+	.color-picker--readonly {
+		.color-picker__color-input,
+		.color-picker__trigger {
+			pointer-events: none;
+		}
 	}
 
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.color-picker {
-		.text-input {
-			background-color: var(--svelte-ui-colorpicker-bg);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset
-				var(--svelte-ui-colorpicker-border-color);
-			color: var(--svelte-ui-colorpicker-text-color);
-		}
-
-		.custom-color-picker::before {
-			border-color: var(--svelte-ui-colorpicker-border-color);
+		.color-picker__trigger::before {
+			border-color: var(--svelte-ui-colorpicker-trigger-border-color);
 		}
 	}
 
 	/* =============================================
  * デザインバリアント：rounded
  * ============================================= */
-	.color-picker.rounded {
-		.text-input {
-			border-radius: var(--svelte-ui-input-border-radius-rounded);
-		}
-
-		.color-display {
+	.color-picker--rounded {
+		.color-picker__color-display {
 			border-radius: var(--svelte-ui-border-radius-rounded);
 		}
 
-		.custom-color-picker::before {
+		.color-picker__trigger::before {
 			border-radius: var(--svelte-ui-border-radius-rounded);
-		}
-
-		&.clearable .text-input {
-			padding-right: var(--svelte-ui-clear-button-padding-adjustment);
 		}
 	}
 </style>

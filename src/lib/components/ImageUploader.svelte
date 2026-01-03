@@ -1,54 +1,141 @@
 <!-- ImageUploader.svelte -->
 
 <script lang="ts">
-	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
-	import { announceToScreenReader } from '../utils/accessibility';
+	import { t } from '$lib/i18n';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import { onDestroy } from 'svelte';
+	import ImageUploaderPreview from './ImageUploaderPreview.svelte';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		files = $bindable(),
-		accept = '.jpg,.jpeg,.png,.gif,.webp',
+		// 基本プロパティ
+		value = $bindable(),
 		multiple = false,
-		maxFileSize = 5 * 1024 * 1024, // 5MB
-		width = undefined,
-		height = undefined,
+		maxFileSize = 5 * 1024 * 1024,
+		placeholder = '',
+
+		// HTML属性系
+		id = `image-uploader-${Math.random().toString(36).substring(2, 15)}`,
+		accept = '.jpg,.jpeg,.png,.gif,.webp,.svg',
+
+		// スタイル/レイアウト
+		width = '120px',
+		height = '120px',
 		rounded = false,
-		icon = 'image',
-		placeholder = '画像をドラッグ＆ドロップ<br />または画像を選択',
+
+		// アイコン系
+		icon = 'add_photo_alternate',
+		iconSize = 32,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = null,
-		iconVariant = 'outlined'
+		iconOpticalSize = iconSize,
+		iconVariant = 'outlined',
+		removeFileAriaLabel = t('imageUploader.removeFile'),
+
+		// 状態/動作
+		adaptiveSize = false,
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {} // No params for type inference
 	}: {
-		files?: FileList;
-		accept?: string;
+		// 基本プロパティ
+		value: FileList | undefined;
 		multiple?: boolean;
 		maxFileSize?: number;
-		width?: number;
-		height?: number;
-		rounded?: boolean;
-		icon?: string;
 		placeholder?: string;
+
+		// HTML属性系
+		id?: string;
+		accept?: string;
+
+		// スタイル/レイアウト
+
+		width?: string | number;
+		height?: string | number;
+		rounded?: boolean;
+		adaptiveSize?: boolean;
+
+		// アイコン系
+		icon?: string;
+		iconSize?: number;
 		iconFilled?: boolean;
-		iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-		iconGrade?: number;
-		iconOpticalSize?: number | null;
-		iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+		removeFileAriaLabel?: string;
+
+		// 入力イベント
+		onchange?: (value: FileList | null) => void;
+
+		// フォーカスイベント
+		onfocus?: Function; // No params for type inference
+		onblur?: Function; // No params for type inference
+
+		// キーボードイベント
+		onkeydown?: Function; // No params for type inference
+		onkeyup?: Function; // No params for type inference
+
+		// マウスイベント
+		onmouseenter?: Function; // No params for type inference
+		onmouseleave?: Function; // No params for type inference
+
+		// タッチイベント
+		ontouchstart?: Function; // No params for type inference
+		ontouchend?: Function; // No params for type inference
+
+		// ポインターイベント
+		onpointerenter?: Function; // No params for type inference
+		onpointerleave?: Function; // No params for type inference
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
+	let urlCache = new Map<File, string>();
 
-	const imageUploaderId = `imageuploader-${Math.random().toString(36).substring(2, 15)}`;
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
 
-	// ファイル選択時のアナウンス
+	onDestroy(() => {
+		cleanupObjectUrls();
+	});
+
+	// =========================================================================
+	// Effects
+	// =========================================================================
 	$effect(() => {
-		if (files && files.length > 0) {
-			const fileCount = files.length;
-			const fileNames = Array.from(files)
+		if (value && value.length > 0) {
+			const fileCount = value.length;
+			const fileNames = Array.from(value)
 				.map((file) => file.name)
 				.join(', ');
 			announceToScreenReader(
@@ -57,20 +144,77 @@
 		}
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleClick = () => {
 		fileInputRef?.click();
 	};
 
+	const handleFocus = (event: FocusEvent) => {
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		onblur?.(event);
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		onkeydown?.(event);
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			handleClick();
+		}
+	};
+
+	const handleKeyUp = (event: KeyboardEvent) => {
+		onkeyup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		onmouseleave?.(event);
+	};
+
+	const handleTouchStart = (event: TouchEvent) => {
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		ontouchend?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		onpointerleave?.(event);
+	};
+
 	const validateFile = (file: File): boolean => {
-		// 画像ファイルかチェック
-		if (!file.type.startsWith('image/')) {
-			errorMessage = '画像ファイルを選択してください';
+		// サポートされる画像タイプ
+		const supportedTypes = [
+			'image/jpeg',
+			'image/jpg',
+			'image/png',
+			'image/gif',
+			'image/webp',
+			'image/svg+xml'
+		];
+
+		if (!supportedTypes.includes(file.type)) {
+			errorMessage = t('imageUploader.unsupportedFileFormat');
 			return false;
 		}
 
-		// ファイルサイズチェック
 		if (file.size > maxFileSize) {
-			errorMessage = `ファイルサイズは${(maxFileSize / 1024 / 1024).toFixed(1)}MB以下にしてください`;
+			errorMessage = t('imageUploader.fileSizeExceeded', {
+				maxSize: (maxFileSize / 1024 / 1024).toFixed(1)
+			});
 			return false;
 		}
 
@@ -86,57 +230,124 @@
 			const file = fileList[i];
 			if (validateFile(file)) {
 				validFiles.push(file);
-			} else {
-				return; // エラーがあった場合は処理を停止
 			}
+			// 無効なファイルは単純にスキップ
 		}
 
-		// FileListを再構築
-		const dt = new DataTransfer();
-		validFiles.forEach((file) => dt.items.add(file));
-		files = dt.files;
+		// 有効なファイルがある場合のみ更新
+		if (validFiles.length > 0) {
+			const dataTransfer = new DataTransfer();
+
+			// multipleの場合は既存のファイルを保持して追加
+			if (multiple && value) {
+				for (let i = 0; i < value.length; i++) {
+					dataTransfer.items.add(value[i]);
+				}
+			}
+
+			// 新しく選択されたファイルのみを追加
+			validFiles.forEach((file) => dataTransfer.items.add(file));
+			value = dataTransfer.files;
+			onchange(value);
+		}
 	};
 
 	const removeFile = (index: number) => {
-		if (!files) return;
+		if (!value) return;
+
+		// 削除されるファイルのURLをクリーンアップ
+		const fileToRemove = value[index];
+		if (fileToRemove && urlCache.has(fileToRemove)) {
+			const url = urlCache.get(fileToRemove)!;
+			URL.revokeObjectURL(url);
+			urlCache.delete(fileToRemove);
+		}
 
 		const dt = new DataTransfer();
-		for (let i = 0; i < files.length; i++) {
+		for (let i = 0; i < value.length; i++) {
 			if (i !== index) {
-				dt.items.add(files[i]);
+				dt.items.add(value[i]);
 			}
 		}
-		files = dt.files.length > 0 ? dt.files : undefined;
+		if (dt.files.length > 0) {
+			value = dt.files;
+		} else {
+			// 空の場合は空のFileListを作成
+			const emptyDt = new DataTransfer();
+			value = emptyDt.files;
+		}
 	};
 
-	const createImageUrl = (file: File): string => {
-		return URL.createObjectURL(file);
+	const cleanupObjectUrls = () => {
+		// キャッシュされたすべてのURLを解放
+		for (const url of urlCache.values()) {
+			URL.revokeObjectURL(url);
+		}
+		urlCache.clear();
 	};
 
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
-			files = undefined;
+			value = undefined;
 			errorMessage = '';
+			cleanupObjectUrls();
 		}
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const previewWidthStyle = $derived(getStyleFromNumber(width));
+	const previewHeightStyle = $derived(getStyleFromNumber(height));
 </script>
 
+{#snippet preview(file: File, index: number)}
+	<ImageUploaderPreview
+		{file}
+		{width}
+		{height}
+		{adaptiveSize}
+		{rounded}
+		id={id ? `${id}-preview-${index}` : undefined}
+		{removeFileAriaLabel}
+		onRemove={() => removeFile(index)}
+	/>
+{/snippet}
+
 <div
-	class="image-uploader-container"
-	class:rounded
+	class="image-uploader"
+	class:image-uploader--multiple={multiple}
+	class:image-uploader--rounded={rounded}
+	class:image-uploader--adaptive={adaptiveSize}
 	style="
-		--image-uploader-width: {width}px;
-		--image-uploader-height: {height}px
-	"
+			--image-uploader-button-width: {previewWidthStyle};
+			--image-uploader-button-height: {previewHeightStyle};
+		"
+	data-testid="image-uploader"
 >
+	{#if multiple}
+		{#each value as file, index}
+			{@render preview(file, index)}
+		{/each}
+	{/if}
 	<button
 		bind:this={dropAreaRef}
-		class="image-uploader"
-		class:hover={isHover}
-		class:has-images={files && files.length > 0}
-		class:rounded
+		class="image-uploader__button"
+		class:image-uploader__button--hover={isHover}
+		class:image-uploader__button--has-images={!multiple && value && value.length > 0}
+		class:image-uploader__button--rounded={rounded}
 		onclick={handleClick}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onkeydown={handleKeyDown}
+		onkeyup={handleKeyUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
 		ondragover={(event) => {
 			event.stopPropagation();
 			event.preventDefault();
@@ -156,36 +367,14 @@
 				handleFileChange(fileList);
 			}
 		}}
-		aria-label="画像をアップロード"
-		aria-describedby={`${imageUploaderId}-help`}
+		aria-label={t('imageUploader.uploadImage')}
 	>
-		{#if files && files.length > 0}
-			<div class="image-preview-container" class:single={!multiple}>
-				{#each files as file, index}
-					<div class="image-preview-item" class:single={!multiple}>
-						<img src={createImageUrl(file)} alt={file.name} class="preview-image" />
-						<div class="delete-button-container">
-							<IconButton
-								iconFilled={true}
-								size={24}
-								color="var(--svelte-ui-text-color)"
-								onclick={(e) => {
-									e.stopPropagation();
-									removeFile(index);
-								}}
-								ariaLabel="画像を削除"
-								tabindex={-1}
-							>
-								cancel
-							</IconButton>
-						</div>
-					</div>
-				{/each}
-			</div>
+		{#if !multiple && value && value.length > 0}
+			{@render preview(value[0], 0)}
 		{:else}
-			<div class="description">
+			<div class="image-uploader__description">
 				<Icon
-					size={48}
+					size={iconSize}
 					filled={iconFilled}
 					weight={iconWeight}
 					grade={iconGrade}
@@ -198,7 +387,7 @@
 	</button>
 
 	{#if errorMessage}
-		<div class="error-message" role="alert" aria-live="polite">
+		<div class="image-uploader__error-message" role="alert" aria-live="polite">
 			{errorMessage}
 		</div>
 	{/if}
@@ -207,12 +396,12 @@
 		bind:this={fileInputRef}
 		{accept}
 		{multiple}
-		class="upload-file-input"
-		id={imageUploaderId}
+		class="image-uploader__input"
+		{id}
 		type="file"
 		onchange={(event) => {
 			const target = event.target as HTMLInputElement;
-			if (target.files) {
+			if (target.files && target.files.length > 0) {
 				handleFileChange(target.files);
 			}
 		}}
@@ -220,62 +409,59 @@
 </div>
 
 <style>
-	.image-uploader-container {
-		position: relative;
-		width: var(--image-uploader-width, 100%);
-		height: var(--image-uploader-width, 100%);
-	}
-
-	.image-uploader-container.rounded {
-		border-radius: var(--svelte-ui-border-radius-rounded);
-	}
-
 	.image-uploader {
+		position: relative;
+		width: 100%;
+	}
+
+	.image-uploader--multiple {
+		display: flex;
+		flex-wrap: wrap;
+		gap: var(--svelte-ui-image-uploader-preview-gap);
+	}
+
+	.image-uploader__button {
 		display: flex;
 		flex-direction: column;
 		justify-content: center;
 		align-items: center;
 		position: relative;
-		width: 100%;
-		height: 100%;
-		min-height: 120px;
+		max-width: 100%;
+		min-width: var(--image-uploader-button-width);
+		min-height: var(--image-uploader-button-height);
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
 		border-radius: var(--svelte-ui-border-radius);
 		cursor: pointer;
 		transition: background-color var(--svelte-ui-transition-duration);
-		overflow: hidden;
 	}
 
-	.image-uploader.rounded {
-		border-radius: var(--svelte-ui-border-radius-rounded);
-	}
-
-	.image-uploader::before {
+	.image-uploader__button::before {
 		content: '';
 		display: block;
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: calc(100% - 2px);
-		height: calc(100% - 2px);
-		border: dashed 1px var(--svelte-ui-border-color);
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		border: var(--svelte-ui-image-uploader-border-style)
+			var(--svelte-ui-image-uploader-border-width) var(--svelte-ui-image-uploader-border-color);
 		border-radius: var(--svelte-ui-border-radius);
-		transition: border-color var(--svelte-ui-transition-duration);
+		transition-property: background-color border-color;
+		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
-	.image-uploader.rounded::before {
+	.image-uploader__button--rounded,
+	.image-uploader__button--rounded::before {
 		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
 	@media (hover: hover) {
-		.image-uploader:hover {
-			background-color: var(--svelte-ui-fileupload-hover-bg);
-		}
-
-		.image-uploader:hover::before,
-		.image-uploader.hover::before {
-			border-color: var(--svelte-ui-primary-color);
+		.image-uploader__button:hover::before,
+		.image-uploader__button--hover::before {
+			background-color: var(--svelte-ui-image-uploader-hover-bg);
+			border-color: var(--svelte-ui-image-uploader-hover-border-color);
 		}
 	}
 
@@ -284,17 +470,22 @@
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.image-uploader.hover {
-		background-color: var(--svelte-ui-fileupload-hover-bg);
+	.image-uploader__button--hover {
+		background-color: var(--svelte-ui-image-uploader-hover-bg);
 		border-color: var(--svelte-ui-primary-color);
 	}
 
-	.image-uploader.has-images {
+	.image-uploader__button--has-images {
 		padding: 0;
-		min-height: auto;
+		background: transparent;
+
+		&::before {
+			background: transparent;
+			border: none;
+		}
 	}
 
-	.description {
+	.image-uploader__description {
 		display: flex;
 		flex-direction: column;
 		align-items: center;
@@ -303,65 +494,14 @@
 		text-align: center;
 	}
 
-	.image-preview-container {
-		display: flex;
-		flex-wrap: wrap;
-		gap: 8px;
-		width: 100%;
-		justify-content: center;
-	}
-
-	.image-preview-container.single {
-		height: 100%;
-	}
-
-	.image-preview-item {
-		position: relative;
-		width: 120px;
-		height: 120px;
-		border-radius: var(--svelte-ui-border-radius);
-		overflow: hidden;
-		background-color: var(--svelte-ui-surface-color);
-	}
-
-	.image-preview-item.single {
-		width: 100%;
-		height: auto;
-	}
-
-	.image-uploader.rounded .image-preview-item {
-		border-radius: var(--image-uploader-border-radius);
-	}
-
-	.image-uploader.rounded .image-preview-item.single {
-		border-radius: var(--image-uploader-border-radius);
-	}
-
-	.preview-image {
-		width: 100%;
-		height: 100%;
-		object-fit: cover;
-		object-position: center;
-	}
-
-	.delete-button-container {
-		position: absolute;
-		top: 4px;
-		right: 4px;
-		background-color: var(--svelte-ui-surface-color);
-		border-radius: var(--svelte-ui-border-radius-rounded);
-		opacity: 0;
-		transition: opacity var(--svelte-ui-transition-duration);
-		z-index: 10;
-	}
-
 	@media (hover: hover) {
-		.image-preview-item:hover .delete-button-container {
-			opacity: 1;
+		.image-uploader__button:hover .image-uploader__description,
+		.image-uploader__button--hover .image-uploader__description {
+			color: var(--svelte-ui-image-uploader-hover-color);
 		}
 	}
 
-	.error-message {
+	.image-uploader__error-message {
 		margin-top: 8px;
 		padding: 8px 12px;
 		background-color: var(--svelte-ui-error-container-color);
@@ -370,7 +510,7 @@
 		font-size: var(--svelte-ui-font-size-sm);
 	}
 
-	.upload-file-input {
+	.image-uploader__input {
 		display: none;
 	}
 </style>

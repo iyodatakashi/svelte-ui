@@ -1,0 +1,238 @@
+<!-- Skeleton.svelte -->
+
+<script lang="ts">
+	import SkeletonBox from './SkeletonBox.svelte';
+	import SkeletonText from './SkeletonText.svelte';
+	import SkeletonMedia from './SkeletonMedia.svelte';
+	import SkeletonAvatar from './SkeletonAvatar.svelte';
+	import SkeletonButton from './SkeletonButton.svelte';
+	import SkeletonHeading from './SkeletonHeading.svelte';
+	import { getStyleFromNumber } from '$lib/utils/style';
+	import type { SkeletonPatternConfig, SkeletonPresetConfig } from '$lib/types/skeleton';
+	import { isPresetPattern, isMediaPattern, isAvatarPattern } from '$lib/types/skeleton';
+
+	// =========================================================================
+	// Props
+	// =========================================================================
+
+	let {
+		// 基本プロパティ
+		patterns = [{ type: 'box' }] as SkeletonPatternConfig[],
+		repeat = 1,
+		repeatGap = '64px',
+		itemGap = '24px',
+		className = '',
+		customStyle = '',
+		animated = true
+	}: {
+		patterns?: SkeletonPatternConfig[];
+		repeat?: number;
+		repeatGap?: string | number;
+		itemGap?: string | number;
+		className?: string;
+		customStyle?: string;
+		animated?: boolean;
+	} = $props();
+
+	const DEFAULT_PATTERN_CONFIG = {
+		repeat: 1,
+		repeatDirection: 'vertical' as const,
+		repeatGap: '24px'
+	};
+
+	// プリセットパターンの定義
+	const PRESET_PATTERNS: Record<string, SkeletonPatternConfig[]> = {
+		'article-detail': [
+			{
+				type: 'box'
+			},
+			{ type: 'avatar', showName: true },
+			{
+				type: 'text',
+				lines: 5,
+				repeat: 1
+			}
+		],
+		'article-list': [
+			{
+				type: 'media',
+				layout: 'horizontal',
+				thumbnailConfig: { width: '160px', aspectRatio: '4/3' },
+				textConfig: { lines: 3 },
+				repeat: 3
+			}
+		],
+		'product-list': [
+			{
+				type: 'media',
+				layout: 'vertical',
+				thumbnailConfig: { width: '100%', aspectRatio: '1' },
+				textConfig: { lines: 2 },
+				repeat: 4,
+				repeatDirection: 'horizontal'
+			}
+		],
+		'video-list': [
+			{
+				type: 'media',
+				layout: 'vertical',
+				thumbnailConfig: { width: '100%', aspectRatio: '16/9' },
+				textConfig: { lines: 2 },
+				repeat: 3,
+				repeatDirection: 'horizontal'
+			}
+		],
+		'user-list': [
+			{
+				type: 'avatar',
+				showName: true
+			}
+		],
+		'button-group': [
+			{
+				type: 'button',
+				width: '120px',
+				repeat: 2,
+				repeatDirection: 'horizontal',
+				repeatGap: '16px'
+			}
+		]
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
+
+	// パターン設定をマージ
+	const mergedPatterns = $derived.by(() => {
+		return patterns
+			.map((pattern) => {
+				// 型ガードでプリセットパターンかどうかを判定
+				if (isPresetPattern(pattern)) {
+					const presetPatternsArray = PRESET_PATTERNS[pattern.type] || [];
+					// プリセットパターンを展開して、元のパターンの設定で上書き
+					const { type: _, ...patternWithoutType } = pattern;
+					const typedPatternWithoutType = patternWithoutType as Omit<SkeletonPresetConfig, 'type'>;
+					return presetPatternsArray.map((presetPattern) => {
+						// プリセットパターン内の各パターンに対して、ユーザー指定のプロパティを適用
+						const mergedPattern = {
+							...DEFAULT_PATTERN_CONFIG,
+							...presetPattern,
+							...typedPatternWithoutType
+						} as SkeletonPatternConfig;
+
+						// ネストしたオブジェクトのマージ処理（型ガードで型を絞り込む）
+						if (isMediaPattern(presetPattern) && 'thumbnailConfig' in typedPatternWithoutType) {
+							(mergedPattern as typeof presetPattern).thumbnailConfig = {
+								...presetPattern.thumbnailConfig,
+								...typedPatternWithoutType.thumbnailConfig
+							};
+						}
+
+						if (
+							(isMediaPattern(presetPattern) || isAvatarPattern(presetPattern)) &&
+							'textConfig' in typedPatternWithoutType
+						) {
+							(mergedPattern as typeof presetPattern).textConfig = {
+								...presetPattern.textConfig,
+								...typedPatternWithoutType.textConfig
+							};
+						}
+
+						if (isAvatarPattern(presetPattern) && 'avatarImageConfig' in typedPatternWithoutType) {
+							(mergedPattern as typeof presetPattern).avatarImageConfig = {
+								...presetPattern.avatarImageConfig,
+								...typedPatternWithoutType.avatarImageConfig
+							};
+						}
+
+						return mergedPattern;
+					});
+				}
+
+				// 通常のパターン
+				return {
+					...DEFAULT_PATTERN_CONFIG,
+					...pattern
+				};
+			})
+			.flat();
+	});
+
+	const repeatGapStyle = $derived(getStyleFromNumber(repeatGap));
+	const itemGapStyle = $derived(getStyleFromNumber(itemGap));
+</script>
+
+<div class={containerClasses} style={customStyle} data-testid="skeleton">
+	<div class="skeleton__items" style="gap: {repeatGapStyle};">
+		{#each Array(repeat) as _, index}
+			<div class="skeleton__item" style="gap: {itemGapStyle};">
+				{#each mergedPatterns as patternConfig}
+					{@const patternRepeat = patternConfig.repeat || 1}
+					{@const patternRepeatDirection = patternConfig.repeatDirection || 'vertical'}
+					{@const patternRepeatGap = getStyleFromNumber(patternConfig.repeatGap) || '8px'}
+					<div
+						class="skeleton__pattern"
+						class:skeleton__pattern--horizontal={patternRepeatDirection === 'horizontal'}
+						style="gap: {patternRepeatGap};"
+					>
+						{#each Array(patternRepeat) as _}
+							{#if patternConfig.type === 'box'}
+								{@const { type: _, width, height, radius, customStyle } = patternConfig}
+								<SkeletonBox {width} {height} {radius} {customStyle} {animated} />
+							{:else if patternConfig.type === 'heading'}
+								{@const { type: _, ...headingConfig } = patternConfig}
+								<SkeletonHeading {headingConfig} {animated} />
+							{:else if patternConfig.type === 'text'}
+								<SkeletonText textConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'avatar'}
+								<div class="skeleton__user-list">
+									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
+								</div>
+							{:else if patternConfig.type === 'media'}
+								<SkeletonMedia width={patternConfig.width} mediaConfig={patternConfig} {animated} />
+							{:else if patternConfig.type === 'button'}
+								<div class="skeleton__button">
+									<SkeletonButton buttonConfig={patternConfig} {animated} />
+								</div>
+							{/if}
+						{/each}
+					</div>
+				{/each}
+			</div>
+		{/each}
+	</div>
+</div>
+
+<style lang="scss">
+	.skeleton {
+		display: block;
+		width: 100%;
+		max-width: 100%;
+		overflow-x: hidden;
+	}
+
+	.skeleton__items {
+		display: flex;
+		flex-direction: column;
+	}
+
+	.skeleton__item {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+	}
+
+	.skeleton__pattern {
+		display: flex;
+		flex-direction: column;
+		width: 100%;
+
+		&--horizontal {
+			flex-direction: row;
+			align-items: center;
+		}
+	}
+</style>

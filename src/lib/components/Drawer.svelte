@@ -15,58 +15,74 @@
 	 */
 	import type { Snippet } from 'svelte';
 	import Modal from './Modal.svelte';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
 	let {
-		isOpen = $bindable(false),
+		// Snippet
+		header,
+		children,
+		footer,
+
+		// 基本プロパティ
 		title = '',
-		scrollable = true,
-		closeIfClickOutside = true,
+		description,
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
 		width = 240,
 		position = 'left',
-		ariaLabel = 'Navigation drawer',
+		bodyStyle = '',
+		noPadding = false,
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		scrollable = true,
+		closeIfClickOutside = true,
 		restoreFocus = false,
-		ariaDescribedby,
-		description,
-		header,
-		body,
-		children,
-		footer
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Drawer',
+		ariaDescribedby
 	}: {
-		isOpen?: boolean;
-		title?: string;
-		scrollable?: boolean;
-		closeIfClickOutside?: boolean;
-		width?: number;
-		position?: 'left' | 'right';
-		ariaLabel?: string;
-		restoreFocus?: boolean;
-		ariaDescribedby?: string;
-		description?: string;
+		// Snippet
 		header?: Snippet;
-		body?: Snippet;
 		children?: Snippet;
 		footer?: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+
+		// HTML属性
+		id?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		position?: 'left' | 'right';
+		bodyStyle?: string;
+		noPadding?: boolean;
+
+		// 状態/動作
+		isOpen?: boolean;
+		scrollable?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaDescribedby?: string;
 	} = $props();
 
 	let modalRef: Modal;
 
-	// Drawer固有のスタイル
-	const drawerStyles = $derived(
-		`width: ${width}px; height: 100%; min-height: 100%; ${position}: 0;`
-	);
-
-	// Drawer固有のクラス
-	const drawerClasses = $derived(
-		['drawer', position, scrollable && 'scrollable'].filter(Boolean).join(' ')
-	);
-
-	// aria属性
-	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
-	const ariaDescribedbyValue = $derived(
-		ariaDescribedby || (description ? 'drawer-description' : undefined)
-	);
-
-	// 外部からのAPI（後方互換性のため）
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	export const open = (): void => {
 		modalRef?.open(title || ariaLabel);
 	};
@@ -82,6 +98,40 @@
 	export const closeEnd = (): void => {
 		modalRef?.closeEnd();
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const drawerStyles = $derived(() => {
+		const styles = [];
+		styles.push(`width: ${getStyleFromNumber(width)}`);
+		styles.push('height: 100%');
+		styles.push('min-height: 100%');
+		styles.push(`${position}: 0`);
+		return styles.join('; ');
+	});
+
+	const bodyStyles = $derived(() => {
+		const styles = [];
+		if (noPadding) {
+			styles.push('padding: 0');
+		}
+		if (bodyStyle) {
+			styles.push(bodyStyle);
+		}
+		return styles.join('; ');
+	});
+
+	const drawerClasses = $derived(
+		['drawer-wrapper', `drawer-wrapper--${position}`, scrollable && 'drawer-wrapper--scrollable']
+			.filter(Boolean)
+			.join(' ')
+	);
+
+	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
+	const ariaDescribedbyValue = $derived(
+		ariaDescribedby || (description ? 'drawer-description' : undefined)
+	);
 </script>
 
 <Modal
@@ -94,33 +144,29 @@
 	{ariaLabelledby}
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={drawerClasses}
-	customStyles={drawerStyles}
+	customStyles={drawerStyles()}
+	id={id ? `${id}-modal` : undefined}
 >
-	<div class="drawer">
+	<div class="drawer drawer--{position} {scrollable ? 'drawer--scrollable' : ''}">
 		{#if header || title}
 			<div class="drawer__header">
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="drawer__title" id="drawer-title">
+					<div class="drawer__title" id={id ? `${id}-drawer-title` : undefined}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="drawer__description" id="drawer-description">
+			<div class="drawer__description" id={id ? `${id}-drawer-description` : undefined}>
 				{description}
 			</div>
 		{/if}
 		{#if children}
-			<div class="drawer__body">
+			<div class="drawer__body" style={bodyStyles()}>
 				{@render children()}
-			</div>
-		{/if}
-		{#if body}
-			<div class="drawer__body">
-				{@render body()}
 			</div>
 		{/if}
 		{#if footer}
@@ -132,8 +178,8 @@
 </Modal>
 
 <style lang="scss">
-	:global(.drawer) {
-		width: var(--svelte-ui-drawer-width);
+	:global(.drawer-wrapper) {
+		width: 100%;
 		height: 100%;
 		min-height: 100%;
 		padding: 0;
@@ -142,8 +188,10 @@
 		color: var(--svelte-ui-drawer-title-color);
 	}
 
-	:global(.drawer:-internal-dialog-in-top-layer) {
+	:global(.drawer-wrapper:-internal-dialog-in-top-layer) {
 		max-height: none;
+		max-width: none;
+		width: 100%;
 	}
 
 	/* 位置固有のアニメーション */
@@ -217,31 +265,31 @@
 		}
 	}
 
-	:global(.drawer.right.fade-in) {
+	:global(.drawer-wrapper--right.fade-in) {
 		animation: fadeInFromRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.right.fade-in::backdrop) {
+	:global(.drawer-wrapper--right.fade-in::backdrop) {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.left.fade-in) {
+	:global(.drawer-wrapper--left.fade-in) {
 		animation: fadeInFromLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.left.fade-in::backdrop) {
+	:global(.drawer-wrapper--left.fade-in::backdrop) {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.left.fade-out) {
+	:global(.drawer-wrapper--left.fade-out) {
 		animation: fadeOutToLeft var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.right.fade-out) {
+	:global(.drawer-wrapper--right.fade-out) {
 		animation: fadeOutToRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer.fade-out::backdrop) {
+	:global(.drawer-wrapper.fade-out::backdrop) {
 		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
@@ -251,6 +299,15 @@
 		justify-content: stretch;
 		height: 100%;
 		overflow: hidden;
+	}
+
+	/* Position-based borders */
+	.drawer--left {
+		border-right: var(--svelte-ui-drawer-border);
+	}
+
+	.drawer--right {
+		border-left: var(--svelte-ui-drawer-border);
 	}
 
 	.drawer__header {
@@ -293,7 +350,7 @@
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 
-	:global(.drawer.scrollable) {
+	.drawer--scrollable {
 		.drawer__header {
 			margin-bottom: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
@@ -312,30 +369,17 @@
 
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		:global(.drawer.fade-in),
-		:global(.drawer.fade-in::backdrop),
-		:global(.drawer.fade-out),
-		:global(.drawer.fade-out::backdrop),
-		:global(.drawer.left.fade-in),
-		:global(.drawer.left.fade-in::backdrop),
-		:global(.drawer.left.fade-out),
-		:global(.drawer.right.fade-in),
-		:global(.drawer.right.fade-in::backdrop),
-		:global(.drawer.right.fade-out) {
+		:global(.drawer-wrapper.fade-in),
+		:global(.drawer-wrapper.fade-in::backdrop),
+		:global(.drawer-wrapper.fade-out),
+		:global(.drawer-wrapper.fade-out::backdrop),
+		:global(.drawer-wrapper--left.fade-in),
+		:global(.drawer-wrapper--left.fade-in::backdrop),
+		:global(.drawer-wrapper--left.fade-out),
+		:global(.drawer-wrapper--right.fade-in),
+		:global(.drawer-wrapper--right.fade-in::backdrop),
+		:global(.drawer-wrapper--right.fade-out) {
 			animation-duration: 0.01s;
 		}
-	}
-
-	/* Screen reader only content */
-	:global(.sr-only) {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
 	}
 </style>
