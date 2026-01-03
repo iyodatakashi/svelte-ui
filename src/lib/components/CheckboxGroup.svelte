@@ -11,7 +11,7 @@
 
 		// スタイル/レイアウト
 		direction = 'vertical',
-		gap = '0',
+		gap,
 		wrap = false,
 		minOptionWidth,
 		size = 'medium',
@@ -60,17 +60,17 @@
 		onchange(value);
 	};
 
-	const gapStyle = getStyleFromNumber(gap);
+	const gapStyle = gap !== undefined ? getStyleFromNumber(gap) : undefined;
 
 	const minOptionWidthStyle = getStyleFromNumber(minOptionWidth);
 </script>
 
 <ul
 	class="checkbox-group"
-	style="--flex-direction: {direction === 'vertical' ? 'column' : 'row'};
-    --gap: {gapStyle};
-    --wrap: {wrap ? 'wrap' : 'none'};
-    --min-option-width: {minOptionWidthStyle}
+	style="--svelte-ui-checkbox-group-flex-direction: {direction === 'vertical' ? 'column' : 'row'};
+    {gapStyle ? `--svelte-ui-checkbox-group-gap: ${gapStyle};` : ''}
+    --svelte-ui-checkbox-group-wrap: {wrap ? 'wrap' : 'none'};
+    --svelte-ui-checkbox-group-min-option-width: {minOptionWidthStyle}
     "
 >
 	{#each options as option (option.value)}
@@ -94,12 +94,12 @@
 <style>
 	.checkbox-group {
 		display: flex;
-		flex-direction: var(--flex-direction);
-		gap: var(--gap);
-		flex-wrap: var(--wrap);
+		flex-direction: var(--svelte-ui-checkbox-group-flex-direction);
+		gap: var(--svelte-ui-checkbox-group-gap);
+		flex-wrap: var(--svelte-ui-checkbox-group-wrap);
 	}
 
 	.checkbox-group__option {
-		min-width: var(--min-option-width);
+		min-width: var(--svelte-ui-checkbox-group-min-option-width);
 	}
 </style>

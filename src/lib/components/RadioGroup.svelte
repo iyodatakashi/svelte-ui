@@ -11,7 +11,7 @@
 
 		// スタイル/レイアウト
 		direction = 'vertical',
-		gap = '0',
+		gap,
 		wrap = false,
 		minOptionWidth,
 		size = 'medium',
@@ -48,23 +48,22 @@
 		// 入力イベント
 		onchange?: (value: OptionValue) => void;
 	} = $props();
-	let localValues: Record<string, boolean> = $state({});
 
 	const handleChange = () => {
 		onchange(value);
 	};
 
-	const gapStyle = getStyleFromNumber(gap);
+	const gapStyle = gap !== undefined ? getStyleFromNumber(gap) : undefined;
 
 	const minOptionWidthStyle = getStyleFromNumber(minOptionWidth);
 </script>
 
 <ul
 	class="radio-group"
-	style="--flex-direction: {direction === 'vertical' ? 'column' : 'row'};
-    --gap: {gapStyle};
-    --wrap: {wrap ? 'wrap' : 'none'};
-    --min-option-width: {minOptionWidthStyle}
+	style="--svelte-ui-radio-group-flex-direction: {direction === 'vertical' ? 'column' : 'row'};
+    {gapStyle ? `--svelte-ui-radio-group-gap: ${gapStyle};` : ''}
+    --svelte-ui-radio-group-wrap: {wrap ? 'wrap' : 'none'};
+    --svelte-ui-radio-group-min-option-width: {minOptionWidthStyle}
     "
 >
 	{#each options as option (option.value)}
@@ -88,12 +87,12 @@
 <style>
 	.radio-group {
 		display: flex;
-		flex-direction: var(--flex-direction);
-		gap: var(--gap);
-		flex-wrap: var(--wrap);
+		flex-direction: var(--svelte-ui-radio-group-flex-direction);
+		gap: var(--svelte-ui-radio-group-gap);
+		flex-wrap: var(--svelte-ui-radio-group-wrap);
 	}
 
 	.radio-group__option {
-		min-width: var(--min-option-width);
+		min-width: var(--svelte-ui-radio-group-min-option-width);
 	}
 </style>
