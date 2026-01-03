@@ -44,7 +44,7 @@
 </script>
 
 <ul
-	class="checkbox-group"
+	class="radio-group"
 	style="--flex-direction: {direction === 'vertical' ? 'column' : 'row'};
     --gap: {gapStyle};
     --wrap: {wrap ? 'wrap' : 'none'};
@@ -52,7 +52,7 @@
     "
 >
 	{#each options as option (option.value)}
-		<li class="checkbox-group__option">
+		<li class="radio-group__option">
 			<Radio {name} bind:currentValue={value} value={option.value} onchange={handleChange}>
 				{option.label}
 			</Radio>
@@ -61,14 +61,14 @@
 </ul>
 
 <style>
-	.checkbox-group {
+	.radio-group {
 		display: flex;
 		flex-direction: var(--flex-direction);
 		gap: var(--gap);
 		flex-wrap: var(--wrap);
 	}
 
-	.checkbox-group__option {
+	.radio-group__option {
 		min-width: var(--min-option-width);
 	}
 </style>
