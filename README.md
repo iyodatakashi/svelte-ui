@@ -346,6 +346,15 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
 
+### v0.0.3
+
+- Improved text vertical alignment in Button, Fab, TabItem, Checkbox, and Radio components using `text-box-trim`
+- Text labels now appear more visually centered within their containers
+
+### v0.0.2
+
+(Previous release notes...)
+
 ### v0.0.1
 
 - Initial release
