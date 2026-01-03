@@ -14,6 +14,14 @@
 		gap = '0',
 		wrap = false,
 		minOptionWidth,
+		size = 'medium',
+
+		// 状態/動作
+		disabled = false,
+		required = false,
+
+		// ARIA/アクセシビリティ
+		reducedMotion = false,
 
 		// 入力イベント
 		onchange = () => {} // No params for type inference
@@ -28,6 +36,14 @@
 		gap?: string | number;
 		wrap?: boolean;
 		minOptionWidth?: string | number;
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
 
 		// 入力イベント
 		onchange?: (value: OptionValue) => void;
@@ -53,7 +69,16 @@
 >
 	{#each options as option (option.value)}
 		<li class="radio-group__option">
-			<Radio {name} bind:currentValue={value} value={option.value} onchange={handleChange}>
+			<Radio
+				{name}
+				bind:currentValue={value}
+				value={option.value}
+				{size}
+				{disabled}
+				{required}
+				{reducedMotion}
+				onchange={handleChange}
+			>
 				{option.label}
 			</Radio>
 		</li>

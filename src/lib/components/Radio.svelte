@@ -26,6 +26,8 @@
 		// 状態/動作
 		disabled = false,
 		required = false,
+
+		// ARIA/アクセシビリティ
 		reducedMotion = false,
 
 		// 入力イベント
@@ -85,6 +87,8 @@
 		// 状態/動作
 		disabled?: boolean;
 		required?: boolean;
+
+		// ARIA/アクセシビリティ
 		reducedMotion?: boolean;
 
 		// 入力イベント

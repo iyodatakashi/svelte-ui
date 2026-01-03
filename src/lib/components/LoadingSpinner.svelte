@@ -13,6 +13,8 @@
 
 		// 状態/動作
 		speed = 1,
+
+		// ARIA/アクセシビリティ
 		reducedMotion = false
 	}: {
 		// スタイル/レイアウト
@@ -22,6 +24,8 @@
 
 		// 状態/動作
 		speed?: number;
+
+		// ARIA/アクセシビリティ
 		reducedMotion?: boolean;
 	} = $props();
 

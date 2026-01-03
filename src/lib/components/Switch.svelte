@@ -24,6 +24,8 @@
 		// 状態/動作
 		disabled = false,
 		required = false,
+
+		// ARIA/アクセシビリティ
 		reducedMotion = false,
 
 		// フォーカスイベント
@@ -59,32 +61,30 @@
 		onpointermove = () => {}, // No params for type inference
 		onpointercancel = () => {}, // No params for type inference
 
-		// 変更イベント
+		// 入力イベント
 		onchange = (value: boolean) => {},
 
 		// その他
 		...restProps
 	}: {
+		// Snippet
+		children?: Snippet;
+
 		// 基本プロパティ
 		value?: boolean;
-
-		// ラベル
-		children?: Snippet;
 
 		// HTML属性系
 		id?: string;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
-		// サイズ
+		// スタイル/レイアウト
 		size?: 'small' | 'medium' | 'large';
 
-		// 無効状態
+		// 状態/動作
 		disabled?: boolean;
-
-		// 必須項目
 		required?: boolean;
 
-		// アニメーション無効化
+		// ARIA/アクセシビリティ
 		reducedMotion?: boolean;
 
 		// フォーカスイベント
@@ -120,7 +120,7 @@
 		onpointermove?: Function; // No params for type inference
 		onpointercancel?: Function; // No params for type inference
 
-		// 変更イベント
+		// 入力イベント
 		onchange?: (value: boolean) => void;
 
 		// その他

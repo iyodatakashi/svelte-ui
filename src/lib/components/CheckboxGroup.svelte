@@ -14,6 +14,14 @@
 		gap = '0',
 		wrap = false,
 		minOptionWidth,
+		size = 'medium',
+
+		// 状態/動作
+		disabled = false,
+		required = false,
+
+		// ARIA/アクセシビリティ
+		reducedMotion = false,
 
 		// 入力イベント
 		onchange = () => {} // No params for type inference
@@ -27,6 +35,14 @@
 		gap?: string | number;
 		wrap?: boolean;
 		minOptionWidth?: string | number;
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
 
 		// 入力イベント
 		onchange?: (value: OptionValue[]) => void;
@@ -60,7 +76,14 @@
 	{#each options as option (option.value)}
 		{#if localValues[option.value] !== undefined}
 			<li class="checkbox-group__option">
-				<Checkbox bind:value={localValues[option.value]} onchange={handleChange}>
+				<Checkbox
+					bind:value={localValues[option.value]}
+					{size}
+					{disabled}
+					{required}
+					{reducedMotion}
+					onchange={handleChange}
+				>
 					{option.label}
 				</Checkbox>
 			</li>

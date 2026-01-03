@@ -47,12 +47,12 @@
 		disabled = false,
 		loading = false,
 		pressed = false,
-		reducedMotion = false,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaDescribedby,
 		ariaPressed,
+		reducedMotion = false,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -125,12 +125,12 @@
 		disabled?: boolean;
 		loading?: boolean;
 		pressed?: boolean;
-		reducedMotion?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel: string;
 		ariaDescribedby?: string;
 		ariaPressed?: boolean;
+		reducedMotion?: boolean;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference
