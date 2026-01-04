@@ -230,6 +230,11 @@
 			value = dataTransfer.files;
 			onchange(value);
 		}
+
+		// input要素をリセット
+		if (fileInputRef) {
+			fileInputRef.value = '';
+		}
 	};
 
 	export const reset = () => {
