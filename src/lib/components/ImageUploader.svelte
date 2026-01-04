@@ -251,6 +251,11 @@
 			value = dataTransfer.files;
 			onchange(value);
 		}
+
+		// input要素をリセット
+		if (fileInputRef) {
+			fileInputRef.value = '';
+		}
 	};
 
 	const removeFile = (index: number) => {
@@ -329,9 +334,11 @@
 	data-testid="image-uploader"
 >
 	{#if multiple}
-		{#each value as file, index}
-			{@render preview(file, index)}
-		{/each}
+		{#if value}
+			{#each value as file, index}
+				{@render preview(file, index)}
+			{/each}
+		{/if}
 	{/if}
 	<button
 		bind:this={dropAreaRef}
