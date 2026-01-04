@@ -252,8 +252,8 @@
 	class:file-uploader--hover={isHover}
 	class:rounded
 	style="
-		--file-uploader-width: {widthStyle};
-		--file-uploader-height: {height}px
+		--svelte-ui-file-uploader-width: {widthStyle};
+		--svelte-ui-file-uploader-height: {height}px
 	"
 	data-testid="file-uploader"
 	onclick={handleClick}
@@ -365,8 +365,8 @@
 		align-items: center;
 		gap: 16px;
 		position: relative;
-		width: var(--file-uploader-width, 100%);
-		height: var(--file-uploader-height);
+		width: var(--svelte-ui-file-uploader-width, 100%);
+		height: var(--svelte-ui-file-uploader-height);
 		min-height: 100px;
 		padding: 16px;
 		background-color: var(--svelte-ui-file-uploader-bg);

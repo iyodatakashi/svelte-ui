@@ -321,8 +321,8 @@
 	class:image-uploader--rounded={rounded}
 	class:image-uploader--adaptive={adaptiveSize}
 	style="
-			--image-uploader-button-width: {previewWidthStyle};
-			--image-uploader-button-height: {previewHeightStyle};
+			--svelte-ui-image-uploader-button-width: {previewWidthStyle};
+			--svelte-ui-image-uploader-button-height: {previewHeightStyle};
 		"
 	data-testid="image-uploader"
 >
@@ -427,8 +427,8 @@
 		align-items: center;
 		position: relative;
 		max-width: 100%;
-		min-width: var(--image-uploader-button-width);
-		min-height: var(--image-uploader-button-height);
+		min-width: var(--svelte-ui-image-uploader-button-width);
+		min-height: var(--svelte-ui-image-uploader-button-height);
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
 		border-radius: var(--svelte-ui-border-radius);

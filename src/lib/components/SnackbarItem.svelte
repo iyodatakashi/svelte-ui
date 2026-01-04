@@ -112,7 +112,7 @@
 				);
 			const requiredMargin = -containerHeight;
 
-			snackbarRef.style.setProperty('--collapse-margin', `${requiredMargin}px`);
+			snackbarRef.style.setProperty('--svelte-ui-snackbar-item-collapse-margin', `${requiredMargin}px`);
 
 			// CSSカスタムプロパティが確実に設定されるまで少し待つ
 			requestAnimationFrame(() => {
@@ -219,7 +219,7 @@
 		}
 		100% {
 			opacity: 0;
-			margin-bottom: var(--collapse-margin);
+			margin-bottom: var(--svelte-ui-snackbar-item-collapse-margin);
 		}
 	}
 
@@ -230,7 +230,7 @@
 		}
 		100% {
 			opacity: 0;
-			margin-top: var(--collapse-margin);
+			margin-top: var(--svelte-ui-snackbar-item-collapse-margin);
 		}
 	}
 
