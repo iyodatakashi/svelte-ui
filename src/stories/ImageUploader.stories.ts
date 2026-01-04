@@ -89,6 +89,32 @@ const meta: Meta<ImageUploaderArgs> = {
 			control: 'text',
 			description: 'Icon name to display'
 		},
+		iconSize: {
+			control: 'number',
+			description: 'Icon size in pixels'
+		},
+		iconFilled: {
+			control: 'boolean',
+			description: 'Whether the icon is filled'
+		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'Icon grade'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'Icon optical size'
+		},
+		iconVariant: {
+			control: 'select',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Icon variant'
+		},
 		placeholder: {
 			control: 'text',
 			description: 'Placeholder text (supports HTML)'

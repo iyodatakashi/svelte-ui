@@ -80,6 +80,28 @@ const meta: Meta<FileUploaderArgs> = {
 			control: 'text',
 			description: 'アイコン名'
 		},
+		iconFilled: {
+			control: 'boolean',
+			description: 'アイコンが塗りつぶされているか'
+		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'アイコンの太さ'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'アイコンのグレード'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'アイコンのオプティカルサイズ'
+		},
+		iconVariant: {
+			control: 'select',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'アイコンのバリアント'
+		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',

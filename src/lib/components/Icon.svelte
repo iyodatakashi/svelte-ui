@@ -111,11 +111,9 @@
 
 <style>
 	.material-symbols-outlined,
-	.material-symbols-filled,
 	.material-symbols-rounded,
 	.material-symbols-sharp {
 		display: block;
-		font-family: 'Material Symbols Outlined';
 		font-size: inherit;
 		color: inherit;
 		line-height: inherit;
@@ -127,6 +125,18 @@
 		transition-property: color, transform;
 		transition-duration: var(--svelte-ui-transition-duration);
 		transition-timing-function: ease;
+	}
+
+	.material-symbols-outlined {
+		font-family: 'Material Symbols Outlined';
+	}
+
+	.material-symbols-rounded {
+		font-family: 'Material Symbols Rounded';
+	}
+
+	.material-symbols-sharp {
+		font-family: 'Material Symbols Sharp';
 	}
 
 	/* font-variation-settings are controlled via inline styles for dynamic props */
