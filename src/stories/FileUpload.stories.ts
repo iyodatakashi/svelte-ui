@@ -1,8 +1,9 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import FileUploader from '../lib/components/FileUploader.svelte';
+import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '../lib/types/icon';
 
 interface FileUploaderArgs {
-	files?: FileList | undefined;
+	value: FileList | undefined;
 	multiple?: boolean;
 	maxFileSize?: number;
 	placeholder?: string;
@@ -12,10 +13,10 @@ interface FileUploaderArgs {
 	rounded?: boolean;
 	icon?: string;
 	iconFilled?: boolean;
-	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-	iconGrade?: number;
-	iconOpticalSize?: number | null;
-	iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+	iconWeight?: IconWeight;
+	iconGrade?: IconGrade;
+	iconOpticalSize?: IconOpticalSize;
+	iconVariant?: IconVariant;
 	// 新しいイベントハンドラ
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
@@ -47,7 +48,7 @@ const meta: Meta<FileUploaderArgs> = {
 			control: 'text',
 			description: '受け入れるファイルタイプ'
 		},
-		files: {
+		value: {
 			control: false,
 			description: '選択されたファイルのリスト'
 		},
@@ -68,7 +69,7 @@ const meta: Meta<FileUploaderArgs> = {
 			description: 'コンポーネントの幅（数値またはCSS単位付きの文字列）'
 		},
 		height: {
-			control: 'number',
+			control: 'text',
 			description: 'コンポーネントの高さ（px）'
 		},
 		rounded: {

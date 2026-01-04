@@ -1,18 +1,23 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import ImageUploader from '../lib/components/ImageUploader.svelte';
+import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '../lib/types/icon';
 
 interface ImageUploaderArgs {
-	files?: FileList;
+	value: FileList | undefined;
 	accept?: string;
 	multiple?: boolean;
 	maxFileSize?: number;
 	width?: string | number;
 	height?: string | number;
-	maxWidth?: string | number;
-	maxHeight?: string | number;
 	rounded?: boolean;
 	adaptiveSize?: boolean;
 	icon?: string;
+	iconSize?: number;
+	iconFilled?: boolean;
+	iconWeight?: IconWeight;
+	iconGrade?: IconGrade;
+	iconOpticalSize?: IconOpticalSize;
+	iconVariant?: IconVariant;
 	placeholder?: string;
 	// 新しいイベントハンドラ
 	onfocus?: (event: FocusEvent) => void;
@@ -41,7 +46,7 @@ const meta: Meta<ImageUploaderArgs> = {
 	},
 	tags: ['autodocs'],
 	argTypes: {
-		files: {
+		value: {
 			control: false,
 			description: 'Selected files (bindable)'
 		},
@@ -64,14 +69,6 @@ const meta: Meta<ImageUploaderArgs> = {
 		height: {
 			control: 'text',
 			description: 'Button and preview height (default: 120px)'
-		},
-		maxWidth: {
-			control: 'text',
-			description: 'Maximum width for adaptive size mode'
-		},
-		maxHeight: {
-			control: 'text',
-			description: 'Maximum height for adaptive size mode'
 		},
 		rounded: {
 			control: 'boolean',
