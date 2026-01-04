@@ -15,6 +15,10 @@ interface FabArgs {
 	loading?: boolean;
 	reducedMotion?: boolean;
 	iconFilled?: boolean;
+	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
+	iconGrade?: number;
+	iconOpticalSize?: number | null;
+	iconVariant?: 'outlined' | 'rounded' | 'sharp';
 	ariaLabel?: string;
 	ariaDescribedby?: string;
 	onclick?: (event: MouseEvent) => void;
@@ -91,6 +95,28 @@ const meta: Meta<FabArgs> = {
 		shadow: {
 			control: 'boolean',
 			description: 'Whether to show drop shadow'
+		},
+		iconFilled: {
+			control: 'boolean',
+			description: 'Whether the icon should be filled'
+		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'Icon grade'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'Icon optical size'
+		},
+		iconVariant: {
+			control: 'select',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Icon variant'
 		},
 		// 新しいイベントハンドラのargTypes
 		onclick: {

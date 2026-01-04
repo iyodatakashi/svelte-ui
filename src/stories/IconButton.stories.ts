@@ -17,6 +17,8 @@ interface IconButtonArgs {
 	iconFilled?: boolean;
 	iconVariant?: 'outlined' | 'rounded' | 'sharp';
 	iconWeight?: number;
+	iconGrade?: number;
+	iconOpticalSize?: number;
 	customStyle?: string;
 	rounded?: boolean;
 	pressed?: boolean;
@@ -112,6 +114,19 @@ const meta: Meta<IconButtonArgs> = {
 			control: 'select',
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant style'
+		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'Icon grade'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'Icon optical size'
 		},
 		hasBadge: {
 			control: 'boolean',

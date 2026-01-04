@@ -114,6 +114,24 @@ const meta: Meta<ButtonArgs> = {
 			control: 'boolean',
 			description: 'Whether the icon should be filled'
 		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'Icon grade'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'Icon optical size'
+		},
+		iconVariant: {
+			control: 'select',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Icon variant'
+		},
 		reducedMotion: {
 			control: 'boolean',
 			description: 'Disable animations for reduced motion'
