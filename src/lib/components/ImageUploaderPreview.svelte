@@ -120,6 +120,7 @@
 
 	.image-uploader-preview--adaptive .image-uploader-preview__image {
 		object-fit: contain;
+		height: auto;
 	}
 
 	.image-uploader-preview::after {
