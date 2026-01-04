@@ -11,7 +11,7 @@ interface ImageUploaderArgs {
 	height?: string | number;
 	rounded?: boolean;
 	previewStyle?: 'plain' | 'framed';
-	adaptiveSize?: boolean;
+	previewAdaptive?: boolean;
 	icon?: string;
 	iconSize?: number;
 	iconFilled?: boolean;
@@ -80,10 +80,10 @@ const meta: Meta<ImageUploaderArgs> = {
 			options: ['plain', 'framed'],
 			description: 'Preview style: plain (no border/radius) or framed (default)'
 		},
-		adaptiveSize: {
+		previewAdaptive: {
 			control: 'boolean',
 			description:
-				'Adjust preview size based on image aspect ratio. Width uses specified value, height adjusts to maintain aspect ratio. If image width is smaller than specified width, uses original image width.'
+				'Enable adaptive preview sizing based on image aspect ratio. Width uses specified value, height adjusts to maintain aspect ratio. If image width is smaller than specified width, uses original image width.'
 		},
 		icon: {
 			control: 'text',
@@ -324,6 +324,6 @@ export const AdaptiveSizeTest: Story = {
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024,
-		adaptiveSize: true
+		previewAdaptive: true
 	}
 };

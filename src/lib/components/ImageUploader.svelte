@@ -40,7 +40,7 @@
 		removeFileAriaLabel = t('imageUploader.removeFile'),
 
 		// 状態/動作
-		adaptiveSize = false,
+		previewAdaptive = false,
 
 		// 入力イベント
 		onchange = () => {}, // No params for type inference
@@ -80,7 +80,7 @@
 		height?: string | number;
 		rounded?: boolean;
 		previewStyle?: 'plain' | 'framed';
-		adaptiveSize?: boolean;
+		previewAdaptive?: boolean;
 
 		// アイコン系
 		icon?: string;
@@ -308,7 +308,7 @@
 		{file}
 		{width}
 		{height}
-		{adaptiveSize}
+		{previewAdaptive}
 		{rounded}
 		{previewStyle}
 		id={id ? `${id}-preview-${index}` : undefined}
@@ -321,7 +321,7 @@
 	class="image-uploader"
 	class:image-uploader--multiple={multiple}
 	class:image-uploader--rounded={rounded}
-	class:image-uploader--adaptive={adaptiveSize}
+	class:image-uploader--adaptive={previewAdaptive}
 	style="
 			--svelte-ui-image-uploader-button-width: {previewWidthStyle};
 			--svelte-ui-image-uploader-button-height: {previewHeightStyle};

@@ -13,7 +13,7 @@
 		// スタイル/レイアウト
 		width = '120px',
 		height = '120px',
-		adaptiveSize = false,
+		previewAdaptive = false,
 		rounded = false,
 		previewStyle = 'framed',
 
@@ -32,7 +32,7 @@
 		// スタイル/レイアウト
 		width?: string | number;
 		height?: string | number;
-		adaptiveSize?: boolean;
+		previewAdaptive?: boolean;
 		rounded?: boolean;
 		previewStyle?: 'plain' | 'framed';
 
@@ -67,9 +67,9 @@
 		img.src = getImageUrl(file);
 	};
 
-	// adaptiveSizeによる分岐を最初に行う
+	// previewAdaptiveによる分岐を最初に行う
 	const imageSizeStyle = $derived.by(() => {
-		if (adaptiveSize) {
+		if (previewAdaptive) {
 			return `
 			  width: 100%;
         height: auto;
@@ -94,7 +94,7 @@
 	{id}
 	class="image-uploader-preview"
 	class:image-uploader-preview--rounded={rounded}
-	class:image-uploader-preview--adaptive={adaptiveSize}
+	class:image-uploader-preview--adaptive={previewAdaptive}
 	class:image-uploader-preview--plain={previewStyle === 'plain'}
 	style={imageSizeStyle}
 >
