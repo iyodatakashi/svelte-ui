@@ -526,3 +526,4 @@ snackbar.warning("テスト", { color: "#8B5CF6", textColor: "#FFFFFF" });
 		);
 	}
 };
+

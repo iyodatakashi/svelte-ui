@@ -43,13 +43,13 @@
 <div
 	class="loading-spinner"
 	class:spinner--no-motion={reducedMotion}
-	style:--grow-duration="{growDuration}s"
-	style:--rotate-duration="{rotateDuration}s"
-	style:--spinner-size="{size}px"
-	style:--spinner-color={color}
-	style:--circumference={circumference}
-	style:--half-circumference={halfCircumference}
-	style:--negative-half-circumference={negativeHalfCircumference}
+	style:--svelte-ui-loading-spinner-grow-duration="{growDuration}s"
+	style:--svelte-ui-loading-spinner-rotate-duration="{rotateDuration}s"
+	style:--svelte-ui-loading-spinner-size="{size}px"
+	style:--svelte-ui-loading-spinner-color={color}
+	style:--svelte-ui-loading-spinner-circumference={circumference}
+	style:--svelte-ui-loading-spinner-half-circumference={halfCircumference}
+	style:--svelte-ui-loading-spinner-negative-half-circumference={negativeHalfCircumference}
 	data-testid="loading-spinner"
 >
 	<svg viewBox="0 0 {size} {size}" width={size} height={size}>
@@ -59,8 +59,8 @@
 
 <style>
 	.loading-spinner {
-		width: var(--spinner-size, var(--svelte-ui-loadingspinner-size));
-		height: var(--spinner-size, var(--svelte-ui-loadingspinner-size));
+		width: var(--svelte-ui-loading-spinner-size, var(--svelte-ui-loadingspinner-size));
+		height: var(--svelte-ui-loading-spinner-size, var(--svelte-ui-loadingspinner-size));
 		line-height: 1px;
 	}
 
@@ -68,14 +68,14 @@
 		width: 100%;
 		height: 100%;
 		transform: rotate(-90deg);
-		animation: rotate var(--rotate-duration, 0.8s) linear infinite;
+		animation: rotate var(--svelte-ui-loading-spinner-rotate-duration, 0.8s) linear infinite;
 	}
 
 	.loading-spinner circle {
 		fill: none;
-		stroke: var(--spinner-color, var(--svelte-ui-loadingspinner-color));
+		stroke: var(--svelte-ui-loading-spinner-color, var(--svelte-ui-loadingspinner-color));
 		stroke-linecap: butt;
-		animation: complex-grow var(--grow-duration, 1.6s) linear infinite;
+		animation: complex-grow var(--svelte-ui-loading-spinner-grow-duration, 1.6s) linear infinite;
 		transform-origin: center;
 	}
 
@@ -91,16 +91,17 @@
 	@keyframes complex-grow {
 		/* 負の値も別のCSS変数として定義 */
 		0% {
-			stroke-dasharray: 0 var(--circumference);
-			stroke-dashoffset: var(--negative-half-circumference);
+			stroke-dasharray: 0 var(--svelte-ui-loading-spinner-circumference);
+			stroke-dashoffset: var(--svelte-ui-loading-spinner-negative-half-circumference);
 		}
 		50% {
-			stroke-dasharray: var(--half-circumference) var(--circumference);
+			stroke-dasharray: var(--svelte-ui-loading-spinner-half-circumference)
+				var(--svelte-ui-loading-spinner-circumference);
 			stroke-dashoffset: 0;
 		}
 		100% {
-			stroke-dasharray: 0 var(--circumference);
-			stroke-dashoffset: var(--negative-half-circumference);
+			stroke-dasharray: 0 var(--svelte-ui-loading-spinner-circumference);
+			stroke-dashoffset: var(--svelte-ui-loading-spinner-negative-half-circumference);
 		}
 	}
 

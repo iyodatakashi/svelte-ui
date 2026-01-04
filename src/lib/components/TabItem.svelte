@@ -52,7 +52,7 @@
 	href={tabItem.href}
 	class="tab-item"
 	class:tab-item--selected={isSelected}
-	style="--text-color: {textColor}; --selected-text-color: {selectedTextColor}; --selected-bar-color: {selectedBarColor}"
+	style="--svelte-ui-tab-item-text-color: {textColor}; --svelte-ui-tab-item-selected-text-color: {selectedTextColor}; --svelte-ui-tab-item-selected-bar-color: {selectedBarColor}"
 	role="tab"
 	aria-selected={isSelected}
 	tabindex={0}
@@ -84,7 +84,7 @@
 		gap: 8px;
 		position: relative;
 		padding: 8px 16px;
-		color: var(--text-color);
+		color: var(--svelte-ui-tab-item-text-color);
 		white-space: nowrap;
 		text-decoration: none;
 		transition-property: background-color, color, outline;
@@ -125,7 +125,7 @@
 		bottom: 0;
 		width: calc(100% - 32px);
 		height: 4px;
-		background-color: var(--selected-bar-color);
+		background-color: var(--svelte-ui-tab-item-selected-bar-color);
 		border-radius: 3px 3px 0 0;
 		opacity: 0;
 		transition-property: opacity;
@@ -133,7 +133,7 @@
 	}
 
 	.tab-item--selected {
-		color: var(--selected-text-color);
+		color: var(--svelte-ui-tab-item-selected-text-color);
 		background-color: transparent;
 	}
 
