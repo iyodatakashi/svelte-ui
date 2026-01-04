@@ -3,27 +3,45 @@
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 
-	type ImagePreviewProps = {
-		file: File;
-		width?: string | number;
-		height?: string | number;
-		adaptiveSize?: boolean;
-		rounded?: boolean;
-		removeFileAriaLabel?: string;
-		onRemove: () => void;
-		id?: string;
-	};
-
 	let {
+		// 基本プロパティ
 		file,
+
+		// HTML属性系
+		id,
+
+		// スタイル/レイアウト
 		width = '120px',
 		height = '120px',
 		adaptiveSize = false,
 		rounded = false,
+		previewStyle = 'framed',
+
+		// ARIA/アクセシビリティ
 		removeFileAriaLabel,
-		onRemove,
-		id
-	}: ImagePreviewProps = $props();
+
+		// 入力イベント
+		onRemove
+	}: {
+		// 基本プロパティ
+		file: File;
+
+		// HTML属性系
+		id?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		height?: string | number;
+		adaptiveSize?: boolean;
+		rounded?: boolean;
+		previewStyle?: 'plain' | 'framed';
+
+		// ARIA/アクセシビリティ
+		removeFileAriaLabel?: string;
+
+		// 入力イベント
+		onRemove: () => void;
+	} = $props();
 
 	let imageSizes = $state<Record<string, { width: number; height: number }>>({});
 
@@ -73,9 +91,11 @@
 </script>
 
 <div
+	{id}
 	class="image-uploader-preview"
 	class:image-uploader-preview--rounded={rounded}
 	class:image-uploader-preview--adaptive={adaptiveSize}
+	class:image-uploader-preview--plain={previewStyle === 'plain'}
 	style={imageSizeStyle}
 >
 	<img
@@ -137,6 +157,14 @@
 	.image-uploader-preview--rounded::after,
 	.image-uploader-preview__image--rounded {
 		border-radius: var(--svelte-ui-image-uploader-preview-border-radius-rounded);
+	}
+
+	.image-uploader-preview--plain::after {
+		display: none;
+	}
+
+	.image-uploader-preview--plain .image-uploader-preview__image {
+		border-radius: 0;
 	}
 
 	.image-uploader-preview__delete {

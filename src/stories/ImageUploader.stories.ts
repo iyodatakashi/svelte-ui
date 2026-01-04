@@ -10,6 +10,7 @@ interface ImageUploaderArgs {
 	width?: string | number;
 	height?: string | number;
 	rounded?: boolean;
+	previewStyle?: 'plain' | 'framed';
 	adaptiveSize?: boolean;
 	icon?: string;
 	iconSize?: number;
@@ -73,6 +74,11 @@ const meta: Meta<ImageUploaderArgs> = {
 		rounded: {
 			control: 'boolean',
 			description: 'Make the component circular'
+		},
+		previewStyle: {
+			control: 'select',
+			options: ['plain', 'framed'],
+			description: 'Preview style: plain (no border/radius) or framed (default)'
 		},
 		adaptiveSize: {
 			control: 'boolean',

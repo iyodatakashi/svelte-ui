@@ -27,6 +27,7 @@
 		width = '120px',
 		height = '120px',
 		rounded = false,
+		previewStyle = 'framed',
 
 		// アイコン系
 		icon = 'add_photo_alternate',
@@ -75,10 +76,10 @@
 		accept?: string;
 
 		// スタイル/レイアウト
-
 		width?: string | number;
 		height?: string | number;
 		rounded?: boolean;
+		previewStyle?: 'plain' | 'framed';
 		adaptiveSize?: boolean;
 
 		// アイコン系
@@ -309,6 +310,7 @@
 		{height}
 		{adaptiveSize}
 		{rounded}
+		{previewStyle}
 		id={id ? `${id}-preview-${index}` : undefined}
 		{removeFileAriaLabel}
 		onRemove={() => removeFile(index)}
