@@ -2,7 +2,7 @@
 	"name": "@14ch/svelte-ui",
 	"description": "Modern Svelte UI components library with TypeScript support",
 	"private": false,
-	"version": "0.0.3",
+	"version": "0.0.4",
 	"type": "module",
 	"keywords": [
 		"svelte",
@@ -57,7 +57,8 @@
 		"test:browser": "vitest --config vitest.config.ts --run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"prepublishOnly": "npm run package"
+		"prepublishOnly": "npm run package",
+		"publish": "npm publish"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^4.1.1",
