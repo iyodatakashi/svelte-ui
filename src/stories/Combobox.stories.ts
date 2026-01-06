@@ -23,10 +23,9 @@ const meta = {
 			control: { type: 'object' },
 			description: '選択肢の配列'
 		},
-		variant: {
-			control: { type: 'select' },
-			options: ['default', 'inline'],
-			description: 'デザインバリアント'
+		inline: {
+			control: { type: 'boolean' },
+			description: 'インライン表示'
 		},
 		focusStyle: {
 			control: { type: 'select' },
@@ -385,7 +384,7 @@ export const Inline = {
 	render: () => ({
 		Component: Combobox,
 		props: {
-			variant: 'inline',
+			inline: true,
 			options: countryOptions,
 			value: '日本',
 			placeholder: 'クリックして編集',
@@ -399,7 +398,7 @@ export const InlineEmpty = {
 	render: () => ({
 		Component: Combobox,
 		props: {
-			variant: 'inline',
+			inline: true,
 			options: colorOptions,
 			value: '',
 			placeholder: '色を選択してください',

@@ -4,7 +4,7 @@ import Datepicker from '../lib/components/Datepicker.svelte';
 // 型安全性のための明示的な型定義
 interface DatepickerArgs {
 	value: Date | { start: Date; end: Date } | undefined;
-	variant?: 'default' | 'inline';
+	inline?: boolean;
 	format?: string;
 	nullString?: string;
 	mode?: 'single' | 'range';
@@ -64,10 +64,9 @@ const meta: Meta<DatepickerArgs> = {
 			control: false,
 			description: '選択された日付（単一またはstartとendを持つオブジェクト）'
 		},
-		variant: {
-			control: 'select',
-			options: ['default', 'inline'],
-			description: '表示バリアント'
+		inline: {
+			control: 'boolean',
+			description: 'インライン表示'
 		},
 		format: {
 			control: 'text',
@@ -301,7 +300,7 @@ export const WithIconAndDateRange: Story = {
 export const InlineVariant: Story = {
 	args: {
 		value: new Date(),
-		variant: 'inline',
+		inline: true,
 		format: 'YYYY/M/D（ddd）',
 		nullString: '',
 		mode: 'single',

@@ -22,7 +22,7 @@
 
 		// スタイル/レイアウト
 		size = null,
-		variant = 'default',
+		inline = false,
 		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
@@ -84,7 +84,7 @@
 
 		// スタイル/レイアウト
 		size?: number | null;
-		variant?: 'default' | 'inline';
+		inline?: boolean;
 		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
@@ -275,7 +275,7 @@
 <div
 	class="select
 select--focus-{focusStyle}"
-	class:select--inline={variant === 'inline'}
+	class:select--inline={inline}
 	class:select--full-width={fullWidth}
 	class:select--disabled={disabled}
 	class:select--focused={isFocused}

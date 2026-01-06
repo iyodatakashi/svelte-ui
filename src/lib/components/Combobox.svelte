@@ -24,11 +24,11 @@
 
 		// スタイル/レイアウト
 		customStyle = '',
-		variant = 'default',
+		inline = false,
 		focusStyle = 'outline',
 		placeholder = '選択してください',
 		fullWidth = false,
-		minWidth = variant === 'inline' ? null : 120,
+		minWidth = inline ? null : 120,
 		maxWidth = null,
 		rounded = false,
 
@@ -92,7 +92,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: string;
-		variant?: 'default' | 'inline';
+		inline?: boolean;
 		focusStyle?: 'background' | 'outline' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -412,7 +412,7 @@
 		{name}
 		id={inputId}
 		{customStyle}
-		{variant}
+		{inline}
 		{focusStyle}
 		{placeholder}
 		{fullWidth}
@@ -420,7 +420,7 @@
 		{readonly}
 		{required}
 		{clearable}
-		rightIcon={variant !== 'inline' ? 'arrow_drop_down' : undefined}
+		rightIcon={inline ? undefined : 'arrow_drop_down'}
 		{tabindex}
 		{maxlength}
 		{rounded}

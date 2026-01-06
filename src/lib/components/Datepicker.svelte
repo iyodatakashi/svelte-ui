@@ -36,7 +36,7 @@
 		inputAttributes,
 
 		// スタイル/レイアウト
-		variant = 'default',
+		inline = false,
 		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
@@ -109,7 +109,7 @@
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
-		variant?: 'default' | 'inline';
+		inline?: boolean;
 		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
@@ -502,7 +502,7 @@
 	<Input
 		bind:this={inputRef}
 		value={displayValue}
-		{variant}
+		{inline}
 		{focusStyle}
 		{fullWidth}
 		{rounded}

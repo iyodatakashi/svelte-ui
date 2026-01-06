@@ -22,10 +22,9 @@ const meta = {
 			control: { type: 'object' },
 			description: '選択肢の配列'
 		},
-		variant: {
-			control: { type: 'select' },
-			options: ['default', 'inline'],
-			description: 'バリアント'
+		inline: {
+			control: { type: 'boolean' },
+			description: 'インライン表示'
 		},
 		focusStyle: {
 			control: { type: 'select' },
@@ -187,7 +186,7 @@ export const Inline = {
 	args: {
 		value: '',
 		options: basicOptions,
-		variant: 'inline',
+		inline: true,
 		placeholder: '選択してください'
 	}
 };
