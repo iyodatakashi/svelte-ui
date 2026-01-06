@@ -94,7 +94,11 @@
 
 	@media (hover: hover) {
 		.tab-item:hover:not(.tab-item--selected) {
-			background-color: var(--svelte-ui-hover-overlay);
+			color: var(--svelte-ui-tab-item-selected-text-color);
+		}
+
+		.tab-item:hover:not(.tab-item--selected)::before {
+			opacity: 1;
 		}
 	}
 
@@ -112,7 +116,11 @@
 		}
 
 		.tab-item:focus:not(.tab-item--selected) {
-			background-color: var(--svelte-ui-hover-overlay);
+			color: var(--svelte-ui-tab-item-selected-text-color);
+		}
+
+		.tab-item:focus:not(.tab-item--selected)::before {
+			opacity: 1;
 		}
 	}
 
