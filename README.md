@@ -346,6 +346,12 @@ MIT License - see the [LICENSE](LICENSE) file for details.
 
 ## Changelog
 
+### v0.0.5
+
+- Improved TabItem hover behavior: replaced background color with indicator bar opacity change
+- TabItem now shows selected text color and indicator bar on hover for better visual feedback
+- Breaking change: Replaced `variant` prop with `inline` prop in Combobox, Datepicker, and Select components
+
 ### v0.0.3
 
 - Improved text vertical alignment in Button, Fab, TabItem, Checkbox, and Radio components using `text-box-trim`
