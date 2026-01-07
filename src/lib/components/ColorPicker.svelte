@@ -72,7 +72,7 @@
 		...restProps
 	}: {
 		// 基本プロパティ
-		value?: string;
+		value: string;
 
 		// HTML属性系
 		id?: string;

@@ -71,7 +71,7 @@
 		...restProps
 	}: {
 		// 基本プロパティ
-		value?: number;
+		value: number;
 		name?: string;
 		id?: string;
 

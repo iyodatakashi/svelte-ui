@@ -61,7 +61,7 @@
 		onpointerleave = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
-		value: FileList | undefined;
+		value: FileList | null | undefined;
 		multiple?: boolean;
 		maxFileSize?: number;
 		placeholder?: string;
@@ -86,7 +86,7 @@
 		removeFileAriaLabel?: string;
 
 		// 入力イベント
-		onchange?: (value: FileList | null) => void;
+		onchange?: (value: FileList | null | undefined) => void;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference
@@ -187,7 +187,7 @@
 				dt.items.add(value[i]);
 			}
 		}
-		value = dt.files.length > 0 ? dt.files : undefined;
+		value = dt.files.length > 0 ? dt.files : null;
 	};
 
 	const validateFile = (file: File): boolean => {
@@ -240,7 +240,7 @@
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
-			value = undefined;
+			value = null;
 			errorMessage = '';
 		}
 	};

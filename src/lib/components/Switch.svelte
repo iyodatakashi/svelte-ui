@@ -71,7 +71,7 @@
 		children?: Snippet;
 
 		// 基本プロパティ
-		value?: boolean;
+		value: boolean;
 
 		// HTML属性系
 		id?: string;
