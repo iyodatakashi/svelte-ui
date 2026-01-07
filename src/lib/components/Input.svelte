@@ -28,6 +28,7 @@
 		step = null,
 		size = null,
 		autocomplete = null,
+		spellcheck = null,
 		inputAttributes,
 
 		// スタイル/レイアウト
@@ -109,7 +110,7 @@
 	}: {
 		// 基本プロパティ
 		name?: string;
-		value: string | number | undefined;
+		value: string | number;
 
 		// HTML属性系
 		id?: string | null;
@@ -122,6 +123,7 @@
 		step?: number | null;
 		size?: number | null;
 		autocomplete?: HTMLInputElement['autocomplete'] | null;
+		spellcheck?: boolean | null;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
@@ -212,8 +214,8 @@
 	const clear = (): void => {
 		if (disabled || readonly) return;
 		ref?.focus();
-		onchange?.(undefined);
-		value = undefined;
+		value = '';
+		onchange?.('');
 	};
 
 	export const focus = () => {
@@ -368,7 +370,6 @@
 	// $derived
 	// =========================================================================
 	const getDisplayValue = (): string => {
-		if (value === undefined) return '';
 		if (type === 'number' && typeof value === 'number') {
 			return value.toLocaleString();
 		}
@@ -425,6 +426,7 @@
 			{required}
 			{tabindex}
 			{size}
+			{spellcheck}
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}

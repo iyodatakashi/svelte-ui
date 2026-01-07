@@ -91,7 +91,7 @@
 	}: {
 		// 基本プロパティ
 		name?: string;
-		value: string | undefined;
+		value: string;
 		placeholder?: string;
 
 		// HTML属性系
@@ -177,9 +177,9 @@
 
 	const clear = (): void => {
 		if (disabled || readonly) return;
-		value = undefined;
+		value = '';
 		ref?.focus();
-		onchange?.(value);
+		onchange?.('');
 	};
 
 	// 外部からフォーカスを当てる（キャレットを先頭に移動）
@@ -334,7 +334,7 @@
 
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
-		if (typeof value === 'string' && value !== '') {
+		if (value !== '') {
 			let html = value
 				.replace(/ +/g, (match) => '&nbsp;'.repeat(match.length))
 				.replace(/\n/g, '<br />');
@@ -345,7 +345,7 @@
 			}
 			return html;
 		} else {
-			return value ?? '';
+			return '';
 		}
 	});
 </script>
