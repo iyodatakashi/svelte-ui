@@ -509,7 +509,7 @@
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;
 	--svelte-ui-colorpicker-text-padding-left: 40px;
-	--svelte-ui-colorpicker-trigger-border-radius: calc(var(--svelte-ui-border-radius) - 2px);
+	--svelte-ui-colorpicker-trigger-border-radius: 3px;
 	--svelte-ui-colorpicker-trigger-border-style: dashed;
 	--svelte-ui-colorpicker-trigger-border-width: 1px;
 	--svelte-ui-colorpicker-trigger-offset: 4px;
