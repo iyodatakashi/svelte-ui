@@ -494,7 +494,7 @@
 	}
 
 	.button__icon {
-		margin-left: -4px;
+		margin: -12px 0 -12px -4px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
