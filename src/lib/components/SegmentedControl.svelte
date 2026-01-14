@@ -473,6 +473,16 @@
 		border-radius: var(--svelte-ui-segmented-control-base-border-radius);
 		gap: var(--svelte-ui-segmented-control-gap);
 		box-sizing: border-box;
+		width: fit-content;
+		max-width: 100%;
+		overflow-x: auto;
+		overflow-y: visible;
+		-ms-overflow-style: none;
+		overscroll-behavior: contain;
+	}
+
+	.segmented-control::-webkit-scrollbar {
+		display: none;
 	}
 
 	.segmented-control--full-width {
