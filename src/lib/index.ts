@@ -46,4 +46,4 @@ export * from './utils/style';
 
 // Types
 export type { MenuItem } from './types/menuItem';
-export type { SegmentedControlItem } from './components/SegmentedControl.svelte';
+export type { SegmentedControlItem } from './types/segmentedControlItem';

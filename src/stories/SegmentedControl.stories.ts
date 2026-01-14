@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import SegmentedControl from '../lib/components/SegmentedControl.svelte';
-import type { SegmentedControlItem } from '../lib/components/SegmentedControl.svelte';
+import type { SegmentedControlItem } from '../lib/types/segmentedControlItem';
 
 // 型安全性のための明示的な型定義
 interface SegmentedControlArgs {
@@ -143,20 +143,13 @@ export const WithIcons: Story = {
 export const IconsOnly: Story = {
 	args: {
 		items: [
-			{ label: 'リスト', value: 'list', icon: 'view_list' },
-			{ label: 'グリッド', value: 'grid', icon: 'grid_view' },
-			{ label: '詳細', value: 'detail', icon: 'view_agenda' }
+			{ value: 'list', icon: 'view_list', ariaLabel: 'リスト表示' },
+			{ value: 'grid', icon: 'grid_view', ariaLabel: 'グリッド表示' },
+			{ value: 'detail', icon: 'view_agenda', ariaLabel: '詳細表示' }
 		],
 		value: 'list',
 		ariaLabel: '表示モード'
-	},
-	render: (args) => ({
-		Component: SegmentedControl,
-		props: {
-			...args,
-			items: args.items.map((item) => ({ ...item, label: '' }))
-		}
-	})
+	}
 };
 
 // Size variants

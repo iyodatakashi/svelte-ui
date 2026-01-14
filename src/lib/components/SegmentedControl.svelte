@@ -3,16 +3,7 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-
-	// =========================================================================
-	// Types
-	// =========================================================================
-	export type SegmentedControlItem = {
-		label: string;
-		value: string;
-		icon?: string;
-		disabled?: boolean;
-	};
+	import type { SegmentedControlItem } from '$lib/types/segmentedControlItem';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -450,6 +441,7 @@
 				class:segmented-control__label--selected={isSelected}
 				class:segmented-control__label--first={index === 0}
 				class:segmented-control__label--last={index === items.length - 1}
+				aria-label={item.ariaLabel || (item.label || undefined)}
 			>
 				{#if item.icon}
 					<span class="segmented-control__icon">
@@ -477,7 +469,7 @@
 		display: inline-flex;
 		position: relative;
 		padding: var(--svelte-ui-segmented-control-base-padding);
-		background-color: var(--svelte-ui-segmented-control-bg);
+		background-color: var(--svelte-ui-segmented-control-base-bg);
 		border-radius: var(--svelte-ui-segmented-control-base-border-radius);
 		gap: var(--svelte-ui-segmented-control-gap);
 		box-sizing: border-box;
@@ -541,21 +533,33 @@
 	}
 
 	.segmented-control--small .segmented-control__label {
-		height: var(--svelte-ui-segmented-control-height-sm);
+		height: var(--svelte-ui-segmented-control-button-height-sm);
 		font-size: var(--svelte-ui-segmented-control-font-size-sm);
-		padding: var(--svelte-ui-segmented-control-padding-sm);
+		padding: var(--svelte-ui-segmented-control-button-padding-sm);
+	}
+
+	.segmented-control--small .segmented-control__label:not(:has(.segmented-control__label-text)) {
+		width: var(--svelte-ui-segmented-control-button-height-sm);
 	}
 
 	.segmented-control--medium .segmented-control__label {
-		height: var(--svelte-ui-segmented-control-height);
+		height: var(--svelte-ui-segmented-control-button-height);
 		font-size: var(--svelte-ui-segmented-control-font-size);
-		padding: var(--svelte-ui-segmented-control-padding);
+		padding: var(--svelte-ui-segmented-control-button-padding);
+	}
+
+	.segmented-control--medium .segmented-control__label:not(:has(.segmented-control__label-text)) {
+		width: var(--svelte-ui-segmented-control-button-height);
 	}
 
 	.segmented-control--large .segmented-control__label {
-		height: var(--svelte-ui-segmented-control-height-lg);
+		height: var(--svelte-ui-segmented-control-button-height-lg);
 		font-size: var(--svelte-ui-segmented-control-font-size-lg);
-		padding: var(--svelte-ui-segmented-control-padding-lg);
+		padding: var(--svelte-ui-segmented-control-button-padding-lg);
+	}
+
+	.segmented-control--large .segmented-control__label:not(:has(.segmented-control__label-text)) {
+		width: var(--svelte-ui-segmented-control-button-height-lg);
 	}
 
 	.segmented-control--rounded .segmented-control__label {
