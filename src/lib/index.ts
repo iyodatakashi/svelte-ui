@@ -24,6 +24,7 @@ export { default as PopupMenuButton } from './components/PopupMenuButton.svelte'
 export { default as Radio } from './components/Radio.svelte';
 export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Select } from './components/Select.svelte';
+export { default as SegmentedControl } from './components/SegmentedControl.svelte';
 export { default as Slider } from './components/Slider.svelte';
 export { default as Snackbar } from './components/Snackbar.svelte';
 export { default as SnackbarItem } from './components/SnackbarItem.svelte';
@@ -45,3 +46,4 @@ export * from './utils/style';
 
 // Types
 export type { MenuItem } from './types/menuItem';
+export type { SegmentedControlItem } from './components/SegmentedControl.svelte';
