@@ -441,7 +441,7 @@
 				class:segmented-control__label--selected={isSelected}
 				class:segmented-control__label--first={index === 0}
 				class:segmented-control__label--last={index === items.length - 1}
-				aria-label={item.ariaLabel || (item.label || undefined)}
+				aria-label={item.ariaLabel || item.label || undefined}
 			>
 				{#if item.icon}
 					<span class="segmented-control__icon">
