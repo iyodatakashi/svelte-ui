@@ -498,7 +498,7 @@
 	}
 
 	.segmented-control--disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity, 0.5);
+		opacity: var(--svelte-ui-button-disabled-opacity);
 		pointer-events: none;
 	}
 
@@ -595,8 +595,10 @@
 		color: var(--svelte-ui-segmented-control-selected-text-color, white);
 	}
 
-	.segmented-control__input:disabled + .segmented-control__label {
-		opacity: 0.5;
+	.segmented-control:not(.segmented-control--disabled)
+		.segmented-control__input:disabled
+		+ .segmented-control__label {
+		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
 
