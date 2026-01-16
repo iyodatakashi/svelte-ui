@@ -155,7 +155,6 @@
 	let popupRef = $state<any>();
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
-	let comboboxRef = $state<HTMLDivElement>();
 
 	// 各要素のIDを生成
 	const inputId = `${id}-input`;
@@ -479,9 +478,9 @@
 						type="button"
 						class="combobox__option"
 						class:combobox__option--highlighted={index === highlightedIndex}
-						class:combobox__option--selected={option === value}
+						class:combobox__option--selected={option === inputValue}
 						role="option"
-						aria-selected={option === value}
+						aria-selected={option === inputValue}
 						onmousedown={(event) => {
 							event?.preventDefault?.();
 							event?.stopPropagation?.();
