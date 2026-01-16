@@ -343,9 +343,9 @@
 
 	/* SegmentedControl */
 	--svelte-ui-segmented-control-base-padding: 4px;
-	--svelte-ui-segmented-control-base-border-radius: 8px;
+	--svelte-ui-segmented-control-base-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-segmented-control-gap: 4px;
-	--svelte-ui-segmented-control-button-radius: 4px;
+	--svelte-ui-segmented-control-button-radius: calc(var(--svelte-ui-border-radius) - 1px);
 	--svelte-ui-segmented-control-button-height-sm: 24px;
 	--svelte-ui-segmented-control-button-height: 32px;
 	--svelte-ui-segmented-control-button-height-lg: 40px;
@@ -509,7 +509,7 @@
 	/* ColorPicker */
 	--svelte-ui-colorpicker-trigger-size: 28px;
 	--svelte-ui-colorpicker-text-padding-left: 40px;
-	--svelte-ui-colorpicker-trigger-border-radius: 3px;
+	--svelte-ui-colorpicker-trigger-border-radius: calc(var(--svelte-ui-border-radius) - 1px);
 	--svelte-ui-colorpicker-trigger-border-style: dashed;
 	--svelte-ui-colorpicker-trigger-border-width: 1px;
 	--svelte-ui-colorpicker-trigger-offset: 4px;
