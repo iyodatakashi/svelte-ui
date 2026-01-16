@@ -167,10 +167,6 @@
 	// Methods
 	// =========================================================================
 
-	const handleSubmit = (event: SubmitEvent) => {
-		event?.preventDefault?.();
-		handleChange();
-	};
 
 	const handleChange = (event?: Event): void => {
 		// 空文字列の場合はそのまま処理
@@ -207,6 +203,11 @@
 		onclick?.(event);
 	};
 	const handleKeydown = (event: KeyboardEvent) => {
+		// Enterキーで色の変更を確定
+		if (event.key === 'Enter' && !disabled && !readonly) {
+			event.preventDefault();
+			handleChange();
+		}
 		if (disabled) return;
 		onkeydown(event);
 	};
@@ -361,7 +362,6 @@
 		onpointerleave={handlePointerLeave}
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
-		onsubmit={handleSubmit}
 		{...restProps}
 	/>
 

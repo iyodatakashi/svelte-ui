@@ -26,6 +26,7 @@
 	let comboboxValue: string = $state('');
 	let checked: boolean = $state(false);
 	let color: string = $state('');
+	let sliderValue: number = $state(150);
 	let dialogRef: SvelteComponent | undefined = $state();
 	let confirmDialogRef: SvelteComponent | undefined = $state();
 	let drawerRef: SvelteComponent | undefined = $state();
@@ -50,8 +51,12 @@
 
 	const comboboxOptions = ['ほげ', 'ふが'];
 
-	const handleChange = (newValue: Date) => {
+	const handleChange = (newValue?: Date) => {
 		console.log(newValue);
+	};
+
+	const handleInputChange = () => {
+		console.log('Input changed:', value);
 	};
 
 	const handleChangeFileList = (newValue: FileList) => {
@@ -70,7 +75,7 @@
 <div class="container" data-theme="light">
 	<Fab icon="add" variant="glass" shadow position="center" onclick={open}>ほげ</Fab>
 	<div class="container-inner">
-		<Slider width={300} min={100} max={300}></Slider>
+		<Slider width={300} min={100} max={300} bind:value={sliderValue}></Slider>
 		<Button onclick={open}>オープン</Button>
 		<label for="input1">インプット1</label>
 		<Input
@@ -79,8 +84,10 @@
 			bind:value
 			minWidth={300}
 			width="50%"
-			onsubmit={handleChange}
-			onclick={handleChange}
+			onkeydown={(e) => {
+				if (e.key === 'Enter') handleInputChange();
+			}}
+			onclick={handleInputChange}
 		/>
 		<Textarea id="textarea1" bind:value={value2} clearable onsubmit={handleChange} />
 		<Select bind:value {options} />

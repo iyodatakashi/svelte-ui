@@ -66,16 +66,14 @@ test('clearable resets value when clear button is clicked', async () => {
 	await expect.element(textbox).toHaveValue('');
 });
 
-// Submit handler receives current value
-test('onsubmit receives current value', async () => {
-	const onsubmit = vi.fn();
-	const screen = render(Input, { value: 'SubmitMe', onsubmit });
-	const form = screen.container.querySelector('form') as HTMLFormElement | null;
-	if (!form) throw new Error('Form not found');
+// Enter key handling can be done via onkeydown
+test('onkeydown receives keyboard events including Enter', async () => {
+	const onkeydown = vi.fn();
+	const screen = render(Input, { value: 'TestValue', onkeydown });
+	const textbox = screen.getByRole('textbox');
 
-	form.requestSubmit();
-	// onsubmit is called synchronously in handler
-	expect(onsubmit).toHaveBeenCalledWith('SubmitMe');
+	await textbox.press('Enter');
+	expect(onkeydown).toHaveBeenCalled();
 });
 
 // input/change events

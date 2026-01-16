@@ -95,11 +95,6 @@
 		// 入力イベント
 		onchange = () => {}, // No params for type inference
 		oninput = () => {}, // No params for type inference
-		onsubmit = () => {}, // No params for type inference
-
-		// IMEイベント
-		oncompositionstart = () => {}, // No params for type inference
-		oncompositionend = () => {}, // No params for type inference
 
 		// アイコンイベント
 		onRightIconClick,
@@ -190,11 +185,6 @@
 		// 入力イベント
 		onchange?: (value: any) => void;
 		oninput?: (value: any) => void;
-		onsubmit?: (value: any) => void;
-
-		// IMEイベント
-		oncompositionstart?: Function; // No params for type inference
-		oncompositionend?: Function; // No params for type inference
 
 		// アイコンイベント
 		onRightIconClick?: Function; // No params for type inference
@@ -206,6 +196,7 @@
 
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
+	let isComposing: boolean = $state(false);
 
 	// =========================================================================
 	// Methods
@@ -243,6 +234,10 @@
 
 	// キーボードイベント
 	const handleKeydown = (event: KeyboardEvent) => {
+		// Enterキーで入力確定（blur）する（IME変換中は除く）
+		if (event.key === 'Enter' && !disabled && !readonly && !isComposing) {
+			ref?.blur();
+		}
 		onkeydown?.(event);
 	};
 
@@ -251,12 +246,6 @@
 	};
 
 	// 入力イベント
-	const handleSubmit = (event: SubmitEvent) => {
-		if (disabled || readonly) return;
-		event?.preventDefault?.();
-		ref?.blur();
-		onsubmit?.(value);
-	};
 
 	const handleChange = () => {
 		if (disabled || readonly) return;
@@ -366,6 +355,15 @@
 		onpointercancel?.(event);
 	};
 
+	// IMEイベント
+	const handleCompositionStart = () => {
+		isComposing = true;
+	};
+
+	const handleCompositionEnd = () => {
+		isComposing = false;
+	};
+
 	// =========================================================================
 	// $derived
 	// =========================================================================
@@ -405,8 +403,8 @@
 			{getDisplayValue()}
 		</div>
 	{/if}
-	<!-- 入力用フォーム -->
-	<form onsubmit={handleSubmit}>
+	<!-- 入力用要素 -->
+	<div class="input__wrapper">
 		<input
 			{id}
 			{name}
@@ -452,10 +450,12 @@
 			onpointerleave={handlePointerLeave}
 			onpointermove={handlePointerMove}
 			onpointercancel={handlePointerCancel}
+			oncompositionstart={handleCompositionStart}
+			oncompositionend={handleCompositionEnd}
 			{...inputAttributes}
 			{...restProps}
 		/>
-	</form>
+	</div>
 	<!-- クリアボタン -->
 	{#if clearable && !disabled && !readonly}
 		<div class="input__clear-button">
@@ -546,7 +546,7 @@
 		height: inherit;
 	}
 
-	form {
+	.input__wrapper {
 		padding: inherit;
 		border: none;
 		font-size: inherit;
@@ -688,7 +688,7 @@
  * デザインバリアント：default
  * ============================================= */
 	.input:not(.input--inline) {
-		form {
+		.input__wrapper {
 			position: static;
 			opacity: 1;
 		}
@@ -749,7 +749,7 @@
 			text-align: right;
 		}
 
-		form {
+		.input__wrapper {
 			position: absolute;
 			top: 0;
 			left: 0;
@@ -790,7 +790,7 @@
 				opacity: 0;
 			}
 
-			form {
+			.input__wrapper {
 				opacity: 1;
 			}
 		}
