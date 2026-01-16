@@ -529,6 +529,10 @@
 		color: var(--svelte-ui-text-subtle-color, var(--svelte-ui-text-color));
 		white-space: nowrap;
 		cursor: pointer;
+		user-select: none;
+		-webkit-user-select: none;
+		-moz-user-select: none;
+		-ms-user-select: none;
 		transition-property: background-color, color;
 		transition-duration: var(--svelte-ui-transition-duration, 0.2s);
 		transition-timing-function: ease;
