@@ -227,7 +227,6 @@ export const Playground = {
 		value: '',
 		options: basicOptions,
 		variant: 'default',
-		focusStyle: 'background',
 		fullWidth: false,
 		rounded: false,
 		filterable: true,

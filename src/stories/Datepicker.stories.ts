@@ -10,7 +10,7 @@ interface DatepickerArgs {
 	mode?: 'single' | 'range';
 	hasIcon?: boolean;
 	disabled?: boolean;
-	focusStyle?: 'background' | 'border' | 'none';
+	focusStyle?: 'background' | 'outline' | 'none';
 	allowDirectInput?: boolean;
 	fullWidth?: boolean;
 	rounded?: boolean;
@@ -91,7 +91,7 @@ const meta: Meta<DatepickerArgs> = {
 		},
 		focusStyle: {
 			control: 'select',
-			options: ['background', 'border', 'none'],
+			options: ['background', 'outline', 'none'],
 			description: 'フォーカス時の表示スタイル'
 		},
 		allowDirectInput: {
@@ -235,14 +235,13 @@ type Story = StoryObj<DatepickerArgs>;
 export const Default: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: false,
 		disabled: false,
 		allowDirectInput: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -252,13 +251,12 @@ export const Default: Story = {
 export const DateRange: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D',
 		nullString: '期間を選択してください',
 		mode: 'range',
 		hasIcon: false,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -268,13 +266,12 @@ export const DateRange: Story = {
 export const WithIcon: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -284,13 +281,12 @@ export const WithIcon: Story = {
 export const WithIconAndDateRange: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D',
 		nullString: '期間を選択',
 		mode: 'range',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -306,7 +302,7 @@ export const InlineVariant: Story = {
 		mode: 'single',
 		hasIcon: false,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	},
@@ -319,13 +315,12 @@ export const InlineVariant: Story = {
 export const CustomFormat: Story = {
 	args: {
 		value: new Date(),
-		variant: 'default',
 		format: 'MM/DD/YYYY',
 		nullString: '日付を選択',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -335,13 +330,12 @@ export const CustomFormat: Story = {
 export const Disabled: Story = {
 	args: {
 		value: new Date(),
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
 		disabled: true,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -351,13 +345,12 @@ export const Disabled: Story = {
 export const WithMinMaxDate: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		minDate: new Date(2024, 0, 1),
 		maxDate: new Date(2024, 11, 31),
@@ -369,13 +362,12 @@ export const WithMinMaxDate: Story = {
 export const EnglishLocale: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'MMM D, YYYY',
 		nullString: 'Select date',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'en'
 	}
@@ -385,13 +377,12 @@ export const EnglishLocale: Story = {
 export const FrenchLocale: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'D MMM YYYY',
 		nullString: 'Sélectionnez une date',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'fr'
 	}
@@ -401,13 +392,12 @@ export const FrenchLocale: Story = {
 export const GermanLocale: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'D. MMM YYYY',
 		nullString: 'Datum auswählen',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'de'
 	}
@@ -417,13 +407,12 @@ export const GermanLocale: Story = {
 export const SpanishLocale: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'D [de] MMM [de] YYYY',
 		nullString: 'Seleccionar fecha',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'es'
 	}
@@ -433,29 +422,27 @@ export const SpanishLocale: Story = {
 export const ChineseLocale: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY年M月D日',
 		nullString: '请选择日期',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'zh-cn'
 	}
 };
 
 // Focus Style Variations（フォーカススタイルのバリエーション）
-export const FocusStyleBorder: Story = {
+export const FocusStyleOutline: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
@@ -464,7 +451,6 @@ export const FocusStyleBorder: Story = {
 export const FocusStyleBackground: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
@@ -479,7 +465,6 @@ export const FocusStyleBackground: Story = {
 export const FocusStyleNone: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
@@ -495,13 +480,12 @@ export const FocusStyleNone: Story = {
 export const AllowDirectInput: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D',
 		nullString: '',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		allowDirectInput: true,
 		openIfClicked: true,
 		locale: 'ja'
@@ -519,13 +503,12 @@ export const AllowDirectInput: Story = {
 export const FullWidth: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		fullWidth: true,
 		openIfClicked: true,
 		locale: 'ja'
@@ -539,13 +522,12 @@ export const FullWidth: Story = {
 export const RoundedStyle: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		rounded: true,
 		openIfClicked: true,
 		locale: 'ja'
@@ -556,13 +538,12 @@ export const RoundedStyle: Story = {
 export const Playground: Story = {
 	args: {
 		value: undefined,
-		variant: 'default',
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
 		disabled: false,
-		focusStyle: 'border',
+		focusStyle: 'outline',
 		openIfClicked: true,
 		locale: 'ja'
 	}
