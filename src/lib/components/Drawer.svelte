@@ -123,9 +123,7 @@
 	});
 
 	const drawerClasses = $derived(
-		['drawer-wrapper', `drawer-wrapper--${position}`, scrollable && 'drawer-wrapper--scrollable']
-			.filter(Boolean)
-			.join(' ')
+		['drawer-wrapper', `drawer-wrapper--${position}`].filter(Boolean).join(' ')
 	);
 
 	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
