@@ -115,7 +115,7 @@
 		return styles.join('; ');
 	});
 
-	const dialogClasses = $derived([scrollable && 'scrollable'].filter(Boolean).join(' ')); // dialogクラス自体はcustomClassに含めない
+	const dialogClasses = $derived('');
 
 	const ariaLabelledby = $derived(title ? 'dialog-title' : undefined);
 	const ariaDescribedbyValue = $derived(
@@ -136,7 +136,7 @@
 	customStyles={dialogStyles}
 	id={id ? `${id}-modal` : undefined}
 >
-	<div class="dialog {scrollable ? 'scrollable' : ''}">
+	<div class="dialog {scrollable ? 'dialog--scrollable' : ''}">
 		{#if header || title}
 			<div class="dialog__header">
 				{#if header}
@@ -171,10 +171,10 @@
 		display: flex;
 		flex-direction: column;
 		justify-content: stretch;
-		max-height: calc(100dvh - 2em - 6px);
 		border: var(--svelte-ui-dialog-border);
 		border-radius: var(--svelte-ui-dialog-border-radius);
-		overflow: hidden;
+		max-height: calc(100dvh - 2em - 6px);
+		overflow: auto;
 	}
 
 	.dialog__header {
@@ -216,20 +216,23 @@
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 
-	:global(.scrollable) {
-		.dialog__header {
-			margin-bottom: 0;
-			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
-		}
+	/* scrollable=true 時: ヘッダー/フッター固定 + bodyのみスクロール */
+	.dialog--scrollable {
+		overflow: hidden;
+	}
 
-		.dialog__body {
-			flex-shrink: 1;
-			padding: var(--svelte-ui-dialog-body-padding);
-			overflow: auto;
-		}
+	.dialog--scrollable .dialog__header {
+		margin-bottom: 0;
+		border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
+	}
 
-		.dialog__footer {
-			border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
-		}
+	.dialog--scrollable .dialog__body {
+		flex-shrink: 1;
+		padding: var(--svelte-ui-dialog-body-padding);
+		overflow: auto;
+	}
+
+	.dialog--scrollable .dialog__footer {
+		border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 	}
 </style>
