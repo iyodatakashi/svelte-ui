@@ -77,6 +77,22 @@ const meta = {
 			control: { type: 'number' },
 			description: '最大文字数'
 		},
+		autocomplete: {
+			control: { type: 'select' },
+			options: [
+				null,
+				'on',
+				'off',
+				'email',
+				'tel',
+				'url',
+				'name',
+				'username',
+				'current-password',
+				'new-password'
+			],
+			description: 'オートコンプリート属性'
+		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',

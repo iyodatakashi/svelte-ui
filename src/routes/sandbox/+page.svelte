@@ -89,7 +89,7 @@
 			}}
 			onclick={handleInputChange}
 		/>
-		<Textarea id="textarea1" bind:value={value2} clearable onsubmit={handleChange} />
+		<Textarea id="textarea1" bind:value={value2} linkify clearable onsubmit={handleChange} />
 		<Select bind:value {options} />
 		<Combobox bind:value={comboboxValue} options={comboboxOptions} onchange={handleChange} />
 		<ColorPicker bind:value={color} rounded clearable />

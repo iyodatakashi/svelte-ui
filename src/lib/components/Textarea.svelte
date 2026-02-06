@@ -4,6 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import { t } from '$lib/i18n';
+	import { convertToHtmlWithLink } from '$lib/utils/formatText';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 
@@ -48,6 +49,7 @@
 		readonly = false,
 		required = false,
 		iconVariant = 'outlined',
+		linkify = false,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -125,6 +127,7 @@
 		readonly?: boolean;
 		required?: boolean;
 		iconVariant?: IconVariant;
+		linkify?: boolean;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference
@@ -348,12 +351,22 @@
 			return '';
 		}
 	});
+
+	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
+	const linkHtmlValue = $derived.by(() => {
+		if (!linkify || value === '') {
+			return '';
+		}
+		const result = convertToHtmlWithLink(value);
+		return typeof result === 'string' ? result : String(result ?? '');
+	});
 </script>
 
 <div
 	class="textarea
 	textarea--focus-{focusStyle}"
 	class:textarea--inline={inline}
+	class:textarea--linkify={linkify}
 	class:textarea--full-width={fullWidth}
 	class:textarea--full-height={fullHeight}
 	class:textarea--auto-resize={autoResize}
@@ -438,6 +451,11 @@
 			</div>
 		{/if}
 	</div>
+	{#if linkify}
+		<div class="textarea__link-text" style="{minHeightStyle} {customStyle}">
+			{@html linkHtmlValue}
+		</div>
+	{/if}
 </div>
 
 <style>
@@ -471,9 +489,10 @@
 	}
 
 	/* =============================================
- * 基本コンポーネント
- * ============================================= */
-	.textarea__display-text {
+	 * 基本コンポーネント
+	 * ============================================= */
+	.textarea__display-text,
+	.textarea__link-text {
 		display: flex;
 		align-items: start; /* テーブルの他の列に合わせて高さが高くなっているときに、上寄せになるようにするための措置 */
 		width: 100%;
@@ -496,6 +515,23 @@
 		&:empty::before {
 			content: attr(data-placeholder);
 		}
+	}
+
+	/* クリック可能なリンク用オーバーレイ */
+	.textarea__link-text {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		padding: inherit;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.textarea__link-text :global(a) {
+		pointer-events: auto;
+		text-decoration: underline;
 	}
 
 	textarea {
@@ -626,8 +662,8 @@
 	}
 
 	/* =============================================
- * 表示切り替え（フォーカス時・非autoResize時）
- * ============================================= */
+	 * 表示切り替え（フォーカス時・非inline）
+	 * ============================================= */
 	.textarea--focused,
 	.textarea:not(.textarea--inline) {
 		.textarea__display-text {
@@ -639,11 +675,22 @@
 		}
 	}
 
+	/* linkify=true かつ非 inline のときは、display-text は常に非表示（レイアウトだけ保持） */
+	.textarea--linkify:not(.textarea--inline) .textarea__display-text {
+		opacity: 0;
+	}
+
+	/* フォーカス時はリンク用オーバーレイも隠す（キャレット表示を優先） */
+	.textarea--focused .textarea__link-text {
+		opacity: 0;
+	}
+
 	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.textarea:not(.textarea--inline) {
-		.textarea__display-text {
+		.textarea__display-text,
+		.textarea__link-text {
 			padding: var(--svelte-ui-textarea-padding);
 		}
 
@@ -662,6 +709,15 @@
 				padding-right: var(--svelte-ui-textarea-icon-space);
 			}
 		}
+	}
+
+	/* linkify=true かつフォーカスがないときは、textarea のテキストカラーだけ透明にして二重描画を防ぐ
+	 * placeholder の色は textarea::placeholder 側で指定しているため、この指定の影響を受けない
+	 */
+	.textarea--linkify:not(.textarea--focused) textarea {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
 	}
 
 	/* =============================================
@@ -698,5 +754,14 @@
 		&.textarea--clearable .textarea__clear-button {
 			top: var(--svelte-ui-textarea-icon-top-inline);
 		}
+	}
+
+	/* inline + linkify のときは、display-text を常に隠し、textarea を常に表示 */
+	.textarea--inline.textarea--linkify .textarea__display-text {
+		opacity: 0;
+	}
+
+	.textarea--inline.textarea--linkify textarea {
+		opacity: 1;
 	}
 </style>
