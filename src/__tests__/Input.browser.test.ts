@@ -283,3 +283,53 @@ test('Input multiple properties change reactively', async () => {
 	await expect.element(input).toHaveAttribute('style', expect.stringContaining('max-width: 350px'));
 	await expect.element(input).toHaveAttribute('style', expect.stringContaining('min-width: 150px'));
 });
+
+// =========================================================================
+// linkify / inline 表示位置テスト
+// =========================================================================
+
+test('linkify (non-inline): unfocused shows link overlay, focused hides it', async () => {
+	const screen = render(Input, {
+		value: 'http://example.com',
+		linkify: true
+	});
+
+	const wrapper = screen.getByTestId('input');
+	const input = screen.getByRole('textbox');
+	const linkOverlay = screen.container.querySelector('.input__link-text') as HTMLElement;
+
+	// 初期状態（非フォーカス）ではリンク用オーバーレイが表示されている
+	await expect.element(wrapper).not.toHaveClass(/input--inline/);
+	await expect.element(linkOverlay).toBeVisible();
+
+	// フォーカスすると、input--focused が付き、リンクオーバーレイは非表示（display:none）になる
+	(input.element() as HTMLInputElement).focus();
+	await expect.element(wrapper).toHaveClass(/input--focused/);
+
+	const displayAfterFocus = getComputedStyle(linkOverlay).display;
+	expect(displayAfterFocus).toBe('none');
+});
+
+test('linkify + inline: unfocused shows link overlay, focused hides overlay and shows input', async () => {
+	const screen = render(Input, {
+		value: 'http://example.com',
+		linkify: true,
+		inline: true
+	});
+
+	const wrapper = screen.getByTestId('input');
+	const input = screen.getByRole('textbox');
+	const linkOverlay = screen.container.querySelector('.input__link-text') as HTMLElement;
+	const displayText = screen.container.querySelector('.input__display-text') as HTMLElement;
+
+	// inline + linkify では display-text は常に非表示、link-text が表示
+	await expect.element(wrapper).toHaveClass(/input--inline/);
+	expect(getComputedStyle(displayText).opacity).toBe('0');
+	await expect.element(linkOverlay).toBeVisible();
+
+	// フォーカスすると、リンクオーバーレイは非表示になり、input が前面になる
+	(input.element() as HTMLInputElement).focus();
+	await expect.element(wrapper).toHaveClass(/input--focused/);
+	const displayAfterFocus = getComputedStyle(linkOverlay).display;
+	expect(displayAfterFocus).toBe('none');
+});

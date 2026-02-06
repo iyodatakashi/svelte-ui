@@ -4,7 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import { t } from '$lib/i18n';
-	import { convertToHtmlWithLink } from '$lib/utils/formatText';
+	import { convertToHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 
@@ -338,9 +338,7 @@
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
 		if (value !== '') {
-			let html = value
-				.replace(/ +/g, (match) => '&nbsp;'.repeat(match.length))
-				.replace(/\n/g, '<br />');
+			let html = convertToHtml(value) as string;
 			// 最後の行が空だったら空白を追加（高さ調整のため）
 			const lines = html.split('<br />');
 			if (lines.length > 0 && lines[lines.length - 1] === '') {
@@ -493,8 +491,7 @@
 	 * ============================================= */
 	.textarea__display-text,
 	.textarea__link-text {
-		display: flex;
-		align-items: start; /* テーブルの他の列に合わせて高さが高くなっているときに、上寄せになるようにするための措置 */
+		display: block;
 		width: 100%;
 		background: inherit;
 		border: inherit;
@@ -680,9 +677,9 @@
 		opacity: 0;
 	}
 
-	/* フォーカス時はリンク用オーバーレイも隠す（キャレット表示を優先） */
+	/* フォーカス時はリンク用オーバーレイも非表示にして（display:none）、リンクが反応しないようにする */
 	.textarea--focused .textarea__link-text {
-		opacity: 0;
+		display: none;
 	}
 
 	/* =============================================

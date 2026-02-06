@@ -266,3 +266,53 @@ test('Textarea maxHeight property changes reactively', async () => {
 		.element(container)
 		.toHaveAttribute('style', expect.stringContaining('max-height: 300px'));
 });
+
+// =========================================================================
+// linkify / inline 表示位置テスト
+// =========================================================================
+
+test('Textarea linkify (non-inline): unfocused shows link overlay, focused hides it', async () => {
+	const screen = render(Textarea, {
+		value: 'http://example.com',
+		linkify: true
+	});
+
+	const wrapper = screen.getByTestId('textarea');
+	const textarea = screen.getByRole('textbox');
+	const linkOverlay = screen.container.querySelector('.textarea__link-text') as HTMLElement;
+
+	// 初期状態（非フォーカス）ではリンク用オーバーレイが表示されている
+	await expect.element(wrapper).not.toHaveClass(/textarea--inline/);
+	await expect.element(linkOverlay).toBeVisible();
+
+	// フォーカスすると、textarea--focused が付き、リンクオーバーレイは非表示（display:none）になる
+	(textarea.element() as HTMLTextAreaElement).focus();
+	await expect.element(wrapper).toHaveClass(/textarea--focused/);
+
+	const displayAfterFocus = getComputedStyle(linkOverlay).display;
+	expect(displayAfterFocus).toBe('none');
+});
+
+test('Textarea linkify + inline: unfocused shows link overlay, focused hides overlay and shows textarea', async () => {
+	const screen = render(Textarea, {
+		value: 'http://example.com',
+		linkify: true,
+		inline: true
+	});
+
+	const wrapper = screen.getByTestId('textarea');
+	const textarea = screen.getByRole('textbox');
+	const linkOverlay = screen.container.querySelector('.textarea__link-text') as HTMLElement;
+	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
+
+	// inline + linkify では display-text は常に非表示、link-text が表示
+	await expect.element(wrapper).toHaveClass(/textarea--inline/);
+	expect(getComputedStyle(displayText).opacity).toBe('0');
+	await expect.element(linkOverlay).toBeVisible();
+
+	// フォーカスすると、リンクオーバーレイは非表示になり、textarea が前面になる
+	(textarea.element() as HTMLTextAreaElement).focus();
+	await expect.element(wrapper).toHaveClass(/textarea--focused/);
+	const displayAfterFocus = getComputedStyle(linkOverlay).display;
+	expect(displayAfterFocus).toBe('none');
+});

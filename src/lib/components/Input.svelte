@@ -7,6 +7,7 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { t } from '$lib/i18n';
+	import { convertToHtmlWithLink } from '$lib/utils/formatText';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -58,6 +59,7 @@
 		required = false,
 		clearable = false,
 		clearButtonAriaLabel = t('input.clear'),
+		linkify = false,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -148,6 +150,7 @@
 		readonly?: boolean;
 		required?: boolean;
 		clearable?: boolean;
+		linkify?: boolean;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference
@@ -374,6 +377,12 @@
 		return String(value);
 	};
 
+	const linkHtmlValue = $derived.by(() => {
+		if (!linkify) return '';
+		const result = convertToHtmlWithLink(getDisplayValue());
+		return typeof result === 'string' ? result : String(result ?? '');
+	});
+
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
 	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
@@ -384,6 +393,7 @@
 	input--focus-{focusStyle}
 	input--type-{type}"
 	class:input--inline={inline}
+	class:input--linkify={linkify}
 	class:input--auto-resize={inline}
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
@@ -456,6 +466,11 @@
 			{...restProps}
 		/>
 	</div>
+	{#if linkify}
+		<div class="input__link-text" style={customStyle}>
+			{@html linkHtmlValue}
+		</div>
+	{/if}
 	<!-- クリアボタン -->
 	{#if clearable && !disabled && !readonly}
 		<div class="input__clear-button">
@@ -613,6 +628,35 @@
 		}
 	}
 
+	/* リンク表示用オーバーレイ */
+	.input__link-text {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		display: flex;
+		align-items: center;
+		padding: inherit;
+		background: transparent;
+		border-radius: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
+		line-height: inherit;
+		text-align: inherit;
+		white-space: nowrap;
+		overflow: hidden;
+		text-overflow: ellipsis;
+		pointer-events: none;
+		z-index: 1;
+	}
+
+	.input__link-text :global(a) {
+		pointer-events: auto;
+		text-decoration: underline;
+	}
+
 	.input__clear-button {
 		position: absolute;
 		top: 50%;
@@ -695,7 +739,6 @@
 
 		input {
 			min-height: var(--svelte-ui-input-height);
-			padding: var(--svelte-ui-input-padding);
 			background-color: var(--svelte-ui-input-bg);
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 			border: none;
@@ -703,30 +746,40 @@
 			color: var(--svelte-ui-input-text-color);
 		}
 
+		input,
+		.input__display-text,
+		.input__link-text {
+			padding: var(--svelte-ui-input-padding);
+		}
+
 		&.input--has-left-icon {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-left: var(--svelte-ui-input-icon-space);
 			}
 		}
 
 		&.input--has-right-icon {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space);
 			}
 		}
 
 		&.input--clearable {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space);
 			}
 		}
 
 		&.input--clearable.input--has-right-icon {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space-double);
 			}
 		}
@@ -739,6 +792,18 @@
 		input {
 			border-radius: var(--svelte-ui-input-border-radius-rounded);
 		}
+	}
+
+	/* linkify=true かつフォーカスがないときは、input のテキストカラーだけ透明にして二重描画を防ぐ */
+	.input--linkify:not(.input--focused) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	/* フォーカス時はリンク用オーバーレイも非表示にして（display:none）、リンクが反応しないようにする */
+	.input--focused .input__link-text {
+		display: none;
 	}
 
 	/* =============================================
@@ -759,28 +824,32 @@
 
 		&.input--has-left-icon {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-left: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 
 		&.input--has-right-icon {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 
 		&.input--clearable {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space-inline);
 			}
 		}
 
 		&.input--clearable.input--has-right-icon {
 			input,
-			.input__display-text {
+			.input__display-text,
+			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
@@ -794,6 +863,15 @@
 				opacity: 1;
 			}
 		}
+	}
+
+	/* inline + linkify のときは、display-text を常に隠し、wrapper を常に表示 */
+	.input--inline.input--linkify .input__display-text {
+		opacity: 0;
+	}
+
+	.input--inline.input--linkify .input__wrapper {
+		opacity: 1;
 	}
 
 	/* =============================================
@@ -812,21 +890,24 @@
  * ============================================= */
 	.input--clearable {
 		input,
-		.input__display-text {
+		.input__display-text,
+		.input__link-text {
 			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
 	.input.input--has-right-icon {
 		input,
-		.input__display-text {
+		.input__display-text,
+		.input__link-text {
 			padding-right: var(--svelte-ui-input-icon-space);
 		}
 	}
 
 	.input.input--has-left-icon {
 		input,
-		.input__display-text {
+		.input__display-text,
+		.input__link-text {
 			padding-left: var(--svelte-ui-input-icon-space);
 		}
 	}

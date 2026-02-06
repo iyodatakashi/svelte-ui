@@ -84,6 +84,7 @@
 			bind:value
 			minWidth={300}
 			width="50%"
+			linkify
 			onkeydown={(e) => {
 				if (e.key === 'Enter') handleInputChange();
 			}}
