@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.8] - 2026-01-22
+
+### Changed
+
+- Adjusted `Dialog` component behavior when `scrollable=false` so large content scrolls correctly within the window.
+- Fixed layout issues in the `Dialog` component.
+
+### Fixed
+
+- Fixed an issue where `Combobox` options could remain visually selected after clearing the input value.
+- Fixed an issue where `SegmentedControl` labels could cause text selection when clicked.
+
 ## [0.0.7] - 2026-01-16
 
 ### Added
