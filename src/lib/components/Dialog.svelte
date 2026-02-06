@@ -184,7 +184,6 @@
 		justify-content: stretch;
 		min-height: var(--svelte-ui-dialog-header-height);
 		padding: var(--svelte-ui-dialog-padding);
-		margin-bottom: calc(0px - var(--svelte-ui-dialog-body-padding));
 
 		.dialog__title {
 			flex-grow: 1;
@@ -230,6 +229,10 @@
 		flex-shrink: 1;
 		padding: var(--svelte-ui-dialog-body-padding);
 		overflow: auto;
+	}
+
+	.dialog:not(.dialog--scrollable) .dialog__body {
+		padding-top: 0;
 	}
 
 	.dialog--scrollable .dialog__footer {
