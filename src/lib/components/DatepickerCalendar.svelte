@@ -366,11 +366,24 @@
 		}
 	};
 
+	const getNormalizedRange = () => {
+		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return null;
+
+		const startDate = dayjs(value.start).startOf('day');
+		const endDate = dayjs(value.end).startOf('day');
+
+		if (startDate.isSameOrBefore(endDate)) {
+			return { start: startDate, end: endDate };
+		}
+
+		return { start: endDate, end: startDate };
+	};
+
 	const isSelected = (date: dayjs.Dayjs) => {
-		if (mode === 'range' && value && 'start' in value && 'end' in value) {
+		const range = getNormalizedRange();
+		if (range) {
 			return (
-				dayjs(date).isSameOrAfter(dayjs(value.start).startOf('day')) &&
-				dayjs(date).isSameOrBefore(dayjs(value.end).startOf('day'))
+				dayjs(date).isSameOrAfter(range.start) && dayjs(date).isSameOrBefore(range.end)
 			);
 		} else if (mode === 'single' && value && value instanceof Date) {
 			return dayjs(date).isSame(dayjs(value).startOf('day'));
@@ -379,25 +392,29 @@
 	};
 
 	const isRangeStart = (date: dayjs.Dayjs) => {
-		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
+		const range = getNormalizedRange();
+		if (!range) return false;
 		if (isRangePreviewActive) return false;
-		return dayjs(date).isSame(dayjs(value.start).startOf('day'));
+		return dayjs(date).isSame(range.start);
 	};
 
 	const isRangeEnd = (date: dayjs.Dayjs) => {
-		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
+		const range = getNormalizedRange();
+		if (!range) return false;
 		if (isRangePreviewActive) return false;
-		return dayjs(date).isSame(dayjs(value.end).startOf('day'));
+		return dayjs(date).isSame(range.end);
 	};
 
 	const isRangeMiddle = (date: dayjs.Dayjs) => {
-		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
+		const range = getNormalizedRange();
+		if (!range) return false;
 		if (isRangePreviewActive) return false;
 		return isSelected(date) && !isRangeStart(date) && !isRangeEnd(date);
 	};
 
 	const isRangeSingle = (date: dayjs.Dayjs) => {
-		if (mode !== 'range' || !value || !('start' in value && 'end' in value)) return false;
+		const range = getNormalizedRange();
+		if (!range) return false;
 		if (isRangePreviewActive) return false;
 		return isRangeStart(date) && isRangeEnd(date);
 	};
