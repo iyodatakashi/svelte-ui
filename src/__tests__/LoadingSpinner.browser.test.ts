@@ -76,4 +76,3 @@ test('LoadingSpinner color property changes reactively', async () => {
 		.element(spinner)
 		.toHaveAttribute('style', expect.stringContaining('--spinner-color: blue'));
 });
-

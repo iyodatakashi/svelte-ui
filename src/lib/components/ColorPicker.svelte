@@ -167,7 +167,6 @@
 	// Methods
 	// =========================================================================
 
-
 	const handleChange = (event?: Event): void => {
 		// 空文字列の場合はそのまま処理
 		if (localValue && !localValue.startsWith('#')) {
