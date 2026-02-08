@@ -382,9 +382,7 @@
 	const isSelected = (date: dayjs.Dayjs) => {
 		const range = getNormalizedRange();
 		if (range) {
-			return (
-				dayjs(date).isSameOrAfter(range.start) && dayjs(date).isSameOrBefore(range.end)
-			);
+			return dayjs(date).isSameOrAfter(range.start) && dayjs(date).isSameOrBefore(range.end);
 		} else if (mode === 'single' && value && value instanceof Date) {
 			return dayjs(date).isSame(dayjs(value).startOf('day'));
 		}
