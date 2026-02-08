@@ -212,11 +212,11 @@ test('renders Skeleton with custom repeatGap', async () => {
 	await expect.element(items).toHaveStyle('gap: 32px');
 });
 
-test('renders Skeleton with custom itemGap', async () => {
+test('renders Skeleton with custom patternGap', async () => {
 	const screen = render(ComponentWrapper, {
 		component: Skeleton,
 		patterns: [{ type: 'box' }],
-		itemGap: '16px'
+		patternGap: '16px'
 	});
 
 	const skeleton = screen.container.querySelector('[data-testid="skeleton"]');

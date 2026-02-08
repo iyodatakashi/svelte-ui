@@ -186,11 +186,15 @@
 		<br />
 		<Skeleton
 			patterns={[
+				{ type: 'box' },
 				{ type: 'avatar', showName: true },
 				{
 					type: 'article-list',
 					lines: 3,
-					thumbnailConfig: { width: 300, aspectRatio: '16/9' }
+					thumbnailConfig: { width: 300, aspectRatio: '16/9' },
+					layout: 'vertical',
+					repeatDirection: 'horizontal',
+					width: '300px'
 				}
 			]}
 		/>

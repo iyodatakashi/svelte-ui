@@ -11,7 +11,7 @@ describe('Skeleton Component', () => {
 			patterns: [{ type: 'box' }],
 			repeat: 1,
 			repeatGap: '64px',
-			itemGap: '24px',
+			patternGap: '24px',
 			className: '',
 			customStyle: '',
 			animated: true
@@ -20,7 +20,7 @@ describe('Skeleton Component', () => {
 		expect(Array.isArray(baseProps.patterns)).toBe(true);
 		expect(typeof baseProps.repeat).toBe('number');
 		expect(['string', 'number']).toContain(typeof baseProps.repeatGap);
-		expect(['string', 'number']).toContain(typeof baseProps.itemGap);
+		expect(['string', 'number']).toContain(typeof baseProps.patternGap);
 		expect(typeof baseProps.className).toBe('string');
 		expect(typeof baseProps.customStyle).toBe('string');
 		expect(typeof baseProps.animated).toBe('boolean');

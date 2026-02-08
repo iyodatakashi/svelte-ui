@@ -21,7 +21,7 @@
 		patterns = [{ type: 'box' }] as SkeletonPatternConfig[],
 		repeat = 1,
 		repeatGap = 'var(--svelte-ui-skeleton-repeat-gap)',
-		itemGap = 'var(--svelte-ui-skeleton-item-gap)',
+		patternGap = 'var(--svelte-ui-skeleton-pattern-gap)',
 		className = '',
 		customStyle = '',
 		animated = true
@@ -29,7 +29,7 @@
 		patterns?: SkeletonPatternConfig[];
 		repeat?: number;
 		repeatGap?: string | number;
-		itemGap?: string | number;
+		patternGap?: string | number;
 		className?: string;
 		customStyle?: string;
 		animated?: boolean;
@@ -98,13 +98,13 @@
 	});
 
 	const repeatGapStyle = $derived(getStyleFromNumber(repeatGap));
-	const itemGapStyle = $derived(getStyleFromNumber(itemGap));
+	const patternGapStyle = $derived(getStyleFromNumber(patternGap));
 </script>
 
 <div class={containerClasses} style={customStyle} data-testid="skeleton">
 	<div class="skeleton__items" style="gap: {repeatGapStyle};">
 		{#each Array(repeat) as _, index}
-			<div class="skeleton__item" style="gap: {itemGapStyle};">
+			<div class="skeleton__item" style="gap: {patternGapStyle};">
 				{#each mergedPatterns as patternConfig}
 					{@const patternRepeat = patternConfig.repeat || 1}
 					{@const patternRepeatDirection = patternConfig.repeatDirection || 'vertical'}

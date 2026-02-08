@@ -45,14 +45,14 @@ export const Text: Story = {
 
 export const Buttons: Story = {
 	args: {
-		patterns: [{ type: 'button', repeat: 2, repeatDirection: 'horizontal', repeatGap: '16px' }],
+		patterns: [{ type: 'button', repeat: 2, repeatDirection: 'horizontal' }],
 		repeat: 1
 	}
 };
 
 export const Heading: Story = {
 	args: {
-		patterns: [{ type: 'heading', width: '300px' }]
+		patterns: [{ type: 'heading' }]
 	}
 };
 
@@ -72,8 +72,7 @@ export const ArticleDetailPreset: Story = {
 
 export const ArticleListPreset: Story = {
 	args: {
-		patterns: [{ type: 'heading' }, { type: 'article-list', repeat: 3 }],
-		itemGap: '24px'
+		patterns: [{ type: 'heading' }, { type: 'article-list', repeat: 3 }]
 	}
 };
 
