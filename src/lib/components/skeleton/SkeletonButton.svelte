@@ -4,6 +4,7 @@
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { SkeletonButtonConfig } from '$lib/types/skeleton';
+	import { DEFAULT_BUTTON_CONFIG } from '$lib/constants/skeleton';
 
 	let {
 		buttonConfig = {},
@@ -12,16 +13,6 @@
 		buttonConfig?: Partial<SkeletonButtonConfig>;
 		animated?: boolean;
 	} = $props();
-
-	// デフォルト設定
-	const DEFAULT_BUTTON_CONFIG: SkeletonButtonConfig = {
-		type: 'button',
-		width: '120px',
-		height: '36px',
-		radius: 'var(--svelte-ui-skeleton-button-border-radius)',
-		align: 'left',
-		customStyle: ''
-	};
 
 	// マージされた設定
 	const mergedButtonConfig = $derived({

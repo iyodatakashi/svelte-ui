@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import { getStyleFromNumber } from '$lib/utils/style';
+	import { DEFAULT_BOX_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props
@@ -25,16 +26,6 @@
 		className?: string;
 		customStyle?: string;
 	} = $props();
-
-	// =========================================================================
-	// Constants
-	// =========================================================================
-
-	const DEFAULT_BOX_CONFIG = {
-		width: '100%',
-		height: '240px',
-		radius: 'var(--svelte-ui-skeleton-box-border-radius, 8px)'
-	};
 
 	// =========================================================================
 	// $derived
@@ -90,7 +81,7 @@
 	.skeleton-box__content {
 		width: 100%;
 		height: 100%;
-		background-color: var(--svelte-ui-skeleton-bg-color, #e5e7eb);
+		background-color: var(--svelte-ui-skeleton-color);
 		display: block;
 	}
 

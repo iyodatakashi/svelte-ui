@@ -684,18 +684,24 @@
 	--svelte-ui-snackbar-error-outlined-border-color: var(--svelte-ui-error-color);
 
 	/* Skeleton */
+	--svelte-ui-skeleton-box-height: 240px;
 	--svelte-ui-skeleton-box-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-text-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-text-border-radius: var(--svelte-ui-border-radius-rounded);
+	--svelte-ui-skeleton-text-line-height: 1em;
 	--svelte-ui-skeleton-avatar-image-border-radius: var(--svelte-ui-border-radius-rounded);
-	--svelte-ui-skeleton-image-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-avatar-image-size: 48px;
+	--svelte-ui-skeleton-avatar-text-width: 160px;
 	--svelte-ui-skeleton-button-border-radius: var(--svelte-ui-border-radius);
-	--svelte-ui-skeleton-bg-color: var(--svelte-ui-skeleton-color);
-	--svelte-ui-skeleton-text-bg-color: var(--svelte-ui-skeleton-color);
-	--svelte-ui-skeleton-image-bg-color: var(--svelte-ui-skeleton-color);
-	--svelte-ui-skeleton-button-bg-color: var(--svelte-ui-skeleton-color);
-	--svelte-ui-skeleton-input-bg-color: var(--svelte-ui-skeleton-color);
-	--svelte-ui-skeleton-textarea-bg-color: var(--svelte-ui-skeleton-color);
-	--svelte-ui-skeleton-avatar-bg-color: var(--svelte-ui-skeleton-color);
+	--svelte-ui-skeleton-button-width: 120px;
+	--svelte-ui-skeleton-button-height: 36px;
+	--svelte-ui-skeleton-media-thumbnail-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-skeleton-media-thumbnail-width: 160px;
+	--svelte-ui-skeleton-media-gap: 16px;
+	--svelte-ui-skeleton-media-vertical-gap: 8px;
+	--svelte-ui-skeleton-heading-width: 50%;
+	--svelte-ui-skeleton-heading-font-size: 2rem;
+	--svelte-ui-skeleton-item-gap: 16px;
+	--svelte-ui-skeleton-repeat-gap: 24px;
 
 	/* Badge */
 	--svelte-ui-badge-font-size: var(--svelte-ui-font-size-sm);
@@ -821,12 +827,5 @@
 		/* ===== スケルトンの上書き ===== */
 		--svelte-ui-skeleton-color: CanvasText;
 		--svelte-ui-skeleton-shimmer-color: Highlight;
-		--svelte-ui-skeleton-bg-color: CanvasText;
-		--svelte-ui-skeleton-text-bg-color: CanvasText;
-		--svelte-ui-skeleton-image-bg-color: CanvasText;
-		--svelte-ui-skeleton-button-bg-color: CanvasText;
-		--svelte-ui-skeleton-input-bg-color: CanvasText;
-		--svelte-ui-skeleton-textarea-bg-color: CanvasText;
-		--svelte-ui-skeleton-avatar-bg-color: CanvasText;
 	}
 }

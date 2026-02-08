@@ -4,11 +4,12 @@
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type {
-		SkeletonMediaConfig,
-		SkeletonThumbnailConfig,
-		SkeletonTextConfig
-	} from '$lib/types/skeleton';
+	import type { SkeletonMediaConfig } from '$lib/types/skeleton';
+	import {
+		DEFAULT_MEDIA_CONFIG,
+		DEFAULT_THUMBNAIL_CONFIG,
+		DEFAULT_TEXT_CONFIG_MEDIA
+	} from '$lib/constants/skeleton';
 
 	let {
 		width = '100%',
@@ -20,14 +21,6 @@
 		animated?: boolean;
 	} = $props();
 
-	// デフォルト設定
-	const DEFAULT_MEDIA_CONFIG: Partial<SkeletonMediaConfig> = {
-		type: 'media',
-		layout: 'horizontal',
-		thumbnailConfig: { width: '160px', aspectRatio: '16/9' },
-		textConfig: { width: '100%', lines: 2 }
-	};
-
 	// マージされた設定
 	const mergedMediaConfig = $derived({
 		...DEFAULT_MEDIA_CONFIG,
@@ -37,20 +30,6 @@
 	// レイアウト方向を取得
 	const layoutDirection = $derived(mergedMediaConfig.layout || 'horizontal');
 
-	// デフォルト設定
-	const DEFAULT_THUMBNAIL_CONFIG: SkeletonThumbnailConfig = {
-		type: 'thumbnail',
-		width: '120px',
-		radius: 'var(--svelte-ui-skeleton-button-border-radius)',
-		customStyle: ''
-	};
-	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
-		type: 'text',
-		width: '100%',
-		lines: 2,
-		customStyle: ''
-	};
-
 	// マージされた設定
 	const mergedThumbnailConfig = $derived({
 		...DEFAULT_THUMBNAIL_CONFIG,
@@ -58,7 +37,7 @@
 	});
 
 	const mergedTextConfig = $derived({
-		...DEFAULT_TEXT_CONFIG,
+		...DEFAULT_TEXT_CONFIG_MEDIA,
 		...(mergedMediaConfig.textConfig || {})
 	});
 
@@ -103,13 +82,13 @@
 	.skeleton-media {
 		display: grid;
 		grid-template-columns: auto 1fr;
-		gap: 16px;
+		gap: var(--svelte-ui-skeleton-media-gap);
 	}
 
 	.skeleton-media--vertical {
 		grid-template-columns: 1fr;
 		grid-template-rows: auto 1fr;
 		justify-items: center;
-		gap: 8px;
+		gap: var(--svelte-ui-skeleton-media-vertical-gap);
 	}
 </style>

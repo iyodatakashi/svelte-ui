@@ -4,6 +4,7 @@
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { SkeletonTextConfig } from '$lib/types/skeleton';
+	import { DEFAULT_TEXT_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props
@@ -17,14 +18,6 @@
 		textConfig?: Partial<SkeletonTextConfig>;
 		animated?: boolean;
 	} = $props();
-
-	// デフォルト設定
-	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
-		type: 'text',
-		width: '100%',
-		lines: 1,
-		customStyle: ''
-	};
 
 	// マージされた設定
 	const mergedTextConfig = $derived({
@@ -55,7 +48,7 @@
 		<div class="skeleton-text__line" style="width: {widthStyle}">
 			<SkeletonBox
 				width="100%"
-				height="1.2em"
+				height="var(--svelte-ui-skeleton-text-line-height)"
 				radius="var(--svelte-ui-skeleton-text-border-radius)"
 				{animated}
 			/>

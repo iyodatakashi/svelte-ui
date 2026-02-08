@@ -4,6 +4,7 @@
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { SkeletonHeadingConfig } from '$lib/types/skeleton';
+	import { DEFAULT_HEADING_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props
@@ -17,14 +18,6 @@
 		animated?: boolean;
 	} = $props();
 
-	// デフォルト設定
-	const DEFAULT_HEADING_CONFIG: SkeletonHeadingConfig = {
-		type: 'heading',
-		width: '50%',
-		fontSize: '2rem',
-		customStyle: ''
-	};
-
 	// マージされた設定
 	const mergedHeadingConfig = $derived({
 		...DEFAULT_HEADING_CONFIG,
@@ -36,11 +29,18 @@
 	// =========================================================================
 
 	const widthStyle = $derived(getStyleFromNumber(mergedHeadingConfig.width));
-	const fontSizeStyle = $derived(getStyleFromNumber(mergedHeadingConfig.fontSize));
+	const fontSizeStyle = $derived(
+		mergedHeadingConfig.fontSize
+			? typeof mergedHeadingConfig.fontSize === 'string' &&
+				mergedHeadingConfig.fontSize.startsWith('var(')
+				? mergedHeadingConfig.fontSize
+				: getStyleFromNumber(mergedHeadingConfig.fontSize)
+			: DEFAULT_HEADING_CONFIG.fontSize
+	);
 </script>
 
 <div class="skeleton-heading" style="font-size: {fontSizeStyle}; {mergedHeadingConfig.customStyle}">
-	<SkeletonText textConfig={{ width: widthStyle, fontSize: fontSizeStyle }} {animated} />
+	<SkeletonText textConfig={{ width: widthStyle }} {animated} />
 </div>
 
 <style lang="scss">

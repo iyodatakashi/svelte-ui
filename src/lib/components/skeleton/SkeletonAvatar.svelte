@@ -4,11 +4,12 @@
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type {
-		SkeletonAvatarConfig,
-		SkeletonTextConfig,
-		SkeletonAvatarImageConfig
-	} from '$lib/types/skeleton';
+	import type { SkeletonAvatarConfig } from '$lib/types/skeleton';
+	import {
+		DEFAULT_AVATAR_IMAGE_CONFIG,
+		DEFAULT_TEXT_CONFIG_AVATAR,
+		DEFAULT_AVATAR_CONFIG
+	} from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props
@@ -23,25 +24,6 @@
 		animated?: boolean;
 	} = $props();
 
-	// デフォルト設定
-	const DEFAULT_AVATAR_IMAGE_CONFIG: SkeletonAvatarImageConfig = {
-		type: 'avatar-image',
-		size: '48px',
-		radius: 'var(--svelte-ui-skeleton-avatar-image-border-radius)',
-		customStyle: ''
-	};
-	const DEFAULT_TEXT_CONFIG: SkeletonTextConfig = {
-		type: 'text',
-		width: '160px',
-		lines: 1,
-		customStyle: ''
-	};
-	const DEFAULT_AVATAR_CONFIG: SkeletonAvatarConfig = {
-		type: 'avatar',
-		avatarImageConfig: DEFAULT_AVATAR_IMAGE_CONFIG,
-		textConfig: DEFAULT_TEXT_CONFIG
-	};
-
 	// マージされた設定
 	const mergedAvatarImageConfig = $derived({
 		...DEFAULT_AVATAR_IMAGE_CONFIG,
@@ -49,7 +31,7 @@
 	});
 
 	const mergedTextConfig = $derived({
-		...DEFAULT_TEXT_CONFIG,
+		...DEFAULT_TEXT_CONFIG_AVATAR,
 		...(avatarConfig.textConfig || {})
 	});
 

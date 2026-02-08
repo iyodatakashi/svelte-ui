@@ -10,6 +10,7 @@
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { SkeletonPatternConfig, SkeletonPresetConfig } from '$lib/types/skeleton';
 	import { isPresetPattern, isMediaPattern, isAvatarPattern } from '$lib/types/skeleton';
+	import { DEFAULT_PATTERN_CONFIG, PRESET_PATTERNS } from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props
@@ -19,8 +20,8 @@
 		// 基本プロパティ
 		patterns = [{ type: 'box' }] as SkeletonPatternConfig[],
 		repeat = 1,
-		repeatGap = '64px',
-		itemGap = '24px',
+		repeatGap = 'var(--svelte-ui-skeleton-repeat-gap)',
+		itemGap = 'var(--svelte-ui-skeleton-item-gap)',
 		className = '',
 		customStyle = '',
 		animated = true
@@ -33,71 +34,6 @@
 		customStyle?: string;
 		animated?: boolean;
 	} = $props();
-
-	const DEFAULT_PATTERN_CONFIG = {
-		repeat: 1,
-		repeatDirection: 'vertical' as const,
-		repeatGap: '24px'
-	};
-
-	// プリセットパターンの定義
-	const PRESET_PATTERNS: Record<string, SkeletonPatternConfig[]> = {
-		'article-detail': [
-			{
-				type: 'box'
-			},
-			{ type: 'avatar', showName: true },
-			{
-				type: 'text',
-				lines: 5,
-				repeat: 1
-			}
-		],
-		'article-list': [
-			{
-				type: 'media',
-				layout: 'horizontal',
-				thumbnailConfig: { width: '160px', aspectRatio: '4/3' },
-				textConfig: { lines: 3 },
-				repeat: 3
-			}
-		],
-		'product-list': [
-			{
-				type: 'media',
-				layout: 'vertical',
-				thumbnailConfig: { width: '100%', aspectRatio: '1' },
-				textConfig: { lines: 2 },
-				repeat: 4,
-				repeatDirection: 'horizontal'
-			}
-		],
-		'video-list': [
-			{
-				type: 'media',
-				layout: 'vertical',
-				thumbnailConfig: { width: '100%', aspectRatio: '16/9' },
-				textConfig: { lines: 2 },
-				repeat: 3,
-				repeatDirection: 'horizontal'
-			}
-		],
-		'user-list': [
-			{
-				type: 'avatar',
-				showName: true
-			}
-		],
-		'button-group': [
-			{
-				type: 'button',
-				width: '120px',
-				repeat: 2,
-				repeatDirection: 'horizontal',
-				repeatGap: '16px'
-			}
-		]
-	};
 
 	// =========================================================================
 	// $derived
@@ -172,7 +108,9 @@
 				{#each mergedPatterns as patternConfig}
 					{@const patternRepeat = patternConfig.repeat || 1}
 					{@const patternRepeatDirection = patternConfig.repeatDirection || 'vertical'}
-					{@const patternRepeatGap = getStyleFromNumber(patternConfig.repeatGap) || '8px'}
+					{@const patternRepeatGap =
+						getStyleFromNumber(patternConfig.repeatGap) ||
+						getStyleFromNumber(DEFAULT_PATTERN_CONFIG.repeatGap)}
 					<div
 						class="skeleton__pattern"
 						class:skeleton__pattern--horizontal={patternRepeatDirection === 'horizontal'}

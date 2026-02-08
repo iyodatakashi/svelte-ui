@@ -52,7 +52,7 @@ export const Buttons: Story = {
 
 export const Heading: Story = {
 	args: {
-		patterns: [{ type: 'heading', width: '300px', fontSize: '2rem' }]
+		patterns: [{ type: 'heading', width: '300px' }]
 	}
 };
 
