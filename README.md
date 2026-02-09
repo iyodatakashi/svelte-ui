@@ -19,7 +19,7 @@ A Svelte component library with TypeScript support and Material Design-inspired 
 ```bash
 npm install @14ch/svelte-ui
 # or
-pnpm add @14ch/svelte-ui
+pnpm install @14ch/svelte-ui
 # or
 yarn add @14ch/svelte-ui
 ```
