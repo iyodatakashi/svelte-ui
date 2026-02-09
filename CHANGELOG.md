@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.10] - 2026-02-10
+
+### Changed
+
+- Changed `ConfirmDialog` component API: `confirmLabel` → `submitLabel`, `onConfirm` → `onSubmit` for better clarity and consistency.
+- Improved type safety for `onchange` and `oninput` callbacks across all form components (replaced `any` types with specific value types).
+- Moved `Textarea` component's `minHeight` default value to CSS variables for better customization.
+
 ## [0.0.9] - 2026-02-08
 
 ### Added
