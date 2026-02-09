@@ -2,7 +2,7 @@
 	"name": "@14ch/svelte-ui",
 	"description": "Modern Svelte UI components library with TypeScript support",
 	"private": false,
-	"version": "0.0.10",
+	"version": "0.0.11",
 	"type": "module",
 	"keywords": [
 		"svelte",
@@ -35,6 +35,7 @@
 		"dist/components/",
 		"dist/types/",
 		"dist/utils/",
+		"dist/constants/",
 		"dist/assets/",
 		"dist/i18n/",
 		"dist/index.js",
