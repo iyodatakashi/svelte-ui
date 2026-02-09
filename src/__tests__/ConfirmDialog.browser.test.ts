@@ -31,12 +31,12 @@ test('ConfirmDialog can be opened and closed', async () => {
 });
 
 test('ConfirmDialog confirm button works correctly', async () => {
-	let confirmCalled = false;
+	let submitCalled = false;
 	const screen = render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
-		onConfirm: () => {
-			confirmCalled = true;
+		onSubmit: () => {
+			submitCalled = true;
 		},
 		id: 'confirm-dialog-test'
 	});
@@ -45,7 +45,7 @@ test('ConfirmDialog confirm button works correctly', async () => {
 	expect(confirmButton).toBeInTheDocument();
 
 	await confirmButton?.click();
-	expect(confirmCalled).toBe(true);
+	expect(submitCalled).toBe(true);
 });
 
 test('ConfirmDialog cancel button works correctly', async () => {
@@ -104,7 +104,7 @@ test('ConfirmDialog with custom text renders correctly', async () => {
 		isOpen: true,
 		title: 'Custom Title',
 		description: 'Custom description content',
-		confirmLabel: 'Yes, proceed',
+		submitLabel: 'Yes, proceed',
 		cancelLabel: 'No, cancel',
 		id: 'custom-dialog-test'
 	});

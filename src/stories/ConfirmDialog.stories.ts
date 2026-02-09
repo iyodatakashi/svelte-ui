@@ -5,11 +5,11 @@ import ConfirmDialog from '../lib/components/ConfirmDialog.svelte';
 interface ConfirmDialogArgs {
 	title?: string;
 	message?: string;
-	confirmText?: string;
-	cancelText?: string;
+	submitLabel?: string;
+	cancelLabel?: string;
 	variant?: 'info' | 'warning' | 'danger';
 	width?: string | number;
-	onConfirm?: () => void;
+	onSubmit?: () => void;
 	onCancel?: () => void;
 }
 
@@ -39,11 +39,11 @@ const meta: Meta<ConfirmDialogArgs> = {
 			control: 'text',
 			description: 'Confirmation message to display'
 		},
-		confirmText: {
+		submitLabel: {
 			control: 'text',
-			description: 'Text for the confirm button'
+			description: 'Text for the submit button'
 		},
-		cancelText: {
+		cancelLabel: {
 			control: 'text',
 			description: 'Text for the cancel button'
 		},
@@ -56,9 +56,9 @@ const meta: Meta<ConfirmDialogArgs> = {
 			control: 'text',
 			description: 'Dialog width (number for pixels, string for calc/vw/% etc.)'
 		},
-		onConfirm: {
-			action: 'confirmed',
-			description: 'Callback when confirm button is clicked'
+		onSubmit: {
+			action: 'submitted',
+			description: 'Callback when submit button is clicked'
 		},
 		onCancel: {
 			action: 'cancelled',
@@ -74,8 +74,8 @@ export const Default: Story = {
 	args: {
 		title: 'Confirm Action',
 		message: 'Are you sure you want to proceed?',
-		confirmText: 'Confirm',
-		cancelText: 'Cancel',
+		submitLabel: 'Confirm',
+		cancelLabel: 'Cancel',
 		variant: 'info',
 		width: 400
 	}
@@ -85,8 +85,8 @@ export const Warning: Story = {
 	args: {
 		title: 'Warning',
 		message: 'This action may have unintended consequences. Do you want to continue?',
-		confirmText: 'Continue',
-		cancelText: 'Cancel',
+		submitLabel: 'Continue',
+		cancelLabel: 'Cancel',
 		variant: 'warning',
 		width: 450
 	}
@@ -96,8 +96,8 @@ export const Danger: Story = {
 	args: {
 		title: 'Delete Item',
 		message: 'This action cannot be undone. Are you sure you want to delete this item?',
-		confirmText: 'Delete',
-		cancelText: 'Cancel',
+		submitLabel: 'Delete',
+		cancelLabel: 'Cancel',
 		variant: 'danger',
 		width: 400
 	}
@@ -107,8 +107,8 @@ export const CustomLabels: Story = {
 	args: {
 		title: 'Save Changes',
 		message: 'You have unsaved changes. Would you like to save them before leaving?',
-		confirmText: 'Save',
-		cancelText: 'Discard',
+		submitLabel: 'Save',
+		cancelLabel: 'Discard',
 		variant: 'info',
 		width: 450
 	}
@@ -119,8 +119,8 @@ export const LongMessage: Story = {
 		title: 'Terms and Conditions',
 		message:
 			'By clicking "Accept", you agree to our Terms of Service and Privacy Policy. This includes sharing your data with third-party services for analytics and improving our service. You can withdraw your consent at any time through your account settings.',
-		confirmText: 'Accept',
-		cancelText: 'Decline',
+		submitLabel: 'Accept',
+		cancelLabel: 'Decline',
 		variant: 'info',
 		width: 500
 	}
@@ -130,8 +130,8 @@ export const MinimalWidth: Story = {
 	args: {
 		title: 'Confirm',
 		message: 'Continue?',
-		confirmText: 'Yes',
-		cancelText: 'No',
+		submitLabel: 'Yes',
+		cancelLabel: 'No',
 		variant: 'info',
 		width: 300
 	}
@@ -142,8 +142,8 @@ export const MessageWithLineBreaks: Story = {
 		title: 'Multi-line Message',
 		message:
 			'This is the first line of the message.\nThis is the second line.\n\nThis is after an empty line.\n\nPlease confirm your action.',
-		confirmText: 'Confirm',
-		cancelText: 'Cancel',
+		submitLabel: 'Confirm',
+		cancelLabel: 'Cancel',
 		variant: 'info',
 		width: 450
 	}

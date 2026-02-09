@@ -98,9 +98,9 @@
 		<ConfirmDialog
 			bind:this={confirmDialogRef}
 			title="いいの？"
-			confirmLabel="はい"
+			submitLabel="はい"
 			cancelLabel="いやん"
-			onConfirm={handleConfirm}
+			onSubmit={handleConfirm}
 		/>
 		<Dialog bind:this={dialogRef} title="タイトル" scrollable
 			>ほげ

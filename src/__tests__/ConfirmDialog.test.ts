@@ -11,7 +11,7 @@ describe('ConfirmDialog Component', () => {
 		const expectedDefaults = {
 			title: 'Confirm',
 			description: 'Are you sure?',
-			confirmLabel: 'Confirm',
+			submitLabel: 'Confirm',
 			cancelLabel: 'Cancel',
 			variant: 'info',
 			width: 400,
@@ -22,7 +22,7 @@ describe('ConfirmDialog Component', () => {
 		// デフォルト値の型チェック
 		expect(typeof expectedDefaults.title).toBe('string');
 		expect(typeof expectedDefaults.description).toBe('string');
-		expect(typeof expectedDefaults.confirmLabel).toBe('string');
+		expect(typeof expectedDefaults.submitLabel).toBe('string');
 		expect(typeof expectedDefaults.cancelLabel).toBe('string');
 		expect(typeof expectedDefaults.variant).toBe('string');
 		expect(typeof expectedDefaults.width).toBe('number');
@@ -40,7 +40,7 @@ describe('ConfirmDialog Component', () => {
 	});
 
 	it('should handle string props correctly', () => {
-		const stringProps = ['title', 'description', 'confirmLabel', 'cancelLabel', 'variant'];
+		const stringProps = ['title', 'description', 'submitLabel', 'cancelLabel', 'variant'];
 
 		stringProps.forEach((prop) => {
 			expect(typeof 'test').toBe('string');
@@ -78,8 +78,8 @@ describe('ConfirmDialog Component', () => {
 		expect(typeof 'This action cannot be undone.').toBe('string');
 	});
 
-	it('should support confirm label', () => {
-		// confirmLabel型のテスト
+	it('should support submit label', () => {
+		// submitLabel型のテスト
 		expect(typeof 'Yes').toBe('string');
 		expect(typeof 'Delete').toBe('string');
 		expect(typeof 'Save').toBe('string');

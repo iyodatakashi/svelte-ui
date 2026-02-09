@@ -13,7 +13,7 @@
 		// 基本プロパティ
 		title = 'Confirm',
 		description = 'Are you sure?',
-		confirmLabel = 'Confirm',
+		submitLabel = 'Confirm',
 		cancelLabel = 'Cancel',
 
 		// HTML属性
@@ -28,13 +28,13 @@
 		closeIfClickOutside = true,
 
 		// イベントハンドラー
-		onConfirm = () => {}, // No params for type inference
+		onSubmit = () => {}, // No params for type inference
 		onCancel = () => {} // No params for type inference
 	}: {
 		// 基本プロパティ
 		title?: string;
 		description?: string;
-		confirmLabel?: string;
+		submitLabel?: string;
 		cancelLabel?: string;
 
 		// HTML属性
@@ -49,7 +49,7 @@
 		closeIfClickOutside?: boolean;
 
 		// イベントハンドラー
-		onConfirm?: () => void;
+		onSubmit?: () => void;
 		onCancel?: () => void;
 	} = $props();
 
@@ -58,8 +58,8 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const handleConfirm = (): void => {
-		onConfirm();
+	const handleSubmit = (): void => {
+		onSubmit();
 		close();
 	};
 
@@ -104,9 +104,9 @@
 				: variant === 'warning'
 					? 'var(--svelte-ui-warning-color)'
 					: undefined}
-			onclick={handleConfirm}
+			onclick={handleSubmit}
 		>
-			{confirmLabel}
+			{submitLabel}
 		</Button>
 	{/snippet}
 </Dialog>
