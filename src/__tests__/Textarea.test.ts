@@ -205,16 +205,6 @@ describe('Textarea Component', () => {
 				expect(result).toBe(expected);
 			});
 		});
-
-		it('should validate minHeight logic for inline mode', () => {
-			// inlineモードでのminHeightの動作をシミュレート
-			const inlineMinHeight = '1.6em; min-height: 1lh;';
-			const normalMinHeight = '36px;';
-
-			expect(inlineMinHeight).toContain('1.6em');
-			expect(inlineMinHeight).toContain('1lh');
-			expect(normalMinHeight).toContain('36px');
-		});
 	});
 
 	// =========================================================================

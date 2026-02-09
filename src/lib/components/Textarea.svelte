@@ -30,7 +30,7 @@
 
 		// スタイル/レイアウト
 		rows = 3,
-		minHeight = 36,
+		minHeight = null,
 		maxHeight = null,
 		inline = false,
 		focusStyle = 'outline',
@@ -327,9 +327,11 @@
 	// $derived
 	// =========================================================================
 
-	// min-heightスタイルの計算
-	const minHeightStyle = $derived(
-		inline ? 'min-height: 1.6em; min-height: 1lh;' : `min-height: ${minHeight}px;`
+	// min-height用CSS変数の上書きスタイル
+	// デフォルト値は variables.scss の --svelte-ui-textarea-min-height に委譲し、
+	// props で minHeight が指定されたときだけ上書きする
+	const minHeightVarStyle = $derived(
+		!inline && minHeight != null ? `--svelte-ui-textarea-min-height: ${minHeight}px;` : ''
 	);
 
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
@@ -346,6 +348,12 @@
 			}
 			return html;
 		} else {
+			// inline かつ value が空のとき、placeholder がなければ
+			// 1行分の高さを確保するためにダミーの &nbsp; を入れる
+			// （placeholder がある場合は :empty::before でプレースホルダを表示したいので空にしておく）
+			if (inline && !placeholder) {
+				return '&nbsp;';
+			}
 			return '';
 		}
 	});
@@ -380,7 +388,7 @@
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="{minHeightStyle} {customStyle}"
+		style="{minHeightVarStyle} {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -402,7 +410,7 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="width: {widthStyle}; {minHeightStyle} {customStyle}"
+			style="width: {widthStyle}; {minHeightVarStyle} {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -450,7 +458,7 @@
 		{/if}
 	</div>
 	{#if linkify}
-		<div class="textarea__link-text" style="{minHeightStyle} {customStyle}">
+		<div class="textarea__link-text" style="{minHeightVarStyle} {customStyle}">
 			{@html linkHtmlValue}
 		</div>
 	{/if}
@@ -687,13 +695,14 @@
  * ============================================= */
 	.textarea:not(.textarea--inline) {
 		.textarea__display-text,
-		.textarea__link-text {
+		.textarea__link-text,
+		textarea {
+			min-height: var(--svelte-ui-textarea-min-height);
 			padding: var(--svelte-ui-textarea-padding);
 		}
 
 		textarea {
 			position: static;
-			padding: var(--svelte-ui-textarea-padding);
 			background-color: var(--svelte-ui-textarea-bg);
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
 			border: none;
