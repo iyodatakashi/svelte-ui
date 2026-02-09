@@ -108,8 +108,8 @@
 		clearable?: boolean;
 
 		// 入力イベント
-		onchange?: (value: any) => void;
-		oninput?: (value: any) => void;
+		onchange?: (value: string | number | null | undefined) => void;
+		oninput?: (value: string | number | null | undefined) => void;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference
@@ -206,7 +206,7 @@
 		// 入力中はvalueを更新しない（入力値をそのまま保持）
 		highlightedIndex = -1;
 		popupRef?.open();
-		oninput?.(currentInputValue);
+		oninput?.(currentValue ?? null);
 	};
 
 	// 値確定ハンドラー

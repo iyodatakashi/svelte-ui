@@ -92,7 +92,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: (value: any) => void;
+		onchange?: (value: string | number | boolean) => void;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference

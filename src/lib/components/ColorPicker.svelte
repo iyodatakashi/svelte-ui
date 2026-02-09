@@ -92,8 +92,8 @@
 		iconVariant?: IconVariant;
 
 		// 入力イベント
-		onchange?: (value: any) => void;
-		oninput?: (value: any) => void;
+		onchange?: (value: string) => void;
+		oninput?: (value: string) => void;
 
 		// フォーカスイベント
 		onfocus?: Function; // No params for type inference
@@ -148,7 +148,7 @@
 			localValue = value;
 
 			/* value が更新されたらonchangeを実行 */
-			handleChange();
+			handleValueChange();
 		});
 	});
 
@@ -167,10 +167,11 @@
 	// Methods
 	// =========================================================================
 
-	const handleChange = (event?: Event): void => {
-		// 空文字列の場合はそのまま処理
-		if (localValue && !localValue.startsWith('#')) {
-			localValue = '#' + localValue;
+	const handleChange = (value: string): void => {
+		if (value && !value.startsWith('#')) {
+			localValue = '#' + value;
+		} else {
+			localValue = value;
 		}
 
 		if (value !== prevValue || localValue !== prevValue) {
@@ -180,9 +181,13 @@
 		}
 	};
 
-	const handleInput = (event?: Event): void => {
+	const handleValueChange = (): void => {
+		handleChange(localValue);
+	};
+
+	const handleInput = (inputValue: string | number): void => {
 		if (disabled) return;
-		oninput?.(localValue);
+		oninput?.(String(inputValue));
 	};
 
 	const handleFocus = (event: FocusEvent): void => {
@@ -205,7 +210,7 @@
 		// Enterキーで色の変更を確定
 		if (event.key === 'Enter' && !disabled && !readonly) {
 			event.preventDefault();
-			handleChange();
+			handleValueChange();
 		}
 		if (disabled) return;
 		onkeydown(event);
@@ -368,7 +373,7 @@
 		<input
 			type="color"
 			bind:value
-			onchange={handleChange}
+			onchange={handleValueChange}
 			onfocus={handleFocus}
 			onblur={handleBlur}
 			onclick={handleClick}

@@ -186,8 +186,8 @@
 		onpointercancel?: Function; // No params for type inference
 
 		// 入力イベント
-		onchange?: (value: any) => void;
-		oninput?: (value: any) => void;
+		onchange?: (value: string | number) => void;
+		oninput?: (value: string | number) => void;
 
 		// アイコンイベント
 		onRightIconClick?: Function; // No params for type inference

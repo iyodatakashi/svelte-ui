@@ -53,7 +53,7 @@
 		mode?: 'single' | 'range';
 
 		// 入力イベント
-		onchange: (value: Date | { start: Date; end: Date } | undefined) => void;
+		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
 		onOpen?: Function;
 		onClose?: Function;
 	} = $props();
