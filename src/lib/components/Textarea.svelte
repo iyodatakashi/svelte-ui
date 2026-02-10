@@ -116,7 +116,7 @@
 
 		// スタイル/レイアウト
 		rows?: number;
-		minHeight?: number | null;
+		minHeight?: string | number | null;
 		maxHeight?: string | number | null;
 		inline?: boolean;
 		focusStyle?: 'background' | 'outline' | 'none';
@@ -335,13 +335,10 @@
 	// $derived
 	// =========================================================================
 
-	// min-height用CSS変数の上書きスタイル
-	// デフォルト値は variables.scss の --svelte-ui-textarea-min-height に委譲し、
-	// props で minHeight が指定されたときだけ上書きする
-	const minHeightVarStyle = $derived(
-		!inline && minHeight != null ? `--svelte-ui-textarea-min-height: ${minHeight}px;` : ''
-	);
-
+	// min-height用スタイル値
+	// デフォルト値は CSS（variables.scss）側の --svelte-ui-textarea-min-height に委譲し、
+	// props で minHeight が指定されたときは min-height の値としてここで解決する
+	const minHeightStyle = $derived(getStyleFromNumber(minHeight));
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
 	const widthStyle = $derived(getStyleFromNumber(width));
 
@@ -397,7 +394,7 @@
 	<div
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="{minHeightVarStyle} {customStyle}"
+		style="min-height: {minHeightStyle}; {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -419,7 +416,9 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="width: {widthStyle}; {minHeightVarStyle} {customStyle}"
+			style="{minHeightStyle
+				? `min-height: ${minHeightStyle}; `
+				: ''}width: {widthStyle}; {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -467,7 +466,10 @@
 		{/if}
 	</div>
 	{#if linkify}
-		<div class="textarea__link-text" style="{minHeightVarStyle} {customStyle}">
+		<div
+			class="textarea__link-text"
+			style="{minHeightStyle ? `min-height: ${minHeightStyle}; ` : ''}{customStyle}"
+		>
 			{@html linkHtmlValue}
 		</div>
 	{/if}
