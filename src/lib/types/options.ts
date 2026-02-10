@@ -8,4 +8,4 @@ export type Option = {
 	disabled?: boolean;
 };
 
-export type OptionValue = string | number | null;
+export type OptionValue = string | number | boolean | null | undefined;

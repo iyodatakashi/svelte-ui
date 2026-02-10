@@ -11,6 +11,7 @@
 		PointerHandler,
 		BivariantValueHandler
 	} from '$lib/types/eventHandlers';
+	import type { OptionValue } from '$lib/types/options';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -82,8 +83,8 @@
 
 		// 基本プロパティ
 		name: string;
-		value: string | number | boolean;
-		currentValue: string | number | boolean | null;
+		value: OptionValue;
+		currentValue: OptionValue;
 
 		// HTML属性系
 		id?: string;
@@ -100,7 +101,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: BivariantValueHandler<string | number | boolean>;
+		onchange?: BivariantValueHandler<OptionValue>;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;
