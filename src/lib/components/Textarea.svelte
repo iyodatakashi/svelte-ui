@@ -334,10 +334,6 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-
-	// min-height用スタイル値
-	// デフォルト値は CSS（variables.scss）側の --svelte-ui-textarea-min-height に委譲し、
-	// props で minHeight が指定されたときは min-height の値としてここで解決する
 	const minHeightStyle = $derived(getStyleFromNumber(minHeight));
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
 	const widthStyle = $derived(getStyleFromNumber(width));
@@ -356,7 +352,6 @@
 		} else {
 			// inline かつ value が空のとき、placeholder がなければ
 			// 1行分の高さを確保するためにダミーの &nbsp; を入れる
-			// （placeholder がある場合は :empty::before でプレースホルダを表示したいので空にしておく）
 			if (inline && !placeholder) {
 				return '&nbsp;';
 			}
@@ -416,9 +411,7 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="{minHeightStyle
-				? `min-height: ${minHeightStyle}; `
-				: ''}width: {widthStyle}; {customStyle}"
+			style="min-height: {minHeightStyle}; width: {widthStyle}; {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -466,10 +459,7 @@
 		{/if}
 	</div>
 	{#if linkify}
-		<div
-			class="textarea__link-text"
-			style="{minHeightStyle ? `min-height: ${minHeightStyle}; ` : ''}{customStyle}"
-		>
+		<div class="textarea__link-text" style="min-height: {minHeightStyle}; {customStyle}">
 			{@html linkHtmlValue}
 		</div>
 	{/if}
