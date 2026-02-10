@@ -442,7 +442,6 @@
 
 			if (isOutside) {
 				callbackFunction();
-				event.stopPropagation();
 			}
 		}
 		setTimeout(() => {
