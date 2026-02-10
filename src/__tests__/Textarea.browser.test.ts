@@ -201,7 +201,6 @@ test('should not reference undefined CSS variables', async () => {
 		'--svelte-ui-textarea-border-radius-rounded',
 		'--svelte-ui-input-disabled-opacity',
 		'--svelte-ui-button-disabled-opacity',
-		'--svelte-ui-input-readonly-bg',
 		'--svelte-ui-clear-button-transition',
 		'--svelte-ui-clear-button-top-textarea',
 		'--svelte-ui-clear-button-right-textarea',

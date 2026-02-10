@@ -585,4 +585,7 @@
 			width: 100%;
 		}
 	}
+
+	/* Datepicker uses a readonly Input when allowDirectInput is false.
+	 * Background behavior for readonly inputs is now handled globally in Input. */
 </style>

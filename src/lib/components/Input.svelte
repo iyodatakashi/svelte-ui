@@ -970,7 +970,9 @@
 	}
 
 	input[readonly] {
-		background-color: var(--svelte-ui-input-readonly-bg);
+		/* Keep cursor behavior but do not add a special background.
+		 * In this library, filled backgrounds are used to indicate editable fields,
+		 * so readonly inputs intentionally have no extra background color. */
 		cursor: default;
 	}
 </style>

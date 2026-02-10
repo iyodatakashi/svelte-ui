@@ -376,7 +376,6 @@
 	--svelte-ui-input-icon-space-double-inline: calc(var(--svelte-ui-form-icon-space) * 2);
 	--svelte-ui-input-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-border-color: var(--svelte-ui-border-weak-color);
-	--svelte-ui-input-readonly-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-input-placeholder-color: var(--svelte-ui-text-placeholder-color);
 	--svelte-ui-input-icon-color: var(--svelte-ui-text-subtle-color);
@@ -396,11 +395,6 @@
 	--svelte-ui-textarea-icon-space-inline: var(--svelte-ui-form-icon-space);
 	--svelte-ui-textarea-icon-top: 2px;
 	--svelte-ui-textarea-icon-top-inline: -2px;
-	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
-	--svelte-ui-textarea-border-color: var(--svelte-ui-border-weak-color);
-	--svelte-ui-textarea-readonly-bg: var(--svelte-ui-form-bg);
-	--svelte-ui-textarea-text-color: var(--svelte-ui-text-color);
-	--svelte-ui-textarea-placeholder-color: var(--svelte-ui-text-placeholder-color);
 	--svelte-ui-textarea-icon-color: var(--svelte-ui-text-subtle-color);
 
 	/* Select */

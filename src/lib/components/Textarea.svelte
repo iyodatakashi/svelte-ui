@@ -663,7 +663,8 @@
 	}
 
 	textarea[readonly] {
-		background-color: var(--svelte-ui-input-readonly-bg);
+		/* Match Input behavior: readonly fields keep the same background,
+		 * but use a default cursor to indicate non-editable. */
 		cursor: default;
 	}
 

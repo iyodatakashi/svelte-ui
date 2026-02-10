@@ -577,6 +577,7 @@
 			</IconButton>
 		</div>
 		<button
+			type="button"
 			class="datepicker-calendar__header__month-label-button"
 			aria-live="polite"
 			aria-atomic="true"
@@ -603,6 +604,7 @@
 		<div class="datepicker-calendar__month-selection">
 			{#each monthNames as monthName, index}
 				<button
+					type="button"
 					class="datepicker-calendar__month-button"
 					class:datepicker-calendar__month-button--current={index === dayjs().month() &&
 						month.year() === dayjs().year()}
@@ -653,6 +655,7 @@
 						role="gridcell"
 					>
 						<button
+							type="button"
 							id={getDateId(date)}
 							class="datepicker-calendar__date-button"
 							aria-current={isToday(date) ? 'date' : undefined}
