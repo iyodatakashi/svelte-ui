@@ -8,6 +8,14 @@
 	import { onDestroy } from 'svelte';
 	import ImageUploaderPreview from './ImageUploaderPreview.svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
+	import type {
+		BivariantValueHandler,
+		FocusHandler,
+		KeyboardHandler,
+		MouseHandler,
+		TouchHandler,
+		PointerHandler
+	} from '$lib/types/eventHandlers';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -93,27 +101,27 @@
 		removeFileAriaLabel?: string;
 
 		// 入力イベント
-		onchange?: (value: FileList | null | undefined) => void;
+		onchange?: BivariantValueHandler<FileList | null | undefined>;
 
 		// フォーカスイベント
-		onfocus?: Function; // No params for type inference
-		onblur?: Function; // No params for type inference
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
 
 		// キーボードイベント
-		onkeydown?: Function; // No params for type inference
-		onkeyup?: Function; // No params for type inference
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
 
 		// マウスイベント
-		onmouseenter?: Function; // No params for type inference
-		onmouseleave?: Function; // No params for type inference
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
 
 		// タッチイベント
-		ontouchstart?: Function; // No params for type inference
-		ontouchend?: Function; // No params for type inference
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
 
 		// ポインターイベント
-		onpointerenter?: Function; // No params for type inference
-		onpointerleave?: Function; // No params for type inference
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
 	} = $props();
 
 	let dropAreaRef: HTMLButtonElement;

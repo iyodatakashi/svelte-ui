@@ -2,6 +2,7 @@
 	import type { Option, OptionValue } from '$lib/types/options';
 	import Radio from './Radio.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
+	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
 
 	let {
 		// 基本プロパティ
@@ -46,7 +47,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: (value: OptionValue) => void;
+		onchange?: BivariantValueHandler<OptionValue>;
 	} = $props();
 
 	const handleChange = () => {

@@ -432,7 +432,7 @@
 		onClose?.();
 	};
 
-	const clickOutside = (element: HTMLElement, callbackFunction: Function) => {
+	const clickOutside = (element: HTMLElement, callbackFunction: () => void) => {
 		function onClick(event: MouseEvent) {
 			if (!(event.target instanceof Node)) return;
 
@@ -449,7 +449,7 @@
 			document.body.addEventListener('click', onClick);
 		}, 1);
 		return {
-			update(newCallbackFunction: Function) {
+			update(newCallbackFunction: () => void) {
 				callbackFunction = newCallbackFunction;
 			},
 			destroy() {

@@ -6,6 +6,13 @@
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
+	import type {
+		FocusHandler,
+		KeyboardHandler,
+		MouseHandler,
+		TouchHandler,
+		PointerHandler
+	} from '$lib/types/eventHandlers';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -98,37 +105,37 @@
 		ariaLabel?: string;
 		ariaDescribedby?: string;
 		// フォーカスイベント
-		onfocus?: Function; // No params for type inference
-		onblur?: Function; // No params for type inference
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
 
 		// キーボードイベント
-		onkeydown?: Function; // No params for type inference
-		onkeyup?: Function; // No params for type inference
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
 
 		// マウスイベント
-		onclick?: Function; // No params for type inference
-		onmousedown?: Function; // No params for type inference
-		onmouseup?: Function; // No params for type inference
-		onmouseenter?: Function; // No params for type inference
-		onmouseleave?: Function; // No params for type inference
-		onmouseover?: Function; // No params for type inference
-		onmouseout?: Function; // No params for type inference
-		oncontextmenu?: Function; // No params for type inference
-		onauxclick?: Function; // No params for type inference
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
 
 		// タッチイベント
-		ontouchstart?: Function; // No params for type inference
-		ontouchend?: Function; // No params for type inference
-		ontouchmove?: Function; // No params for type inference
-		ontouchcancel?: Function; // No params for type inference
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
 
 		// ポインターイベント
-		onpointerdown?: Function; // No params for type inference
-		onpointerup?: Function; // No params for type inference
-		onpointerenter?: Function; // No params for type inference
-		onpointerleave?: Function; // No params for type inference
-		onpointermove?: Function; // No params for type inference
-		onpointercancel?: Function; // No params for type inference
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
 		[key: string]: any;
 	} = $props();
 

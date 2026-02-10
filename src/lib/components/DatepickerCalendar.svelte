@@ -14,6 +14,7 @@
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
 	import { t } from '$lib/i18n';
+	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
 
 	dayjs.extend(localeData);
 	dayjs.extend(isSameOrBefore);
@@ -53,9 +54,9 @@
 		mode?: 'single' | 'range';
 
 		// 入力イベント
-		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
-		onOpen?: Function;
-		onClose?: Function;
+		onchange?: BivariantValueHandler<Date | { start: Date; end: Date } | undefined>;
+		onOpen?: () => void;
+		onClose?: () => void;
 	} = $props();
 
 	let month: dayjs.Dayjs = $state(dayjs());

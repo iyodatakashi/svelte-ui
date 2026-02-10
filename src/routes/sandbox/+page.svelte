@@ -55,12 +55,18 @@
 		console.log(newValue);
 	};
 
-	const handleInputChange = () => {
+	const handleInputChange = (value: string) => {
 		console.log('Input changed:', value);
 	};
 
+	const handleInputKeydown = () => {};
+
 	const handleChangeFileList = (newValue: FileList) => {
 		console.log(newValue);
+	};
+
+	const handleComboboxChange = (value: string) => {
+		console.log(value);
 	};
 
 	const open = () => {
@@ -86,13 +92,17 @@
 			width="50%"
 			linkify
 			onkeydown={(e) => {
-				if (e.key === 'Enter') handleInputChange();
+				if (e.key === 'Enter') handleInputKeydown();
 			}}
-			onclick={handleInputChange}
+			onchange={handleInputChange}
 		/>
 		<Textarea id="textarea1" bind:value={value2} linkify clearable onsubmit={handleChange} />
 		<Select bind:value {options} />
-		<Combobox bind:value={comboboxValue} options={comboboxOptions} onchange={handleChange} />
+		<Combobox
+			bind:value={comboboxValue}
+			options={comboboxOptions}
+			onchange={handleComboboxChange}
+		/>
 		<ColorPicker bind:value={color} rounded clearable />
 
 		<ConfirmDialog

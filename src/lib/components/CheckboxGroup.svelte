@@ -3,6 +3,7 @@
 	import Checkbox from './Checkbox.svelte';
 	import { onMount } from 'svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
+	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
 
 	let {
 		// 基本プロパティ
@@ -45,7 +46,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: (value: OptionValue[]) => void;
+		onchange?: BivariantValueHandler<OptionValue[]>;
 	} = $props();
 	let localValues: Record<string, boolean> = $state({});
 

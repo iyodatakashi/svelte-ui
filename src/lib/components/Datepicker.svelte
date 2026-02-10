@@ -16,6 +16,14 @@
 	import { announceToScreenReader } from '$lib/utils/accessibility';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
+	import type {
+		BivariantValueHandler,
+		FocusHandler,
+		KeyboardHandler,
+		MouseHandler,
+		TouchHandler,
+		PointerHandler
+	} from '$lib/types/eventHandlers';
 
 	dayjs.extend(localeData);
 
@@ -131,33 +139,33 @@
 		maxDate?: Date;
 
 		// 入力イベント
-		onchange?: (value: Date | { start: Date; end: Date } | undefined) => void;
-		oninput?: (value: string) => void;
+		onchange?: BivariantValueHandler<Date | { start: Date; end: Date } | undefined>;
+		oninput?: BivariantValueHandler<string>;
 
 		// フォーカスイベント
-		onfocus?: Function; // No params for type inference
-		onblur?: Function; // No params for type inference
-		onkeydown?: Function; // No params for type inference
-		onkeyup?: Function; // No params for type inference
-		onclick?: Function; // No params for type inference
-		onmousedown?: Function; // No params for type inference
-		onmouseup?: Function; // No params for type inference
-		onmouseenter?: Function; // No params for type inference
-		onmouseleave?: Function; // No params for type inference
-		onmouseover?: Function; // No params for type inference
-		onmouseout?: Function; // No params for type inference
-		oncontextmenu?: Function; // No params for type inference
-		onauxclick?: Function; // No params for type inference
-		ontouchstart?: Function; // No params for type inference
-		ontouchend?: Function; // No params for type inference
-		ontouchmove?: Function; // No params for type inference
-		ontouchcancel?: Function; // No params for type inference
-		onpointerdown?: Function; // No params for type inference
-		onpointerup?: Function; // No params for type inference
-		onpointerenter?: Function; // No params for type inference
-		onpointerleave?: Function; // No params for type inference
-		onpointermove?: Function; // No params for type inference
-		onpointercancel?: Function; // No params for type inference
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
 
 		// その他
 		[key: string]: any;
@@ -318,10 +326,9 @@
 		onkeyup(event);
 	};
 
-	const handleInput = (event: Event) => {
+	const handleInput = (inputValue: string | number) => {
 		if (disabled) return;
-		const target = event.target as HTMLInputElement;
-		oninput?.(target.value);
+		oninput?.(String(inputValue));
 	};
 
 	// マウスイベント
