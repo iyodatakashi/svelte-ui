@@ -23,10 +23,13 @@
 		"url": "https://github.com/iyodatakashi/svelte-ui/issues"
 	},
 	"main": "dist/index.js",
+	"module": "dist/index.js",
 	"exports": {
 		".": {
 			"types": "./dist/index.d.ts",
-			"svelte": "./dist/index.js"
+			"svelte": "./dist/index.js",
+			"import": "./dist/index.js",
+			"require": "./dist/index.js"
 		},
 		"./styles": "./dist/assets/styles/import.scss",
 		"./styles/*": "./dist/assets/styles/*"
