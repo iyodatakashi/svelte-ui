@@ -8,7 +8,8 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler
+		PointerHandler,
+		BivariantValueHandler
 	} from '$lib/types/eventHandlers';
 	import type { Option } from '$lib/types/options';
 
