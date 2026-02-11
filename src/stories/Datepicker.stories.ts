@@ -11,10 +11,10 @@ interface DatepickerArgs {
 	hasIcon?: boolean;
 	disabled?: boolean;
 	focusStyle?: 'background' | 'outline' | 'none';
-	allowDirectInput?: boolean;
+	allowTextInput?: boolean;
 	fullWidth?: boolean;
 	rounded?: boolean;
-	openIfClicked?: boolean;
+	openOnClick?: boolean;
 	minDate?: Date;
 	maxDate?: Date;
 	locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
@@ -94,9 +94,9 @@ const meta: Meta<DatepickerArgs> = {
 			options: ['background', 'outline', 'none'],
 			description: 'フォーカス時の表示スタイル'
 		},
-		allowDirectInput: {
+		allowTextInput: {
 			control: 'boolean',
-			description: '直接入力を許可するかどうか'
+			description: 'テキストでの直接入力を許可するかどうか'
 		},
 		fullWidth: {
 			control: 'boolean',
@@ -106,7 +106,7 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'boolean',
 			description: '角丸スタイル'
 		},
-		openIfClicked: {
+		openOnClick: {
 			control: 'boolean',
 			description: 'クリックでカレンダーを開く'
 		},
@@ -240,9 +240,9 @@ export const Default: Story = {
 		mode: 'single',
 		hasIcon: false,
 		disabled: false,
-		allowDirectInput: false,
+		allowTextInput: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		openOnClick: true,
 		locale: 'ja'
 	}
 };
@@ -257,7 +257,7 @@ export const DateRange: Story = {
 		hasIcon: false,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		openOnClick: true,
 		locale: 'ja'
 	}
 };

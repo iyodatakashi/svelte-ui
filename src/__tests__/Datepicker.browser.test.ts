@@ -137,10 +137,10 @@ test('Datepicker with range mode renders correctly', async () => {
 	expect(datepicker).toBeInTheDocument();
 });
 
-test('Datepicker with allowDirectInput renders correctly', async () => {
+test('Datepicker with allowTextInput renders correctly', async () => {
 	const screen = render(Datepicker, {
 		value: '',
-		allowDirectInput: true,
+		allowTextInput: true,
 		id: 'datepicker-direct-input'
 	});
 	const input = screen.container.querySelector('#datepicker-direct-input') as HTMLInputElement;

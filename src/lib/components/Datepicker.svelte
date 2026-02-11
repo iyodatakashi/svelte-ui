@@ -59,8 +59,10 @@
 		// 状態/動作
 		disabled?: boolean;
 		mode?: 'single' | 'range';
-		allowDirectInput?: boolean;
-		openIfClicked?: boolean;
+		/** テキスト入力を許可するか */
+		allowTextInput?: boolean;
+		/** クリック時にポップアップを開くか */
+		openOnClick?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
 
@@ -126,8 +128,8 @@
 		// 状態/動作
 		disabled = false,
 		mode = 'single',
-		allowDirectInput = false,
-		openIfClicked = true,
+		allowTextInput = false,
+		openOnClick = true,
 		minDate,
 		maxDate,
 
@@ -183,8 +185,6 @@
 	let displayValue = $state('');
 
 	const calendarId = `${id}-calendar`;
-
-	// =========================================================================
 
 	const localeConfig = {
 		en: {
@@ -284,7 +284,7 @@
 
 	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
-		if (openIfClicked) {
+		if (openOnClick) {
 			openedViaKeyboard = false;
 			open();
 		}
@@ -298,8 +298,8 @@
 		switch (event.key) {
 			case 'Enter':
 			case ' ':
-				// 直接入力が許可されている場合はEnterキーで入力を確定
-				if (allowDirectInput && event.key === 'Enter') {
+				// テキスト入力が許可されている場合はEnterキーで入力を確定
+				if (allowTextInput && event.key === 'Enter') {
 					return; // Inputコンポーネントの処理に任せる
 				}
 				event?.preventDefault?.();
@@ -454,7 +454,7 @@
 
 	const handleInputChange = (inputValue: string | number | undefined) => {
 		if (disabled) return;
-		if (!allowDirectInput) return;
+		if (!allowTextInput) return;
 
 		const inputStr = String(inputValue || '');
 		if (!inputStr) {
@@ -495,7 +495,7 @@
 			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
 	);
 	const placeholderText = $derived(
-		allowDirectInput
+		allowTextInput
 			? nullString || currentLocaleConfig.directInputPlaceholder
 			: nullString || currentLocaleConfig.notSelected
 	);
@@ -515,7 +515,7 @@
 		{fullWidth}
 		{rounded}
 		{disabled}
-		readonly={!allowDirectInput}
+		readonly={!allowTextInput}
 		placeholder={placeholderText}
 		rightIcon={hasIcon ? (mode === 'range' ? 'date_range' : 'calendar_today') : undefined}
 		{iconFilled}
