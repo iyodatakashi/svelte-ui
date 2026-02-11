@@ -20,6 +20,36 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type DrawerProps = {
+		// Snippet
+		header?: Snippet;
+		children?: Snippet;
+		footer?: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+
+		// HTML属性
+		id?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		position?: 'left' | 'right';
+		bodyStyle?: string;
+		noPadding?: boolean;
+
+		// 状態/動作
+		isOpen?: boolean;
+		scrollable?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaDescribedby?: string;
+	};
+
 	let {
 		// Snippet
 		header,
@@ -48,35 +78,7 @@
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Drawer',
 		ariaDescribedby
-	}: {
-		// Snippet
-		header?: Snippet;
-		children?: Snippet;
-		footer?: Snippet;
-
-		// 基本プロパティ
-		title?: string;
-		description?: string;
-
-		// HTML属性
-		id?: string;
-
-		// スタイル/レイアウト
-		width?: string | number;
-		position?: 'left' | 'right';
-		bodyStyle?: string;
-		noPadding?: boolean;
-
-		// 状態/動作
-		isOpen?: boolean;
-		scrollable?: boolean;
-		closeIfClickOutside?: boolean;
-		restoreFocus?: boolean;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
-		ariaDescribedby?: string;
-	} = $props();
+	}: DrawerProps = $props();
 
 	let modalRef: Modal;
 

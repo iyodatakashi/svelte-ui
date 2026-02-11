@@ -12,18 +12,22 @@
 	} from '$lib/constants/skeleton';
 
 	// =========================================================================
-	// Props
+	// Props, States & Constants
 	// =========================================================================
+	export type SkeletonAvatarProps = {
+		avatarConfig?: Partial<SkeletonAvatarConfig>;
+		animated?: boolean;
+	};
 
 	let {
 		// 基本プロパティ
 		avatarConfig = {},
 		animated = true
-	}: {
-		avatarConfig?: Partial<SkeletonAvatarConfig>;
-		animated?: boolean;
-	} = $props();
+	}: SkeletonAvatarProps = $props();
 
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	// マージされた設定
 	const mergedAvatarImageConfig = $derived({
 		...DEFAULT_AVATAR_IMAGE_CONFIG,

@@ -5,8 +5,17 @@
 	import { DEFAULT_BOX_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
-	// Props
+	// Props, States & Constants
 	// =========================================================================
+	export type SkeletonBoxProps = {
+		width?: string | number;
+		height?: string | number;
+		aspectRatio?: string | number;
+		radius?: string | number;
+		animated?: boolean;
+		className?: string;
+		customStyle?: string;
+	};
 
 	let {
 		// 基本プロパティ
@@ -17,20 +26,11 @@
 		animated = true,
 		className = '',
 		customStyle = ''
-	}: {
-		width?: string | number;
-		height?: string | number;
-		aspectRatio?: string | number;
-		radius?: string | number;
-		animated?: boolean;
-		className?: string;
-		customStyle?: string;
-	} = $props();
+	}: SkeletonBoxProps = $props();
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
-
 	const containerClasses = $derived(
 		['skeleton-box', animated && 'skeleton-box--animated', className].filter(Boolean).join(' ')
 	);

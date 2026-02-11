@@ -1,10 +1,22 @@
 <!-- LoadingSpinner.svelte -->
 
 <script lang="ts">
-	import { getStyleFromNumber } from '$lib/utils/style';
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type LoadingSpinnerProps = {
+		// スタイル/レイアウト
+		size?: number;
+		color?: string;
+		strokeWidth?: number;
+
+		// 状態/動作
+		speed?: number;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
+	};
+
 	let {
 		// スタイル/レイアウト
 		size = 32,
@@ -16,18 +28,7 @@
 
 		// ARIA/アクセシビリティ
 		reducedMotion = false
-	}: {
-		// スタイル/レイアウト
-		size?: number;
-		color?: string;
-		strokeWidth?: number;
-
-		// 状態/動作
-		speed?: number;
-
-		// ARIA/アクセシビリティ
-		reducedMotion?: boolean;
-	} = $props();
+	}: LoadingSpinnerProps = $props();
 
 	// =========================================================================
 	// $derived

@@ -20,6 +20,35 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type DialogProps = {
+		// Snippet
+		header?: Snippet;
+		children?: Snippet;
+		footer?: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+
+		// HTML属性
+		id?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		bodyStyle?: string;
+		noPadding?: boolean;
+
+		// 状態/動作
+		isOpen?: boolean;
+		scrollable?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaDescribedby?: string;
+	};
+
 	let {
 		// Snippet
 		header,
@@ -47,34 +76,7 @@
 		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaDescribedby
-	}: {
-		// Snippet
-		header?: Snippet;
-		children?: Snippet;
-		footer?: Snippet;
-
-		// 基本プロパティ
-		title?: string;
-		description?: string;
-
-		// HTML属性
-		id?: string;
-
-		// スタイル/レイアウト
-		width?: string | number;
-		bodyStyle?: string;
-		noPadding?: boolean;
-
-		// 状態/動作
-		isOpen?: boolean;
-		scrollable?: boolean;
-		closeIfClickOutside?: boolean;
-		restoreFocus?: boolean;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
-		ariaDescribedby?: string;
-	} = $props();
+	}: DialogProps = $props();
 
 	let modalRef: Modal;
 

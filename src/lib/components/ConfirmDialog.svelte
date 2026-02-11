@@ -9,6 +9,29 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type ConfirmDialogProps = {
+		// 基本プロパティ
+		title?: string;
+		description?: string;
+		submitLabel?: string;
+		cancelLabel?: string;
+
+		// HTML属性
+		id?: string;
+
+		// スタイル/レイアウト
+		variant?: 'info' | 'warning' | 'danger';
+		width?: string | number;
+
+		// 状態/動作
+		isOpen?: boolean;
+		closeIfClickOutside?: boolean;
+
+		// イベントハンドラー
+		onSubmit?: () => void;
+		onCancel?: () => void;
+	};
+
 	let {
 		// 基本プロパティ
 		title = 'Confirm',
@@ -30,28 +53,7 @@
 		// イベントハンドラー
 		onSubmit = () => {}, // No params for type inference
 		onCancel = () => {} // No params for type inference
-	}: {
-		// 基本プロパティ
-		title?: string;
-		description?: string;
-		submitLabel?: string;
-		cancelLabel?: string;
-
-		// HTML属性
-		id?: string;
-
-		// スタイル/レイアウト
-		variant?: 'info' | 'warning' | 'danger';
-		width?: string | number;
-
-		// 状態/動作
-		isOpen?: boolean;
-		closeIfClickOutside?: boolean;
-
-		// イベントハンドラー
-		onSubmit?: () => void;
-		onCancel?: () => void;
-	} = $props();
+	}: ConfirmDialogProps = $props();
 
 	let dialogRef: SvelteComponent | undefined = $state();
 

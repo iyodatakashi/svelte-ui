@@ -6,14 +6,19 @@
 	import type { SkeletonButtonConfig } from '$lib/types/skeleton';
 	import { DEFAULT_BUTTON_CONFIG } from '$lib/constants/skeleton';
 
-	let {
-		buttonConfig = {},
-		animated = true
-	}: {
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+	export type SkeletonButtonProps = {
 		buttonConfig?: Partial<SkeletonButtonConfig>;
 		animated?: boolean;
-	} = $props();
+	};
 
+	let { buttonConfig = {}, animated = true }: SkeletonButtonProps = $props();
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	// マージされた設定
 	const mergedButtonConfig = $derived({
 		...DEFAULT_BUTTON_CONFIG,

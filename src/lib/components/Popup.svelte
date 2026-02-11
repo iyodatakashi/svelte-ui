@@ -22,40 +22,7 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	let {
-		// Snippet
-		children,
-
-		// DOM参照
-		anchorElement,
-
-		// 基本プロパティ
-		role = 'menu',
-
-		// HTML属性
-		id,
-
-		// スタイル/レイアウト
-		position = 'bottom',
-		margin = 8,
-
-		// 状態/動作
-		isOpen = $bindable(false),
-		focusTrap = false,
-		restoreFocus = false,
-		mobileFullscreen = false,
-		mobileBehavior = 'auto',
-		allowRepositioning = true,
-
-		// ARIA/アクセシビリティ
-		ariaLabel,
-		ariaLabelledby,
-		ariaDescribedby,
-
-		// イベントハンドラー
-		onOpen = () => {}, // No params for type inference
-		onClose = () => {}
-	}: {
+	export type PopupProps = {
 		// Snippet
 		children: Snippet;
 
@@ -105,7 +72,42 @@
 		// イベントハンドラー
 		onOpen?: () => void;
 		onClose?: () => void;
-	} = $props();
+	};
+
+	let {
+		// Snippet
+		children,
+
+		// DOM参照
+		anchorElement,
+
+		// 基本プロパティ
+		role = 'menu',
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
+		position = 'bottom',
+		margin = 8,
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		focusTrap = false,
+		restoreFocus = false,
+		mobileFullscreen = false,
+		mobileBehavior = 'auto',
+		allowRepositioning = true,
+
+		// ARIA/アクセシビリティ
+		ariaLabel,
+		ariaLabelledby,
+		ariaDescribedby,
+
+		// イベントハンドラー
+		onOpen = () => {}, // No params for type inference
+		onClose = () => {}
+	}: PopupProps = $props();
 
 	let popupRef: HTMLDivElement | undefined = $state();
 	let popupId: string = $state(id || `popup-${Math.random().toString(36).substring(2, 15)}`);

@@ -7,26 +7,23 @@
 	import { DEFAULT_HEADING_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
-	// Props
+	// Props, States & Constants
 	// =========================================================================
-
-	let {
-		headingConfig = {},
-		animated = true
-	}: {
+	export type SkeletonHeadingProps = {
 		headingConfig?: Partial<SkeletonHeadingConfig>;
 		animated?: boolean;
-	} = $props();
+	};
 
+	let { headingConfig = {}, animated = true }: SkeletonHeadingProps = $props();
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	// マージされた設定
 	const mergedHeadingConfig = $derived({
 		...DEFAULT_HEADING_CONFIG,
 		...headingConfig
 	});
-
-	// =========================================================================
-	// $derived
-	// =========================================================================
 
 	const widthStyle = $derived(getStyleFromNumber(mergedHeadingConfig.width));
 	const fontSizeStyle = $derived(

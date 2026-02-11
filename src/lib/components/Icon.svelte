@@ -8,6 +8,34 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type IconProps = {
+		// Snippet
+		children: Snippet;
+
+		// 基本プロパティ
+		title?: string;
+		fallbackText?: string;
+
+		// スタイル/レイアウト
+		size?: number;
+		color?: string;
+		customStyle?: string;
+
+		// アイコン関連
+		filled?: boolean;
+		weight?: IconWeight;
+		grade?: IconGrade;
+		opticalSize?: IconOpticalSize;
+		variant?: IconVariant;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		decorative?: boolean;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// Snippet
 		children,
@@ -34,33 +62,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// Snippet
-		children: Snippet;
-
-		// 基本プロパティ
-		title?: string;
-		fallbackText?: string;
-
-		// スタイル/レイアウト
-		size?: number;
-		color?: string;
-		customStyle?: string;
-
-		// アイコン関連
-		filled?: boolean;
-		weight?: IconWeight;
-		grade?: IconGrade;
-		opticalSize?: IconOpticalSize;
-		variant?: IconVariant;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
-		decorative?: boolean;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: IconProps = $props();
 
 	// =========================================================================
 	// $derived

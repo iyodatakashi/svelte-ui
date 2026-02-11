@@ -20,6 +20,58 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type ImageUploaderProps = {
+		// 基本プロパティ
+		value: FileList | null | undefined;
+		multiple?: boolean;
+		maxFileSize?: number;
+		placeholder?: string;
+
+		// HTML属性系
+		id?: string;
+		accept?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		height?: string | number;
+		rounded?: boolean;
+		previewStyle?: 'plain' | 'framed';
+		previewAdaptive?: boolean;
+
+		// アイコン系
+		icon?: string;
+		iconSize?: number;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+		removeFileAriaLabel?: string;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<FileList | null | undefined>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+
+		// ポインターイベント
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+	};
+
 	let {
 		// 基本プロパティ
 		value = $bindable(),
@@ -72,57 +124,7 @@
 		// ポインターイベント
 		onpointerenter = () => {}, // No params for type inference
 		onpointerleave = () => {} // No params for type inference
-	}: {
-		// 基本プロパティ
-		value: FileList | null | undefined;
-		multiple?: boolean;
-		maxFileSize?: number;
-		placeholder?: string;
-
-		// HTML属性系
-		id?: string;
-		accept?: string;
-
-		// スタイル/レイアウト
-		width?: string | number;
-		height?: string | number;
-		rounded?: boolean;
-		previewStyle?: 'plain' | 'framed';
-		previewAdaptive?: boolean;
-
-		// アイコン系
-		icon?: string;
-		iconSize?: number;
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-		removeFileAriaLabel?: string;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<FileList | null | undefined>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-
-		// ポインターイベント
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-	} = $props();
+	}: ImageUploaderProps = $props();
 
 	let dropAreaRef: HTMLButtonElement;
 	let fileInputRef: HTMLInputElement;

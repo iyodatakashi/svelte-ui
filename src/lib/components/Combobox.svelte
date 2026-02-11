@@ -18,6 +18,76 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type ComboboxProps = {
+		// 基本プロパティ
+		name?: string;
+		value: string | number | null | undefined;
+		options: string[];
+
+		// HTML属性系
+		inputAttributes?: HTMLInputAttributes | undefined;
+		id?: string | null;
+		tabindex?: number | null;
+		maxlength?: number | null;
+
+		// スタイル/レイアウト
+		customStyle?: string;
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		placeholder?: string;
+		fullWidth?: boolean;
+		minWidth?: number | null;
+		maxWidth?: number | null;
+		rounded?: boolean;
+
+		// 状態/動作
+		disabled?: boolean;
+		readonly?: boolean;
+		required?: boolean;
+		filterable?: boolean;
+		clearable?: boolean;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<string | number | null | undefined>;
+		oninput?: BivariantValueHandler<string | number | null | undefined>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		name,
@@ -86,75 +156,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		name?: string;
-		value: string | number | null | undefined;
-		options: string[];
-
-		// HTML属性系
-		inputAttributes?: HTMLInputAttributes | undefined;
-		id?: string | null;
-		tabindex?: number | null;
-		maxlength?: number | null;
-
-		// スタイル/レイアウト
-		customStyle?: string;
-		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
-		placeholder?: string;
-		fullWidth?: boolean;
-		minWidth?: number | null;
-		maxWidth?: number | null;
-		rounded?: boolean;
-
-		// 状態/動作
-		disabled?: boolean;
-		readonly?: boolean;
-		required?: boolean;
-		filterable?: boolean;
-		clearable?: boolean;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<string | number | null | undefined>;
-		oninput?: BivariantValueHandler<string | number | null | undefined>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: ComboboxProps = $props();
 
 	let inputValue = $state('');
 	let inputRef = $state<any>();
@@ -167,12 +169,6 @@
 	// 各要素のIDを生成
 	const inputId = `${id}-input`;
 	const listboxId = `${id}-listbox`;
-
-	// =========================================================================
-
-	// =========================================================================
-	// $effect
-	// =========================================================================
 
 	// =========================================================================
 	// Methods

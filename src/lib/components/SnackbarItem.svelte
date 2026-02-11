@@ -12,6 +12,33 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type SnackbarItemProps = {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
+		message?: string;
+		type?: 'info' | 'success' | 'warning' | 'error' | 'default';
+		actionLabel?: string;
+
+		// HTML属性系
+		id: string;
+
+		// スタイル/レイアウト
+		variant?: 'filled' | 'outlined';
+		position?: 'top' | 'bottom';
+		color?: string;
+		textColor?: string;
+
+		// 状態/動作
+		duration?: number;
+		closable?: boolean;
+		closeButtonAriaLabel?: string;
+		iconVariant?: IconVariant;
+
+		// イベントハンドラー
+		onAction?: () => void;
+	};
 
 	let {
 		// Snippet
@@ -39,33 +66,7 @@
 
 		// イベントハンドラー
 		onAction
-	}: {
-		// Snippet
-		children?: Snippet;
-
-		// 基本プロパティ
-		message?: string;
-		type?: 'info' | 'success' | 'warning' | 'error' | 'default';
-		actionLabel?: string;
-
-		// HTML属性系
-		id: string;
-
-		// スタイル/レイアウト
-		variant?: 'filled' | 'outlined';
-		position?: 'top' | 'bottom';
-		color?: string;
-		textColor?: string;
-
-		// 状態/動作
-		duration?: number;
-		closable?: boolean;
-		closeButtonAriaLabel?: string;
-		iconVariant?: IconVariant;
-
-		// イベントハンドラー
-		onAction?: () => void;
-	} = $props();
+	}: SnackbarItemProps = $props();
 
 	let visible = $state(true);
 	let timeoutId: ReturnType<typeof setTimeout> | null = null;
@@ -95,7 +96,6 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
-
 	const handleClose = () => {
 		// アニメーション開始前に、他のSnackbarの位置を測定
 		if (snackbarRef) {

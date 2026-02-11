@@ -8,6 +8,25 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type TabItemProps = {
+		// 基本プロパティ
+		tabItem: MenuItem;
+
+		// スタイル/レイアウト
+		textColor: string;
+		selectedTextColor: string;
+		selectedBarColor: string;
+
+		// アイコン関連
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
+		isSelected?: boolean;
+	};
 
 	let {
 		// 基本プロパティ
@@ -27,25 +46,7 @@
 
 		// 状態/動作
 		isSelected = false
-	}: {
-		// 基本プロパティ
-		tabItem: MenuItem;
-
-		// スタイル/レイアウト
-		textColor: string;
-		selectedTextColor: string;
-		selectedBarColor: string;
-
-		// アイコン関連
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-
-		// 状態/動作
-		isSelected?: boolean;
-	} = $props();
+	}: TabItemProps = $props();
 </script>
 
 <a

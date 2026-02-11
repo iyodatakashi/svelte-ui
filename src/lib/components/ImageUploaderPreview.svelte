@@ -1,7 +1,33 @@
+<!-- ImageUploaderPreview.svelte -->
+
 <script lang="ts">
 	import { onDestroy } from 'svelte';
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+	export type ImageUploaderPreviewProps = {
+		// 基本プロパティ
+		file: File;
+
+		// HTML属性系
+		id?: string;
+
+		// スタイル/レイアウト
+		width?: string | number;
+		height?: string | number;
+		previewAdaptive?: boolean;
+		rounded?: boolean;
+		previewStyle?: 'plain' | 'framed';
+
+		// ARIA/アクセシビリティ
+		removeFileAriaLabel?: string;
+
+		// 入力イベント
+		onRemove: () => void;
+	};
 
 	let {
 		// 基本プロパティ
@@ -22,29 +48,13 @@
 
 		// 入力イベント
 		onRemove
-	}: {
-		// 基本プロパティ
-		file: File;
-
-		// HTML属性系
-		id?: string;
-
-		// スタイル/レイアウト
-		width?: string | number;
-		height?: string | number;
-		previewAdaptive?: boolean;
-		rounded?: boolean;
-		previewStyle?: 'plain' | 'framed';
-
-		// ARIA/アクセシビリティ
-		removeFileAriaLabel?: string;
-
-		// 入力イベント
-		onRemove: () => void;
-	} = $props();
+	}: ImageUploaderPreviewProps = $props();
 
 	let imageSizes = $state<Record<string, { width: number; height: number }>>({});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const getImageUrl = (file: File): string => {
 		return URL.createObjectURL(file);
 	};
@@ -67,6 +77,9 @@
 		img.src = getImageUrl(file);
 	};
 
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	// previewAdaptiveによる分岐を最初に行う
 	const imageSizeStyle = $derived.by(() => {
 		if (previewAdaptive) {

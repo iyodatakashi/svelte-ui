@@ -15,6 +15,70 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type SliderProps = {
+		// 基本プロパティ
+		value: number;
+		name?: string;
+		id?: string;
+
+		// HTML属性系
+		min?: number;
+		max?: number;
+		step?: number;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		width?: string | number | null;
+		fullWidth?: boolean;
+		thumbColor?: string | null;
+		thumbWidth?: string | number | null;
+		thumbHeight?: string | number | null;
+		customStyle?: string;
+
+		// 状態/動作
+		disabled?: boolean;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<number>;
+		oninput?: BivariantValueHandler<number>;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		value = $bindable(0),
@@ -77,69 +141,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		value: number;
-		name?: string;
-		id?: string;
-
-		// HTML属性系
-		min?: number;
-		max?: number;
-		step?: number;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		width?: string | number | null;
-		fullWidth?: boolean;
-		thumbColor?: string | null;
-		thumbWidth?: string | number | null;
-		thumbHeight?: string | number | null;
-		customStyle?: string;
-
-		// 状態/動作
-		disabled?: boolean;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<number>;
-		oninput?: BivariantValueHandler<number>;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: SliderProps = $props();
 
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
@@ -147,7 +149,6 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
-
 	// フォーカスイベント
 	const handleFocus = (event: FocusEvent): void => {
 		if (disabled) return;

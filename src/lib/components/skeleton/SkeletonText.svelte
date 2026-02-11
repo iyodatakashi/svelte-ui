@@ -7,33 +7,29 @@
 	import { DEFAULT_TEXT_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
-	// Props
+	// Props, States & Constants
 	// =========================================================================
+	export type SkeletonTextProps = {
+		textConfig?: Partial<SkeletonTextConfig>;
+		animated?: boolean;
+	};
 
 	let {
 		// 基本プロパティ
 		textConfig = {},
 		animated = true
-	}: {
-		textConfig?: Partial<SkeletonTextConfig>;
-		animated?: boolean;
-	} = $props();
+	}: SkeletonTextProps = $props();
 
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	// マージされた設定
 	const mergedTextConfig = $derived({
 		...DEFAULT_TEXT_CONFIG,
 		...textConfig
 	});
 
-	// =========================================================================
-	// State
-	// =========================================================================
-
 	let containerRef: HTMLDivElement;
-
-	// =========================================================================
-	// $derived
-	// =========================================================================
 
 	const widthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
 	const fontSizeStyle = $derived(getStyleFromNumber(mergedTextConfig.fontSize));

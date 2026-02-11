@@ -30,6 +30,72 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type DatepickerProps = {
+		// 基本プロパティ
+		value: Date | { start: Date; end: Date } | undefined;
+		format?: string;
+		nullString?: string;
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		rangeSeparator?: string;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		fullWidth?: boolean;
+		rounded?: boolean;
+
+		// アイコン関連
+		hasIcon?: boolean;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
+		disabled?: boolean;
+		mode?: 'single' | 'range';
+		allowDirectInput?: boolean;
+		openIfClicked?: boolean;
+		minDate?: Date;
+		maxDate?: Date;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<Date | { start: Date; end: Date } | undefined>;
+		oninput?: BivariantValueHandler<string>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
 
 	let {
 		// 基本プロパティ
@@ -104,72 +170,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		value: Date | { start: Date; end: Date } | undefined;
-		format?: string;
-		nullString?: string;
-		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
-		rangeSeparator?: string;
-
-		// HTML属性系
-		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
-		fullWidth?: boolean;
-		rounded?: boolean;
-
-		// アイコン関連
-		hasIcon?: boolean;
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-
-		// 状態/動作
-		disabled?: boolean;
-		mode?: 'single' | 'range';
-		allowDirectInput?: boolean;
-		openIfClicked?: boolean;
-		minDate?: Date;
-		maxDate?: Date;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<Date | { start: Date; end: Date } | undefined>;
-		oninput?: BivariantValueHandler<string>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: DatepickerProps = $props();
 
 	// =========================================================================
 	// Props, States & Constants

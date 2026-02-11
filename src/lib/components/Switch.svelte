@@ -15,6 +15,67 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type SwitchProps = {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
+		value: boolean;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<boolean>;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// Snippet
 		children,
@@ -74,71 +135,10 @@
 
 		// その他
 		...restProps
-	}: {
-		// Snippet
-		children?: Snippet;
-
-		// 基本プロパティ
-		value: boolean;
-
-		// HTML属性系
-		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		size?: 'small' | 'medium' | 'large';
-
-		// 状態/動作
-		disabled?: boolean;
-		required?: boolean;
-
-		// ARIA/アクセシビリティ
-		reducedMotion?: boolean;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<boolean>;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: SwitchProps = $props();
 
 	let inputRef: HTMLInputElement | undefined = $state();
 	let errorId = `switch-error-${Math.random().toString(36).substring(2, 15)}`;
-
-	// =========================================================================
 
 	// =========================================================================
 	// Methods

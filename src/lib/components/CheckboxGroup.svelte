@@ -1,9 +1,38 @@
+<!-- CheckboxGroup.svelte -->
+
 <script lang="ts">
 	import type { Option, OptionValue } from '$lib/types/options';
 	import Checkbox from './Checkbox.svelte';
 	import { onMount } from 'svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
+	export type CheckboxGroupProps = {
+		// 基本プロパティ
+		options: Option[];
+		value: OptionValue[];
+
+		// スタイル/レイアウト
+		direction?: 'vertical' | 'horizontal';
+		gap?: string | number;
+		wrap?: boolean;
+		minOptionWidth?: string | number;
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<OptionValue[]>;
+	};
 
 	let {
 		// 基本プロパティ
@@ -26,43 +55,30 @@
 
 		// 入力イベント
 		onchange = () => {} // No params for type inference
-	}: {
-		// 基本プロパティ
-		options: Option[];
-		value: OptionValue[];
+	}: CheckboxGroupProps = $props();
 
-		// スタイル/レイアウト
-		direction?: 'vertical' | 'horizontal';
-		gap?: string | number;
-		wrap?: boolean;
-		minOptionWidth?: string | number;
-		size?: 'small' | 'medium' | 'large';
-
-		// 状態/動作
-		disabled?: boolean;
-		required?: boolean;
-
-		// ARIA/アクセシビリティ
-		reducedMotion?: boolean;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<OptionValue[]>;
-	} = $props();
 	let localValues: Record<string, boolean> = $state({});
 
+	// =========================================================================
+	// Lifecycle
+	// =========================================================================
 	onMount(() => {
 		options.forEach((option) => {
-			localValues[option.value] = false;
+			localValues[String(option.value)] = false;
 		});
 	});
 
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleChange = () => {
-		value = options.filter((option) => localValues[option.value]).map((option) => option.value);
+		value = options
+			.filter((option) => localValues[String(option.value)])
+			.map((option) => option.value);
 		onchange(value);
 	};
 
 	const gapStyle = gap !== undefined ? getStyleFromNumber(gap) : undefined;
-
 	const minOptionWidthStyle = getStyleFromNumber(minOptionWidth);
 </script>
 
@@ -75,10 +91,10 @@
     "
 >
 	{#each options as option (option.value)}
-		{#if localValues[option.value] !== undefined}
+		{#if localValues[String(option.value)] !== undefined}
 			<li class="checkbox-group__option">
 				<Checkbox
-					bind:value={localValues[option.value]}
+					bind:value={localValues[String(option.value)]}
 					{size}
 					{disabled}
 					{required}

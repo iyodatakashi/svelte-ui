@@ -11,16 +11,20 @@
 		DEFAULT_TEXT_CONFIG_MEDIA
 	} from '$lib/constants/skeleton';
 
-	let {
-		width = '100%',
-		mediaConfig = {},
-		animated = true
-	}: {
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+	export type SkeletonMediaProps = {
 		width?: string | number;
 		mediaConfig?: Partial<SkeletonMediaConfig>;
 		animated?: boolean;
-	} = $props();
+	};
 
+	let { width = '100%', mediaConfig = {}, animated = true }: SkeletonMediaProps = $props();
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
 	// マージされた設定
 	const mergedMediaConfig = $derived({
 		...DEFAULT_MEDIA_CONFIG,

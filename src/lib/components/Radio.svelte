@@ -16,6 +16,69 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type RadioProps = {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
+		name: string;
+		value: OptionValue;
+		currentValue: OptionValue;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<OptionValue>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// Snippet
 		children,
@@ -77,71 +140,9 @@
 
 		// その他
 		...restProps
-	}: {
-		// Snippet
-		children?: Snippet;
-
-		// 基本プロパティ
-		name: string;
-		value: OptionValue;
-		currentValue: OptionValue;
-
-		// HTML属性系
-		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		size?: 'small' | 'medium' | 'large';
-
-		// 状態/動作
-		disabled?: boolean;
-		required?: boolean;
-
-		// ARIA/アクセシビリティ
-		reducedMotion?: boolean;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<OptionValue>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: RadioProps = $props();
 
 	// =========================================================================
-
 	// Methods
 	// =========================================================================
 	const handleFocus = (event: FocusEvent) => {

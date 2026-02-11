@@ -12,34 +12,7 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	let {
-		// DOM参照
-		anchorElement,
-
-		// 基本プロパティ
-		menuItems,
-
-		// HTML属性
-		id,
-
-		// スタイル/レイアウト
-		position = 'bottom',
-
-		// 状態/動作
-		isOpen = $bindable(false),
-		mobileFullscreen = true,
-		mobileBehavior = 'auto',
-
-		// アイコン関連
-		iconFilled = false,
-		iconWeight = 300,
-		iconGrade = 0,
-		iconOpticalSize = 24,
-		iconVariant = 'outlined',
-
-		// ARIA/アクセシビリティ
-		ariaLabel = 'Menu'
-	}: {
+	export type PopupMenuProps = {
 		isOpen?: boolean;
 		anchorElement: HTMLElement;
 		position?:
@@ -70,7 +43,36 @@
 		iconGrade?: IconGrade;
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
-	} = $props();
+	};
+
+	let {
+		// DOM参照
+		anchorElement,
+
+		// 基本プロパティ
+		menuItems,
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
+		position = 'bottom',
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		mobileFullscreen = true,
+		mobileBehavior = 'auto',
+
+		// アイコン関連
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = 24,
+		iconVariant = 'outlined',
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Menu'
+	}: PopupMenuProps = $props();
 
 	let popupRef: SvelteComponent | undefined = $state();
 	let menuContainerRef: HTMLDivElement | undefined = $state();

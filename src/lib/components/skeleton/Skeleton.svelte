@@ -13,8 +13,17 @@
 	import { DEFAULT_PATTERN_CONFIG, PRESET_PATTERNS } from '$lib/constants/skeleton';
 
 	// =========================================================================
-	// Props
+	// Props, States & Constants
 	// =========================================================================
+	export type SkeletonProps = {
+		patterns?: SkeletonPatternConfig[];
+		repeat?: number;
+		repeatGap?: string | number;
+		patternGap?: string | number;
+		className?: string;
+		customStyle?: string;
+		animated?: boolean;
+	};
 
 	let {
 		// 基本プロパティ
@@ -25,22 +34,11 @@
 		className = '',
 		customStyle = '',
 		animated = true
-	}: {
-		patterns?: SkeletonPatternConfig[];
-		repeat?: number;
-		repeatGap?: string | number;
-		patternGap?: string | number;
-		className?: string;
-		customStyle?: string;
-		animated?: boolean;
-	} = $props();
+	}: SkeletonProps = $props();
 
 	// =========================================================================
-	// $derived
+	// Methods
 	// =========================================================================
-
-	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
-
 	// パターン設定をマージ
 	const mergedPatterns = $derived.by(() => {
 		return patterns
@@ -97,6 +95,10 @@
 			.flat();
 	});
 
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const containerClasses = $derived(['skeleton', className].filter(Boolean).join(' '));
 	const repeatGapStyle = $derived(getStyleFromNumber(repeatGap));
 	const patternGapStyle = $derived(getStyleFromNumber(patternGap));
 </script>

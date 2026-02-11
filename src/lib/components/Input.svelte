@@ -20,6 +20,99 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type InputProps = {
+		// 基本プロパティ
+		name?: string;
+		value: string | number;
+
+		// HTML属性系
+		id?: string | null;
+		type?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'number';
+		tabindex?: number | null;
+		maxlength?: number | null;
+		pattern?: string | null;
+		min?: number | null;
+		max?: number | null;
+		step?: number | null;
+		size?: number | null;
+		autocomplete?: HTMLInputElement['autocomplete'] | null;
+		spellcheck?: boolean | null;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		placeholder?: string;
+		fullWidth?: boolean;
+		width?: string | number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
+		rounded?: boolean;
+		customStyle?: string;
+
+		// アイコン関連
+		rightIcon?: string;
+		leftIcon?: string;
+		leftIconAriaLabel?: string;
+		rightIconAriaLabel?: string;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
+		disabled?: boolean;
+		readonly?: boolean;
+		required?: boolean;
+		clearable?: boolean;
+		linkify?: boolean;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<string | number>;
+		oninput?: BivariantValueHandler<string | number>;
+
+		// アイコンイベント
+		onRightIconClick?: MouseHandler;
+		onLeftIconClick?: MouseHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		name,
@@ -112,98 +205,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		name?: string;
-		value: string | number;
-
-		// HTML属性系
-		id?: string | null;
-		type?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'number';
-		tabindex?: number | null;
-		maxlength?: number | null;
-		pattern?: string | null;
-		min?: number | null;
-		max?: number | null;
-		step?: number | null;
-		size?: number | null;
-		autocomplete?: HTMLInputElement['autocomplete'] | null;
-		spellcheck?: boolean | null;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
-		placeholder?: string;
-		fullWidth?: boolean;
-		width?: string | number | null;
-		minWidth?: string | number | null;
-		maxWidth?: string | number | null;
-		rounded?: boolean;
-		customStyle?: string;
-
-		// アイコン関連
-		rightIcon?: string;
-		leftIcon?: string;
-		leftIconAriaLabel?: string;
-		rightIconAriaLabel?: string;
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-
-		// 状態/動作
-		disabled?: boolean;
-		readonly?: boolean;
-		required?: boolean;
-		clearable?: boolean;
-		linkify?: boolean;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<string | number>;
-		oninput?: BivariantValueHandler<string | number>;
-
-		// アイコンイベント
-		onRightIconClick?: MouseHandler;
-		onLeftIconClick?: MouseHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: InputProps = $props();
 
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);

@@ -15,6 +15,69 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type CheckboxProps = {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
+		name?: string;
+		value: boolean;
+		indeterminate?: boolean;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<boolean>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// Snippet
 		children,
@@ -76,85 +139,9 @@
 
 		// その他
 		...restProps
-	}: {
-		// Snippet
-		children?: Snippet;
-
-		// 基本プロパティ
-		name?: string;
-		value: boolean;
-		indeterminate?: boolean;
-
-		// HTML属性系
-		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		size?: 'small' | 'medium' | 'large';
-
-		// 状態/動作
-		disabled?: boolean;
-		required?: boolean;
-
-		// ARIA/アクセシビリティ
-		reducedMotion?: boolean;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<boolean>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: CheckboxProps = $props();
 
 	// =========================================================================
-	// $derived
-	// =========================================================================
-	const containerClasses = $derived(
-		[
-			'checkbox',
-			`checkbox--${size}`,
-			disabled && 'checkbox--disabled',
-			reducedMotion && 'checkbox--no-motion'
-		]
-			.filter(Boolean)
-			.join(' ')
-	);
-
-	// =========================================================================
-
 	// Methods
 	// =========================================================================
 	const handleFocus = (event: FocusEvent) => {
@@ -283,6 +270,20 @@
 	const handleChange = (event: Event) => {
 		onchange(value);
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const containerClasses = $derived(
+		[
+			'checkbox',
+			`checkbox--${size}`,
+			disabled && 'checkbox--disabled',
+			reducedMotion && 'checkbox--no-motion'
+		]
+			.filter(Boolean)
+			.join(' ')
+	);
 </script>
 
 <div class={containerClasses} data-testid="checkbox">

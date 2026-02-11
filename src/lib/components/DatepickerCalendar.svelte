@@ -23,6 +23,25 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type DatepickerCalendarProps = {
+		// 基本プロパティ
+		value: Date | { start: Date; end: Date } | undefined;
+		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		minDate?: Date;
+		maxDate?: Date;
+
+		// HTML属性系
+		id?: string;
+
+		// 状態/動作
+		mode?: 'single' | 'range';
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<Date | { start: Date; end: Date } | undefined>;
+		onOpen?: () => void;
+		onClose?: () => void;
+	};
+
 	let {
 		// 基本プロパティ
 		value = $bindable(),
@@ -40,24 +59,7 @@
 		onchange = () => {}, // No params for type inference
 		onOpen,
 		onClose
-	}: {
-		// 基本プロパティ
-		value: Date | { start: Date; end: Date } | undefined;
-		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
-		minDate?: Date;
-		maxDate?: Date;
-
-		// HTML属性系
-		id?: string;
-
-		// 状態/動作
-		mode?: 'single' | 'range';
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<Date | { start: Date; end: Date } | undefined>;
-		onOpen?: () => void;
-		onClose?: () => void;
-	} = $props();
+	}: DatepickerCalendarProps = $props();
 
 	let month: dayjs.Dayjs = $state(dayjs());
 	let viewMode: 'date' | 'month' = $state('date');

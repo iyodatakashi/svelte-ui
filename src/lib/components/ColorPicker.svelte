@@ -18,6 +18,68 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type ColorPickerProps = {
+		// 基本プロパティ
+		value: string;
+
+		// HTML属性系
+		id?: string;
+		inputAttributes?: HTMLInputAttributes | undefined;
+
+		// スタイル/レイアウト
+		customStyle?: string;
+		focusStyle?: 'background' | 'outline' | 'none';
+		fullWidth?: boolean;
+		rounded?: boolean;
+
+		// 状態/動作
+		disabled?: boolean;
+		readonly?: boolean;
+		clearable?: boolean;
+		clearButtonAriaLabel?: string;
+		iconVariant?: IconVariant;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<string>;
+		oninput?: BivariantValueHandler<string>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		value = $bindable(''),
@@ -78,67 +140,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		value: string;
-
-		// HTML属性系
-		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
-		// スタイル/レイアウト
-		customStyle?: string;
-		focusStyle?: 'background' | 'outline' | 'none';
-		fullWidth?: boolean;
-		rounded?: boolean;
-
-		// 状態/動作
-		disabled?: boolean;
-		readonly?: boolean;
-		clearable?: boolean;
-		clearButtonAriaLabel?: string;
-		iconVariant?: IconVariant;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<string>;
-		oninput?: BivariantValueHandler<string>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: ColorPickerProps = $props();
 
 	let localValue: string | undefined = $state(value);
 	let prevValue: string = $state('');

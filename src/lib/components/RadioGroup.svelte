@@ -1,8 +1,37 @@
+<!-- RadioGroup.svelte -->
+
 <script lang="ts">
 	import type { Option, OptionValue } from '$lib/types/options';
 	import Radio from './Radio.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+	export type RadioGroupProps = {
+		// 基本プロパティ
+		name?: string;
+		options: Option[];
+		value: OptionValue;
+
+		// スタイル/レイアウト
+		direction?: 'vertical' | 'horizontal';
+		gap?: string | number;
+		wrap?: boolean;
+		minOptionWidth?: string | number;
+		size?: 'small' | 'medium' | 'large';
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// ARIA/アクセシビリティ
+		reducedMotion?: boolean;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<OptionValue>;
+	};
 
 	let {
 		// 基本プロパティ
@@ -26,37 +55,20 @@
 
 		// 入力イベント
 		onchange = () => {} // No params for type inference
-	}: {
-		// 基本プロパティ
-		name?: string;
-		options: Option[];
-		value: OptionValue;
+	}: RadioGroupProps = $props();
 
-		// スタイル/レイアウト
-		direction?: 'vertical' | 'horizontal';
-		gap?: string | number;
-		wrap?: boolean;
-		minOptionWidth?: string | number;
-		size?: 'small' | 'medium' | 'large';
-
-		// 状態/動作
-		disabled?: boolean;
-		required?: boolean;
-
-		// ARIA/アクセシビリティ
-		reducedMotion?: boolean;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<OptionValue>;
-	} = $props();
-
+	// =========================================================================
+	// Methods
+	// =========================================================================
 	const handleChange = () => {
 		onchange(value);
 	};
 
-	const gapStyle = gap !== undefined ? getStyleFromNumber(gap) : undefined;
-
-	const minOptionWidthStyle = getStyleFromNumber(minOptionWidth);
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const gapStyle = $derived(gap !== undefined ? getStyleFromNumber(gap) : undefined);
+	const minOptionWidthStyle = $derived(getStyleFromNumber(minOptionWidth));
 </script>
 
 <ul

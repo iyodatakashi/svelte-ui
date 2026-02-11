@@ -16,6 +16,76 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type SegmentedControlProps = {
+		// 基本プロパティ
+		items: SegmentedControlItem[];
+		value: string;
+
+		// HTML属性系
+		id?: string;
+		name?: string;
+
+		// スタイル/レイアウト
+		size?: 'small' | 'medium' | 'large';
+		fullWidth?: boolean;
+		color?: string;
+		rounded?: boolean;
+
+		// アイコン関連
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// 状態/動作
+		disabled?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaLabelledby?: string;
+		reducedMotion?: boolean;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<string>;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		items = [],
@@ -84,75 +154,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		items: SegmentedControlItem[];
-		value: string;
-
-		// HTML属性系
-		id?: string;
-		name?: string;
-
-		// スタイル/レイアウト
-		size?: 'small' | 'medium' | 'large';
-		fullWidth?: boolean;
-		color?: string;
-		rounded?: boolean;
-
-		// アイコン関連
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-
-		// 状態/動作
-		disabled?: boolean;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
-		ariaLabelledby?: string;
-		reducedMotion?: boolean;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<string>;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: SegmentedControlProps = $props();
 
 	// =========================================================================
 	// Methods

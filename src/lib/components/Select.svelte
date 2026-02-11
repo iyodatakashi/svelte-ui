@@ -16,6 +16,70 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type SelectProps = {
+		// 基本プロパティ
+		name?: string;
+		value: string | number | null | undefined;
+		options: Option[];
+
+		// HTML属性系
+		id?: string | null;
+		tabindex?: number | null;
+		placeholder?: string;
+		selectAttributes?: HTMLSelectAttributes | undefined;
+
+		// スタイル/レイアウト
+		size?: number | null;
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		fullWidth?: boolean;
+		rounded?: boolean;
+		customStyle?: string;
+
+		// 状態/動作
+		disabled?: boolean;
+		required?: boolean;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<string | number | null | undefined>;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		name,
@@ -78,78 +142,14 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		name?: string;
-		value: string | number | null | undefined;
-		options: Option[];
-
-		// HTML属性系
-		id?: string | null;
-		tabindex?: number | null;
-		placeholder?: string;
-		selectAttributes?: HTMLSelectAttributes | undefined;
-
-		// スタイル/レイアウト
-		size?: number | null;
-		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
-		fullWidth?: boolean;
-		rounded?: boolean;
-		customStyle?: string;
-
-		// 状態/動作
-		disabled?: boolean;
-		required?: boolean;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<string | number | null | undefined>;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: SelectProps = $props();
 
 	let isFocused: boolean = $state(false);
 	let selectRef = $state<HTMLSelectElement>();
 
 	// =========================================================================
-
 	// Methods
 	// =========================================================================
-
 	const handleFocus = (event: FocusEvent) => {
 		if (disabled) return;
 		isFocused = true;

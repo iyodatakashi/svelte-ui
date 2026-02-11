@@ -18,6 +18,31 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type ModalProps = {
+		// Snippet
+		children?: Snippet;
+
+		// 基本プロパティ
+		componentType?: string;
+
+		// スタイル/レイアウト
+		customClass?: string;
+		customStyles?: string;
+
+		// 状態/動作
+		isOpen?: boolean;
+		closeIfClickOutside?: boolean;
+		restoreFocus?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaLabelledby?: string;
+		ariaDescribedby?: string;
+
+		// HTML属性
+		id?: string;
+	};
+
 	let {
 		// Snippet
 		children,
@@ -41,30 +66,7 @@
 
 		// HTML属性
 		id
-	}: {
-		// Snippet
-		children?: Snippet;
-
-		// 基本プロパティ
-		componentType?: string;
-
-		// スタイル/レイアウト
-		customClass?: string;
-		customStyles?: string;
-
-		// 状態/動作
-		isOpen?: boolean;
-		closeIfClickOutside?: boolean;
-		restoreFocus?: boolean;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
-		ariaLabelledby?: string;
-		ariaDescribedby?: string;
-
-		// HTML属性
-		id?: string;
-	} = $props();
+	}: ModalProps = $props();
 
 	let dialogRef: HTMLDialogElement;
 	let containerRef: HTMLDivElement;

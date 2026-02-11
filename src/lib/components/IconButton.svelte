@@ -18,6 +18,86 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type IconButtonProps = {
+		// Snippet
+		children: Snippet;
+
+		// HTML属性系
+		buttonAttributes?: HTMLButtonAttributes | undefined;
+		type?: 'button' | 'submit' | 'reset' | null | undefined;
+		tabindex?: number | null;
+
+		// スタイル/レイアウト
+		customStyle?: HTMLButtonAttributes['style'];
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
+		size?: number;
+		fontSize?: number;
+		color?: string;
+		rounded?: boolean;
+
+		// アイコン関連
+		icon?: string;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
+		// バッジ関連
+		hasBadge?: boolean;
+		badgeCount?: number;
+		badgeVariant?: 'dot' | 'count';
+		badgeColor?: string;
+		badgeMax?: number;
+
+		// 状態/動作
+		disabled?: boolean;
+		loading?: boolean;
+		pressed?: boolean;
+
+		// ARIA/アクセシビリティ
+		ariaLabel: string;
+		ariaDescribedby?: string;
+		ariaPressed?: boolean;
+		reducedMotion?: boolean;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// その他
+		[key: string]: any;
+	};
+
 	let {
 		// 基本プロパティ
 		children,
@@ -96,85 +176,7 @@
 
 		// その他
 		...restProps
-	}: {
-		// Snippet
-		children: Snippet;
-
-		// HTML属性系
-		buttonAttributes?: HTMLButtonAttributes | undefined;
-		type?: 'button' | 'submit' | 'reset' | null | undefined;
-		tabindex?: number | null;
-
-		// スタイル/レイアウト
-		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
-		size?: number;
-		fontSize?: number;
-		color?: string;
-		rounded?: boolean;
-
-		// アイコン関連
-		icon?: string;
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-
-		// バッジ関連
-		hasBadge?: boolean;
-		badgeCount?: number;
-		badgeVariant?: 'dot' | 'count';
-		badgeColor?: string;
-		badgeMax?: number;
-
-		// 状態/動作
-		disabled?: boolean;
-		loading?: boolean;
-		pressed?: boolean;
-
-		// ARIA/アクセシビリティ
-		ariaLabel: string;
-		ariaDescribedby?: string;
-		ariaPressed?: boolean;
-		reducedMotion?: boolean;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: IconButtonProps = $props();
 
 	// =========================================================================
 	// Methods

@@ -8,6 +8,25 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type PaginationProps = {
+		// 基本プロパティ
+		total: number;
+		limit: number;
+		currentPageNum: number;
+		visiblePages?: number;
+
+		// HTML属性
+		id?: string;
+
+		// 状態/動作
+		showCount?: boolean;
+		showRange?: boolean;
+		showTotal?: boolean;
+
+		// イベントハンドラー
+		onchange: (pageNum: number) => void;
+	};
+
 	let {
 		// 基本プロパティ
 		total,
@@ -25,24 +44,7 @@
 
 		// イベントハンドラー
 		onchange = () => {}
-	}: {
-		// 基本プロパティ
-		total: number;
-		limit: number;
-		currentPageNum: number;
-		visiblePages?: number;
-
-		// HTML属性
-		id?: string;
-
-		// 状態/動作
-		showCount?: boolean;
-		showRange?: boolean;
-		showTotal?: boolean;
-
-		// イベントハンドラー
-		onchange: (pageNum: number) => void;
-	} = $props();
+	}: PaginationProps = $props();
 
 	// =========================================================================
 	// Methods
@@ -50,16 +52,6 @@
 	const handleClick = (pageNum: number) => {
 		onchange(pageNum);
 		announceToScreenReader(`Page ${pageNum} of ${totalPages}`);
-	};
-
-	const goFirstPage = () => {
-		onchange(1);
-		announceToScreenReader(`First page, page 1 of ${totalPages}`);
-	};
-
-	const goLastPage = () => {
-		onchange(totalPages);
-		announceToScreenReader(`Last page, page ${totalPages} of ${totalPages}`);
 	};
 
 	const goPrevPage = () => {

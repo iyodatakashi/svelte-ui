@@ -7,6 +7,21 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type TabProps = {
+		// 基本プロパティ
+		tabItems: MenuItem[];
+		pathPrefix?: string;
+		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+
+		// スタイル/レイアウト
+		textColor?: string;
+		selectedTextColor?: string;
+		selectedBarColor?: string;
+
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+		ariaLabelledby?: string;
+	};
 
 	let {
 		// 基本プロパティ
@@ -22,26 +37,11 @@
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Tabs',
 		ariaLabelledby
-	}: {
-		// 基本プロパティ
-		tabItems: MenuItem[];
-		pathPrefix?: string;
-		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
-
-		// スタイル/レイアウト
-		textColor?: string;
-		selectedTextColor?: string;
-		selectedBarColor?: string;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
-		ariaLabelledby?: string;
-	} = $props();
+	}: TabProps = $props();
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
-
 	// ブラウザ標準APIを使用した現在パス取得
 	const getCurrentPath = () => {
 		if (typeof window !== 'undefined') {

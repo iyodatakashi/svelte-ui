@@ -19,6 +19,85 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type TextareaProps = {
+		// 基本プロパティ
+		name?: string;
+		value: string;
+		placeholder?: string;
+
+		// HTML属性系
+		id?: string | null;
+		tabindex?: number | null;
+		maxlength?: number | null;
+		autocomplete?: HTMLTextareaAttributes['autocomplete'];
+		wrap?: 'soft' | 'hard' | null;
+		spellcheck?: boolean | null;
+		autocapitalize?: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | null;
+		textareaAttributes?: HTMLTextareaAttributes | undefined;
+
+		// スタイル/レイアウト
+		rows?: number;
+		minHeight?: string | number | null;
+		maxHeight?: string | number | null;
+		inline?: boolean;
+		focusStyle?: 'background' | 'outline' | 'none';
+		fullWidth?: boolean;
+		fullHeight?: boolean;
+		width?: string | number | null;
+		rounded?: boolean;
+		customStyle?: string;
+
+		// 状態/動作
+		disabled?: boolean;
+		autoResize?: boolean;
+		resizable?: boolean;
+		clearable?: boolean;
+		clearButtonAriaLabel?: string;
+		readonly?: boolean;
+		required?: boolean;
+		iconVariant?: IconVariant;
+		linkify?: boolean;
+
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+
+		// 入力イベント
+		onchange?: BivariantValueHandler<string>;
+		oninput?: BivariantValueHandler<string>;
+
+		// その他
+		[key: string]: any;
+	};
 
 	let {
 		// 基本プロパティ
@@ -98,94 +177,14 @@
 
 		// その他
 		...restProps
-	}: {
-		// 基本プロパティ
-		name?: string;
-		value: string;
-		placeholder?: string;
-
-		// HTML属性系
-		id?: string | null;
-		tabindex?: number | null;
-		maxlength?: number | null;
-		autocomplete?: HTMLTextareaAttributes['autocomplete'];
-		wrap?: 'soft' | 'hard' | null;
-		spellcheck?: boolean | null;
-		autocapitalize?: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | null;
-		textareaAttributes?: HTMLTextareaAttributes | undefined;
-
-		// スタイル/レイアウト
-		rows?: number;
-		minHeight?: string | number | null;
-		maxHeight?: string | number | null;
-		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
-		fullWidth?: boolean;
-		fullHeight?: boolean;
-		width?: string | number | null;
-		rounded?: boolean;
-		customStyle?: string;
-
-		// 状態/動作
-		disabled?: boolean;
-		autoResize?: boolean;
-		resizable?: boolean;
-		clearable?: boolean;
-		clearButtonAriaLabel?: string;
-		readonly?: boolean;
-		required?: boolean;
-		iconVariant?: IconVariant;
-		linkify?: boolean;
-
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-
-		// 入力イベント
-		onchange?: BivariantValueHandler<string>;
-		oninput?: BivariantValueHandler<string>;
-
-		// その他
-		[key: string]: any;
-	} = $props();
+	}: TextareaProps = $props();
 
 	let ref: HTMLTextAreaElement | null = null;
 	let isFocused: boolean = $state(false);
 
 	// =========================================================================
-
 	// Methods
 	// =========================================================================
-
 	const clear = (): void => {
 		if (disabled || readonly) return;
 		value = '';

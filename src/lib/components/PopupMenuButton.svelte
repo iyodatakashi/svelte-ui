@@ -16,64 +16,7 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	let {
-		// Snippet
-		children,
-
-		// 基本プロパティ
-		menuItems,
-
-		// HTML属性
-		id,
-
-		// スタイル/レイアウト
-		position = 'bottom',
-		variant = 'ghost',
-		size = 32,
-		color,
-		rounded = true,
-
-		// 状態/動作
-		disabled = false,
-		mobileFullscreen = true,
-		mobileBehavior = 'auto',
-
-		// フォーカスイベント
-		onfocus = () => {}, // No params for type inference
-		onblur = () => {}, // No params for type inference
-
-		// キーボードイベント
-		onkeydown = () => {}, // No params for type inference
-		onkeyup = () => {}, // No params for type inference
-
-		// マウスイベント
-		onclick = () => {}, // No params for type inference
-		onmousedown = () => {}, // No params for type inference
-		onmouseup = () => {}, // No params for type inference
-		onmouseenter = () => {}, // No params for type inference
-		onmouseleave = () => {}, // No params for type inference
-		onmouseover = () => {}, // No params for type inference
-		onmouseout = () => {}, // No params for type inference
-		oncontextmenu = () => {}, // No params for type inference
-		onauxclick = () => {}, // No params for type inference
-
-		// タッチイベント
-		ontouchstart = () => {}, // No params for type inference
-		ontouchend = () => {}, // No params for type inference
-		ontouchmove = () => {}, // No params for type inference
-		ontouchcancel = () => {}, // No params for type inference
-
-		// ポインターイベント
-		onpointerdown = () => {}, // No params for type inference
-		onpointerup = () => {}, // No params for type inference
-		onpointerenter = () => {}, // No params for type inference
-		onpointerleave = () => {}, // No params for type inference
-		onpointermove = () => {}, // No params for type inference
-		onpointercancel = () => {}, // No params for type inference
-
-		// ARIA/アクセシビリティ
-		ariaLabel
-	}: {
+	export type PopupMenuButtonProps = {
 		// Snippet
 		children?: Snippet;
 
@@ -146,13 +89,70 @@
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
-	} = $props();
+	};
+
+	let {
+		// Snippet
+		children,
+
+		// 基本プロパティ
+		menuItems,
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
+		position = 'bottom',
+		variant = 'ghost',
+		size = 32,
+		color,
+		rounded = true,
+
+		// 状態/動作
+		disabled = false,
+		mobileFullscreen = true,
+		mobileBehavior = 'auto',
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onclick = () => {}, // No params for type inference
+		onmousedown = () => {}, // No params for type inference
+		onmouseup = () => {}, // No params for type inference
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+		onmouseover = () => {}, // No params for type inference
+		onmouseout = () => {}, // No params for type inference
+		oncontextmenu = () => {}, // No params for type inference
+		onauxclick = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+		ontouchmove = () => {}, // No params for type inference
+		ontouchcancel = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerdown = () => {}, // No params for type inference
+		onpointerup = () => {}, // No params for type inference
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {}, // No params for type inference
+		onpointermove = () => {}, // No params for type inference
+		onpointercancel = () => {}, // No params for type inference
+
+		// ARIA/アクセシビリティ
+		ariaLabel
+	}: PopupMenuButtonProps = $props();
 
 	let anchorRef: HTMLElement | undefined = $state();
 	let popupMenuRef: SvelteComponent | undefined = $state();
 	let buttonId: string = $state(`menu-button-${Math.random().toString(36).substring(2, 15)}`);
-
-	// =========================================================================
 
 	// =========================================================================
 	// Methods

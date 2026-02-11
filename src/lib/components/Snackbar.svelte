@@ -8,6 +8,15 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type SnackbarProps = {
+		// スタイル/レイアウト
+		position?: 'top' | 'bottom';
+		maxVisible?: number;
+		variant?: 'filled' | 'outlined';
+
+		// 状態/動作
+		duration?: number;
+	};
 
 	let {
 		// スタイル/レイアウト
@@ -17,15 +26,7 @@
 
 		// 状態/動作
 		duration = 3000
-	}: {
-		// スタイル/レイアウト
-		position?: 'top' | 'bottom';
-		maxVisible?: number;
-		variant?: 'filled' | 'outlined';
-
-		// 状態/動作
-		duration?: number;
-	} = $props();
+	}: SnackbarProps = $props();
 
 	// =========================================================================
 	// Lifecycle

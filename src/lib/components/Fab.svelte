@@ -17,6 +17,61 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type FabProps = {
+		children?: Snippet;
+		buttonAttributes?: HTMLButtonAttributes | undefined;
+		type?: HTMLButtonAttributes['type'];
+		customStyle?: HTMLButtonAttributes['style'];
+		disabled?: boolean;
+		loading?: boolean;
+		icon?: string;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+		color?: string;
+		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
+		position?: 'left' | 'center' | 'right';
+		hasShadow?: boolean;
+		reducedMotion?: boolean;
+		ariaLabel?: string;
+		ariaDescribedby?: string;
+		// フォーカスイベント
+		onfocus?: FocusHandler;
+		onblur?: FocusHandler;
+
+		// キーボードイベント
+		onkeydown?: KeyboardHandler;
+		onkeyup?: KeyboardHandler;
+
+		// マウスイベント
+		onclick?: MouseHandler;
+		onmousedown?: MouseHandler;
+		onmouseup?: MouseHandler;
+		onmouseenter?: MouseHandler;
+		onmouseleave?: MouseHandler;
+		onmouseover?: MouseHandler;
+		onmouseout?: MouseHandler;
+		oncontextmenu?: MouseHandler;
+		onauxclick?: MouseHandler;
+
+		// タッチイベント
+		ontouchstart?: TouchHandler;
+		ontouchend?: TouchHandler;
+		ontouchmove?: TouchHandler;
+		ontouchcancel?: TouchHandler;
+
+		// ポインターイベント
+		onpointerdown?: PointerHandler;
+		onpointerup?: PointerHandler;
+		onpointerenter?: PointerHandler;
+		onpointerleave?: PointerHandler;
+		onpointermove?: PointerHandler;
+		onpointercancel?: PointerHandler;
+		[key: string]: any;
+	};
+
 	let {
 		// Snippet
 		children,
@@ -84,60 +139,7 @@
 
 		// その他
 		...restProps
-	}: {
-		children?: Snippet;
-		buttonAttributes?: HTMLButtonAttributes | undefined;
-		type?: HTMLButtonAttributes['type'];
-		customStyle?: HTMLButtonAttributes['style'];
-		disabled?: boolean;
-		loading?: boolean;
-		icon?: string;
-		iconFilled?: boolean;
-		iconWeight?: IconWeight;
-		iconGrade?: IconGrade;
-		iconOpticalSize?: IconOpticalSize;
-		iconVariant?: IconVariant;
-		color?: string;
-		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
-		position?: 'left' | 'center' | 'right';
-		hasShadow?: boolean;
-		reducedMotion?: boolean;
-		ariaLabel?: string;
-		ariaDescribedby?: string;
-		// フォーカスイベント
-		onfocus?: FocusHandler;
-		onblur?: FocusHandler;
-
-		// キーボードイベント
-		onkeydown?: KeyboardHandler;
-		onkeyup?: KeyboardHandler;
-
-		// マウスイベント
-		onclick?: MouseHandler;
-		onmousedown?: MouseHandler;
-		onmouseup?: MouseHandler;
-		onmouseenter?: MouseHandler;
-		onmouseleave?: MouseHandler;
-		onmouseover?: MouseHandler;
-		onmouseout?: MouseHandler;
-		oncontextmenu?: MouseHandler;
-		onauxclick?: MouseHandler;
-
-		// タッチイベント
-		ontouchstart?: TouchHandler;
-		ontouchend?: TouchHandler;
-		ontouchmove?: TouchHandler;
-		ontouchcancel?: TouchHandler;
-
-		// ポインターイベント
-		onpointerdown?: PointerHandler;
-		onpointerup?: PointerHandler;
-		onpointerenter?: PointerHandler;
-		onpointerleave?: PointerHandler;
-		onpointermove?: PointerHandler;
-		onpointercancel?: PointerHandler;
-		[key: string]: any;
-	} = $props();
+	}: FabProps = $props();
 
 	// =========================================================================
 	// Methods
