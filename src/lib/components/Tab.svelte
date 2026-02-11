@@ -3,6 +3,7 @@
 <script lang="ts">
 	import TabItem from './TabItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
+	import { afterNavigate } from '$app/navigation';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -12,6 +13,7 @@
 		tabItems: MenuItem[];
 		pathPrefix?: string;
 		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+		currentPath?: string;
 
 		// スタイル/レイアウト
 		textColor?: string;
@@ -28,6 +30,7 @@
 		tabItems = [],
 		pathPrefix = '',
 		customPathMatcher,
+		currentPath,
 
 		// スタイル/レイアウト
 		textColor = 'var(--svelte-ui-text-subtle-color)',
@@ -39,16 +42,27 @@
 		ariaLabelledby
 	}: TabProps = $props();
 
+	let resolvedCurrentPath = $state('');
+
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	// ブラウザ標準APIを使用した現在パス取得
 	const getCurrentPath = () => {
+		// アプリ側から現在パスが明示的に渡されていればそれを優先（SSR対応）
+		if (currentPath && currentPath !== '') {
+			return currentPath;
+		}
+
+		// それ以外の場合はクライアント実行時のみ window.location から取得
 		if (typeof window !== 'undefined') {
 			return window.location.pathname;
 		}
 		return '';
 	};
+
+	afterNavigate(() => {
+		resolvedCurrentPath = getCurrentPath();
+	});
 
 	// パスの正規化処理
 	const normalizePath = (path: string): string => {
@@ -131,16 +145,13 @@
 	// $derived
 	// =========================================================================
 
-	// 現在のパスを取得
-	const currentPath = $derived(getCurrentPath());
-
 	// アクティブなタブのインデックスを現在のパスに基づいて計算
 	const selectedTabIndex = $derived.by(() => {
 		for (let i = 0; i < tabItems.length; i++) {
 			const item = tabItems[i];
 			if (!item.href) continue;
 
-			if (matchPath(currentPath, item.href, item)) {
+			if (matchPath(resolvedCurrentPath, item.href, item)) {
 				return i;
 			}
 		}
