@@ -486,17 +486,16 @@
 		if (disabled) return;
 		if (!allowTextInput) return;
 
-		const raw = String(inputValue ?? '').trim();
-		if (!raw) {
+		const inputStr = String(inputValue ?? '').trim();
+		if (!inputStr) {
 			value = undefined;
 			onchange(value);
 			return;
 		}
 
-		// 表示用フォーマットには曜日などが含まれる場合があるので、
 		// 入力値のうち「日付として有効な部分」（数字と区切り記号）だけを抽出してパースする
-		const datePartMatch = raw.match(/^[0-9０-９./-]+/);
-		const datePart = datePartMatch ? datePartMatch[0] : raw;
+		const datePartMatch = inputStr.match(/^[0-9０-９./-]+/);
+		const datePart = datePartMatch ? datePartMatch[0] : inputStr;
 
 		// ロケールごとの日付専用フォーマット（rangeFormat は曜日を含まない）
 		const parseFormat = currentLocaleConfig.rangeFormat;
