@@ -295,13 +295,39 @@
 		if (disabled) return;
 		onkeydown(event);
 
+		// allowTextInput のときは、カーソルキー系は Input 内のキャレット移動に使わせたいので、
+		// カレンダー用のグローバル keydown まで届かないようにここで止める
+		if (allowTextInput) {
+			if (
+				event.key === 'ArrowUp' ||
+				event.key === 'ArrowDown' ||
+				event.key === 'ArrowLeft' ||
+				event.key === 'ArrowRight' ||
+				event.key === 'Home' ||
+				event.key === 'End' ||
+				event.key === 'PageUp' ||
+				event.key === 'PageDown'
+			) {
+				event.stopPropagation();
+				return;
+			}
+			if (event.key === 'Enter') {
+				// Enter も Input 側で確定に使われるので、カレンダーに伝播させない
+				event.stopPropagation();
+				return;
+			}
+		}
+
 		switch (event.key) {
 			case 'Enter':
 			case ' ':
-				// テキスト入力が許可されている場合はEnterキーで入力を確定
-				if (allowTextInput && event.key === 'Enter') {
-					return; // Inputコンポーネントの処理に任せる
+				// 既にポップアップが開いている場合は、Datepicker 側では何もせず
+				// Calendar 側のキーボード処理に任せる
+				if (popupRef?.getIsOpen && popupRef.getIsOpen()) {
+					return;
 				}
+				// allowTextInput=false で、まだポップアップが開いていない場合のみ
+				// Enter/Space でポップアップを開く
 				event?.preventDefault?.();
 				openedViaKeyboard = true;
 				open();
@@ -335,6 +361,10 @@
 	// マウスイベント
 	const handleMouseDown = (event: MouseEvent) => {
 		if (disabled) return;
+		// 入力もクリックによるオープンも無効な場合は、クリックでフォーカススタイルが出ないようにする
+		if (!allowTextInput && !openOnClick) {
+			event.preventDefault();
+		}
 		onmousedown?.(event);
 	};
 
