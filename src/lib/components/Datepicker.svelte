@@ -486,15 +486,22 @@
 		if (disabled) return;
 		if (!allowTextInput) return;
 
-		const inputStr = String(inputValue || '');
-		if (!inputStr) {
+		const raw = String(inputValue ?? '').trim();
+		if (!raw) {
 			value = undefined;
 			onchange(value);
 			return;
 		}
 
-		// 日付の解析を試行
-		const parsedDate = dayjs(inputStr, finalFormat, locale, true);
+		// 表示用フォーマットには曜日などが含まれる場合があるので、
+		// 入力値のうち「日付として有効な部分」（数字と区切り記号）だけを抽出してパースする
+		const datePartMatch = raw.match(/^[0-9０-９./-]+/);
+		const datePart = datePartMatch ? datePartMatch[0] : raw;
+
+		// ロケールごとの日付専用フォーマット（rangeFormat は曜日を含まない）
+		const parseFormat = currentLocaleConfig.rangeFormat;
+
+		const parsedDate = dayjs(datePart, parseFormat, locale, true);
 		if (parsedDate.isValid()) {
 			value = parsedDate.toDate();
 			onchange(value);
