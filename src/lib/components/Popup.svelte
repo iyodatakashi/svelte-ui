@@ -361,22 +361,14 @@
 
 	const addEventListenersToClose = () => {
 		if (typeof window === 'undefined' || typeof document === 'undefined') return;
-
 		window.addEventListener('resize', close);
-		window.addEventListener('scroll', handleScroll, true);
-		document.querySelectorAll('.scrollable').forEach((element) => {
-			element.addEventListener('scroll', handleScroll);
-		});
+		document.addEventListener('scroll', handleScroll, true);
 	};
 
 	const removeEventListenersToClose = () => {
 		if (typeof window === 'undefined' || typeof document === 'undefined') return;
-
 		window.removeEventListener('resize', close);
-		window.removeEventListener('scroll', handleScroll, true);
-		document.querySelectorAll('.scrollable').forEach((element) => {
-			element.removeEventListener('scroll', handleScroll);
-		});
+		document.removeEventListener('scroll', handleScroll, true);
 	};
 
 	const addKeyboardListener = () => {
