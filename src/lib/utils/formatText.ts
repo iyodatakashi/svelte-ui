@@ -35,7 +35,12 @@ export const escapeHtml = (value: string): string => {
 		"'": '&#039;'
 	};
 	const escapedValue = value.replace(/[&<>"']/g, (m: string): string => map[m]);
-	return DOMPurify.sanitize(escapedValue);
+
+	if (DOMPurify && typeof DOMPurify.sanitize === 'function') {
+		return DOMPurify.sanitize(escapedValue);
+	}
+
+	return escapedValue;
 };
 
 export const convertToHtmlWithLink = (value: string | number | null): string | number | null => {

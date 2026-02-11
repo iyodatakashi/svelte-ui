@@ -360,6 +360,8 @@
 	};
 
 	const addEventListenersToClose = () => {
+		if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
 		window.addEventListener('resize', close);
 		window.addEventListener('scroll', handleScroll, true);
 		document.querySelectorAll('.scrollable').forEach((element) => {
@@ -368,6 +370,8 @@
 	};
 
 	const removeEventListenersToClose = () => {
+		if (typeof window === 'undefined' || typeof document === 'undefined') return;
+
 		window.removeEventListener('resize', close);
 		window.removeEventListener('scroll', handleScroll, true);
 		document.querySelectorAll('.scrollable').forEach((element) => {
@@ -376,10 +380,12 @@
 	};
 
 	const addKeyboardListener = () => {
+		if (typeof document === 'undefined') return;
 		document.addEventListener('keydown', handleKeyDown);
 	};
 
 	const removeKeyboardListener = () => {
+		if (typeof document === 'undefined') return;
 		document.removeEventListener('keydown', handleKeyDown);
 	};
 
