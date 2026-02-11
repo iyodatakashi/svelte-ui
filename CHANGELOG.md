@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.13] - 2026-02-12
+
+### Changed
+
+- **Datepicker props**: Renamed and clarified behavior of `enableTextInput` (controls whether the input is editable) and `enableClickToOpen` (controls whether clicking the field opens the calendar).
+- **Popup props**: Renamed `allowRepositioning` to `enableAutoReposition`.
+
+### Fixed
+
+- **Datepicker keyboard interactions**: Refined key handling so that text editing and calendar navigation behave as intended (caret movement vs. date selection).
+- **Tab routing**: Fixed cases where the active tab was not correctly updated in response to URL changes.
+- **SSR safety**: Added guards around access to browser-only globals such as `window` and `document` to prevent errors in SSR environments.
+- **Popup scroll/resize behavior**: Improved the logic that closes popups on scroll and resize events.
+
 ## [0.0.12] - 2026-02-11
 
 ### Changed
