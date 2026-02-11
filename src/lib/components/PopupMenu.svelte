@@ -76,33 +76,16 @@
 
 	let popupRef: SvelteComponent | undefined = $state();
 	let menuContainerRef: HTMLDivElement | undefined = $state();
-	let menuItemRefs: HTMLButtonElement[] = $state([]);
+	let menuItemRefs: HTMLElement[] = $state([]);
 	let activeIndex: number = $state(-1);
 	let menuId: string = $state(`menu-${Math.random().toString(36).substring(2, 15)}`);
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const goto = (url: string) => {
-		if (typeof window !== 'undefined') {
-			window.location.href = url;
-		}
-	};
-
 	const getMenuItemId = (index: number): string => `${menuId}-item-${index}`;
 
-	const handleClick = (event: MouseEvent, item: MenuItem | 'separator') => {
-		event.preventDefault();
-		event.stopPropagation();
-		if (item === 'separator') return;
-
-		executeMenuItem(item as MenuItem);
-	};
-
 	const executeMenuItem = (item: MenuItem) => {
-		if (item.href) {
-			goto(`${item.href}`);
-		}
 		if (item.callback) {
 			item.callback();
 		}
@@ -268,36 +251,64 @@
 					{:else}
 						{@const actionableIndex = actionableItems.findIndex((ai) => ai.originalIndex === index)}
 						{@const isActive = actionableIndex === activeIndex}
-						<button
-							bind:this={menuItemRefs[actionableIndex]}
-							id={getMenuItemId(actionableIndex)}
-							class="popup-menu__button"
-							class:popup-menu__button--active={isActive}
-							role="menuitem"
-							tabindex="-1"
-							aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
-							onclick={(event) => handleClick(event, item)}
-							onmouseenter={() => handleMouseEnter(actionableIndex)}
-							onfocus={() => handleFocus(actionableIndex)}
-						>
-							{#if item.icon}
-								<Icon
-									id="{getMenuItemId(actionableIndex)}-icon"
-									aria-hidden="true"
-									filled={iconFilled}
-									weight={iconWeight}
-									grade={iconGrade}
-									opticalSize={iconOpticalSize}
-									variant={iconVariant}
-								>
-									{item.icon}
-								</Icon>
-							{/if}
-							<span class="popup-menu__text">{item.title}</span>
-							{#if item.href}
-								<span class="sr-only">link</span>
-							{/if}
-						</button>
+						{#if item.href}
+							<a
+								bind:this={menuItemRefs[actionableIndex]}
+								id={getMenuItemId(actionableIndex)}
+								class="popup-menu__button"
+								class:popup-menu__button--active={isActive}
+								role="menuitem"
+								tabindex="-1"
+								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
+								href={item.href}
+								onclick={() => executeMenuItem(item)}
+								onmouseenter={() => handleMouseEnter(actionableIndex)}
+								onfocus={() => handleFocus(actionableIndex)}
+							>
+								{#if item.icon}
+									<Icon
+										id="{getMenuItemId(actionableIndex)}-icon"
+										aria-hidden="true"
+										filled={iconFilled}
+										weight={iconWeight}
+										grade={iconGrade}
+										opticalSize={iconOpticalSize}
+										variant={iconVariant}
+									>
+										{item.icon}
+									</Icon>
+								{/if}
+								<span class="popup-menu__text">{item.title}</span>
+							</a>
+						{:else}
+							<button
+								bind:this={menuItemRefs[actionableIndex]}
+								id={getMenuItemId(actionableIndex)}
+								class="popup-menu__button"
+								class:popup-menu__button--active={isActive}
+								role="menuitem"
+								tabindex="-1"
+								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
+								onclick={() => executeMenuItem(item)}
+								onmouseenter={() => handleMouseEnter(actionableIndex)}
+								onfocus={() => handleFocus(actionableIndex)}
+							>
+								{#if item.icon}
+									<Icon
+										id="{getMenuItemId(actionableIndex)}-icon"
+										aria-hidden="true"
+										filled={iconFilled}
+										weight={iconWeight}
+										grade={iconGrade}
+										opticalSize={iconOpticalSize}
+										variant={iconVariant}
+									>
+										{item.icon}
+									</Icon>
+								{/if}
+								<span class="popup-menu__text">{item.title}</span>
+							</button>
+						{/if}
 					{/if}
 				</li>
 			{/each}
@@ -368,19 +379,6 @@
 		height: 0;
 		margin: 8px 0;
 		border-bottom: solid 1px var(--svelte-ui-border-color);
-	}
-
-	/* Screen reader only content */
-	.sr-only {
-		position: absolute;
-		width: 1px;
-		height: 1px;
-		padding: 0;
-		margin: -1px;
-		overflow: hidden;
-		clip: rect(0, 0, 0, 0);
-		white-space: nowrap;
-		border: 0;
 	}
 
 	/* Reduced motion support */
