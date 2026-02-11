@@ -59,10 +59,10 @@
 		// 状態/動作
 		disabled?: boolean;
 		mode?: 'single' | 'range';
-		/** テキスト入力を許可するか */
-		allowTextInput?: boolean;
-		/** クリック時にポップアップを開くか */
-		openOnClick?: boolean;
+		/** テキスト入力を有効にするか */
+		enableTextInput?: boolean;
+		/** クリック時にポップアップを開くかどうかを有効にするか */
+		enableClickToOpen?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
 
@@ -128,8 +128,8 @@
 		// 状態/動作
 		disabled = false,
 		mode = 'single',
-		allowTextInput = false,
-		openOnClick = true,
+		enableTextInput = false,
+		enableClickToOpen = true,
 		minDate,
 		maxDate,
 
@@ -284,7 +284,7 @@
 
 	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
-		if (openOnClick) {
+		if (enableClickToOpen) {
 			openedViaKeyboard = false;
 			open();
 		}
@@ -295,9 +295,9 @@
 		if (disabled) return;
 		onkeydown(event);
 
-		// allowTextInput のときは、カーソルキー系は Input 内のキャレット移動に使わせたいので、
+		// enableTextInput のときは、カーソルキー系は Input 内のキャレット移動に使わせたいので、
 		// カレンダー用のグローバル keydown まで届かないようにここで止める
-		if (allowTextInput) {
+		if (enableTextInput) {
 			if (
 				event.key === 'ArrowUp' ||
 				event.key === 'ArrowDown' ||
@@ -326,7 +326,7 @@
 				if (popupRef?.getIsOpen && popupRef.getIsOpen()) {
 					return;
 				}
-				// allowTextInput=false で、まだポップアップが開いていない場合のみ
+				// enableTextInput=false で、まだポップアップが開いていない場合のみ
 				// Enter/Space でポップアップを開く
 				event?.preventDefault?.();
 				openedViaKeyboard = true;
@@ -362,7 +362,7 @@
 	const handleMouseDown = (event: MouseEvent) => {
 		if (disabled) return;
 		// 入力もクリックによるオープンも無効な場合は、クリックでフォーカススタイルが出ないようにする
-		if (!allowTextInput && !openOnClick) {
+		if (!enableTextInput && !enableClickToOpen) {
 			event.preventDefault();
 		}
 		onmousedown?.(event);
@@ -484,7 +484,7 @@
 
 	const handleInputChange = (inputValue: string | number | undefined) => {
 		if (disabled) return;
-		if (!allowTextInput) return;
+		if (!enableTextInput) return;
 
 		const inputStr = String(inputValue ?? '').trim();
 		if (!inputStr) {
@@ -531,7 +531,7 @@
 			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
 	);
 	const placeholderText = $derived(
-		allowTextInput
+		enableTextInput
 			? nullString || currentLocaleConfig.directInputPlaceholder
 			: nullString || currentLocaleConfig.notSelected
 	);
@@ -551,7 +551,7 @@
 		{fullWidth}
 		{rounded}
 		{disabled}
-		readonly={!allowTextInput}
+		readonly={!enableTextInput}
 		placeholder={placeholderText}
 		rightIcon={hasIcon ? (mode === 'range' ? 'date_range' : 'calendar_today') : undefined}
 		{iconFilled}

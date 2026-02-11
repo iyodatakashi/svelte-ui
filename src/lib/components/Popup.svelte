@@ -62,7 +62,7 @@
 		restoreFocus?: boolean;
 		mobileFullscreen?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
-		allowRepositioning?: boolean;
+		enableAutoReposition?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -97,7 +97,7 @@
 		restoreFocus = false,
 		mobileFullscreen = false,
 		mobileBehavior = 'auto',
-		allowRepositioning = true,
+		enableAutoReposition = true,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -238,7 +238,7 @@
 			{ position: 'bottom-center' as const, score: spaceBelow >= needHeight ? spaceBelow : 0 },
 			{
 				position: 'top-center' as const,
-				score: !allowRepositioning ? 0 : spaceAbove >= needHeight ? spaceAbove : 0
+				score: !enableAutoReposition ? 0 : spaceAbove >= needHeight ? spaceAbove : 0
 			},
 			{ position: 'right-center' as const, score: spaceRight >= needWidth ? spaceRight : 0 },
 			{ position: 'left-center' as const, score: spaceLeft >= needWidth ? spaceLeft : 0 }
@@ -315,7 +315,7 @@
 
 		x = Math.max(margin, Math.min(x, viewport.width - popupRect.width - margin));
 
-		if (!allowRepositioning) {
+		if (!enableAutoReposition) {
 			y = Math.max(margin, y);
 			if (y + popupRect.height + margin > viewport.height) {
 				const availableHeight = viewport.height - y - margin;

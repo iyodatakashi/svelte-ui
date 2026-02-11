@@ -4,7 +4,7 @@ import Datepicker from '../lib/components/Datepicker.svelte';
 
 test('renders Datepicker with default props', async () => {
 	const screen = render(Datepicker, {
-		value: ''
+		value: undefined
 	});
 	const datepicker = screen.getByTestId('datepicker');
 	expect(datepicker).toBeInTheDocument();
@@ -13,7 +13,7 @@ test('renders Datepicker with default props', async () => {
 
 test('Datepicker can be opened and closed', async () => {
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		id: 'datepicker-open'
 	});
 	const datepicker = screen.getByTestId('datepicker');
@@ -33,7 +33,7 @@ test('Datepicker can be opened and closed', async () => {
 
 test('disabled Datepicker is not interactable', async () => {
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		disabled: true,
 		id: 'datepicker-disabled'
 	});
@@ -52,7 +52,7 @@ test('disabled Datepicker is not interactable', async () => {
 test('Datepicker variants render correctly', async () => {
 	// Test default variant
 	const screenDefault = render(Datepicker, {
-		value: '',
+		value: undefined,
 		id: 'datepicker-default'
 	});
 	const datepickerDefault = screenDefault.container.querySelector('#datepicker-default');
@@ -60,7 +60,7 @@ test('Datepicker variants render correctly', async () => {
 
 	// Test with fullWidth
 	const screenFullWidth = render(Datepicker, {
-		value: '',
+		value: undefined,
 		fullWidth: true,
 		id: 'datepicker-fullwidth'
 	});
@@ -71,7 +71,7 @@ test('Datepicker variants render correctly', async () => {
 
 	// Test with rounded
 	const screenRounded = render(Datepicker, {
-		value: '',
+		value: undefined,
 		rounded: true,
 		id: 'datepicker-rounded'
 	});
@@ -84,7 +84,7 @@ test('Datepicker focus and blur events work correctly', async () => {
 	let blurCalled = false;
 
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		id: 'datepicker-focus-blur',
 		onfocus: () => {
 			focusCalled = true;
@@ -108,7 +108,7 @@ test('Datepicker focus and blur events work correctly', async () => {
 
 test('Datepicker with placeholder renders correctly', async () => {
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		placeholder: 'Select date',
 		id: 'datepicker-placeholder'
 	});
@@ -118,7 +118,7 @@ test('Datepicker with placeholder renders correctly', async () => {
 
 test('Datepicker with icon renders correctly', async () => {
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		hasIcon: true,
 		id: 'datepicker-icon'
 	});
@@ -129,7 +129,7 @@ test('Datepicker with icon renders correctly', async () => {
 
 test('Datepicker with range mode renders correctly', async () => {
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		mode: 'range',
 		id: 'datepicker-range'
 	});
@@ -137,20 +137,20 @@ test('Datepicker with range mode renders correctly', async () => {
 	expect(datepicker).toBeInTheDocument();
 });
 
-test('Datepicker with allowTextInput renders correctly', async () => {
+test('Datepicker with enableTextInput renders correctly', async () => {
 	const screen = render(Datepicker, {
-		value: '',
-		allowTextInput: true,
+		value: undefined,
+		enableTextInput: true,
 		id: 'datepicker-direct-input'
 	});
 	const input = screen.container.querySelector('#datepicker-direct-input') as HTMLInputElement;
-	// Should not be readonly when allowDirectInput is true
+	// Should not be readonly when enableTextInput is true
 	expect(input).not.toHaveAttribute('readonly');
 });
 
 test('Datepicker with locale renders correctly', async () => {
 	const screen = render(Datepicker, {
-		value: '',
+		value: undefined,
 		locale: 'ja',
 		id: 'datepicker-locale'
 	});
@@ -162,7 +162,7 @@ import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('Datepicker CSS variables used are defined (computed) in the page', async () => {
 	const screen = render(Datepicker, {
-		value: ''
+		value: undefined
 	});
 	const wrapper = screen.getByTestId('datepicker');
 	const usedVars = new Set<string>();

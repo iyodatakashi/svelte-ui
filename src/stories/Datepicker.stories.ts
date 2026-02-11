@@ -11,10 +11,10 @@ interface DatepickerArgs {
 	hasIcon?: boolean;
 	disabled?: boolean;
 	focusStyle?: 'background' | 'outline' | 'none';
-	allowTextInput?: boolean;
+	enableTextInput?: boolean;
 	fullWidth?: boolean;
 	rounded?: boolean;
-	openOnClick?: boolean;
+	enableClickToOpen?: boolean;
 	minDate?: Date;
 	maxDate?: Date;
 	locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
@@ -94,9 +94,9 @@ const meta: Meta<DatepickerArgs> = {
 			options: ['background', 'outline', 'none'],
 			description: 'フォーカス時の表示スタイル'
 		},
-		allowTextInput: {
+		enableTextInput: {
 			control: 'boolean',
-			description: 'テキストでの直接入力を許可するかどうか'
+			description: 'テキストでの直接入力を有効にするかどうか'
 		},
 		fullWidth: {
 			control: 'boolean',
@@ -106,9 +106,9 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'boolean',
 			description: '角丸スタイル'
 		},
-		openOnClick: {
+		enableClickToOpen: {
 			control: 'boolean',
-			description: 'クリックでカレンダーを開く'
+			description: 'クリックでカレンダーを開いて選択を有効にするかどうか'
 		},
 		minDate: {
 			control: 'date',
@@ -240,9 +240,9 @@ export const Default: Story = {
 		mode: 'single',
 		hasIcon: false,
 		disabled: false,
-		allowTextInput: false,
+		enableTextInput: false,
 		focusStyle: 'outline',
-		openOnClick: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -257,7 +257,7 @@ export const DateRange: Story = {
 		hasIcon: false,
 		disabled: false,
 		focusStyle: 'outline',
-		openOnClick: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -272,7 +272,7 @@ export const WithIcon: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -287,7 +287,7 @@ export const WithIconAndDateRange: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -303,7 +303,7 @@ export const InlineVariant: Story = {
 		hasIcon: false,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	},
 	parameters: {
@@ -321,7 +321,7 @@ export const CustomFormat: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -336,7 +336,7 @@ export const Disabled: Story = {
 		hasIcon: true,
 		disabled: true,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -351,7 +351,7 @@ export const WithMinMaxDate: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		minDate: new Date(2024, 0, 1),
 		maxDate: new Date(2024, 11, 31),
 		locale: 'ja'
@@ -368,7 +368,7 @@ export const EnglishLocale: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'en'
 	}
 };
@@ -383,7 +383,7 @@ export const FrenchLocale: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'fr'
 	}
 };
@@ -398,7 +398,7 @@ export const GermanLocale: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'de'
 	}
 };
@@ -413,7 +413,7 @@ export const SpanishLocale: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'es'
 	}
 };
@@ -428,7 +428,7 @@ export const ChineseLocale: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'zh-cn'
 	}
 };
@@ -443,7 +443,7 @@ export const FocusStyleOutline: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -457,7 +457,7 @@ export const FocusStyleBackground: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'background',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -471,7 +471,7 @@ export const FocusStyleNone: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'none',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -486,8 +486,8 @@ export const AllowDirectInput: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		allowDirectInput: true,
-		openIfClicked: true,
+		enableTextInput: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	},
 	parameters: {
@@ -510,7 +510,7 @@ export const FullWidth: Story = {
 		disabled: false,
 		focusStyle: 'outline',
 		fullWidth: true,
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	},
 	parameters: {
@@ -529,7 +529,7 @@ export const RoundedStyle: Story = {
 		disabled: false,
 		focusStyle: 'outline',
 		rounded: true,
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -544,7 +544,7 @@ export const Playground: Story = {
 		hasIcon: true,
 		disabled: false,
 		focusStyle: 'outline',
-		openIfClicked: true,
+		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };

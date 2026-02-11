@@ -17,7 +17,7 @@ describe('Popup Component', () => {
 			restoreFocus: false,
 			mobileFullscreen: false,
 			mobileBehavior: 'auto',
-			allowRepositioning: true,
+			enableAutoReposition: true,
 			ariaLabel: undefined,
 			ariaLabelledby: undefined,
 			ariaDescribedby: undefined
@@ -32,7 +32,7 @@ describe('Popup Component', () => {
 		expect(typeof expectedDefaults.restoreFocus).toBe('boolean');
 		expect(typeof expectedDefaults.mobileFullscreen).toBe('boolean');
 		expect(typeof expectedDefaults.mobileBehavior).toBe('string');
-		expect(typeof expectedDefaults.allowRepositioning).toBe('boolean');
+		expect(typeof expectedDefaults.enableAutoReposition).toBe('boolean');
 	});
 
 	it('should accept valid position values', () => {
@@ -76,13 +76,7 @@ describe('Popup Component', () => {
 	});
 
 	it('should handle boolean props correctly', () => {
-		const booleanProps = [
-			'isOpen',
-			'focusTrap',
-			'restoreFocus',
-			'mobileFullscreen',
-			'allowRepositioning'
-		];
+		const booleanProps = ['isOpen', 'focusTrap', 'restoreFocus', 'mobileFullscreen', 'enableAutoReposition'];
 
 		booleanProps.forEach((prop) => {
 			expect(typeof true).toBe('boolean');
