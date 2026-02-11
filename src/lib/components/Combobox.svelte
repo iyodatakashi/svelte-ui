@@ -466,7 +466,6 @@
 		focusTrap={false}
 		onClose={handlePopupClose}
 		margin={4}
-		allowRepositioning={false}
 	>
 		<div
 			bind:this={listElement}
