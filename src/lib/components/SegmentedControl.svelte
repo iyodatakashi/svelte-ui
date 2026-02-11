@@ -47,7 +47,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: BivariantValueHandler<string>;
+		onchange?: (value: string) => void;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;

@@ -72,8 +72,8 @@
 		onpointercancel?: PointerHandler;
 
 		// 入力イベント
-		onchange?: BivariantValueHandler<number>;
-		oninput?: BivariantValueHandler<number>;
+		onchange?: (value: number) => void;
+		oninput?: (value: number) => void;
 
 		// その他
 		[key: string]: any;

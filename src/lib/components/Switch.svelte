@@ -70,7 +70,7 @@
 		onpointercancel?: PointerHandler;
 
 		// 入力イベント
-		onchange?: BivariantValueHandler<boolean>;
+		onchange?: (value: boolean) => void;
 
 		// その他
 		[key: string]: any;
