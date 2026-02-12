@@ -38,6 +38,7 @@
 		disabled?: boolean;
 		mobileFullscreen?: boolean;
 		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+		cancelParentClick?: boolean;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;
@@ -97,6 +98,7 @@
 		disabled = false,
 		mobileFullscreen = true,
 		mobileBehavior = 'auto',
+		cancelParentClick = false,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -144,7 +146,10 @@
 	// =========================================================================
 	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
-		event.stopPropagation();
+		if (cancelParentClick) {
+			event.stopPropagation();
+			event.preventDefault();
+		}
 		onclick?.(event);
 		toggle();
 	};
