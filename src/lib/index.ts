@@ -105,3 +105,7 @@ export * from './utils/formatText';
 export * from './utils/mobile';
 export * from './utils/snackbar.svelte';
 export * from './utils/style';
+
+// Global configuration
+export type { SvelteUiConfig } from './config';
+export { setSvelteUiConfig } from './config';

@@ -1,28 +1,24 @@
 import { en } from './locales/en';
 import { ja } from './locales/ja';
+import { fr } from './locales/fr';
+import { de } from './locales/de';
+import { es } from './locales/es';
+import { zhCn } from './locales/zh-cn';
+import { getLocale } from '$lib/config';
 
-export type Locale = 'en' | 'ja';
+export type Locale = 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 
-export const MESSAGES = {
+export const TRANSLATIONS = {
 	en,
-	ja
+	ja,
+	fr,
+	de,
+	es,
+	'zh-cn': zhCn
 } as const;
 
-// ブラウザの言語設定を取得
-export const getLocale = (): Locale => {
-	if (typeof navigator !== 'undefined') {
-		// navigator.languages を使用して言語の優先順位を確認
-		const languages = navigator.languages || [navigator.language];
-
-		// 最初の言語（最優先言語）をチェック
-		const primaryLanguage = languages[0];
-
-		if (primaryLanguage.startsWith('ja')) {
-			return 'ja';
-		}
-	}
-	return 'en';
-};
+// i18n が実際にサポートしているロケール（翻訳データが存在するもの）
+type SupportedLocale = keyof typeof TRANSLATIONS;
 
 // ネストされたオブジェクトから値を取得するヘルパー関数
 type NestedKeyOf<T> = T extends object
@@ -45,9 +41,11 @@ const replaceParams = (message: string, params?: Record<string, any>): string =>
 };
 
 // 標準的なi18n関数
-export const t = (key: NestedKeyOf<typeof MESSAGES.en>, params?: Record<string, any>): string => {
-	const locale = getLocaleWithManual();
-	const message = key.split('.').reduce((obj: any, k: string) => obj?.[k], MESSAGES[locale]);
+export const t = (key: NestedKeyOf<typeof TRANSLATIONS.en>, params?: Record<string, any>): string => {
+	const globalLocale = getLocale();
+	// グローバル設定のロケールが TRANSLATIONS に存在する場合はそれを使い、存在しない場合は 'en' にフォールバック
+	const locale: SupportedLocale = (globalLocale && globalLocale in TRANSLATIONS) ? globalLocale : 'en';
+	const message = key.split('.').reduce((obj: any, k: string) => obj?.[k], TRANSLATIONS[locale]);
 
 	if (typeof message !== 'string') {
 		console.warn(`Translation key "${key}" not found for locale "${locale}"`);
@@ -58,26 +56,15 @@ export const t = (key: NestedKeyOf<typeof MESSAGES.en>, params?: Record<string, 
 };
 
 // デバッグ用: 現在の言語設定を確認
-export const debugLocale = () => {
+export const debugLocale = (): Locale => {
 	if (typeof navigator !== 'undefined') {
 		console.log('navigator.language:', navigator.language);
 		console.log('navigator.languages:', navigator.languages);
-		console.log('detected locale:', getLocale());
 	}
-	return getLocale();
+	const globalResolved = getLocale();
+	// グローバル設定のロケールが TRANSLATIONS に存在する場合はそれを使い、存在しない場合は 'en' にフォールバック
+	const effective: Locale = (globalResolved && globalResolved in TRANSLATIONS) ? globalResolved : 'en';
+	console.log('effective locale (i18n):', effective);
+	return effective;
 };
 
-// テスト用: 手動で言語を切り替え
-let manualLocale: Locale | null = null;
-export const setLocale = (locale: Locale) => {
-	manualLocale = locale;
-	console.log(`🔧 Manual locale set to: ${locale}`);
-};
-
-// 手動設定を優先するgetLocale
-const getLocaleWithManual = (): Locale => {
-	if (manualLocale) {
-		return manualLocale;
-	}
-	return getLocale();
-};

@@ -14,6 +14,7 @@
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import { announceToScreenReader } from '$lib/utils/accessibility';
+	import { getLocale } from '$lib/config';
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import type {
@@ -105,7 +106,7 @@
 		value = $bindable(),
 		format,
 		nullString = '',
-		locale = 'en',
+		locale,
 		rangeSeparator = ' - ',
 
 		// HTML属性系
@@ -235,15 +236,13 @@
 	// =========================================================================
 	// Effects
 	// =========================================================================
-	$effect(() => {
-		dayjs.locale(locale);
-	});
+	const effectiveLocale = $derived(locale ?? getLocale());
 
 	$effect(() => {
 		// range モードのときは、value 自体を「start <= end」の順序に正規化しておく
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
-			const startDay = dayjs(value.start);
-			const endDay = dayjs(value.end);
+			const startDay = dayjs(value.start).locale(effectiveLocale);
+			const endDay = dayjs(value.end).locale(effectiveLocale);
 			if (startDay.isAfter(endDay)) {
 				value = { start: value.end, end: value.start };
 			}
@@ -251,7 +250,8 @@
 	});
 
 	$effect(() => {
-		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
+		const formatWithLocale = (date: Date) =>
+			dayjs(date).locale(effectiveLocale).format(finalFormat);
 
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
@@ -269,11 +269,11 @@
 		// スクリーンリーダーアナウンス
 		if (value) {
 			if (mode === 'range' && typeof value === 'object' && 'start' in value && 'end' in value) {
-				const startDate = dayjs(value.start).format(finalFormat);
-				const endDate = dayjs(value.end).format(finalFormat);
+				const startDate = dayjs(value.start).locale(effectiveLocale).format(finalFormat);
+				const endDate = dayjs(value.end).locale(effectiveLocale).format(finalFormat);
 				announceToScreenReader(`Date range selected: ${startDate} to ${endDate}`);
 			} else if (value instanceof Date) {
-				const formattedDate = dayjs(value).format(finalFormat);
+				const formattedDate = dayjs(value).locale(effectiveLocale).format(finalFormat);
 				announceToScreenReader(`Date selected: ${formattedDate}`);
 			}
 		}
@@ -516,7 +516,7 @@
 		const parseFormat = currentLocaleConfig.rangeFormat;
 
 		if (mode === 'range') {
-			const parsedRange = parseRangeInput(inputStr, parseFormat, locale);
+			const parsedRange = parseRangeInput(inputStr, parseFormat, effectiveLocale);
 			if (!parsedRange) return;
 
 			value = parsedRange;
@@ -525,7 +525,7 @@
 		}
 
 		// single モードでは先頭の「日付本体」のみを解釈する
-		const parsedSingle = parseSingleInput(inputStr, parseFormat, locale);
+		const parsedSingle = parseSingleInput(inputStr, parseFormat, effectiveLocale);
 		if (!parsedSingle) return;
 
 		value = parsedSingle;
@@ -598,7 +598,7 @@
 	// $derived
 	// =========================================================================
 
-	const currentLocaleConfig = $derived(localeConfig[locale]);
+	const currentLocaleConfig = $derived(localeConfig[effectiveLocale]);
 	const finalFormat = $derived(
 		format ||
 			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
@@ -679,7 +679,7 @@
 		onchange={handleChange}
 		{minDate}
 		{maxDate}
-		{locale}
+		locale={effectiveLocale}
 		id={calendarId}
 	/>
 </Popup>
