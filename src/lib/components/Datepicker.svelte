@@ -239,7 +239,7 @@
 	const effectiveLocale = $derived(locale ?? getLocale());
 
 	$effect(() => {
-		// range モードのときは、value 自体を「start <= end」の順序に正規化しておく
+		// range モードのときは、value を「start <= end」の順序に正規化
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			const startDay = dayjs(value.start).locale(effectiveLocale);
 			const endDay = dayjs(value.end).locale(effectiveLocale);
@@ -512,11 +512,9 @@
 			return;
 		}
 
-		// ロケールごとの日付専用フォーマット（rangeFormat は曜日を含まない）
-		const parseFormat = currentLocaleConfig.rangeFormat;
-
+		// 日付パース処理
 		if (mode === 'range') {
-			const parsedRange = parseRangeInput(inputStr, parseFormat, effectiveLocale);
+			const parsedRange = parseRangeInput(inputStr, effectiveLocale);
 			if (!parsedRange) return;
 
 			value = parsedRange;
@@ -525,28 +523,23 @@
 		}
 
 		// single モードでは先頭の「日付本体」のみを解釈する
-		const parsedSingle = parseSingleInput(inputStr, parseFormat, effectiveLocale);
+		const parsedSingle = parseSingleInput(inputStr, effectiveLocale);
 		if (!parsedSingle) return;
 
 		value = parsedSingle;
 		onchange(value);
 	};
 
-	const parseSingleInput = (inputStr: string, parseFormat: string, locale: string): Date | null => {
+	const parseSingleInput = (inputStr: string, locale: string): Date | null => {
+		const parseFormat = currentLocaleConfig.defaultFormat;
 		const datePart = extractDatePart(inputStr);
 		const parsedDate = dayjs(datePart, parseFormat, locale, true);
 		if (!parsedDate.isValid()) return null;
 		return parsedDate.toDate();
 	};
 
-	const parseRangeInput = (
-		inputStr: string,
-		parseFormat: string,
-		locale: string
-	): { start: Date; end: Date } | null => {
-		// range モードでは、rangeSeparator には依存せず、
-		// 入力全体から「日付として解釈できるかたまり」を 2 つ拾って range として扱う
-		// 数字と区切り記号だけからなる連続部分をすべて拾う
+	const parseRangeInput = (inputStr: string, locale: string): { start: Date; end: Date } | null => {
+		const parseFormat = currentLocaleConfig.rangeFormat;
 		const dateLikeParts = inputStr.match(/[0-9０-９./-]+/g) ?? [];
 
 		if (dateLikeParts.length < 2) {
