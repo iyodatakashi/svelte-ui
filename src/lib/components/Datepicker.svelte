@@ -240,6 +240,17 @@
 	});
 
 	$effect(() => {
+		// range モードのときは、value 自体を「start <= end」の順序に正規化しておく
+		if (mode === 'range' && value && 'start' in value && 'end' in value) {
+			const startDay = dayjs(value.start);
+			const endDay = dayjs(value.end);
+			if (startDay.isAfter(endDay)) {
+				value = { start: value.end, end: value.start };
+			}
+		}
+	});
+
+	$effect(() => {
 		const formatWithLocale = (date: Date) => dayjs(date).locale(locale).format(finalFormat);
 
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
@@ -493,24 +504,80 @@
 		if (!enableTextInput) return;
 
 		const inputStr = String(inputValue ?? '').trim();
+
+		// 空文字列の場合は値をクリア
 		if (!inputStr) {
 			value = undefined;
 			onchange(value);
 			return;
 		}
 
-		// 入力値のうち「日付として有効な部分」（数字と区切り記号）だけを抽出してパースする
-		const datePartMatch = inputStr.match(/^[0-9０-９./-]+/);
-		const datePart = datePartMatch ? datePartMatch[0] : inputStr;
-
 		// ロケールごとの日付専用フォーマット（rangeFormat は曜日を含まない）
 		const parseFormat = currentLocaleConfig.rangeFormat;
 
-		const parsedDate = dayjs(datePart, parseFormat, locale, true);
-		if (parsedDate.isValid()) {
-			value = parsedDate.toDate();
+		if (mode === 'range') {
+			const parsedRange = parseRangeInput(inputStr, parseFormat, locale);
+			if (!parsedRange) return;
+
+			value = parsedRange;
 			onchange(value);
+			return;
 		}
+
+		// single モードでは先頭の「日付本体」のみを解釈する
+		const parsedSingle = parseSingleInput(inputStr, parseFormat, locale);
+		if (!parsedSingle) return;
+
+		value = parsedSingle;
+		onchange(value);
+	};
+
+	const parseSingleInput = (inputStr: string, parseFormat: string, locale: string): Date | null => {
+		const datePart = extractDatePart(inputStr);
+		const parsedDate = dayjs(datePart, parseFormat, locale, true);
+		if (!parsedDate.isValid()) return null;
+		return parsedDate.toDate();
+	};
+
+	const parseRangeInput = (
+		inputStr: string,
+		parseFormat: string,
+		locale: string
+	): { start: Date; end: Date } | null => {
+		// range モードでは、rangeSeparator には依存せず、
+		// 入力全体から「日付として解釈できるかたまり」を 2 つ拾って range として扱う
+		// 数字と区切り記号だけからなる連続部分をすべて拾う
+		const dateLikeParts = inputStr.match(/[0-9０-９./-]+/g) ?? [];
+
+		if (dateLikeParts.length < 2) {
+			return null;
+		}
+
+		const startRaw = extractDatePart(dateLikeParts[0]);
+		const endRaw = extractDatePart(dateLikeParts[1]);
+
+		const startParsed = dayjs(startRaw, parseFormat, locale, true);
+		const endParsed = dayjs(endRaw, parseFormat, locale, true);
+
+		if (!startParsed.isValid() || !endParsed.isValid()) {
+			return null;
+		}
+
+		const startDate = startParsed.toDate();
+		const endDate = endParsed.toDate();
+
+		// start > end の場合はここで入れ替えて正規化して返す
+		return startDate <= endDate
+			? { start: startDate, end: endDate }
+			: { start: endDate, end: startDate };
+	};
+
+	const extractDatePart = (raw: string): string => {
+		// 入力値のうち「日付として有効な部分」（数字と区切り記号）だけを抽出してパースする。
+		// 曜日やカッコなどの装飾はここで無視される。
+		const trimmed = raw.trim();
+		const match = trimmed.match(/^[0-9０-９./-]+/);
+		return match ? match[0] : trimmed;
 	};
 
 	export const open = () => {
