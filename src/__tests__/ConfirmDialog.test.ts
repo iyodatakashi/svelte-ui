@@ -13,7 +13,7 @@ describe('ConfirmDialog Component', () => {
 			description: 'Are you sure?',
 			submitLabel: 'Confirm',
 			cancelLabel: 'Cancel',
-			variant: 'info',
+			danger: false,
 			width: 400,
 			isOpen: false,
 			closeIfClickOutside: true
@@ -24,23 +24,19 @@ describe('ConfirmDialog Component', () => {
 		expect(typeof expectedDefaults.description).toBe('string');
 		expect(typeof expectedDefaults.submitLabel).toBe('string');
 		expect(typeof expectedDefaults.cancelLabel).toBe('string');
-		expect(typeof expectedDefaults.variant).toBe('string');
+		expect(typeof expectedDefaults.danger).toBe('boolean');
 		expect(typeof expectedDefaults.width).toBe('number');
 		expect(typeof expectedDefaults.isOpen).toBe('boolean');
 		expect(typeof expectedDefaults.closeIfClickOutside).toBe('boolean');
 	});
 
-	it('should accept valid variant values', () => {
-		const validVariants = ['info', 'warning', 'danger'];
-
-		validVariants.forEach((variant) => {
-			expect(typeof variant).toBe('string');
-			expect(variant.length).toBeGreaterThan(0);
-		});
+	it('should accept danger boolean value', () => {
+		expect(typeof true).toBe('boolean');
+		expect(typeof false).toBe('boolean');
 	});
 
 	it('should handle string props correctly', () => {
-		const stringProps = ['title', 'description', 'submitLabel', 'cancelLabel', 'variant'];
+		const stringProps = ['title', 'description', 'submitLabel', 'cancelLabel'];
 
 		stringProps.forEach((prop) => {
 			expect(typeof 'test').toBe('string');
@@ -92,14 +88,10 @@ describe('ConfirmDialog Component', () => {
 		expect(typeof 'Close').toBe('string');
 	});
 
-	it('should support variant types', () => {
-		// variant型のテスト
-		const variants = ['info', 'warning', 'danger'];
-
-		variants.forEach((variant) => {
-			expect(typeof variant).toBe('string');
-			expect(['info', 'warning', 'danger']).toContain(variant);
-		});
+	it('should support danger prop', () => {
+		// danger boolean型のテスト
+		expect(typeof true).toBe('boolean');
+		expect(typeof false).toBe('boolean');
 	});
 
 	it('should support width', () => {
@@ -150,14 +142,10 @@ describe('ConfirmDialog Component', () => {
 		expect(true).toBe(true); // 型チェック用
 	});
 
-	it('should support different variants styling', () => {
-		// 異なるバリアントのスタイリングのテスト
-		const variants = ['info', 'warning', 'danger'];
-
-		variants.forEach((variant) => {
-			expect(typeof variant).toBe('string');
-			expect(variant.length).toBeGreaterThan(0);
-		});
+	it('should support danger styling', () => {
+		// dangerプロパティによるスタイリングのテスト
+		expect(typeof true).toBe('boolean');
+		expect(typeof false).toBe('boolean');
 	});
 
 	it('should support custom button labels', () => {

@@ -70,9 +70,9 @@
 			>
 		</div>
 	{/if}
-	{#if tabItem.title}
+	{#if tabItem.label}
 		<div class="tab-item__label">
-			{tabItem.title}
+			{tabItem.label}
 		</div>
 	{/if}
 </a>

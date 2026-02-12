@@ -7,7 +7,7 @@ interface ConfirmDialogArgs {
 	message?: string;
 	submitLabel?: string;
 	cancelLabel?: string;
-	variant?: 'info' | 'warning' | 'danger';
+	danger?: boolean;
 	width?: string | number;
 	onSubmit?: () => void;
 	onCancel?: () => void;
@@ -47,10 +47,9 @@ const meta: Meta<ConfirmDialogArgs> = {
 			control: 'text',
 			description: 'Text for the cancel button'
 		},
-		variant: {
-			control: 'select',
-			options: ['info', 'warning', 'danger'],
-			description: 'Visual variant of the confirmation dialog'
+		danger: {
+			control: 'boolean',
+			description: 'Whether this is a dangerous action (uses danger color)'
 		},
 		width: {
 			control: 'text',
@@ -76,7 +75,7 @@ export const Default: Story = {
 		message: 'Are you sure you want to proceed?',
 		submitLabel: 'Confirm',
 		cancelLabel: 'Cancel',
-		variant: 'info',
+		danger: false,
 		width: 400
 	}
 };
@@ -87,7 +86,7 @@ export const Warning: Story = {
 		message: 'This action may have unintended consequences. Do you want to continue?',
 		submitLabel: 'Continue',
 		cancelLabel: 'Cancel',
-		variant: 'warning',
+		danger: false,
 		width: 450
 	}
 };
@@ -98,7 +97,7 @@ export const Danger: Story = {
 		message: 'This action cannot be undone. Are you sure you want to delete this item?',
 		submitLabel: 'Delete',
 		cancelLabel: 'Cancel',
-		variant: 'danger',
+		danger: true,
 		width: 400
 	}
 };
@@ -109,7 +108,7 @@ export const CustomLabels: Story = {
 		message: 'You have unsaved changes. Would you like to save them before leaving?',
 		submitLabel: 'Save',
 		cancelLabel: 'Discard',
-		variant: 'info',
+		danger: false,
 		width: 450
 	}
 };
@@ -121,7 +120,7 @@ export const LongMessage: Story = {
 			'By clicking "Accept", you agree to our Terms of Service and Privacy Policy. This includes sharing your data with third-party services for analytics and improving our service. You can withdraw your consent at any time through your account settings.',
 		submitLabel: 'Accept',
 		cancelLabel: 'Decline',
-		variant: 'info',
+		danger: false,
 		width: 500
 	}
 };
@@ -132,7 +131,7 @@ export const MinimalWidth: Story = {
 		message: 'Continue?',
 		submitLabel: 'Yes',
 		cancelLabel: 'No',
-		variant: 'info',
+		danger: false,
 		width: 300
 	}
 };
@@ -144,7 +143,7 @@ export const MessageWithLineBreaks: Story = {
 			'This is the first line of the message.\nThis is the second line.\n\nThis is after an empty line.\n\nPlease confirm your action.',
 		submitLabel: 'Confirm',
 		cancelLabel: 'Cancel',
-		variant: 'info',
+		danger: false,
 		width: 450
 	}
 };

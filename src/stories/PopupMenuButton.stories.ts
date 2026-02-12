@@ -233,18 +233,18 @@ export const Default: Story = {
 	args: {
 		menuItems: [
 			{
-				title: 'Edit',
+				label: 'Edit',
 				icon: 'edit',
 				callback: () => alert('Edit clicked')
 			},
 			{
-				title: 'Copy',
+				label: 'Copy',
 				icon: 'content_copy',
 				callback: () => alert('Copy clicked')
 			},
 			'separator',
 			{
-				title: 'Delete',
+				label: 'Delete',
 				icon: 'delete',
 				callback: () => alert('Delete clicked')
 			}
@@ -258,23 +258,23 @@ export const CustomIcon: Story = {
 		children: createChildrenSnippet('settings'),
 		menuItems: [
 			{
-				title: 'General',
+				label: 'General',
 				icon: 'tune',
 				callback: () => alert('General settings')
 			},
 			{
-				title: 'Account',
+				label: 'Account',
 				icon: 'account_circle',
 				callback: () => alert('Account settings')
 			},
 			{
-				title: 'Privacy',
+				label: 'Privacy',
 				icon: 'privacy_tip',
 				callback: () => alert('Privacy settings')
 			},
 			'separator',
 			{
-				title: 'About',
+				label: 'About',
 				icon: 'info',
 				callback: () => alert('About')
 			}
@@ -288,34 +288,34 @@ export const FileOperations: Story = {
 		children: createChildrenSnippet('folder'),
 		menuItems: [
 			{
-				title: 'New File',
+				label: 'New File',
 				icon: 'add',
 				callback: () => alert('New File')
 			},
 			{
-				title: 'Open',
+				label: 'Open',
 				icon: 'folder_open',
 				callback: () => alert('Open')
 			},
 			'separator',
 			{
-				title: 'Save',
+				label: 'Save',
 				icon: 'save',
 				callback: () => alert('Save')
 			},
 			{
-				title: 'Save As...',
+				label: 'Save As...',
 				icon: 'save_as',
 				callback: () => alert('Save As')
 			},
 			'separator',
 			{
-				title: 'Export',
+				label: 'Export',
 				icon: 'file_download',
 				callback: () => alert('Export')
 			},
 			{
-				title: 'Print',
+				label: 'Print',
 				icon: 'print',
 				callback: () => alert('Print')
 			}
@@ -329,29 +329,29 @@ export const UserMenu: Story = {
 		children: createChildrenSnippet('account_circle'),
 		menuItems: [
 			{
-				title: 'Profile',
+				label: 'Profile',
 				icon: 'person',
 				href: '/profile'
 			},
 			{
-				title: 'Settings',
+				label: 'Settings',
 				icon: 'settings',
 				href: '/settings'
 			},
 			'separator',
 			{
-				title: 'Help',
+				label: 'Help',
 				icon: 'help',
 				callback: () => alert('Help')
 			},
 			{
-				title: 'Feedback',
+				label: 'Feedback',
 				icon: 'feedback',
 				callback: () => alert('Feedback')
 			},
 			'separator',
 			{
-				title: 'Logout',
+				label: 'Logout',
 				icon: 'logout',
 				callback: () => alert('Logout')
 			}
@@ -365,40 +365,40 @@ export const ContextMenu: Story = {
 		children: createChildrenSnippet('more_horiz'),
 		menuItems: [
 			{
-				title: 'View Details',
+				label: 'View Details',
 				icon: 'info',
 				callback: () => alert('View Details')
 			},
 			{
-				title: 'Rename',
+				label: 'Rename',
 				icon: 'edit',
 				callback: () => alert('Rename')
 			},
 			{
-				title: 'Duplicate',
+				label: 'Duplicate',
 				icon: 'content_copy',
 				callback: () => alert('Duplicate')
 			},
 			'separator',
 			{
-				title: 'Move to Folder',
+				label: 'Move to Folder',
 				icon: 'drive_file_move',
 				callback: () => alert('Move to Folder')
 			},
 			{
-				title: 'Add to Favorites',
+				label: 'Add to Favorites',
 				icon: 'star',
 				callback: () => alert('Add to Favorites')
 			},
 			'separator',
 			{
-				title: 'Share',
+				label: 'Share',
 				icon: 'share',
 				callback: () => alert('Share')
 			},
 			'separator',
 			{
-				title: 'Delete',
+				label: 'Delete',
 				icon: 'delete',
 				callback: () => alert('Delete')
 			}
@@ -412,15 +412,15 @@ export const WithoutIcons: Story = {
 		children: createChildrenSnippet('more_vert'),
 		menuItems: [
 			{
-				title: 'Option A',
+				label: 'Option A',
 				callback: () => alert('Option A')
 			},
 			{
-				title: 'Option B',
+				label: 'Option B',
 				callback: () => alert('Option B')
 			},
 			{
-				title: 'Option C',
+				label: 'Option C',
 				callback: () => alert('Option C')
 			}
 		]
@@ -436,18 +436,18 @@ export const AutoPositioning: Story = {
 		children: createChildrenSnippet('auto_fix_high'),
 		menuItems: [
 			{
-				title: '🤖 Auto Position',
+				label: '🤖 Auto Position',
 				icon: 'auto_fix_high',
 				callback: () => alert('Auto positioning finds the best spot!')
 			},
 			{
-				title: 'Smart Placement',
+				label: 'Smart Placement',
 				icon: 'psychology',
 				callback: () => alert('Automatically adjusts to viewport')
 			},
 			'separator',
 			{
-				title: 'Try moving to screen edges',
+				label: 'Try moving to screen edges',
 				icon: 'info',
 				callback: () =>
 					alert('Position this button near screen edges to see auto positioning in action')
@@ -471,12 +471,12 @@ export const TopLeftPosition: Story = {
 		children: createChildrenSnippet('north_west'),
 		menuItems: [
 			{
-				title: '📍 Top-Left',
+				label: '📍 Top-Left',
 				icon: 'north_west',
 				callback: () => alert('Top-Left aligned')
 			},
 			{
-				title: 'Corner alignment',
+				label: 'Corner alignment',
 				callback: () => alert('Aligned to top-left corner')
 			}
 		]
@@ -489,12 +489,12 @@ export const BottomRightPosition: Story = {
 		children: createChildrenSnippet('south_east'),
 		menuItems: [
 			{
-				title: '📍 Bottom-Right',
+				label: '📍 Bottom-Right',
 				icon: 'south_east',
 				callback: () => alert('Bottom-Right aligned')
 			},
 			{
-				title: 'Corner alignment',
+				label: 'Corner alignment',
 				callback: () => alert('Aligned to bottom-right corner')
 			}
 		]
@@ -508,12 +508,12 @@ export const LeftTopPosition: Story = {
 		children: createChildrenSnippet('keyboard_arrow_left'),
 		menuItems: [
 			{
-				title: '← Left-Top',
+				label: '← Left-Top',
 				icon: 'keyboard_arrow_left',
 				callback: () => alert('Left side, top aligned')
 			},
 			{
-				title: 'Side placement',
+				label: 'Side placement',
 				callback: () => alert('Perfect for toolbar buttons')
 			}
 		]
@@ -526,12 +526,12 @@ export const RightBottomPosition: Story = {
 		children: createChildrenSnippet('keyboard_arrow_right'),
 		menuItems: [
 			{
-				title: 'Right-Bottom →',
+				label: 'Right-Bottom →',
 				icon: 'keyboard_arrow_right',
 				callback: () => alert('Right side, bottom aligned')
 			},
 			{
-				title: 'Side placement',
+				label: 'Side placement',
 				callback: () => alert('Great for contextual menus')
 			}
 		]
@@ -545,30 +545,30 @@ export const PositionPlayground: Story = {
 		children: createChildrenSnippet('tune'),
 		menuItems: [
 			{
-				title: '🎯 Position Test',
+				label: '🎯 Position Test',
 				icon: 'tune',
 				callback: () => alert('Use the position control above to test different placements!')
 			},
 			'separator',
 			{
-				title: 'Available Positions:',
+				label: 'Available Positions:',
 				icon: 'list'
 			},
 			{
-				title: '• auto (smart)',
+				label: '• auto (smart)',
 				callback: () => alert('Auto selects best position')
 			},
 			{
-				title: '• 4 basic (top/bottom/left/right)',
+				label: '• 4 basic (top/bottom/left/right)',
 				callback: () => alert('Traditional positioning')
 			},
 			{
-				title: '• 12 detailed positions',
+				label: '• 12 detailed positions',
 				callback: () => alert('Precise corner & side alignment')
 			},
 			'separator',
 			{
-				title: 'Test Instructions',
+				label: 'Test Instructions',
 				icon: 'help',
 				callback: () =>
 					alert(

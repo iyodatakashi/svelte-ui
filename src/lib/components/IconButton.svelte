@@ -13,7 +13,8 @@
 		MouseHandler,
 		TouchHandler,
 		PointerHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { ButtonVariant, BadgeVariant } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -29,7 +30,7 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
+		variant?: ButtonVariant;
 		size?: number;
 		fontSize?: number;
 		color?: string;
@@ -46,7 +47,7 @@
 		// バッジ関連
 		hasBadge?: boolean;
 		badgeCount?: number;
-		badgeVariant?: 'dot' | 'count';
+		badgeVariant?: BadgeVariant;
 		badgeColor?: string;
 		badgeMax?: number;
 

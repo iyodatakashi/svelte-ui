@@ -5,7 +5,7 @@
 	import Checkbox from './Checkbox.svelte';
 	import { onMount } from 'svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
+	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
 
 	// =========================================================================
 	// Props, States & Constants

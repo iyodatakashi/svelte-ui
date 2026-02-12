@@ -4,7 +4,7 @@
 	import type { Option, OptionValue } from '$lib/types/options';
 	import Radio from './Radio.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
+	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
 
 	// =========================================================================
 	// Props, States & Constants

@@ -66,32 +66,22 @@ test('ConfirmDialog cancel button works correctly', async () => {
 	expect(cancelCalled).toBe(true);
 });
 
-test('ConfirmDialog variants render correctly', async () => {
-	// Test info variant
-	const screenInfo = render(ComponentWrapper, {
+test('ConfirmDialog danger prop renders correctly', async () => {
+	// Test default (non-danger)
+	const screenDefault = render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
-		variant: 'info',
-		id: 'confirm-dialog-info'
+		danger: false,
+		id: 'confirm-dialog-default'
 	});
-	const modalInfo = screenInfo.container.querySelector('[data-testid="modal"]');
-	expect(modalInfo).toBeInTheDocument();
-
-	// Test warning variant
-	const screenWarning = render(ComponentWrapper, {
-		component: ConfirmDialog,
-		isOpen: true,
-		variant: 'warning',
-		id: 'confirm-dialog-warning'
-	});
-	const modalWarning = screenWarning.container.querySelector('[data-testid="modal"]');
-	expect(modalWarning).toBeInTheDocument();
+	const modalDefault = screenDefault.container.querySelector('[data-testid="modal"]');
+	expect(modalDefault).toBeInTheDocument();
 
 	// Test danger variant
 	const screenDanger = render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
-		variant: 'danger',
+		danger: true,
 		id: 'confirm-dialog-danger'
 	});
 	const modalDanger = screenDanger.container.querySelector('[data-testid="modal"]');

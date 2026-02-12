@@ -60,19 +60,19 @@ export const Basic: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Home',
+				label: 'Home',
 				href: '/'
 			},
 			{
-				title: 'About',
+				label: 'About',
 				href: '/about'
 			},
 			{
-				title: 'Services',
+				label: 'Services',
 				href: '/services'
 			},
 			{
-				title: 'Contact',
+				label: 'Contact',
 				href: '/contact'
 			}
 		]
@@ -84,22 +84,22 @@ export const WithIcons: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Dashboard',
+				label: 'Dashboard',
 				href: '/dashboard',
 				icon: 'dashboard'
 			},
 			{
-				title: 'Users',
+				label: 'Users',
 				href: '/users',
 				icon: 'people'
 			},
 			{
-				title: 'Settings',
+				label: 'Settings',
 				href: '/settings',
 				icon: 'settings'
 			},
 			{
-				title: 'Analytics',
+				label: 'Analytics',
 				href: '/analytics',
 				icon: 'analytics'
 			}
@@ -112,17 +112,17 @@ export const StrictMatching: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Home',
+				label: 'Home',
 				href: '/',
 				strictMatch: true
 			},
 			{
-				title: 'Blog',
+				label: 'Blog',
 				href: '/blog',
 				strictMatch: true
 			},
 			{
-				title: 'Products',
+				label: 'Products',
 				href: '/products',
 				strictMatch: true
 			}
@@ -135,17 +135,17 @@ export const MultipleMatchingPaths: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Content',
+				label: 'Content',
 				href: '/content',
 				matchingPath: ['/content', '/articles', '/news']
 			},
 			{
-				title: 'User Management',
+				label: 'User Management',
 				href: '/admin/users',
 				matchingPath: ['/admin/users', '/admin/roles', '/admin/permissions']
 			},
 			{
-				title: 'Reports',
+				label: 'Reports',
 				href: '/reports',
 				matchingPath: ['/reports', '/analytics', '/metrics']
 			}
@@ -159,17 +159,17 @@ export const MultiTenantWithPathPrefix: Story = {
 		pathPrefix: '/tenant-name',
 		tabItems: [
 			{
-				title: 'Dashboard',
+				label: 'Dashboard',
 				href: '/dashboard',
 				icon: 'dashboard'
 			},
 			{
-				title: 'Articles',
+				label: 'Articles',
 				href: '/articles',
 				icon: 'article'
 			},
 			{
-				title: 'Settings',
+				label: 'Settings',
 				href: '/settings',
 				icon: 'settings'
 			}
@@ -197,17 +197,17 @@ export const MultiTenantWithCustomMatcher: Story = {
 		},
 		tabItems: [
 			{
-				title: 'Home',
+				label: 'Home',
 				href: '/',
 				icon: 'home'
 			},
 			{
-				title: 'Products',
+				label: 'Products',
 				href: '/products',
 				icon: 'inventory'
 			},
 			{
-				title: 'Analytics',
+				label: 'Analytics',
 				href: '/analytics',
 				icon: 'analytics'
 			}
@@ -220,25 +220,25 @@ export const ComplexConfiguration: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Home',
+				label: 'Home',
 				href: '/',
 				icon: 'home',
 				strictMatch: true
 			},
 			{
-				title: 'Content',
+				label: 'Content',
 				href: '/content',
 				icon: 'article',
 				matchingPath: ['/content', '/articles', '/posts']
 			},
 			{
-				title: 'Admin',
+				label: 'Admin',
 				href: '/admin',
 				icon: 'admin_panel_settings',
 				matchingPath: ['/admin', '/admin/users', '/admin/settings']
 			},
 			{
-				title: 'Help',
+				label: 'Help',
 				href: '/help',
 				icon: 'help',
 				strictMatch: true
@@ -272,22 +272,22 @@ export const LongTitles: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Dashboard Overview',
+				label: 'Dashboard Overview',
 				href: '/dashboard',
 				icon: 'dashboard'
 			},
 			{
-				title: 'User Management System',
+				label: 'User Management System',
 				href: '/users',
 				icon: 'people'
 			},
 			{
-				title: 'Advanced Settings Configuration',
+				label: 'Advanced Settings Configuration',
 				href: '/settings',
 				icon: 'settings'
 			},
 			{
-				title: 'Analytics & Reporting Tools',
+				label: 'Analytics & Reporting Tools',
 				href: '/analytics',
 				icon: 'analytics'
 			}
@@ -300,7 +300,7 @@ export const SingleTab: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Only Tab',
+				label: 'Only Tab',
 				href: '/only',
 				icon: 'tab'
 			}
@@ -320,22 +320,22 @@ export const AccessibilityFeatures: Story = {
 	args: {
 		tabItems: [
 			{
-				title: 'Home',
+				label: 'Home',
 				href: '/',
 				icon: 'home'
 			},
 			{
-				title: 'Products',
+				label: 'Products',
 				href: '/products',
 				icon: 'inventory'
 			},
 			{
-				title: 'About',
+				label: 'About',
 				href: '/about',
 				icon: 'info'
 			},
 			{
-				title: 'Contact',
+				label: 'Contact',
 				href: '/contact',
 				icon: 'contact_mail'
 			}

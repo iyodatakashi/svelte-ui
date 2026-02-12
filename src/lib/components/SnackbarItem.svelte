@@ -5,6 +5,7 @@
 	import type { Snippet } from 'svelte';
 	import { snackbar } from '$lib/utils/snackbar.svelte';
 	import type { IconVariant } from '$lib/types/icon';
+	import type { SnackbarType, SnackbarVariant, SnackbarPosition } from '$lib/types/propOptions';
 	import Icon from './Icon.svelte';
 	import IconButton from './IconButton.svelte';
 	import Button from './Button.svelte';
@@ -18,15 +19,15 @@
 
 		// 基本プロパティ
 		message?: string;
-		type?: 'info' | 'success' | 'warning' | 'error' | 'default';
+		type?: SnackbarType;
 		actionLabel?: string;
 
 		// HTML属性系
 		id: string;
 
 		// スタイル/レイアウト
-		variant?: 'filled' | 'outlined';
-		position?: 'top' | 'bottom';
+		variant?: SnackbarVariant;
+		position?: SnackbarPosition;
 		color?: string;
 		textColor?: string;
 

@@ -23,7 +23,8 @@
 		MouseHandler,
 		TouchHandler,
 		PointerHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { DatepickerMode, FocusStyle } from '$lib/types/propOptions';
 
 	dayjs.extend(localeData);
 
@@ -44,7 +45,7 @@
 
 		// スタイル/レイアウト
 		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
+		focusStyle?: FocusStyle;
 		fullWidth?: boolean;
 		rounded?: boolean;
 
@@ -58,7 +59,7 @@
 
 		// 状態/動作
 		disabled?: boolean;
-		mode?: 'single' | 'range';
+		mode?: DatepickerMode;
 		/** テキスト入力を有効にするか */
 		enableTextInput?: boolean;
 		/** クリック時にポップアップを開くかどうかを有効にするか */

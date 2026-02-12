@@ -63,18 +63,18 @@ export const Default: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'Edit',
+				label: 'Edit',
 				icon: 'edit',
 				callback: () => alert('Edit clicked')
 			},
 			{
-				title: 'Copy',
+				label: 'Copy',
 				icon: 'content_copy',
 				callback: () => alert('Copy clicked')
 			},
 			'separator',
 			{
-				title: 'Delete',
+				label: 'Delete',
 				icon: 'delete',
 				callback: () => alert('Delete clicked')
 			}
@@ -89,17 +89,17 @@ export const WithLinks: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'Home',
+				label: 'Home',
 				icon: 'home',
 				href: '/'
 			},
 			{
-				title: 'About',
+				label: 'About',
 				icon: 'info',
 				href: '/about'
 			},
 			{
-				title: 'Contact',
+				label: 'Contact',
 				icon: 'contact_mail',
 				href: '/contact'
 			}
@@ -114,20 +114,20 @@ export const WithoutIcons: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'Save',
+				label: 'Save',
 				callback: () => alert('Save clicked')
 			},
 			{
-				title: 'Save As...',
+				label: 'Save As...',
 				callback: () => alert('Save As clicked')
 			},
 			'separator',
 			{
-				title: 'Export',
+				label: 'Export',
 				callback: () => alert('Export clicked')
 			},
 			{
-				title: 'Print',
+				label: 'Print',
 				callback: () => alert('Print clicked')
 			}
 		]
@@ -141,45 +141,45 @@ export const Complex: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'New File',
+				label: 'New File',
 				icon: 'add',
 				callback: () => alert('New File')
 			},
 			{
-				title: 'Open File',
+				label: 'Open File',
 				icon: 'folder_open',
 				callback: () => alert('Open File')
 			},
 			'separator',
 			{
-				title: 'Cut',
+				label: 'Cut',
 				icon: 'content_cut',
 				callback: () => alert('Cut')
 			},
 			{
-				title: 'Copy',
+				label: 'Copy',
 				icon: 'content_copy',
 				callback: () => alert('Copy')
 			},
 			{
-				title: 'Paste',
+				label: 'Paste',
 				icon: 'content_paste',
 				callback: () => alert('Paste')
 			},
 			'separator',
 			{
-				title: 'Settings',
+				label: 'Settings',
 				icon: 'settings',
 				href: '/settings'
 			},
 			{
-				title: 'Help',
+				label: 'Help',
 				icon: 'help',
 				callback: () => alert('Help')
 			},
 			'separator',
 			{
-				title: 'Logout',
+				label: 'Logout',
 				icon: 'logout',
 				callback: () => alert('Logout')
 			}
@@ -194,17 +194,17 @@ export const TopPosition: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'Option 1',
+				label: 'Option 1',
 				icon: 'check_circle',
 				callback: () => alert('Option 1')
 			},
 			{
-				title: 'Option 2',
+				label: 'Option 2',
 				icon: 'radio_button_unchecked',
 				callback: () => alert('Option 2')
 			},
 			{
-				title: 'Option 3',
+				label: 'Option 3',
 				icon: 'radio_button_unchecked',
 				callback: () => alert('Option 3')
 			}
@@ -219,17 +219,17 @@ export const LeftPosition: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'Bold',
+				label: 'Bold',
 				icon: 'format_bold',
 				callback: () => alert('Bold')
 			},
 			{
-				title: 'Italic',
+				label: 'Italic',
 				icon: 'format_italic',
 				callback: () => alert('Italic')
 			},
 			{
-				title: 'Underline',
+				label: 'Underline',
 				icon: 'format_underlined',
 				callback: () => alert('Underline')
 			}
@@ -244,17 +244,17 @@ export const RightPosition: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				title: 'Align Left',
+				label: 'Align Left',
 				icon: 'format_align_left',
 				callback: () => alert('Align Left')
 			},
 			{
-				title: 'Align Center',
+				label: 'Align Center',
 				icon: 'format_align_center',
 				callback: () => alert('Align Center')
 			},
 			{
-				title: 'Align Right',
+				label: 'Align Right',
 				icon: 'format_align_right',
 				callback: () => alert('Align Right')
 			}

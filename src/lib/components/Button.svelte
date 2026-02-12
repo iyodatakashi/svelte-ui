@@ -10,7 +10,8 @@
 		MouseHandler,
 		TouchHandler,
 		PointerHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { ButtonVariant, ButtonSize } from '$lib/types/propOptions';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
@@ -29,8 +30,8 @@
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
-		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
-		size?: 'small' | 'medium' | 'large';
+		variant?: ButtonVariant;
+		size?: ButtonSize;
 		color?: string;
 		fullWidth?: boolean;
 		minWidth?: string | number;

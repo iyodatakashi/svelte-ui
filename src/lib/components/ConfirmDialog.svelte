@@ -20,7 +20,7 @@
 		id?: string;
 
 		// スタイル/レイアウト
-		variant?: 'info' | 'warning' | 'danger';
+		danger?: boolean;
 		width?: string | number;
 
 		// 状態/動作
@@ -43,7 +43,7 @@
 		id,
 
 		// スタイル/レイアウト
-		variant = 'info',
+		danger = false,
 		width = 400,
 
 		// 状態/動作
@@ -101,11 +101,7 @@
 		</Button>
 		<Button
 			variant="filled"
-			color={variant === 'danger'
-				? 'var(--svelte-ui-danger-color)'
-				: variant === 'warning'
-					? 'var(--svelte-ui-warning-color)'
-					: undefined}
+			color={danger ? 'var(--svelte-ui-danger-color)' : undefined}
 			onclick={handleSubmit}
 		>
 			{submitLabel}

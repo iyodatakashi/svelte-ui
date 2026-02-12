@@ -14,7 +14,7 @@
 		MouseHandler,
 		TouchHandler,
 		PointerHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
 
 	// =========================================================================
 	// Props, States & Constants

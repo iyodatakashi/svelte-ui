@@ -14,7 +14,7 @@
 	import IconButton from './IconButton.svelte';
 	import { onMount } from 'svelte';
 	import { t } from '$lib/i18n';
-	import type { BivariantValueHandler } from '$lib/types/eventHandlers';
+	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
 
 	dayjs.extend(localeData);
 	dayjs.extend(isSameOrBefore);

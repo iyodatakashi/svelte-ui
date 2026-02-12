@@ -7,10 +7,10 @@ import type { MenuItem } from '../lib/types/menuItem';
 
 // テスト用のメニューアイテムを作成
 const createMenuItems = (): (MenuItem | 'separator')[] => [
-	{ title: 'Edit', icon: 'edit', callback: () => {} },
-	{ title: 'Copy', icon: 'copy', callback: () => {} },
+	{ label: 'Edit', icon: 'edit', callback: () => {} },
+	{ label: 'Copy', icon: 'copy', callback: () => {} },
 	'separator',
-	{ title: 'Delete', icon: 'delete', callback: () => {} }
+	{ label: 'Delete', icon: 'delete', callback: () => {} }
 ];
 
 // テスト用のアンカー要素を作成
@@ -74,7 +74,7 @@ test('handles menu item click', async () => {
 	let clicked = false;
 	const menuItems: (MenuItem | 'separator')[] = [
 		{
-			title: 'Test Item',
+			label: 'Test Item',
 			icon: 'test',
 			callback: () => {
 				clicked = true;
@@ -146,7 +146,7 @@ test('handles Enter key to execute menu item', async () => {
 	let executed = false;
 	const menuItems: (MenuItem | 'separator')[] = [
 		{
-			title: 'Execute',
+			label: 'Execute',
 			icon: 'play',
 			callback: () => {
 				executed = true;
@@ -316,7 +316,7 @@ test('handles Space key to execute menu item', async () => {
 	let executed = false;
 	const menuItems: (MenuItem | 'separator')[] = [
 		{
-			title: 'Space Test',
+			label: 'Space Test',
 			icon: 'space',
 			callback: () => {
 				executed = true;

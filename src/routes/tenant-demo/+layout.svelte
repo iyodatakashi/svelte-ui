@@ -8,22 +8,22 @@
 	// テナントデモ用のタブアイテム
 	const tabItems: MenuItem[] = [
 		{
-			title: 'Dashboard',
+			label: 'Dashboard',
 			href: '/dashboard',
 			icon: 'dashboard'
 		},
 		{
-			title: 'Articles',
+			label: 'Articles',
 			href: '/articles',
 			icon: 'article'
 		},
 		{
-			title: 'Users',
+			label: 'Users',
 			href: '/users',
 			icon: 'people'
 		},
 		{
-			title: 'Settings',
+			label: 'Settings',
 			href: '/settings',
 			icon: 'settings'
 		}

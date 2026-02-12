@@ -6,10 +6,10 @@ import type { MenuItem } from '../lib/types/menuItem';
 
 // テスト用のメニューアイテムを作成
 const createMenuItems = (): (MenuItem | 'separator')[] => [
-	{ title: 'Edit', icon: 'edit', callback: () => {} },
-	{ title: 'Copy', icon: 'copy', callback: () => {} },
+	{ label: 'Edit', icon: 'edit', callback: () => {} },
+	{ label: 'Copy', icon: 'copy', callback: () => {} },
 	'separator',
-	{ title: 'Delete', icon: 'delete', callback: () => {} }
+	{ label: 'Delete', icon: 'delete', callback: () => {} }
 ];
 
 test('renders PopupMenuButton with basic props', async () => {

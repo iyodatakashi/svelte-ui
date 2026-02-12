@@ -19,6 +19,7 @@
 	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
 	import { announceOpenClose } from '$lib/utils/accessibility';
 	import { popupManager } from '$lib/utils/popupManager';
+	import type { PopupPosition, PopupMobileBehavior } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -37,24 +38,7 @@
 		id?: string;
 
 		// スタイル/レイアウト
-		position?:
-			| 'top'
-			| 'bottom'
-			| 'left'
-			| 'right'
-			| 'top-left'
-			| 'top-center'
-			| 'top-right'
-			| 'bottom-left'
-			| 'bottom-center'
-			| 'bottom-right'
-			| 'left-top'
-			| 'left-center'
-			| 'left-bottom'
-			| 'right-top'
-			| 'right-center'
-			| 'right-bottom'
-			| 'auto';
+		position?: PopupPosition;
 		margin?: number;
 
 		// 状態/動作
@@ -62,7 +46,7 @@
 		focusTrap?: boolean;
 		restoreFocus?: boolean;
 		mobileFullscreen?: boolean;
-		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+		mobileBehavior?: PopupMobileBehavior;
 		enableAutoReposition?: boolean;
 
 		// ARIA/アクセシビリティ

@@ -15,7 +15,8 @@
 		TouchHandler,
 		PointerHandler,
 		BivariantValueHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { FocusStyle } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -41,7 +42,7 @@
 
 		// スタイル/レイアウト
 		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
+		focusStyle?: FocusStyle;
 		placeholder?: string;
 		fullWidth?: boolean;
 		width?: string | number | null;

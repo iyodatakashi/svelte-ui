@@ -8,6 +8,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
+	import type { PopupPosition, PopupMobileBehavior } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -15,29 +16,12 @@
 	export type PopupMenuProps = {
 		isOpen?: boolean;
 		anchorElement: HTMLElement;
-		position?:
-			| 'top'
-			| 'bottom'
-			| 'left'
-			| 'right'
-			| 'top-left'
-			| 'top-center'
-			| 'top-right'
-			| 'bottom-left'
-			| 'bottom-center'
-			| 'bottom-right'
-			| 'left-top'
-			| 'left-center'
-			| 'left-bottom'
-			| 'right-top'
-			| 'right-center'
-			| 'right-bottom'
-			| 'auto';
+		position?: PopupPosition;
 		menuItems: (MenuItem | 'separator')[];
 		id?: string;
 		ariaLabel?: string;
 		mobileFullscreen?: boolean;
-		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
+		mobileBehavior?: PopupMobileBehavior;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -278,7 +262,7 @@
 										{item.icon}
 									</Icon>
 								{/if}
-								<span class="popup-menu__text">{item.title}</span>
+								<span class="popup-menu__text">{item.label}</span>
 							</a>
 						{:else}
 							<button
@@ -306,7 +290,7 @@
 										{item.icon}
 									</Icon>
 								{/if}
-								<span class="popup-menu__text">{item.title}</span>
+								<span class="popup-menu__text">{item.label}</span>
 							</button>
 						{/if}
 					{/if}

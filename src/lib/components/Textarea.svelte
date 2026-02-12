@@ -14,7 +14,8 @@
 		TouchHandler,
 		PointerHandler,
 		BivariantValueHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { FocusStyle } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -40,7 +41,7 @@
 		minHeight?: string | number | null;
 		maxHeight?: string | number | null;
 		inline?: boolean;
-		focusStyle?: 'background' | 'outline' | 'none';
+		focusStyle?: FocusStyle;
 		fullWidth?: boolean;
 		fullHeight?: boolean;
 		width?: string | number | null;

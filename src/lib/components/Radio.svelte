@@ -10,7 +10,7 @@
 		TouchHandler,
 		PointerHandler,
 		BivariantValueHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
 	import type { OptionValue } from '$lib/types/options';
 
 	// =========================================================================

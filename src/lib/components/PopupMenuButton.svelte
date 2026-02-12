@@ -11,7 +11,8 @@
 		MouseHandler,
 		TouchHandler,
 		PointerHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { PopupPosition, ButtonVariant } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -27,24 +28,8 @@
 		id?: string;
 
 		// スタイル/レイアウト
-		position?:
-			| 'top'
-			| 'bottom'
-			| 'left'
-			| 'right'
-			| 'top-left'
-			| 'top-center'
-			| 'top-right'
-			| 'bottom-left'
-			| 'bottom-center'
-			| 'bottom-right'
-			| 'left-top'
-			| 'left-center'
-			| 'left-bottom'
-			| 'right-top'
-			| 'right-center'
-			| 'right-bottom';
-		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
+		position?: PopupPosition;
+		variant?: ButtonVariant;
 		size?: number;
 		color?: string;
 		rounded?: boolean;

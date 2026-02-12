@@ -115,7 +115,7 @@ test('handles empty tab items array', async () => {
 });
 
 test('handles single tab item', async () => {
-	const singleTabItem: MenuItem[] = [{ title: 'Home', href: '/', icon: 'home' }];
+	const singleTabItem: MenuItem[] = [{ label: 'Home', href: '/', icon: 'home' }];
 
 	const screen = render(ComponentWrapper, {
 		component: Tab,

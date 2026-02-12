@@ -14,4 +14,3 @@ export type BivariantValueHandler<T> = {
 	bivarianceHack(value: T): void;
 }['bivarianceHack'];
 
-

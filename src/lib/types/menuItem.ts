@@ -1,5 +1,5 @@
 export type MenuItem = {
-	title: string;
+	label: string;
 	href?: string;
 	callback?: () => void;
 	icon?: string;

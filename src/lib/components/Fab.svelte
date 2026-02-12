@@ -4,15 +4,16 @@
 	import type { Snippet } from 'svelte';
 	import type { HTMLButtonAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-	import Icon from './Icon.svelte';
-	import LoadingSpinner from './LoadingSpinner.svelte';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
 		PointerHandler
-	} from '$lib/types/eventHandlers';
+	} from '$lib/types/callbackHandlers';
+	import type { ButtonVariant, FabPosition } from '$lib/types/propOptions';
+	import Icon from './Icon.svelte';
+	import LoadingSpinner from './LoadingSpinner.svelte';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -31,8 +32,8 @@
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
 		color?: string;
-		variant?: 'ghost' | 'filled' | 'outlined' | 'glass';
-		position?: 'left' | 'center' | 'right';
+		variant?: ButtonVariant;
+		position?: FabPosition;
 		hasShadow?: boolean;
 		reducedMotion?: boolean;
 		ariaLabel?: string;

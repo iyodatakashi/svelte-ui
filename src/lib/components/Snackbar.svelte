@@ -4,15 +4,16 @@
 	import { onMount } from 'svelte';
 	import { snackbarManager, type SnackbarItem as SnackbarData } from '$lib/utils/snackbar.svelte';
 	import SnackbarItem from './SnackbarItem.svelte';
+	import type { SnackbarPosition, SnackbarVariant } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
 	export type SnackbarProps = {
 		// スタイル/レイアウト
-		position?: 'top' | 'bottom';
+		position?: SnackbarPosition;
 		maxVisible?: number;
-		variant?: 'filled' | 'outlined';
+		variant?: SnackbarVariant;
 
 		// 状態/動作
 		duration?: number;
