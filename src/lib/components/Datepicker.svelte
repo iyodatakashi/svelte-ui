@@ -286,8 +286,13 @@
 	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
 		if (enableClickToOpen) {
-			openedViaKeyboard = false;
-			open();
+			const isOpen = popupRef?.getIsOpen && popupRef.getIsOpen();
+			if (isOpen) {
+				close();
+			} else {
+				openedViaKeyboard = false;
+				open();
+			}
 		}
 		onclick?.(event);
 	};
