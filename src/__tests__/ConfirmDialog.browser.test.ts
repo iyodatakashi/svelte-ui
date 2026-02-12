@@ -41,7 +41,9 @@ test('ConfirmDialog confirm button works correctly', async () => {
 		id: 'confirm-dialog-test'
 	});
 
-	const confirmButton = screen.container.querySelector('button[data-testid="button"]:last-child');
+	const confirmButton = screen.container.querySelector(
+		'button[data-testid="button"]:last-child'
+	) as HTMLButtonElement | null;
 	expect(confirmButton).toBeInTheDocument();
 
 	await confirmButton?.click();
@@ -59,7 +61,9 @@ test('ConfirmDialog cancel button works correctly', async () => {
 		id: 'cancel-dialog-test'
 	});
 
-	const cancelButton = screen.container.querySelector('button[data-testid="button"]:first-child');
+	const cancelButton = screen.container.querySelector(
+		'button[data-testid="button"]:first-child'
+	) as HTMLButtonElement | null;
 	expect(cancelButton).toBeInTheDocument();
 
 	await cancelButton?.click();
