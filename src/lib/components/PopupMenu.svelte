@@ -15,7 +15,7 @@
 	// =========================================================================
 	export type PopupMenuProps = {
 		isOpen?: boolean;
-		anchorElement: HTMLElement;
+		anchorElement: HTMLElement | null | undefined;
 		position?: PopupPosition;
 		menuItems: (MenuItem | 'separator')[];
 		id?: string;

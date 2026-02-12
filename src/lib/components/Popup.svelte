@@ -29,7 +29,7 @@
 		children: Snippet;
 
 		// DOM参照
-		anchorElement: HTMLElement;
+		anchorElement: HTMLElement | null | undefined;
 
 		// 基本プロパティ
 		role?: string;
