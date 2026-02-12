@@ -69,7 +69,8 @@
 	// =========================================================================
 	const getMenuItemId = (index: number): string => `${menuId}-item-${index}`;
 
-	const executeMenuItem = (item: MenuItem) => {
+	const executeMenuItem = (item: MenuItem, event?: MouseEvent) => {
+		event?.stopPropagation();
 		if (item.callback) {
 			item.callback();
 		}
@@ -194,6 +195,13 @@
 		popupRef?.toggle();
 	};
 
+	const cancelParentEvent = (event: Event) => {
+		event.stopPropagation();
+		if (event.cancelable) {
+			event.preventDefault();
+		}
+	};
+
 	// =========================================================================
 	// $derived
 	// =========================================================================
@@ -226,6 +234,8 @@
 		aria-activedescendant={activeIndex >= 0 ? getMenuItemId(activeIndex) : undefined}
 		tabindex="-1"
 		{id}
+		onclick={cancelParentEvent}
+		onkeydown={cancelParentEvent}
 	>
 		<ul class="popup-menu__list" role="none">
 			{#each menuItems as item, index}
@@ -245,7 +255,7 @@
 								tabindex="-1"
 								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
 								href={item.href}
-								onclick={() => executeMenuItem(item)}
+								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
 								onfocus={() => handleFocus(actionableIndex)}
 							>
@@ -273,7 +283,7 @@
 								role="menuitem"
 								tabindex="-1"
 								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
-								onclick={() => executeMenuItem(item)}
+								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
 								onfocus={() => handleFocus(actionableIndex)}
 							>
