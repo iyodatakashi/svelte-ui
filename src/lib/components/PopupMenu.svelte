@@ -71,6 +71,7 @@
 
 	const executeMenuItem = (item: MenuItem, event?: MouseEvent) => {
 		event?.stopPropagation();
+		event?.preventDefault();
 		if (item.callback) {
 			item.callback();
 		}
