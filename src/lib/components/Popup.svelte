@@ -18,6 +18,7 @@
 	import { onDestroy, tick, onMount } from 'svelte';
 	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
 	import { announceOpenClose } from '$lib/utils/accessibility';
+	import { popupManager } from '$lib/utils/popupManager';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -135,6 +136,7 @@
 		removeEventListenersToClose();
 		removeKeyboardListener();
 		cleanupMobileFeatures();
+		popupManager.unregister(close);
 	});
 
 	// =========================================================================
@@ -458,6 +460,9 @@
 	};
 
 	export const open = async () => {
+		// 他の開いているPopupをすべて閉じる
+		popupManager.closeOthers(close);
+
 		previousActiveElement = document.activeElement as HTMLElement;
 
 		setTimeout(async () => {
@@ -466,6 +471,8 @@
 			isOpen = true;
 			addEventListenersToClose();
 			addKeyboardListener();
+
+			popupManager.register(close);
 
 			await tick();
 
@@ -491,6 +498,7 @@
 		removeEventListenersToClose();
 		removeKeyboardListener();
 		cleanupMobileFeatures();
+		popupManager.unregister(close);
 		popupRef?.addEventListener('animationend', closeEnd, { once: true });
 		// onCloseはアニメーション完了後に呼ぶ（closeEndで実行）
 	};
