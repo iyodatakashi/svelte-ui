@@ -22,7 +22,7 @@
 	export type TextareaProps = {
 		// 基本プロパティ
 		name?: string;
-		value: string;
+		value: string | null | undefined;
 		placeholder?: string;
 
 		// HTML属性系
@@ -339,13 +339,14 @@
 
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const htmlValue = $derived.by(() => {
-		if (value !== '') {
-			const converted = convertToHtml(value);
-			let html = typeof converted === 'string' ? converted : String(converted ?? '');
+		const normalizedValue = value ?? '';
+		if (normalizedValue !== '') {
+			const converted = convertToHtml(normalizedValue);
+			const html = String(converted ?? '');
 			// 最後の行が空だったら空白を追加（高さ調整のため）
 			const lines = html.split('<br />');
 			if (lines.length > 0 && lines[lines.length - 1] === '') {
-				html += '&nbsp;';
+				return html + '&nbsp;';
 			}
 			return html;
 		} else {
@@ -360,11 +361,12 @@
 
 	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
 	const linkHtmlValue = $derived.by(() => {
-		if (!linkify || value === '') {
+		const normalizedValue = value ?? '';
+		if (!linkify || normalizedValue === '') {
 			return '';
 		}
-		const result = convertToHtmlWithLink(value);
-		return typeof result === 'string' ? result : String(result ?? '');
+		const result = convertToHtmlWithLink(normalizedValue);
+		return String(result ?? '');
 	});
 </script>
 

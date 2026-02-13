@@ -24,7 +24,7 @@
 	export type InputProps = {
 		// 基本プロパティ
 		name?: string;
-		value: string | number;
+		value: string | number | null | undefined;
 
 		// HTML属性系
 		id?: string | null;
@@ -382,6 +382,7 @@
 	// $derived
 	// =========================================================================
 	const getDisplayValue = (): string => {
+		if (value === null || value === undefined) return '';
 		if (type === 'number' && typeof value === 'number') {
 			return value.toLocaleString();
 		}
