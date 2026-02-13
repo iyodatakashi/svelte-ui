@@ -79,30 +79,40 @@
 	const handleKeyDown = async (event: KeyboardEvent) => {
 		switch (event.key) {
 			case 'ArrowDown':
+			case 'ArrowUp':
+			case 'Home':
+			case 'End':
+			case 'Enter':
+			case ' ':
+			case 'Escape':
 				event.preventDefault();
+				event.stopPropagation(); // PopupのhandleKeyDownに伝播させない
+				break;
+			case 'Tab':
+				event.stopPropagation(); // PopupのhandleKeyDownに伝播させない
+				break;
+		}
+
+		switch (event.key) {
+			case 'ArrowDown':
 				moveToNextItem();
 				break;
 			case 'ArrowUp':
-				event.preventDefault();
 				moveToPreviousItem();
 				break;
 			case 'Home':
-				event.preventDefault();
 				moveToFirstItem();
 				break;
 			case 'End':
-				event.preventDefault();
 				moveToLastItem();
 				break;
 			case 'Enter':
 			case ' ':
-				event.preventDefault();
 				if (activeIndex >= 0 && activeIndex < actionableItems.length) {
 					executeMenuItem(actionableItems[activeIndex].item);
 				}
 				break;
 			case 'Escape':
-				event.preventDefault();
 				close();
 				break;
 			case 'Tab':
@@ -169,13 +179,11 @@
 			menuContainerRef?.focus();
 		});
 
-		document.addEventListener('keydown', handleKeyDown);
 		announceMenuOpened();
 	};
 
 	const handlePopupClose = () => {
 		activeIndex = -1;
-		document.removeEventListener('keydown', handleKeyDown);
 
 		if (anchorElement) {
 			anchorElement.focus();
@@ -233,7 +241,7 @@
 		tabindex="-1"
 		{id}
 		onclick={cancelParentEvent}
-		onkeydown={cancelParentEvent}
+		onkeydown={handleKeyDown}
 	>
 		<ul class="popup-menu__list" role="none">
 			{#each menuItems as item, index}
