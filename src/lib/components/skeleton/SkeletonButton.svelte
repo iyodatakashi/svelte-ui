@@ -3,38 +3,40 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { SkeletonButtonConfig } from '$lib/types/skeleton';
 	import { DEFAULT_BUTTON_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
 	export type SkeletonButtonProps = {
-		buttonConfig?: Partial<SkeletonButtonConfig>;
+		width?: string | number;
+		height?: string | number;
+		radius?: string | number;
+		align?: 'left' | 'center' | 'right';
+		customStyle?: string;
 		animated?: boolean;
 	};
 
-	let { buttonConfig = {}, animated = true }: SkeletonButtonProps = $props();
+	let {
+		width = DEFAULT_BUTTON_CONFIG.width,
+		height = DEFAULT_BUTTON_CONFIG.height,
+		radius = DEFAULT_BUTTON_CONFIG.radius,
+		align = DEFAULT_BUTTON_CONFIG.align,
+		customStyle = DEFAULT_BUTTON_CONFIG.customStyle,
+		animated = true
+	}: SkeletonButtonProps = $props();
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	// マージされた設定
-	const mergedButtonConfig = $derived({
-		...DEFAULT_BUTTON_CONFIG,
-		...buttonConfig
-	});
-
-	const widthStyle = $derived(getStyleFromNumber(mergedButtonConfig.width));
-	const heightStyle = $derived(getStyleFromNumber(mergedButtonConfig.height));
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const heightStyle = $derived(getStyleFromNumber(height));
 	const radiusStyle = $derived(
-		typeof mergedButtonConfig.radius === 'number'
-			? `${mergedButtonConfig.radius}px`
-			: mergedButtonConfig.radius
+		typeof radius === 'number' ? `${radius}px` : radius
 	);
 
 	// alignに応じたCSSクラスを生成
-	const alignClass = $derived(`skeleton-button--align-${mergedButtonConfig.align}`);
+	const alignClass = $derived(`skeleton-button--align-${align}`);
 </script>
 
 <div class="skeleton-button {alignClass}">
@@ -43,7 +45,7 @@
 		height={heightStyle}
 		radius={radiusStyle}
 		{animated}
-		customStyle={mergedButtonConfig.customStyle}
+		{customStyle}
 	/>
 </div>
 

@@ -3,44 +3,42 @@
 <script lang="ts">
 	import SkeletonBox from './SkeletonBox.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { SkeletonTextConfig } from '$lib/types/skeleton';
 	import { DEFAULT_TEXT_CONFIG } from '$lib/constants/skeleton';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
 	export type SkeletonTextProps = {
-		textConfig?: Partial<SkeletonTextConfig>;
+		width?: string | number;
+		lines?: number;
+		fontSize?: string | number;
+		customStyle?: string;
 		animated?: boolean;
 	};
 
 	let {
-		// 基本プロパティ
-		textConfig = {},
+		width = DEFAULT_TEXT_CONFIG.width,
+		lines = DEFAULT_TEXT_CONFIG.lines,
+		fontSize,
+		customStyle = DEFAULT_TEXT_CONFIG.customStyle,
 		animated = true
 	}: SkeletonTextProps = $props();
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	// マージされた設定
-	const mergedTextConfig = $derived({
-		...DEFAULT_TEXT_CONFIG,
-		...textConfig
-	});
-
 	let containerRef: HTMLDivElement;
 
-	const widthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
-	const fontSizeStyle = $derived(getStyleFromNumber(mergedTextConfig.fontSize));
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const fontSizeStyle = $derived(fontSize ? getStyleFromNumber(fontSize) : '');
 </script>
 
 <div
 	bind:this={containerRef}
 	class="skeleton-text"
-	style="font-size: {fontSizeStyle}; {mergedTextConfig.customStyle}"
+	style="font-size: {fontSizeStyle}; {customStyle}"
 >
-	{#each Array(mergedTextConfig.lines) as _, index}
+	{#each Array(lines) as _, index}
 		<div class="skeleton-text__line" style="width: {widthStyle}">
 			<SkeletonBox
 				width="100%"

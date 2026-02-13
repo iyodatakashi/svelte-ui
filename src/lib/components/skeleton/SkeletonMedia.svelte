@@ -4,7 +4,6 @@
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { SkeletonMediaConfig } from '$lib/types/skeleton';
 	import {
 		DEFAULT_MEDIA_CONFIG,
 		DEFAULT_THUMBNAIL_CONFIG,
@@ -16,46 +15,49 @@
 	// =========================================================================
 	export type SkeletonMediaProps = {
 		width?: string | number;
-		mediaConfig?: Partial<SkeletonMediaConfig>;
+		layout?: 'horizontal' | 'vertical';
+		textWidth?: string | number;
+		lines?: number;
+		fontSize?: string | number;
+		thumbnailWidth?: string | number;
+		thumbnailHeight?: string | number;
+		thumbnailAspectRatio?: string | number;
+		thumbnailRadius?: string | number;
 		animated?: boolean;
 	};
 
-	let { width = '100%', mediaConfig = {}, animated = true }: SkeletonMediaProps = $props();
+	let {
+		width = '100%',
+		layout = DEFAULT_MEDIA_CONFIG.layout,
+		textWidth = DEFAULT_TEXT_CONFIG_MEDIA.width,
+		lines = DEFAULT_TEXT_CONFIG_MEDIA.lines,
+		fontSize,
+		thumbnailWidth = DEFAULT_THUMBNAIL_CONFIG.width,
+		thumbnailHeight,
+		thumbnailAspectRatio,
+		thumbnailRadius = DEFAULT_THUMBNAIL_CONFIG.radius,
+		animated = true
+	}: SkeletonMediaProps = $props();
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	// マージされた設定
-	const mergedMediaConfig = $derived({
-		...DEFAULT_MEDIA_CONFIG,
-		...mediaConfig
-	});
-
-	// レイアウト方向を取得
-	const layoutDirection = $derived(mergedMediaConfig.layout || 'horizontal');
-
-	// マージされた設定
-	const mergedThumbnailConfig = $derived({
-		...DEFAULT_THUMBNAIL_CONFIG,
-		...(mergedMediaConfig.thumbnailConfig || {})
-	});
-
-	const mergedTextConfig = $derived({
-		...DEFAULT_TEXT_CONFIG_MEDIA,
-		...(mergedMediaConfig.textConfig || {})
-	});
+	const layoutDirection = $derived(layout || 'horizontal');
 
 	const widthStyle = $derived(getStyleFromNumber(width));
-	const thumbnailWidthStyle = $derived(getStyleFromNumber(mergedThumbnailConfig.width));
+	const thumbnailWidthStyle = $derived(getStyleFromNumber(thumbnailWidth));
 	const thumbnailHeightStyle = $derived(
-		mergedThumbnailConfig.height ? getStyleFromNumber(mergedThumbnailConfig.height) : ''
+		thumbnailHeight ? getStyleFromNumber(thumbnailHeight) : ''
 	);
-	const textWidthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
+	const textWidthStyle = $derived(getStyleFromNumber(textWidth));
 
 	// heightとaspectRatioの優先順位を制御
-	const finalThumbnailHeight = $derived(mergedThumbnailConfig.height ? thumbnailHeightStyle : '');
+	const finalThumbnailHeight = $derived(thumbnailHeight ? thumbnailHeightStyle : '');
 	const finalThumbnailAspectRatio = $derived(
-		mergedThumbnailConfig.height ? undefined : mergedThumbnailConfig.aspectRatio
+		thumbnailHeight ? undefined : thumbnailAspectRatio
+	);
+	const thumbnailRadiusStyle = $derived(
+		thumbnailRadius ? getStyleFromNumber(thumbnailRadius) : ''
 	);
 </script>
 
@@ -68,16 +70,13 @@
 		width={thumbnailWidthStyle}
 		{...finalThumbnailHeight && { height: finalThumbnailHeight }}
 		aspectRatio={finalThumbnailAspectRatio}
-		radius={mergedThumbnailConfig.radius}
+		radius={thumbnailRadiusStyle}
 		{animated}
-		customStyle={mergedThumbnailConfig.customStyle}
 	/>
 	<SkeletonText
-		textConfig={{
-			width: textWidthStyle,
-			lines: mergedTextConfig.lines,
-			fontSize: mergedTextConfig.fontSize
-		}}
+		width={textWidthStyle}
+		{lines}
+		fontSize={fontSize}
 		{animated}
 	/>
 </div>

@@ -4,7 +4,6 @@
 	import SkeletonBox from './SkeletonBox.svelte';
 	import SkeletonText from './SkeletonText.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { SkeletonAvatarConfig } from '$lib/types/skeleton';
 	import {
 		DEFAULT_AVATAR_IMAGE_CONFIG,
 		DEFAULT_TEXT_CONFIG_AVATAR,
@@ -15,37 +14,35 @@
 	// Props, States & Constants
 	// =========================================================================
 	export type SkeletonAvatarProps = {
-		avatarConfig?: Partial<SkeletonAvatarConfig>;
+		avatarImageSize?: string | number;
+		avatarImageRadius?: string | number;
+		textWidth?: string | number;
+		lines?: number;
+		fontSize?: string | number;
+		showName?: boolean;
 		animated?: boolean;
 	};
 
 	let {
-		// 基本プロパティ
-		avatarConfig = {},
+		avatarImageSize = DEFAULT_AVATAR_IMAGE_CONFIG.size,
+		avatarImageRadius = DEFAULT_AVATAR_IMAGE_CONFIG.radius,
+		textWidth = DEFAULT_TEXT_CONFIG_AVATAR.width,
+		lines = DEFAULT_TEXT_CONFIG_AVATAR.lines,
+		fontSize,
+		showName = DEFAULT_AVATAR_CONFIG.showName,
 		animated = true
 	}: SkeletonAvatarProps = $props();
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	// マージされた設定
-	const mergedAvatarImageConfig = $derived({
-		...DEFAULT_AVATAR_IMAGE_CONFIG,
-		...(avatarConfig.avatarImageConfig || {})
-	});
-
-	const mergedTextConfig = $derived({
-		...DEFAULT_TEXT_CONFIG_AVATAR,
-		...(avatarConfig.textConfig || {})
-	});
-
-	const mergedAvatarConfig = $derived({
-		...DEFAULT_AVATAR_CONFIG,
-		...avatarConfig
-	});
-
-	const avatarImageSizeStyle = $derived(getStyleFromNumber(mergedAvatarImageConfig.size));
-	const nameWidthStyle = $derived(getStyleFromNumber(mergedTextConfig.width));
+	const avatarImageSizeStyle = $derived(getStyleFromNumber(avatarImageSize));
+	const avatarImageRadiusStyle = $derived(
+		avatarImageRadius
+			? getStyleFromNumber(avatarImageRadius)
+			: 'var(--svelte-ui-skeleton-avatar-image-border-radius)'
+	);
+	const textWidthStyle = $derived(getStyleFromNumber(textWidth));
 </script>
 
 <div class="skeleton-avatar">
@@ -53,20 +50,13 @@
 		<SkeletonBox
 			width={avatarImageSizeStyle}
 			height={avatarImageSizeStyle}
-			radius="var(--svelte-ui-skeleton-avatar-image-border-radius)"
+			radius={avatarImageRadiusStyle}
 			{animated}
-			customStyle={mergedAvatarImageConfig.customStyle}
 		/>
 	</div>
-	{#if mergedAvatarConfig.showName}
+	{#if showName}
 		<div class="skeleton-avatar__text">
-			<SkeletonText
-				textConfig={{
-					width: nameWidthStyle,
-					lines: mergedTextConfig.lines
-				}}
-				{animated}
-			/>
+			<SkeletonText width={textWidthStyle} {lines} {fontSize} {animated} />
 		</div>
 	{/if}
 </div>
