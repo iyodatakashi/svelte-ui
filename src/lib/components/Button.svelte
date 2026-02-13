@@ -542,6 +542,11 @@
 		justify-content: center;
 	}
 
+	.button--align-left .button__popup-icon {
+		margin-left: auto;
+		margin-right: -4px;
+	}
+
 	.button__loading {
 		position: absolute;
 		top: 50%;
@@ -561,11 +566,21 @@
 		margin-right: -2px;
 	}
 
+	.button--align-left.button--small .button__popup-icon {
+		margin-left: auto;
+		margin-right: -2px;
+	}
+
 	.button--large .button__icon {
 		margin-left: -6px;
 	}
 
 	.button--large .button__popup-icon {
+		margin-right: -6px;
+	}
+
+	.button--align-left.button--large .button__popup-icon {
+		margin-left: auto;
 		margin-right: -6px;
 	}
 
