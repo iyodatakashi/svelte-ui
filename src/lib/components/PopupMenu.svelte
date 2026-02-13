@@ -164,7 +164,7 @@
 	};
 
 	const handlePopupOpen = () => {
-		activeIndex = 0;
+		activeIndex = -1; // 初期状態ではハイライトなし
 		tick().then(() => {
 			menuContainerRef?.focus();
 		});
