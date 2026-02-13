@@ -34,6 +34,7 @@
 		size?: ButtonSize;
 		color?: string;
 		fullWidth?: boolean;
+		align?: 'left' | 'center' | 'right';
 		minWidth?: string | number;
 		rounded?: boolean;
 		popup?: boolean;
@@ -108,6 +109,7 @@
 		size = 'medium',
 		color,
 		fullWidth = false,
+		align = 'center',
 		minWidth = 0,
 		rounded = false,
 		popup = false,
@@ -311,6 +313,7 @@
 			popup && 'button--popup',
 			rounded && 'button--rounded',
 			fullWidth && 'button--full-width',
+			`button--align-${align}`,
 			loading && 'button--loading',
 			reducedMotion && 'button--no-motion'
 		]
@@ -454,6 +457,14 @@
 		width: 100%;
 	}
 
+	.button--align-left {
+		justify-content: flex-start;
+	}
+
+	.button--align-right {
+		justify-content: flex-end;
+	}
+
 	.button--rounded {
 		border-radius: var(--svelte-ui-button-border-radius-rounded);
 	}
@@ -511,9 +522,8 @@
 	}
 
 	.button__label {
-		width: 100%;
 		display: block;
-		text-align: center;
+		width: auto;
 		line-height: var(--svelte-ui-button-line-height);
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
