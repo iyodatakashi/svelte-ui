@@ -46,19 +46,13 @@
 
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const thumbnailWidthStyle = $derived(getStyleFromNumber(thumbnailWidth));
-	const thumbnailHeightStyle = $derived(
-		thumbnailHeight ? getStyleFromNumber(thumbnailHeight) : ''
-	);
+	const thumbnailHeightStyle = $derived(thumbnailHeight ? getStyleFromNumber(thumbnailHeight) : '');
 	const textWidthStyle = $derived(getStyleFromNumber(textWidth));
 
 	// heightとaspectRatioの優先順位を制御
 	const finalThumbnailHeight = $derived(thumbnailHeight ? thumbnailHeightStyle : '');
-	const finalThumbnailAspectRatio = $derived(
-		thumbnailHeight ? undefined : thumbnailAspectRatio
-	);
-	const thumbnailRadiusStyle = $derived(
-		thumbnailRadius ? getStyleFromNumber(thumbnailRadius) : ''
-	);
+	const finalThumbnailAspectRatio = $derived(thumbnailHeight ? undefined : thumbnailAspectRatio);
+	const thumbnailRadiusStyle = $derived(thumbnailRadius ? getStyleFromNumber(thumbnailRadius) : '');
 </script>
 
 <div
@@ -73,12 +67,7 @@
 		radius={thumbnailRadiusStyle}
 		{animated}
 	/>
-	<SkeletonText
-		width={textWidthStyle}
-		{lines}
-		fontSize={fontSize}
-		{animated}
-	/>
+	<SkeletonText width={textWidthStyle} {lines} {fontSize} {animated} />
 </div>
 
 <style>
