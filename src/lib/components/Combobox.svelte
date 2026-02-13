@@ -165,6 +165,7 @@
 	let popupRef = $state<any>();
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
+	let isKeyboardNavigation = $state(false);
 
 	// =========================================================================
 	// Methods
@@ -176,6 +177,7 @@
 		popupRef?.close();
 		highlightedIndex = -1;
 		isFocused = false;
+		isKeyboardNavigation = false;
 
 		// スクリーンリーダーアナウンス
 		if (option !== null && option !== undefined) {
@@ -235,6 +237,7 @@
 		switch (event.key) {
 			case 'ArrowDown':
 				event?.preventDefault?.();
+				isKeyboardNavigation = true;
 				if (!isFocused) {
 					isFocused = true;
 					popupRef?.open();
@@ -243,6 +246,7 @@
 				break;
 			case 'ArrowUp':
 				event?.preventDefault?.();
+				isKeyboardNavigation = true;
 				if (!isFocused) {
 					isFocused = true;
 					popupRef?.open();
@@ -259,6 +263,7 @@
 				event?.preventDefault?.();
 				inputValue = '';
 				highlightedIndex = -1;
+				isKeyboardNavigation = false;
 				popupRef?.close();
 				isFocused = false;
 				break;
@@ -480,6 +485,7 @@
 						type="button"
 						class="combobox__option"
 						class:combobox__option--highlighted={index === highlightedIndex}
+						class:combobox__option--keyboard={isKeyboardNavigation && index === highlightedIndex}
 						class:combobox__option--selected={option === inputValue}
 						role="option"
 						aria-selected={option === inputValue}
@@ -488,7 +494,10 @@
 							event?.stopPropagation?.();
 							selectOption(option);
 						}}
-						onmouseenter={() => (highlightedIndex = index)}
+						onmouseenter={() => {
+							highlightedIndex = index;
+							isKeyboardNavigation = false; // マウス操作時はキーボード操作フラグをリセット
+						}}
 					>
 						{option}
 					</button>
@@ -552,12 +561,23 @@
 			background-color: var(--svelte-ui-combobox-option-hover-bg);
 		}
 
+		/* キーボード操作時のみ枠線を表示 */
+		&.combobox__option--keyboard {
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+		}
+
 		&.combobox__option--selected {
 			background-color: var(--svelte-ui-combobox-option-selected-bg);
 		}
 
 		&.combobox__option--selected.combobox__option--highlighted {
 			background-color: var(--svelte-ui-combobox-option-selected-bg);
+		}
+
+		&.combobox__option--selected.combobox__option--keyboard {
+			outline: var(--svelte-ui-focus-outline-inner);
+			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
 
 		&:focus,
