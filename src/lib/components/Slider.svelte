@@ -8,8 +8,7 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler,
-		BivariantValueHandler
+		PointerHandler
 	} from '$lib/types/callbackHandlers';
 
 	// =========================================================================

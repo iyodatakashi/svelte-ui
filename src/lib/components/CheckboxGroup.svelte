@@ -78,8 +78,11 @@
 		onchange(value);
 	};
 
-	const gapStyle = gap !== undefined ? getStyleFromNumber(gap) : undefined;
-	const minOptionWidthStyle = getStyleFromNumber(minOptionWidth);
+	// =========================================================================
+	// $defived
+	// =========================================================================
+	const gapStyle = $derived(gap !== undefined ? getStyleFromNumber(gap) : undefined);
+	const minOptionWidthStyle = $derived(getStyleFromNumber(minOptionWidth));
 </script>
 
 <ul

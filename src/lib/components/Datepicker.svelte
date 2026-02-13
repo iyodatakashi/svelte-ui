@@ -186,8 +186,6 @@
 	let openedViaKeyboard: boolean = $state(false);
 	let displayValue = $state('');
 
-	const calendarId = `${id}-calendar`;
-
 	const localeConfig = {
 		en: {
 			defaultFormat: 'MM/DD/YYYY (ddd)',
@@ -590,7 +588,7 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-
+	const calendarId = $derived(`${id}-calendar`);
 	const currentLocaleConfig = $derived(localeConfig[effectiveLocale]);
 	const finalFormat = $derived(
 		format ||

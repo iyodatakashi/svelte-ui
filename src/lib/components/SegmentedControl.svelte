@@ -5,7 +5,6 @@
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import type { SegmentedControlItem } from '$lib/types/segmentedControlItem';
 	import type {
-		BivariantValueHandler,
 		FocusHandler,
 		KeyboardHandler,
 		MouseHandler,

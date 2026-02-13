@@ -11,8 +11,7 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler,
-		BivariantValueHandler
+		PointerHandler
 	} from '$lib/types/callbackHandlers';
 
 	// =========================================================================
@@ -40,8 +39,8 @@
 		iconVariant?: IconVariant;
 
 		// 入力イベント
-		onchange?: BivariantValueHandler<string>;
-		oninput?: BivariantValueHandler<string>;
+		onchange?: (value: string) => void;
+		oninput?: (value: string) => void;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;

@@ -166,10 +166,6 @@
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 
-	// 各要素のIDを生成
-	const inputId = `${id}-input`;
-	const listboxId = `${id}-listbox`;
-
 	// =========================================================================
 	// Methods
 	// =========================================================================
@@ -387,6 +383,9 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
+	// 各要素のIDを生成
+	const inputId = $derived(`${id}-input`);
+	const listboxId = $derived(`${id}-listbox`);
 
 	// フィルタリングされたオプション
 	const filteredOptions = $derived.by(() => {

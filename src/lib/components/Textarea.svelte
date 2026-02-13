@@ -12,8 +12,7 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler,
-		BivariantValueHandler
+		PointerHandler
 	} from '$lib/types/callbackHandlers';
 	import type { FocusStyle } from '$lib/types/propOptions';
 

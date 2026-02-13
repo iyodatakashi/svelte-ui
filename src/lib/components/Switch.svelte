@@ -8,8 +8,7 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler,
-		BivariantValueHandler
+		PointerHandler
 	} from '$lib/types/callbackHandlers';
 
 	// =========================================================================
@@ -138,7 +137,6 @@
 	}: SwitchProps = $props();
 
 	let inputRef: HTMLInputElement | undefined = $state();
-	let errorId = `switch-error-${Math.random().toString(36).substring(2, 15)}`;
 
 	// =========================================================================
 	// Methods

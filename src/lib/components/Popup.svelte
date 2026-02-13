@@ -95,7 +95,6 @@
 	}: PopupProps = $props();
 
 	let popupRef: HTMLDivElement | undefined = $state();
-	let popupId: string = $state(id || `popup-${Math.random().toString(36).substring(2, 15)}`);
 	let previousActiveElement: HTMLElement | null = null;
 	let isMobile: boolean = $state(false);
 	let shouldUseFullscreen: boolean = $state(false);
@@ -498,6 +497,12 @@
 	export const getIsOpen = () => {
 		return isOpen;
 	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const generatedPopupId = $state(`popup-${Math.random().toString(36).substring(2, 15)}`);
+	const popupId = $derived(id || generatedPopupId);
 </script>
 
 <div
