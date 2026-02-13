@@ -14,6 +14,7 @@
 	import type { ButtonVariant, FabPosition } from '$lib/types/propOptions';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
+	import { getStyleFromNumber } from '$lib/utils/style';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -34,7 +35,10 @@
 		color?: string;
 		variant?: ButtonVariant;
 		position?: FabPosition;
-		hasShadow?: boolean;
+		bottomOffset?: string | number;
+		sideOffset?: string | number;
+		useSafeArea?: boolean;
+		shadow?: boolean;
 		reducedMotion?: boolean;
 		ariaLabel?: string;
 		ariaDescribedby?: string;
@@ -86,7 +90,10 @@
 		color,
 		variant = 'filled',
 		position = 'right',
-		hasShadow = false,
+		bottomOffset = 24,
+		sideOffset = 24,
+		useSafeArea = true,
+		shadow = false,
 
 		// アイコン関連
 		icon = '',
@@ -278,6 +285,9 @@
 	});
 
 	const hasLabel = $derived(children !== undefined);
+
+	const bottomOffsetStyle = $derived(getStyleFromNumber(bottomOffset));
+	const sideOffsetStyle = $derived(getStyleFromNumber(sideOffset));
 </script>
 
 <button
@@ -293,10 +303,13 @@
 	class:fab--left={position === 'left'}
 	class:fab--center={position === 'center'}
 	class:fab--right={position === 'right'}
-	class:fab--shadow={hasShadow}
+	class:fab--safe-area={useSafeArea}
+	class:fab--shadow={shadow}
 	class:fab--loading={loading}
 	class:fab--no-motion={reducedMotion}
 	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
+		--fab-bottom: {bottomOffsetStyle};
+		--fab-side: {sideOffsetStyle};
 		{customStyle ?? ''};"
 	onclick={handleClick}
 	onfocus={handleFocus}
@@ -356,7 +369,7 @@
 		justify-content: center;
 		align-items: center;
 		position: fixed;
-		bottom: calc(24px + env(safe-area-inset-bottom));
+		bottom: var(--fab-bottom, 24px);
 		height: 56px;
 		padding: 0 20px;
 		background-color: transparent;
@@ -373,7 +386,7 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 
 		&.fab--left {
-			left: 24px;
+			left: var(--fab-side, 24px);
 		}
 
 		&.fab--center {
@@ -382,7 +395,11 @@
 		}
 
 		&.fab--right {
-			right: 24px;
+			right: var(--fab-side, 24px);
+		}
+
+		&.fab--safe-area {
+			bottom: calc(var(--fab-bottom, 24px) + env(safe-area-inset-bottom, 0px));
 		}
 
 		& > * {
