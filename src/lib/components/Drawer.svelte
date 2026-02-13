@@ -316,7 +316,7 @@
 		align-items: center;
 		justify-content: stretch;
 		min-height: var(--svelte-ui-drawer-header-height);
-		padding: var(--svelte-ui-drawer-padding);
+		padding: var(--svelte-ui-drawer-header-padding);
 		margin-bottom: calc(0px - var(--svelte-ui-drawer-body-padding));
 
 		.drawer__title {
