@@ -37,7 +37,6 @@
 		// 状態/動作
 		disabled?: boolean;
 		mobileFullscreen?: boolean;
-		mobileBehavior?: 'auto' | 'fullscreen' | 'popup';
 		cancelParentClick?: boolean;
 
 		// フォーカスイベント
@@ -97,7 +96,6 @@
 		// 状態/動作
 		disabled = false,
 		mobileFullscreen = true,
-		mobileBehavior = 'auto',
 		cancelParentClick = false,
 
 		// フォーカスイベント
@@ -340,7 +338,6 @@
 	{ariaLabel}
 	{position}
 	{mobileFullscreen}
-	{mobileBehavior}
 	id={id ? `${id}-menu` : undefined}
 />
 

@@ -19,7 +19,7 @@
 	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
 	import { announceOpenClose } from '$lib/utils/accessibility';
 	import { popupManager } from '$lib/utils/popupManager';
-	import type { PopupPosition, PopupMobileBehavior } from '$lib/types/propOptions';
+	import type { PopupPosition } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -46,7 +46,6 @@
 		focusTrap?: boolean;
 		restoreFocus?: boolean;
 		mobileFullscreen?: boolean;
-		mobileBehavior?: PopupMobileBehavior;
 		enableAutoReposition?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -80,8 +79,7 @@
 		isOpen = $bindable(false),
 		focusTrap = false,
 		restoreFocus = false,
-		mobileFullscreen = false,
-		mobileBehavior = 'auto',
+		mobileFullscreen = true,
 		enableAutoReposition = true,
 
 		// ARIA/アクセシビリティ
@@ -105,14 +103,8 @@
 	// =========================================================================
 	onMount(() => {
 		isMobile = isMobileDevice();
-
-		if (mobileBehavior === 'auto') {
-			shouldUseFullscreen = isMobile;
-		} else if (mobileBehavior === 'fullscreen') {
-			shouldUseFullscreen = true;
-		} else {
-			shouldUseFullscreen = mobileFullscreen;
-		}
+		// モバイルの場合のみ fullscreen にするかどうか
+		shouldUseFullscreen = isMobile && mobileFullscreen;
 	});
 
 	onDestroy(() => {
@@ -450,6 +442,18 @@
 
 		setTimeout(async () => {
 			popupRef?.removeEventListener('animationend', closeEnd);
+
+			if (shouldUseFullscreen && popupRef) {
+				// ボトムシート: showPopover()の前に位置を画面下部に設定
+				popupRef.style.position = 'fixed';
+				popupRef.style.top = 'auto';
+				popupRef.style.bottom = '0';
+				popupRef.style.left = '0';
+				popupRef.style.right = '0';
+				popupRef.style.width = '100%';
+				popupRef.style.margin = '0';
+			}
+
 			popupRef?.showPopover();
 			isOpen = true;
 			addEventListenersToClose();
@@ -459,7 +463,16 @@
 
 			await tick();
 
-			if (!shouldUseFullscreen) {
+			if (shouldUseFullscreen && popupRef) {
+				// ボトムシート: 位置を再確認・再設定（ブラウザが上書きする可能性があるため）
+				popupRef.style.position = 'fixed';
+				popupRef.style.top = 'auto';
+				popupRef.style.bottom = '0';
+				popupRef.style.left = '0';
+				popupRef.style.right = '0';
+				popupRef.style.width = '100%';
+				popupRef.style.margin = '0';
+			} else {
 				setPosition();
 				await new Promise((resolve) => requestAnimationFrame(resolve));
 				setPosition();
@@ -482,6 +495,7 @@
 		removeKeyboardListener();
 		cleanupMobileFeatures();
 		popupManager.unregister(close);
+		// アニメーション完了後に閉じる（fullscreen/通常共通）
 		popupRef?.addEventListener('animationend', closeEnd, { once: true });
 		// onCloseはアニメーション完了後に呼ぶ（closeEndで実行）
 	};
@@ -510,7 +524,6 @@
 	bind:this={popupRef}
 	class="popup"
 	class:popup--fade-out={!isOpen}
-	class:popup--mobile={isMobile}
 	class:popup--fullscreen={shouldUseFullscreen}
 	{role}
 	aria-label={ariaLabel}
@@ -522,15 +535,7 @@
 		close();
 	}}
 >
-	{#if shouldUseFullscreen}
-		<div class="popup__mobile">
-			<div class="popup__mobile-content">
-				{@render children()}
-			</div>
-		</div>
-	{:else}
-		{@render children()}
-	{/if}
+	{@render children()}
 </div>
 
 <style lang="scss">
@@ -583,49 +588,41 @@
 	}
 
 	/* =============================================
-	 * Mobile-specific styles
+	 * Fullscreen variant (Bottom Sheet)
 	 * ============================================= */
-	:popover-open.popup--mobile {
-		position: fixed;
-		inset: 0;
-		width: 100%;
-		height: 100%;
-		margin: 0;
+	.popup--fullscreen {
+		position: fixed !important;
+		top: auto !important;
+		bottom: 0 !important;
+		left: 0 !important;
+		right: 0 !important;
+		width: 100% !important;
+		max-height: 90vh;
+		margin: 0 !important;
 		border: none;
-		border-radius: 0;
-		box-shadow: none;
-		background: transparent;
-		z-index: var(--svelte-ui-z-modal);
-	}
-
-	:popover-open.popup--mobile.popup--fullscreen {
-		padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom)
-			env(safe-area-inset-left);
-	}
-
-	.popup__mobile {
-		position: absolute;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		background: var(--svelte-ui-surface-color);
 		border-top-left-radius: var(--svelte-ui-popup-mobile-border-radius);
 		border-top-right-radius: var(--svelte-ui-popup-mobile-border-radius);
-		max-height: 90vh;
-		overflow: hidden;
-		animation: slideUpMobile 300ms ease-out;
+		border-bottom-left-radius: 0;
+		border-bottom-right-radius: 0;
 		box-shadow:
 			0 -4px 6px -1px rgb(0 0 0 / 10%),
 			0 -2px 4px -1px rgb(0 0 0 / 6%);
-	}
-
-	.popup__mobile-content {
-		padding: var(--svelte-ui-popup-mobile-margin);
-		max-height: calc(90vh - 60px);
+		background: var(--svelte-ui-surface-color);
+		z-index: var(--svelte-ui-z-modal);
 		overflow-y: auto;
+		overflow-x: hidden;
+		padding-bottom: env(safe-area-inset-bottom, 0px);
 	}
 
-	/* Mobile animations */
+	:popover-open.popup--fullscreen {
+		transform: translateY(0);
+		animation: slideUpMobile 300ms ease-out;
+	}
+
+	:popover-open.popup--fullscreen.popup--fade-out {
+		animation: slideDownMobile 300ms ease-in;
+	}
+
 	@keyframes slideUpMobile {
 		from {
 			transform: translateY(100%);
@@ -633,10 +630,6 @@
 		to {
 			transform: translateY(0);
 		}
-	}
-
-	:popover-open.popup--mobile.popup--fullscreen.popup--fade-out .popup__mobile {
-		animation: slideDownMobile 300ms ease-in;
 	}
 
 	@keyframes slideDownMobile {
@@ -648,15 +641,10 @@
 		}
 	}
 
-	/* Responsive design adjustments */
 	@media (max-width: 480px) {
-		.popup__mobile {
-			border-radius: 0;
+		:popover-open.popup--fullscreen {
 			max-height: 100vh;
-		}
-
-		.popup__mobile-content {
-			max-height: calc(100vh - 60px);
+			border-radius: 0;
 		}
 	}
 

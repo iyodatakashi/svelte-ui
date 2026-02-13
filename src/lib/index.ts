@@ -90,7 +90,6 @@ export type {
 	SnackbarType,
 	SnackbarVariant,
 	BadgeVariant,
-	PopupMobileBehavior,
 	DatepickerMode,
 	FocusStyle
 } from './types/propOptions';

@@ -8,7 +8,7 @@
 	import type { SvelteComponent } from 'svelte';
 	import { tick } from 'svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-	import type { PopupPosition, PopupMobileBehavior } from '$lib/types/propOptions';
+	import type { PopupPosition } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -21,7 +21,6 @@
 		id?: string;
 		ariaLabel?: string;
 		mobileFullscreen?: boolean;
-		mobileBehavior?: PopupMobileBehavior;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -45,7 +44,6 @@
 		// 状態/動作
 		isOpen = $bindable(false),
 		mobileFullscreen = true,
-		mobileBehavior = 'auto',
 
 		// アイコン関連
 		iconFilled = false,
@@ -224,7 +222,6 @@
 	onClose={handlePopupClose}
 	role="menu"
 	{mobileFullscreen}
-	{mobileBehavior}
 	id={id ? `${id}-popup` : undefined}
 >
 	<div
@@ -391,29 +388,12 @@
 		}
 	}
 
-	/* Enhanced mobile menu styles */
-	:global(.popup--mobile) .popup-menu {
-		border-radius: 0;
-		box-shadow: none;
-		background: transparent;
-		width: 100%;
-		max-width: none;
-		min-width: auto;
-	}
-
-	:global(.popup--mobile.popup--fullscreen) .popup-menu {
-		background: var(--svelte-ui-surface-color);
-		border-radius: var(--svelte-ui-popup-mobile-border-radius);
-		box-shadow: 0 -4px 6px -1px rgb(0 0 0 / 10%);
-		margin: 0;
-		padding: 0;
-	}
-
-	:global(.popup--mobile.popup--fullscreen) .popup-menu__list {
+	/* Enhanced mobile menu spacing (layoutはPopup側に任せる) */
+	:global(.popup--fullscreen) .popup-menu__list {
 		padding: 16px 0;
 	}
 
-	:global(.popup--mobile.popup--fullscreen) .popup-menu__button {
+	:global(.popup--fullscreen) .popup-menu__button {
 		padding: 16px 24px;
 		font-size: 1.1rem;
 		min-height: var(--svelte-ui-touch-target-lg);

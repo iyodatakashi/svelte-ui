@@ -69,12 +69,6 @@ export type SnackbarVariant = 'filled' | 'outlined';
 export type BadgeVariant = 'dot' | 'count';
 
 /**
- * Popup mobile behavior type
- * Used by Popup component
- */
-export type PopupMobileBehavior = 'auto' | 'fullscreen' | 'popup';
-
-/**
  * Datepicker mode type
  * Used by Datepicker component
  */
