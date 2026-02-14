@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.14] - 2026-02-13
+
+### Added
+
+- **Global configuration API**: Added `setSvelteUiConfig()` function to configure library-wide settings (locale, browser locale fallback).
+- **i18n locales**: Added support for French (`fr`), German (`de`), Spanish (`es`), and Chinese Simplified (`zh-cn`).
+- **Button alignment**: Added `align` prop (`'left' | 'center' | 'right'`) to control button content alignment, especially useful with `fullWidth`.
+- **Fab positioning**: Added `bottomOffset`, `sideOffset`, and `useSafeArea` props for flexible positioning and safe area support on mobile devices.
+
+### Changed
+
+- **Input/Textarea value types**: `value` prop now accepts `null | undefined` in addition to `string | number` (reverting 0.0.6 breaking change).
+- **Skeleton components API**: Simplified API by flattening nested config objects into direct props for easier usage.
+- **Popup mobile fullscreen**: Improved mobile fullscreen behavior with bottom sheet design. Removed `mobileBehavior` prop in favor of boolean `mobileFullscreen` prop.
+- **Fab shadow prop**: Unified prop name from `hasShadow` to `shadow` for consistency.
+
+### Fixed
+
+- **Datepicker range input**: Improved text input parsing for range mode, correctly handling date formats and automatically normalizing reversed ranges (`start` > `end`).
+- **PopupMenu keyboard navigation**: Fixed keyboard navigation not working after opening the menu.
+- **Combobox keyboard focus**: Added visual outline on keyboard navigation for better accessibility.
+
 ## [0.0.13] - 2026-02-12
 
 ### Changed
