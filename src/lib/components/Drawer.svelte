@@ -34,7 +34,7 @@
 		id?: string;
 
 		// スタイル/レイアウト
-		width?: string | number;
+		width?: string | number | undefined;
 		position?: 'left' | 'right';
 		bodyStyle?: string;
 		noPadding?: boolean;
@@ -64,7 +64,7 @@
 		id,
 
 		// スタイル/レイアウト
-		width = 240,
+		width = undefined,
 		position = 'left',
 		bodyStyle = '',
 		noPadding = false,
@@ -106,7 +106,11 @@
 	// =========================================================================
 	const drawerStyles = $derived(() => {
 		const styles = [];
-		styles.push(`width: ${getStyleFromNumber(width)}`);
+		if (width !== undefined) {
+			styles.push(`width: ${getStyleFromNumber(width)}`);
+		} else {
+			styles.push('width: max-content');
+		}
 		styles.push('height: 100%');
 		styles.push('min-height: 100%');
 		styles.push(`${position}: 0`);
