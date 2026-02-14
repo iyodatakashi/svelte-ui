@@ -19,7 +19,7 @@
 	// =========================================================================
 	export type ColorPickerProps = {
 		// 基本プロパティ
-		value: string;
+		value: string | null | undefined;
 
 		// HTML属性系
 		id?: string;
@@ -141,7 +141,12 @@
 		...restProps
 	}: ColorPickerProps = $props();
 
-	let localValue: string | undefined = $state(value);
+	const getNormalizedValue = (val: string | null | undefined): string => {
+		if (val === null || val === undefined) return '';
+		return val;
+	};
+
+	let localValue: string = $state(getNormalizedValue(value));
 	let prevValue: string = $state('');
 	let isFocused: boolean = $state(false);
 
@@ -154,7 +159,7 @@
 		value;
 		untrack(() => {
 			/* value を localValue に反映 */
-			localValue = value;
+			localValue = getNormalizedValue(value);
 
 			/* value が更新されたらonchangeを実行 */
 			handleValueChange();
@@ -165,7 +170,7 @@
 		localValue;
 		untrack(() => {
 			/* localValue がクリアされた時に value もクリア */
-			if (localValue === '' || localValue === undefined) {
+			if (localValue === '') {
 				value = '';
 				prevValue = '';
 			}
@@ -392,7 +397,10 @@
 			{...inputAttributes}
 			{...restProps}
 		/>
-		<div class="color-picker__color-display" style="background-color: {value};"></div>
+		<div
+			class="color-picker__color-display"
+			style="background-color: {getNormalizedValue(value)};"
+		></div>
 	</div>
 </div>
 
