@@ -11,6 +11,7 @@
 	export type TabItemProps = {
 		// 基本プロパティ
 		tabItem: MenuItem;
+		pathPrefix?: string;
 
 		// スタイル/レイアウト
 		textColor: string;
@@ -31,6 +32,7 @@
 	let {
 		// 基本プロパティ
 		tabItem,
+		pathPrefix = '',
 
 		// スタイル/レイアウト
 		textColor,
@@ -47,10 +49,29 @@
 		// 状態/動作
 		isSelected = false
 	}: TabItemProps = $props();
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+
+	// pathPrefixを付与したhrefを計算
+	const hrefWithPrefix = $derived.by(() => {
+		if (!tabItem.href) return undefined;
+		if (!pathPrefix) return tabItem.href;
+
+		// 既にpathPrefixが含まれている場合はそのまま
+		// pathPrefixが完全一致、またはpathPrefix + '/'で始まる場合
+		if (tabItem.href === pathPrefix || tabItem.href.startsWith(`${pathPrefix}/`)) {
+			return tabItem.href;
+		}
+
+		// pathPrefixを付与
+		return `${pathPrefix}${tabItem.href.startsWith('/') ? '' : '/'}${tabItem.href}`;
+	});
 </script>
 
 <a
-	href={tabItem.href}
+	href={hrefWithPrefix}
 	class="tab-item"
 	class:tab-item--selected={isSelected}
 	style="--svelte-ui-tab-item-text-color: {textColor}; --svelte-ui-tab-item-selected-text-color: {selectedTextColor}; --svelte-ui-tab-item-selected-bar-color: {selectedBarColor}"

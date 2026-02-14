@@ -171,6 +171,7 @@
 	{#each tabItems as tabItem, index}
 		<TabItem
 			{tabItem}
+			{pathPrefix}
 			isSelected={index === selectedTabIndex}
 			{textColor}
 			{selectedTextColor}
