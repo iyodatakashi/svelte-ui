@@ -467,7 +467,7 @@
 		bind:this={popupRef}
 		anchorElement={comboboxElement}
 		position="bottom-left"
-		focusTrap={false}
+		mobileFullscreen={false}
 		onClose={handlePopupClose}
 		margin={4}
 	>
