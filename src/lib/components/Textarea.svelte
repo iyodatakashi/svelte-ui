@@ -180,6 +180,8 @@
 	}: TextareaProps = $props();
 
 	let ref: HTMLTextAreaElement | null = null;
+	let displayTextRef: HTMLDivElement | null = $state(null);
+	let linkTextRef: HTMLDivElement | null = $state(null);
 	let isFocused: boolean = $state(false);
 
 	// =========================================================================
@@ -330,6 +332,18 @@
 		onpointercancel?.(event);
 	};
 
+	// スクロール同期
+	const handleScroll = () => {
+		if (!ref) return;
+		const scrollTop = ref.scrollTop;
+		if (displayTextRef) {
+			displayTextRef.scrollTop = scrollTop;
+		}
+		if (linkify && linkTextRef) {
+			linkTextRef.scrollTop = scrollTop;
+		}
+	};
+
 	// =========================================================================
 	// $derived
 	// =========================================================================
@@ -388,6 +402,7 @@
 >
 	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->
 	<div
+		bind:this={displayTextRef}
 		class="textarea__display-text"
 		data-placeholder={placeholder}
 		style="min-height: {minHeightStyle}; {customStyle}"
@@ -438,12 +453,17 @@
 			onpointerleave={handlePointerLeave}
 			onpointermove={handlePointerMove}
 			onpointercancel={handlePointerCancel}
+			onscroll={handleScroll}
 			{...textareaAttributes}
 			{...restProps}
 		></textarea>
 	</div>
 	{#if linkify}
-		<div class="textarea__link-text" style="min-height: {minHeightStyle}; {customStyle}">
+		<div
+			bind:this={linkTextRef}
+			class="textarea__link-text"
+			style="min-height: {minHeightStyle}; {customStyle}"
+		>
 			{@html linkHtmlValue}
 		</div>
 	{/if}
@@ -514,6 +534,14 @@
 		opacity: 1;
 		transition: none;
 		cursor: text !important;
+		overflow-y: auto;
+		overflow-x: hidden;
+		scrollbar-width: none; /* Firefox */
+		-ms-overflow-style: none; /* IE and Edge */
+
+		&::-webkit-scrollbar {
+			display: none; /* Chrome, Safari, Opera */
+		}
 
 		&::before {
 			content: '';
