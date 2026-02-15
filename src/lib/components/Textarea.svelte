@@ -394,7 +394,7 @@
 	>
 		{@html htmlValue}
 	</div>
-	<div class="textarea__input">
+	<div class="textarea__wrapper">
 		<textarea
 			{id}
 			{name}
@@ -441,27 +441,27 @@
 			{...textareaAttributes}
 			{...restProps}
 		></textarea>
-		<!-- クリアボタン -->
-		{#if clearable && !disabled && !readonly}
-			<div class="textarea__clear-button">
-				<IconButton
-					ariaLabel={clearButtonAriaLabel}
-					color="var(--svelte-ui-textarea-text-color)"
-					onclick={(event) => {
-						event.stopPropagation();
-						clear();
-					}}
-					tabindex={-1}
-					iconFilled={true}
-					{iconVariant}
-					fontSize={18}>cancel</IconButton
-				>
-			</div>
-		{/if}
 	</div>
 	{#if linkify}
 		<div class="textarea__link-text" style="min-height: {minHeightStyle}; {customStyle}">
 			{@html linkHtmlValue}
+		</div>
+	{/if}
+	<!-- クリアボタン -->
+	{#if clearable && !disabled && !readonly}
+		<div class="textarea__clear-button">
+			<IconButton
+				ariaLabel={clearButtonAriaLabel}
+				color="var(--svelte-ui-textarea-text-color)"
+				onclick={(event) => {
+					event.stopPropagation();
+					clear();
+				}}
+				tabindex={-1}
+				iconFilled={true}
+				{iconVariant}
+				fontSize={18}>cancel</IconButton
+			>
 		</div>
 	{/if}
 </div>
@@ -481,7 +481,7 @@
 		}
 	}
 
-	.textarea__input {
+	.textarea__wrapper {
 		position: absolute;
 		top: 0;
 		left: 0;
@@ -602,7 +602,8 @@
  * ============================================= */
 	.textarea--clearable {
 		textarea,
-		.textarea__display-text {
+		.textarea__display-text,
+		.textarea__link-text {
 			padding-right: var(--svelte-ui-textarea-icon-space);
 		}
 	}
@@ -714,7 +715,9 @@
 		}
 
 		&.textarea--clearable {
-			textarea {
+			textarea,
+			.textarea__display-text,
+			.textarea__link-text {
 				padding-right: var(--svelte-ui-textarea-icon-space);
 			}
 		}
