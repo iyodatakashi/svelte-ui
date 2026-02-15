@@ -339,10 +339,11 @@
 	 * ========================================================================= */
 
 	.checkbox {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		width: fit-content;
 		min-height: var(--svelte-ui-checkbox-min-height);
+		vertical-align: top;
 		contain: layout;
 	}
 

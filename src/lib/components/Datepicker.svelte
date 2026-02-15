@@ -680,6 +680,7 @@
 		position: relative;
 		display: inline-block;
 		width: auto;
+		vertical-align: top;
 
 		&.datepicker--full-width {
 			display: block;

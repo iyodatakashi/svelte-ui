@@ -518,6 +518,7 @@
 		position: relative;
 		width: auto;
 		max-width: 100%;
+		vertical-align: top;
 	}
 
 	.combobox--full-width {

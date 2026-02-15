@@ -475,7 +475,7 @@
 
 <style lang="scss">
 	.segmented-control {
-		display: inline-flex;
+		display: flex;
 		position: relative;
 		padding: var(--svelte-ui-segmented-control-base-padding);
 		background-color: var(--svelte-ui-segmented-control-base-bg);
