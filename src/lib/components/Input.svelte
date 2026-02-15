@@ -381,17 +381,22 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const getDisplayValue = (): string => {
-		if (value === null || value === undefined) return '';
+	const displayValue = $derived.by(() => {
+		if (!value) {
+			if (!placeholder) {
+				return '&nbsp;';
+			}
+			return '';
+		}
 		if (type === 'number' && typeof value === 'number') {
 			return value.toLocaleString();
 		}
-		return String(value);
-	};
+		return convertToHtmlWithLink(value);
+	});
 
 	const linkHtmlValue = $derived.by(() => {
 		if (!linkify) return '';
-		const result = convertToHtmlWithLink(getDisplayValue());
+		const result = convertToHtmlWithLink(displayValue);
 		return typeof result === 'string' ? result : String(result ?? '');
 	});
 
@@ -419,12 +424,10 @@
 	data-testid="input"
 	style="width: {widthStyle}; max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
 >
-	<!-- inline時の表示用要素（text-overflow: ellipsisが効く） -->
-	{#if inline}
-		<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
-			{getDisplayValue()}
-		</div>
-	{/if}
+	<!-- 表示用テキスト -->
+	<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
+		{@html displayValue}
+	</div>
 	<!-- 入力用要素 -->
 	<div class="input__wrapper">
 		<input
@@ -568,12 +571,19 @@
 	.input {
 		display: inline-block;
 		position: relative;
+		vertical-align: top;
 		width: auto;
+		height: var(--svelte-ui-input-height);
 		max-width: 100%;
 		height: inherit;
 	}
 
 	.input__wrapper {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
 		padding: inherit;
 		border: none;
 		font-size: inherit;
@@ -581,7 +591,7 @@
 		color: inherit;
 		line-height: inherit;
 		text-align: inherit;
-		opacity: 0;
+		opacity: 1;
 	}
 
 	/* =============================================
@@ -610,63 +620,36 @@
 		}
 	}
 
-	.input__display-text {
-		display: inline-block;
-		vertical-align: top;
+	.input__display-text,
+	.input__link-text {
+		display: flex;
+		align-items: center;
 		width: 100%;
 		min-width: 1em;
 		padding: inherit;
-		background: inherit;
-		border: inherit;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
 		line-height: inherit;
 		text-align: inherit;
 		white-space: nowrap;
-		vertical-align: top;
 		overflow: hidden;
 		text-overflow: ellipsis;
 		opacity: 1;
 		transition: none;
-		cursor: text !important;
-
-		&::before {
-			content: '';
-		}
-
-		&:empty::before {
-			content: attr(data-placeholder);
-		}
 	}
 
-	/* リンク表示用オーバーレイ */
 	.input__link-text {
 		position: absolute;
 		top: 0;
 		left: 0;
-		width: 100%;
 		height: 100%;
-		display: flex;
-		align-items: center;
-		padding: inherit;
-		background: transparent;
-		border-radius: inherit;
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		pointer-events: none;
 		z-index: 1;
 	}
 
 	.input__link-text :global(a) {
 		pointer-events: auto;
-		text-decoration: underline;
 	}
 
 	.input__clear-button {
@@ -741,14 +724,19 @@
 	}
 
 	/* =============================================
+ * タイプ別スタイル
+ * ============================================= */
+	.input--type-number {
+		.input__display-text,
+		.input__link-text {
+			justify-content: flex-end;
+		}
+	}
+
+	/* =============================================
  * デザインバリアント：default
  * ============================================= */
 	.input:not(.input--inline) {
-		.input__wrapper {
-			position: static;
-			opacity: 1;
-		}
-
 		input {
 			min-height: var(--svelte-ui-input-height);
 			background-color: var(--svelte-ui-input-bg);
@@ -761,6 +749,7 @@
 		input,
 		.input__display-text,
 		.input__link-text {
+			height: var(--svelte-ui-input-height);
 			padding: var(--svelte-ui-input-padding);
 		}
 
@@ -806,14 +795,34 @@
 		}
 	}
 
-	/* linkify=true かつフォーカスがないときは、input のテキストカラーだけ透明にして二重描画を防ぐ */
+	/* not-linkify + not-focused: inputを不可視化、display-textを表示 */
+	.input:not(.input--linkify):not(.input--focused) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	/* not-linkify + focused: display-textをopacity: 0 */
+	.input:not(.input--linkify).input--focused .input__display-text {
+		opacity: 0;
+	}
+
+	/* linkify + not-focused: inputを不可視化、display-textをopacity: 0、link-textを表示 */
 	.input--linkify:not(.input--focused) input {
 		color: transparent;
 		caret-color: transparent;
 		text-shadow: none;
 	}
 
-	/* フォーカス時はリンク用オーバーレイも非表示にして（display:none）、リンクが反応しないようにする */
+	.input--linkify:not(.input--focused) .input__display-text {
+		opacity: 0;
+	}
+
+	/* linkify + focused: display-textをopacity: 0、link-textをdisplay: none */
+	.input--linkify.input--focused .input__display-text {
+		opacity: 0;
+	}
+
 	.input--focused .input__link-text {
 		display: none;
 	}
@@ -822,18 +831,6 @@
  * デザインバリアント：inline
  * ============================================= */
 	.input--inline {
-		&.input--type-number .input__display-text {
-			text-align: right;
-		}
-
-		.input__wrapper {
-			position: absolute;
-			top: 0;
-			left: 0;
-			width: 100%;
-			height: 100%;
-		}
-
 		&.input--has-left-icon {
 			input,
 			.input__display-text,
@@ -865,25 +862,6 @@
 				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
-
-		&.input--focused {
-			.input__display-text {
-				opacity: 0;
-			}
-
-			.input__wrapper {
-				opacity: 1;
-			}
-		}
-	}
-
-	/* inline + linkify のときは、display-text を常に隠し、wrapper を常に表示 */
-	.input--inline.input--linkify .input__display-text {
-		opacity: 0;
-	}
-
-	.input--inline.input--linkify .input__wrapper {
-		opacity: 1;
 	}
 
 	/* =============================================
