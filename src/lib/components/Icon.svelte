@@ -17,7 +17,7 @@
 		fallbackText?: string;
 
 		// スタイル/レイアウト
-		size?: number;
+		size?: number | string;
 		color?: string;
 		customStyle?: string;
 
@@ -53,7 +53,7 @@
 		filled = false,
 		weight = 300,
 		grade = 0,
-		opticalSize = size,
+		opticalSize = typeof size === 'number' ? size : 24,
 		variant = 'outlined',
 
 		// ARIA/アクセシビリティ
@@ -61,13 +61,16 @@
 		decorative = true,
 
 		// その他
+		class: className,
 		...restProps
 	}: IconProps = $props();
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const iconClasses = $derived(`material-symbols-${variant}`);
+	const iconClasses = $derived(
+		['icon', `icon--${variant}`, `material-symbols-${variant}`, className].filter(Boolean).join(' ')
+	);
 
 	const fontVariationSettings = $derived(
 		`'FILL' ${filled ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${opticalSize}`
@@ -79,12 +82,13 @@
 		role: !decorative && ariaLabel ? 'img' : undefined
 	});
 
-	const iconStyle = $derived(
-		`width: ${size}px; height: ${size}px; font-size: ${size}px; 
-		color: ${color}; line-height: 1; 
+	const iconStyle = $derived.by(() => {
+		const sizeStyle = getStyleFromNumber(size);
+		return `width: ${sizeStyle}; height: ${sizeStyle}; font-size: ${sizeStyle}; 
+		color: ${color}; 
 		font-variation-settings: ${fontVariationSettings}; 
-		${customStyle}`
-	);
+		${customStyle}`;
+	});
 </script>
 
 <i
@@ -102,7 +106,7 @@
 	<!-- Unicode文字での代替表示 -->
 	<span
 		class="icon-fallback-text"
-		style="width: {size}px; height: {size}px; font-size: {size}px; {customStyle}"
+		style={customStyle}
 		{...ariaAttributes}
 		{...restProps}
 		data-testid="icon-fallback"
@@ -112,13 +116,11 @@
 {/if}
 
 <style>
-	.material-symbols-outlined,
-	.material-symbols-rounded,
-	.material-symbols-sharp {
+	.icon {
 		display: block;
 		font-size: inherit;
 		color: inherit;
-		line-height: inherit;
+		line-height: 1;
 		text-transform: none;
 		letter-spacing: normal;
 		word-wrap: normal;
@@ -129,15 +131,15 @@
 		transition-timing-function: ease;
 	}
 
-	.material-symbols-outlined {
+	.icon.material-symbols-outlined {
 		font-family: 'Material Symbols Outlined';
 	}
 
-	.material-symbols-rounded {
+	.icon.material-symbols-rounded {
 		font-family: 'Material Symbols Rounded';
 	}
 
-	.material-symbols-sharp {
+	.icon.material-symbols-sharp {
 		font-family: 'Material Symbols Sharp';
 	}
 
@@ -157,10 +159,7 @@
 
 	/* Prefers reduced motion */
 	@media (prefers-reduced-motion: reduce) {
-		.material-symbols-outlined,
-		.material-symbols-filled,
-		.material-symbols-rounded,
-		.material-symbols-sharp,
+		.icon,
 		.icon-fallback-text {
 			transition: none;
 		}
@@ -168,10 +167,7 @@
 
 	/* Print styles */
 	@media print {
-		.material-symbols-outlined,
-		.material-symbols-filled,
-		.material-symbols-rounded,
-		.material-symbols-sharp,
+		.icon,
 		.icon-fallback-text {
 			color: black !important;
 		}
