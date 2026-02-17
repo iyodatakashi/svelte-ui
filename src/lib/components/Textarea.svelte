@@ -405,7 +405,7 @@
 		bind:this={displayTextRef}
 		class="textarea__display-text"
 		data-placeholder={placeholder}
-		style="min-height: {minHeightStyle}; {customStyle}"
+		style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
 	>
 		{@html htmlValue}
 	</div>
@@ -462,7 +462,7 @@
 		<div
 			bind:this={linkTextRef}
 			class="textarea__link-text"
-			style="min-height: {minHeightStyle}; {customStyle}"
+			style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
 		>
 			{@html linkHtmlValue}
 		</div>
@@ -717,9 +717,13 @@
 		opacity: 0;
 	}
 
-	/* フォーカス時はリンク用オーバーレイも非表示にして（display:none）、リンクが反応しないようにする */
+	/* フォーカス時はリンク用オーバーレイも非表示（opacity: 0）にして、リンクが反応しないようにする */
 	.textarea--focused .textarea__link-text {
-		display: none;
+		opacity: 0;
+	}
+
+	.textarea--focused .textarea__link-text :global(a) {
+		pointer-events: none;
 	}
 
 	/* =============================================
