@@ -50,6 +50,7 @@
 		maxWidth?: string | number | null;
 		rounded?: boolean;
 		customStyle?: string;
+		unit?: string;
 
 		// アイコン関連
 		rightIcon?: string;
@@ -137,12 +138,13 @@
 		// スタイル/レイアウト
 		inline = false,
 		focusStyle = 'outline',
-		customStyle = '',
 		fullWidth = false,
 		width = null,
 		minWidth = inline ? null : 120,
 		maxWidth = null,
 		rounded = false,
+		customStyle = '',
+		unit = '',
 
 		// アイコン関連
 		rightIcon = undefined,
@@ -426,7 +428,14 @@
 >
 	<!-- 表示用テキスト -->
 	<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
-		{@html displayValue}
+		<div class="input__display-text-content">
+			{@html displayValue}
+			{#if type === 'number' && unit !== ''}
+				<span class="input__unit-text">
+					{unit}
+				</span>
+			{/if}
+		</div>
 	</div>
 	<!-- 入力用要素 -->
 	<div class="input__wrapper">
@@ -483,7 +492,14 @@
 	</div>
 	{#if linkify}
 		<div class="input__link-text" style={customStyle}>
-			{@html linkHtmlValue}
+			<div class="input__link-text-content">
+				{@html linkHtmlValue}
+				{#if type === 'number' && unit !== ''}
+					<span class="input__unit-text">
+						{unit}
+					</span>
+				{/if}
+			</div>
 		</div>
 	{/if}
 	<!-- クリアボタン -->
@@ -650,6 +666,10 @@
 
 	.input__link-text :global(a) {
 		pointer-events: auto;
+	}
+
+	.input__unit-text {
+		font-size: max(0.5em, var(--svelte-ui-font-size-sm));
 	}
 
 	.input__clear-button {
