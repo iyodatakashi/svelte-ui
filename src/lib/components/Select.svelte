@@ -454,7 +454,6 @@ select--focus-{focusStyle}"
 			border: none;
 			border-radius: var(--svelte-ui-select-border-radius);
 			font-size: 1rem;
-			color: var(--svelte-ui-select-text-color);
 			line-height: var(--svelte-ui-select-height);
 		}
 	}

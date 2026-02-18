@@ -472,7 +472,7 @@
 		<div class="textarea__clear-button">
 			<IconButton
 				ariaLabel={clearButtonAriaLabel}
-				color="var(--svelte-ui-textarea-text-color)"
+				color="var(--svelte-ui-text-color)"
 				onclick={(event) => {
 					event.stopPropagation();
 					clear();
@@ -743,7 +743,6 @@
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
 			border: none;
 			border-radius: var(--svelte-ui-textarea-border-radius);
-			color: var(--svelte-ui-textarea-text-color);
 		}
 
 		&.textarea--clearable {

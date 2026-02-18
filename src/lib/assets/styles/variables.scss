@@ -376,7 +376,7 @@
 	--svelte-ui-input-icon-space-double-inline: calc(var(--svelte-ui-form-icon-space) * 2);
 	--svelte-ui-input-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-input-border-color: var(--svelte-ui-border-weak-color);
-	--svelte-ui-input-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-input-unit-font-size: max(0.5em, var(--svelte-ui-font-size-sm));
 	--svelte-ui-input-placeholder-color: var(--svelte-ui-text-placeholder-color);
 	--svelte-ui-input-icon-color: var(--svelte-ui-text-subtle-color);
 
@@ -387,7 +387,6 @@
 	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
 	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-textarea-border-color: var(--svelte-ui-border-weak-color);
-	--svelte-ui-textarea-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-textarea-placeholder-color: var(--svelte-ui-text-placeholder-color);
 	--svelte-ui-textarea-icon-space: calc(
 		var(--svelte-ui-form-icon-space) + var(--svelte-ui-form-icon-offset)
@@ -409,7 +408,6 @@
 	--svelte-ui-select-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-select-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-select-border-color: var(--svelte-ui-border-weak-color);
-	--svelte-ui-select-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-select-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
 	--svelte-ui-select-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
@@ -510,7 +508,6 @@
 	--svelte-ui-colorpicker-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-colorpicker-trigger-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-colorpicker-bg: var(--svelte-ui-form-bg);
-	--svelte-ui-colorpicker-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-colorpicker-placeholder-color: var(--svelte-ui-text-placeholder-color);
 
 	/* Combobox */
@@ -524,7 +521,6 @@
 	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-combobox-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-combobox-bg: var(--svelte-ui-surface-color);
-	--svelte-ui-combobox-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-combobox-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
 	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-overlay);
 	--svelte-ui-combobox-option-selected-bg: var(--svelte-ui-select-overlay);

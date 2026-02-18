@@ -548,7 +548,7 @@
 		text-align: left;
 		cursor: pointer;
 		font-size: inherit;
-		color: var(--svelte-ui-combobox-text-color);
+		color: var(--svelte-ui-text-color);
 		transition: background-color var(--svelte-ui-transition-duration) ease;
 
 		@media (hover: hover) {
