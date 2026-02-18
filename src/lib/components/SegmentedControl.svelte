@@ -376,7 +376,7 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const effectiveIconSize = $derived(
+	const resolvedIconSize = $derived(
 		iconOpticalSize || (size === 'small' ? 16 : size === 'large' ? 24 : 20)
 	);
 
@@ -458,7 +458,7 @@
 							filled={iconFilled || isSelected}
 							weight={iconWeight}
 							grade={iconGrade}
-							opticalSize={effectiveIconSize}
+							opticalSize={resolvedIconSize}
 							variant={iconVariant}
 						>
 							{item.icon}

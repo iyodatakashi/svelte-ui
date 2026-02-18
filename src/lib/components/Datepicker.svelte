@@ -234,13 +234,13 @@
 	// =========================================================================
 	// Effects
 	// =========================================================================
-	const effectiveLocale = $derived(locale ?? getLocale());
+	const resolvedLocale = $derived(locale ?? getLocale());
 
 	$effect(() => {
 		// range モードのときは、value を「start <= end」の順序に正規化
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
-			const startDay = dayjs(value.start).locale(effectiveLocale);
-			const endDay = dayjs(value.end).locale(effectiveLocale);
+			const startDay = dayjs(value.start).locale(resolvedLocale);
+			const endDay = dayjs(value.end).locale(resolvedLocale);
 			if (startDay.isAfter(endDay)) {
 				value = { start: value.end, end: value.start };
 			}
@@ -248,8 +248,7 @@
 	});
 
 	$effect(() => {
-		const formatWithLocale = (date: Date) =>
-			dayjs(date).locale(effectiveLocale).format(finalFormat);
+		const formatWithLocale = (date: Date) => dayjs(date).locale(resolvedLocale).format(finalFormat);
 
 		if (mode === 'range' && value && 'start' in value && 'end' in value) {
 			displayValue = `${formatWithLocale(value.start)}${rangeSeparator}${formatWithLocale(value.end)}`;
@@ -267,11 +266,11 @@
 		// スクリーンリーダーアナウンス
 		if (value) {
 			if (mode === 'range' && typeof value === 'object' && 'start' in value && 'end' in value) {
-				const startDate = dayjs(value.start).locale(effectiveLocale).format(finalFormat);
-				const endDate = dayjs(value.end).locale(effectiveLocale).format(finalFormat);
+				const startDate = dayjs(value.start).locale(resolvedLocale).format(finalFormat);
+				const endDate = dayjs(value.end).locale(resolvedLocale).format(finalFormat);
 				announceToScreenReader(`Date range selected: ${startDate} to ${endDate}`);
 			} else if (value instanceof Date) {
-				const formattedDate = dayjs(value).locale(effectiveLocale).format(finalFormat);
+				const formattedDate = dayjs(value).locale(resolvedLocale).format(finalFormat);
 				announceToScreenReader(`Date selected: ${formattedDate}`);
 			}
 		}
@@ -512,7 +511,7 @@
 
 		// 日付パース処理
 		if (mode === 'range') {
-			const parsedRange = parseRangeInput(inputStr, effectiveLocale);
+			const parsedRange = parseRangeInput(inputStr, resolvedLocale);
 			if (!parsedRange) return;
 
 			value = parsedRange;
@@ -521,7 +520,7 @@
 		}
 
 		// single モードでは先頭の「日付本体」のみを解釈する
-		const parsedSingle = parseSingleInput(inputStr, effectiveLocale);
+		const parsedSingle = parseSingleInput(inputStr, resolvedLocale);
 		if (!parsedSingle) return;
 
 		value = parsedSingle;
@@ -589,7 +588,7 @@
 	// $derived
 	// =========================================================================
 	const calendarId = $derived(`${id}-calendar`);
-	const currentLocaleConfig = $derived(localeConfig[effectiveLocale]);
+	const currentLocaleConfig = $derived(localeConfig[resolvedLocale]);
 	const finalFormat = $derived(
 		format ||
 			(mode === 'range' ? currentLocaleConfig.rangeFormat : currentLocaleConfig.defaultFormat)
@@ -670,7 +669,7 @@
 		onchange={handleChange}
 		{minDate}
 		{maxDate}
-		locale={effectiveLocale}
+		locale={resolvedLocale}
 		id={calendarId}
 	/>
 </Popup>
