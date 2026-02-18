@@ -48,23 +48,12 @@ export const t = (key: NestedKeyOf<typeof TRANSLATIONS.en>, params?: Record<stri
 	const message = key.split('.').reduce((obj: any, k: string) => obj?.[k], TRANSLATIONS[locale]);
 
 	if (typeof message !== 'string') {
-		console.warn(`Translation key "${key}" not found for locale "${locale}"`);
+		if (import.meta.env.DEV) {
+			console.warn(`Translation key "${key}" not found for locale "${locale}"`);
+		}
 		return key;
 	}
 
 	return replaceParams(message, params);
-};
-
-// デバッグ用: 現在の言語設定を確認
-export const debugLocale = (): Locale => {
-	if (typeof navigator !== 'undefined') {
-		console.log('navigator.language:', navigator.language);
-		console.log('navigator.languages:', navigator.languages);
-	}
-	const globalResolved = getLocale();
-	// グローバル設定のロケールが TRANSLATIONS に存在する場合はそれを使い、存在しない場合は 'en' にフォールバック
-	const effective: Locale = (globalResolved && globalResolved in TRANSLATIONS) ? globalResolved : 'en';
-	console.log('effective locale (i18n):', effective);
-	return effective;
 };
 

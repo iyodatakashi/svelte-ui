@@ -401,7 +401,6 @@
 	const linkHtmlValue = $derived.by(() => {
 		if (!isLinkifyActive) return '';
 		const result = convertToHtmlWithLink(value);
-		console.log('LinkHTML', result);
 		return typeof result === 'string' ? result : String(result ?? '');
 	});
 
