@@ -396,8 +396,7 @@
 		return convertToHtmlWithLink(value);
 	});
 
-	// number 型のときはリンク化しない
-	const isLinkifyActive = $derived(linkify && type !== 'number');
+	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
 
 	const linkHtmlValue = $derived.by(() => {
 		if (!isLinkifyActive) return '';
@@ -505,7 +504,7 @@
 		<div class="input__clear-button">
 			<IconButton
 				ariaLabel={t('input.clear')}
-				color="var(--svelte-ui-input-text-color)"
+				color="var(--svelte-ui-text-color)"
 				onclick={(event) => {
 					event.stopPropagation();
 					clear();
@@ -667,7 +666,7 @@
 	}
 
 	.input__unit-text {
-		font-size: max(0.5em, var(--svelte-ui-font-size-sm));
+		font-size: var(--svelte-ui-input-unit-font-size);
 	}
 
 	.input__clear-button {
@@ -744,10 +743,24 @@
 	/* =============================================
  * タイプ別スタイル
  * ============================================= */
+	/* type-number */
 	.input--type-number {
 		.input__display-text,
 		.input__link-text {
 			justify-content: flex-end;
+		}
+	}
+
+	/* type-password */
+	.input--type-password {
+		&:not(.input--linkify) input {
+			color: inherit;
+			caret-color: inherit;
+			text-shadow: inherit;
+		}
+
+		.input__display-text {
+			opacity: 0;
 		}
 	}
 
@@ -761,7 +774,6 @@
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 			border: none;
 			border-radius: var(--svelte-ui-input-border-radius);
-			color: var(--svelte-ui-input-text-color);
 		}
 
 		input,
@@ -811,38 +823,6 @@
 		input {
 			border-radius: var(--svelte-ui-input-border-radius-rounded);
 		}
-	}
-
-	/* not-linkify + not-focused: inputを不可視化、display-textを表示 */
-	.input:not(.input--linkify):not(.input--focused) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
-	}
-
-	/* not-linkify + focused: display-textをopacity: 0 */
-	.input:not(.input--linkify).input--focused .input__display-text {
-		opacity: 0;
-	}
-
-	/* linkify + not-focused: inputを不可視化、display-textをopacity: 0、link-textを表示 */
-	.input--linkify:not(.input--focused) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
-	}
-
-	.input--linkify:not(.input--focused) .input__display-text {
-		opacity: 0;
-	}
-
-	/* linkify + focused: display-textをopacity: 0、link-textをdisplay: none */
-	.input--linkify.input--focused .input__display-text {
-		opacity: 0;
-	}
-
-	.input--focused .input__link-text {
-		display: none;
 	}
 
 	/* =============================================
@@ -918,6 +898,39 @@
 		.input__link-text {
 			padding-left: var(--svelte-ui-input-icon-space);
 		}
+	}
+
+	/* not-linkify + not-focused: inputを不可視化、display-textを表示 */
+	/* type=password のときは除外（常に input を表示） */
+	.input:not(.input--linkify):not(.input--focused):not(.input--type-password) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	/* not-linkify + focused: display-textをopacity: 0 */
+	.input:not(.input--linkify).input--focused .input__display-text {
+		opacity: 0;
+	}
+
+	/* linkify + not-focused: inputを不可視化、display-textをopacity: 0、link-textを表示 */
+	.input--linkify:not(.input--focused) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	.input--linkify:not(.input--focused) .input__display-text {
+		opacity: 0;
+	}
+
+	/* linkify + focused: display-textをopacity: 0、link-textをdisplay: none */
+	.input--linkify.input--focused .input__display-text {
+		opacity: 0;
+	}
+
+	.input--focused .input__link-text {
+		display: none;
 	}
 
 	/* =============================================
