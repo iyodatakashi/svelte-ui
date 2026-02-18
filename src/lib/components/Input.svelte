@@ -396,8 +396,11 @@
 		return convertToHtmlWithLink(value);
 	});
 
+	// number 型のときはリンク化しない
+	const isLinkifyActive = $derived(linkify && type !== 'number');
+
 	const linkHtmlValue = $derived.by(() => {
-		if (!linkify) return '';
+		if (!isLinkifyActive) return '';
 		const result = convertToHtmlWithLink(displayValue);
 		return typeof result === 'string' ? result : String(result ?? '');
 	});
@@ -412,7 +415,7 @@
 	input--focus-{focusStyle}
 	input--type-{type}"
 	class:input--inline={inline}
-	class:input--linkify={linkify}
+	class:input--linkify={isLinkifyActive}
 	class:input--auto-resize={inline}
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
@@ -490,15 +493,10 @@
 			{...restProps}
 		/>
 	</div>
-	{#if linkify}
+	{#if isLinkifyActive}
 		<div class="input__link-text" style={customStyle}>
 			<div class="input__link-text-content">
 				{@html linkHtmlValue}
-				{#if type === 'number' && unit !== ''}
-					<span class="input__unit-text">
-						{unit}
-					</span>
-				{/if}
 			</div>
 		</div>
 	{/if}
