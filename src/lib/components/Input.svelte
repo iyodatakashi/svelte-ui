@@ -385,7 +385,7 @@
 	// =========================================================================
 	const displayValue = $derived.by(() => {
 		if (!value) {
-			if (!placeholder) {
+			if (inline && !placeholder) {
 				return '&nbsp;';
 			}
 			return '';
@@ -400,7 +400,8 @@
 
 	const linkHtmlValue = $derived.by(() => {
 		if (!isLinkifyActive) return '';
-		const result = convertToHtmlWithLink(displayValue);
+		const result = convertToHtmlWithLink(value);
+		console.log('LinkHTML', result);
 		return typeof result === 'string' ? result : String(result ?? '');
 	});
 
