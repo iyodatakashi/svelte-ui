@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.15] - 2026-02-XX
+
+### Added
+
+- **Input unit display**: Added `unit` prop to `Input` component to display units (e.g., "px", "kg") next to number inputs. Units are hidden when the input is focused.
+
+### Changed
+
+- **Drawer width**: Changed default `width` from `240` to `undefined`, allowing the drawer to automatically fit its content width.
+- **Tab pathPrefix**: `pathPrefix` now applies to navigation URLs in addition to selection logic, making tab navigation more intuitive.
+
+### Fixed
+
+- **Input password security**: Fixed issue where password inputs would reveal the password when switching to display-text. Password inputs now always use the native input element.
+- **Textarea scroll synchronization**: Fixed scroll synchronization between `textarea`, `display-text`, and `link-text` elements when content overflows, ensuring consistent scroll position across all states.
+
 ## [0.0.14] - 2026-02-13
 
 ### Added
