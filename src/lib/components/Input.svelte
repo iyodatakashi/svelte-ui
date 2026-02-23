@@ -384,7 +384,7 @@
 	// =========================================================================
 	const displayValue = $derived.by(() => {
 		if (!value) {
-			if (inline && !placeholder) {
+			if (inline) {
 				return '&nbsp;';
 			}
 			return '';
@@ -429,7 +429,7 @@
 	style="width: {widthStyle}; max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
 >
 	<!-- 表示用テキスト -->
-	<div class="input__display-text" data-placeholder={placeholder} style={customStyle}>
+	<div class="input__display-text" style={customStyle}>
 		<div class="input__display-text-content">
 			{@html displayValue}
 			{#if type === 'number' && unit !== ''}
