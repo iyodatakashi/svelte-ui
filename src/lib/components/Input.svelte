@@ -58,6 +58,7 @@
 		leftIconAriaLabel?: string;
 		rightIconAriaLabel?: string;
 		enablePasswordVisibilityToggle?: boolean;
+		enableNumberStepperButtons?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -150,9 +151,10 @@
 		// アイコン関連
 		rightIcon = undefined,
 		leftIcon = undefined,
-		leftIconAriaLabel = '左アイコン',
-		rightIconAriaLabel = '右アイコン',
+		leftIconAriaLabel = t('input.left_icon'),
+		rightIconAriaLabel = t('input.right_icon'),
 		enablePasswordVisibilityToggle = false,
+		enableNumberStepperButtons = false,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -385,8 +387,12 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
+	const hasDisplayValue = $derived(
+		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
+	);
+
 	const displayValue = $derived.by(() => {
-		if (!value) {
+		if (!hasDisplayValue) {
 			if (inline) {
 				return '&nbsp;';
 			}
@@ -414,9 +420,53 @@
 		ref?.focus();
 	};
 
+	const incrementNumber = (event: MouseEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		event.stopPropagation();
+		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
+		const stepValue = step ?? 1;
+		let newValue = currentValue + stepValue;
+		if (max !== null && newValue > max) {
+			newValue = max;
+		}
+		value = newValue;
+		onchange?.(newValue);
+	};
+
+	const decrementNumber = (event: MouseEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		event.stopPropagation();
+		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
+		const stepValue = step ?? 1;
+		let newValue = currentValue - stepValue;
+		if (min !== null && newValue < min) {
+			newValue = min;
+		}
+		value = newValue;
+		onchange?.(newValue);
+	};
+
 	const isPasswordToggleActive = $derived(
 		type === 'password' &&
 			enablePasswordVisibilityToggle &&
+			!rightIcon &&
+			!onRightIconClick &&
+			!disabled &&
+			!readonly
+	);
+
+	const isNumberStepperActiveLeft = $derived(
+		type === 'number' &&
+			enableNumberStepperButtons &&
+			!leftIcon &&
+			!onLeftIconClick &&
+			!disabled &&
+			!readonly
+	);
+
+	const isNumberStepperActiveRight = $derived(
+		type === 'number' &&
+			enableNumberStepperButtons &&
 			!rightIcon &&
 			!onRightIconClick &&
 			!disabled &&
@@ -428,14 +478,34 @@
 		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
 	);
 
-	const resolvedRightIcon = $derived(isPasswordToggleActive ? passwordToggleIcon : rightIcon);
-	const resolvedRightIconClick = $derived(
-		isPasswordToggleActive ? togglePasswordVisibility : onRightIconClick
+	const resolvedLeftIcon = $derived(isNumberStepperActiveLeft ? 'remove' : leftIcon);
+	const resolvedLeftIconClick = $derived(
+		isNumberStepperActiveLeft ? decrementNumber : onLeftIconClick
 	);
-	const resolvedRightIconAriaLabel = $derived(
-		isPasswordToggleActive ? passwordToggleAriaLabel : rightIconAriaLabel
+	const resolvedLeftIconAriaLabel = $derived(
+		isNumberStepperActiveLeft ? t('input.decrement') : leftIconAriaLabel
 	);
 
+	const resolvedRightIcon = $derived(
+		isPasswordToggleActive ? passwordToggleIcon : isNumberStepperActiveRight ? 'add' : rightIcon
+	);
+	const resolvedRightIconClick = $derived(
+		isPasswordToggleActive
+			? togglePasswordVisibility
+			: isNumberStepperActiveRight
+				? incrementNumber
+				: onRightIconClick
+	);
+	const resolvedRightIconAriaLabel = $derived(
+		isPasswordToggleActive
+			? passwordToggleAriaLabel
+			: isNumberStepperActiveRight
+				? t('input.increment')
+				: rightIconAriaLabel
+	);
+
+	const hasLeftIcon = $derived(!!resolvedLeftIcon);
+	const hasLeftIconClickable = $derived(!!resolvedLeftIcon && !!resolvedLeftIconClick);
 	const hasRightIcon = $derived(!!resolvedRightIcon);
 	const hasRightIconClickable = $derived(!!resolvedRightIcon && !!resolvedRightIconClick);
 
@@ -460,8 +530,8 @@
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
 	class:input--has-right-icon={hasRightIcon}
-	class:input--has-left-icon={!!leftIcon}
-	class:input--has-left-icon-clickable={!!leftIcon && !!onLeftIconClick}
+	class:input--has-left-icon={hasLeftIcon}
+	class:input--has-left-icon-clickable={hasLeftIconClickable}
 	class:input--has-right-icon-clickable={hasRightIconClickable}
 	class:input--rounded={rounded}
 	class:input--disabled={disabled}
@@ -474,7 +544,7 @@
 	<div class="input__display-text" style={customStyle}>
 		<div class="input__display-text-content">
 			{@html displayValue}
-			{#if type === 'number' && unit !== ''}
+			{#if type === 'number' && unit !== '' && hasDisplayValue}
 				<span class="input__unit-text">
 					{unit}
 				</span>
@@ -559,18 +629,18 @@
 	{/if}
 
 	<!-- Left Icon -->
-	{#if leftIcon}
+	{#if hasLeftIcon}
 		<div class="input__icon-left">
-			{#if onLeftIconClick}
+			{#if resolvedLeftIconClick}
 				<IconButton
-					ariaLabel={leftIconAriaLabel}
+					ariaLabel={resolvedLeftIconAriaLabel}
 					color="var(--svelte-ui-input-icon-color)"
-					onclick={onLeftIconClick}
+					onclick={resolvedLeftIconClick}
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
 				>
-					{leftIcon}
+					{resolvedLeftIcon}
 				</IconButton>
 			{:else}
 				<div class="input__normal-icon">
@@ -581,7 +651,7 @@
 						opticalSize={iconOpticalSize}
 						variant={iconVariant}
 					>
-						{leftIcon}
+						{resolvedLeftIcon}
 					</Icon>
 				</div>
 			{/if}

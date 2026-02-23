@@ -26,7 +26,11 @@ export const ja = {
 	input: {
 		clear: 'クリア',
 		show_password: 'パスワードを表示',
-		hide_password: 'パスワードを非表示'
+		hide_password: 'パスワードを非表示',
+		left_icon: '左アイコン',
+		right_icon: '右アイコン',
+		increment: '増やす',
+		decrement: '減らす'
 	},
 	pagination: {
 		prevPage: '前のページへ移動',

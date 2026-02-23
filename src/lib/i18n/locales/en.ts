@@ -26,7 +26,11 @@ export const en = {
 	input: {
 		clear: 'Clear',
 		show_password: 'Show password',
-		hide_password: 'Hide password'
+		hide_password: 'Hide password',
+		left_icon: 'Left icon',
+		right_icon: 'Right icon',
+		increment: 'Increment',
+		decrement: 'Decrement'
 	},
 	pagination: {
 		prevPage: 'Go to previous page',
