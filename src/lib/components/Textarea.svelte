@@ -385,93 +385,92 @@
 		return String(result ?? '');
 	});
 
-	// autoResize=false のとき、コンポーネント全体の高さに display-text / link-text を合わせる
-	$effect(() => {
-		// クリーンアップ関数
-		const cleanup = () => {
+	// display-text / link-text とコンポーネント全体のサイズ同期を解除
+	const cleanupSizeSync = () => {
+		if (resizeObserver) {
+			resizeObserver.disconnect();
+			resizeObserver = null;
+		}
+		if (containerRef) {
+			containerRef.style.removeProperty('height');
+			containerRef.style.removeProperty('width');
+		}
+		if (displayTextRef) {
+			displayTextRef.style.removeProperty('height');
+			displayTextRef.style.removeProperty('width');
+		}
+		if (linkTextRef) {
+			linkTextRef.style.removeProperty('height');
+			linkTextRef.style.removeProperty('width');
+		}
+	};
+
+	// textarea のサイズに合わせてコンポーネント全体 / display-text / link-text のサイズを同期
+	const syncSizeFromTextarea = () => {
+		if (!containerRef || !displayTextRef || !textareaRef) return;
+		const rect = textareaRef.getBoundingClientRect();
+		const height = rect.height;
+		const width = rect.width;
+		if (!height || !width) return;
+
+		// コンポーネント全体のサイズは textarea に合わせる
+		containerRef.style.height = `${height}px`;
+		containerRef.style.width = `${width}px`;
+
+		// display-text / link-text はコンテナにフィットさせる
+		displayTextRef.style.height = '100%';
+		displayTextRef.style.width = '100%';
+		if (linkTextRef) {
+			linkTextRef.style.height = '100%';
+			linkTextRef.style.width = '100%';
+		}
+	};
+
+	// resizable=true のときに textarea のサイズ変更を監視
+	const setupResizeObserver = () => {
+		if (!textareaRef) return;
+
+		// resizable でなければ監視は不要
+		if (!resizable) {
 			if (resizeObserver) {
 				resizeObserver.disconnect();
 				resizeObserver = null;
 			}
-			if (containerRef) {
-				containerRef.style.removeProperty('height');
-				containerRef.style.removeProperty('width');
-			}
-			if (displayTextRef) {
-				displayTextRef.style.removeProperty('height');
-				displayTextRef.style.removeProperty('width');
-			}
-			if (linkTextRef) {
-				linkTextRef.style.removeProperty('height');
-				linkTextRef.style.removeProperty('width');
-			}
-		};
+			return;
+		}
 
+		// 既存のオブザーバがあれば一旦解除
+		if (resizeObserver) {
+			resizeObserver.disconnect();
+			resizeObserver = null;
+		}
+
+		resizeObserver = new ResizeObserver(() => {
+			syncSizeFromTextarea();
+		});
+		resizeObserver.observe(textareaRef);
+	};
+
+	// autoResize=false のとき、コンポーネント全体のサイズに display-text / link-text を合わせる
+	$effect(() => {
 		if (!containerRef || !displayTextRef || !textareaRef) {
-			cleanup();
+			cleanupSizeSync();
 			return;
 		}
 
-		// autoResize=true のときは、高さ同期を行わず従来の挙動を維持
+		// autoResize=true のときは、サイズ同期を行わず従来の挙動を維持
 		if (autoResize) {
-			cleanup();
+			cleanupSizeSync();
 			return;
 		}
-
-		// 高さ・幅を同期するヘルパー
-		const syncSize = (height: number, width: number) => {
-			if (!height || !width) return;
-			if (containerRef) {
-				// コンポーネント全体のサイズは textarea に合わせる
-				containerRef.style.height = `${height}px`;
-				containerRef.style.width = `${width}px`;
-			}
-			// display-text / link-text はコンテナにフィットさせる
-			if (displayTextRef) {
-				displayTextRef.style.height = '100%';
-				displayTextRef.style.width = '100%';
-			}
-			if (linkTextRef) {
-				linkTextRef.style.height = '100%';
-				linkTextRef.style.width = '100%';
-			}
-		};
-
-		// textarea の実際の表示サイズを取得するヘルパー（border を含む）
-		const getTextareaRect = () => {
-			if (!textareaRef) return { height: 0, width: 0 };
-			const rect = textareaRef.getBoundingClientRect();
-			return { height: rect.height, width: rect.width };
-		};
 
 		// 初期同期
-		{
-			const { height, width } = getTextareaRect();
-			syncSize(height, width);
-		}
-
-		// resizable のときは ResizeObserver で textarea の高さ変更を監視
-		if (resizable) {
-			resizeObserver = new ResizeObserver((entries) => {
-				for (const entry of entries) {
-					if (entry.target === textareaRef) {
-						// contentRect ではなく getBoundingClientRect() ベースで同期する
-						const { height, width } = getTextareaRect();
-						syncSize(height, width);
-					}
-				}
-			});
-			resizeObserver.observe(textareaRef);
-		} else {
-			// resizable=false のときは、初期高さだけ同期して監視はしない
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-				resizeObserver = null;
-			}
-		}
+		syncSizeFromTextarea();
+		// resizable=true のときにのみ ResizeObserver をセットアップ
+		setupResizeObserver();
 
 		return () => {
-			cleanup();
+			cleanupSizeSync();
 		};
 	});
 </script>
@@ -611,6 +610,30 @@
 	/* =============================================
 	 * 基本コンポーネント
 	 * ============================================= */
+	textarea {
+		width: 100%;
+		height: auto;
+		min-height: var(--svelte-ui-textarea-min-height);
+		padding: var(--svelte-ui-textarea-padding);
+		background-color: var(--svelte-ui-textarea-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
+		border: none;
+		border-radius: var(--svelte-ui-textarea-border-radius);
+		font-size: inherit;
+		font-weight: inherit;
+		color: inherit;
+		line-height: inherit;
+		text-align: inherit;
+		opacity: 0;
+		-webkit-appearance: none;
+		-moz-appearance: none;
+		appearance: none;
+
+		&:not(.resizable) {
+			resize: none;
+		}
+	}
+
 	.textarea__display-text,
 	.textarea__link-text {
 		display: block;
@@ -663,30 +686,6 @@
 		text-decoration: underline;
 	}
 
-	textarea {
-		width: 100%;
-		height: auto;
-		min-height: var(--svelte-ui-textarea-min-height);
-		padding: var(--svelte-ui-textarea-padding);
-		background-color: var(--svelte-ui-textarea-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
-		border: none;
-		border-radius: var(--svelte-ui-textarea-border-radius);
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
-		opacity: 0;
-		-webkit-appearance: none;
-		-moz-appearance: none;
-		appearance: none;
-
-		&:not(.resizable) {
-			resize: none;
-		}
-	}
-
 	.textarea--clearable .textarea__clear-button {
 		position: absolute;
 		top: var(--svelte-ui-textarea-icon-top);
@@ -704,8 +703,7 @@
 
 	.textarea--auto-resize {
 		textarea {
-			padding: inherit;
-			background: transparent;
+			height: 100%;
 			overflow-y: auto;
 		}
 	}
