@@ -86,17 +86,29 @@
 		<label for="input1">インプット1</label>
 		<Input
 			id="input1"
-			clearable
+			placeholder="input"
+			type="number"
+			unit="人月"
+			enableNumberStepperButtons
+			step={10}
+			enablePasswordVisibilityToggle
 			bind:value
 			minWidth={300}
 			width="50%"
-			linkify
 			onkeydown={(e) => {
 				if (e.key === 'Enter') handleInputKeydown();
 			}}
 			onchange={handleInputChange}
+		/><br />
+		テキストエリア
+		<Textarea
+			id="textarea1"
+			bind:value={value2}
+			placeholder="test"
+			clearable
+			rows={10}
+			onsubmit={handleChange}
 		/>
-		<Textarea id="textarea1" bind:value={value2} linkify clearable onsubmit={handleChange} />
 		<Select bind:value {options} />
 		<Combobox
 			bind:value={comboboxValue}

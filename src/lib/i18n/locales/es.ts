@@ -24,7 +24,13 @@ export const es = {
 		optionsList: 'Lista de opciones'
 	},
 	input: {
-		clear: 'Limpiar'
+		clear: 'Limpiar',
+		show_password: 'Mostrar contraseña',
+		hide_password: 'Ocultar contraseña',
+		left_icon: 'Icono izquierdo',
+		right_icon: 'Icono derecho',
+		increment: 'Incrementar',
+		decrement: 'Decrementar'
 	},
 	pagination: {
 		prevPage: 'Ir a la página anterior',

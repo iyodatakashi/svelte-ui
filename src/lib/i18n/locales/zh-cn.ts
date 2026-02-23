@@ -24,7 +24,13 @@ export const zhCn = {
 		optionsList: '选项列表'
 	},
 	input: {
-		clear: '清除'
+		clear: '清除',
+		show_password: '显示密码',
+		hide_password: '隐藏密码',
+		left_icon: '左侧图标',
+		right_icon: '右侧图标',
+		increment: '增加',
+		decrement: '减少'
 	},
 	pagination: {
 		prevPage: '转到上一页',
