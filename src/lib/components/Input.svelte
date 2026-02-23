@@ -465,7 +465,7 @@
 	// $derived
 	// =========================================================================
 	// --------------------------------
-	// display value
+	// display & link value
 	// --------------------------------
 	const hasDisplayValue = $derived(
 		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
@@ -474,6 +474,12 @@
 		if (!hasDisplayValue) return inline ? '&nbsp;' : '';
 		if (type === 'number' && typeof value === 'number') return value.toLocaleString();
 		return convertToHtml(value);
+	});
+
+	const linkHtmlValue = $derived.by(() => {
+		if (!isLinkifyActive) return '';
+		const result = convertToHtmlWithLink(value);
+		return typeof result === 'string' ? result : String(result ?? '');
 	});
 
 	// --------------------------------
@@ -499,6 +505,8 @@
 			!readonly
 	);
 	const resolvedLeftIcon = $derived(isLeftNumberStepper ? 'remove' : leftIcon);
+
+	// resolve icon event
 	const resolvedLeftIconClick = $derived(isLeftNumberStepper ? undefined : onLeftIconClick);
 	const resolvedLeftIconMouseDown = $derived(
 		isLeftNumberStepper ? handleDecrement : onLeftIconMouseDown
@@ -520,6 +528,19 @@
 	);
 	const resolvedLeftIconAriaLabel = $derived(
 		isLeftNumberStepper ? t('input.decrement') : leftIconAriaLabel
+	);
+
+	// has icon
+	const hasLeftIcon = $derived(!!resolvedLeftIcon);
+	const hasLeftIconClickable = $derived(
+		!!resolvedLeftIcon &&
+			(!!resolvedLeftIconClick ||
+				!!resolvedLeftIconMouseDown ||
+				!!resolvedLeftIconMouseUp ||
+				!!resolvedLeftIconMouseLeave ||
+				!!resolvedLeftIconTouchStart ||
+				!!resolvedLeftIconTouchEnd ||
+				!!resolvedLeftIconTouchCancel)
 	);
 
 	// --------------------------------
@@ -549,6 +570,8 @@
 	const resolvedRightIcon = $derived(
 		isPasswordToggleActive ? passwordToggleIcon : isRightNumberStepper ? 'add' : rightIcon
 	);
+
+	// resolve icon event
 	const resolvedRightIconClick = $derived(
 		isPasswordToggleActive
 			? togglePasswordVisibility
@@ -582,18 +605,7 @@
 				: rightIconAriaLabel
 	);
 
-	const hasLeftIcon = $derived(!!resolvedLeftIcon);
-	const hasLeftIconClickable = $derived(
-		!!resolvedLeftIcon &&
-			(!!resolvedLeftIconClick ||
-				!!resolvedLeftIconMouseDown ||
-				!!resolvedLeftIconMouseUp ||
-				!!resolvedLeftIconMouseLeave ||
-				!!resolvedLeftIconTouchStart ||
-				!!resolvedLeftIconTouchEnd ||
-				!!resolvedLeftIconTouchCancel)
-	);
-
+	// has icon
 	const hasRightIcon = $derived(!!resolvedRightIcon);
 	const hasRightIconClickable = $derived(
 		!!resolvedRightIcon &&
@@ -606,12 +618,9 @@
 				!!resolvedRightIconTouchCancel)
 	);
 
-	const linkHtmlValue = $derived.by(() => {
-		if (!isLinkifyActive) return '';
-		const result = convertToHtmlWithLink(value);
-		return typeof result === 'string' ? result : String(result ?? '');
-	});
-
+	// --------------------------------
+	// style from number
+	// --------------------------------
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
 	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
