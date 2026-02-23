@@ -465,6 +465,17 @@
 	// $derived
 	// =========================================================================
 	// --------------------------------
+	// type & linkify
+	// --------------------------------
+	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
+	const resolvedType = $derived.by(() => {
+		if (type === 'password' && enablePasswordVisibilityToggle) {
+			return isPasswordVisible ? 'text' : 'password';
+		}
+		return type;
+	});
+
+	// --------------------------------
 	// display & link value
 	// --------------------------------
 	const hasDisplayValue = $derived(
@@ -480,17 +491,6 @@
 		if (!isLinkifyActive) return '';
 		const result = convertToHtmlWithLink(value);
 		return typeof result === 'string' ? result : String(result ?? '');
-	});
-
-	// --------------------------------
-	// type & linkify
-	// --------------------------------
-	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
-	const resolvedType = $derived.by(() => {
-		if (type === 'password' && enablePasswordVisibilityToggle) {
-			return isPasswordVisible ? 'text' : 'password';
-		}
-		return type;
 	});
 
 	// --------------------------------

@@ -473,13 +473,6 @@
 			}
 			return '';
 		}
-
-		// --------------------------------
-		// style from number
-		// --------------------------------
-		const minHeightStyle = $derived(getStyleFromNumber(minHeight));
-		const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
-		const widthStyle = $derived(getStyleFromNumber(width));
 	});
 
 	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
@@ -491,6 +484,13 @@
 		const result = convertToHtmlWithLink(normalizedValue);
 		return String(result ?? '');
 	});
+
+	// --------------------------------
+	// style from number
+	// --------------------------------
+	const minHeightStyle = $derived(getStyleFromNumber(minHeight));
+	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
+	const widthStyle = $derived(getStyleFromNumber(width));
 </script>
 
 <div
