@@ -638,7 +638,8 @@
 		align-items: center;
 		width: 100%;
 		min-width: 1em;
-		padding: inherit;
+		height: var(--svelte-ui-input-height);
+		padding: var(--svelte-ui-input-padding);
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -755,7 +756,7 @@
 	}
 
 	/* rightIconがある場合はクリアボタンを左にずらす */
-	.input--clearable.input--has-right-icon .input__clear-button {
+	.input--has-right-icon .input__clear-button {
 		right: var(--svelte-ui-input-icon-space);
 	}
 
@@ -811,16 +812,12 @@
 		cursor: pointer;
 	}
 
-	/* レイアウトバリエーション */
+	/* auto-resize */
 	.input--auto-resize {
 		width: fit-content;
 	}
 
-	.input--full-width {
-		width: 100%;
-	}
-
-	/* linkify機能 */
+	/* linkify */
 	/* linkifyモード: display-textは常に非表示 */
 	.input--linkify .input__display-text {
 		opacity: 0;
@@ -857,8 +854,9 @@
 	}
 
 	/* =============================================
- * デザインバリアント：default
+ * デザインバリエーション
  * ============================================= */
+	/* default */
 	.input:not(.input--inline) {
 		input {
 			min-height: var(--svelte-ui-input-height);
@@ -866,13 +864,6 @@
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 			border: none;
 			border-radius: var(--svelte-ui-input-border-radius);
-		}
-
-		input,
-		.input__display-text,
-		.input__link-text {
-			height: var(--svelte-ui-input-height);
-			padding: var(--svelte-ui-input-padding);
 		}
 
 		&.input--has-left-icon {
@@ -908,19 +899,22 @@
 		}
 	}
 
-	/* =============================================
- * デザインバリアント：rounded
- * ============================================= */
+	/* rounded */
 	.input--rounded:not(.input--inline) {
 		input {
 			border-radius: var(--svelte-ui-input-border-radius-rounded);
 		}
 	}
 
-	/* =============================================
- * デザインバリアント：inline
- * ============================================= */
+	/* inline */
 	.input--inline {
+		input,
+		.input__display-text,
+		.input__link-text {
+			height: inherit;
+			padding: inherit;
+		}
+
 		&.input--has-left-icon {
 			input,
 			.input__display-text,
@@ -952,5 +946,10 @@
 				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
+	}
+
+	/* full-width */
+	.input--full-width {
+		width: 100%;
 	}
 </style>
