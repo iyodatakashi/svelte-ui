@@ -7,7 +7,7 @@
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { t } from '$lib/i18n';
-	import { convertToHtmlWithLink } from '$lib/utils/formatText';
+	import { convertToHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -392,7 +392,7 @@
 		if (type === 'number' && typeof value === 'number') {
 			return value.toLocaleString();
 		}
-		return convertToHtmlWithLink(value);
+		return convertToHtml(value);
 	});
 
 	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
@@ -669,6 +669,84 @@
 	}
 
 	/* =============================================
+ * 表示制御
+ * ============================================= */
+	/* 
+	 * 表示ロジック:
+	 * - 通常モード（not-linkify）: フォーカス時はinputを表示、非フォーカス時はdisplay-textを表示
+	 * - linkifyモード: フォーカス時はinputを表示、非フォーカス時はlink-textを表示
+	 * - type=password: 常にinputを表示（display-textは常に非表示）
+	 */
+
+	/* 非フォーカス時: inputを不可視化（通常モード・linkifyモード共通、passwordは除外） */
+	.input:not(.input--focused):not(.input--type-password) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	/* フォーカス時: display-textを非表示（通常モード・linkifyモード共通） */
+	.input--focused .input__display-text {
+		opacity: 0;
+	}
+
+	/* =============================================
+ * プレースホルダー・テキスト表示
+ * ============================================= */
+	input::placeholder,
+	.input__display-text:empty::before {
+		color: var(--svelte-ui-input-placeholder-color);
+	}
+
+	/* =============================================
+ * フォーカス効果バリエーション
+ * ============================================= */
+	.input--focus-outline input:focus {
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+	}
+
+	.input--focus-background input:focus {
+		background: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.input--focus-none input:focus {
+		outline: none;
+	}
+
+	/* =============================================
+ * 状態管理（disabled, readonly等）
+ * ============================================= */
+	.input--disabled {
+		opacity: var(--svelte-ui-input-disabled-opacity);
+		pointer-events: none;
+
+		.input__icon-left,
+		.input__icon-right {
+			opacity: var(--svelte-ui-button-disabled-opacity);
+		}
+	}
+
+	.input--readonly {
+		input {
+			cursor: default;
+		}
+	}
+
+	input:disabled {
+		opacity: var(--svelte-ui-button-disabled-opacity);
+		cursor: not-allowed;
+	}
+
+	input[readonly] {
+		/* Keep cursor behavior but do not add a special background.
+		 * In this library, filled backgrounds are used to indicate editable fields,
+		 * so readonly inputs intentionally have no extra background color. */
+		cursor: default;
+	}
+
+	/* =============================================
  * 機能バリエーション
  * ============================================= */
 	/* クリアボタン */
@@ -750,33 +828,8 @@
 	}
 
 	/* linkify機能 */
-	/* 
-	 * 表示ロジック:
-	 * - 通常モード（not-linkify）: フォーカス時はinputを表示、非フォーカス時はdisplay-textを表示
-	 * - linkifyモード: フォーカス時はinputを表示、非フォーカス時はlink-textを表示
-	 * - type=password: 常にinputを表示（display-textは常に非表示）
-	 */
-
-	/* 通常モード: 非フォーカス時はinputを不可視化、display-textを表示 */
-	.input:not(.input--linkify):not(.input--focused):not(.input--type-password) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
-	}
-
-	/* linkifyモード: 非フォーカス時はinputとdisplay-textを非表示、link-textを表示 */
-	.input--linkify:not(.input--focused) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
-	}
-
-	.input--linkify:not(.input--focused) .input__display-text {
-		opacity: 0;
-	}
-
-	/* フォーカス時はdisplay-textを非表示（通常モード・linkifyモード共通） */
-	.input--focused .input__display-text {
+	/* linkifyモード: display-textは常に非表示 */
+	.input--linkify .input__display-text {
 		opacity: 0;
 	}
 
@@ -906,61 +959,5 @@
 				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
-	}
-
-	/* =============================================
- * プレースホルダー・テキスト表示
- * ============================================= */
-	input::placeholder,
-	.input__display-text:empty::before {
-		color: var(--svelte-ui-input-placeholder-color);
-	}
-
-	/* =============================================
- * フォーカス効果バリエーション
- * ============================================= */
-	.input--focus-outline input:focus {
-		outline: var(--svelte-ui-focus-outline-inner);
-		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-	}
-
-	.input--focus-background input:focus {
-		background: var(--svelte-ui-hover-overlay);
-		outline: none;
-	}
-
-	.input--focus-none input:focus {
-		outline: none;
-	}
-
-	/* =============================================
- * 状態管理（disabled, readonly等）
- * ============================================= */
-	.input--disabled {
-		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
-
-		.input__icon-left,
-		.input__icon-right {
-			opacity: var(--svelte-ui-button-disabled-opacity);
-		}
-	}
-
-	.input--readonly {
-		input {
-			cursor: default;
-		}
-	}
-
-	input:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
-	}
-
-	input[readonly] {
-		/* Keep cursor behavior but do not add a special background.
-		 * In this library, filled backgrounds are used to indicate editable fields,
-		 * so readonly inputs intentionally have no extra background color. */
-		cursor: default;
 	}
 </style>
