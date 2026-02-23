@@ -36,6 +36,8 @@
 		max?: number | null;
 		step?: number | null;
 		size?: number | null;
+		decimalPlaces?: number | null;
+		enableThousandsSeparator?: boolean;
 		autocomplete?: HTMLInputElement['autocomplete'] | null;
 		spellcheck?: boolean | null;
 		inputAttributes?: HTMLInputAttributes | undefined;
@@ -145,6 +147,8 @@
 		max = null,
 		step = null,
 		size = null,
+		decimalPlaces = null,
+		enableThousandsSeparator = false,
 		autocomplete = null,
 		spellcheck = null,
 		inputAttributes,
@@ -483,7 +487,16 @@
 	);
 	const displayValue = $derived.by(() => {
 		if (!hasDisplayValue) return inline ? '&nbsp;' : '';
-		if (type === 'number' && typeof value === 'number') return value.toLocaleString();
+		if (type === 'number' && typeof value === 'number') {
+			const options = {
+				useGrouping: enableThousandsSeparator,
+				...(decimalPlaces !== null && {
+					minimumFractionDigits: decimalPlaces,
+					maximumFractionDigits: decimalPlaces
+				})
+			};
+			return value.toLocaleString(undefined, options);
+		}
 		return convertToHtml(value);
 	});
 
