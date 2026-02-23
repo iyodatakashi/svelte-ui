@@ -112,6 +112,18 @@
 		// アイコンイベント
 		onRightIconClick?: MouseHandler;
 		onLeftIconClick?: MouseHandler;
+		onRightIconMouseDown?: MouseHandler;
+		onLeftIconMouseDown?: MouseHandler;
+		onRightIconMouseUp?: MouseHandler;
+		onLeftIconMouseUp?: MouseHandler;
+		onRightIconMouseLeave?: MouseHandler;
+		onLeftIconMouseLeave?: MouseHandler;
+		onRightIconTouchStart?: TouchHandler;
+		onLeftIconTouchStart?: TouchHandler;
+		onRightIconTouchEnd?: TouchHandler;
+		onLeftIconTouchEnd?: TouchHandler;
+		onRightIconTouchCancel?: TouchHandler;
+		onLeftIconTouchCancel?: TouchHandler;
 
 		// その他
 		[key: string]: any;
@@ -209,6 +221,18 @@
 		// アイコンイベント
 		onRightIconClick,
 		onLeftIconClick,
+		onRightIconMouseDown,
+		onLeftIconMouseDown,
+		onRightIconMouseUp,
+		onLeftIconMouseUp,
+		onRightIconMouseLeave,
+		onLeftIconMouseLeave,
+		onRightIconTouchStart,
+		onLeftIconTouchStart,
+		onRightIconTouchEnd,
+		onLeftIconTouchEnd,
+		onRightIconTouchCancel,
+		onLeftIconTouchCancel,
 
 		// その他
 		...restProps
@@ -218,6 +242,8 @@
 	let isFocused: boolean = $state(false);
 	let isComposing: boolean = $state(false);
 	let isPasswordVisible: boolean = $state(false);
+	let numberStepperTimeoutId: ReturnType<typeof setTimeout> | null = $state(null);
+	let numberStepperIntervalId: ReturnType<typeof setInterval> | null = $state(null);
 
 	// =========================================================================
 	// Methods
@@ -415,14 +441,22 @@
 
 	const togglePasswordVisibility = (event: MouseEvent) => {
 		if (disabled || readonly) return;
-		event.stopPropagation();
 		isPasswordVisible = !isPasswordVisible;
 		ref?.focus();
 	};
 
-	const incrementNumber = (event: MouseEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		event.stopPropagation();
+	const clearNumberStepperTimers = () => {
+		if (numberStepperTimeoutId !== null) {
+			clearTimeout(numberStepperTimeoutId);
+			numberStepperTimeoutId = null;
+		}
+		if (numberStepperIntervalId !== null) {
+			clearInterval(numberStepperIntervalId);
+			numberStepperIntervalId = null;
+		}
+	};
+
+	const incrementNumberOnce = () => {
 		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
 		const stepValue = step ?? 1;
 		let newValue = currentValue + stepValue;
@@ -433,9 +467,7 @@
 		onchange?.(newValue);
 	};
 
-	const decrementNumber = (event: MouseEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		event.stopPropagation();
+	const decrementNumberOnce = () => {
 		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
 		const stepValue = step ?? 1;
 		let newValue = currentValue - stepValue;
@@ -444,6 +476,65 @@
 		}
 		value = newValue;
 		onchange?.(newValue);
+	};
+
+	const handleIncrementMouseDown = (event: MouseEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		incrementNumberOnce();
+		clearNumberStepperTimers();
+		numberStepperTimeoutId = setTimeout(() => {
+			numberStepperIntervalId = setInterval(() => {
+				incrementNumberOnce();
+			}, 100);
+		}, 400);
+	};
+
+	const handleDecrementMouseDown = (event: MouseEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		decrementNumberOnce();
+		clearNumberStepperTimers();
+		numberStepperTimeoutId = setTimeout(() => {
+			numberStepperIntervalId = setInterval(() => {
+				decrementNumberOnce();
+			}, 100);
+		}, 400);
+	};
+
+	const handleNumberStepperMouseUp = (event: MouseEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		clearNumberStepperTimers();
+	};
+
+	const handleIncrementTouchStart = (event: TouchEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		incrementNumberOnce();
+		clearNumberStepperTimers();
+		numberStepperTimeoutId = setTimeout(() => {
+			numberStepperIntervalId = setInterval(() => {
+				incrementNumberOnce();
+			}, 100);
+		}, 400);
+	};
+
+	const handleDecrementTouchStart = (event: TouchEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		decrementNumberOnce();
+		clearNumberStepperTimers();
+		numberStepperTimeoutId = setTimeout(() => {
+			numberStepperIntervalId = setInterval(() => {
+				decrementNumberOnce();
+			}, 100);
+		}, 400);
+	};
+
+	const handleNumberStepperTouchEnd = (event: TouchEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		clearNumberStepperTimers();
+	};
+
+	const handleNumberStepperTouchCancel = (event: TouchEvent) => {
+		if (disabled || readonly || type !== 'number') return;
+		clearNumberStepperTimers();
 	};
 
 	const isPasswordToggleActive = $derived(
@@ -455,6 +546,11 @@
 			!readonly
 	);
 
+	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
+	const passwordToggleAriaLabel = $derived(
+		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
+	);
+
 	const isNumberStepperActiveLeft = $derived(
 		type === 'number' &&
 			enableNumberStepperButtons &&
@@ -462,6 +558,55 @@
 			!onLeftIconClick &&
 			!disabled &&
 			!readonly
+	);
+
+	const resolvedLeftIcon = $derived(isNumberStepperActiveLeft ? 'remove' : leftIcon);
+	const isLeftNumberStepper = $derived(resolvedLeftIcon === 'remove');
+	const resolvedLeftIconClick = $derived(isLeftNumberStepper ? undefined : onLeftIconClick);
+	const resolvedLeftIconMouseDown = $derived(
+		isLeftNumberStepper
+			? handleDecrementMouseDown
+			: onLeftIconMouseDown
+				? onLeftIconMouseDown
+				: undefined
+	);
+	const resolvedLeftIconMouseUp = $derived(
+		isLeftNumberStepper
+			? handleNumberStepperMouseUp
+			: onLeftIconMouseUp
+				? onLeftIconMouseUp
+				: undefined
+	);
+	const resolvedLeftIconMouseLeave = $derived(
+		isLeftNumberStepper
+			? handleNumberStepperMouseUp
+			: onLeftIconMouseLeave
+				? onLeftIconMouseLeave
+				: undefined
+	);
+	const resolvedLeftIconTouchStart = $derived(
+		isLeftNumberStepper
+			? handleDecrementTouchStart
+			: onLeftIconTouchStart
+				? onLeftIconTouchStart
+				: undefined
+	);
+	const resolvedLeftIconTouchEnd = $derived(
+		isLeftNumberStepper
+			? handleNumberStepperTouchEnd
+			: onLeftIconTouchEnd
+				? onLeftIconTouchEnd
+				: undefined
+	);
+	const resolvedLeftIconTouchCancel = $derived(
+		isLeftNumberStepper
+			? handleNumberStepperTouchCancel
+			: onLeftIconTouchCancel
+				? onLeftIconTouchCancel
+				: undefined
+	);
+	const resolvedLeftIconAriaLabel = $derived(
+		isLeftNumberStepper ? t('input.decrement') : leftIconAriaLabel
 	);
 
 	const isNumberStepperActiveRight = $derived(
@@ -473,41 +618,89 @@
 			!readonly
 	);
 
-	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
-	const passwordToggleAriaLabel = $derived(
-		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
-	);
-
-	const resolvedLeftIcon = $derived(isNumberStepperActiveLeft ? 'remove' : leftIcon);
-	const resolvedLeftIconClick = $derived(
-		isNumberStepperActiveLeft ? decrementNumber : onLeftIconClick
-	);
-	const resolvedLeftIconAriaLabel = $derived(
-		isNumberStepperActiveLeft ? t('input.decrement') : leftIconAriaLabel
-	);
-
 	const resolvedRightIcon = $derived(
 		isPasswordToggleActive ? passwordToggleIcon : isNumberStepperActiveRight ? 'add' : rightIcon
 	);
+	const isRightNumberStepper = $derived(resolvedRightIcon === 'add' && !isPasswordToggleActive);
 	const resolvedRightIconClick = $derived(
 		isPasswordToggleActive
 			? togglePasswordVisibility
-			: isNumberStepperActiveRight
-				? incrementNumber
+			: isRightNumberStepper
+				? undefined
 				: onRightIconClick
+	);
+	const resolvedRightIconMouseDown = $derived(
+		isRightNumberStepper
+			? handleIncrementMouseDown
+			: onRightIconMouseDown
+				? onRightIconMouseDown
+				: undefined
+	);
+	const resolvedRightIconMouseUp = $derived(
+		isRightNumberStepper
+			? handleNumberStepperMouseUp
+			: onRightIconMouseUp
+				? onRightIconMouseUp
+				: undefined
+	);
+	const resolvedRightIconMouseLeave = $derived(
+		isRightNumberStepper
+			? handleNumberStepperMouseUp
+			: onRightIconMouseLeave
+				? onRightIconMouseLeave
+				: undefined
+	);
+	const resolvedRightIconTouchStart = $derived(
+		isRightNumberStepper
+			? handleIncrementTouchStart
+			: onRightIconTouchStart
+				? onRightIconTouchStart
+				: undefined
+	);
+	const resolvedRightIconTouchEnd = $derived(
+		isRightNumberStepper
+			? handleNumberStepperTouchEnd
+			: onRightIconTouchEnd
+				? onRightIconTouchEnd
+				: undefined
+	);
+	const resolvedRightIconTouchCancel = $derived(
+		isRightNumberStepper
+			? handleNumberStepperTouchCancel
+			: onRightIconTouchCancel
+				? onRightIconTouchCancel
+				: undefined
 	);
 	const resolvedRightIconAriaLabel = $derived(
 		isPasswordToggleActive
 			? passwordToggleAriaLabel
-			: isNumberStepperActiveRight
+			: isRightNumberStepper
 				? t('input.increment')
 				: rightIconAriaLabel
 	);
 
 	const hasLeftIcon = $derived(!!resolvedLeftIcon);
-	const hasLeftIconClickable = $derived(!!resolvedLeftIcon && !!resolvedLeftIconClick);
+	const hasLeftIconClickable = $derived(
+		!!resolvedLeftIcon &&
+			(!!resolvedLeftIconClick ||
+				!!resolvedLeftIconMouseDown ||
+				!!resolvedLeftIconMouseUp ||
+				!!resolvedLeftIconMouseLeave ||
+				!!resolvedLeftIconTouchStart ||
+				!!resolvedLeftIconTouchEnd ||
+				!!resolvedLeftIconTouchCancel)
+	);
 	const hasRightIcon = $derived(!!resolvedRightIcon);
-	const hasRightIconClickable = $derived(!!resolvedRightIcon && !!resolvedRightIconClick);
+	const hasRightIconClickable = $derived(
+		!!resolvedRightIcon &&
+			(!!resolvedRightIconClick ||
+				!!resolvedRightIconMouseDown ||
+				!!resolvedRightIconMouseUp ||
+				!!resolvedRightIconMouseLeave ||
+				!!resolvedRightIconTouchStart ||
+				!!resolvedRightIconTouchEnd ||
+				!!resolvedRightIconTouchCancel)
+	);
 
 	const linkHtmlValue = $derived.by(() => {
 		if (!isLinkifyActive) return '';
@@ -631,11 +824,17 @@
 	<!-- Left Icon -->
 	{#if hasLeftIcon}
 		<div class="input__icon-left">
-			{#if resolvedLeftIconClick}
+			{#if resolvedLeftIconClick || resolvedLeftIconMouseDown || resolvedLeftIconMouseUp || resolvedLeftIconMouseLeave || resolvedLeftIconTouchStart || resolvedLeftIconTouchEnd || resolvedLeftIconTouchCancel}
 				<IconButton
 					ariaLabel={resolvedLeftIconAriaLabel}
 					color="var(--svelte-ui-input-icon-color)"
 					onclick={resolvedLeftIconClick}
+					onmousedown={resolvedLeftIconMouseDown}
+					onmouseup={resolvedLeftIconMouseUp}
+					onmouseleave={resolvedLeftIconMouseLeave}
+					ontouchstart={resolvedLeftIconTouchStart}
+					ontouchend={resolvedLeftIconTouchEnd}
+					ontouchcancel={resolvedLeftIconTouchCancel}
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
@@ -661,11 +860,17 @@
 	<!-- Right Icon -->
 	{#if hasRightIcon}
 		<div class="input__icon-right">
-			{#if resolvedRightIconClick}
+			{#if resolvedRightIconClick || resolvedRightIconMouseDown || resolvedRightIconMouseUp || resolvedRightIconMouseLeave || resolvedRightIconTouchStart || resolvedRightIconTouchEnd || resolvedRightIconTouchCancel}
 				<IconButton
 					ariaLabel={resolvedRightIconAriaLabel}
 					color="var(--svelte-ui-input-icon-color)"
 					onclick={resolvedRightIconClick}
+					onmousedown={resolvedRightIconMouseDown}
+					onmouseup={resolvedRightIconMouseUp}
+					onmouseleave={resolvedRightIconMouseLeave}
+					ontouchstart={resolvedRightIconTouchStart}
+					ontouchend={resolvedRightIconTouchEnd}
+					ontouchcancel={resolvedRightIconTouchCancel}
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
