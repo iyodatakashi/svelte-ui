@@ -366,9 +366,9 @@
 			}
 			return html;
 		} else {
-			// inline かつ value が空のとき、placeholder がなければ
+			// inline かつ value が空のとき
 			// 1行分の高さを確保するためにダミーの &nbsp; を入れる
-			if (inline && !placeholder) {
+			if (inline) {
 				return '&nbsp;';
 			}
 			return '';
@@ -393,7 +393,7 @@
 		}
 		if (containerRef) {
 			containerRef.style.removeProperty('height');
-			containerRef.style.removeProperty('width');
+			// width は width プロップで制御されるため、ここでは削除しない
 		}
 		if (displayTextRef) {
 			displayTextRef.style.removeProperty('height');
@@ -406,16 +406,22 @@
 	};
 
 	// textarea のサイズに合わせてコンポーネント全体 / display-text / link-text のサイズを同期
-	const syncSizeFromTextarea = () => {
+	// forceWidth=true のときは、width プロップの有無に関係なく textarea の幅で上書きする
+	const syncSizeFromTextarea = (forceWidth: boolean = false) => {
 		if (!containerRef || !displayTextRef || !textareaRef) return;
 		const rect = textareaRef.getBoundingClientRect();
 		const height = rect.height;
 		const width = rect.width;
 		if (!height || !width) return;
 
-		// コンポーネント全体のサイズは textarea に合わせる
+		// コンポーネント全体の高さは textarea に合わせる
 		containerRef.style.height = `${height}px`;
-		containerRef.style.width = `${width}px`;
+
+		// 幅は、初期状態では width プロップを優先し、
+		// ユーザーがリサイズ（ResizeObserver 経由）したあとは textarea の幅で上書きする
+		if (forceWidth || !widthStyle) {
+			containerRef.style.width = `${width}px`;
+		}
 
 		// display-text / link-text はコンテナにフィットさせる
 		displayTextRef.style.height = '100%';
@@ -446,7 +452,8 @@
 		}
 
 		resizeObserver = new ResizeObserver(() => {
-			syncSizeFromTextarea();
+			// ユーザーのリサイズ後は textarea の幅でコンテナ幅を上書きする
+			syncSizeFromTextarea(true);
 		});
 		resizeObserver.observe(textareaRef);
 	};
@@ -490,12 +497,11 @@
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
 	data-testid="textarea"
-	style={!inline ? `max-height: ${maxHeightStyle};` : ''}
+	style="width: {widthStyle}; {!inline ? `max-height: ${maxHeightStyle};` : ''}"
 >
 	<div
 		bind:this={displayTextRef}
 		class="textarea__display-text"
-		data-placeholder={placeholder}
 		style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
 	>
 		{@html htmlValue}
@@ -518,7 +524,7 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="min-height: {minHeightStyle}; width: {widthStyle}; {customStyle}"
+			style="min-height: {minHeightStyle}; {customStyle}"
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -754,7 +760,6 @@
 	/* =============================================
 	 * 表示切り替え
 	 * ============================================= */
-
 	.textarea:not(.textarea--focused) textarea {
 		color: transparent;
 		caret-color: transparent;
@@ -792,7 +797,6 @@
 	}
 
 	/* linkify */
-	/* フォーカス時はリンク用オーバーレイも非表示（opacity: 0）にして、リンクが反応しないようにする */
 	.textarea--linkify {
 		.textarea__display-text {
 			opacity: 0;
@@ -829,15 +833,16 @@
 		.textarea__link-text,
 		textarea {
 			min-height: auto;
-			padding-top: 0;
-			padding-bottom: 0;
-			padding-left: 0;
+			padding-top: inherit;
+			padding-bottom: inherit;
+			padding-left: inherit;
 		}
 
 		textarea {
 			padding: inherit;
 			background: transparent;
-			border: none;
+			box-shadow: none;
+			border-radius: 0;
 			font-size: inherit;
 			font-weight: inherit;
 			color: inherit;
@@ -846,24 +851,6 @@
 			-webkit-appearance: none;
 			-moz-appearance: none;
 			appearance: none;
-		}
-
-		.textarea__display-text {
-			opacity: 1;
-		}
-
-		textarea {
-			opacity: 0;
-		}
-
-		&.textarea--focused {
-			.textarea__display-text {
-				opacity: 0;
-			}
-
-			textarea {
-				opacity: 1;
-			}
 		}
 
 		&.textarea--clearable .textarea__clear-button {
