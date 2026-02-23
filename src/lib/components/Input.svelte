@@ -612,10 +612,12 @@
 	input {
 		width: 100%;
 		min-width: 1em;
+		min-height: var(--svelte-ui-input-height);
 		padding: inherit;
-		background: transparent;
+		background-color: var(--svelte-ui-input-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 		border: none;
-		border-radius: 0;
+		border-radius: var(--svelte-ui-input-border-radius);
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -743,7 +745,7 @@
 	/* =============================================
  * 機能バリエーション
  * ============================================= */
-	/* クリアボタン */
+	/* clearable */
 	.input__clear-button {
 		position: absolute;
 		top: 50%;
@@ -755,7 +757,22 @@
 		transition: var(--svelte-ui-transition-duration);
 	}
 
-	/* rightIconがある場合はクリアボタンを左にずらす */
+	.input--clearable {
+		input,
+		.input__display-text,
+		.input__link-text {
+			padding-right: var(--svelte-ui-input-icon-space);
+		}
+	}
+
+	.input--clearable.input--has-right-icon {
+		input,
+		.input__display-text,
+		.input__link-text {
+			padding-right: var(--svelte-ui-input-icon-space-double);
+		}
+	}
+
 	.input--has-right-icon .input__clear-button {
 		right: var(--svelte-ui-input-icon-space);
 	}
@@ -773,6 +790,22 @@
 	}
 
 	/* アイコン */
+	.input--has-left-icon {
+		input,
+		.input__display-text,
+		.input__link-text {
+			padding-left: var(--svelte-ui-input-icon-space);
+		}
+	}
+
+	.input--has-right-icon {
+		input,
+		.input__display-text,
+		.input__link-text {
+			padding-right: var(--svelte-ui-input-icon-space);
+		}
+	}
+
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
@@ -856,51 +889,8 @@
 	/* =============================================
  * デザインバリエーション
  * ============================================= */
-	/* default */
-	.input:not(.input--inline) {
-		input {
-			min-height: var(--svelte-ui-input-height);
-			background-color: var(--svelte-ui-input-bg);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
-			border: none;
-			border-radius: var(--svelte-ui-input-border-radius);
-		}
-
-		&.input--has-left-icon {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-left: var(--svelte-ui-input-icon-space);
-			}
-		}
-
-		&.input--has-right-icon {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-right: var(--svelte-ui-input-icon-space);
-			}
-		}
-
-		&.input--clearable {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-right: var(--svelte-ui-input-icon-space);
-			}
-		}
-
-		&.input--clearable.input--has-right-icon {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-right: var(--svelte-ui-input-icon-space-double);
-			}
-		}
-	}
-
 	/* rounded */
-	.input--rounded:not(.input--inline) {
+	.input--rounded {
 		input {
 			border-radius: var(--svelte-ui-input-border-radius-rounded);
 		}
@@ -908,6 +898,14 @@
 
 	/* inline */
 	.input--inline {
+		input {
+			min-height: inherit;
+			background-color: transparent;
+			box-shadow: none;
+			border: inherit;
+			border-radius: 0;
+		}
+
 		input,
 		.input__display-text,
 		.input__link-text {
