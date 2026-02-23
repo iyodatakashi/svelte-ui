@@ -262,7 +262,6 @@
 	};
 
 	// 入力イベント
-
 	const handleChange = () => {
 		if (disabled || readonly) return;
 		onchange?.(value);
@@ -587,7 +586,6 @@
 		position: relative;
 		vertical-align: top;
 		width: auto;
-		height: var(--svelte-ui-input-height);
 		max-width: 100%;
 		height: inherit;
 	}
@@ -670,6 +668,10 @@
 		font-size: var(--svelte-ui-input-unit-font-size);
 	}
 
+	/* =============================================
+ * 機能バリエーション
+ * ============================================= */
+	/* クリアボタン */
 	.input__clear-button {
 		position: absolute;
 		top: 50%;
@@ -698,6 +700,7 @@
 		}
 	}
 
+	/* アイコン */
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
@@ -735,6 +738,51 @@
 	.input--has-right-icon-clickable .input__icon-right {
 		pointer-events: auto;
 		cursor: pointer;
+	}
+
+	/* レイアウトバリエーション */
+	.input--auto-resize {
+		width: fit-content;
+	}
+
+	.input--full-width {
+		width: 100%;
+	}
+
+	/* linkify機能 */
+	/* 
+	 * 表示ロジック:
+	 * - 通常モード（not-linkify）: フォーカス時はinputを表示、非フォーカス時はdisplay-textを表示
+	 * - linkifyモード: フォーカス時はinputを表示、非フォーカス時はlink-textを表示
+	 * - type=password: 常にinputを表示（display-textは常に非表示）
+	 */
+
+	/* 通常モード: 非フォーカス時はinputを不可視化、display-textを表示 */
+	.input:not(.input--linkify):not(.input--focused):not(.input--type-password) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	/* linkifyモード: 非フォーカス時はinputとdisplay-textを非表示、link-textを表示 */
+	.input--linkify:not(.input--focused) input {
+		color: transparent;
+		caret-color: transparent;
+		text-shadow: none;
+	}
+
+	.input--linkify:not(.input--focused) .input__display-text {
+		opacity: 0;
+	}
+
+	/* フォーカス時はdisplay-textを非表示（通常モード・linkifyモード共通） */
+	.input--focused .input__display-text {
+		opacity: 0;
+	}
+
+	/* linkifyモード: フォーカス時はlink-textを非表示 */
+	.input--linkify.input--focused .input__link-text {
+		display: none;
 	}
 
 	/* =============================================
@@ -858,55 +906,6 @@
 				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
-	}
-
-	/* =============================================
- * レイアウトバリエーション
- * ============================================= */
-	.input--auto-resize {
-		width: fit-content;
-	}
-
-	.input--full-width {
-		width: 100%;
-	}
-
-	/* =============================================
- * 表示制御（linkify機能）
- * ============================================= */
-	/* 
-	 * 表示ロジック:
-	 * - 通常モード（not-linkify）: フォーカス時はinputを表示、非フォーカス時はdisplay-textを表示
-	 * - linkifyモード: フォーカス時はinputを表示、非フォーカス時はlink-textを表示
-	 * - type=password: 常にinputを表示（display-textは常に非表示）
-	 */
-
-	/* 通常モード: 非フォーカス時はinputを不可視化、display-textを表示 */
-	.input:not(.input--linkify):not(.input--focused):not(.input--type-password) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
-	}
-
-	/* linkifyモード: 非フォーカス時はinputとdisplay-textを非表示、link-textを表示 */
-	.input--linkify:not(.input--focused) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
-	}
-
-	.input--linkify:not(.input--focused) .input__display-text {
-		opacity: 0;
-	}
-
-	/* フォーカス時はdisplay-textを非表示（通常モード・linkifyモード共通） */
-	.input--focused .input__display-text {
-		opacity: 0;
-	}
-
-	/* linkifyモード: フォーカス時はlink-textを非表示 */
-	.input--linkify.input--focused .input__link-text {
-		display: none;
 	}
 
 	/* =============================================
