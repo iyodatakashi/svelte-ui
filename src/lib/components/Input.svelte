@@ -742,8 +742,7 @@
  * ============================================= */
 	/* type-number */
 	.input--type-number {
-		.input__display-text,
-		.input__link-text {
+		.input__display-text {
 			justify-content: flex-end;
 		}
 	}
@@ -889,11 +888,6 @@
 		text-shadow: none;
 	}
 
-	/* 通常モード: フォーカス時はdisplay-textを非表示 */
-	.input:not(.input--linkify).input--focused .input__display-text {
-		opacity: 0;
-	}
-
 	/* linkifyモード: 非フォーカス時はinputとdisplay-textを非表示、link-textを表示 */
 	.input--linkify:not(.input--focused) input {
 		color: transparent;
@@ -905,12 +899,13 @@
 		opacity: 0;
 	}
 
-	/* linkifyモード: フォーカス時はlink-textを非表示 */
-	.input--linkify.input--focused .input__display-text {
+	/* フォーカス時はdisplay-textを非表示（通常モード・linkifyモード共通） */
+	.input--focused .input__display-text {
 		opacity: 0;
 	}
 
-	.input--focused .input__link-text {
+	/* linkifyモード: フォーカス時はlink-textを非表示 */
+	.input--linkify.input--focused .input__link-text {
 		display: none;
 	}
 
