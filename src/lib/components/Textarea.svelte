@@ -179,10 +179,12 @@
 		...restProps
 	}: TextareaProps = $props();
 
-	let ref: HTMLTextAreaElement | null = null;
+	let textareaRef: HTMLTextAreaElement | null = null;
+	let containerRef: HTMLDivElement | null = null;
 	let displayTextRef: HTMLDivElement | null = $state(null);
 	let linkTextRef: HTMLDivElement | null = $state(null);
 	let isFocused: boolean = $state(false);
+	let resizeObserver: ResizeObserver | null = null;
 
 	// =========================================================================
 	// Methods
@@ -190,16 +192,16 @@
 	const clear = (): void => {
 		if (disabled || readonly) return;
 		value = '';
-		ref?.focus();
+		textareaRef?.focus();
 		onchange?.('');
 	};
 
 	// 外部からフォーカスを当てる（キャレットを先頭に移動）
 	export const focus = () => {
-		if (ref) {
-			ref.focus();
-			ref.setSelectionRange(0, 0);
-			ref.scrollTop = 0;
+		if (textareaRef) {
+			textareaRef.focus();
+			textareaRef.setSelectionRange(0, 0);
+			textareaRef.scrollTop = 0;
 		}
 	};
 
@@ -334,8 +336,8 @@
 
 	// スクロール同期
 	const handleScroll = () => {
-		if (!ref) return;
-		const scrollTop = ref.scrollTop;
+		if (!textareaRef) return;
+		const scrollTop = textareaRef.scrollTop;
 		if (displayTextRef) {
 			displayTextRef.scrollTop = scrollTop;
 		}
@@ -382,9 +384,100 @@
 		const result = convertToHtmlWithLink(normalizedValue);
 		return String(result ?? '');
 	});
+
+	// autoResize=false のとき、コンポーネント全体の高さに display-text / link-text を合わせる
+	$effect(() => {
+		// クリーンアップ関数
+		const cleanup = () => {
+			if (resizeObserver) {
+				resizeObserver.disconnect();
+				resizeObserver = null;
+			}
+			if (containerRef) {
+				containerRef.style.removeProperty('height');
+				containerRef.style.removeProperty('width');
+			}
+			if (displayTextRef) {
+				displayTextRef.style.removeProperty('height');
+				displayTextRef.style.removeProperty('width');
+			}
+			if (linkTextRef) {
+				linkTextRef.style.removeProperty('height');
+				linkTextRef.style.removeProperty('width');
+			}
+		};
+
+		if (!containerRef || !displayTextRef || !textareaRef) {
+			cleanup();
+			return;
+		}
+
+		// autoResize=true のときは、高さ同期を行わず従来の挙動を維持
+		if (autoResize) {
+			cleanup();
+			return;
+		}
+
+		// 高さ・幅を同期するヘルパー
+		const syncSize = (height: number, width: number) => {
+			if (!height || !width) return;
+			if (containerRef) {
+				// コンポーネント全体のサイズは textarea に合わせる
+				containerRef.style.height = `${height}px`;
+				containerRef.style.width = `${width}px`;
+			}
+			// display-text / link-text はコンテナにフィットさせる
+			if (displayTextRef) {
+				displayTextRef.style.height = '100%';
+				displayTextRef.style.width = '100%';
+			}
+			if (linkTextRef) {
+				linkTextRef.style.height = '100%';
+				linkTextRef.style.width = '100%';
+			}
+		};
+
+		// textarea の実際の表示サイズを取得するヘルパー（border を含む）
+		const getTextareaRect = () => {
+			if (!textareaRef) return { height: 0, width: 0 };
+			const rect = textareaRef.getBoundingClientRect();
+			return { height: rect.height, width: rect.width };
+		};
+
+		// 初期同期
+		{
+			const { height, width } = getTextareaRect();
+			syncSize(height, width);
+		}
+
+		// resizable のときは ResizeObserver で textarea の高さ変更を監視
+		if (resizable) {
+			resizeObserver = new ResizeObserver((entries) => {
+				for (const entry of entries) {
+					if (entry.target === textareaRef) {
+						// contentRect ではなく getBoundingClientRect() ベースで同期する
+						const { height, width } = getTextareaRect();
+						syncSize(height, width);
+					}
+				}
+			});
+			resizeObserver.observe(textareaRef);
+		} else {
+			// resizable=false のときは、初期高さだけ同期して監視はしない
+			if (resizeObserver) {
+				resizeObserver.disconnect();
+				resizeObserver = null;
+			}
+		}
+
+		return () => {
+			cleanup();
+		};
+	});
 </script>
 
 <div
+	bind:this={containerRef}
 	class="textarea
 	textarea--focus-{focusStyle}"
 	class:textarea--inline={inline}
@@ -413,7 +506,7 @@
 			{id}
 			{name}
 			bind:value
-			bind:this={ref}
+			bind:this={textareaRef}
 			{rows}
 			{placeholder}
 			{disabled}
