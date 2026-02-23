@@ -671,21 +671,14 @@
 	/* =============================================
  * 表示制御
  * ============================================= */
-	/* 
-	 * 表示ロジック:
-	 * - 通常モード（not-linkify）: フォーカス時はinputを表示、非フォーカス時はdisplay-textを表示
-	 * - linkifyモード: フォーカス時はinputを表示、非フォーカス時はlink-textを表示
-	 * - type=password: 常にinputを表示（display-textは常に非表示）
-	 */
-
-	/* 非フォーカス時: inputを不可視化（通常モード・linkifyモード共通、passwordは除外） */
-	.input:not(.input--focused):not(.input--type-password) input {
+	/* 非フォーカス時: inputを不可視化d */
+	.input:not(.input--focused) input {
 		color: transparent;
 		caret-color: transparent;
 		text-shadow: none;
 	}
 
-	/* フォーカス時: display-textを非表示（通常モード・linkifyモード共通） */
+	/* フォーカス時: display-textを非表示 */
 	.input--focused .input__display-text {
 		opacity: 0;
 	}
@@ -850,8 +843,8 @@
 
 	/* type-password: セキュリティのため常にinputを表示（display-textは非表示） */
 	.input--type-password {
-		/* inputを常に表示（通常の表示制御を上書き） */
-		input {
+		/* inputを常に表示（表示制御の非フォーカス時の不可視化を上書き） */
+		&:not(.input--focused) input {
 			color: inherit;
 			caret-color: inherit;
 			text-shadow: inherit;
