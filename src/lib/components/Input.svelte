@@ -459,6 +459,23 @@
 		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
 		const stepValue = step ?? 1;
 		let newValue = currentValue + delta * stepValue;
+
+		// 浮動小数点誤差を修正
+		if (decimalPlaces !== null) {
+			// decimalPlaces が指定されている場合は、その桁数で丸める
+			const factor = Math.pow(10, decimalPlaces);
+			newValue = Math.round(newValue * factor) / factor;
+		} else {
+			// step の小数点以下の桁数を考慮して丸める
+			const stepDecimalPlaces = stepValue.toString().includes('.')
+				? stepValue.toString().split('.')[1].length
+				: 0;
+			if (stepDecimalPlaces > 0) {
+				const factor = Math.pow(10, stepDecimalPlaces);
+				newValue = Math.round(newValue * factor) / factor;
+			}
+		}
+
 		if (max !== null && newValue > max) newValue = max;
 		if (min !== null && newValue < min) newValue = min;
 		value = newValue;
