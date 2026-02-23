@@ -410,40 +410,19 @@
 		isComposing = false;
 	};
 
-	// =========================================================================
-	// $derived
-	// =========================================================================
-	const hasDisplayValue = $derived(
-		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
-	);
+	// password 表示/非表示切り替え
 
-	const displayValue = $derived.by(() => {
-		if (!hasDisplayValue) {
-			if (inline) {
-				return '&nbsp;';
-			}
-			return '';
-		}
-		if (type === 'number' && typeof value === 'number') {
-			return value.toLocaleString();
-		}
-		return convertToHtml(value);
-	});
-
-	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
-
-	const resolvedType = $derived.by(() => {
-		if (type === 'password' && enablePasswordVisibilityToggle) {
-			return isPasswordVisible ? 'text' : 'password';
-		}
-		return type;
-	});
-
-	const togglePasswordVisibility = (event: MouseEvent) => {
+	const togglePasswordVisibility = () => {
 		if (disabled || readonly) return;
 		isPasswordVisible = !isPasswordVisible;
 		ref?.focus();
 	};
+
+	// number stepper (increment/decrement)
+
+	const handleIncrement = () => startNumberStepper(1);
+	const handleDecrement = () => startNumberStepper(-1);
+	const handleNumberStepperStop = () => stopNumberStepper();
 
 	const clearNumberStepperTimers = () => {
 		if (numberStepperTimeoutId !== null) {
@@ -456,87 +435,53 @@
 		}
 	};
 
-	const incrementNumberOnce = () => {
+	const startNumberStepper = (delta: number) => {
+		if (disabled || readonly || type !== 'number') return;
+		adjustNumber(delta);
+		clearNumberStepperTimers();
+		numberStepperTimeoutId = setTimeout(() => {
+			numberStepperIntervalId = setInterval(() => adjustNumber(delta), 100);
+		}, 400);
+	};
+
+	const stopNumberStepper = () => {
+		if (disabled || readonly || type !== 'number') return;
+		clearNumberStepperTimers();
+	};
+
+	const adjustNumber = (delta: number) => {
 		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
 		const stepValue = step ?? 1;
-		let newValue = currentValue + stepValue;
-		if (max !== null && newValue > max) {
-			newValue = max;
-		}
+		let newValue = currentValue + delta * stepValue;
+		if (max !== null && newValue > max) newValue = max;
+		if (min !== null && newValue < min) newValue = min;
 		value = newValue;
 		onchange?.(newValue);
 	};
 
-	const decrementNumberOnce = () => {
-		const currentValue = typeof value === 'number' ? value : Number(value) || 0;
-		const stepValue = step ?? 1;
-		let newValue = currentValue - stepValue;
-		if (min !== null && newValue < min) {
-			newValue = min;
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	// display value
+	const hasDisplayValue = $derived(
+		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
+	);
+	const displayValue = $derived.by(() => {
+		if (!hasDisplayValue) return inline ? '&nbsp;' : '';
+		if (type === 'number' && typeof value === 'number') return value.toLocaleString();
+		return convertToHtml(value);
+	});
+
+	// type & linkify
+	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
+	const resolvedType = $derived.by(() => {
+		if (type === 'password' && enablePasswordVisibilityToggle) {
+			return isPasswordVisible ? 'text' : 'password';
 		}
-		value = newValue;
-		onchange?.(newValue);
-	};
+		return type;
+	});
 
-	const handleIncrementMouseDown = (event: MouseEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		incrementNumberOnce();
-		clearNumberStepperTimers();
-		numberStepperTimeoutId = setTimeout(() => {
-			numberStepperIntervalId = setInterval(() => {
-				incrementNumberOnce();
-			}, 100);
-		}, 400);
-	};
-
-	const handleDecrementMouseDown = (event: MouseEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		decrementNumberOnce();
-		clearNumberStepperTimers();
-		numberStepperTimeoutId = setTimeout(() => {
-			numberStepperIntervalId = setInterval(() => {
-				decrementNumberOnce();
-			}, 100);
-		}, 400);
-	};
-
-	const handleNumberStepperMouseUp = (event: MouseEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		clearNumberStepperTimers();
-	};
-
-	const handleIncrementTouchStart = (event: TouchEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		incrementNumberOnce();
-		clearNumberStepperTimers();
-		numberStepperTimeoutId = setTimeout(() => {
-			numberStepperIntervalId = setInterval(() => {
-				incrementNumberOnce();
-			}, 100);
-		}, 400);
-	};
-
-	const handleDecrementTouchStart = (event: TouchEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		decrementNumberOnce();
-		clearNumberStepperTimers();
-		numberStepperTimeoutId = setTimeout(() => {
-			numberStepperIntervalId = setInterval(() => {
-				decrementNumberOnce();
-			}, 100);
-		}, 400);
-	};
-
-	const handleNumberStepperTouchEnd = (event: TouchEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		clearNumberStepperTimers();
-	};
-
-	const handleNumberStepperTouchCancel = (event: TouchEvent) => {
-		if (disabled || readonly || type !== 'number') return;
-		clearNumberStepperTimers();
-	};
-
+	// password toggle
 	const isPasswordToggleActive = $derived(
 		type === 'password' &&
 			enablePasswordVisibilityToggle &&
@@ -545,12 +490,12 @@
 			!disabled &&
 			!readonly
 	);
-
 	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
 	const passwordToggleAriaLabel = $derived(
 		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
 	);
 
+	// number stepper (left)
 	const isNumberStepperActiveLeft = $derived(
 		type === 'number' &&
 			enableNumberStepperButtons &&
@@ -559,56 +504,32 @@
 			!disabled &&
 			!readonly
 	);
-
 	const resolvedLeftIcon = $derived(isNumberStepperActiveLeft ? 'remove' : leftIcon);
 	const isLeftNumberStepper = $derived(resolvedLeftIcon === 'remove');
 	const resolvedLeftIconClick = $derived(isLeftNumberStepper ? undefined : onLeftIconClick);
 	const resolvedLeftIconMouseDown = $derived(
-		isLeftNumberStepper
-			? handleDecrementMouseDown
-			: onLeftIconMouseDown
-				? onLeftIconMouseDown
-				: undefined
+		isLeftNumberStepper ? handleDecrement : onLeftIconMouseDown
 	);
 	const resolvedLeftIconMouseUp = $derived(
-		isLeftNumberStepper
-			? handleNumberStepperMouseUp
-			: onLeftIconMouseUp
-				? onLeftIconMouseUp
-				: undefined
+		isLeftNumberStepper ? handleNumberStepperStop : onLeftIconMouseUp
 	);
 	const resolvedLeftIconMouseLeave = $derived(
-		isLeftNumberStepper
-			? handleNumberStepperMouseUp
-			: onLeftIconMouseLeave
-				? onLeftIconMouseLeave
-				: undefined
+		isLeftNumberStepper ? handleNumberStepperStop : onLeftIconMouseLeave
 	);
 	const resolvedLeftIconTouchStart = $derived(
-		isLeftNumberStepper
-			? handleDecrementTouchStart
-			: onLeftIconTouchStart
-				? onLeftIconTouchStart
-				: undefined
+		isLeftNumberStepper ? handleDecrement : onLeftIconTouchStart
 	);
 	const resolvedLeftIconTouchEnd = $derived(
-		isLeftNumberStepper
-			? handleNumberStepperTouchEnd
-			: onLeftIconTouchEnd
-				? onLeftIconTouchEnd
-				: undefined
+		isLeftNumberStepper ? handleNumberStepperStop : onLeftIconTouchEnd
 	);
 	const resolvedLeftIconTouchCancel = $derived(
-		isLeftNumberStepper
-			? handleNumberStepperTouchCancel
-			: onLeftIconTouchCancel
-				? onLeftIconTouchCancel
-				: undefined
+		isLeftNumberStepper ? handleNumberStepperStop : onLeftIconTouchCancel
 	);
 	const resolvedLeftIconAriaLabel = $derived(
 		isLeftNumberStepper ? t('input.decrement') : leftIconAriaLabel
 	);
 
+	// number stepper (right) / password toggle
 	const isNumberStepperActiveRight = $derived(
 		type === 'number' &&
 			enableNumberStepperButtons &&
@@ -617,7 +538,6 @@
 			!disabled &&
 			!readonly
 	);
-
 	const resolvedRightIcon = $derived(
 		isPasswordToggleActive ? passwordToggleIcon : isNumberStepperActiveRight ? 'add' : rightIcon
 	);
@@ -630,46 +550,22 @@
 				: onRightIconClick
 	);
 	const resolvedRightIconMouseDown = $derived(
-		isRightNumberStepper
-			? handleIncrementMouseDown
-			: onRightIconMouseDown
-				? onRightIconMouseDown
-				: undefined
+		isRightNumberStepper ? handleIncrement : onRightIconMouseDown
 	);
 	const resolvedRightIconMouseUp = $derived(
-		isRightNumberStepper
-			? handleNumberStepperMouseUp
-			: onRightIconMouseUp
-				? onRightIconMouseUp
-				: undefined
+		isRightNumberStepper ? handleNumberStepperStop : onRightIconMouseUp
 	);
 	const resolvedRightIconMouseLeave = $derived(
-		isRightNumberStepper
-			? handleNumberStepperMouseUp
-			: onRightIconMouseLeave
-				? onRightIconMouseLeave
-				: undefined
+		isRightNumberStepper ? handleNumberStepperStop : onRightIconMouseLeave
 	);
 	const resolvedRightIconTouchStart = $derived(
-		isRightNumberStepper
-			? handleIncrementTouchStart
-			: onRightIconTouchStart
-				? onRightIconTouchStart
-				: undefined
+		isRightNumberStepper ? handleIncrement : onRightIconTouchStart
 	);
 	const resolvedRightIconTouchEnd = $derived(
-		isRightNumberStepper
-			? handleNumberStepperTouchEnd
-			: onRightIconTouchEnd
-				? onRightIconTouchEnd
-				: undefined
+		isRightNumberStepper ? handleNumberStepperStop : onRightIconTouchEnd
 	);
 	const resolvedRightIconTouchCancel = $derived(
-		isRightNumberStepper
-			? handleNumberStepperTouchCancel
-			: onRightIconTouchCancel
-				? onRightIconTouchCancel
-				: undefined
+		isRightNumberStepper ? handleNumberStepperStop : onRightIconTouchCancel
 	);
 	const resolvedRightIconAriaLabel = $derived(
 		isPasswordToggleActive
@@ -679,6 +575,7 @@
 				: rightIconAriaLabel
 	);
 
+	// icon visibility & clickability
 	const hasLeftIcon = $derived(!!resolvedLeftIcon);
 	const hasLeftIconClickable = $derived(
 		!!resolvedLeftIcon &&
