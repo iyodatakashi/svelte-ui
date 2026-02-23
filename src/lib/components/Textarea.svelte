@@ -400,7 +400,6 @@
 	data-testid="textarea"
 	style={!inline ? `max-height: ${maxHeightStyle};` : ''}
 >
-	<!-- autoResize時の表示用要素（HTMLレンダリングで高さ調整） -->
 	<div
 		bind:this={displayTextRef}
 		class="textarea__display-text"
@@ -523,6 +522,8 @@
 	.textarea__link-text {
 		display: block;
 		width: 100%;
+		min-height: var(--svelte-ui-textarea-min-height);
+		padding: var(--svelte-ui-textarea-padding);
 		background: inherit;
 		border: inherit;
 		font-size: inherit;
@@ -570,14 +571,14 @@
 	}
 
 	textarea {
-		position: absolute;
-		top: 0;
-		left: 0;
 		width: 100%;
-		height: 100%;
-		padding: inherit;
-		background: transparent;
+		height: auto;
+		min-height: var(--svelte-ui-textarea-min-height);
+		padding: var(--svelte-ui-textarea-padding);
+		background-color: var(--svelte-ui-textarea-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
 		border: none;
+		border-radius: var(--svelte-ui-textarea-border-radius);
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -610,18 +611,9 @@
 
 	.textarea--auto-resize {
 		textarea {
+			padding: inherit;
+			background: transparent;
 			overflow-y: auto;
-		}
-	}
-
-	.textarea:not(.textarea--auto-resize) {
-		.textarea__display-text {
-			display: none;
-		}
-
-		textarea {
-			position: static;
-			height: auto;
 		}
 	}
 
@@ -726,34 +718,6 @@
 		pointer-events: none;
 	}
 
-	/* =============================================
- * デザインバリアント：default
- * ============================================= */
-	.textarea:not(.textarea--inline) {
-		.textarea__display-text,
-		.textarea__link-text,
-		textarea {
-			min-height: var(--svelte-ui-textarea-min-height);
-			padding: var(--svelte-ui-textarea-padding);
-		}
-
-		textarea {
-			position: static;
-			background-color: var(--svelte-ui-textarea-bg);
-			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
-			border: none;
-			border-radius: var(--svelte-ui-textarea-border-radius);
-		}
-
-		&.textarea--clearable {
-			textarea,
-			.textarea__display-text,
-			.textarea__link-text {
-				padding-right: var(--svelte-ui-textarea-icon-space);
-			}
-		}
-	}
-
 	/* linkify=true かつフォーカスがないときは、textarea のテキストカラーだけ透明にして二重描画を防ぐ
 	 * placeholder の色は textarea::placeholder 側で指定しているため、この指定の影響を受けない
 	 */
@@ -776,6 +740,29 @@
  * デザインバリアント：inline
  * ============================================= */
 	.textarea--inline {
+		.textarea__display-text,
+		.textarea__link-text,
+		textarea {
+			min-height: auto;
+			padding-top: 0;
+			padding-bottom: 0;
+			padding-left: 0;
+		}
+
+		textarea {
+			padding: inherit;
+			background: transparent;
+			border: none;
+			font-size: inherit;
+			font-weight: inherit;
+			color: inherit;
+			line-height: inherit;
+			text-align: inherit;
+			-webkit-appearance: none;
+			-moz-appearance: none;
+			appearance: none;
+		}
+
 		.textarea__display-text {
 			opacity: 1;
 		}
