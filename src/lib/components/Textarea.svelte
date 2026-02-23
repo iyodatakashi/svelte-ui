@@ -187,6 +187,32 @@
 	let resizeObserver: ResizeObserver | null = null;
 
 	// =========================================================================
+	// $effect
+	// =========================================================================
+	// autoResize=false のとき、コンポーネント全体のサイズに display-text / link-text を合わせる
+	$effect(() => {
+		if (!containerRef || !displayTextRef || !textareaRef) {
+			cleanupSizeSync();
+			return;
+		}
+
+		// autoResize=true のときは、サイズ同期を行わず従来の挙動を維持
+		if (autoResize) {
+			cleanupSizeSync();
+			return;
+		}
+
+		// 初期同期
+		syncSizeFromTextarea();
+		// resizable=true のときにのみ ResizeObserver をセットアップ
+		setupResizeObserver();
+
+		return () => {
+			cleanupSizeSync();
+		};
+	});
+
+	// =========================================================================
 	// Methods
 	// =========================================================================
 	const clear = (): void => {
@@ -346,68 +372,37 @@
 		}
 	};
 
-	// =========================================================================
-	// $derived
-	// =========================================================================
-	const minHeightStyle = $derived(getStyleFromNumber(minHeight));
-	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
-	const widthStyle = $derived(getStyleFromNumber(width));
+	// resizable=true のときに textarea のサイズ変更を監視
+	const setupResizeObserver = () => {
+		if (!textareaRef) return;
 
-	// HTML表示用の値（autoResize時の高さ調整用）
-	const htmlValue = $derived.by(() => {
-		const normalizedValue = value ?? '';
-		if (normalizedValue !== '') {
-			const converted = convertToHtml(normalizedValue);
-			const html = String(converted ?? '');
-			// 最後の行が空だったら空白を追加（高さ調整のため）
-			const lines = html.split('<br />');
-			if (lines.length > 0 && lines[lines.length - 1] === '') {
-				return html + '&nbsp;';
+		// resizable でなければ監視は不要
+		if (!resizable) {
+			if (resizeObserver) {
+				resizeObserver.disconnect();
+				resizeObserver = null;
 			}
-			return html;
-		} else {
-			// inline かつ value が空のとき
-			// 1行分の高さを確保するためにダミーの &nbsp; を入れる
-			if (inline) {
-				return '&nbsp;';
-			}
-			return '';
+			return;
 		}
-	});
 
-	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
-	const linkHtmlValue = $derived.by(() => {
-		const normalizedValue = value ?? '';
-		if (!linkify || normalizedValue === '') {
-			return '';
-		}
-		const result = convertToHtmlWithLink(normalizedValue);
-		return String(result ?? '');
-	});
-
-	// display-text / link-text とコンポーネント全体のサイズ同期を解除
-	const cleanupSizeSync = () => {
+		// 既存のオブザーバがあれば一旦解除
 		if (resizeObserver) {
 			resizeObserver.disconnect();
 			resizeObserver = null;
 		}
-		if (containerRef) {
-			containerRef.style.removeProperty('height');
-			// width は width プロップで制御されるため、ここでは削除しない
-		}
-		if (displayTextRef) {
-			displayTextRef.style.removeProperty('height');
-			displayTextRef.style.removeProperty('width');
-		}
-		if (linkTextRef) {
-			linkTextRef.style.removeProperty('height');
-			linkTextRef.style.removeProperty('width');
-		}
+
+		resizeObserver = new ResizeObserver(() => {
+			// ユーザーのリサイズ後は textarea の幅でコンテナ幅を上書きする
+			syncSizeFromTextarea({ forceWidth: true });
+		});
+		resizeObserver.observe(textareaRef);
 	};
 
-	// textarea のサイズに合わせてコンポーネント全体 / display-text / link-text のサイズを同期
-	// forceWidth=true のときは、width プロップの有無に関係なく textarea の幅で上書きする
-	const syncSizeFromTextarea = (forceWidth: boolean = false) => {
+	// --------------------------------
+	// display-text / link-text と textarea のサイズ同期
+	// --------------------------------
+	// サイズ同期
+	const syncSizeFromTextarea = ({ forceWidth = false }: { forceWidth?: boolean } = {}) => {
 		if (!containerRef || !displayTextRef || !textareaRef) return;
 		const rect = textareaRef.getBoundingClientRect();
 		const height = rect.height;
@@ -432,53 +427,69 @@
 		}
 	};
 
-	// resizable=true のときに textarea のサイズ変更を監視
-	const setupResizeObserver = () => {
-		if (!textareaRef) return;
-
-		// resizable でなければ監視は不要
-		if (!resizable) {
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-				resizeObserver = null;
-			}
-			return;
-		}
-
-		// 既存のオブザーバがあれば一旦解除
+	// サイズ同期を解除
+	const cleanupSizeSync = () => {
 		if (resizeObserver) {
 			resizeObserver.disconnect();
 			resizeObserver = null;
 		}
-
-		resizeObserver = new ResizeObserver(() => {
-			// ユーザーのリサイズ後は textarea の幅でコンテナ幅を上書きする
-			syncSizeFromTextarea(true);
-		});
-		resizeObserver.observe(textareaRef);
+		if (containerRef) {
+			containerRef.style.removeProperty('height');
+			// width は width プロップで制御されるため、ここでは削除しない
+		}
+		if (displayTextRef) {
+			displayTextRef.style.removeProperty('height');
+			displayTextRef.style.removeProperty('width');
+		}
+		if (linkTextRef) {
+			linkTextRef.style.removeProperty('height');
+			linkTextRef.style.removeProperty('width');
+		}
 	};
 
-	// autoResize=false のとき、コンポーネント全体のサイズに display-text / link-text を合わせる
-	$effect(() => {
-		if (!containerRef || !displayTextRef || !textareaRef) {
-			cleanupSizeSync();
-			return;
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	// --------------------------------
+	// display & link value
+	// --------------------------------
+	// HTML表示用の値（autoResize時の高さ調整用）
+	const displayValue = $derived.by(() => {
+		const normalizedValue = value ?? '';
+		if (normalizedValue !== '') {
+			const converted = convertToHtml(normalizedValue);
+			const html = String(converted ?? '');
+			// 最後の行が空だったら空白を追加（高さ調整のため）
+			const lines = html.split('<br />');
+			if (lines.length > 0 && lines[lines.length - 1] === '') {
+				return html + '&nbsp;';
+			}
+			return html;
+		} else {
+			// inline かつ value が空のとき
+			// 1行分の高さを確保するためにダミーの &nbsp; を入れる
+			if (inline) {
+				return '&nbsp;';
+			}
+			return '';
 		}
 
-		// autoResize=true のときは、サイズ同期を行わず従来の挙動を維持
-		if (autoResize) {
-			cleanupSizeSync();
-			return;
+		// --------------------------------
+		// style from number
+		// --------------------------------
+		const minHeightStyle = $derived(getStyleFromNumber(minHeight));
+		const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
+		const widthStyle = $derived(getStyleFromNumber(width));
+	});
+
+	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
+	const linkHtmlValue = $derived.by(() => {
+		const normalizedValue = value ?? '';
+		if (!linkify || normalizedValue === '') {
+			return '';
 		}
-
-		// 初期同期
-		syncSizeFromTextarea();
-		// resizable=true のときにのみ ResizeObserver をセットアップ
-		setupResizeObserver();
-
-		return () => {
-			cleanupSizeSync();
-		};
+		const result = convertToHtmlWithLink(normalizedValue);
+		return String(result ?? '');
 	});
 </script>
 
@@ -504,7 +515,7 @@
 		class="textarea__display-text"
 		style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
 	>
-		{@html htmlValue}
+		{@html displayValue}
 	</div>
 	<div class="textarea__wrapper">
 		<textarea
