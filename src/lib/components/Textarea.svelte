@@ -624,7 +624,6 @@
 		color: inherit;
 		line-height: inherit;
 		text-align: inherit;
-		opacity: 0;
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
@@ -676,14 +675,8 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
-		padding: inherit;
 		pointer-events: none;
 		z-index: 1;
-	}
-
-	.textarea__link-text :global(a) {
-		pointer-events: auto;
-		text-decoration: underline;
 	}
 
 	.textarea--clearable .textarea__clear-button {
@@ -705,29 +698,6 @@
 		textarea {
 			height: 100%;
 			overflow-y: auto;
-		}
-	}
-
-	/* =============================================
- * 機能バリエーション
- * ============================================= */
-	.textarea--clearable {
-		textarea,
-		.textarea__display-text,
-		.textarea__link-text {
-			padding-right: var(--svelte-ui-textarea-icon-space);
-		}
-	}
-
-	@media (hover: hover) {
-		.textarea--clearable:hover .textarea__clear-button {
-			opacity: 1;
-		}
-	}
-
-	@media (hover: none) {
-		.textarea--clearable .textarea__clear-button {
-			opacity: 1;
 		}
 	}
 
@@ -782,54 +752,78 @@
 	}
 
 	/* =============================================
-	 * 表示切り替え（フォーカス時・非inline）
+	 * 表示切り替え
 	 * ============================================= */
-	.textarea--focused,
-	.textarea:not(.textarea--inline) {
-		.textarea__display-text {
-			opacity: 0;
-		}
 
-		textarea {
-			opacity: 1;
-		}
-	}
-
-	/* linkify=true かつ非 inline のときは、display-text は常に非表示（レイアウトだけ保持） */
-	.textarea--linkify:not(.textarea--inline) .textarea__display-text {
-		opacity: 0;
-	}
-
-	/* フォーカス時はリンク用オーバーレイも非表示（opacity: 0）にして、リンクが反応しないようにする */
-	.textarea--focused .textarea__link-text {
-		opacity: 0;
-	}
-
-	.textarea--focused .textarea__link-text :global(a) {
-		pointer-events: none;
-	}
-
-	/* linkify=true かつフォーカスがないときは、textarea のテキストカラーだけ透明にして二重描画を防ぐ
-	 * placeholder の色は textarea::placeholder 側で指定しているため、この指定の影響を受けない
-	 */
-	.textarea--linkify:not(.textarea--focused) textarea {
+	.textarea:not(.textarea--focused) textarea {
 		color: transparent;
 		caret-color: transparent;
 		text-shadow: none;
 	}
 
+	.textarea--focused {
+		.textarea__display-text {
+			opacity: 0;
+		}
+	}
+
 	/* =============================================
- * デザインバリアント：rounded
+ * 機能バリエーション
  * ============================================= */
+	/* clearable */
+	.textarea--clearable {
+		textarea,
+		.textarea__display-text,
+		.textarea__link-text {
+			padding-right: var(--svelte-ui-textarea-icon-space);
+		}
+	}
+
+	@media (hover: hover) {
+		.textarea--clearable:hover .textarea__clear-button {
+			opacity: 1;
+		}
+	}
+
+	@media (hover: none) {
+		.textarea--clearable .textarea__clear-button {
+			opacity: 1;
+		}
+	}
+
+	/* linkify */
+	/* フォーカス時はリンク用オーバーレイも非表示（opacity: 0）にして、リンクが反応しないようにする */
+	.textarea--linkify {
+		.textarea__display-text {
+			opacity: 0;
+		}
+
+		.textarea__link-text :global(a) {
+			pointer-events: auto;
+		}
+
+		&.textarea--focused {
+			.textarea__link-text {
+				opacity: 0;
+			}
+
+			:global(a) {
+				pointer-events: none;
+			}
+		}
+	}
+
+	/* =============================================
+ * デザインバリエーション
+ * ============================================= */
+	/* rounded */
 	.textarea--rounded:not(.textarea--inline) {
 		textarea {
 			border-radius: var(--svelte-ui-textarea-border-radius-rounded);
 		}
 	}
 
-	/* =============================================
- * デザインバリアント：inline
- * ============================================= */
+	/* inline */
 	.textarea--inline {
 		.textarea__display-text,
 		.textarea__link-text,
@@ -875,14 +869,5 @@
 		&.textarea--clearable .textarea__clear-button {
 			top: var(--svelte-ui-textarea-icon-top-inline);
 		}
-	}
-
-	/* inline + linkify のときは、display-text を常に隠し、textarea を常に表示 */
-	.textarea--inline.textarea--linkify .textarea__display-text {
-		opacity: 0;
-	}
-
-	.textarea--inline.textarea--linkify textarea {
-		opacity: 1;
 	}
 </style>
