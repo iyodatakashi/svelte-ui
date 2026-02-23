@@ -57,6 +57,7 @@
 		leftIcon?: string;
 		leftIconAriaLabel?: string;
 		rightIconAriaLabel?: string;
+		enablePasswordVisibilityToggle?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -151,6 +152,7 @@
 		leftIcon = undefined,
 		leftIconAriaLabel = '左アイコン',
 		rightIconAriaLabel = '右アイコン',
+		enablePasswordVisibilityToggle = false,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -213,6 +215,7 @@
 	let ref: HTMLInputElement | undefined = $state();
 	let isFocused: boolean = $state(false);
 	let isComposing: boolean = $state(false);
+	let isPasswordVisible: boolean = $state(false);
 
 	// =========================================================================
 	// Methods
@@ -397,6 +400,45 @@
 
 	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
 
+	const resolvedType = $derived.by(() => {
+		if (type === 'password' && enablePasswordVisibilityToggle) {
+			return isPasswordVisible ? 'text' : 'password';
+		}
+		return type;
+	});
+
+	const togglePasswordVisibility = (event: MouseEvent) => {
+		if (disabled || readonly) return;
+		event.stopPropagation();
+		isPasswordVisible = !isPasswordVisible;
+		ref?.focus();
+	};
+
+	const isPasswordToggleActive = $derived(
+		type === 'password' &&
+			enablePasswordVisibilityToggle &&
+			!rightIcon &&
+			!onRightIconClick &&
+			!disabled &&
+			!readonly
+	);
+
+	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
+	const passwordToggleAriaLabel = $derived(
+		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
+	);
+
+	const resolvedRightIcon = $derived(isPasswordToggleActive ? passwordToggleIcon : rightIcon);
+	const resolvedRightIconClick = $derived(
+		isPasswordToggleActive ? togglePasswordVisibility : onRightIconClick
+	);
+	const resolvedRightIconAriaLabel = $derived(
+		isPasswordToggleActive ? passwordToggleAriaLabel : rightIconAriaLabel
+	);
+
+	const hasRightIcon = $derived(!!resolvedRightIcon);
+	const hasRightIconClickable = $derived(!!resolvedRightIcon && !!resolvedRightIconClick);
+
 	const linkHtmlValue = $derived.by(() => {
 		if (!isLinkifyActive) return '';
 		const result = convertToHtmlWithLink(value);
@@ -411,16 +453,16 @@
 <div
 	class="input
 	input--focus-{focusStyle}
-	input--type-{type}"
+	input--type-{resolvedType}"
 	class:input--inline={inline}
 	class:input--linkify={isLinkifyActive}
 	class:input--auto-resize={inline}
 	class:input--full-width={fullWidth}
 	class:input--clearable={clearable}
-	class:input--has-right-icon={!!rightIcon}
+	class:input--has-right-icon={hasRightIcon}
 	class:input--has-left-icon={!!leftIcon}
 	class:input--has-left-icon-clickable={!!leftIcon && !!onLeftIconClick}
-	class:input--has-right-icon-clickable={!!rightIcon && !!onRightIconClick}
+	class:input--has-right-icon-clickable={hasRightIconClickable}
 	class:input--rounded={rounded}
 	class:input--disabled={disabled}
 	class:input--readonly={readonly}
@@ -446,7 +488,7 @@
 			{name}
 			bind:value
 			bind:this={ref}
-			{type}
+			type={resolvedType}
 			style={customStyle}
 			{placeholder}
 			{autocomplete}
@@ -547,18 +589,18 @@
 	{/if}
 
 	<!-- Right Icon -->
-	{#if rightIcon}
+	{#if hasRightIcon}
 		<div class="input__icon-right">
-			{#if onRightIconClick}
+			{#if resolvedRightIconClick}
 				<IconButton
-					ariaLabel={rightIconAriaLabel}
+					ariaLabel={resolvedRightIconAriaLabel}
 					color="var(--svelte-ui-input-icon-color)"
-					onclick={onRightIconClick}
+					onclick={resolvedRightIconClick}
 					tabindex={-1}
 					{iconFilled}
 					{iconWeight}
 				>
-					{rightIcon}
+					{resolvedRightIcon}
 				</IconButton>
 			{:else}
 				<div class="input__normal-icon">
@@ -569,7 +611,7 @@
 						opticalSize={iconOpticalSize}
 						variant={iconVariant}
 					>
-						{rightIcon}
+						{resolvedRightIcon}
 					</Icon>
 				</div>
 			{/if}
@@ -613,7 +655,7 @@
 		width: 100%;
 		min-width: 1em;
 		min-height: var(--svelte-ui-input-height);
-		padding: inherit;
+		padding: var(--svelte-ui-input-padding);
 		background-color: var(--svelte-ui-input-bg);
 		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 		border: none;

@@ -24,7 +24,9 @@ export const ja = {
 		optionsList: 'オプション一覧'
 	},
 	input: {
-		clear: 'クリア'
+		clear: 'クリア',
+		show_password: 'パスワードを表示',
+		hide_password: 'パスワードを非表示'
 	},
 	pagination: {
 		prevPage: '前のページへ移動',

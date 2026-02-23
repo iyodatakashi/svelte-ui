@@ -24,7 +24,9 @@ export const en = {
 		optionsList: 'Options list'
 	},
 	input: {
-		clear: 'Clear'
+		clear: 'Clear',
+		show_password: 'Show password',
+		hide_password: 'Hide password'
 	},
 	pagination: {
 		prevPage: 'Go to previous page',
