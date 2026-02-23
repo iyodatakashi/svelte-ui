@@ -410,16 +410,18 @@
 		isComposing = false;
 	};
 
+	// --------------------------------
 	// password 表示/非表示切り替え
-
+	// --------------------------------
 	const togglePasswordVisibility = () => {
 		if (disabled || readonly) return;
 		isPasswordVisible = !isPasswordVisible;
 		ref?.focus();
 	};
 
+	// --------------------------------
 	// number stepper (increment/decrement)
-
+	// --------------------------------
 	const handleIncrement = () => startNumberStepper(1);
 	const handleDecrement = () => startNumberStepper(-1);
 	const handleNumberStepperStop = () => stopNumberStepper();
@@ -462,7 +464,9 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
+	// --------------------------------
 	// display value
+	// --------------------------------
 	const hasDisplayValue = $derived(
 		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
 	);
@@ -472,7 +476,9 @@
 		return convertToHtml(value);
 	});
 
+	// --------------------------------
 	// type & linkify
+	// --------------------------------
 	const isLinkifyActive = $derived(linkify && (type === 'text' || type === 'url'));
 	const resolvedType = $derived.by(() => {
 		if (type === 'password' && enablePasswordVisibilityToggle) {
@@ -481,22 +487,10 @@
 		return type;
 	});
 
-	// password toggle
-	const isPasswordToggleActive = $derived(
-		type === 'password' &&
-			enablePasswordVisibilityToggle &&
-			!rightIcon &&
-			!onRightIconClick &&
-			!disabled &&
-			!readonly
-	);
-	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
-	const passwordToggleAriaLabel = $derived(
-		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
-	);
-
-	// number stepper (left)
-	const isNumberStepperActiveLeft = $derived(
+	// --------------------------------
+	// left icon resolution & state
+	// --------------------------------
+	const isLeftNumberStepper = $derived(
 		type === 'number' &&
 			enableNumberStepperButtons &&
 			!leftIcon &&
@@ -504,8 +498,7 @@
 			!disabled &&
 			!readonly
 	);
-	const resolvedLeftIcon = $derived(isNumberStepperActiveLeft ? 'remove' : leftIcon);
-	const isLeftNumberStepper = $derived(resolvedLeftIcon === 'remove');
+	const resolvedLeftIcon = $derived(isLeftNumberStepper ? 'remove' : leftIcon);
 	const resolvedLeftIconClick = $derived(isLeftNumberStepper ? undefined : onLeftIconClick);
 	const resolvedLeftIconMouseDown = $derived(
 		isLeftNumberStepper ? handleDecrement : onLeftIconMouseDown
@@ -529,9 +522,24 @@
 		isLeftNumberStepper ? t('input.decrement') : leftIconAriaLabel
 	);
 
-	// number stepper (right) / password toggle
-	const isNumberStepperActiveRight = $derived(
-		type === 'number' &&
+	// --------------------------------
+	// right icon resolution & state
+	// --------------------------------
+	const isPasswordToggleActive = $derived(
+		type === 'password' &&
+			enablePasswordVisibilityToggle &&
+			!rightIcon &&
+			!onRightIconClick &&
+			!disabled &&
+			!readonly
+	);
+	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
+	const passwordToggleAriaLabel = $derived(
+		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
+	);
+	const isRightNumberStepper = $derived(
+		!isPasswordToggleActive &&
+			type === 'number' &&
 			enableNumberStepperButtons &&
 			!rightIcon &&
 			!onRightIconClick &&
@@ -539,9 +547,8 @@
 			!readonly
 	);
 	const resolvedRightIcon = $derived(
-		isPasswordToggleActive ? passwordToggleIcon : isNumberStepperActiveRight ? 'add' : rightIcon
+		isPasswordToggleActive ? passwordToggleIcon : isRightNumberStepper ? 'add' : rightIcon
 	);
-	const isRightNumberStepper = $derived(resolvedRightIcon === 'add' && !isPasswordToggleActive);
 	const resolvedRightIconClick = $derived(
 		isPasswordToggleActive
 			? togglePasswordVisibility
@@ -575,7 +582,6 @@
 				: rightIconAriaLabel
 	);
 
-	// icon visibility & clickability
 	const hasLeftIcon = $derived(!!resolvedLeftIcon);
 	const hasLeftIconClickable = $derived(
 		!!resolvedLeftIcon &&
@@ -587,6 +593,7 @@
 				!!resolvedLeftIconTouchEnd ||
 				!!resolvedLeftIconTouchCancel)
 	);
+
 	const hasRightIcon = $derived(!!resolvedRightIcon);
 	const hasRightIconClickable = $derived(
 		!!resolvedRightIcon &&
