@@ -163,8 +163,7 @@
 	--svelte-ui-surface-inverse-color: var(--base-800-transparent);
 
 	/* スケルトン色 */
-	--svelte-ui-skeleton-color: var(--base-200-transparent);
-	--svelte-ui-skeleton-shimmer-color: var(--white-300-transparent);
+	--svelte-ui-skeleton-color: var(--base-100-transparent);
 
 	/* UIカラー */
 	--svelte-ui-handle-color: #ffffff;
@@ -216,8 +215,7 @@
 	--svelte-ui-surface-inverse-color: var(--white-800-transparent);
 
 	/* スケルトン色 */
-	--svelte-ui-skeleton-color: var(--white-200-transparent);
-	--svelte-ui-skeleton-shimmer-color: var(--white-100-transparent);
+	--svelte-ui-skeleton-color: var(--white-100-transparent);
 
 	/* hover & select 効果 */
 	--svelte-ui-hover-overlay: var(--white-100-transparent);
