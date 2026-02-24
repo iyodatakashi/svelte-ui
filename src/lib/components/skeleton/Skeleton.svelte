@@ -123,19 +123,61 @@
 								{@const { type: _, width, height, radius, customStyle } = patternConfig}
 								<SkeletonBox {width} {height} {radius} {customStyle} {animated} />
 							{:else if patternConfig.type === 'heading'}
-								{@const { type: _, ...headingConfig } = patternConfig}
-								<SkeletonHeading {headingConfig} {animated} />
+								{@const { type: _, width, fontSize, customStyle } = patternConfig}
+								<SkeletonHeading {width} {fontSize} {customStyle} {animated} />
 							{:else if patternConfig.type === 'text'}
-								<SkeletonText textConfig={patternConfig} {animated} />
+								{@const { width, lines, fontSize, customStyle } = patternConfig}
+								<SkeletonText {width} {lines} {fontSize} {customStyle} {animated} />
 							{:else if patternConfig.type === 'avatar'}
+								{@const avatarImageSize = patternConfig.avatarImageConfig?.size}
+								{@const avatarImageRadius = patternConfig.avatarImageConfig?.radius}
+								{@const textWidth = patternConfig.textConfig?.width}
+								{@const lines = patternConfig.textConfig?.lines}
+								{@const fontSize = patternConfig.textConfig?.fontSize}
+								{@const showName = patternConfig.showName}
 								<div class="skeleton__user-list">
-									<SkeletonAvatar avatarConfig={patternConfig} {animated} />
+									<SkeletonAvatar
+										{avatarImageSize}
+										{avatarImageRadius}
+										{textWidth}
+										{lines}
+										{fontSize}
+										{showName}
+										{animated}
+									/>
 								</div>
 							{:else if patternConfig.type === 'media'}
-								<SkeletonMedia width={patternConfig.width} mediaConfig={patternConfig} {animated} />
+								{@const { width, layout } = patternConfig}
+								{@const textWidth = patternConfig.textConfig?.width}
+								{@const lines = patternConfig.textConfig?.lines}
+								{@const fontSize = patternConfig.textConfig?.fontSize}
+								{@const thumbnailWidth = patternConfig.thumbnailConfig?.width}
+								{@const thumbnailHeight = patternConfig.thumbnailConfig?.height}
+								{@const thumbnailAspectRatio = patternConfig.thumbnailConfig?.aspectRatio}
+								{@const thumbnailRadius = patternConfig.thumbnailConfig?.radius}
+								<SkeletonMedia
+									{width}
+									{layout}
+									{textWidth}
+									{lines}
+									{fontSize}
+									{thumbnailWidth}
+									{thumbnailHeight}
+									{thumbnailAspectRatio}
+									{thumbnailRadius}
+									{animated}
+								/>
 							{:else if patternConfig.type === 'button'}
+								{@const { width, height, radius, align, customStyle } = patternConfig}
 								<div class="skeleton__button">
-									<SkeletonButton buttonConfig={patternConfig} {animated} />
+									<SkeletonButton
+										{width}
+										{height}
+										{radius}
+										{align}
+										{customStyle}
+										{animated}
+									/>
 								</div>
 							{/if}
 						{/each}
