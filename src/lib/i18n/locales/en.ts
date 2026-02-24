@@ -21,7 +21,9 @@ export const en = {
 		maxFileSizeError: 'File size must be {{maxSize}}MB or less'
 	},
 	combobox: {
-		optionsList: 'Options list'
+		placeholder: 'Select an option',
+		optionsList: 'Options list',
+		noOptions: 'No matching options'
 	},
 	input: {
 		clear: 'Clear',

@@ -21,7 +21,9 @@ export const zhCn = {
 		maxFileSizeError: '文件大小必须为{{maxSize}}MB或更小'
 	},
 	combobox: {
-		optionsList: '选项列表'
+		placeholder: '请选择',
+		optionsList: '选项列表',
+		noOptions: '没有匹配的选项'
 	},
 	input: {
 		clear: '清除',

@@ -21,7 +21,9 @@ export const ja = {
 		maxFileSizeError: 'ファイルサイズは{{maxSize}}MB以下にしてください'
 	},
 	combobox: {
-		optionsList: 'オプション一覧'
+		placeholder: '選択してください',
+		optionsList: 'オプション一覧',
+		noOptions: '該当するオプションがありません'
 	},
 	input: {
 		clear: 'クリア',

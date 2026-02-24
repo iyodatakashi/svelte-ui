@@ -104,7 +104,7 @@
 		customStyle = '',
 		inline = false,
 		focusStyle = 'outline',
-		placeholder = '選択してください',
+		placeholder = t('combobox.placeholder'),
 		fullWidth = false,
 		minWidth = inline ? null : 120,
 		maxWidth = null,
@@ -503,7 +503,7 @@
 					</button>
 				</div>
 			{:else}
-				<div class="combobox__no-options">該当するオプションがありません</div>
+				<div class="combobox__no-options">{t('combobox.noOptions')}</div>
 			{/each}
 		</div>
 	</Popup>

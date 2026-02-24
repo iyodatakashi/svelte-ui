@@ -21,7 +21,9 @@ export const fr = {
 		maxFileSizeError: 'La taille du fichier doit être inférieure ou égale à {{maxSize}}MB'
 	},
 	combobox: {
-		optionsList: 'Liste des options'
+		placeholder: 'Sélectionnez une option',
+		optionsList: 'Liste des options',
+		noOptions: 'Aucune option correspondante'
 	},
 	input: {
 		clear: 'Effacer',
