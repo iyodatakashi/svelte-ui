@@ -143,7 +143,10 @@ test('Button click event works correctly', async () => {
 		}
 	});
 	const button = screen.getByRole('button');
-	await button.click();
+	// Use element().click() instead of button.click() to ensure event is fired
+	(button.element() as HTMLButtonElement).click();
+	// Wait for event to propagate
+	await new Promise(resolve => setTimeout(resolve, 50));
 	expect(clicked).toBe(true);
 });
 

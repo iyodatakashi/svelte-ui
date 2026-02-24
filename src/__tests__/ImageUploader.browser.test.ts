@@ -21,9 +21,11 @@ test('ImageUploader - カスタムサイズ', async () => {
 		height: '150px'
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]');
-	expect(uploader).toHaveStyle('--image-uploader-button-width: 200px');
-	expect(uploader).toHaveStyle('--image-uploader-button-height: 150px');
+	const uploader = container.querySelector('[data-testid="image-uploader"]') as HTMLElement;
+	// CSS変数はgetComputedStyleで確認
+	const computedStyle = getComputedStyle(uploader);
+	expect(computedStyle.getPropertyValue('--svelte-ui-image-uploader-button-width').trim()).toBe('200px');
+	expect(computedStyle.getPropertyValue('--svelte-ui-image-uploader-button-height').trim()).toBe('150px');
 });
 
 test('ImageUploader - 角丸', async () => {
@@ -110,7 +112,7 @@ test('ImageUploader - アダプティブサイズ', async () => {
 	const { container } = await render(ComponentWrapper, {
 		component: ImageUploader,
 		id: 'imageuploader-adaptive-test',
-		adaptiveSize: true
+		previewAdaptive: true
 	});
 
 	const uploader = container.querySelector('[data-testid="image-uploader"]');
@@ -128,5 +130,5 @@ test('ImageUploader - CSS変数', async () => {
 
 	// CSS変数の存在確認
 	const computedStyle = getComputedStyle(uploader!);
-	expect(computedStyle.getPropertyValue('--image-uploader-button-width')).toBeTruthy();
+	expect(computedStyle.getPropertyValue('--svelte-ui-image-uploader-button-width')).toBeTruthy();
 });

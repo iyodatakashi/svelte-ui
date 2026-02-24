@@ -6,10 +6,10 @@ import type { MenuItem } from '../lib/types/menuItem';
 
 // テスト用のタブアイテムを作成
 const createTabItems = (): MenuItem[] => [
-	{ title: 'Home', href: '/', icon: 'home' },
-	{ title: 'About', href: '/about', icon: 'info' },
-	{ title: 'Contact', href: '/contact', icon: 'mail' },
-	{ title: 'Services', href: '/services', icon: 'settings' }
+	{ label: 'Home', href: '/', icon: 'home' },
+	{ label: 'About', href: '/about', icon: 'info' },
+	{ label: 'Contact', href: '/contact', icon: 'mail' },
+	{ label: 'Services', href: '/services', icon: 'settings' }
 ];
 
 test('renders Tab with basic props', async () => {
@@ -131,8 +131,8 @@ test('handles single tab item', async () => {
 
 test('handles tab items without icons', async () => {
 	const tabItemsWithoutIcons: MenuItem[] = [
-		{ title: 'Home', href: '/' },
-		{ title: 'About', href: '/about' }
+		{ label: 'Home', href: '/' },
+		{ label: 'About', href: '/about' }
 	];
 
 	const screen = render(ComponentWrapper, {
@@ -159,8 +159,8 @@ test('handles tab items with custom path prefix', async () => {
 	const tab = screen.container.querySelector('[data-testid="tab"]');
 	await expect.element(tab).toBeVisible();
 
-	// pathPrefixは内部処理に影響するが、表示されるhrefは変わらない
-	const homeTab = screen.container.querySelector('[data-testid="tab-item"][href="/"]');
+	// pathPrefixが設定されている場合、hrefはpathPrefixが付与される
+	const homeTab = screen.container.querySelector('[data-testid="tab-item"][href="/app/"]');
 	expect(homeTab).toBeInTheDocument();
 });
 
@@ -171,17 +171,22 @@ test('handles keyboard navigation', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const firstTab = screen.container.querySelector('[data-testid="tab-item"]') as HTMLElement;
+	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = tabItems[0];
+	const secondTab = tabItems[1];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
+	await new Promise(resolve => setTimeout(resolve, 10));
+	expect(document.activeElement).toBe(firstTab);
 
-	// ArrowRightキーを押す
-	const arrowRightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight' });
-	tab.dispatchEvent(arrowRightEvent);
+	// ArrowRightキーを押す（フォーカスされているタブアイテムでイベントを発火）
+	const arrowRightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
+	firstTab.dispatchEvent(arrowRightEvent);
 
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
+	// フォーカスが2番目のタブに移動することを確認
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect(document.activeElement).toBe(secondTab);
 });
 
 test('handles ArrowLeft key navigation', async () => {
@@ -191,17 +196,22 @@ test('handles ArrowLeft key navigation', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const firstTab = screen.container.querySelector('[data-testid="tab-item"]') as HTMLElement;
+	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = tabItems[0];
+	const lastTab = tabItems[tabItems.length - 1];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
+	await new Promise(resolve => setTimeout(resolve, 10));
+	expect(document.activeElement).toBe(firstTab);
 
-	// ArrowLeftキーを押す
-	const arrowLeftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft' });
-	tab.dispatchEvent(arrowLeftEvent);
+	// ArrowLeftキーを押す（最初のタブから左に移動すると最後のタブに循環）
+	const arrowLeftEvent = new KeyboardEvent('keydown', { key: 'ArrowLeft', bubbles: true, cancelable: true });
+	firstTab.dispatchEvent(arrowLeftEvent);
 
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
+	// フォーカスが最後のタブに移動することを確認（循環）
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect(document.activeElement).toBe(lastTab);
 });
 
 test('handles Home key navigation', async () => {
@@ -211,17 +221,22 @@ test('handles Home key navigation', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const firstTab = screen.container.querySelector('[data-testid="tab-item"]') as HTMLElement;
+	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = tabItems[0];
+	const lastTab = tabItems[tabItems.length - 1];
 
-	// 最初のタブにフォーカス
-	firstTab.focus();
+	// 最後のタブにフォーカス
+	lastTab.focus();
+	await new Promise(resolve => setTimeout(resolve, 10));
+	expect(document.activeElement).toBe(lastTab);
 
 	// Homeキーを押す
-	const homeEvent = new KeyboardEvent('keydown', { key: 'Home' });
-	tab.dispatchEvent(homeEvent);
+	const homeEvent = new KeyboardEvent('keydown', { key: 'Home', bubbles: true, cancelable: true });
+	lastTab.dispatchEvent(homeEvent);
 
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
+	// フォーカスが最初のタブに移動することを確認
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect(document.activeElement).toBe(firstTab);
 });
 
 test('handles End key navigation', async () => {
@@ -231,17 +246,22 @@ test('handles End key navigation', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const firstTab = screen.container.querySelector('[data-testid="tab-item"]') as HTMLElement;
+	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = tabItems[0];
+	const lastTab = tabItems[tabItems.length - 1];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
+	await new Promise(resolve => setTimeout(resolve, 10));
+	expect(document.activeElement).toBe(firstTab);
 
 	// Endキーを押す
-	const endEvent = new KeyboardEvent('keydown', { key: 'End' });
-	tab.dispatchEvent(endEvent);
+	const endEvent = new KeyboardEvent('keydown', { key: 'End', bubbles: true, cancelable: true });
+	firstTab.dispatchEvent(endEvent);
 
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
+	// フォーカスが最後のタブに移動することを確認
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect(document.activeElement).toBe(lastTab);
 });
 
 test('handles non-navigation keys', async () => {
@@ -251,17 +271,20 @@ test('handles non-navigation keys', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const firstTab = screen.container.querySelector('[data-testid="tab-item"]') as HTMLElement;
+	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = tabItems[0];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
+	expect(document.activeElement).toBe(firstTab);
 
 	// 非ナビゲーションキーを押す
-	const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
+	const spaceEvent = new KeyboardEvent('keydown', { key: ' ', bubbles: true });
 	tab.dispatchEvent(spaceEvent);
 
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
+	// フォーカスが変わらないことを確認
+	await new Promise(resolve => setTimeout(resolve, 10));
+	expect(document.activeElement).toBe(firstTab);
 });
 
 test('applies correct CSS classes', async () => {
@@ -286,12 +309,12 @@ test('renders tab items with correct structure', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]');
-	const tabItems = tab?.querySelectorAll('.tab__item');
+	const tabItems = tab?.querySelectorAll('[data-testid="tab-item"]');
 
 	expect(tabItems).toHaveLength(4);
 
-	tabItems?.forEach((tabItemWrapper) => {
-		const tabItem = tabItemWrapper.querySelector('[data-testid="tab-item"]');
+	tabItems?.forEach((tabItem) => {
 		expect(tabItem).toBeInTheDocument();
+		expect(tabItem).toHaveAttribute('role', 'tab');
 	});
 });

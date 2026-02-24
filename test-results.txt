@@ -1,0 +1,7 @@
+
+> @14ch/svelte-ui@0.0.15 test:browser
+> vitest --config vitest.config.ts --run
+
+
+ RUN  v3.2.4 /Users/iyoda/Documents/workspace/Web_Workspace/svelte-ui
+

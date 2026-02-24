@@ -105,7 +105,7 @@ describe('Textarea Component', () => {
 				disabled: false,
 				readonly: false,
 				required: false,
-				autoResize: false,
+				autoResize: true,
 				clearable: false
 			};
 

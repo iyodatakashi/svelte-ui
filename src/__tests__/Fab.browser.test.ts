@@ -25,7 +25,10 @@ test('Fab can be clicked', async () => {
 	});
 	const fab = screen.getByTestId('fab');
 
-	await fab.click();
+	// Use element().click() to ensure event is fired
+	(fab.element() as HTMLElement).click();
+	// Wait for event to propagate
+	await new Promise(resolve => setTimeout(resolve, 50));
 	expect(clickCalled).toBe(true);
 });
 
@@ -170,7 +173,7 @@ test('Fab with shadow renders correctly', async () => {
 	const screen = render(ComponentWrapper, {
 		component: Fab,
 		children: 'Shadow Fab',
-		hasShadow: true,
+		shadow: true,
 		id: 'fab-shadow'
 	});
 	const fab = screen.getByTestId('fab');

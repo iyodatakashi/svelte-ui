@@ -42,7 +42,7 @@ test('LoadingSpinner size property changes reactively', async () => {
 	const spinner = screen.getByTestId('loading-spinner');
 	await expect
 		.element(spinner)
-		.toHaveAttribute('style', expect.stringContaining('--spinner-size: 24px'));
+		.toHaveAttribute('style', expect.stringContaining('--svelte-ui-loading-spinner-size: 24px'));
 
 	// プロパティを更新
 	screen.rerender({
@@ -52,7 +52,7 @@ test('LoadingSpinner size property changes reactively', async () => {
 
 	await expect
 		.element(spinner)
-		.toHaveAttribute('style', expect.stringContaining('--spinner-size: 32px'));
+		.toHaveAttribute('style', expect.stringContaining('--svelte-ui-loading-spinner-size: 32px'));
 });
 
 test('LoadingSpinner color property changes reactively', async () => {
@@ -64,7 +64,7 @@ test('LoadingSpinner color property changes reactively', async () => {
 	const spinner = screen.getByTestId('loading-spinner');
 	await expect
 		.element(spinner)
-		.toHaveAttribute('style', expect.stringContaining('--spinner-color: red'));
+		.toHaveAttribute('style', expect.stringContaining('--svelte-ui-loading-spinner-color: red'));
 
 	// プロパティを更新
 	screen.rerender({
@@ -74,5 +74,5 @@ test('LoadingSpinner color property changes reactively', async () => {
 
 	await expect
 		.element(spinner)
-		.toHaveAttribute('style', expect.stringContaining('--spinner-color: blue'));
+		.toHaveAttribute('style', expect.stringContaining('--svelte-ui-loading-spinner-color: blue'));
 });

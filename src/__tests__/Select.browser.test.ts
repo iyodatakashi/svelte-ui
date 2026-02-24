@@ -88,7 +88,7 @@ test('Select variants render correctly', async () => {
 	const screenInline = render(Select, {
 		value: '',
 		options: [{ value: 'test', label: 'Test' }],
-		variant: 'inline',
+		inline: true,
 		id: 'select-inline'
 	});
 	const containerInline = screenInline.container.querySelector('[data-testid="select"]');

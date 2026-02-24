@@ -108,12 +108,20 @@ test('handles keyboard navigation with arrow keys', async () => {
 		id: 'popup-menu-keyboard'
 	});
 
-	// ArrowDownキーを押す
-	const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
-	document.dispatchEvent(arrowDownEvent);
+	const menuContainer = screen.container.querySelector(
+		'#popup-menu-keyboard .popup-menu'
+	) as HTMLElement;
+	if (menuContainer) {
+		menuContainer.focus();
 
-	// キーボードイベントが処理されることを確認（エラーが発生しないことを確認）
-	expect(true).toBe(true);
+		// ArrowDownキーを押す
+		const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
+		menuContainer.dispatchEvent(arrowDownEvent);
+
+		// イベントが処理され、エラーが発生しないことを確認
+		await new Promise(resolve => setTimeout(resolve, 10));
+		expect(menuContainer).toBeInTheDocument();
+	}
 });
 
 test('handles Escape key to close menu', async () => {
@@ -167,18 +175,20 @@ test('handles Enter key to execute menu item', async () => {
 	) as HTMLElement;
 	if (menuContainer) {
 		menuContainer.focus();
+
+		// ArrowDownで最初のアイテムをアクティブにする
+		const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
+		menuContainer.dispatchEvent(arrowDownEvent);
+		await new Promise(resolve => setTimeout(resolve, 10));
+
+		// Enterキーを押す
+		const enterEvent = new KeyboardEvent('keydown', { key: 'Enter', bubbles: true });
+		menuContainer.dispatchEvent(enterEvent);
+		await new Promise(resolve => setTimeout(resolve, 10));
+
+		// callbackが実行されることを確認
+		expect(executed).toBe(true);
 	}
-
-	// ArrowDownで最初のアイテムをアクティブにする
-	const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
-	document.dispatchEvent(arrowDownEvent);
-
-	// Enterキーを押す
-	const enterEvent = new KeyboardEvent('keydown', { key: 'Enter' });
-	document.dispatchEvent(enterEvent);
-
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
 });
 
 test('shows icons when provided', async () => {
@@ -236,8 +246,9 @@ test('handles mouse enter on menu items', async () => {
 		const mouseEnterEvent = new MouseEvent('mouseenter', { bubbles: true });
 		menuButton.dispatchEvent(mouseEnterEvent);
 
-		// イベントが処理されることを確認
-		expect(true).toBe(true);
+		// イベントが処理され、エラーが発生しないことを確認
+		await new Promise(resolve => setTimeout(resolve, 10));
+		expect(menuButton).toBeInTheDocument();
 	}
 });
 
@@ -251,16 +262,22 @@ test('handles focus on menu items', async () => {
 		id: 'popup-menu-focus'
 	});
 
-	const menuButton = screen.container.querySelector(
+	const menuButtons = screen.container.querySelectorAll(
 		'#popup-menu-focus .popup-menu__button'
-	) as HTMLElement;
+	) as NodeListOf<HTMLElement>;
 
-	if (menuButton) {
+	if (menuButtons.length > 0) {
+		const firstButton = menuButtons[0];
 		// フォーカスイベントを発火
-		menuButton.focus();
+		firstButton.focus();
+		// フォーカスイベントを手動で発火してSvelteのリアクティビティを確実に更新
+		firstButton.dispatchEvent(new FocusEvent('focus', { bubbles: true }));
 
-		// イベントが処理されることを確認
-		expect(true).toBe(true);
+		// フォーカスが設定されることを確認（menuContainerRefにtabindex="-1"があるため、フォーカスが移る可能性がある）
+		await new Promise(resolve => setTimeout(resolve, 100));
+		// ボタンにフォーカスがあるか、またはメニューコンテナにフォーカスがあるかを確認
+		const menuContainer = screen.container.querySelector('#popup-menu-focus') as HTMLElement;
+		expect(document.activeElement === firstButton || document.activeElement === menuContainer).toBe(true);
 	}
 });
 
@@ -274,16 +291,25 @@ test('handles Home and End keys for navigation', async () => {
 		id: 'popup-menu-home-end'
 	});
 
-	// Endキーを押す
-	const endEvent = new KeyboardEvent('keydown', { key: 'End' });
-	document.dispatchEvent(endEvent);
+	const menuContainer = screen.container.querySelector(
+		'#popup-menu-home-end .popup-menu'
+	) as HTMLElement;
+	if (menuContainer) {
+		menuContainer.focus();
 
-	// Homeキーを押す
-	const homeEvent = new KeyboardEvent('keydown', { key: 'Home' });
-	document.dispatchEvent(homeEvent);
+		// Endキーを押す
+		const endEvent = new KeyboardEvent('keydown', { key: 'End', bubbles: true });
+		menuContainer.dispatchEvent(endEvent);
+		await new Promise(resolve => setTimeout(resolve, 10));
 
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
+		// Homeキーを押す
+		const homeEvent = new KeyboardEvent('keydown', { key: 'Home', bubbles: true });
+		menuContainer.dispatchEvent(homeEvent);
+		await new Promise(resolve => setTimeout(resolve, 10));
+
+		// イベントが処理され、エラーが発生しないことを確認
+		expect(menuContainer).toBeInTheDocument();
+	}
 });
 
 test('handles Tab key to close menu', async () => {
@@ -337,18 +363,20 @@ test('handles Space key to execute menu item', async () => {
 	) as HTMLElement;
 	if (menuContainer) {
 		menuContainer.focus();
+
+		// ArrowDownで最初のアイテムをアクティブにする
+		const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown', bubbles: true });
+		menuContainer.dispatchEvent(arrowDownEvent);
+		await new Promise(resolve => setTimeout(resolve, 10));
+
+		// Spaceキーを押す
+		const spaceEvent = new KeyboardEvent('keydown', { key: ' ', bubbles: true });
+		menuContainer.dispatchEvent(spaceEvent);
+		await new Promise(resolve => setTimeout(resolve, 10));
+
+		// callbackが実行されることを確認
+		expect(executed).toBe(true);
 	}
-
-	// ArrowDownで最初のアイテムをアクティブにする
-	const arrowDownEvent = new KeyboardEvent('keydown', { key: 'ArrowDown' });
-	document.dispatchEvent(arrowDownEvent);
-
-	// Spaceキーを押す
-	const spaceEvent = new KeyboardEvent('keydown', { key: ' ' });
-	document.dispatchEvent(spaceEvent);
-
-	// キーボードイベントが処理されることを確認
-	expect(true).toBe(true);
 });
 
 test('handles empty menu items array', async () => {

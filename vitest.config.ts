@@ -1,12 +1,16 @@
 import { defineConfig } from 'vitest/config';
 import { svelte } from '@sveltejs/vite-plugin-svelte';
 import { resolve } from 'node:path';
+import { mockAppModules } from './vite-plugin-mock-app';
 
 export default defineConfig({
-	plugins: [svelte()],
+	plugins: [mockAppModules(), svelte()],
 	resolve: {
 		alias: {
-			$lib: resolve(process.cwd(), 'src/lib')
+			$lib: resolve(process.cwd(), 'src/lib'),
+			'$app/navigation': resolve(process.cwd(), 'src/__tests__/mocks/$app/navigation.ts'),
+			'$app/stores': resolve(process.cwd(), 'src/__tests__/mocks/$app/stores.ts'),
+			'$app/environment': resolve(process.cwd(), 'src/__tests__/mocks/$app/environment.ts')
 		}
 	},
 	test: {

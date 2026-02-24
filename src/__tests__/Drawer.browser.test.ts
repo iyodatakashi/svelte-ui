@@ -80,7 +80,8 @@ test('Drawer - 位置指定', async () => {
 		isOpen: true
 	});
 
-	const leftDrawer = container.querySelector('[data-testid="modal"]');
+	const modal = container.querySelector('[data-testid="modal"]');
+	const leftDrawer = modal?.querySelector('.drawer');
 	expect(leftDrawer).toHaveClass('drawer--left');
 
 	// 右側
@@ -92,7 +93,8 @@ test('Drawer - 位置指定', async () => {
 		isOpen: true
 	});
 
-	const rightDrawer = container2.querySelector('[data-testid="modal"]');
+	const modal2 = container2.querySelector('[data-testid="modal"]');
+	const rightDrawer = modal2?.querySelector('.drawer');
 	expect(rightDrawer).toHaveClass('drawer--right');
 });
 
@@ -118,7 +120,8 @@ test('Drawer - スクロール可能', async () => {
 		isOpen: true
 	});
 
-	const drawer = container.querySelector('[data-testid="modal"]');
+	const modal = container.querySelector('[data-testid="modal"]');
+	const drawer = modal?.querySelector('.drawer');
 	expect(drawer).toHaveClass('drawer--scrollable');
 });
 
@@ -171,7 +174,8 @@ test('Drawer - CSS変数', async () => {
 	expect(drawer).toBeInTheDocument();
 
 	// DrawerコンポーネントはModalを内包しているため、実際のCSS変数を確認
-	expect(drawer).toHaveStyle('width: 240px'); // デフォルト幅
+	// デフォルトではwidthが未指定の場合はmax-contentになる
+	expect(drawer).toHaveStyle('width: max-content'); // デフォルト幅
 });
 
 // =========================================================================

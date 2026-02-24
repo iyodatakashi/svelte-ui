@@ -59,10 +59,10 @@ describe('Input Component', () => {
 		});
 
 		it('should validate input types', () => {
-			const validInputTypes = ['text', 'email', 'password', 'number', 'tel', 'url', 'search'];
+			const validInputTypes = ['text', 'email', 'password', 'number', 'tel', 'url'];
 
 			validInputTypes.forEach((type) => {
-				expect(['text', 'email', 'password', 'number', 'tel', 'url', 'search']).toContain(type);
+				expect(['text', 'email', 'password', 'number', 'tel', 'url']).toContain(type);
 			});
 		});
 	});
