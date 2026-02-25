@@ -1,6 +1,7 @@
 // src/lib/utils/snackbar.ts
 
 import type { Snippet } from 'svelte';
+import type { IconVariant } from '$lib/types/icon';
 
 export type SnackbarItem = {
 	id: string;
@@ -14,6 +15,7 @@ export type SnackbarItem = {
 	position?: 'top' | 'bottom';
 	closable?: boolean;
 	actionLabel?: string;
+	iconVariant?: IconVariant;
 	onAction?: () => void;
 	onClose?: () => void;
 	createdAt: number;

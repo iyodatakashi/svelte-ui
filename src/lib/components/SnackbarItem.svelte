@@ -166,7 +166,7 @@
 			</div>
 		{/if}
 
-		<div class="snackbar__content">
+		<div class="snackbar-item__body">
 			{#if children}
 				{@render children()}
 			{:else}
@@ -176,8 +176,10 @@
 
 		{#if actionLabel && onAction}
 			<Button
-				variant="outlined"
-				color="var(--svelte-ui-text-on-filled-color)"
+				variant={variant === 'filled' ? 'outlined' : 'filled'}
+				color={variant === 'filled'
+					? 'var(--svelte-ui-text-on-filled-color)'
+					: `var(--svelte-ui-snackbar-${type}-filled-bg)`}
 				onclick={handleAction}
 				aria-label="{actionLabel} - {message}"
 			>
@@ -308,12 +310,13 @@
 		flex-shrink: 0;
 	}
 
-	.snackbar-item__text {
+	.snackbar-item__body {
 		flex: 1;
 		min-width: 0;
 	}
 
 	.snackbar-item__message {
+		flex-grow: 1;
 		word-break: break-word;
 	}
 
