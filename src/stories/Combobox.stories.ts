@@ -221,24 +221,13 @@ const programmingLanguages = [
 	'Lua'
 ];
 
-// 基本的なコンボボックス
-export const BasicCombobox = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: basicOptions,
-			placeholder: '選択または入力してください'
-		}
-	})
-};
-
-// 国選択
-export const CountrySearch = {
+// Default combobox (country options)
+export const Default = {
 	render: () => ({
 		Component: Combobox,
 		props: {
 			options: countryOptions,
-			placeholder: '国名を検索...'
+			placeholder: '国を選択または入力してください'
 		}
 	})
 };
@@ -290,18 +279,6 @@ export const Inline = {
 	})
 };
 
-// 文字数制限
-export const WithMaxLength = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: colorOptions,
-			placeholder: '最大10文字まで',
-			maxlength: 10
-		}
-	})
-};
-
 // 幅制限
 export const WithWidthLimits = {
 	render: () => ({
@@ -311,113 +288,6 @@ export const WithWidthLimits = {
 			placeholder: '幅制限あり',
 			minWidth: 200,
 			maxWidth: 300
-		}
-	})
-};
-
-// 都道府県選択（実用例）
-export const PrefectureSelector = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: [
-				'北海道',
-				'青森県',
-				'岩手県',
-				'宮城県',
-				'秋田県',
-				'山形県',
-				'福島県',
-				'茨城県',
-				'栃木県',
-				'群馬県',
-				'埼玉県',
-				'千葉県',
-				'東京都',
-				'神奈川県',
-				'新潟県',
-				'富山県',
-				'石川県',
-				'福井県',
-				'山梨県',
-				'長野県',
-				'岐阜県',
-				'静岡県',
-				'愛知県',
-				'三重県',
-				'滋賀県',
-				'京都府',
-				'大阪府',
-				'兵庫県',
-				'奈良県',
-				'和歌山県',
-				'鳥取県',
-				'島根県',
-				'岡山県',
-				'広島県',
-				'山口県',
-				'徳島県',
-				'香川県',
-				'愛媛県',
-				'高知県',
-				'福岡県',
-				'佐賀県',
-				'長崎県',
-				'熊本県',
-				'大分県',
-				'宮崎県',
-				'鹿児島県',
-				'沖縄県'
-			],
-			placeholder: '都道府県を選択または検索',
-			fullWidth: true
-		}
-	})
-};
-
-// フォーム統合例
-export const FormIntegration = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: ['個人', '法人', 'フリーランス', '学生', 'その他'],
-			placeholder: '職業を選択または入力',
-			required: true,
-			fullWidth: true
-		}
-	})
-};
-
-// イベントハンドラーのデモ
-export const WithEvents = {
-	args: {
-		options: basicOptions,
-		placeholder: 'イベントを確認（コンソールをチェック）',
-		value: '',
-		filterable: true
-	},
-	render: (args: Record<string, unknown>) => ({
-		Component: Combobox,
-		props: {
-			...args,
-			onchange: (value: string | number | null | undefined) => {
-				console.log('onChange:', value);
-			},
-			oninput: (value: string | number | null | undefined) => {
-				console.log('onInput:', value);
-			},
-			onfocus: () => {
-				console.log('フォーカスされました');
-			},
-			onblur: () => {
-				console.log('フォーカスが外れました');
-			},
-			onclick: () => {
-				console.log('クリックされました');
-			},
-			onkeydown: () => {
-				console.log('キーが押されました');
-			}
 		}
 	})
 };

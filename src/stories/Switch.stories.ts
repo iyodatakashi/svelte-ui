@@ -240,15 +240,6 @@ export const Disabled: Story = {
 	}
 };
 
-// Reduced motion
-export const ReducedMotion: Story = {
-	args: {
-		value: false,
-		reducedMotion: true,
-		children: createChildrenSnippet('アニメーション無効')
-	}
-};
-
 // Required
 export const Required: Story = {
 	args: {

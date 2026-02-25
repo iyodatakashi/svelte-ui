@@ -56,13 +56,6 @@ export const Heading: Story = {
 	}
 };
 
-export const NoAnimation: Story = {
-	args: {
-		patterns: [{ type: 'text' }],
-		animated: false
-	}
-};
-
 // プリセットパターンのストーリー
 export const ArticleDetailPreset: Story = {
 	args: {

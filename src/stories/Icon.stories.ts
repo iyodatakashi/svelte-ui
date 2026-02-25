@@ -220,12 +220,3 @@ export const Accessible: Story = {
 	}
 };
 
-// Reduced motion
-export const ReducedMotion: Story = {
-	args: {
-		size: 32,
-		reducedMotion: true,
-		children: createChildrenSnippet('animation')
-	}
-};
-

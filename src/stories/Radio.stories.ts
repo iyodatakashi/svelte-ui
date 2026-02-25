@@ -249,11 +249,3 @@ export const ReadOnly: Story = {
 	}
 };
 
-// Reduced motion
-export const ReducedMotion: Story = {
-	args: {
-		reducedMotion: true,
-		children: createChildrenSnippet('Reduced motion')
-	}
-};
-

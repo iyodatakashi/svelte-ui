@@ -35,8 +35,9 @@ Recommended categories:
 
 - **States**
   - Stories for user-visible states:
-    - Example: `Disabled`, `Loading`, `ReducedMotion`, `ReadOnly`, `Indeterminate`
+    - Example: `Disabled`, `Loading`, `ReadOnly`, `Indeterminate`
   - These exist to clearly document “we support this state” and how it looks.
+  - For motion/accessibility flags like `reducedMotion`, prefer exposing them as controls (`argTypes`) or documenting them in MDX, and avoid dedicated `ReducedMotion` stories for each component.
 
 - **Layout / Behavior**
   - Stories for layout-related or interaction-related props:
@@ -70,6 +71,7 @@ Example patterns:
   - Use fixed snippets or static children in `render`, and set `control: false` for `children`.
 - **Events**
   - Use `action: 'clicked'` etc., or custom `render` that logs to console if needed.
+  - Avoid dedicated stories whose only purpose is “event demo” (e.g. `WithEvents` that just `console.log`); prefer docs snippets or MDX examples instead.
 - **Story args**
   - In each story, set **only the props that are essential to demonstrate that story's main idea**.
   - Avoid “noise props” that change values unrelated to the story's focus (e.g. tweaking `gap` or `minWidth` when the story is primarily about `direction`).
@@ -77,7 +79,7 @@ Example patterns:
   - Avoid stories whose only difference is **not visually apparent** at a glance:
     - File formats / `accept` patterns (`.jpg` vs `.png` vs `.svg` etc.) – control via `argTypes`, not separate stories.
     - Internal value types (e.g. `string` / `number` / `boolean` for `Radio` / `RadioGroup` values).
-    - Other purely data-level differences that do not change layout, icon, label, or visible state.
+    - Purely data-level differences that do not change layout, icon, label, or visible state (e.g. option lists like prefectures vs. countries vs. “Option 1/2/3”).
 
 ---
 

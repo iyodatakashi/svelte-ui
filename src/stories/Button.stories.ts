@@ -399,11 +399,3 @@ export const FullWidth: Story = {
 		layout: 'padded'
 	}
 };
-
-// Reduced motion
-export const ReducedMotion: Story = {
-	args: {
-		reducedMotion: true,
-		children: createChildrenSnippet('No Animation')
-	}
-};

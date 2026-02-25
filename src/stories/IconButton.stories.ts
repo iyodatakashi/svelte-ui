@@ -480,14 +480,4 @@ export const Accessible: Story = {
 	}
 };
 
-// Reduced motion
-export const ReducedMotion: Story = {
-	args: {
-		variant: 'filled',
-		reducedMotion: true,
-		ariaLabel: 'No animation',
-		children: createChildrenSnippet('home')
-	}
-};
-
 // (No dedicated Playground story; use Default and other stories with controls instead.)
