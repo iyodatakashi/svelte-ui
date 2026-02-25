@@ -404,7 +404,8 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
-	.file-uploader.rounded {
+	.file-uploader.rounded,
+	.file-uploader.rounded::before {
 		border-radius: var(--svelte-ui-border-radius-rounded);
 	}
 
