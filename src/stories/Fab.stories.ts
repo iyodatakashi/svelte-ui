@@ -51,7 +51,7 @@ const meta: Meta<FabArgs> = {
 	title: 'UI/Fab',
 	component: Fab,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:

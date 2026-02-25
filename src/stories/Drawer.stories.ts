@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Drawer from '../lib/components/Drawer.svelte';
+import DrawerExample from './DrawerExample.svelte';
 
 // 型安全性のための明示的な型定義
 interface DrawerArgs {
-	isOpen: boolean;
 	title?: string;
 	scrollable?: boolean;
 	closeIfClickOutside?: boolean;
@@ -26,7 +26,7 @@ const meta: Meta<DrawerArgs> = {
 	title: 'UI/Drawer',
 	component: Drawer,
 	parameters: {
-		layout: 'fullscreen',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:
@@ -36,14 +36,10 @@ const meta: Meta<DrawerArgs> = {
 	},
 	tags: ['autodocs'],
 	render: (args) => ({
-		Component: Drawer,
+		Component: DrawerExample,
 		props: args
 	}),
 	argTypes: {
-		isOpen: {
-			control: 'boolean',
-			description: 'Whether the drawer is open'
-		},
 		title: {
 			control: 'text',
 			description: 'Title displayed in the header'
@@ -117,7 +113,6 @@ const createContentSnippet = (content: string) =>
 // Default drawer (left side)
 export const Default: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 240,
 		title: 'Navigation',
@@ -161,7 +156,6 @@ export const Default: Story = {
 // Drawer with custom header and footer
 export const WithHeaderFooter: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 280,
 		description: 'Navigation drawer with header and footer sections',
@@ -222,7 +216,6 @@ export const WithHeaderFooter: Story = {
 // Scrollable drawer with borders
 export const ScrollableWithBorders: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 300,
 		scrollable: true,
@@ -267,7 +260,6 @@ export const ScrollableWithBorders: Story = {
 // Right side drawer
 export const RightSide: Story = {
 	args: {
-		isOpen: true,
 		position: 'right',
 		width: 300,
 		title: 'Settings Panel',
@@ -308,7 +300,6 @@ export const RightSide: Story = {
 // Wide drawer
 export const Wide: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 400,
 		title: 'Wide Drawer',
@@ -351,7 +342,6 @@ export const Wide: Story = {
 // Scrollable drawer
 export const Scrollable: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 280,
 		scrollable: true,
@@ -382,7 +372,6 @@ export const Scrollable: Story = {
 // Menu drawer with icons
 export const MenuWithIcons: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 260,
 		ariaLabel: 'Main navigation menu',
@@ -450,7 +439,6 @@ export const MenuWithIcons: Story = {
 // Narrow drawer
 export const Narrow: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 180,
 		children: createContentSnippet(`
@@ -492,7 +480,6 @@ export const Narrow: Story = {
 // Closed drawer (for demonstration)
 export const Closed: Story = {
 	args: {
-		isOpen: false,
 		position: 'left',
 		width: 240,
 		children: createContentSnippet(`
@@ -507,7 +494,6 @@ export const Closed: Story = {
 // Responsive width drawer - ウィンドウ幅マイナスピクセル
 export const ResponsiveWidth: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		width: 'calc(100vw - 80px)',
 		title: 'Responsive Drawer',
@@ -557,7 +543,6 @@ export const ResponsiveWidth: Story = {
 // Percentage width drawer
 export const PercentageWidth: Story = {
 	args: {
-		isOpen: true,
 		position: 'right',
 		width: '60%',
 		title: 'Percentage Width',
@@ -594,7 +579,6 @@ export const PercentageWidth: Story = {
 // Custom body styling - no padding for navigation sections
 export const NoPadding: Story = {
 	args: {
-		isOpen: true,
 		position: 'left',
 		title: 'Custom Navigation',
 		width: 280,
@@ -634,7 +618,6 @@ export const NoPadding: Story = {
 // Custom body styling with gradient
 export const CustomBodyStyle: Story = {
 	args: {
-		isOpen: true,
 		position: 'right',
 		title: 'Styled Panel',
 		width: 320,

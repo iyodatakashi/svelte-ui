@@ -1,14 +1,16 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import ConfirmDialog from '../lib/components/ConfirmDialog.svelte';
+import ConfirmDialogExample from './ConfirmDialogExample.svelte';
 
 // 型安全性のための明示的な型定義
 interface ConfirmDialogArgs {
 	title?: string;
-	message?: string;
+	description?: string;
 	submitLabel?: string;
 	cancelLabel?: string;
 	danger?: boolean;
 	width?: string | number;
+	closeIfClickOutside?: boolean;
 	onSubmit?: () => void;
 	onCancel?: () => void;
 }
@@ -27,7 +29,7 @@ const meta: Meta<ConfirmDialogArgs> = {
 	},
 	tags: ['autodocs'],
 	render: (args) => ({
-		Component: ConfirmDialog,
+		Component: ConfirmDialogExample,
 		props: args
 	}),
 	argTypes: {
@@ -35,9 +37,9 @@ const meta: Meta<ConfirmDialogArgs> = {
 			control: 'text',
 			description: 'Dialog title'
 		},
-		message: {
+		description: {
 			control: 'text',
-			description: 'Confirmation message to display'
+			description: 'Confirmation message to display (supports line breaks with \\n)'
 		},
 		submitLabel: {
 			control: 'text',
@@ -54,6 +56,10 @@ const meta: Meta<ConfirmDialogArgs> = {
 		width: {
 			control: 'text',
 			description: 'Dialog width (number for pixels, string for calc/vw/% etc.)'
+		},
+		closeIfClickOutside: {
+			control: 'boolean',
+			description: 'Whether to close dialog when clicking outside'
 		},
 		onSubmit: {
 			action: 'submitted',
@@ -72,7 +78,7 @@ type Story = StoryObj<ConfirmDialogArgs>;
 export const Default: Story = {
 	args: {
 		title: 'Confirm Action',
-		message: 'Are you sure you want to proceed?',
+		description: 'Are you sure you want to proceed?',
 		submitLabel: 'Confirm',
 		cancelLabel: 'Cancel',
 		danger: false,
@@ -83,7 +89,7 @@ export const Default: Story = {
 export const Warning: Story = {
 	args: {
 		title: 'Warning',
-		message: 'This action may have unintended consequences. Do you want to continue?',
+		description: 'This action may have unintended consequences. Do you want to continue?',
 		submitLabel: 'Continue',
 		cancelLabel: 'Cancel',
 		danger: false,
@@ -94,7 +100,7 @@ export const Warning: Story = {
 export const Danger: Story = {
 	args: {
 		title: 'Delete Item',
-		message: 'This action cannot be undone. Are you sure you want to delete this item?',
+		description: 'This action cannot be undone. Are you sure you want to delete this item?',
 		submitLabel: 'Delete',
 		cancelLabel: 'Cancel',
 		danger: true,
@@ -105,7 +111,7 @@ export const Danger: Story = {
 export const CustomLabels: Story = {
 	args: {
 		title: 'Save Changes',
-		message: 'You have unsaved changes. Would you like to save them before leaving?',
+		description: 'You have unsaved changes. Would you like to save them before leaving?',
 		submitLabel: 'Save',
 		cancelLabel: 'Discard',
 		danger: false,
@@ -116,7 +122,7 @@ export const CustomLabels: Story = {
 export const LongMessage: Story = {
 	args: {
 		title: 'Terms and Conditions',
-		message:
+		description:
 			'By clicking "Accept", you agree to our Terms of Service and Privacy Policy. This includes sharing your data with third-party services for analytics and improving our service. You can withdraw your consent at any time through your account settings.',
 		submitLabel: 'Accept',
 		cancelLabel: 'Decline',
@@ -128,7 +134,7 @@ export const LongMessage: Story = {
 export const MinimalWidth: Story = {
 	args: {
 		title: 'Confirm',
-		message: 'Continue?',
+		description: 'Continue?',
 		submitLabel: 'Yes',
 		cancelLabel: 'No',
 		danger: false,
@@ -139,7 +145,7 @@ export const MinimalWidth: Story = {
 export const MessageWithLineBreaks: Story = {
 	args: {
 		title: 'Multi-line Message',
-		message:
+		description:
 			'This is the first line of the message.\nThis is the second line.\n\nThis is after an empty line.\n\nPlease confirm your action.',
 		submitLabel: 'Confirm',
 		cancelLabel: 'Cancel',

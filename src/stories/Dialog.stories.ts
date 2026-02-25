@@ -2,10 +2,10 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Dialog from '../lib/components/Dialog.svelte';
+import DialogExample from './DialogExample.svelte';
 
 // 型安全性のための明示的な型定義
 interface DialogArgs {
-	isOpen: boolean;
 	title?: string;
 	scrollable?: boolean;
 	closeIfClickOutside?: boolean;
@@ -34,14 +34,10 @@ const meta: Meta<DialogArgs> = {
 	},
 	tags: ['autodocs'],
 	render: (args) => ({
-		Component: Dialog,
+		Component: DialogExample,
 		props: args
 	}),
 	argTypes: {
-		isOpen: {
-			control: 'boolean',
-			description: 'Whether the dialog is open'
-		},
 		title: {
 			control: 'text',
 			description: 'Dialog title (displayed in header)'
@@ -106,7 +102,6 @@ const createContentSnippet = (content: string) =>
 // Default dialog with title
 export const Default: Story = {
 	args: {
-		isOpen: true,
 		title: 'Dialog Title',
 		width: 320,
 		children: createContentSnippet(`
@@ -121,7 +116,6 @@ export const Default: Story = {
 // Dialog with custom header
 export const CustomHeader: Story = {
 	args: {
-		isOpen: true,
 		width: 400,
 		header: createContentSnippet(`
 			<div style="display: flex; align-items: center; gap: 12px; width: 100%;">
@@ -162,7 +156,6 @@ export const CustomHeader: Story = {
 // Dialog with footer buttons
 export const WithFooter: Story = {
 	args: {
-		isOpen: true,
 		title: 'Confirm Action',
 		width: 400,
 		children: createContentSnippet(`
@@ -195,7 +188,6 @@ export const WithFooter: Story = {
 // Scrollable dialog
 export const Scrollable: Story = {
 	args: {
-		isOpen: true,
 		title: 'Long Content',
 		scrollable: true,
 		width: 500,
@@ -227,7 +219,6 @@ export const Scrollable: Story = {
 // Large width dialog
 export const LargeWidth: Story = {
 	args: {
-		isOpen: true,
 		title: 'Large Dialog',
 		width: 800,
 		children: createContentSnippet(`
@@ -252,7 +243,6 @@ export const LargeWidth: Story = {
 // Form dialog
 export const FormDialog: Story = {
 	args: {
-		isOpen: true,
 		title: 'Add New Item',
 		width: 450,
 		description: 'Fill out the form below to create a new item',
@@ -303,7 +293,6 @@ export const FormDialog: Story = {
 // Custom body styling - no padding for full-width layouts
 export const NoPadding: Story = {
 	args: {
-		isOpen: true,
 		title: 'Custom Layout Dialog',
 		width: 500,
 		noPadding: true,
@@ -337,7 +326,6 @@ export const NoPadding: Story = {
 // Custom body styling with CSS
 export const CustomBodyStyle: Story = {
 	args: {
-		isOpen: true,
 		title: 'Custom Styled Dialog',
 		width: 400,
 		bodyStyle: 'padding: 0; background: linear-gradient(45deg, #f0f9ff, #e0f2fe);',
