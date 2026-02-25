@@ -6,6 +6,7 @@
 	import Popup from './Popup.svelte';
 	import { announceSelection } from '$lib/utils/accessibility';
 	import { t } from '$lib/i18n';
+	import { getStyleFromNumber } from '$lib/utils/style';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -14,7 +15,7 @@
 		PointerHandler,
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
-
+	
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
@@ -36,8 +37,8 @@
 		focusStyle?: 'background' | 'outline' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
-		minWidth?: number | null;
-		maxWidth?: number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
 		rounded?: boolean;
 
 		// 状態/動作
@@ -397,6 +398,9 @@
 		if (!filterable || !inputValue) return options;
 		return options.filter((option) => option.toLowerCase().includes(inputValue.toLowerCase()));
 	});
+
+	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
+	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
 </script>
 
 <div
@@ -404,7 +408,7 @@
 	{id}
 	class="combobox"
 	class:combobox--full-width={fullWidth}
-	style="max-width: {maxWidth}px; min-width: {minWidth}px"
+	style="max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
 	role="combobox"
 	aria-expanded={!!popupRef}
 	aria-controls={listboxId}
