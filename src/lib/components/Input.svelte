@@ -72,7 +72,7 @@
 		clearable?: boolean;
 		linkify?: boolean;
 		enablePasswordVisibilityToggle?: boolean;
-		enableNumberStepperButtons?: boolean;
+		enableNumberStepper?: boolean;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;
@@ -170,7 +170,7 @@
 		leftIconAriaLabel = t('input.left_icon'),
 		rightIconAriaLabel = t('input.right_icon'),
 		enablePasswordVisibilityToggle = false,
-		enableNumberStepperButtons = false,
+		enableNumberStepper = false,
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -528,7 +528,7 @@
 	// --------------------------------
 	const isLeftNumberStepper = $derived(
 		type === 'number' &&
-			enableNumberStepperButtons &&
+			enableNumberStepper &&
 			!leftIcon &&
 			!onLeftIconClick &&
 			!disabled &&
@@ -591,7 +591,7 @@
 	const isRightNumberStepper = $derived(
 		!isPasswordToggleActive &&
 			type === 'number' &&
-			enableNumberStepperButtons &&
+			enableNumberStepper &&
 			!rightIcon &&
 			!onRightIconClick &&
 			!disabled &&

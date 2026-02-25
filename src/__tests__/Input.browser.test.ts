@@ -42,6 +42,110 @@ test('required Input is marked as required', async () => {
 	await expect.element(textbox).toBeRequired();
 });
 
+// enableNumberStepper: resolve buttons by DOM position (locale-agnostic; i18n has en/ja/zh-cn/fr/de/es etc.)
+function getStepperButtons(container: HTMLElement) {
+	const wrapper = container.querySelector('[data-testid="input"]') as HTMLElement | null;
+	return {
+		decrement: wrapper?.querySelector('.input__icon-left button') as HTMLButtonElement | null,
+		increment: wrapper?.querySelector('.input__icon-right button') as HTMLButtonElement | null
+	};
+}
+
+// Stepper uses mousedown/mouseup (not click); dispatch both so value updates and repeat timer is cleared
+function fireStepperButton(button: HTMLButtonElement) {
+	button.dispatchEvent(new MouseEvent('mousedown', { bubbles: true, cancelable: true }));
+	button.dispatchEvent(new MouseEvent('mouseup', { bubbles: true, cancelable: true }));
+}
+
+test('number input with enableNumberStepper shows Increment and Decrement buttons', async () => {
+	const screen = render(Input, {
+		type: 'number',
+		enableNumberStepper: true,
+		value: 10,
+		step: 1
+	});
+	const spinbutton = screen.getByRole('spinbutton');
+	await expect.element(spinbutton).toBeVisible();
+	expect((spinbutton.element() as HTMLInputElement).value).toBe('10');
+
+	const { decrement, increment } = getStepperButtons(screen.container as HTMLElement);
+	expect(decrement).toBeTruthy();
+	expect(increment).toBeTruthy();
+	expect(decrement!.getAttribute('aria-label')).toBeTruthy();
+	expect(increment!.getAttribute('aria-label')).toBeTruthy();
+});
+
+// Stepper increment increases value
+test('enableNumberStepper: clicking Increment button increases value', async () => {
+	const screen = render(Input, {
+		type: 'number',
+		enableNumberStepper: true,
+		value: 5,
+		step: 1
+	});
+	const spinbutton = screen.getByRole('spinbutton');
+	const { increment } = getStepperButtons(screen.container as HTMLElement);
+	expect(increment).toBeTruthy();
+
+	fireStepperButton(increment!);
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect((spinbutton.element() as HTMLInputElement).value).toBe('6');
+
+	fireStepperButton(increment!);
+	fireStepperButton(increment!);
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect((spinbutton.element() as HTMLInputElement).value).toBe('8');
+});
+
+// Stepper decrement decreases value
+test('enableNumberStepper: clicking Decrement button decreases value', async () => {
+	const screen = render(Input, {
+		type: 'number',
+		enableNumberStepper: true,
+		value: 10,
+		step: 1
+	});
+	const spinbutton = screen.getByRole('spinbutton');
+	const { decrement } = getStepperButtons(screen.container as HTMLElement);
+	expect(decrement).toBeTruthy();
+
+	fireStepperButton(decrement!);
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect((spinbutton.element() as HTMLInputElement).value).toBe('9');
+
+	fireStepperButton(decrement!);
+	fireStepperButton(decrement!);
+	await new Promise(resolve => setTimeout(resolve, 50));
+	expect((spinbutton.element() as HTMLInputElement).value).toBe('7');
+});
+
+// Without enableNumberStepper, number input has no stepper buttons
+test('number input without enableNumberStepper has no Increment/Decrement buttons', async () => {
+	const screen = render(Input, {
+		type: 'number',
+		enableNumberStepper: false,
+		value: 0
+	});
+	await expect.element(screen.getByRole('spinbutton')).toBeVisible();
+	const { decrement, increment } = getStepperButtons(screen.container as HTMLElement);
+	expect(decrement).toBeNull();
+	expect(increment).toBeNull();
+});
+
+// type=text with enableNumberStepper does not show stepper (input remains textbox)
+test('type text with enableNumberStepper does not show stepper buttons', async () => {
+	const screen = render(Input, {
+		type: 'text',
+		enableNumberStepper: true,
+		value: ''
+	});
+	const textbox = screen.getByRole('textbox');
+	await expect.element(textbox).toBeVisible();
+	const { decrement, increment } = getStepperButtons(screen.container as HTMLElement);
+	expect(decrement).toBeNull();
+	expect(increment).toBeNull();
+});
+
 // Maxlength enforcement
 test('maxlength limits typed characters', async () => {
 	const screen = render(Input, { maxlength: 3, value: '' });
@@ -254,7 +358,8 @@ test('Input CSS variables used are defined (computed) in the page', async () => 
 
 test('Input width property changes reactively', async () => {
 	const screen = render(Input, {
-		width: 200
+		width: 200,
+		value: ''
 	});
 
 	const input = screen.getByTestId('input');
@@ -262,7 +367,8 @@ test('Input width property changes reactively', async () => {
 
 	// プロパティを更新
 	screen.rerender({
-		width: 300
+		width: 300,
+		value: ''
 	});
 
 	await expect.element(input).toHaveAttribute('style', expect.stringContaining('width: 300px'));
@@ -270,7 +376,8 @@ test('Input width property changes reactively', async () => {
 
 test('Input maxWidth property changes reactively', async () => {
 	const screen = render(Input, {
-		maxWidth: 200
+		maxWidth: 200,
+		value: ''
 	});
 
 	const input = screen.getByTestId('input');
@@ -278,7 +385,8 @@ test('Input maxWidth property changes reactively', async () => {
 
 	// プロパティを更新
 	screen.rerender({
-		maxWidth: 300
+		maxWidth: 300,
+		value: ''
 	});
 
 	await expect.element(input).toHaveAttribute('style', expect.stringContaining('max-width: 300px'));
@@ -286,7 +394,8 @@ test('Input maxWidth property changes reactively', async () => {
 
 test('Input minWidth property changes reactively', async () => {
 	const screen = render(Input, {
-		minWidth: 200
+		minWidth: 200,
+		value: ''
 	});
 
 	const input = screen.getByTestId('input');
@@ -294,7 +403,8 @@ test('Input minWidth property changes reactively', async () => {
 
 	// プロパティを更新
 	screen.rerender({
-		minWidth: 300
+		minWidth: 300,
+		value: ''
 	});
 
 	await expect.element(input).toHaveAttribute('style', expect.stringContaining('min-width: 300px'));
@@ -304,7 +414,8 @@ test('Input multiple properties change reactively', async () => {
 	const screen = render(Input, {
 		width: 200,
 		maxWidth: 300,
-		minWidth: 100
+		minWidth: 100,
+		value: ''
 	});
 
 	const input = screen.getByTestId('input');
@@ -316,7 +427,8 @@ test('Input multiple properties change reactively', async () => {
 	screen.rerender({
 		width: 250,
 		maxWidth: 350,
-		minWidth: 150
+		minWidth: 150,
+		value: ''
 	});
 
 	await expect.element(input).toHaveAttribute('style', expect.stringContaining('width: 250px'));

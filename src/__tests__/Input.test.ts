@@ -31,7 +31,8 @@ describe('Input Component', () => {
 				focusStyle: 'outline' as const,
 				fullWidth: false,
 				rounded: true,
-				error: 'Error message'
+				error: 'Error message',
+				enableNumberStepper: true
 			};
 
 			// プロパティが正しい型であることを確認
@@ -48,6 +49,7 @@ describe('Input Component', () => {
 			expect(typeof validProps.fullWidth).toBe('boolean');
 			expect(typeof validProps.rounded).toBe('boolean');
 			expect(typeof validProps.error).toBe('string');
+			expect(typeof validProps.enableNumberStepper).toBe('boolean');
 		});
 
 		it('should validate focusStyle enum values', () => {
@@ -81,7 +83,8 @@ describe('Input Component', () => {
 				rounded: false,
 				disabled: false,
 				readonly: false,
-				required: false
+				required: false,
+				enableNumberStepper: false
 			};
 
 			// デフォルト値が期待される型であることを確認
@@ -94,6 +97,7 @@ describe('Input Component', () => {
 			expect(typeof expectedDefaults.disabled).toBe('boolean');
 			expect(typeof expectedDefaults.readonly).toBe('boolean');
 			expect(typeof expectedDefaults.required).toBe('boolean');
+			expect(typeof expectedDefaults.enableNumberStepper).toBe('boolean');
 		});
 	});
 
