@@ -525,7 +525,7 @@
 	--svelte-ui-combobox-no-options-color: var(--svelte-ui-text-subtle-color);
 
 	/* FileUploader */
-	--svelte-ui-file-uploader-border-width: 2px;
+	--svelte-ui-file-uploader-border-width: 1px;
 	--svelte-ui-file-uploader-border-style: dashed;
 	--svelte-ui-file-uploader-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-file-uploader-border-color: var(--svelte-ui-border-color);
@@ -535,7 +535,7 @@
 	--svelte-ui-file-uploader-item-bg: var(--svelte-ui-form-bg);
 
 	/* ImageUploader */
-	--svelte-ui-image-uploader-border-width: 2px;
+	--svelte-ui-image-uploader-border-width: 1px;
 	--svelte-ui-image-uploader-border-style: dashed;
 	--svelte-ui-image-uploader-preview-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-image-uploader-preview-border-radius-rounded: var(--svelte-ui-border-radius-rounded);
