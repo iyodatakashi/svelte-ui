@@ -11,7 +11,7 @@ describe('Datepicker Component', () => {
 		const expectedDefaults = {
 			value: undefined,
 			format: undefined,
-			nullString: '',
+			placeholder: '',
 			locale: 'en',
 			rangeSeparator: ' - ',
 			variant: 'default',
@@ -35,7 +35,7 @@ describe('Datepicker Component', () => {
 		};
 
 		// デフォルト値の型チェック
-		expect(typeof expectedDefaults.nullString).toBe('string');
+		expect(typeof expectedDefaults.placeholder).toBe('string');
 		expect(typeof expectedDefaults.locale).toBe('string');
 		expect(typeof expectedDefaults.rangeSeparator).toBe('string');
 		expect(typeof expectedDefaults.variant).toBe('string');
@@ -118,7 +118,6 @@ describe('Datepicker Component', () => {
 	it('should handle string props correctly', () => {
 		const stringProps = [
 			'format',
-			'nullString',
 			'locale',
 			'rangeSeparator',
 			'variant',
