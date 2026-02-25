@@ -1,7 +1,6 @@
 <!-- Snackbar.svelte -->
 
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import { snackbarManager, type SnackbarItem as SnackbarData } from '$lib/utils/snackbar.svelte';
 	import SnackbarItem from './SnackbarItem.svelte';
 	import type { SnackbarPosition, SnackbarVariant } from '$lib/types/propOptions';
@@ -30,10 +29,10 @@
 	}: SnackbarProps = $props();
 
 	// =========================================================================
-	// Lifecycle
+	// $effect
 	// =========================================================================
 
-	onMount(() => {
+	$effect(() => {
 		snackbarManager.setDefaults({
 			position,
 			maxVisible,
@@ -64,7 +63,7 @@
 			id={item.id}
 			variant={item.variant}
 			position={item.position}
-			iconVariant="outlined"
+			iconVariant={item.iconVariant ?? 'outlined'}
 			color={item.color}
 			textColor={item.textColor}
 			duration={item.duration}
