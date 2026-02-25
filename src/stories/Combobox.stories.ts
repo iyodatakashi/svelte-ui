@@ -1,4 +1,5 @@
 // s../lib/components/atoms/Combobox.stories.ts
+import type { Meta, StoryObj } from '@storybook/svelte';
 import Combobox from '../lib/components/Combobox.svelte';
 
 const meta = {
@@ -29,8 +30,8 @@ const meta = {
 		},
 		focusStyle: {
 			control: { type: 'radio' },
-			options: ['background', 'border', 'none'],
-			description: 'Focus style (background, border, or none)'
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
@@ -39,6 +40,10 @@ const meta = {
 		fullWidth: {
 			control: { type: 'boolean' },
 			description: 'Whether the combobox takes full width'
+		},
+		width: {
+			control: { type: 'number' },
+			description: 'Width in pixels'
 		},
 		filterable: {
 			control: { type: 'boolean' },
@@ -61,12 +66,14 @@ const meta = {
 			description: 'Mark the field as required'
 		},
 		minWidth: {
-			control: { type: 'number' },
-			description: 'Minimum width in pixels'
+			control: { type: 'text' },
+			description:
+				'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
 		},
 		maxWidth: {
-			control: { type: 'number' },
-			description: 'Maximum width in pixels'
+			control: { type: 'text' },
+			description:
+				'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
 		},
 		maxlength: {
 			control: { type: 'number' },
@@ -174,9 +181,10 @@ const meta = {
 			description: 'Input event'
 		}
 	}
-};
+} satisfies Meta<typeof Combobox>;
 
 export default meta;
+type Story = StoryObj<typeof meta>;
 
 // 基本的なオプションデータ
 const basicOptions = ['オプション1', 'オプション2', 'オプション3', 'オプション4', 'オプション5'];
@@ -222,74 +230,63 @@ const programmingLanguages = [
 ];
 
 // Default combobox (country options)
-export const Default = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: countryOptions,
-			placeholder: '国を選択または入力してください'
-		}
-	})
+export const Default: Story = {
+	args: {
+		value: '',
+		options: countryOptions,
+		placeholder: '国を選択または入力してください'
+	}
 };
 
 // フィルタリング無効
-export const NonFilterable = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: basicOptions,
-			placeholder: 'フィルタリング無効'
-		}
-	})
+export const NonFilterable: Story = {
+	args: {
+		value: '',
+		options: basicOptions,
+		placeholder: 'フィルタリング無効',
+		filterable: false
+	}
 };
 
 // 角丸デザイン
-export const Rounded = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: countryOptions,
-			placeholder: '角丸のコンボボックス',
-			rounded: true
-		}
-	})
+export const Rounded: Story = {
+	args: {
+		value: '',
+		options: countryOptions,
+		placeholder: '角丸のコンボボックス',
+		rounded: true
+	}
 };
 
 // フルWidth
-export const FullWidth = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: programmingLanguages,
-			placeholder: '幅100%のコンボボックス',
-			fullWidth: true
-		}
-	})
+export const FullWidth: Story = {
+	args: {
+		value: '',
+		options: programmingLanguages,
+		placeholder: '幅100%のコンボボックス',
+		fullWidth: true
+	}
 };
 
 // インラインバリアント
-export const Inline = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			inline: true,
-			options: countryOptions,
-			placeholder: 'クリックして編集'
-		}
-	})
+export const Inline: Story = {
+	args: {
+		value: '',
+		inline: true,
+		options: countryOptions,
+		placeholder: 'クリックして編集'
+	}
 };
 
 // 幅制限
-export const WithWidthLimits = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: programmingLanguages,
-			placeholder: '幅制限あり',
-			minWidth: 200,
-			maxWidth: 300
-		}
-	})
+export const WithWidthLimits: Story = {
+	args: {
+		value: '',
+		options: programmingLanguages,
+		placeholder: '幅制限あり',
+		minWidth: 200,
+		maxWidth: 300
+	}
 };
 
 // カスタムスタイル（docs などでコード例として示すことを推奨）

@@ -31,8 +31,8 @@ const meta = {
 		},
 		focusStyle: {
 			control: { type: 'radio' },
-			options: ['background', 'border', 'none'],
-			description: 'Focus style (background, border, or none)'
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
@@ -71,12 +71,12 @@ const meta = {
 			description: 'ARIA label for the right icon'
 		},
 		minWidth: {
-			control: { type: 'number' },
-			description: 'Minimum width in pixels'
+			control: { type: 'text' },
+			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "16rem")'
 		},
 		maxWidth: {
-			control: { type: 'number' },
-			description: 'Maximum width in pixels'
+			control: { type: 'text' },
+			description: 'Maximum width (number in px or CSS length string, e.g. "300", "80%", "24rem")'
 		},
 		rightIcon: {
 			control: { type: 'text' },
@@ -298,7 +298,7 @@ export const TelWithAutocomplete = {
 	}
 };
 
-// Inline variant
+// Inline
 export const Inline = {
 	args: {
 		variant: 'inline',
@@ -397,4 +397,3 @@ export const IconsDisabled = {
 		disabled: true
 	}
 };
-

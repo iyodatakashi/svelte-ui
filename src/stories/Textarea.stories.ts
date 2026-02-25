@@ -26,8 +26,8 @@ const meta = {
 		},
 		focusStyle: {
 			control: { type: 'radio' },
-			options: ['background', 'border', 'none'],
-			description: 'Focus style (background, border, or none)'
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },

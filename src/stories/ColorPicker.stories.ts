@@ -21,8 +21,8 @@ const meta = {
 		},
 		focusStyle: {
 			control: { type: 'radio' },
-			options: ['background', 'border', 'none'],
-			description: 'Focus style (background, border, or none)'
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
@@ -47,6 +47,21 @@ const meta = {
 		customStyle: {
 			control: { type: 'text' },
 			description: 'Custom CSS styles'
+		},
+		width: {
+			control: { type: 'text' },
+			description:
+				'Width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
+		},
+		minWidth: {
+			control: { type: 'text' },
+			description:
+				'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
+		},
+		maxWidth: {
+			control: { type: 'text' },
+			description:
+				'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {

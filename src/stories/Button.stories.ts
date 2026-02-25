@@ -156,8 +156,9 @@ const meta: Meta<ButtonArgs> = {
 			description: 'Custom CSS styles'
 		},
 		minWidth: {
-			control: 'number',
-			description: 'Minimum width in pixels'
+			control: 'text',
+			description:
+				'Minimum width (number in px or CSS length string, e.g. "160", "50%", "12rem")'
 		},
 		tabindex: {
 			control: 'number',

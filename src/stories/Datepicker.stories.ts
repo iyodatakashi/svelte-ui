@@ -1,4 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
+import type { IconWeight } from '../lib/types/icon';
 import Datepicker from '../lib/components/Datepicker.svelte';
 
 // 型安全性のための明示的な型定義
@@ -6,13 +7,17 @@ interface DatepickerArgs {
 	value: Date | { start: Date; end: Date } | undefined;
 	inline?: boolean;
 	format?: string;
-	nullString?: string;
+	placeholder?: string;
 	mode?: 'single' | 'range';
 	hasIcon?: boolean;
 	disabled?: boolean;
 	focusStyle?: 'background' | 'outline' | 'none';
 	enableTextInput?: boolean;
 	fullWidth?: boolean;
+	iconWeight?: IconWeight;
+	width?: string | number | null;
+	minWidth?: string | number | null;
+	maxWidth?: string | number | null;
 	rounded?: boolean;
 	enableClickToOpen?: boolean;
 	minDate?: Date;
@@ -72,9 +77,9 @@ const meta: Meta<DatepickerArgs> = {
 			control: 'text',
 			description: 'Date format string (dayjs style)'
 		},
-		nullString: {
+		placeholder: {
 			control: 'text',
-			description: 'Text to show when no date is selected'
+			description: 'Placeholder text to show when no date is selected'
 		},
 		mode: {
 			control: 'radio',
@@ -101,6 +106,23 @@ const meta: Meta<DatepickerArgs> = {
 		fullWidth: {
 			control: 'boolean',
 			description: 'Whether the control takes full width'
+		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight (thickness of the calendar icon strokes)'
+		},
+		width: {
+			control: 'text',
+			description: 'Width (number in px or CSS length string, e.g. "320", "50%", "24rem")'
+		},
+		minWidth: {
+			control: 'text',
+			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "16rem")'
+		},
+		maxWidth: {
+			control: 'text',
+			description: 'Maximum width (number in px or CSS length string, e.g. "400", "80%", "32rem")'
 		},
 		rounded: {
 			control: 'boolean',
@@ -234,11 +256,8 @@ type Story = StoryObj<DatepickerArgs>;
 // Default（基本の単一日付選択）
 export const Default: Story = {
 	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
-		locale: 'ja'
+		// Use component defaults: single mode, locale from config, default format/placeholder
+		value: undefined
 	}
 };
 
@@ -246,10 +265,7 @@ export const Default: Story = {
 export const DateRange: Story = {
 	args: {
 		value: undefined,
-		format: 'YYYY/M/D',
-		nullString: '期間を選択してください',
-		mode: 'range',
-		locale: 'ja'
+		mode: 'range'
 	}
 };
 
@@ -257,11 +273,7 @@ export const DateRange: Story = {
 export const WithIcon: Story = {
 	args: {
 		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択',
-		mode: 'single',
-		hasIcon: true,
-		locale: 'ja'
+		hasIcon: true
 	}
 };
 
@@ -269,22 +281,16 @@ export const WithIcon: Story = {
 export const WithIconAndDateRange: Story = {
 	args: {
 		value: undefined,
-		format: 'YYYY/M/D',
-		nullString: '期間を選択',
 		mode: 'range',
-		hasIcon: true,
-		locale: 'ja'
+		hasIcon: true
 	}
 };
 
-// Inline Variant（インライン表示）
-export const InlineVariant: Story = {
+// Inline
+export const Inline: Story = {
 	args: {
 		value: new Date(),
-		inline: true,
-		format: 'YYYY/M/D（ddd）',
-		mode: 'single',
-		locale: 'ja'
+		inline: true
 	},
 	parameters: {
 		layout: 'padded'
@@ -296,10 +302,7 @@ export const CustomFormat: Story = {
 	args: {
 		value: new Date(),
 		format: 'MM/DD/YYYY',
-		nullString: '日付を選択',
-		mode: 'single',
-		hasIcon: true,
-		locale: 'ja'
+		hasIcon: true
 	}
 };
 
@@ -307,38 +310,25 @@ export const CustomFormat: Story = {
 export const Disabled: Story = {
 	args: {
 		value: new Date(),
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
 		hasIcon: true,
-		disabled: true,
-		locale: 'ja'
+		disabled: true
 	}
 };
 
 // With Min/Max Date（最小/最大日付制限）
 export const WithMinMaxDate: Story = {
 	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
 		hasIcon: true,
 		minDate: new Date(2024, 0, 1),
-		maxDate: new Date(2024, 11, 31),
-		locale: 'ja'
+		maxDate: new Date(2024, 11, 31)
 	}
 };
 
 // Allow Direct Input（直接入力を許可）
 export const AllowDirectInput: Story = {
 	args: {
-		value: undefined,
-		format: 'YYYY/M/D',
-		mode: 'single',
-		hasIcon: true,
 		enableTextInput: true,
-		locale: 'ja'
+		hasIcon: true
 	},
 	parameters: {
 		docs: {
@@ -352,13 +342,8 @@ export const AllowDirectInput: Story = {
 // Full Width（全幅表示）
 export const FullWidth: Story = {
 	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
-		hasIcon: true,
 		fullWidth: true,
-		locale: 'ja'
+		hasIcon: true
 	},
 	parameters: {
 		layout: 'padded'
@@ -368,13 +353,7 @@ export const FullWidth: Story = {
 // Rounded Style（角丸スタイル）
 export const RoundedStyle: Story = {
 	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
 		hasIcon: true,
-		rounded: true,
-		locale: 'ja'
+		rounded: true
 	}
 };
-

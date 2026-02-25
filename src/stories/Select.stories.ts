@@ -180,7 +180,7 @@ export const Default = {
 	}
 };
 
-// Inline variant
+// Inline
 export const Inline = {
 	args: {
 		options: basicOptions,
@@ -307,4 +307,3 @@ export const VariantComparison = {
 		}
 	})
 };
-
