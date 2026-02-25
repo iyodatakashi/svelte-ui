@@ -17,137 +17,137 @@ const meta = {
 	argTypes: {
 		value: {
 			control: { type: 'color' },
-			description: '選択された色（16進数カラーコード）'
+			description: 'Selected color (hex code)'
 		},
 		focusStyle: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['background', 'border', 'none'],
-			description: 'フォーカス時のスタイル'
+			description: 'Focus style (background, border, or none)'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
-			description: '幅100%で表示'
+			description: 'Whether the picker takes full width'
 		},
 		rounded: {
 			control: { type: 'boolean' },
-			description: '角丸デザイン'
+			description: 'Use rounded corners'
 		},
 		clearable: {
 			control: { type: 'boolean' },
-			description: 'クリアボタンを表示'
+			description: 'Show clear button'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the picker is disabled'
 		},
 		readonly: {
 			control: { type: 'boolean' },
-			description: '読み取り専用'
+			description: 'Make the picker read-only'
 		},
 		customStyle: {
 			control: { type: 'text' },
-			description: 'カスタムスタイル'
+			description: 'Custom CSS styles'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		},
 		oninput: {
 			action: 'input',
-			description: '入力イベント'
+			description: 'Input event'
 		}
 	}
 };
@@ -189,30 +189,6 @@ export const FullWidth = {
 	}
 };
 
-// Focus style: background
-export const FocusStyleBackground = {
-	args: {
-		value: '#8e44ad',
-		focusStyle: 'background'
-	}
-};
-
-// Focus style: border
-export const FocusStyleBorder = {
-	args: {
-		value: '#c0392b',
-		focusStyle: 'border'
-	}
-};
-
-// Focus style: none
-export const FocusStyleNone = {
-	args: {
-		value: '#27ae60',
-		focusStyle: 'none'
-	}
-};
-
 // Clearable false
 export const NotClearable = {
 	args: {
@@ -237,16 +213,4 @@ export const ReadOnly = {
 	}
 };
 
-// Playground (全props操作用)
-export const Playground = {
-	args: {
-		value: '#3498db',
-		focusStyle: 'background',
-		fullWidth: false,
-		rounded: false,
-		clearable: true,
-		disabled: false,
-		readonly: false,
-		customStyle: ''
-	}
-};
+// (No dedicated Playground story; use Default and other stories with controls instead.)

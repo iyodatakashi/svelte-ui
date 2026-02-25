@@ -16,7 +16,8 @@ const meta: Meta<LoadingSpinnerArgs> = {
 		layout: 'centered',
 		docs: {
 			description: {
-				component: 'ローディング表示用のスピナーコンポーネント。速度と色のカスタマイズが可能です。'
+				component:
+					'A loading spinner component for indicating pending operations. Size, color, stroke width, and speed can be customized.'
 			}
 		}
 	},
@@ -29,23 +30,23 @@ const meta: Meta<LoadingSpinnerArgs> = {
 	argTypes: {
 		size: {
 			control: 'number',
-			description: 'サイズ（ピクセル）'
+			description: 'Size of the spinner in pixels'
 		},
 		color: {
 			control: 'color',
-			description: 'スピナーの色'
+			description: 'Spinner color'
 		},
 		strokeWidth: {
 			control: 'number',
-			description: 'ストロークの幅（ピクセル）'
+			description: 'Stroke width in pixels'
 		},
 		speed: {
 			control: { type: 'range', min: 0.1, max: 5, step: 0.1 },
-			description: 'アニメーション速度（1が標準）'
+			description: 'Animation speed multiplier (1 is default)'
 		},
 		reducedMotion: {
 			control: 'boolean',
-			description: 'アニメーションを無効化（アクセシビリティ対応）'
+			description: 'Disable animation for reduced motion / accessibility'
 		}
 	}
 };

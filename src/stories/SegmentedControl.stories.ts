@@ -49,7 +49,7 @@ const meta: Meta<SegmentedControlArgs> = {
 			description: 'Currently selected value (bindable)'
 		},
 		size: {
-			control: 'select',
+			control: 'radio',
 			options: ['small', 'medium', 'large'],
 			description: 'Size of the control'
 		},
@@ -297,24 +297,4 @@ export const AccessibilityExample: Story = {
 	}
 };
 
-// Playground
-export const Playground: Story = {
-	args: {
-		items: [
-			{ label: 'オプション1', value: 'opt1', icon: 'home' },
-			{ label: 'オプション2', value: 'opt2', icon: 'settings' },
-			{ label: 'オプション3', value: 'opt3', icon: 'info' }
-		],
-		value: 'opt1',
-		size: 'medium',
-		fullWidth: false,
-		rounded: true,
-		disabled: false,
-		ariaLabel: 'カスタマイズ可能なセグメントコントロール',
-		iconFilled: false,
-		iconVariant: 'outlined',
-		iconWeight: 300,
-		iconGrade: 0,
-		reducedMotion: false
-	}
-};
+// (No dedicated Playground story; use Default and other stories with controls instead.)

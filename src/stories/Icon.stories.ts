@@ -53,7 +53,7 @@ const meta: Meta<IconArgs> = {
 			description: 'Icon color'
 		},
 		variant: {
-			control: 'select',
+			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Material Symbols variant'
 		},
@@ -229,29 +229,3 @@ export const ReducedMotion: Story = {
 	}
 };
 
-// Playground (全props操作用)
-export const Playground: Story = {
-	args: {
-		size: 24,
-		filled: false,
-		color: '',
-		style: '',
-		variant: 'outlined',
-		weight: 400,
-		grade: 0,
-		opticalSize: 24,
-		decorative: true,
-		reducedMotion: false,
-		ariaLabel: '',
-		title: '',
-		fallbackText: ''
-		// children は除外してコントロールの問題を回避
-	},
-	render: (args) => ({
-		Component: Icon,
-		props: {
-			...args,
-			children: createChildrenSnippet('home')
-		}
-	})
-};

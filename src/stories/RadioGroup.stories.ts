@@ -33,36 +33,36 @@ const meta: Meta<RadioGroupArgs> = {
 	argTypes: {
 		name: {
 			control: { type: 'text' },
-			description: 'グループ名'
+			description: 'Group name'
 		},
 		options: {
 			control: { type: 'object' },
-			description: '選択肢の配列'
+			description: 'Array of radio options'
 		},
 		value: {
 			control: { type: 'text' },
-			description: '選択された値'
+			description: 'Currently selected value'
 		},
 		direction: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['vertical', 'horizontal'],
-			description: 'レイアウト方向'
+			description: 'Layout direction (vertical or horizontal)'
 		},
 		gap: {
 			control: { type: 'text' },
-			description: 'アイテム間の間隔'
+			description: 'Gap between items (CSS length)'
 		},
 		wrap: {
 			control: { type: 'boolean' },
-			description: '折り返しを有効にする'
+			description: 'Enable wrapping when items overflow'
 		},
 		minOptionWidth: {
 			control: { type: 'text' },
-			description: 'オプションの最小幅'
+			description: 'Minimum width for each option'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event when selection updates'
 		}
 	}
 };
@@ -79,26 +79,21 @@ const sampleOptions: Option[] = [
 
 export const Default: Story = {
 	args: {
-		options: sampleOptions,
-		value: null
+		options: sampleOptions
 	}
 };
 
 export const Vertical: Story = {
 	args: {
 		options: sampleOptions,
-		value: null,
-		direction: 'vertical',
-		gap: '16px'
+		direction: 'vertical'
 	}
 };
 
 export const Horizontal: Story = {
 	args: {
 		options: sampleOptions,
-		value: null,
-		direction: 'horizontal',
-		gap: '24px'
+		direction: 'horizontal'
 	}
 };
 
@@ -114,9 +109,7 @@ export const WithWrap: Story = {
 			{ label: 'Option 7', value: 'option7' },
 			{ label: 'Option 8', value: 'option8' }
 		],
-		value: null,
 		direction: 'horizontal',
-		gap: '16px',
 		wrap: true,
 		minOptionWidth: '150px'
 	}
@@ -132,30 +125,8 @@ export const PreSelected: Story = {
 export const WithCustomGap: Story = {
 	args: {
 		options: sampleOptions,
-		value: null,
 		direction: 'vertical',
 		gap: '32px'
 	}
 };
 
-export const NumberValues: Story = {
-	args: {
-		options: [
-			{ label: 'Small', value: 1 },
-			{ label: 'Medium', value: 2 },
-			{ label: 'Large', value: 3 }
-		],
-		value: 2
-	}
-};
-
-export const Playground: Story = {
-	args: {
-		options: sampleOptions,
-		value: null,
-		direction: 'vertical',
-		gap: '16px',
-		wrap: false,
-		minOptionWidth: undefined
-	}
-};

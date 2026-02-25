@@ -62,168 +62,168 @@ const meta: Meta<DatepickerArgs> = {
 	argTypes: {
 		value: {
 			control: false,
-			description: '選択された日付（単一またはstartとendを持つオブジェクト）'
+			description: 'Selected date (single) or date range object'
 		},
 		inline: {
 			control: 'boolean',
-			description: 'インライン表示'
+			description: 'Display calendar inline'
 		},
 		format: {
 			control: 'text',
-			description: '日付のフォーマット（dayjs形式）'
+			description: 'Date format string (dayjs style)'
 		},
 		nullString: {
 			control: 'text',
-			description: '未選択時に表示する文字列'
+			description: 'Text to show when no date is selected'
 		},
 		mode: {
-			control: 'select',
+			control: 'radio',
 			options: ['single', 'range'],
-			description: '日付選択モード'
+			description: 'Selection mode (single or range)'
 		},
 		hasIcon: {
 			control: 'boolean',
-			description: 'カレンダーアイコンを表示'
+			description: 'Show calendar icon'
 		},
 		disabled: {
 			control: 'boolean',
-			description: '無効状態'
+			description: 'Whether the datepicker is disabled'
 		},
 		focusStyle: {
-			control: 'select',
+			control: 'radio',
 			options: ['background', 'outline', 'none'],
-			description: 'フォーカス時の表示スタイル'
+			description: 'Focus style (background, outline, or none)'
 		},
 		enableTextInput: {
 			control: 'boolean',
-			description: 'テキストでの直接入力を有効にするかどうか'
+			description: 'Allow direct text input in the field'
 		},
 		fullWidth: {
 			control: 'boolean',
-			description: '全幅表示'
+			description: 'Whether the control takes full width'
 		},
 		rounded: {
 			control: 'boolean',
-			description: '角丸スタイル'
+			description: 'Use rounded corners'
 		},
 		enableClickToOpen: {
 			control: 'boolean',
-			description: 'クリックでカレンダーを開いて選択を有効にするかどうか'
+			description: 'Open calendar on click for selection'
 		},
 		minDate: {
 			control: 'date',
-			description: '選択可能な最小日付'
+			description: 'Minimum selectable date'
 		},
 		maxDate: {
 			control: 'date',
-			description: '選択可能な最大日付'
+			description: 'Maximum selectable date'
 		},
 		locale: {
 			control: 'select',
 			options: ['en', 'ja', 'fr', 'de', 'es', 'zh-cn'],
-			description: '表示言語'
+			description: 'Locale used for display'
 		},
 		onchange: {
 			control: false,
 			action: 'changed',
-			description: '値変更時のコールバック'
+			description: 'Callback when the value changes'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		oninput: {
 			action: 'input',
-			description: '入力イベント'
+			description: 'Input event'
 		}
 	}
 };
@@ -238,11 +238,6 @@ export const Default: Story = {
 		format: 'YYYY/M/D（ddd）',
 		nullString: '日付を選択してください',
 		mode: 'single',
-		hasIcon: false,
-		disabled: false,
-		enableTextInput: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -254,10 +249,6 @@ export const DateRange: Story = {
 		format: 'YYYY/M/D',
 		nullString: '期間を選択してください',
 		mode: 'range',
-		hasIcon: false,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -270,9 +261,6 @@ export const WithIcon: Story = {
 		nullString: '日付を選択',
 		mode: 'single',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -285,9 +273,6 @@ export const WithIconAndDateRange: Story = {
 		nullString: '期間を選択',
 		mode: 'range',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -298,12 +283,7 @@ export const InlineVariant: Story = {
 		value: new Date(),
 		inline: true,
 		format: 'YYYY/M/D（ddd）',
-		nullString: '',
 		mode: 'single',
-		hasIcon: false,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	},
 	parameters: {
@@ -319,9 +299,6 @@ export const CustomFormat: Story = {
 		nullString: '日付を選択',
 		mode: 'single',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -335,8 +312,6 @@ export const Disabled: Story = {
 		mode: 'single',
 		hasIcon: true,
 		disabled: true,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -349,129 +324,8 @@ export const WithMinMaxDate: Story = {
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
 		minDate: new Date(2024, 0, 1),
 		maxDate: new Date(2024, 11, 31),
-		locale: 'ja'
-	}
-};
-
-// English Locale（英語表示）
-export const EnglishLocale: Story = {
-	args: {
-		value: undefined,
-		format: 'MMM D, YYYY',
-		nullString: 'Select date',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'en'
-	}
-};
-
-// French Locale（フランス語表示）
-export const FrenchLocale: Story = {
-	args: {
-		value: undefined,
-		format: 'D MMM YYYY',
-		nullString: 'Sélectionnez une date',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'fr'
-	}
-};
-
-// German Locale（ドイツ語表示）
-export const GermanLocale: Story = {
-	args: {
-		value: undefined,
-		format: 'D. MMM YYYY',
-		nullString: 'Datum auswählen',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'de'
-	}
-};
-
-// Spanish Locale（スペイン語表示）
-export const SpanishLocale: Story = {
-	args: {
-		value: undefined,
-		format: 'D [de] MMM [de] YYYY',
-		nullString: 'Seleccionar fecha',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'es'
-	}
-};
-
-// Chinese Locale（中国語表示）
-export const ChineseLocale: Story = {
-	args: {
-		value: undefined,
-		format: 'YYYY年M月D日',
-		nullString: '请选择日期',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'zh-cn'
-	}
-};
-
-// Focus Style Variations（フォーカススタイルのバリエーション）
-export const FocusStyleOutline: Story = {
-	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'ja'
-	}
-};
-
-export const FocusStyleBackground: Story = {
-	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'background',
-		enableClickToOpen: true,
-		locale: 'ja'
-	}
-};
-
-export const FocusStyleNone: Story = {
-	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'none',
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
@@ -481,13 +335,9 @@ export const AllowDirectInput: Story = {
 	args: {
 		value: undefined,
 		format: 'YYYY/M/D',
-		nullString: '',
 		mode: 'single',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
 		enableTextInput: true,
-		enableClickToOpen: true,
 		locale: 'ja'
 	},
 	parameters: {
@@ -507,10 +357,7 @@ export const FullWidth: Story = {
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
 		fullWidth: true,
-		enableClickToOpen: true,
 		locale: 'ja'
 	},
 	parameters: {
@@ -526,25 +373,8 @@ export const RoundedStyle: Story = {
 		nullString: '日付を選択してください',
 		mode: 'single',
 		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
 		rounded: true,
-		enableClickToOpen: true,
 		locale: 'ja'
 	}
 };
 
-// Playground（プレイグラウンド）
-export const Playground: Story = {
-	args: {
-		value: undefined,
-		format: 'YYYY/M/D（ddd）',
-		nullString: '日付を選択してください',
-		mode: 'single',
-		hasIcon: true,
-		disabled: false,
-		focusStyle: 'outline',
-		enableClickToOpen: true,
-		locale: 'ja'
-	}
-};

@@ -17,161 +17,161 @@ const meta = {
 	argTypes: {
 		value: {
 			control: { type: 'text' },
-			description: '選択された値'
+			description: 'Selected value'
 		},
 		options: {
 			control: { type: 'object' },
-			description: '選択肢の配列'
+			description: 'Array of selectable options'
 		},
 		inline: {
 			control: { type: 'boolean' },
-			description: 'インライン表示'
+			description: 'Display as inline editable text'
 		},
 		focusStyle: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['background', 'border', 'none'],
-			description: 'フォーカス時のスタイル'
+			description: 'Focus style (background, border, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
-			description: 'プレースホルダーテキスト'
+			description: 'Placeholder text'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
-			description: '幅100%で表示'
+			description: 'Whether the combobox takes full width'
 		},
 		filterable: {
 			control: { type: 'boolean' },
-			description: 'フィルタリング機能を有効にする'
+			description: 'Enable filtering as the user types'
 		},
 		rounded: {
 			control: { type: 'boolean' },
-			description: '角丸デザイン'
+			description: 'Use rounded corners'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the combobox is disabled'
 		},
 		readonly: {
 			control: { type: 'boolean' },
-			description: '読み取り専用'
+			description: 'Make the input read-only'
 		},
 		required: {
 			control: { type: 'boolean' },
-			description: '必須項目'
+			description: 'Mark the field as required'
 		},
 		minWidth: {
 			control: { type: 'number' },
-			description: '最小幅'
+			description: 'Minimum width in pixels'
 		},
 		maxWidth: {
 			control: { type: 'number' },
-			description: '最大幅'
+			description: 'Maximum width in pixels'
 		},
 		maxlength: {
 			control: { type: 'number' },
-			description: '最大文字数'
+			description: 'Maximum input length'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		},
 		oninput: {
 			action: 'input',
-			description: '入力イベント'
+			description: 'Input event'
 		}
 	}
 };
@@ -221,33 +221,13 @@ const programmingLanguages = [
 	'Lua'
 ];
 
-// Playground (全props操作用)
-export const Playground = {
-	args: {
-		value: '',
-		options: basicOptions,
-		variant: 'default',
-		fullWidth: false,
-		rounded: false,
-		filterable: true,
-		disabled: false,
-		readonly: false,
-		required: false,
-		minWidth: null,
-		maxWidth: null,
-		maxlength: null,
-		placeholder: 'Playground'
-	}
-};
-
 // 基本的なコンボボックス
 export const BasicCombobox = {
 	render: () => ({
 		Component: Combobox,
 		props: {
 			options: basicOptions,
-			placeholder: '選択または入力してください',
-			filterable: true
+			placeholder: '選択または入力してください'
 		}
 	})
 };
@@ -258,45 +238,7 @@ export const CountrySearch = {
 		Component: Combobox,
 		props: {
 			options: countryOptions,
-			placeholder: '国名を検索...',
-			filterable: true,
-			value: '日本'
-		}
-	})
-};
-
-// プログラミング言語選択
-export const ProgrammingLanguageSearch = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: programmingLanguages,
-			placeholder: 'プログラミング言語を検索...',
-			filterable: true
-		}
-	})
-};
-
-// 数値選択
-export const NumberCombobox = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: numberOptions,
-			placeholder: '数値を選択または入力',
-			filterable: true
-		}
-	})
-};
-
-// 色選択
-export const ColorPicker = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: colorOptions,
-			placeholder: '色を選択...',
-			filterable: true
+			placeholder: '国名を検索...'
 		}
 	})
 };
@@ -307,8 +249,7 @@ export const NonFilterable = {
 		Component: Combobox,
 		props: {
 			options: basicOptions,
-			placeholder: 'フィルタリング無効',
-			filterable: false
+			placeholder: 'フィルタリング無効'
 		}
 	})
 };
@@ -320,7 +261,6 @@ export const Rounded = {
 		props: {
 			options: countryOptions,
 			placeholder: '角丸のコンボボックス',
-			filterable: true,
 			rounded: true
 		}
 	})
@@ -333,47 +273,7 @@ export const FullWidth = {
 		props: {
 			options: programmingLanguages,
 			placeholder: '幅100%のコンボボックス',
-			filterable: true,
 			fullWidth: true
-		}
-	})
-};
-
-// Background Focus
-export const BackgroundFocus = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: colorOptions,
-			placeholder: 'フォーカス時に背景色変更',
-			focusStyle: 'background',
-			filterable: true
-		}
-	})
-};
-
-// Border Focus
-export const BorderFocus = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: basicOptions,
-			placeholder: 'フォーカス時にボーダー表示',
-			focusStyle: 'border',
-			filterable: true
-		}
-	})
-};
-
-// No Focus Style
-export const NoFocusStyle = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: basicOptions,
-			placeholder: 'フォーカススタイルなし',
-			focusStyle: 'none',
-			filterable: true
 		}
 	})
 };
@@ -385,23 +285,7 @@ export const Inline = {
 		props: {
 			inline: true,
 			options: countryOptions,
-			value: '日本',
-			placeholder: 'クリックして編集',
-			filterable: true
-		}
-	})
-};
-
-// インライン（空の値）
-export const InlineEmpty = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			inline: true,
-			options: colorOptions,
-			value: '',
-			placeholder: '色を選択してください',
-			filterable: true
+			placeholder: 'クリックして編集'
 		}
 	})
 };
@@ -413,8 +297,7 @@ export const WithMaxLength = {
 		props: {
 			options: colorOptions,
 			placeholder: '最大10文字まで',
-			maxlength: 10,
-			filterable: true
+			maxlength: 10
 		}
 	})
 };
@@ -427,62 +310,7 @@ export const WithWidthLimits = {
 			options: programmingLanguages,
 			placeholder: '幅制限あり',
 			minWidth: 200,
-			maxWidth: 300,
-			filterable: true
-		}
-	})
-};
-
-// 大量のオプション
-export const LargeOptionList = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: Array.from({ length: 100 }, (_, i) => `オプション${i + 1}`),
-			placeholder: '大量のオプションから検索',
-			filterable: true
-		}
-	})
-};
-
-// 空のオプション
-export const EmptyOptions = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: [],
-			placeholder: 'オプションがありません',
-			filterable: true
-		}
-	})
-};
-
-// 混在した型のオプション
-export const MixedTypeOptions = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: ['文字列1', '文字列2', 123, 456, null, '文字列3'],
-			placeholder: '混在した型のオプション',
-			filterable: true
-		}
-	})
-};
-
-// 長いオプション名
-export const LongOptionNames = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: [
-				'短い',
-				'中程度の長さのオプション',
-				'非常に長いオプション名でテキストの折り返しや表示を確認するためのサンプル',
-				'さらに長いオプション名でユーザーインターフェースの動作をテストするための詳細なサンプルテキスト',
-				'普通の長さ'
-			],
-			placeholder: '長いオプション名のテスト',
-			filterable: true
+			maxWidth: 300
 		}
 	})
 };
@@ -542,47 +370,7 @@ export const PrefectureSelector = {
 				'沖縄県'
 			],
 			placeholder: '都道府県を選択または検索',
-			filterable: true,
 			fullWidth: true
-		}
-	})
-};
-
-// 技術スタック選択
-export const TechStackSelector = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: [
-				'React',
-				'Vue.js',
-				'Angular',
-				'Svelte',
-				'Next.js',
-				'Nuxt.js',
-				'Gatsby',
-				'Node.js',
-				'Express.js',
-				'Fastify',
-				'NestJS',
-				'Django',
-				'Flask',
-				'Laravel',
-				'MongoDB',
-				'PostgreSQL',
-				'MySQL',
-				'Redis',
-				'ElasticSearch',
-				'Docker',
-				'Kubernetes',
-				'AWS',
-				'GCP',
-				'Azure',
-				'Vercel',
-				'Netlify'
-			],
-			placeholder: '技術スタックを検索...',
-			filterable: true
 		}
 	})
 };
@@ -594,7 +382,6 @@ export const FormIntegration = {
 		props: {
 			options: ['個人', '法人', 'フリーランス', '学生', 'その他'],
 			placeholder: '職業を選択または入力',
-			filterable: true,
 			required: true,
 			fullWidth: true
 		}
@@ -635,15 +422,4 @@ export const WithEvents = {
 	})
 };
 
-// カスタムスタイル
-export const WithCustomStyle = {
-	render: () => ({
-		Component: Combobox,
-		props: {
-			options: colorOptions,
-			placeholder: 'カスタムスタイル',
-			customStyle: 'font-weight: bold; color: #007bff;',
-			filterable: true
-		}
-	})
-};
+// カスタムスタイル（docs などでコード例として示すことを推奨）

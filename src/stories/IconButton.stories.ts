@@ -77,12 +77,12 @@ const meta: Meta<IconButtonArgs> = {
 	}),
 	argTypes: {
 		type: {
-			control: 'select',
+			control: 'radio',
 			options: ['button', 'submit', 'reset'],
 			description: 'HTML button type attribute'
 		},
 		variant: {
-			control: 'select',
+			control: 'radio',
 			options: ['filled', 'outlined', 'ghost', 'glass'],
 			description: 'Visual style variant'
 		},
@@ -111,7 +111,7 @@ const meta: Meta<IconButtonArgs> = {
 			description: 'Whether the icon should be filled'
 		},
 		iconVariant: {
-			control: 'select',
+			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant style'
 		},
@@ -490,36 +490,4 @@ export const ReducedMotion: Story = {
 	}
 };
 
-// Playground (全props操作用)
-export const Playground: Story = {
-	args: {
-		type: 'button',
-		variant: 'filled',
-		size: 32,
-		disabled: false,
-		loading: false,
-		rounded: true,
-		pressed: false,
-		iconFilled: false,
-		hasBadge: false,
-		badgeCount: 0,
-		badgeVariant: 'count',
-		badgeMax: 99,
-		reducedMotion: false,
-		color: '',
-		badgeColor: '',
-		customStyle: '',
-		tabindex: null,
-		ariaLabel: 'Customizable icon button',
-		ariaDescribedby: '',
-		ariaPressed: false
-		// children は除外してコントロールの問題を回避
-	},
-	render: (args) => ({
-		Component: IconButton,
-		props: {
-			...args,
-			children: createChildrenSnippet('home')
-		}
-	})
-};
+// (No dedicated Playground story; use Default and other stories with controls instead.)

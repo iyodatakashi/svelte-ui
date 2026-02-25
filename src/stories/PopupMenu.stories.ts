@@ -24,7 +24,7 @@ const meta: Meta<PopupMenuArgs> = {
 	tags: ['autodocs'],
 	argTypes: {
 		position: {
-			control: 'select',
+			control: 'radio',
 			options: ['top', 'bottom', 'left', 'right'],
 			description: 'Position of menu relative to anchor element'
 		},

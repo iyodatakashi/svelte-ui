@@ -67,12 +67,12 @@ const meta: Meta<FabArgs> = {
 	}),
 	argTypes: {
 		variant: {
-			control: 'select',
+			control: 'radio',
 			options: ['filled', 'outlined', 'ghost', 'glass'],
 			description: 'Visual style variant'
 		},
 		position: {
-			control: 'select',
+			control: 'radio',
 			options: ['left', 'center', 'right'],
 			description: 'Position of the FAB on screen'
 		},
@@ -114,102 +114,102 @@ const meta: Meta<FabArgs> = {
 			description: 'Icon optical size'
 		},
 		iconVariant: {
-			control: 'select',
+			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant'
 		},
 		// 新しいイベントハンドラのargTypes
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		}
 	}
 };
@@ -222,8 +222,6 @@ export const Default: Story = {
 	args: {
 		icon: 'add',
 		position: 'right',
-		disabled: false,
-		loading: false,
 		shadow: true
 	}
 };
@@ -232,16 +230,14 @@ export const Default: Story = {
 export const PositionLeft: Story = {
 	args: {
 		icon: 'favorite',
-		position: 'left',
-		disabled: false
+		position: 'left'
 	}
 };
 
 export const PositionCenter: Story = {
 	args: {
 		icon: 'share',
-		position: 'center',
-		disabled: false
+		position: 'center'
 	}
 };
 
@@ -250,8 +246,7 @@ export const CustomColor: Story = {
 	args: {
 		icon: 'delete',
 		color: '#f44336',
-		position: 'right',
-		disabled: false
+		position: 'right'
 	}
 };
 
@@ -278,8 +273,7 @@ export const NoShadow: Story = {
 	args: {
 		icon: 'add',
 		shadow: false,
-		position: 'right',
-		disabled: false
+		position: 'right'
 	}
 };
 
@@ -295,7 +289,6 @@ export const WithLabel: Story = {
 		icon: 'edit',
 		position: 'center',
 		color: '#6750a4',
-		disabled: false,
 		children: createChildrenSnippet('Edit')
 	}
 };
@@ -306,7 +299,6 @@ export const WithLongLabel: Story = {
 		icon: 'download',
 		position: 'center',
 		color: '#6750a4',
-		disabled: false,
 		children: createChildrenSnippet('Download File')
 	}
 };

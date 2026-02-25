@@ -1,6 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
+import type { IconVariant } from '../lib/types/icon';
 import Button from '../lib/components/Button.svelte';
 
 // 型安全性のための明示的な型定義
@@ -9,6 +10,7 @@ interface ButtonArgs {
 	type?: 'button' | 'submit' | 'reset';
 	customStyle?: string;
 
+	align?: 'left' | 'center' | 'right';
 	disabled?: boolean;
 	loading?: boolean;
 	tabindex?: number | null;
@@ -16,9 +18,9 @@ interface ButtonArgs {
 	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 	iconGrade?: number;
 	iconOpticalSize?: number | null;
-	iconVariant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+	iconVariant?: IconVariant;
 	fullWidth?: boolean;
-	minWidth?: number;
+	minWidth?: string | number;
 	popup?: boolean;
 	rounded?: boolean;
 	icon?: string;
@@ -75,19 +77,24 @@ const meta: Meta<ButtonArgs> = {
 	}),
 	argTypes: {
 		type: {
-			control: 'select',
+			control: 'radio',
 			options: ['button', 'submit', 'reset'],
 			description: 'HTML button type attribute'
 		},
 		variant: {
-			control: 'select',
+			control: 'radio',
 			options: ['filled', 'outlined', 'ghost', 'glass'],
 			description: 'Visual style variant'
 		},
 		size: {
-			control: 'select',
+			control: 'radio',
 			options: ['small', 'medium', 'large'],
 			description: 'Size variant of the button'
+		},
+		align: {
+			control: 'radio',
+			options: ['left', 'center', 'right'],
+			description: 'Horizontal alignment of the button content'
 		},
 
 		disabled: {
@@ -128,7 +135,7 @@ const meta: Meta<ButtonArgs> = {
 			description: 'Icon optical size'
 		},
 		iconVariant: {
-			control: 'select',
+			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant'
 		},
@@ -181,91 +188,91 @@ const meta: Meta<ButtonArgs> = {
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		}
 	}
 };
@@ -330,14 +337,12 @@ export const Rounded: Story = {
 // Size variants
 export const Small: Story = {
 	args: {
-		variant: 'filled',
 		size: 'small',
 		children: createChildrenSnippet('Small Button')
 	}
 };
 export const Large: Story = {
 	args: {
-		variant: 'filled',
 		size: 'large',
 		children: createChildrenSnippet('Large Button')
 	}
@@ -346,7 +351,6 @@ export const Large: Story = {
 // Disabled
 export const Disabled: Story = {
 	args: {
-		variant: 'filled',
 		disabled: true,
 		children: createChildrenSnippet('Disabled Button')
 	}
@@ -355,7 +359,6 @@ export const Disabled: Story = {
 // Loading
 export const Loading: Story = {
 	args: {
-		variant: 'filled',
 		loading: true,
 		children: createChildrenSnippet('Loading Button')
 	}
@@ -364,7 +367,6 @@ export const Loading: Story = {
 // With icon
 export const WithIcon: Story = {
 	args: {
-		variant: 'filled',
 		icon: 'add',
 		children: createChildrenSnippet('Add Item')
 	}
@@ -373,7 +375,6 @@ export const WithIcon: Story = {
 // Popup
 export const Popup: Story = {
 	args: {
-		variant: 'filled',
 		popup: true,
 		ariaExpanded: false,
 		children: createChildrenSnippet('Options')
@@ -383,7 +384,6 @@ export const Popup: Story = {
 // Custom color
 export const CustomColor: Story = {
 	args: {
-		variant: 'filled',
 		color: '#e91e63',
 		children: createChildrenSnippet('Custom Color')
 	}
@@ -392,7 +392,6 @@ export const CustomColor: Story = {
 // Full width
 export const FullWidth: Story = {
 	args: {
-		variant: 'filled',
 		fullWidth: true,
 		children: createChildrenSnippet('Full Width Button')
 	},
@@ -404,7 +403,6 @@ export const FullWidth: Story = {
 // Reduced motion
 export const ReducedMotion: Story = {
 	args: {
-		variant: 'filled',
 		reducedMotion: true,
 		children: createChildrenSnippet('No Animation')
 	}

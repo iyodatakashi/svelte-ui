@@ -46,102 +46,102 @@ const meta: Meta<FileUploaderArgs> = {
 	argTypes: {
 		accept: {
 			control: 'text',
-			description: '受け入れるファイルタイプ'
+			description: 'Accepted file types (e.g. ".jpg,.png,.pdf")'
 		},
 		value: {
 			control: false,
-			description: '選択されたファイルのリスト'
+			description: 'Selected file list (bindable)'
 		},
 		multiple: {
 			control: 'boolean',
-			description: '複数ファイルの選択を許可するかどうか'
+			description: 'Allow selecting multiple files'
 		},
 		maxFileSize: {
 			control: 'number',
-			description: '許可する最大ファイルサイズ（バイト）'
+			description: 'Maximum allowed file size in bytes'
 		},
 		placeholder: {
 			control: 'text',
-			description: 'プレースホルダーテキスト（HTMLタグ使用可）'
+			description: 'Placeholder text (HTML allowed)'
 		},
 		width: {
 			control: 'text',
-			description: 'コンポーネントの幅（数値またはCSS単位付きの文字列）'
+			description: 'Component width (number for px, or CSS length string)'
 		},
 		height: {
 			control: 'text',
-			description: 'コンポーネントの高さ（px）'
+			description: 'Component height in pixels'
 		},
 		rounded: {
 			control: 'boolean',
-			description: '角丸スタイルを適用するかどうか'
+			description: 'Apply rounded style'
 		},
 		icon: {
 			control: 'text',
-			description: 'アイコン名'
+			description: 'Material Symbols icon name'
 		},
 		iconFilled: {
 			control: 'boolean',
-			description: 'アイコンが塗りつぶされているか'
+			description: 'Whether the icon is filled'
 		},
 		iconWeight: {
 			control: 'select',
 			options: [100, 200, 300, 400, 500, 600, 700],
-			description: 'アイコンの太さ'
+			description: 'Icon weight'
 		},
 		iconGrade: {
 			control: 'number',
-			description: 'アイコンのグレード'
+			description: 'Icon grade'
 		},
 		iconOpticalSize: {
 			control: 'number',
-			description: 'アイコンのオプティカルサイズ'
+			description: 'Icon optical size'
 		},
 		iconVariant: {
-			control: 'select',
+			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
-			description: 'アイコンのバリアント'
+			description: 'Icon variant'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		}
 	}
 };
@@ -153,12 +153,6 @@ export const Default: Story = {
 	args: {}
 };
 
-export const WithAcceptFilter: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif'
-	}
-};
-
 export const MultipleFiles: Story = {
 	args: {
 		multiple: true,
@@ -166,23 +160,21 @@ export const MultipleFiles: Story = {
 	}
 };
 
-export const CustomStyle: Story = {
+export const CustomSize: Story = {
 	args: {
 		width: '300px',
-		height: 200,
-		rounded: true,
-		icon: 'upload_file'
+		height: 200
 	}
 };
 
-export const ImageOnly: Story = {
+export const Rounded: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp'
+		rounded: true
 	}
 };
 
-export const DocumentsOnly: Story = {
+export const CustomPlaceholder: Story = {
 	args: {
-		accept: '.pdf,.doc,.docx,.txt'
+		placeholder: 'Click or drop files here<br />Max 10MB'
 	}
 };

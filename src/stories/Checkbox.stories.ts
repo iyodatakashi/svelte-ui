@@ -64,125 +64,129 @@ const meta: Meta<CheckboxArgs> = {
 	argTypes: {
 		value: {
 			control: { type: 'boolean' },
-			description: 'チェック状態'
+			description: 'Checked state'
+		},
+		indeterminate: {
+			control: { type: 'boolean' },
+			description: 'Indeterminate (mixed) state'
 		},
 		name: {
 			control: { type: 'text' },
-			description: 'フォームの名前属性'
+			description: 'Form field name attribute'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the checkbox is disabled'
 		},
 		required: {
 			control: { type: 'boolean' },
-			description: '必須項目'
+			description: 'Whether the field is required'
 		},
 		size: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['small', 'medium', 'large'],
-			description: 'サイズ'
+			description: 'Size variant of the checkbox'
 		},
 		reducedMotion: {
 			control: { type: 'boolean' },
-			description: 'アニメーション無効化'
+			description: 'Disable animations for reduced motion'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		}
 	}
 };
@@ -199,7 +203,6 @@ const createChildrenSnippet = (text: string) =>
 // Default (unchecked)
 export const Default: Story = {
 	args: {
-		value: false,
 		children: createChildrenSnippet('I agree to the terms and conditions')
 	}
 };
@@ -215,7 +218,6 @@ export const Checked: Story = {
 // Indeterminate
 export const Indeterminate: Story = {
 	args: {
-		value: false,
 		indeterminate: true,
 		children: createChildrenSnippet('Indeterminate')
 	}
@@ -224,14 +226,12 @@ export const Indeterminate: Story = {
 // Size variants
 export const Small: Story = {
 	args: {
-		value: false,
 		size: 'small',
 		children: createChildrenSnippet('Small')
 	}
 };
 export const Large: Story = {
 	args: {
-		value: false,
 		size: 'large',
 		children: createChildrenSnippet('Large')
 	}
@@ -240,7 +240,6 @@ export const Large: Story = {
 // Disabled
 export const Disabled: Story = {
 	args: {
-		value: false,
 		disabled: true,
 		children: createChildrenSnippet('Disabled')
 	}
@@ -249,7 +248,6 @@ export const Disabled: Story = {
 // Readonly
 export const ReadOnly: Story = {
 	args: {
-		value: true,
 		readonly: true,
 		children: createChildrenSnippet('Readonly')
 	}
@@ -259,28 +257,6 @@ export const ReadOnly: Story = {
 export const ReducedMotion: Story = {
 	args: {
 		reducedMotion: true,
-		value: false,
 		children: createChildrenSnippet('Reduced motion')
 	}
-};
-
-// Playground (全props操作用)
-export const Playground: Story = {
-	args: {
-		value: false,
-		indeterminate: false,
-		disabled: false,
-		required: false,
-		readonly: false,
-		size: 'medium',
-		reducedMotion: false
-		// children は除外してコントロールの問題を回避
-	},
-	render: (args) => ({
-		Component: Checkbox,
-		props: {
-			...args,
-			children: createChildrenSnippet('Customizable checkbox')
-		}
-	})
 };

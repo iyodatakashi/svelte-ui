@@ -29,40 +29,40 @@ const meta: Meta<PaginationArgs> = {
 	argTypes: {
 		total: {
 			control: 'number',
-			description: '総件数'
+			description: 'Total number of items'
 		},
 		limit: {
 			control: 'number',
-			description: '1ページあたりの表示件数'
+			description: 'Items per page'
 		},
 		currentPageNum: {
 			control: 'number',
-			description: '現在のページ番号'
+			description: 'Current page number (1-based)'
 		},
 		visiblePages: {
 			control: 'number',
-			description: '表示するページボタンの数',
+			description: 'Number of page buttons to display',
 			defaultValue: 5
 		},
 		showCount: {
 			control: 'boolean',
-			description: 'count表示全体の有無',
+			description: 'Whether to show the count section',
 			defaultValue: true
 		},
 		showRange: {
 			control: 'boolean',
-			description: '現在のアイテム範囲（例: "1 - 50"）の表示有無',
+			description: 'Whether to show current item range (e.g. "1 - 50")',
 			defaultValue: true
 		},
 		showTotal: {
 			control: 'boolean',
-			description: '総件数（例: "1,000"）の表示有無',
+			description: 'Whether to show total count (e.g. "1,000")',
 			defaultValue: true
 		},
 		onchange: {
 			control: false,
 			action: 'page-changed',
-			description: 'ページ変更時のコールバック関数'
+			description: 'Callback fired when the page changes'
 		}
 	}
 };

@@ -16,141 +16,141 @@ const meta = {
 	argTypes: {
 		value: {
 			control: { type: 'text' },
-			description: '選択された値'
+			description: 'Selected value'
 		},
 		options: {
 			control: { type: 'object' },
-			description: '選択肢の配列'
+			description: 'Array of selectable options'
 		},
 		inline: {
 			control: { type: 'boolean' },
-			description: 'インライン表示'
+			description: 'Display as inline editable text'
 		},
 		focusStyle: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['background', 'border', 'none'],
-			description: 'フォーカス時のスタイル'
+			description: 'Focus style (background, border, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
-			description: 'プレースホルダーテキスト'
+			description: 'Placeholder text'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
-			description: '幅100%で表示'
+			description: 'Whether the select takes full width'
 		},
 		rounded: {
 			control: { type: 'boolean' },
-			description: '角丸デザイン'
+			description: 'Use rounded corners'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the select is disabled'
 		},
 		readonly: {
 			control: { type: 'boolean' },
-			description: '読み取り専用'
+			description: 'Make the select read-only'
 		},
 		required: {
 			control: { type: 'boolean' },
-			description: '必須項目'
+			description: 'Mark the field as required'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		}
 	}
 };
@@ -175,7 +175,6 @@ const countryOptions = [
 // Default
 export const Default = {
 	args: {
-		value: '',
 		options: basicOptions,
 		placeholder: '選択してください'
 	}
@@ -184,7 +183,6 @@ export const Default = {
 // Inline variant
 export const Inline = {
 	args: {
-		value: '',
 		options: basicOptions,
 		inline: true,
 		placeholder: '選択してください'
@@ -209,31 +207,6 @@ export const FullWidth = {
 	},
 	parameters: {
 		layout: 'padded'
-	}
-};
-
-// Focus styles
-export const FocusBackground = {
-	args: {
-		options: basicOptions,
-		focusStyle: 'background',
-		placeholder: 'フォーカス時に背景色変更'
-	}
-};
-
-export const FocusBorder = {
-	args: {
-		options: basicOptions,
-		focusStyle: 'border',
-		placeholder: 'フォーカス時にボーダー表示'
-	}
-};
-
-export const FocusNone = {
-	args: {
-		options: basicOptions,
-		focusStyle: 'none',
-		placeholder: 'フォーカススタイルなし'
 	}
 };
 
@@ -267,8 +240,7 @@ export const Required = {
 export const WithEvents = {
 	args: {
 		options: basicOptions,
-		placeholder: 'イベントを確認（コンソールをチェック）',
-		value: ''
+		placeholder: 'イベントを確認（コンソールをチェック）'
 	},
 	render: (args: Record<string, unknown>) => ({
 		Component: Select,
@@ -336,32 +308,3 @@ export const VariantComparison = {
 	})
 };
 
-// Playground (全props操作用)
-export const Playground = {
-	args: {
-		value: '',
-		options: basicOptions,
-		variant: 'default',
-		focusStyle: 'background',
-		placeholder: 'Playground',
-		fullWidth: false,
-		rounded: false,
-		disabled: false,
-		readonly: false,
-		required: false,
-		customStyle: '',
-		size: 1
-	},
-	parameters: {
-		layout: 'padded'
-	},
-	render: (args: Record<string, unknown>) => ({
-		Component: Select,
-		props: {
-			...args,
-			onchange: (value: string | number | boolean | null | undefined) => {
-				console.log('onChange:', value);
-			}
-		}
-	})
-};

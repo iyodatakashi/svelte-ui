@@ -64,129 +64,129 @@ const meta: Meta<RadioArgs> = {
 	argTypes: {
 		name: {
 			control: { type: 'text' },
-			description: 'グループ名'
+			description: 'Group name the radio belongs to'
 		},
 		value: {
 			control: { type: 'text' },
-			description: '選択肢の値'
+			description: 'Value represented by this radio'
 		},
 		currentValue: {
 			control: { type: 'text' },
-			description: '現在の選択値'
+			description: 'Currently selected value in the group'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the radio is disabled'
 		},
 		required: {
 			control: { type: 'boolean' },
-			description: '必須項目'
+			description: 'Mark the field as required'
 		},
 		size: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['small', 'medium', 'large'],
-			description: 'サイズ'
+			description: 'Size variant of the radio'
 		},
 		reducedMotion: {
 			control: { type: 'boolean' },
-			description: 'アニメーション無効化'
+			description: 'Disable animations for reduced motion'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		}
 	}
 };
@@ -203,9 +203,7 @@ const createChildrenSnippet = (text: string) =>
 // Default (unchecked)
 export const Default: Story = {
 	args: {
-		name: 'default-group',
 		value: 'option1',
-		currentValue: null,
 		children: createChildrenSnippet('Option 1')
 	}
 };
@@ -213,7 +211,6 @@ export const Default: Story = {
 // Checked
 export const Checked: Story = {
 	args: {
-		name: 'checked-group',
 		value: 'option1',
 		currentValue: 'option1',
 		children: createChildrenSnippet('Checked')
@@ -223,18 +220,12 @@ export const Checked: Story = {
 // Size variants
 export const Small: Story = {
 	args: {
-		name: 'size-group',
-		value: 'small',
-		currentValue: null,
 		size: 'small',
 		children: createChildrenSnippet('Small')
 	}
 };
 export const Large: Story = {
 	args: {
-		name: 'size-group',
-		value: 'large',
-		currentValue: null,
 		size: 'large',
 		children: createChildrenSnippet('Large')
 	}
@@ -243,9 +234,6 @@ export const Large: Story = {
 // Disabled
 export const Disabled: Story = {
 	args: {
-		name: 'disabled-group',
-		value: 'option1',
-		currentValue: null,
 		disabled: true,
 		children: createChildrenSnippet('Disabled')
 	}
@@ -254,7 +242,6 @@ export const Disabled: Story = {
 // Readonly
 export const ReadOnly: Story = {
 	args: {
-		name: 'readonly-group',
 		value: 'option1',
 		currentValue: 'option1',
 		readonly: true,
@@ -265,60 +252,8 @@ export const ReadOnly: Story = {
 // Reduced motion
 export const ReducedMotion: Story = {
 	args: {
-		name: 'motion-group',
-		value: 'option1',
-		currentValue: null,
 		reducedMotion: true,
 		children: createChildrenSnippet('Reduced motion')
 	}
 };
 
-// String value
-export const StringValue: Story = {
-	args: {
-		name: 'string-values',
-		value: 'medium',
-		currentValue: 'medium',
-		children: createChildrenSnippet('String value')
-	}
-};
-// Number value
-export const NumberValue: Story = {
-	args: {
-		name: 'number-values',
-		value: 5,
-		currentValue: 5,
-		children: createChildrenSnippet('Number value')
-	}
-};
-// Boolean value
-export const BooleanValue: Story = {
-	args: {
-		name: 'boolean-values',
-		value: true,
-		currentValue: true,
-		children: createChildrenSnippet('Boolean value')
-	}
-};
-
-// Playground (全props操作用)
-export const Playground: Story = {
-	args: {
-		name: 'playground',
-		value: 'test-value',
-		currentValue: null,
-		disabled: false,
-		required: false,
-		readonly: false,
-		size: 'medium',
-		reducedMotion: false
-		// children は除外してコントロールの問題を回避
-	},
-	render: (args) => ({
-		Component: Radio,
-		props: {
-			...args,
-			children: createChildrenSnippet('Customizable radio')
-		}
-	})
-};

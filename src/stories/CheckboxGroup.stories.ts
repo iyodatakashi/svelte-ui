@@ -32,32 +32,32 @@ const meta: Meta<CheckboxGroupArgs> = {
 	argTypes: {
 		options: {
 			control: { type: 'object' },
-			description: '選択肢の配列'
+			description: 'Array of checkbox options'
 		},
 		value: {
 			control: { type: 'object' },
-			description: '選択された値の配列'
+			description: 'Array of selected values'
 		},
 		direction: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['vertical', 'horizontal'],
-			description: 'レイアウト方向'
+			description: 'Layout direction (vertical or horizontal)'
 		},
 		gap: {
 			control: { type: 'text' },
-			description: 'アイテム間の間隔'
+			description: 'Gap between items (CSS length)'
 		},
 		wrap: {
 			control: { type: 'boolean' },
-			description: '折り返しを有効にする'
+			description: 'Enable wrapping when items overflow'
 		},
 		minOptionWidth: {
 			control: { type: 'text' },
-			description: 'オプションの最小幅'
+			description: 'Minimum width for each option'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event when selection updates'
 		}
 	}
 };
@@ -83,8 +83,7 @@ export const Vertical: Story = {
 	args: {
 		options: sampleOptions,
 		value: [],
-		direction: 'vertical',
-		gap: '16px'
+		direction: 'vertical'
 	}
 };
 
@@ -92,8 +91,7 @@ export const Horizontal: Story = {
 	args: {
 		options: sampleOptions,
 		value: [],
-		direction: 'horizontal',
-		gap: '24px'
+		direction: 'horizontal'
 	}
 };
 
@@ -111,7 +109,6 @@ export const WithWrap: Story = {
 		],
 		value: [],
 		direction: 'horizontal',
-		gap: '16px',
 		wrap: true,
 		minOptionWidth: '150px'
 	}
@@ -133,13 +130,3 @@ export const WithCustomGap: Story = {
 	}
 };
 
-export const Playground: Story = {
-	args: {
-		options: sampleOptions,
-		value: [],
-		direction: 'vertical',
-		gap: '16px',
-		wrap: false,
-		minOptionWidth: undefined
-	}
-};

@@ -76,7 +76,7 @@ const meta: Meta<ImageUploaderArgs> = {
 			description: 'Make the component circular'
 		},
 		previewStyle: {
-			control: 'select',
+			control: 'radio',
 			options: ['plain', 'framed'],
 			description: 'Preview style: plain (no border/radius) or framed (default)'
 		},
@@ -176,37 +176,12 @@ export const Default: Story = {
 
 export const Multiple: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: true,
-		maxFileSize: 5 * 1024 * 1024
-	}
-};
-
-export const WithSize: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		width: 200,
-		height: 200
-	}
-};
-
-export const SmallSize: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		width: 120,
-		height: 120
+		multiple: true
 	}
 };
 
 export const Rectangle: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
 		width: 300,
 		height: 200
 	}
@@ -214,9 +189,6 @@ export const Rectangle: Story = {
 
 export const Rounded: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
 		width: 150,
 		height: 150,
 		rounded: true
@@ -225,131 +197,27 @@ export const Rounded: Story = {
 
 export const CustomIcon: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
 		icon: 'photo_camera'
 	}
 };
 
 export const CustomPlaceholder: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		icon: 'add_photo_alternate'
-	}
-};
-
-export const AvatarUploader: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.svg',
-		multiple: false,
-		maxFileSize: 2 * 1024 * 1024,
-		width: 120,
-		height: 120,
-		rounded: true,
-		icon: 'person'
-	}
-};
-
-export const CustomAccept: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.svg',
-		multiple: false,
-		maxFileSize: 2 * 1024 * 1024,
-		icon: 'image'
-	}
-};
-
-export const SmallMaxSize: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 1 * 1024 * 1024, // 1MB
-		icon: 'image'
-	}
-};
-
-export const Playground: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		width: undefined,
-		height: undefined,
-		rounded: false,
-		icon: 'image'
-	}
-};
-
-export const SVGSupport: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		icon: 'image'
-	}
-};
-
-export const SVGOnly: Story = {
-	args: {
-		accept: '.svg',
-		multiple: false,
-		maxFileSize: 2 * 1024 * 1024,
-		icon: 'code'
+		placeholder: 'Click or drop image here<br />Max 5MB'
 	}
 };
 
 // Responsive width examples
 export const ResponsiveWidth: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
 		width: 'calc(100vw - 80px)',
-		height: 200,
-		icon: 'image'
+		height: 200
 	}
 };
 
-export const PercentageWidth: Story = {
+export const AdaptivePreview: Story = {
 	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		width: '80%',
-		height: 150,
-		icon: 'image'
-	}
-};
-
-export const AllImageFormats: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg,.bmp,.tiff,.ico',
-		multiple: true,
-		maxFileSize: 10 * 1024 * 1024,
-		icon: 'collections'
-	}
-};
-
-// デバッグ用: 数値サイズテスト
-export const NumericSizeTest: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		width: 150,
-		height: 100
-	}
-};
-
-// アダプティブサイズテスト
-export const AdaptiveSizeTest: Story = {
-	args: {
-		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
-		multiple: false,
-		maxFileSize: 5 * 1024 * 1024,
-		previewAdaptive: true
+		previewAdaptive: true,
+		width: 300
 	}
 };

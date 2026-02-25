@@ -17,90 +17,90 @@ const meta = {
 	argTypes: {
 		value: {
 			control: { type: 'text' },
-			description: '入力値'
+			description: 'Input value'
 		},
 		type: {
 			control: { type: 'select' },
 			options: ['text', 'password', 'email', 'tel', 'url', 'number'],
-			description: '入力タイプ'
+			description: 'HTML input type'
 		},
 		variant: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['default', 'inline'],
-			description: 'デザインバリアント'
+			description: 'Visual variant (default or inline)'
 		},
 		focusStyle: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['background', 'border', 'none'],
-			description: 'フォーカス時のスタイル'
+			description: 'Focus style (background, border, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
-			description: 'プレースホルダーテキスト'
+			description: 'Placeholder text'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
-			description: '幅100%で表示'
+			description: 'Whether the input takes full width'
 		},
 		clearable: {
 			control: { type: 'boolean' },
-			description: 'クリアボタンを表示'
+			description: 'Show clear button'
 		},
 		rounded: {
 			control: { type: 'boolean' },
-			description: '角丸デザイン'
+			description: 'Use rounded corners'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the input is disabled'
 		},
 		readonly: {
 			control: { type: 'boolean' },
-			description: '読み取り専用'
+			description: 'Make the input read-only'
 		},
 		required: {
 			control: { type: 'boolean' },
-			description: '必須項目'
+			description: 'Mark the field as required'
 		},
 		leftIconAriaLabel: {
 			control: { type: 'text' },
-			description: '左アイコンのaria-label'
+			description: 'ARIA label for the left icon'
 		},
 		rightIconAriaLabel: {
 			control: { type: 'text' },
-			description: '右アイコンのaria-label'
+			description: 'ARIA label for the right icon'
 		},
 		minWidth: {
 			control: { type: 'number' },
-			description: '最小幅'
+			description: 'Minimum width in pixels'
 		},
 		maxWidth: {
 			control: { type: 'number' },
-			description: '最大幅'
+			description: 'Maximum width in pixels'
 		},
 		rightIcon: {
 			control: { type: 'text' },
-			description: '右側のアイコン名'
+			description: 'Right icon name'
 		},
 		leftIcon: {
 			control: { type: 'text' },
-			description: '左側のアイコン名'
+			description: 'Left icon name'
 		},
 		iconFilled: {
 			control: { type: 'boolean' },
-			description: 'アイコンを塗りつぶし表示'
+			description: 'Render icons as filled variants'
 		},
 		min: {
 			control: { type: 'number' },
-			description: '最小値（number type用）'
+			description: 'Minimum value (for number type)'
 		},
 		max: {
 			control: { type: 'number' },
-			description: '最大値（number type用）'
+			description: 'Maximum value (for number type)'
 		},
 		step: {
 			control: { type: 'number' },
-			description: 'ステップ値（number type用）'
+			description: 'Step value (for number type)'
 		},
 		autocomplete: {
 			control: { type: 'select' },
@@ -114,108 +114,108 @@ const meta = {
 				'current-password',
 				'new-password'
 			],
-			description: 'オートコンプリート属性'
+			description: 'Autocomplete attribute'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		},
 		oninput: {
 			action: 'input',
-			description: '入力イベント'
+			description: 'Input event'
 		}
 	}
 };
@@ -225,9 +225,7 @@ export default meta;
 // Default
 export const Default = {
 	args: {
-		value: '',
-		placeholder: 'テキストを入力してください',
-		clearable: false
+		placeholder: 'テキストを入力してください'
 	}
 };
 
@@ -235,8 +233,7 @@ export const Default = {
 export const Password = {
 	args: {
 		type: 'password',
-		placeholder: 'パスワードを入力',
-		value: ''
+		placeholder: 'パスワードを入力'
 	}
 };
 
@@ -244,8 +241,7 @@ export const Password = {
 export const Number = {
 	args: {
 		type: 'number',
-		placeholder: '数値を入力',
-		value: 1000
+		placeholder: '数値を入力'
 	}
 };
 
@@ -253,8 +249,7 @@ export const Number = {
 export const Email = {
 	args: {
 		type: 'email',
-		placeholder: 'メールアドレスを入力',
-		value: 'example@example.com'
+		placeholder: 'メールアドレスを入力'
 	}
 };
 
@@ -262,8 +257,7 @@ export const Email = {
 export const Tel = {
 	args: {
 		type: 'tel',
-		placeholder: '電話番号を入力',
-		value: '090-1234-5678'
+		placeholder: '電話番号を入力'
 	}
 };
 
@@ -271,8 +265,7 @@ export const Tel = {
 export const URL = {
 	args: {
 		type: 'url',
-		placeholder: 'URLを入力',
-		value: 'https://example.com'
+		placeholder: 'URLを入力'
 	}
 };
 
@@ -281,7 +274,6 @@ export const NumberWithConstraints = {
 	args: {
 		type: 'number',
 		placeholder: '0-100の範囲で0.1刻み',
-		value: 50,
 		min: 0,
 		max: 100,
 		step: 0.1
@@ -293,7 +285,6 @@ export const EmailWithAutocomplete = {
 	args: {
 		type: 'email',
 		placeholder: 'メールアドレスを入力',
-		value: '',
 		autocomplete: 'email'
 	}
 };
@@ -303,7 +294,6 @@ export const TelWithAutocomplete = {
 	args: {
 		type: 'tel',
 		placeholder: '電話番号を入力',
-		value: '',
 		autocomplete: 'tel'
 	}
 };
@@ -312,7 +302,6 @@ export const TelWithAutocomplete = {
 export const Inline = {
 	args: {
 		variant: 'inline',
-		value: 'インライン表示のテキスト',
 		placeholder: 'クリックして編集'
 	}
 };
@@ -333,36 +322,11 @@ export const FullWidth = {
 	}
 };
 
-// Focus style: background
-export const FocusStyleBackground = {
-	args: {
-		focusStyle: 'background',
-		placeholder: 'フォーカス時に背景色変更'
-	}
-};
-
-// Focus style: border
-export const FocusStyleBorder = {
-	args: {
-		focusStyle: 'border',
-		placeholder: 'フォーカス時にボーダー表示'
-	}
-};
-
-// Focus style: none
-export const FocusStyleNone = {
-	args: {
-		focusStyle: 'none',
-		placeholder: 'フォーカススタイルなし'
-	}
-};
-
 // Disabled
 export const Disabled = {
 	args: {
 		disabled: true,
-		placeholder: '無効な状態',
-		value: '編集不可'
+		placeholder: '無効な状態'
 	}
 };
 
@@ -370,8 +334,7 @@ export const Disabled = {
 export const ReadOnly = {
 	args: {
 		readonly: true,
-		placeholder: '読み取り専用',
-		value: '表示のみ'
+		placeholder: '読み取り専用'
 	}
 };
 
@@ -431,81 +394,7 @@ export const IconsDisabled = {
 		rightIcon: 'calendar_today',
 		leftIcon: 'person',
 		iconFilled: true,
-		disabled: true,
-		value: '無効状態'
+		disabled: true
 	}
 };
 
-// Icon Filled Comparison
-export const IconFilledComparison = {
-	args: {
-		placeholder: 'アイコンの塗りつぶし比較',
-		leftIcon: 'favorite',
-		rightIcon: 'star',
-		iconFilled: false
-	}
-};
-
-// Icon Filled True
-export const IconFilledTrue = {
-	args: {
-		placeholder: 'アイコン塗りつぶしあり',
-		leftIcon: 'favorite',
-		rightIcon: 'star',
-		iconFilled: true
-	}
-};
-
-// Icon Filled False
-export const IconFilledFalse = {
-	args: {
-		placeholder: 'アイコン塗りつぶしなし',
-		leftIcon: 'favorite',
-		rightIcon: 'star',
-		iconFilled: false
-	}
-};
-
-// With custom style
-export const WithCustomStyle = {
-	args: {
-		customStyle: 'font-weight: bold; color: #007bff;',
-		placeholder: 'カスタムスタイル'
-	}
-};
-
-// Playground (全props操作用)
-export const Playground = {
-	args: {
-		value: '',
-		type: 'text',
-		variant: 'default',
-		focusStyle: 'background',
-		placeholder: 'Playground',
-		fullWidth: false,
-		clearable: false,
-		rounded: false,
-		disabled: false,
-		readonly: false,
-		required: false,
-		minWidth: null,
-		maxWidth: null,
-		min: null,
-		max: null,
-		step: null,
-		autocomplete: null,
-		iconFilled: false
-	},
-	render: (args) => ({
-		Component: Input,
-		props: {
-			...args,
-			onchange: (value) => {
-				console.log('onChange:', value);
-			},
-			oninput: (value) => {
-				console.log('onInput:', value);
-			}
-		}
-	})
-};

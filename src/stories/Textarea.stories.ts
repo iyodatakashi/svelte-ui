@@ -17,65 +17,65 @@ const meta = {
 	argTypes: {
 		value: {
 			control: { type: 'text' },
-			description: '入力値'
+			description: 'Textarea value'
 		},
 		variant: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['default', 'inline'],
-			description: 'デザインバリアント'
+			description: 'Visual variant (default or inline)'
 		},
 		focusStyle: {
-			control: { type: 'select' },
+			control: { type: 'radio' },
 			options: ['background', 'border', 'none'],
-			description: 'フォーカス時のスタイル'
+			description: 'Focus style (background, border, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
-			description: 'プレースホルダーテキスト'
+			description: 'Placeholder text'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
-			description: '幅100%で表示'
+			description: 'Whether the textarea takes full width'
 		},
 		autoResize: {
 			control: { type: 'boolean' },
-			description: '内容に応じて高さを自動調整'
+			description: 'Automatically resize height based on content'
 		},
 		resizable: {
 			control: { type: 'boolean' },
-			description: 'ユーザーによるリサイズを許可'
+			description: 'Allow user-driven resize'
 		},
 		clearable: {
 			control: { type: 'boolean' },
-			description: 'クリアボタンを表示'
+			description: 'Show clear button'
 		},
 		rounded: {
 			control: { type: 'boolean' },
-			description: '角丸デザイン'
+			description: 'Use rounded corners'
 		},
 		disabled: {
 			control: { type: 'boolean' },
-			description: '無効状態'
+			description: 'Whether the textarea is disabled'
 		},
 		readonly: {
 			control: { type: 'boolean' },
-			description: '読み取り専用'
+			description: 'Make the textarea read-only'
 		},
 		required: {
 			control: { type: 'boolean' },
-			description: '必須項目'
+			description: 'Mark the field as required'
 		},
 		rows: {
 			control: { type: 'number', min: 1, max: 20 },
-			description: '初期行数'
+			description: 'Initial row count'
 		},
 		minHeight: {
 			control: { type: 'number' },
-			description: '最小高さ（px）'
+			description: 'Minimum height in pixels'
 		},
 		maxlength: {
 			control: { type: 'number' },
-			description: '最大文字数'
+			description: 'Maximum character length'
 		},
 		autocomplete: {
 			control: { type: 'select' },
@@ -91,108 +91,108 @@ const meta = {
 				'current-password',
 				'new-password'
 			],
-			description: 'オートコンプリート属性'
+			description: 'Autocomplete attribute'
 		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Keydown event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Keyup event'
 		},
 		onclick: {
 			action: 'clicked',
-			description: 'クリックイベント'
+			description: 'Click event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mousedown event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouseup event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouseenter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouseleave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouseover event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouseout event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		},
 		onchange: {
 			action: 'changed',
-			description: '変更イベント'
+			description: 'Change event'
 		},
 		oninput: {
 			action: 'input',
-			description: '入力イベント'
+			description: 'Input event'
 		}
 	}
 };
@@ -202,7 +202,6 @@ export default meta;
 // Default
 export const Default = {
 	args: {
-		value: '',
 		placeholder: '複数行のテキストを入力してください',
 		rows: 3,
 		autoResize: true
@@ -224,30 +223,6 @@ export const FullWidth = {
 		fullWidth: true,
 		placeholder: '幅100%のテキストエリア',
 		rows: 3
-	}
-};
-
-// Focus style: background
-export const FocusStyleBackground = {
-	args: {
-		focusStyle: 'background',
-		placeholder: 'フォーカス時に背景色変更'
-	}
-};
-
-// Focus style: border
-export const FocusStyleBorder = {
-	args: {
-		focusStyle: 'border',
-		placeholder: 'フォーカス時にボーダー表示'
-	}
-};
-
-// Focus style: none
-export const FocusStyleNone = {
-	args: {
-		focusStyle: 'none',
-		placeholder: 'フォーカススタイルなし'
 	}
 };
 
@@ -320,35 +295,3 @@ export const WithMaxlength = {
 	}
 };
 
-// Playground (全props操作用)
-export const Playground = {
-	args: {
-		value: '',
-		variant: 'default',
-		focusStyle: 'background',
-		placeholder: 'Playground',
-		fullWidth: false,
-		autoResize: false,
-		resizable: false,
-		clearable: false,
-		rounded: false,
-		disabled: false,
-		readonly: false,
-		required: false,
-		rows: 3,
-		minHeight: null,
-		maxlength: null
-	},
-	render: (args: Record<string, unknown>) => ({
-		Component: Textarea,
-		props: {
-			...args,
-			onchange: (value: string | number | null | undefined) => {
-				console.log('onChange:', value);
-			},
-			oninput: (value: string | number | undefined) => {
-				console.log('onInput:', value);
-			}
-		}
-	})
-};
