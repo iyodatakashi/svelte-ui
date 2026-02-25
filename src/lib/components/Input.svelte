@@ -158,7 +158,7 @@
 		focusStyle = 'outline',
 		fullWidth = false,
 		width = null,
-		minWidth = inline ? null : 120,
+		minWidth = inline ? null : 200,
 		maxWidth = null,
 		rounded = false,
 		customStyle = '',
