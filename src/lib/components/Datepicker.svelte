@@ -36,7 +36,7 @@
 		// 基本プロパティ
 		value: Date | { start: Date; end: Date } | undefined;
 		format?: string;
-		nullString?: string;
+		placeholder?: string;
 		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 		rangeSeparator?: string;
 
@@ -63,10 +63,9 @@
 
 		// 状態/動作
 		disabled?: boolean;
+		readonly?: boolean;
 		mode?: DatepickerMode;
-		/** テキスト入力を有効にするか */
 		enableTextInput?: boolean;
-		/** クリック時にポップアップを開くかどうかを有効にするか */
 		enableClickToOpen?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
@@ -108,7 +107,7 @@
 		// 基本プロパティ
 		value = $bindable(),
 		format,
-		nullString = '',
+		placeholder = '',
 		locale,
 		rangeSeparator = ' - ',
 
@@ -120,9 +119,9 @@
 		inline = false,
 		focusStyle = 'outline',
 		fullWidth = false,
-		width = null,
-		minWidth = null,
-		maxWidth = null,
+		width,
+		minWidth,
+		maxWidth,
 		rounded = false,
 
 		// アイコン関連
@@ -135,6 +134,7 @@
 
 		// 状態/動作
 		disabled = false,
+		readonly = false,
 		mode = 'single',
 		enableTextInput = false,
 		enableClickToOpen = true,
@@ -270,7 +270,7 @@
 	// =========================================================================
 	const handleChange = () => {
 		// スクリーンリーダーアナウンス
-		if (value) {
+		if (value && !readonly) {
 			if (mode === 'range' && typeof value === 'object' && 'start' in value && 'end' in value) {
 				const startDate = dayjs(value.start).locale(resolvedLocale).format(finalFormat);
 				const endDate = dayjs(value.end).locale(resolvedLocale).format(finalFormat);
@@ -281,7 +281,9 @@
 			}
 		}
 
-		onchange(value);
+		if (!readonly) {
+			onchange(value);
+		}
 
 		// 単一日付選択時、または範囲選択時の終了日選択時にポップアップを閉じる
 		if (
@@ -298,7 +300,7 @@
 	};
 
 	const handleClick = (event: MouseEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		if (enableClickToOpen) {
 			const isOpen = popupRef?.getIsOpen && popupRef.getIsOpen();
 			if (isOpen) {
@@ -312,7 +314,7 @@
 	};
 
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		onkeydown(event);
 
 		// enableTextInput のときは、カーソルキー系は Input 内のキャレット移動に使わせたいので、
@@ -369,18 +371,18 @@
 	};
 
 	const handleKeyup = (event: KeyboardEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		onkeyup(event);
 	};
 
 	const handleInput = (inputValue: string | number) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		oninput?.(String(inputValue));
 	};
 
 	// マウスイベント
 	const handleMouseDown = (event: MouseEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		// 入力もクリックによるオープンも無効な場合は、クリックでフォーカススタイルが出ないようにする
 		if (!enableTextInput && !enableClickToOpen) {
 			event.preventDefault();
@@ -389,12 +391,12 @@
 	};
 
 	const handleMouseUp = (event: MouseEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		onmouseup?.(event);
 	};
 
 	const handleMouseEnter = (event: MouseEvent) => {
-		if (disabled) return;
+		if (disabled || readonly) return;
 		onmouseenter?.(event);
 	};
 
@@ -601,8 +603,8 @@
 	);
 	const placeholderText = $derived(
 		enableTextInput
-			? nullString || currentLocaleConfig.directInputPlaceholder
-			: nullString || currentLocaleConfig.notSelected
+			? placeholder || currentLocaleConfig.directInputPlaceholder
+			: placeholder || currentLocaleConfig.notSelected
 	);
 </script>
 
@@ -623,7 +625,7 @@
 		{maxWidth}
 		{rounded}
 		{disabled}
-		readonly={!enableTextInput}
+		readonly={readonly || !enableTextInput}
 		placeholder={placeholderText}
 		rightIcon={hasIcon ? (mode === 'range' ? 'date_range' : 'calendar_today') : undefined}
 		{iconFilled}

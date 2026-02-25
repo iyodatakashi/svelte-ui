@@ -94,9 +94,9 @@
 		customStyle = '',
 		focusStyle = 'outline',
 		fullWidth = false,
-		width = null,
-		minWidth = null,
-		maxWidth = null,
+		width,
+		minWidth,
+		maxWidth,
 		rounded = false,
 
 		// 状態/動作

@@ -14,7 +14,7 @@
 		PointerHandler,
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
-	
+
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
@@ -107,9 +107,9 @@
 		focusStyle = 'outline',
 		placeholder = t('combobox.placeholder'),
 		fullWidth = false,
-		width = null,
-		minWidth = inline ? null : 120,
-		maxWidth = null,
+		width,
+		minWidth,
+		maxWidth,
 		rounded = false,
 
 		// 状態/動作
