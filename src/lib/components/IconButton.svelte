@@ -383,7 +383,7 @@
 		{:else}
 			<div class="icon-button__icon" class:icon-button__icon--hidden={loading}>
 				<Icon
-					filled={true}
+					filled={iconFilled}
 					size={fontSize}
 					weight={iconWeight}
 					grade={iconGrade}
