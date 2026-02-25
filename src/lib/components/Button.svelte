@@ -536,7 +536,7 @@
 	}
 
 	.button__popup-icon {
-		margin-right: -4px;
+		margin: -12px -4px -12px 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
