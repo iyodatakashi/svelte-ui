@@ -29,6 +29,9 @@
 		customStyle?: string;
 		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
+		width?: string | number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
 		rounded?: boolean;
 
 		// 状態/動作
@@ -91,6 +94,9 @@
 		customStyle = '',
 		focusStyle = 'outline',
 		fullWidth = false,
+		width = null,
+		minWidth = null,
+		maxWidth = null,
 		rounded = false,
 
 		// 状態/動作
@@ -352,6 +358,9 @@
 		{clearButtonAriaLabel}
 		{focusStyle}
 		{fullWidth}
+		{width}
+		{minWidth}
+		{maxWidth}
 		{rounded}
 		customStyle={`padding-left: var(--svelte-ui-colorpicker-text-padding-left); ${customStyle}`}
 		{inputAttributes}

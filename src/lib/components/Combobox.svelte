@@ -6,7 +6,6 @@
 	import Popup from './Popup.svelte';
 	import { announceSelection } from '$lib/utils/accessibility';
 	import { t } from '$lib/i18n';
-	import { getStyleFromNumber } from '$lib/utils/style';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -37,6 +36,7 @@
 		focusStyle?: 'background' | 'outline' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
+		width?: string | number | null;
 		minWidth?: string | number | null;
 		maxWidth?: string | number | null;
 		rounded?: boolean;
@@ -107,6 +107,7 @@
 		focusStyle = 'outline',
 		placeholder = t('combobox.placeholder'),
 		fullWidth = false,
+		width = null,
 		minWidth = inline ? null : 120,
 		maxWidth = null,
 		rounded = false,
@@ -398,9 +399,6 @@
 		if (!filterable || !inputValue) return options;
 		return options.filter((option) => option.toLowerCase().includes(inputValue.toLowerCase()));
 	});
-
-	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
-	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
 </script>
 
 <div
@@ -408,7 +406,6 @@
 	{id}
 	class="combobox"
 	class:combobox--full-width={fullWidth}
-	style="max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
 	role="combobox"
 	aria-expanded={!!popupRef}
 	aria-controls={listboxId}
@@ -427,6 +424,9 @@
 		{focusStyle}
 		{placeholder}
 		{fullWidth}
+		{width}
+		{minWidth}
+		{maxWidth}
 		{disabled}
 		{readonly}
 		{required}

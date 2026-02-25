@@ -48,6 +48,9 @@
 		inline?: boolean;
 		focusStyle?: FocusStyle;
 		fullWidth?: boolean;
+		width?: string | number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
 		rounded?: boolean;
 
 		// アイコン関連
@@ -117,6 +120,9 @@
 		inline = false,
 		focusStyle = 'outline',
 		fullWidth = false,
+		width = null,
+		minWidth = null,
+		maxWidth = null,
 		rounded = false,
 
 		// アイコン関連
@@ -612,6 +618,9 @@
 		{inline}
 		{focusStyle}
 		{fullWidth}
+		{width}
+		{minWidth}
+		{maxWidth}
 		{rounded}
 		{disabled}
 		readonly={!enableTextInput}
