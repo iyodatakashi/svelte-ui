@@ -5,6 +5,28 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.16] - 2026-02-25
+
+### Added
+
+- **Input number stepper**: Added `enableNumberStepper` prop to show Increment/Decrement buttons for `type="number"` inputs, including press-and-hold support for continuous value changes.
+- **Input number formatting**: Added `decimalPlaces` and `enableThousandsSeparator` props to control rounding and thousands separators for numeric values.
+- **Input password visibility toggle**: Added `enablePasswordVisibilityToggle` prop to toggle password visibility via an icon button on password inputs.
+
+### Changed
+
+- **Input/Textarea icon buttons**: Refined styles for inline icon buttons so layouts are more consistent across variants.
+- **Uploader borders**: Tweaked default `borderWidth` for `FileUploader` and `ImageUploader` for better visual balance.
+- **Overlay hover color**: Adjusted overlay hover color (especially in light mode) to improve visual contrast.
+
+### Fixed
+
+- **Skeleton appearance**: Lightened skeleton colors and adjusted props to stay in sync with underlying components.
+- **Combobox i18n**: Moved Japanese default option labels into the i18n dictionary for easier localization.
+- **Input right icon interactions**: Fixed an issue where the right icon in `Input` could not be clicked in some layouts.
+- **Textarea sizing**: Fixed cases where `Textarea` width or resize handles were not applied correctly when `autoResize=false` and `resizable` is enabled.
+- **IconButton `iconFilled`**: Fixed `IconButton` so the `iconFilled` prop is correctly applied.
+
 ## [0.0.15] - 2026-02-XX
 
 ### Added
