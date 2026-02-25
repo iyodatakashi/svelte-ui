@@ -59,8 +59,6 @@
 		leftIcon?: string;
 		leftIconAriaLabel?: string;
 		rightIconAriaLabel?: string;
-		enablePasswordVisibilityToggle?: boolean;
-		enableNumberStepperButtons?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -73,6 +71,8 @@
 		required?: boolean;
 		clearable?: boolean;
 		linkify?: boolean;
+		enablePasswordVisibilityToggle?: boolean;
+		enableNumberStepperButtons?: boolean;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;
@@ -584,7 +584,7 @@
 			!disabled &&
 			!readonly
 	);
-	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility_off' : 'visibility');
+	const passwordToggleIcon = $derived(isPasswordVisible ? 'visibility' : 'visibility_off');
 	const passwordToggleAriaLabel = $derived(
 		isPasswordVisible ? t('input.hide_password') : t('input.show_password')
 	);
@@ -752,13 +752,13 @@
 		<div class="input__clear-button">
 			<IconButton
 				ariaLabel={t('input.clear')}
-				color="var(--svelte-ui-text-color)"
+				color="var(--svelte-ui-input-icon-color)"
 				onclick={(event) => {
 					event.stopPropagation();
 					clear();
 				}}
 				tabindex={-1}
-				iconFilled={true}
+				{iconFilled}
 				fontSize={18}>cancel</IconButton
 			>
 		</div>

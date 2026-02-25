@@ -6,7 +6,7 @@
 	import { t } from '$lib/i18n';
 	import { convertToHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
-	import type { IconVariant } from '$lib/types/icon';
+	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -47,15 +47,21 @@
 		rounded?: boolean;
 		customStyle?: string;
 
+		// アイコン関連
+		clearButtonAriaLabel?: string;
+		iconFilled?: boolean;
+		iconWeight?: IconWeight;
+		iconGrade?: IconGrade;
+		iconOpticalSize?: IconOpticalSize;
+		iconVariant?: IconVariant;
+
 		// 状態/動作
 		disabled?: boolean;
 		autoResize?: boolean;
 		resizable?: boolean;
 		clearable?: boolean;
-		clearButtonAriaLabel?: string;
 		readonly?: boolean;
 		required?: boolean;
-		iconVariant?: IconVariant;
 		linkify?: boolean;
 
 		// フォーカスイベント
@@ -127,15 +133,21 @@
 		rounded = false,
 		customStyle = '',
 
+		// アイコン関連
+		clearButtonAriaLabel = t('input.clear'),
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = 24,
+		iconVariant = 'outlined',
+
 		// 状態/動作
 		disabled = false,
 		autoResize = true,
 		resizable = false,
 		clearable = false,
-		clearButtonAriaLabel = t('input.clear'),
 		readonly = false,
 		required = false,
-		iconVariant = 'outlined',
 		linkify = false,
 
 		// フォーカスイベント
@@ -580,13 +592,13 @@
 		<div class="textarea__clear-button">
 			<IconButton
 				ariaLabel={clearButtonAriaLabel}
-				color="var(--svelte-ui-text-color)"
+				color="var(--svelte-ui-textarea-icon-color)"
 				onclick={(event) => {
 					event.stopPropagation();
 					clear();
 				}}
 				tabindex={-1}
-				iconFilled={true}
+				{iconFilled}
 				{iconVariant}
 				fontSize={18}>cancel</IconButton
 			>
