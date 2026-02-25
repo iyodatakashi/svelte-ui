@@ -95,7 +95,6 @@
 	let popupRef: HTMLDivElement | undefined = $state();
 	let previousActiveElement: HTMLElement | null = null;
 	let isMobile: boolean = $state(false);
-	let shouldUseFullscreen: boolean = $state(false);
 	let bodyScrollCleanup: (() => void) | undefined = $state();
 
 	// =========================================================================
@@ -103,8 +102,6 @@
 	// =========================================================================
 	onMount(() => {
 		isMobile = isMobileDevice();
-		// モバイルの場合のみ fullscreen にするかどうか
-		shouldUseFullscreen = isMobile && mobileFullscreen;
 	});
 
 	onDestroy(() => {
@@ -117,6 +114,7 @@
 	// =========================================================================
 	// Effects
 	// =========================================================================
+
 	$effect(() => {
 		if (isOpen) {
 			if (popupRef && popupRef.matches(':popover-open')) {
@@ -517,6 +515,7 @@
 	// =========================================================================
 	const generatedPopupId = $state(`popup-${Math.random().toString(36).substring(2, 15)}`);
 	const popupId = $derived(id || generatedPopupId);
+	const shouldUseFullscreen = $derived(isMobile && mobileFullscreen);
 </script>
 
 <div
