@@ -517,8 +517,6 @@
 
 	.icon-button__badge {
 		position: absolute;
-		top: -2px;
-		right: -2px;
 		display: flex;
 		align-items: center;
 		justify-content: center;
@@ -531,16 +529,20 @@
 	}
 
 	.icon-button__badge--dot {
+		top: 0;
+		right: 0;
 		width: 8px;
 		height: 8px;
 		min-width: unset;
 	}
 
 	.icon-button__badge--count {
-		min-width: 16px;
-		height: 16px;
+		top: -5px;
+		right: -5px;
+		min-width: 18px;
+		height: 18px;
 		padding: 0 4px;
-		border-radius: 8px;
+		border-radius: 9px;
 	}
 
 	.icon-button__button--no-motion,
