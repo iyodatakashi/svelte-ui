@@ -440,6 +440,7 @@
 	input[type='checkbox']:indeterminate + .checkbox__icon::after {
 		content: 'remove';
 		width: var(--svelte-ui-checkbox-icon-width);
+		clip-path: inset(0 0 0 0);
 		opacity: 1;
 		transition-delay:
 			var(--svelte-ui-transition-duration-fast), var(--svelte-ui-transition-duration-fast);
