@@ -367,6 +367,7 @@
 		&--disabled {
 			cursor: not-allowed;
 			opacity: 0.5;
+			pointer-events: none;
 		}
 	}
 
@@ -389,6 +390,8 @@
 
 		.switch--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
+			cursor: not-allowed;
+			pointer-events: none;
 		}
 	}
 
@@ -407,10 +410,6 @@
 			transform: translateX(
 				calc(var(--switch-width) - var(--switch-thumb-size) - var(--switch-thumb-margin) * 2)
 			);
-		}
-
-		.switch--disabled & {
-			opacity: var(--svelte-ui-switch-disabled-opacity);
 		}
 	}
 
@@ -459,15 +458,15 @@
 
 	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.switch__label {
+		.switch {
 			min-height: var(--svelte-ui-touch-target);
 		}
 
-		.switch--small .switch__label {
+		.switch--small {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
-		.switch--large .switch__label {
+		.switch--large {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
