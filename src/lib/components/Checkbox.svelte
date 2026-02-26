@@ -474,10 +474,6 @@
 		font-size: inherit;
 	}
 
-	.checkbox--small .checkbox__label {
-		min-height: var(--svelte-ui-checkbox-min-height-sm);
-	}
-
 	.checkbox--small .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-sm);
 		height: var(--svelte-ui-checkbox-size-sm);
@@ -489,10 +485,6 @@
 
 	.checkbox--large {
 		font-size: inherit;
-	}
-
-	.checkbox--large .checkbox__label {
-		min-height: var(--svelte-ui-checkbox-min-height-lg);
 	}
 
 	.checkbox--large .checkbox__icon {
