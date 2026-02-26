@@ -198,7 +198,7 @@
 	.dialog__body {
 		flex-shrink: 1;
 		position: relative;
-		padding: var(--svelte-ui-dialog-body-padding);
+		padding: 0 var(--svelte-ui-dialog-body-padding) var(--svelte-ui-dialog-body-padding);
 	}
 
 	.dialog__footer {
@@ -231,10 +231,6 @@
 		flex-shrink: 1;
 		padding: var(--svelte-ui-dialog-body-padding);
 		overflow: auto;
-	}
-
-	.dialog:not(.dialog--scrollable) .dialog__body {
-		padding-top: 0;
 	}
 
 	.dialog--scrollable .dialog__footer {

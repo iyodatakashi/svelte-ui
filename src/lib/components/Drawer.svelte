@@ -71,7 +71,7 @@
 
 		// 状態/動作
 		isOpen = $bindable(false),
-		scrollable = true,
+		scrollable = false,
 		closeIfClickOutside = true,
 		restoreFocus = false,
 
@@ -321,7 +321,6 @@
 		justify-content: stretch;
 		min-height: var(--svelte-ui-drawer-header-height);
 		padding: var(--svelte-ui-drawer-header-padding);
-		margin-bottom: calc(0px - var(--svelte-ui-drawer-body-padding));
 
 		.drawer__title {
 			flex-grow: 1;
@@ -334,7 +333,7 @@
 	.drawer__body {
 		flex-shrink: 1;
 		position: relative;
-		padding: var(--svelte-ui-drawer-body-padding);
+		padding: 0 var(--svelte-ui-drawer-body-padding) var(--svelte-ui-drawer-body-padding);
 		flex-grow: 1;
 	}
 
