@@ -538,15 +538,15 @@
 
 	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.radio__label {
+		.radio {
 			min-height: var(--svelte-ui-touch-target);
 		}
 
-		.radio--small .radio__label {
+		.radio--small {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
-		.radio--large .radio__label {
+		.radio--large {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}

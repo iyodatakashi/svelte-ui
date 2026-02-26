@@ -502,15 +502,15 @@
 
 	/* Mobile touch targets */
 	@media (hover: none) and (pointer: coarse) {
-		.checkbox__label {
+		.checkbox {
 			min-height: var(--svelte-ui-touch-target);
 		}
 
-		.checkbox--small .checkbox__label {
+		.checkbox--small {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
-		.checkbox--large .checkbox__label {
+		.checkbox--large {
 			min-height: var(--svelte-ui-touch-target-lg);
 		}
 	}
