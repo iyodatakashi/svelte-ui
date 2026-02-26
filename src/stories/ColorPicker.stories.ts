@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'カラーピッカーコンポーネント。色選択と16進数カラーコードの直接入力に対応します。'
+					'A color picker component that supports both visual color selection and direct hex color code input.'
 			}
 		}
 	},
@@ -63,7 +63,7 @@ const meta = {
 			description:
 				'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'

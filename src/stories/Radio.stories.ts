@@ -3,7 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Radio from '../lib/components/Radio.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface RadioArgs {
 	name: string;
 	value: string | number | boolean;
@@ -19,7 +19,7 @@ interface RadioArgs {
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
 	onchange?: (value: string | number | boolean | null | undefined) => void;
-	// 新しいイベントハンドラ
+	// Additional event handler props
 	onkeydown?: (event: KeyboardEvent) => void;
 	onkeyup?: (event: KeyboardEvent) => void;
 	onclick?: (event: MouseEvent) => void;
@@ -91,7 +91,7 @@ const meta: Meta<RadioArgs> = {
 			control: { type: 'boolean' },
 			description: 'Disable animations for reduced motion'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'

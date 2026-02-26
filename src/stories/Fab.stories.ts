@@ -3,7 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Fab from '../lib/components/Fab.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface FabArgs {
 	children?: Snippet;
 	icon?: string;
@@ -22,7 +22,7 @@ interface FabArgs {
 	ariaLabel?: string;
 	ariaDescribedby?: string;
 	onclick?: (event: MouseEvent) => void;
-	// 新しいイベントハンドラ
+	// Additional event handler props
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
@@ -118,7 +118,7 @@ const meta: Meta<FabArgs> = {
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onclick: {
 			action: 'clicked',
 			description: 'Click event'
@@ -217,16 +217,15 @@ const meta: Meta<FabArgs> = {
 export default meta;
 type Story = StoryObj<FabArgs>;
 
-// アイコンのみ（標準）
+// Icon only (default)
 export const Default: Story = {
 	args: {
 		icon: 'add',
-		position: 'right',
-		shadow: true
+		position: 'right'
 	}
 };
 
-// 異なるポジション
+// Different positions
 export const PositionLeft: Story = {
 	args: {
 		icon: 'favorite',
@@ -241,7 +240,7 @@ export const PositionCenter: Story = {
 	}
 };
 
-// カスタムカラー
+// Custom color
 export const CustomColor: Story = {
 	args: {
 		icon: 'delete',
@@ -250,7 +249,7 @@ export const CustomColor: Story = {
 	}
 };
 
-// 無効状態
+// Disabled state
 export const Disabled: Story = {
 	args: {
 		icon: 'add',
@@ -259,7 +258,7 @@ export const Disabled: Story = {
 	}
 };
 
-// ローディング状態
+// Loading state
 export const Loading: Story = {
 	args: {
 		icon: 'add',
@@ -268,12 +267,12 @@ export const Loading: Story = {
 	}
 };
 
-// シャドウなし
-export const NoShadow: Story = {
+// With shadow
+export const WithShadow: Story = {
 	args: {
 		icon: 'add',
-		shadow: false,
-		position: 'right'
+		position: 'right',
+		shadow: true
 	}
 };
 
@@ -283,22 +282,11 @@ const createChildrenSnippet = (text: string) =>
 		render: () => text
 	}));
 
-// ラベル付きFab
+// FAB with label
 export const WithLabel: Story = {
 	args: {
 		icon: 'edit',
 		position: 'center',
-		color: '#6750a4',
 		children: createChildrenSnippet('Edit')
-	}
-};
-
-// ラベル付きFab（長いテキスト）
-export const WithLongLabel: Story = {
-	args: {
-		icon: 'download',
-		position: 'center',
-		color: '#6750a4',
-		children: createChildrenSnippet('Download File')
 	}
 };

@@ -4,7 +4,7 @@ import type { Snippet } from 'svelte';
 import type { IconVariant } from '../lib/types/icon';
 import Button from '../lib/components/Button.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface ButtonArgs {
 	children: Snippet;
 	type?: 'button' | 'submit' | 'reset';
@@ -32,7 +32,7 @@ interface ButtonArgs {
 	ariaDescribedby?: string;
 	ariaExpanded?: boolean;
 	onclick?: (event: MouseEvent) => void;
-	// 新しいイベントハンドラ
+	// Additional event handler props
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
@@ -176,17 +176,17 @@ const meta: Meta<ButtonArgs> = {
 			control: 'boolean',
 			description: 'Whether the button controls an expanded element'
 		},
-		// Snippetはコントロールから除外
+		// Snippet props are excluded from controls
 		children: {
 			control: false,
 			description: 'Button content/label'
 		},
-		// イベントハンドラもコントロールから除外
+		// Event handlers are also excluded from controls
 		onclick: {
 			control: false,
 			action: 'clicked'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'

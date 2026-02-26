@@ -3,7 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import IconButton from '../lib/components/IconButton.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface IconButtonArgs {
 	children: Snippet;
 	type?: 'button' | 'submit' | 'reset' | null | undefined;
@@ -32,7 +32,7 @@ interface IconButtonArgs {
 	ariaDescribedby?: string;
 	ariaPressed?: boolean;
 	onclick?: (event: MouseEvent) => void;
-	// 新しいイベントハンドラ
+	// Additional event handler props
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
@@ -182,99 +182,98 @@ const meta: Meta<IconButtonArgs> = {
 			control: false,
 			description: 'Icon content (Material Symbols name)'
 		},
-		// イベントハンドラもコントロールから除外
+		// Event handlers are excluded from controls
 		onclick: {
 			control: false,
 			action: 'clicked'
 		},
-		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
-			description: 'フォーカスイベント'
+			description: 'Focus event'
 		},
 		onblur: {
 			action: 'blurred',
-			description: 'ブラーイベント'
+			description: 'Blur event'
 		},
 		onkeydown: {
 			action: 'keydown',
-			description: 'キーダウンイベント'
+			description: 'Key down event'
 		},
 		onkeyup: {
 			action: 'keyup',
-			description: 'キーアップイベント'
+			description: 'Key up event'
 		},
 		onmousedown: {
 			action: 'mousedown',
-			description: 'マウスダウンイベント'
+			description: 'Mouse down event'
 		},
 		onmouseup: {
 			action: 'mouseup',
-			description: 'マウスアップイベント'
+			description: 'Mouse up event'
 		},
 		onmouseenter: {
 			action: 'mouseenter',
-			description: 'マウスエンターイベント'
+			description: 'Mouse enter event'
 		},
 		onmouseleave: {
 			action: 'mouseleave',
-			description: 'マウスリーブイベント'
+			description: 'Mouse leave event'
 		},
 		onmouseover: {
 			action: 'mouseover',
-			description: 'マウスオーバーイベント'
+			description: 'Mouse over event'
 		},
 		onmouseout: {
 			action: 'mouseout',
-			description: 'マウスアウトイベント'
+			description: 'Mouse out event'
 		},
 		oncontextmenu: {
 			action: 'contextmenu',
-			description: 'コンテキストメニューイベント'
+			description: 'Context menu event'
 		},
 		onauxclick: {
 			action: 'auxclick',
-			description: '補助ボタンクリックイベント'
+			description: 'Auxiliary button click event'
 		},
 		ontouchstart: {
 			action: 'touchstart',
-			description: 'タッチ開始イベント'
+			description: 'Touch start event'
 		},
 		ontouchend: {
 			action: 'touchend',
-			description: 'タッチ終了イベント'
+			description: 'Touch end event'
 		},
 		ontouchmove: {
 			action: 'touchmove',
-			description: 'タッチ移動イベント'
+			description: 'Touch move event'
 		},
 		ontouchcancel: {
 			action: 'touchcancel',
-			description: 'タッチキャンセルイベント'
+			description: 'Touch cancel event'
 		},
 		onpointerdown: {
 			action: 'pointerdown',
-			description: 'ポインターダウンイベント'
+			description: 'Pointer down event'
 		},
 		onpointerup: {
 			action: 'pointerup',
-			description: 'ポインターアップイベント'
+			description: 'Pointer up event'
 		},
 		onpointerenter: {
 			action: 'pointerenter',
-			description: 'ポインターエンターイベント'
+			description: 'Pointer enter event'
 		},
 		onpointerleave: {
 			action: 'pointerleave',
-			description: 'ポインターリーブイベント'
+			description: 'Pointer leave event'
 		},
 		onpointermove: {
 			action: 'pointermove',
-			description: 'ポインター移動イベント'
+			description: 'Pointer move event'
 		},
 		onpointercancel: {
 			action: 'pointercancel',
-			description: 'ポインターキャンセルイベント'
+			description: 'Pointer cancel event'
 		}
 	}
 };
@@ -292,10 +291,9 @@ const createChildrenSnippet = (iconName: string) =>
 export const Default: Story = {
 	args: {
 		variant: 'ghost',
-		size: 32,
 		ariaLabel: 'Default icon button',
 		iconFilled: true,
-		children: createChildrenSnippet('cancel')
+		children: createChildrenSnippet('search')
 	}
 };
 
@@ -305,7 +303,7 @@ export const Filled: Story = {
 		variant: 'filled',
 		size: 32,
 		ariaLabel: 'Filled icon button',
-		children: createChildrenSnippet('home')
+		children: createChildrenSnippet('search')
 	}
 };
 
@@ -315,7 +313,7 @@ export const Outlined: Story = {
 		variant: 'outlined',
 		size: 32,
 		ariaLabel: 'Outlined icon button',
-		children: createChildrenSnippet('home')
+		children: createChildrenSnippet('search')
 	}
 };
 
@@ -325,54 +323,13 @@ export const Glass: Story = {
 		variant: 'glass',
 		size: 32,
 		ariaLabel: 'Glass icon button',
-		children: createChildrenSnippet('tune')
-	}
-};
-
-// Glass variant with different sizes
-export const GlassLarge: Story = {
-	args: {
-		variant: 'glass',
-		size: 48,
-		ariaLabel: 'Large glass icon button',
-		children: createChildrenSnippet('settings')
-	}
-};
-
-// Glass variant with rounded shape
-export const GlassRounded: Story = {
-	args: {
-		variant: 'glass',
-		size: 40,
-		rounded: true,
-		ariaLabel: 'Round glass icon button',
-		children: createChildrenSnippet('more_vert')
-	}
-};
-
-// Glass with background demo
-export const GlassWithBackground: Story = {
-	args: {
-		variant: 'glass',
-		size: 40,
-		ariaLabel: 'Glass with background',
-		children: createChildrenSnippet('star'),
-		customStyle: 'position: relative; z-index: 1;'
-	},
-	parameters: {
-		docs: {
-			description: {
-				story:
-					'すりガラス効果を確認するため、ブラウザの開発者ツールでこの要素に背景色やグラデーションを設定してください。例: `background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px;`'
-			}
-		}
+		children: createChildrenSnippet('search')
 	}
 };
 
 // Size variants
 export const Small: Story = {
 	args: {
-		variant: 'filled',
 		size: 24,
 		ariaLabel: 'Small icon button',
 		children: createChildrenSnippet('home')
@@ -380,7 +337,6 @@ export const Small: Story = {
 };
 export const Large: Story = {
 	args: {
-		variant: 'filled',
 		size: 40,
 		ariaLabel: 'Large icon button',
 		children: createChildrenSnippet('home')
@@ -400,7 +356,6 @@ export const Disabled: Story = {
 // Loading
 export const Loading: Story = {
 	args: {
-		variant: 'filled',
 		loading: true,
 		ariaLabel: 'Loading icon button',
 		children: createChildrenSnippet('home')
@@ -450,34 +405,12 @@ export const CustomColor: Story = {
 	}
 };
 
-// Rounded
-export const Rounded: Story = {
+// Custom color
+export const Square: Story = {
 	args: {
-		variant: 'filled',
-		rounded: true,
-		ariaLabel: 'Rounded icon button',
+		variant: 'outlined',
+		rounded: false,
+		ariaLabel: 'Squqre Home button',
 		children: createChildrenSnippet('home')
 	}
 };
-
-// Pressed
-export const Pressed: Story = {
-	args: {
-		variant: 'filled',
-		pressed: true,
-		ariaLabel: 'Pressed icon button',
-		children: createChildrenSnippet('home')
-	}
-};
-
-// Accessibility example
-export const Accessible: Story = {
-	args: {
-		variant: 'ghost',
-		ariaLabel: 'お気に入りに追加/削除',
-		ariaPressed: false,
-		children: createChildrenSnippet('favorite')
-	}
-};
-
-// (No dedicated Playground story; use Default and other stories with controls instead.)

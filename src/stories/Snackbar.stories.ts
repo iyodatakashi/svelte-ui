@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Snackbar, { type SnackbarProps } from '../lib/components/Snackbar.svelte';
 import SnackbarExample from './SnackbarExample.svelte';
 
-/** Snackbar の props + 表示時に snackbarManager に渡すオプション（properties 外） */
+/** Snackbar props + additional display options passed to snackbarManager (outside component props) */
 type SnackbarStoryProps = SnackbarProps & {
 	closable?: boolean;
 	actionLabel?: string;
@@ -19,8 +19,8 @@ const meta: Meta<SnackbarStoryProps> = {
 		docs: {
 			description: {
 				component: `
-\`<Snackbar>\` の props（\`position\`, \`maxVisible\`, \`variant\`, \`duration\`）と、
-properties 外の表示オプション（\`closable\`, \`actionLabel\`, \`color\`, \`textColor\`, \`iconVariant\`）を Controls で変更できます。
+You can control \`<Snackbar>\` props (\`position\`, \`maxVisible\`, \`variant\`, \`duration\`)
+and additional display options outside the component props (\`closable\`, \`actionLabel\`, \`color\`, \`textColor\`, \`iconVariant\`) via Storybook Controls.
 				`
 			}
 		}
@@ -31,46 +31,44 @@ properties 外の表示オプション（\`closable\`, \`actionLabel\`, \`color\
 		props: args
 	}),
 	argTypes: {
-		// ---- Snackbar コンポーネントの props ----
 		position: {
 			control: 'radio',
 			options: ['bottom', 'top'],
-			description: 'Snackbar の表示位置（Snackbar の props）'
+			description: 'Vertical position of Snackbar (component prop)'
 		},
 		maxVisible: {
 			control: 'number',
-			description: '同時に表示できる最大件数（Snackbar の props）'
+			description: 'Maximum number of snackbars visible at once (component prop)'
 		},
 		variant: {
 			control: 'radio',
 			options: ['filled', 'outlined'],
-			description: '表示スタイルのバリアント（Snackbar の props）'
+			description: 'Visual variant of Snackbar (component prop)'
 		},
 		duration: {
 			control: 'number',
-			description: 'デフォルトの表示時間ミリ秒。0 で無期限（Snackbar の props）'
+			description: 'Default display duration in milliseconds. 0 means persistent (component prop)'
 		},
-		// ---- 表示オプション（snackbarManager → SnackbarItem） ----
 		closable: {
 			control: 'boolean',
-			description: '閉じるボタンを表示するか'
+			description: 'Whether to show a close button on each Snackbar'
 		},
 		actionLabel: {
 			control: 'text',
-			description: 'アクションボタンのラベル。空ならボタンなし'
+			description: 'Label for action button. Empty string means no action button'
 		},
 		color: {
 			control: 'color',
-			description: 'SnackbarItem のカスタム色'
+			description: 'Custom background color for SnackbarItem'
 		},
 		textColor: {
 			control: 'color',
-			description: 'SnackbarItem のカスタム文字色'
+			description: 'Custom text color for SnackbarItem'
 		},
 		iconVariant: {
 			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
-			description: 'SnackbarItem に渡すアイコンのバリアント（properties 外）'
+			description: 'Icon variant passed to SnackbarItem (outside component props)'
 		}
 	}
 };

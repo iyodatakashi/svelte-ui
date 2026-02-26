@@ -8,7 +8,8 @@ const meta = {
 		layout: 'padded',
 		docs: {
 			description: {
-				component: 'セレクトボックスコンポーネント。カスタムスタイリングとテーマに対応します。'
+				component:
+					'A styled select component that supports theming, inline editing, and various visual variants.'
 			}
 		}
 	},
@@ -55,7 +56,7 @@ const meta = {
 			control: { type: 'boolean' },
 			description: 'Mark the field as required'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'
@@ -157,26 +158,26 @@ const meta = {
 
 export default meta;
 
-// 基本的な選択肢データ
+// Basic option data
 const basicOptions = [
-	{ value: 'option1', label: 'オプション1' },
-	{ value: 'option2', label: 'オプション2' },
-	{ value: 'option3', label: 'オプション3' }
+	{ value: 'option1', label: 'Option 1' },
+	{ value: 'option2', label: 'Option 2' },
+	{ value: 'option3', label: 'Option 3' }
 ];
 
 const countryOptions = [
-	{ value: 'jp', label: '日本' },
-	{ value: 'us', label: 'アメリカ' },
-	{ value: 'uk', label: 'イギリス' },
-	{ value: 'fr', label: 'フランス' },
-	{ value: 'de', label: 'ドイツ' }
+	{ value: 'jp', label: 'Japan' },
+	{ value: 'us', label: 'United States' },
+	{ value: 'uk', label: 'United Kingdom' },
+	{ value: 'fr', label: 'France' },
+	{ value: 'de', label: 'Germany' }
 ];
 
 // Default
 export const Default = {
 	args: {
 		options: basicOptions,
-		placeholder: '選択してください'
+		placeholder: 'Select an option'
 	}
 };
 
@@ -185,7 +186,7 @@ export const Inline = {
 	args: {
 		options: basicOptions,
 		inline: true,
-		placeholder: '選択してください'
+		placeholder: 'Select an option (inline)'
 	}
 };
 
@@ -194,7 +195,7 @@ export const Rounded = {
 	args: {
 		options: basicOptions,
 		rounded: true,
-		placeholder: '角丸セレクト'
+		placeholder: 'Rounded select'
 	}
 };
 
@@ -203,7 +204,7 @@ export const FullWidth = {
 	args: {
 		options: countryOptions,
 		fullWidth: true,
-		placeholder: '国を選択'
+		placeholder: 'Select a country'
 	},
 	parameters: {
 		layout: 'padded'
@@ -215,7 +216,7 @@ export const Disabled = {
 	args: {
 		options: basicOptions,
 		disabled: true,
-		placeholder: '無効状態'
+		placeholder: 'Disabled state'
 	}
 };
 
@@ -224,15 +225,7 @@ export const ReadOnly = {
 		options: basicOptions,
 		readonly: true,
 		value: 'option1',
-		placeholder: '読み取り専用'
-	}
-};
-
-export const Required = {
-	args: {
-		options: basicOptions,
-		required: true,
-		placeholder: '必須項目'
+		placeholder: 'Read-only'
 	}
 };
 
@@ -240,7 +233,7 @@ export const Required = {
 export const WithEvents = {
 	args: {
 		options: basicOptions,
-		placeholder: 'イベントを確認（コンソールをチェック）'
+		placeholder: 'Trigger events (check console)'
 	},
 	render: (args: Record<string, unknown>) => ({
 		Component: Select,
@@ -250,10 +243,10 @@ export const WithEvents = {
 				console.log('onChange:', value);
 			},
 			onfocus: () => {
-				console.log('フォーカスされました');
+				console.log('Focused');
 			},
 			onblur: () => {
-				console.log('フォーカスが外れました');
+				console.log('Blurred');
 			}
 		}
 	})
@@ -265,12 +258,12 @@ export const WidthComparison = {
 		template: `
 			<div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem;">通常の幅</label>
-					<Select options={basicOptions} placeholder="通常の幅" />
+					<label style="display: block; margin-bottom: 0.5rem;">Normal width</label>
+					<Select options={basicOptions} placeholder="Normal width" />
 				</div>
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem;">幅100%（fullWidth）</label>
-					<Select options={basicOptions} fullWidth placeholder="幅100%の表示" />
+					<label style="display: block; margin-bottom: 0.5rem;">Full width (fullWidth)</label>
+					<Select options={basicOptions} fullWidth placeholder="Full-width display" />
 				</div>
 			</div>
 		`,
@@ -291,12 +284,12 @@ export const VariantComparison = {
 		template: `
 			<div style="display: flex; flex-direction: column; gap: 1rem; padding: 1rem;">
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem;">Default バリアント</label>
-					<Select options={basicOptions} placeholder="Default バリアント" />
+					<label style="display: block; margin-bottom: 0.5rem;">Default variant</label>
+					<Select options={basicOptions} placeholder="Default variant" />
 				</div>
 				<div>
-					<label style="display: block; margin-bottom: 0.5rem;">Inline バリアント</label>
-					<Select options={basicOptions} variant="inline" placeholder="Inline バリアント" />
+					<label style="display: block; margin-bottom: 0.5rem;">Inline variant</label>
+					<Select options={basicOptions} variant="inline" placeholder="Inline variant" />
 				</div>
 			</div>
 		`,

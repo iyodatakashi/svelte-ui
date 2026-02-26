@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import type { IconWeight } from '../lib/types/icon';
 import Datepicker from '../lib/components/Datepicker.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface DatepickerArgs {
 	value: Date | { start: Date; end: Date } | undefined;
 	inline?: boolean;
@@ -24,7 +24,7 @@ interface DatepickerArgs {
 	maxDate?: Date;
 	locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
 	onchange?: () => void;
-	// 新しいイベントハンドラ
+	// Additional event handler props
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
@@ -59,7 +59,7 @@ const meta: Meta<DatepickerArgs> = {
 		docs: {
 			description: {
 				component:
-					'日付選択用のコンポーネント。単一日付選択と日付範囲選択の両方に対応し、カスタマイズ可能なフォーマットとアイコン表示を提供します。'
+					'A datepicker component that supports both single-date and range selection, with customizable formats and an optional calendar icon.'
 			}
 		}
 	},
@@ -253,7 +253,7 @@ const meta: Meta<DatepickerArgs> = {
 export default meta;
 type Story = StoryObj<DatepickerArgs>;
 
-// Default（基本の単一日付選択）
+// Default (single date selection)
 export const Default: Story = {
 	args: {
 		// Use component defaults: single mode, locale from config, default format/placeholder
@@ -261,7 +261,7 @@ export const Default: Story = {
 	}
 };
 
-// Date Range（日付範囲選択）
+// Date Range (date range selection)
 export const DateRange: Story = {
 	args: {
 		value: undefined,
@@ -269,7 +269,7 @@ export const DateRange: Story = {
 	}
 };
 
-// With Icon（アイコン付き）
+// With Icon (with calendar icon)
 export const WithIcon: Story = {
 	args: {
 		value: undefined,
@@ -277,7 +277,7 @@ export const WithIcon: Story = {
 	}
 };
 
-// With Icon and Date Range（アイコン付き日付範囲選択）
+// With Icon and Date Range (range selection with calendar icon)
 export const WithIconAndDateRange: Story = {
 	args: {
 		value: undefined,
@@ -297,7 +297,7 @@ export const Inline: Story = {
 	}
 };
 
-// Custom Format（カスタム日付フォーマット）
+// Custom Format (custom date format)
 export const CustomFormat: Story = {
 	args: {
 		value: new Date(),
@@ -306,7 +306,7 @@ export const CustomFormat: Story = {
 	}
 };
 
-// Disabled State（無効状態）
+// Disabled State
 export const Disabled: Story = {
 	args: {
 		value: new Date(),
@@ -315,7 +315,7 @@ export const Disabled: Story = {
 	}
 };
 
-// With Min/Max Date（最小/最大日付制限）
+// With Min/Max Date (min/max date constraints)
 export const WithMinMaxDate: Story = {
 	args: {
 		hasIcon: true,
@@ -324,8 +324,8 @@ export const WithMinMaxDate: Story = {
 	}
 };
 
-// Allow Direct Input（直接入力を許可）
-export const AllowDirectInput: Story = {
+// Enable text input (enableTextInput=true)
+export const EnableTextInput: Story = {
 	args: {
 		enableTextInput: true,
 		hasIcon: true
@@ -333,13 +333,13 @@ export const AllowDirectInput: Story = {
 	parameters: {
 		docs: {
 			description: {
-				story: '直接入力を許可した場合、値がない時は placeholder のみが表示されます。'
+				story: 'When direct input is allowed, if there is no value only the placeholder is shown.'
 			}
 		}
 	}
 };
 
-// Full Width（全幅表示）
+// Full Width
 export const FullWidth: Story = {
 	args: {
 		fullWidth: true,
@@ -349,9 +349,8 @@ export const FullWidth: Story = {
 		layout: 'padded'
 	}
 };
-
-// Rounded Style（角丸スタイル）
-export const RoundedStyle: Story = {
+// Rounded
+export const Rounded: Story = {
 	args: {
 		hasIcon: true,
 		rounded: true

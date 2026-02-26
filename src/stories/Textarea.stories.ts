@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'複数行テキスト入力用のコンポーネント。自動リサイズやインライン編集に対応します。'
+					'A multi-line text input component that supports auto-resize and inline editing.'
 			}
 		}
 	},
@@ -93,7 +93,7 @@ const meta = {
 			],
 			description: 'Autocomplete attribute'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'
@@ -202,7 +202,7 @@ export default meta;
 // Default
 export const Default = {
 	args: {
-		placeholder: '複数行のテキストを入力してください',
+		placeholder: 'Enter multi-line text',
 		rows: 3,
 		autoResize: true
 	}
@@ -212,7 +212,7 @@ export const Default = {
 export const Rounded = {
 	args: {
 		rounded: true,
-		placeholder: '角丸デザインのテキストエリア',
+		placeholder: 'Rounded textarea',
 		rows: 4
 	}
 };
@@ -221,7 +221,7 @@ export const Rounded = {
 export const FullWidth = {
 	args: {
 		fullWidth: true,
-		placeholder: '幅100%のテキストエリア',
+		placeholder: 'Full-width textarea',
 		rows: 3
 	}
 };
@@ -230,7 +230,7 @@ export const FullWidth = {
 export const AutoResize = {
 	args: {
 		autoResize: true,
-		placeholder: '自動リサイズ',
+		placeholder: 'Auto-resize',
 		rows: 2
 	}
 };
@@ -239,7 +239,7 @@ export const AutoResize = {
 export const Resizable = {
 	args: {
 		resizable: true,
-		placeholder: 'リサイズ可能',
+		placeholder: 'Resizable',
 		rows: 3
 	}
 };
@@ -248,8 +248,8 @@ export const Resizable = {
 export const Clearable = {
 	args: {
 		clearable: true,
-		placeholder: 'クリアボタン付き',
-		value: 'このテキストをクリアできます\n複数行対応'
+		placeholder: 'With clear button',
+		value: 'You can clear this text.\nSupports multiple lines.'
 	}
 };
 
@@ -257,7 +257,7 @@ export const Clearable = {
 export const Disabled = {
 	args: {
 		disabled: true,
-		value: '無効状態のテキスト\n操作できません'
+		value: 'Disabled text.\nCannot be edited.'
 	}
 };
 
@@ -265,15 +265,7 @@ export const Disabled = {
 export const ReadOnly = {
 	args: {
 		readonly: true,
-		value: '読み取り専用のテキスト\n編集できません'
-	}
-};
-
-// Required
-export const Required = {
-	args: {
-		required: true,
-		placeholder: '必須項目'
+		value: 'Read-only text.\nCannot be edited.'
 	}
 };
 
@@ -281,7 +273,7 @@ export const Required = {
 export const WithMinHeight = {
 	args: {
 		minHeight: 100,
-		placeholder: '最小高さ100px',
+		placeholder: 'Minimum height 100px',
 		rows: 2
 	}
 };
@@ -290,7 +282,7 @@ export const WithMinHeight = {
 export const WithMaxlength = {
 	args: {
 		maxlength: 50,
-		placeholder: '最大50文字まで',
+		placeholder: 'Up to 50 characters',
 		rows: 2
 	}
 };

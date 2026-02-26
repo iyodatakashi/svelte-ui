@@ -10,7 +10,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'フィルタリング機能付きのコンボボックスコンポーネント。検索とオプション選択が可能です。'
+					'A combobox component with filtering capabilities that supports searching and selecting options.'
 			}
 		}
 	},
@@ -79,7 +79,7 @@ const meta = {
 			control: { type: 'number' },
 			description: 'Maximum input length'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'
@@ -186,23 +186,34 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// 基本的なオプションデータ
-const basicOptions = ['オプション1', 'オプション2', 'オプション3', 'オプション4', 'オプション5'];
+// Basic option data
+const basicOptions = ['Option 1', 'Option 2', 'Option 3', 'Option 4', 'Option 5'];
 
 const countryOptions = [
-	'日本',
-	'アメリカ',
-	'イギリス',
-	'フランス',
-	'ドイツ',
-	'カナダ',
-	'オーストラリア',
-	'ブラジル',
-	'インド',
-	'中国'
+	'Japan',
+	'United States',
+	'United Kingdom',
+	'France',
+	'Germany',
+	'Canada',
+	'Australia',
+	'Brazil',
+	'India',
+	'China'
 ];
 
-const colorOptions = ['赤', '青', '緑', '黄色', '紫', 'オレンジ', '黒', '白', 'グレー', 'ピンク'];
+const colorOptions = [
+	'Red',
+	'Blue',
+	'Green',
+	'Yellow',
+	'Purple',
+	'Orange',
+	'Black',
+	'White',
+	'Gray',
+	'Pink'
+];
 
 const numberOptions = [1, 5, 10, 20, 50, 100, 200, 500, 1000];
 
@@ -234,59 +245,59 @@ export const Default: Story = {
 	args: {
 		value: '',
 		options: countryOptions,
-		placeholder: '国を選択または入力してください'
+		placeholder: 'Select or type a country'
 	}
 };
 
-// フィルタリング無効
+// Non-filterable
 export const NonFilterable: Story = {
 	args: {
 		value: '',
 		options: basicOptions,
-		placeholder: 'フィルタリング無効',
+		placeholder: 'Filtering disabled',
 		filterable: false
 	}
 };
 
-// 角丸デザイン
+// Rounded design
 export const Rounded: Story = {
 	args: {
 		value: '',
 		options: countryOptions,
-		placeholder: '角丸のコンボボックス',
+		placeholder: 'Rounded combobox',
 		rounded: true
 	}
 };
 
-// フルWidth
+// Full width
 export const FullWidth: Story = {
 	args: {
 		value: '',
 		options: programmingLanguages,
-		placeholder: '幅100%のコンボボックス',
+		placeholder: 'Full-width combobox',
 		fullWidth: true
 	}
 };
 
-// インラインバリアント
+// Inline variant
 export const Inline: Story = {
 	args: {
 		value: '',
 		inline: true,
 		options: countryOptions,
-		placeholder: 'クリックして編集'
+		placeholder: 'Click to edit'
 	}
 };
 
-// 幅制限
+// Width-limited
 export const WithWidthLimits: Story = {
 	args: {
 		value: '',
 		options: programmingLanguages,
-		placeholder: '幅制限あり',
+		placeholder: 'Width-constrained combobox',
 		minWidth: 200,
 		maxWidth: 300
 	}
 };
 
-// カスタムスタイル（docs などでコード例として示すことを推奨）
+// Custom styles (recommended to show in docs as code examples)

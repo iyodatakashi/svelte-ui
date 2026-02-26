@@ -1,16 +1,17 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
+import type { IconVariant } from '$lib/types/icon';
 import Icon from '../lib/components/Icon.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface IconArgs {
 	children: Snippet;
 	size?: number;
 	filled?: boolean;
 	color?: string;
 	style?: string;
-	variant?: 'outlined' | 'filled' | 'rounded' | 'sharp';
+	variant?: IconVariant;
 	weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
 	grade?: number;
 	opticalSize?: number;
@@ -94,7 +95,7 @@ const meta: Meta<IconArgs> = {
 			control: 'text',
 			description: 'Fallback text when font fails to load (Unicode recommended)'
 		},
-		// Snippetはコントロールから除外
+		// Snippet props are excluded from controls
 		children: {
 			control: false,
 			description: 'Material Symbols icon name'
@@ -124,7 +125,7 @@ export const Default: Story = {
 export const Filled: Story = {
 	args: {
 		size: 24,
-		variant: 'filled',
+		filled: true,
 		children: createChildrenSnippet('home')
 	}
 };
@@ -152,71 +153,15 @@ export const Small: Story = {
 };
 export const Large: Story = {
 	args: {
-		size: 48,
-		children: createChildrenSnippet('search')
-	}
-};
-
-// Fill
-export const FilledIcon: Story = {
-	args: {
 		size: 32,
-		filled: true,
-		children: createChildrenSnippet('home')
+		children: createChildrenSnippet('search')
 	}
 };
 
 // Color
 export const CustomColor: Story = {
 	args: {
-		size: 32,
 		color: '#e91e63',
 		children: createChildrenSnippet('palette')
 	}
 };
-
-// Weight
-export const WeightBold: Story = {
-	args: {
-		size: 32,
-		weight: 700,
-		children: createChildrenSnippet('settings')
-	}
-};
-
-// Grade
-export const GradeHeavy: Story = {
-	args: {
-		size: 32,
-		grade: 200,
-		children: createChildrenSnippet('brightness_high')
-	}
-};
-
-// Optical size
-export const OpticalSizeLarge: Story = {
-	args: {
-		size: 48,
-		opticalSize: 48,
-		children: createChildrenSnippet('visibility')
-	}
-};
-
-// Decorative
-export const Decorative: Story = {
-	args: {
-		size: 24,
-		decorative: true,
-		children: createChildrenSnippet('search')
-	}
-};
-
-// Accessibility example
-export const Accessible: Story = {
-	args: {
-		size: 24,
-		ariaLabel: '検索',
-		children: createChildrenSnippet('search')
-	}
-};
-

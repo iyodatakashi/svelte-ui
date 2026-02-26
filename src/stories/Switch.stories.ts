@@ -3,7 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Switch from '../lib/components/Switch.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface SwitchArgs {
 	value: boolean;
 	children?: Snippet;
@@ -13,7 +13,7 @@ interface SwitchArgs {
 	required?: boolean;
 	reducedMotion?: boolean;
 	reducedMotion?: boolean;
-	// イベントハンドラ
+	// Additional event handler props
 	onfocus?: (event: FocusEvent) => void;
 	onblur?: (event: FocusEvent) => void;
 	onkeydown?: (event: KeyboardEvent) => void;
@@ -81,7 +81,7 @@ const meta: Meta<SwitchArgs> = {
 			control: { type: 'boolean' },
 			description: 'Disable animations for reduced motion'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'
@@ -194,7 +194,7 @@ const createChildrenSnippet = (text: string) =>
 export const Default: Story = {
 	args: {
 		value: false,
-		children: createChildrenSnippet('通知を有効にする')
+		children: createChildrenSnippet('Enable notifications')
 	}
 };
 
@@ -202,7 +202,7 @@ export const Default: Story = {
 export const Checked: Story = {
 	args: {
 		value: true,
-		children: createChildrenSnippet('通知が有効です')
+		children: createChildrenSnippet('Notifications enabled')
 	}
 };
 
@@ -211,15 +211,7 @@ export const Small: Story = {
 	args: {
 		value: false,
 		size: 'small',
-		children: createChildrenSnippet('小サイズ')
-	}
-};
-
-export const Medium: Story = {
-	args: {
-		value: false,
-		size: 'medium',
-		children: createChildrenSnippet('中サイズ')
+		children: createChildrenSnippet('Small size')
 	}
 };
 
@@ -227,7 +219,7 @@ export const Large: Story = {
 	args: {
 		value: false,
 		size: 'large',
-		children: createChildrenSnippet('大サイズ')
+		children: createChildrenSnippet('Large size')
 	}
 };
 
@@ -236,16 +228,7 @@ export const Disabled: Story = {
 	args: {
 		value: false,
 		disabled: true,
-		children: createChildrenSnippet('無効状態')
-	}
-};
-
-// Required
-export const Required: Story = {
-	args: {
-		value: false,
-		required: true,
-		children: createChildrenSnippet('必須項目')
+		children: createChildrenSnippet('Disabled state')
 	}
 };
 
@@ -254,104 +237,4 @@ export const WithoutLabel: Story = {
 	args: {
 		value: false
 	}
-};
-
-// Multiple switches
-export const MultipleSwitches: Story = {
-	render: () => ({
-		Component: () => ({
-			Component: 'div',
-			props: {
-				style: 'display: flex; flex-direction: column; gap: 16px;'
-			},
-			children: [
-				{
-					Component: Switch,
-					props: {
-						value: true,
-						children: createChildrenSnippet('Wi-Fi')
-					}
-				},
-				{
-					Component: Switch,
-					props: {
-						value: false,
-						children: createChildrenSnippet('Bluetooth')
-					}
-				},
-				{
-					Component: Switch,
-					props: {
-						value: true,
-						children: createChildrenSnippet('位置情報')
-					}
-				},
-				{
-					Component: Switch,
-					props: {
-						value: false,
-						disabled: true,
-						children: createChildrenSnippet('機内モード')
-					}
-				}
-			]
-		})
-	})
-};
-
-// Settings example
-export const SettingsExample: Story = {
-	render: () => ({
-		Component: () => ({
-			Component: 'div',
-			props: {
-				style: 'max-width: 400px; padding: 20px; background: #f5f5f5; border-radius: 8px;'
-			},
-			children: [
-				{
-					Component: 'h3',
-					props: {
-						style: 'margin: 0 0 16px 0; color: #333;'
-					},
-					children: '設定'
-				},
-				{
-					Component: 'div',
-					props: {
-						style: 'display: flex; flex-direction: column; gap: 12px;'
-					},
-					children: [
-						{
-							Component: Switch,
-							props: {
-								value: true,
-								children: createChildrenSnippet('プッシュ通知')
-							}
-						},
-						{
-							Component: Switch,
-							props: {
-								value: false,
-								children: createChildrenSnippet('メール通知')
-							}
-						},
-						{
-							Component: Switch,
-							props: {
-								value: true,
-								children: createChildrenSnippet('ダークモード')
-							}
-						},
-						{
-							Component: Switch,
-							props: {
-								value: false,
-								children: createChildrenSnippet('自動更新')
-							}
-						}
-					]
-				}
-			]
-		})
-	})
 };

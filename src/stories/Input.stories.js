@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'テキスト入力用のコンポーネント。デフォルトとインラインの2つのバリアントを提供します。'
+					'A text input component that provides both default and inline variants for flexible layouts.'
 			}
 		}
 	},
@@ -116,7 +116,7 @@ const meta = {
 			],
 			description: 'Autocomplete attribute'
 		},
-		// 新しいイベントハンドラのargTypes
+		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'
@@ -225,7 +225,7 @@ export default meta;
 // Default
 export const Default = {
 	args: {
-		placeholder: 'テキストを入力してください'
+		placeholder: 'Enter text'
 	}
 };
 
@@ -233,7 +233,7 @@ export const Default = {
 export const Password = {
 	args: {
 		type: 'password',
-		placeholder: 'パスワードを入力'
+		placeholder: 'Enter password'
 	}
 };
 
@@ -241,7 +241,7 @@ export const Password = {
 export const Number = {
 	args: {
 		type: 'number',
-		placeholder: '数値を入力'
+		placeholder: 'Enter a number'
 	}
 };
 
@@ -249,7 +249,7 @@ export const Number = {
 export const Email = {
 	args: {
 		type: 'email',
-		placeholder: 'メールアドレスを入力'
+		placeholder: 'Enter email address'
 	}
 };
 
@@ -257,7 +257,7 @@ export const Email = {
 export const Tel = {
 	args: {
 		type: 'tel',
-		placeholder: '電話番号を入力'
+		placeholder: 'Enter phone number'
 	}
 };
 
@@ -265,7 +265,7 @@ export const Tel = {
 export const URL = {
 	args: {
 		type: 'url',
-		placeholder: 'URLを入力'
+		placeholder: 'Enter URL'
 	}
 };
 
@@ -273,7 +273,7 @@ export const URL = {
 export const NumberWithConstraints = {
 	args: {
 		type: 'number',
-		placeholder: '0-100の範囲で0.1刻み',
+		placeholder: '0–100 range with 0.1 step',
 		min: 0,
 		max: 100,
 		step: 0.1
@@ -284,7 +284,7 @@ export const NumberWithConstraints = {
 export const EmailWithAutocomplete = {
 	args: {
 		type: 'email',
-		placeholder: 'メールアドレスを入力',
+		placeholder: 'Enter email address',
 		autocomplete: 'email'
 	}
 };
@@ -293,7 +293,7 @@ export const EmailWithAutocomplete = {
 export const TelWithAutocomplete = {
 	args: {
 		type: 'tel',
-		placeholder: '電話番号を入力',
+		placeholder: 'Enter phone number',
 		autocomplete: 'tel'
 	}
 };
@@ -302,7 +302,7 @@ export const TelWithAutocomplete = {
 export const Inline = {
 	args: {
 		variant: 'inline',
-		placeholder: 'クリックして編集'
+		placeholder: 'Click to edit'
 	}
 };
 
@@ -310,7 +310,7 @@ export const Inline = {
 export const Rounded = {
 	args: {
 		rounded: true,
-		placeholder: '角丸の入力フィールド'
+		placeholder: 'Rounded input field'
 	}
 };
 
@@ -318,7 +318,7 @@ export const Rounded = {
 export const FullWidth = {
 	args: {
 		fullWidth: true,
-		placeholder: '幅100%の入力フィールド'
+		placeholder: 'Full-width input field'
 	}
 };
 
@@ -326,7 +326,7 @@ export const FullWidth = {
 export const Disabled = {
 	args: {
 		disabled: true,
-		placeholder: '無効な状態'
+		placeholder: 'Disabled state'
 	}
 };
 
@@ -334,15 +334,7 @@ export const Disabled = {
 export const ReadOnly = {
 	args: {
 		readonly: true,
-		placeholder: '読み取り専用'
-	}
-};
-
-// Required
-export const Required = {
-	args: {
-		required: true,
-		placeholder: '必須項目'
+		placeholder: 'Read-only'
 	}
 };
 
@@ -351,46 +343,46 @@ export const WithWidthLimits = {
 	args: {
 		minWidth: 200,
 		maxWidth: 300,
-		placeholder: '幅制限あり'
+		placeholder: 'Width-constrained input'
 	}
 };
 
 // With Right Icon
 export const WithRightIcon = {
 	args: {
-		placeholder: '右側にアイコン',
+		placeholder: 'Icon on the right',
 		rightIcon: 'search',
 		iconFilled: true,
-		onRightIconClick: () => alert('右アイコンがクリックされました！')
+		onRightIconClick: () => alert('Right icon clicked!')
 	}
 };
 
 // With Left Icon
 export const WithLeftIcon = {
 	args: {
-		placeholder: '左側にアイコン',
+		placeholder: 'Icon on the left',
 		leftIcon: 'person',
 		iconFilled: true,
-		onLeftIconClick: () => alert('左アイコンがクリックされました！')
+		onLeftIconClick: () => alert('Left icon clicked!')
 	}
 };
 
 // With Both Icons
 export const WithBothIcons = {
 	args: {
-		placeholder: '両側にアイコン',
+		placeholder: 'Icons on both sides',
 		leftIcon: 'search',
 		rightIcon: 'clear',
 		iconFilled: true,
-		onLeftIconClick: () => alert('左アイコンがクリックされました！'),
-		onRightIconClick: () => alert('右アイコンがクリックされました！')
+		onLeftIconClick: () => alert('Left icon clicked!'),
+		onRightIconClick: () => alert('Right icon clicked!')
 	}
 };
 
 // Icons Disabled State
 export const IconsDisabled = {
 	args: {
-		placeholder: '無効状態のアイコン',
+		placeholder: 'Icons in disabled state',
 		rightIcon: 'calendar_today',
 		leftIcon: 'person',
 		iconFilled: true,

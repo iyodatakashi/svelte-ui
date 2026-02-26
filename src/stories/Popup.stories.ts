@@ -4,7 +4,7 @@ import type { Snippet } from 'svelte';
 import Popup from '../lib/components/Popup.svelte';
 import PopupExample from './PopupExample.svelte';
 
-// 型安全性のための明示的な型定義
+// Explicit type definition for better type safety
 interface PopupArgs {
 	position?:
 		| 'top'
@@ -69,7 +69,7 @@ const meta: Meta<PopupArgs> = {
 			description:
 				'Position of popup relative to anchor element. Use "auto" for optimal positioning.'
 		},
-		// Snippetはコントロールから除外
+		// Snippet props are excluded from controls
 		children: {
 			control: false,
 			description: 'Popup content'
@@ -118,7 +118,7 @@ export const Right: Story = {
 	}
 };
 
-// Auto positioning (智能定位)
+// Auto positioning (smart positioning)
 export const AutoPositioning: Story = {
 	args: {
 		position: 'auto',
