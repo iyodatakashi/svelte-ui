@@ -12,12 +12,7 @@ const config: StorybookConfig = {
 		'@storybook/addon-docs',
 		'@storybook/addon-a11y',
 		'@storybook/addon-themes',
-		{
-			name: '@storybook/addon-vitest',
-			options: {
-				configFile: './vitest.config.ts'
-			}
-		}
+		'@storybook/addon-vitest'
 	],
 	framework: {
 		name: '@storybook/sveltekit',
