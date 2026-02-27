@@ -187,17 +187,19 @@
 	// Methods
 	// =========================================================================
 
-	const handleChange = (value: string): void => {
-		if (value && !value.startsWith('#')) {
-			localValue = '#' + value;
-		} else {
-			localValue = value;
+	const handleChange = (newValue: string): void => {
+		let normalizedValue = newValue;
+
+		if (normalizedValue && !normalizedValue.startsWith('#')) {
+			normalizedValue = '#' + normalizedValue;
 		}
 
-		if (value !== prevValue || localValue !== prevValue) {
-			value = localValue;
-			prevValue = value;
-			onchange(value);
+		localValue = normalizedValue;
+
+		if (normalizedValue !== prevValue || localValue !== prevValue) {
+			value = normalizedValue;
+			prevValue = normalizedValue;
+			onchange(normalizedValue);
 		}
 	};
 
