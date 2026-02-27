@@ -4,10 +4,8 @@ import Combobox from '../lib/components/Combobox.svelte';
 
 test('renders Combobox with default props', async () => {
 	const screen = render(Combobox, {
-		options: [
-			{ value: 'option1', label: 'Option 1' },
-			{ value: 'option2', label: 'Option 2' }
-		]
+		value: undefined,
+		options: ['Option 1', 'Option 2']
 	});
 	const combobox = screen.getByTestId('combobox');
 	expect(combobox).toBeInTheDocument();
@@ -17,10 +15,7 @@ test('renders Combobox with default props', async () => {
 test('Combobox can select options', async () => {
 	let currentValue = '';
 	const screen = render(Combobox, {
-		options: [
-			{ value: 'option1', label: 'Option 1' },
-			{ value: 'option2', label: 'Option 2' }
-		],
+		options: ['Option 1', 'Option 2'],
 		value: currentValue,
 		onchange: (value: string) => {
 			currentValue = value;
@@ -43,8 +38,8 @@ test('Combobox can select options', async () => {
 		screen.container.querySelector('.combobox__option') ||
 		screen.container.querySelector('[role="option"]');
 
-	// If option exists, click it
-	if (option) {
+	// If option is an HTMLElement, click it
+	if (option instanceof HTMLElement) {
 		await option.click();
 	}
 
@@ -54,12 +49,9 @@ test('Combobox can select options', async () => {
 
 test('disabled Combobox is not interactable', async () => {
 	const screen = render(Combobox, {
-		options: [
-			{ value: 'option1', label: 'Option 1' },
-			{ value: 'option2', label: 'Option 2' }
-		],
+		options: ['Option 1', 'Option 2'],
 		disabled: true,
-		value: 'option1',
+		value: 'Option 1',
 		id: 'combobox-disabled'
 	});
 	const combobox = screen.getByTestId('combobox');
@@ -84,7 +76,8 @@ test('disabled Combobox is not interactable', async () => {
 test('Combobox variants render correctly', async () => {
 	// Test default variant
 	const screenDefault = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		value: undefined,
+		options: ['Option 1'],
 		id: 'combobox-default'
 	});
 	const comboboxDefault = screenDefault.container.querySelector('#combobox-default');
@@ -92,7 +85,8 @@ test('Combobox variants render correctly', async () => {
 
 	// Test inline variant
 	const screenInline = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		value: undefined,
+		options: ['Option 1'],
 		variant: 'inline',
 		id: 'combobox-inline'
 	});
@@ -101,7 +95,8 @@ test('Combobox variants render correctly', async () => {
 
 	// Test with fullWidth
 	const screenFullWidth = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		value: undefined,
+		options: ['Option 1'],
 		fullWidth: true,
 		id: 'combobox-fullwidth'
 	});
@@ -110,7 +105,8 @@ test('Combobox variants render correctly', async () => {
 
 	// Test with rounded
 	const screenRounded = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		value: undefined,
+		options: ['Option 1'],
 		rounded: true,
 		id: 'combobox-rounded'
 	});
@@ -123,7 +119,8 @@ test('Combobox focus and blur events work correctly', async () => {
 	let blurCalled = false;
 
 	const screen = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		value: undefined,
+		options: ['Option 1'],
 		id: 'combobox-focus-blur',
 		onfocus: () => {
 			focusCalled = true;
@@ -146,9 +143,9 @@ test('Combobox focus and blur events work correctly', async () => {
 
 test('Combobox with readonly renders correctly', async () => {
 	const screen = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		options: ['Option 1'],
 		readonly: true,
-		value: 'option1',
+		value: 'Option 1',
 		id: 'combobox-readonly'
 	});
 	const input = screen.container.querySelector('#combobox-readonly') as HTMLInputElement;
@@ -159,7 +156,8 @@ test('Combobox with readonly renders correctly', async () => {
 
 test('Combobox with required renders correctly', async () => {
 	const screen = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }],
+		value: undefined,
+		options: ['Option 1'],
 		required: true,
 		id: 'combobox-required'
 	});
@@ -171,10 +169,8 @@ test('Combobox with required renders correctly', async () => {
 
 test('Combobox with filterable renders correctly', async () => {
 	const screen = render(Combobox, {
-		options: [
-			{ value: 'option1', label: 'Option 1' },
-			{ value: 'option2', label: 'Option 2' }
-		],
+		value: undefined,
+		options: ['Option 1', 'Option 2'],
 		filterable: true,
 		id: 'combobox-filterable'
 	});
@@ -189,10 +185,8 @@ test('Combobox with filterable renders correctly', async () => {
 
 test('Combobox with non-filterable renders correctly', async () => {
 	const screen = render(Combobox, {
-		options: [
-			{ value: 'option1', label: 'Option 1' },
-			{ value: 'option2', label: 'Option 2' }
-		],
+		value: undefined,
+		options: ['Option 1', 'Option 2'],
 		filterable: false,
 		id: 'combobox-non-filterable'
 	});
@@ -207,7 +201,8 @@ import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('Combobox CSS variables used are defined (computed) in the page', async () => {
 	const screen = render(Combobox, {
-		options: [{ value: 'option1', label: 'Option 1' }]
+		value: undefined,
+		options: ['Option 1']
 	});
 	const wrapper = screen.getByTestId('combobox');
 	const usedVars = new Set<string>();
@@ -249,48 +244,56 @@ test('Combobox CSS variables used are defined (computed) in the page', async () 
 
 test('Combobox maxWidth property changes reactively', async () => {
 	const screen = render(Combobox, {
+		value: undefined,
 		maxWidth: 200,
 		minWidth: 100,
 		options: []
 	});
 
-	const combobox = screen.getByTestId('combobox');
+	// maxWidth は内部の Input コンポーネントのルート要素（data-testid="input"）に
+	// inline style として適用されるため、そちらを検証する
+	const getInput = () => screen.getByTestId('input');
+
 	await expect
-		.element(combobox)
+		.element(getInput())
 		.toHaveAttribute('style', expect.stringContaining('max-width: 200px'));
 
 	// プロパティを更新
-	screen.rerender({
+	await screen.rerender({
+		value: undefined,
 		maxWidth: 300,
 		minWidth: 100,
 		options: []
 	});
 
 	await expect
-		.element(combobox)
+		.element(getInput())
 		.toHaveAttribute('style', expect.stringContaining('max-width: 300px'));
 });
 
 test('Combobox minWidth property changes reactively', async () => {
 	const screen = render(Combobox, {
+		value: undefined,
 		maxWidth: 200,
 		minWidth: 100,
 		options: []
 	});
 
-	const combobox = screen.getByTestId('combobox');
+	const getInput = () => screen.getByTestId('input');
+
 	await expect
-		.element(combobox)
+		.element(getInput())
 		.toHaveAttribute('style', expect.stringContaining('min-width: 100px'));
 
 	// プロパティを更新
-	screen.rerender({
+	await screen.rerender({
+		value: undefined,
 		maxWidth: 200,
 		minWidth: 150,
 		options: []
 	});
 
 	await expect
-		.element(combobox)
+		.element(getInput())
 		.toHaveAttribute('style', expect.stringContaining('min-width: 150px'));
 });

@@ -27,7 +27,6 @@ describe('Datepicker Component', () => {
 			disabled: false,
 			readonly: false,
 			required: false,
-			placeholder: undefined,
 			ariaLabel: undefined,
 			ariaDescribedby: undefined,
 			ariaInvalid: undefined,
