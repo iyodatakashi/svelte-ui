@@ -3,47 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Checkbox from '../lib/components/Checkbox.svelte';
 
-// Explicit type definition for better type safety
-interface CheckboxArgs {
-	value: boolean;
-	indeterminate?: boolean;
-	name?: string;
-	disabled?: boolean;
-	required?: boolean;
-	readonly?: boolean;
-	error?: string | null;
-	success?: string | null;
-	size?: 'small' | 'medium' | 'large';
-	reducedMotion?: boolean;
-	children?: Snippet;
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onchange?: (value: boolean) => void;
-	// Additional event handler props
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onclick?: (event: MouseEvent) => void;
-	onmousedown?: (event: MouseEvent) => void;
-	onmouseup?: (event: MouseEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	onmouseover?: (event: MouseEvent) => void;
-	onmouseout?: (event: MouseEvent) => void;
-	oncontextmenu?: (event: MouseEvent) => void;
-	onauxclick?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	ontouchmove?: (event: TouchEvent) => void;
-	ontouchcancel?: (event: TouchEvent) => void;
-	onpointerdown?: (event: PointerEvent) => void;
-	onpointerup?: (event: PointerEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-	onpointermove?: (event: PointerEvent) => void;
-	onpointercancel?: (event: PointerEvent) => void;
-}
-
-const meta: Meta<CheckboxArgs> = {
+const meta = {
 	title: 'Forms/Checkbox',
 	component: Checkbox,
 	parameters: {
@@ -189,10 +149,10 @@ const meta: Meta<CheckboxArgs> = {
 			description: 'Change event'
 		}
 	}
-};
+} satisfies Meta<typeof Checkbox>;
 
 export default meta;
-type Story = StoryObj<CheckboxArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for children
 const createChildrenSnippet = (text: string) =>
@@ -203,6 +163,7 @@ const createChildrenSnippet = (text: string) =>
 // Default (unchecked)
 export const Default: Story = {
 	args: {
+		value: false,
 		children: createChildrenSnippet('I agree to the terms and conditions')
 	}
 };
@@ -218,6 +179,7 @@ export const Checked: Story = {
 // Indeterminate
 export const Indeterminate: Story = {
 	args: {
+		value: false,
 		indeterminate: true,
 		children: createChildrenSnippet('Indeterminate')
 	}
@@ -226,12 +188,14 @@ export const Indeterminate: Story = {
 // Size variants
 export const Small: Story = {
 	args: {
+		value: false,
 		size: 'small',
 		children: createChildrenSnippet('Small')
 	}
 };
 export const Large: Story = {
 	args: {
+		value: false,
 		size: 'large',
 		children: createChildrenSnippet('Large')
 	}
@@ -240,15 +204,8 @@ export const Large: Story = {
 // Disabled
 export const Disabled: Story = {
 	args: {
+		value: false,
 		disabled: true,
 		children: createChildrenSnippet('Disabled')
-	}
-};
-
-// Readonly
-export const ReadOnly: Story = {
-	args: {
-		readonly: true,
-		children: createChildrenSnippet('Readonly')
 	}
 };

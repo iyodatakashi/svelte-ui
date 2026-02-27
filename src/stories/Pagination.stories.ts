@@ -1,19 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Pagination from '../lib/components/Pagination.svelte';
 
-// 型安全性のための明示的な型定義
-interface PaginationArgs {
-	total: number;
-	limit: number;
-	currentPageNum: number;
-	visiblePages: number;
-	showCount: boolean;
-	showRange: boolean;
-	showTotal: boolean;
-	onchange: (pageNum: number) => void;
-}
-
-const meta: Meta<PaginationArgs> = {
+const meta = {
 	title: 'Navigation/Pagination',
 	component: Pagination,
 	parameters: {
@@ -65,10 +53,10 @@ const meta: Meta<PaginationArgs> = {
 			description: 'Callback fired when the page changes'
 		}
 	}
-};
+} satisfies Meta<typeof Pagination>;
 
 export default meta;
-type Story = StoryObj<PaginationArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Default - 標準的なページネーション
 export const Default: Story = {

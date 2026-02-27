@@ -3,51 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Fab from '../lib/components/Fab.svelte';
 
-// Explicit type definition for better type safety
-interface FabArgs {
-	children?: Snippet;
-	icon?: string;
-	color?: string;
-	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
-	position?: 'left' | 'center' | 'right';
-	shadow?: boolean;
-	disabled?: boolean;
-	loading?: boolean;
-	reducedMotion?: boolean;
-	iconFilled?: boolean;
-	iconWeight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-	iconGrade?: number;
-	iconOpticalSize?: number | null;
-	iconVariant?: 'outlined' | 'rounded' | 'sharp';
-	ariaLabel?: string;
-	ariaDescribedby?: string;
-	onclick?: (event: MouseEvent) => void;
-	// Additional event handler props
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onmousedown?: (event: MouseEvent) => void;
-	onmouseup?: (event: MouseEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	onmouseover?: (event: MouseEvent) => void;
-	onmouseout?: (event: MouseEvent) => void;
-	oncontextmenu?: (event: MouseEvent) => void;
-	onauxclick?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	ontouchmove?: (event: TouchEvent) => void;
-	ontouchcancel?: (event: TouchEvent) => void;
-	onpointerdown?: (event: PointerEvent) => void;
-	onpointerup?: (event: PointerEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-	onpointermove?: (event: PointerEvent) => void;
-	onpointercancel?: (event: PointerEvent) => void;
-}
-
-const meta: Meta<FabArgs> = {
+const meta = {
 	title: 'UI/Fab',
 	component: Fab,
 	parameters: {
@@ -212,10 +168,10 @@ const meta: Meta<FabArgs> = {
 			description: 'Pointer cancel event'
 		}
 	}
-};
+} satisfies Meta<typeof Fab>;
 
 export default meta;
-type Story = StoryObj<FabArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Icon only (default)
 export const Default: Story = {

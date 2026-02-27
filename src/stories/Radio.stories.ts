@@ -3,47 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import Radio from '../lib/components/Radio.svelte';
 
-// Explicit type definition for better type safety
-interface RadioArgs {
-	name: string;
-	value: string | number | boolean;
-	currentValue: string | number | boolean | null;
-	disabled?: boolean;
-	required?: boolean;
-	readonly?: boolean;
-	error?: string | null;
-	success?: string | null;
-	size?: 'small' | 'medium' | 'large';
-	reducedMotion?: boolean;
-	children?: Snippet;
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onchange?: (value: string | number | boolean | null | undefined) => void;
-	// Additional event handler props
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onclick?: (event: MouseEvent) => void;
-	onmousedown?: (event: MouseEvent) => void;
-	onmouseup?: (event: MouseEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	onmouseover?: (event: MouseEvent) => void;
-	onmouseout?: (event: MouseEvent) => void;
-	oncontextmenu?: (event: MouseEvent) => void;
-	onauxclick?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	ontouchmove?: (event: TouchEvent) => void;
-	ontouchcancel?: (event: TouchEvent) => void;
-	onpointerdown?: (event: PointerEvent) => void;
-	onpointerup?: (event: PointerEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-	onpointermove?: (event: PointerEvent) => void;
-	onpointercancel?: (event: PointerEvent) => void;
-}
-
-const meta: Meta<RadioArgs> = {
+const meta = {
 	title: 'Forms/Radio',
 	component: Radio,
 	parameters: {
@@ -189,10 +149,10 @@ const meta: Meta<RadioArgs> = {
 			description: 'Change event'
 		}
 	}
-};
+} satisfies Meta<typeof Radio>;
 
 export default meta;
-type Story = StoryObj<RadioArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for children
 const createChildrenSnippet = (text: string) =>
@@ -203,7 +163,9 @@ const createChildrenSnippet = (text: string) =>
 // Default (unchecked)
 export const Default: Story = {
 	args: {
+		name: 'example',
 		value: 'option1',
+		currentValue: undefined,
 		children: createChildrenSnippet('Option 1')
 	}
 };
@@ -211,6 +173,7 @@ export const Default: Story = {
 // Checked
 export const Checked: Story = {
 	args: {
+		name: 'example',
 		value: 'option1',
 		currentValue: 'option1',
 		children: createChildrenSnippet('Checked')
@@ -220,12 +183,18 @@ export const Checked: Story = {
 // Size variants
 export const Small: Story = {
 	args: {
+		name: 'example',
+		value: 'option1',
+		currentValue: undefined,
 		size: 'small',
 		children: createChildrenSnippet('Small')
 	}
 };
 export const Large: Story = {
 	args: {
+		name: 'example',
+		value: 'option1',
+		currentValue: undefined,
 		size: 'large',
 		children: createChildrenSnippet('Large')
 	}
@@ -234,18 +203,11 @@ export const Large: Story = {
 // Disabled
 export const Disabled: Story = {
 	args: {
+		name: 'example',
+		value: 'option1',
+		currentValue: undefined,
 		disabled: true,
 		children: createChildrenSnippet('Disabled')
-	}
-};
-
-// Readonly
-export const ReadOnly: Story = {
-	args: {
-		value: 'option1',
-		currentValue: 'option1',
-		readonly: true,
-		children: createChildrenSnippet('Readonly')
 	}
 };
 

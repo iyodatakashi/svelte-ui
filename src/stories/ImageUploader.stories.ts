@@ -2,38 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import ImageUploader from '../lib/components/ImageUploader.svelte';
 import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '../lib/types/icon';
 
-interface ImageUploaderArgs {
-	value: FileList | undefined;
-	accept?: string;
-	multiple?: boolean;
-	maxFileSize?: number;
-	width?: string | number;
-	height?: string | number;
-	rounded?: boolean;
-	previewStyle?: 'plain' | 'framed';
-	previewAdaptive?: boolean;
-	icon?: string;
-	iconSize?: number;
-	iconFilled?: boolean;
-	iconWeight?: IconWeight;
-	iconGrade?: IconGrade;
-	iconOpticalSize?: IconOpticalSize;
-	iconVariant?: IconVariant;
-	placeholder?: string;
-	// 新しいイベントハンドラ
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-}
-
-const meta: Meta<ImageUploaderArgs> = {
+const meta = {
 	title: 'Forms/ImageUploader',
 	component: ImageUploader,
 	parameters: {
@@ -161,10 +130,10 @@ const meta: Meta<ImageUploaderArgs> = {
 			description: 'ポインターリーブイベント'
 		}
 	}
-};
+} satisfies Meta<typeof ImageUploader>;
 
 export default meta;
-type Story = StoryObj<ImageUploaderArgs>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {

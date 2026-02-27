@@ -2,27 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import SegmentedControl from '../lib/components/SegmentedControl.svelte';
 import type { SegmentedControlItem } from '../lib/types/segmentedControlItem';
 
-// 型安全性のための明示的な型定義
-interface SegmentedControlArgs {
-	items: SegmentedControlItem[];
-	value?: string;
-	size?: 'small' | 'medium' | 'large';
-	fullWidth?: boolean;
-	color?: string;
-	rounded?: boolean;
-	disabled?: boolean;
-	ariaLabel?: string;
-	ariaLabelledby?: string;
-	iconFilled?: boolean;
-	iconVariant?: 'outlined' | 'rounded' | 'sharp';
-	iconWeight?: number;
-	iconGrade?: number;
-	iconOpticalSize?: number;
-	reducedMotion?: boolean;
-	onchange?: (value: string) => void;
-}
-
-const meta: Meta<SegmentedControlArgs> = {
+const meta = {
 	title: 'UI/SegmentedControl',
 	component: SegmentedControl,
 	parameters: {
@@ -108,10 +88,10 @@ const meta: Meta<SegmentedControlArgs> = {
 			description: 'Called when selection changes'
 		}
 	}
-};
+} satisfies Meta<typeof SegmentedControl>;
 
 export default meta;
-type Story = StoryObj<SegmentedControlArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Basic text only
 export const Basic: Story = {

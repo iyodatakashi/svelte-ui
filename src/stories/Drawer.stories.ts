@@ -4,25 +4,7 @@ import type { Snippet } from 'svelte';
 import Drawer from '../lib/components/Drawer.svelte';
 import DrawerExample from './DrawerExample.svelte';
 
-// Explicit type definition for better type safety
-interface DrawerArgs {
-	title?: string;
-	scrollable?: boolean;
-	closeIfClickOutside?: boolean;
-	width?: string | number;
-	position?: 'left' | 'right';
-	ariaLabel?: string;
-	restoreFocus?: boolean;
-	ariaDescribedby?: string;
-	description?: string;
-	header?: Snippet;
-	children?: Snippet;
-	footer?: Snippet;
-	bodyStyle?: string;
-	noPadding?: boolean;
-}
-
-const meta: Meta<DrawerArgs> = {
+const meta = {
 	title: 'UI/Drawer',
 	component: Drawer,
 	parameters: {
@@ -99,10 +81,10 @@ const meta: Meta<DrawerArgs> = {
 			description: 'Remove default padding from body section'
 		}
 	}
-};
+} satisfies Meta<typeof Drawer>;
 
 export default meta;
-type Story = StoryObj<DrawerArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for content
 const createContentSnippet = (content: string) =>

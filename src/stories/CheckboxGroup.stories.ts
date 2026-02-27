@@ -2,17 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import CheckboxGroup from '../lib/components/CheckboxGroup.svelte';
 import type { Option, OptionValue } from '../lib/types/options';
 
-interface CheckboxGroupArgs {
-	options: Option[];
-	value: OptionValue[];
-	direction?: 'vertical' | 'horizontal';
-	gap?: string | number;
-	wrap?: boolean;
-	minOptionWidth?: string | number;
-	onchange?: (value: OptionValue[]) => void;
-}
-
-const meta: Meta<CheckboxGroupArgs> = {
+const meta = {
 	title: 'Forms/CheckboxGroup',
 	component: CheckboxGroup,
 	parameters: {
@@ -60,10 +50,10 @@ const meta: Meta<CheckboxGroupArgs> = {
 			description: 'Change event when selection updates'
 		}
 	}
-};
+} satisfies Meta<typeof CheckboxGroup>;
 
 export default meta;
-type Story = StoryObj<CheckboxGroupArgs>;
+type Story = StoryObj<typeof meta>;
 
 const sampleOptions: Option[] = [
 	{ label: 'Option 1', value: 'option1' },

@@ -2,56 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import type { IconWeight } from '../lib/types/icon';
 import Datepicker from '../lib/components/Datepicker.svelte';
 
-// Explicit type definition for better type safety
-interface DatepickerArgs {
-	value: Date | { start: Date; end: Date } | undefined;
-	inline?: boolean;
-	format?: string;
-	placeholder?: string;
-	mode?: 'single' | 'range';
-	hasIcon?: boolean;
-	disabled?: boolean;
-	focusStyle?: 'background' | 'outline' | 'none';
-	enableTextInput?: boolean;
-	fullWidth?: boolean;
-	iconWeight?: IconWeight;
-	width?: string | number | null;
-	minWidth?: string | number | null;
-	maxWidth?: string | number | null;
-	rounded?: boolean;
-	enableClickToOpen?: boolean;
-	minDate?: Date;
-	maxDate?: Date;
-	locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
-	onchange?: () => void;
-	// Additional event handler props
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onclick?: (event: MouseEvent) => void;
-	onmousedown?: (event: MouseEvent) => void;
-	onmouseup?: (event: MouseEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	onmouseover?: (event: MouseEvent) => void;
-	onmouseout?: (event: MouseEvent) => void;
-	oncontextmenu?: (event: MouseEvent) => void;
-	onauxclick?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	ontouchmove?: (event: TouchEvent) => void;
-	ontouchcancel?: (event: TouchEvent) => void;
-	onpointerdown?: (event: PointerEvent) => void;
-	onpointerup?: (event: PointerEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-	onpointermove?: (event: PointerEvent) => void;
-	onpointercancel?: (event: PointerEvent) => void;
-	oninput?: (value: string) => void;
-}
-
-const meta: Meta<DatepickerArgs> = {
+const meta = {
 	title: 'Forms/Datepicker',
 	component: Datepicker,
 	parameters: {
@@ -248,10 +199,10 @@ const meta: Meta<DatepickerArgs> = {
 			description: 'Input event'
 		}
 	}
-};
+} satisfies Meta<typeof Datepicker>;
 
 export default meta;
-type Story = StoryObj<DatepickerArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Default (single date selection)
 export const Default: Story = {
@@ -318,6 +269,7 @@ export const Disabled: Story = {
 // With Min/Max Date (min/max date constraints)
 export const WithMinMaxDate: Story = {
 	args: {
+		value: undefined,
 		hasIcon: true,
 		minDate: new Date(2024, 0, 1),
 		maxDate: new Date(2024, 11, 31)
@@ -327,6 +279,7 @@ export const WithMinMaxDate: Story = {
 // Enable text input (enableTextInput=true)
 export const EnableTextInput: Story = {
 	args: {
+		value: undefined,
 		enableTextInput: true,
 		hasIcon: true
 	},
@@ -342,6 +295,7 @@ export const EnableTextInput: Story = {
 // Full Width
 export const FullWidth: Story = {
 	args: {
+		value: undefined,
 		fullWidth: true,
 		hasIcon: true
 	},
@@ -352,6 +306,7 @@ export const FullWidth: Story = {
 // Rounded
 export const Rounded: Story = {
 	args: {
+		value: undefined,
 		hasIcon: true,
 		rounded: true
 	}

@@ -4,23 +4,7 @@ import type { Snippet } from 'svelte';
 import Dialog from '../lib/components/Dialog.svelte';
 import DialogExample from './DialogExample.svelte';
 
-// Explicit type definition for better type safety
-interface DialogArgs {
-	title?: string;
-	scrollable?: boolean;
-	closeIfClickOutside?: boolean;
-	width?: string | number;
-	restoreFocus?: boolean;
-	ariaDescribedby?: string;
-	description?: string;
-	header?: Snippet;
-	children?: Snippet;
-	footer?: Snippet;
-	bodyStyle?: string;
-	noPadding?: boolean;
-}
-
-const meta: Meta<DialogArgs> = {
+const meta = {
 	title: 'UI/Dialog',
 	component: Dialog,
 	parameters: {
@@ -88,10 +72,10 @@ const meta: Meta<DialogArgs> = {
 			description: 'Remove default padding from body section'
 		}
 	}
-};
+} satisfies Meta<typeof Dialog>;
 
 export default meta;
-type Story = StoryObj<DialogArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for content
 const createContentSnippet = (content: string) =>

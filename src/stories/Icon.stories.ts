@@ -4,25 +4,7 @@ import type { Snippet } from 'svelte';
 import type { IconVariant } from '$lib/types/icon';
 import Icon from '../lib/components/Icon.svelte';
 
-// Explicit type definition for better type safety
-interface IconArgs {
-	children: Snippet;
-	size?: number;
-	filled?: boolean;
-	color?: string;
-	style?: string;
-	variant?: IconVariant;
-	weight?: 100 | 200 | 300 | 400 | 500 | 600 | 700;
-	grade?: number;
-	opticalSize?: number;
-	decorative?: boolean;
-	ariaLabel?: string;
-	title?: string;
-	fallbackText?: string;
-	reducedMotion?: boolean;
-}
-
-const meta: Meta<IconArgs> = {
+const meta = {
 	title: 'UI/Icon',
 	component: Icon,
 	parameters: {
@@ -101,10 +83,10 @@ const meta: Meta<IconArgs> = {
 			description: 'Material Symbols icon name'
 		}
 	}
-};
+} satisfies Meta<typeof Icon>;
 
 export default meta;
-type Story = StoryObj<IconArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for children
 const createChildrenSnippet = (iconName: string) =>

@@ -4,59 +4,7 @@ import type { Snippet } from 'svelte';
 import type { MenuItem } from '../lib/types/menuItem';
 import PopupMenuButton from '../lib/components/PopupMenuButton.svelte';
 
-// 型安全性のための明示的な型定義
-interface PopupMenuButtonArgs {
-	children?: Snippet;
-	menuItems: (MenuItem | 'separator')[];
-	position?:
-		| 'top'
-		| 'bottom'
-		| 'left'
-		| 'right'
-		| 'top-left'
-		| 'top-center'
-		| 'top-right'
-		| 'bottom-left'
-		| 'bottom-center'
-		| 'bottom-right'
-		| 'left-top'
-		| 'left-center'
-		| 'left-bottom'
-		| 'right-top'
-		| 'right-center'
-		| 'right-bottom'
-		| 'auto';
-	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
-	size?: number;
-	color?: string;
-	rounded?: boolean;
-	// 新しいイベントハンドラ
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onclick?: (event: MouseEvent) => void;
-	onmousedown?: (event: MouseEvent) => void;
-	onmouseup?: (event: MouseEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	onmouseover?: (event: MouseEvent) => void;
-	onmouseout?: (event: MouseEvent) => void;
-	oncontextmenu?: (event: MouseEvent) => void;
-	onauxclick?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	ontouchmove?: (event: TouchEvent) => void;
-	ontouchcancel?: (event: TouchEvent) => void;
-	onpointerdown?: (event: PointerEvent) => void;
-	onpointerup?: (event: PointerEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-	onpointermove?: (event: PointerEvent) => void;
-	onpointercancel?: (event: PointerEvent) => void;
-}
-
-const meta: Meta<PopupMenuButtonArgs> = {
+const meta = {
 	title: 'UI/PopupMenuButton',
 	component: PopupMenuButton,
 	parameters: {
@@ -217,10 +165,10 @@ const meta: Meta<PopupMenuButtonArgs> = {
 			description: 'Pointer cancel event'
 		}
 	}
-};
+} satisfies Meta<typeof PopupMenuButton>;
 
 export default meta;
-type Story = StoryObj<PopupMenuButtonArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for children
 const createChildrenSnippet = (iconName: string) =>

@@ -2,16 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Tab from '../lib/components/Tab.svelte';
 import type { MenuItem } from '../lib/types/menuItem';
 
-// 型安全性のための明示的な型定義
-interface TabArgs {
-	tabItems: MenuItem[];
-	ariaLabel?: string;
-	ariaLabelledby?: string;
-	pathPrefix?: string;
-	customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
-}
-
-const meta: Meta<TabArgs> = {
+const meta = {
 	title: 'Navigation/Tab',
 	component: Tab,
 	parameters: {
@@ -50,10 +41,10 @@ const meta: Meta<TabArgs> = {
 			description: 'Custom function to match current path against tab href'
 		}
 	}
-};
+} satisfies Meta<typeof Tab>;
 
 export default meta;
-type Story = StoryObj<TabArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Basic text tabs
 export const Basic: Story = {

@@ -1,22 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Slider from '../lib/components/Slider.svelte';
 
-// Typed args matching SliderProps (only the props we actually expose)
-interface SliderArgs {
-	value: number;
-	name?: string;
-	min?: number;
-	max?: number;
-	step?: number;
-	width?: string | number | null;
-	fullWidth?: boolean;
-	thumbColor?: string | null;
-	thumbWidth?: string | number | null;
-	thumbHeight?: string | number | null;
-	disabled?: boolean;
-}
-
-const meta: Meta<SliderArgs> = {
+const meta = {
 	title: 'Forms/Slider',
 	component: Slider,
 	parameters: {
@@ -74,10 +59,10 @@ const meta: Meta<SliderArgs> = {
 			description: 'Whether the slider is disabled'
 		}
 	}
-};
+} satisfies Meta<typeof Slider>;
 
 export default meta;
-type Story = StoryObj<SliderArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Default slider (0–100)
 export const Default: Story = {

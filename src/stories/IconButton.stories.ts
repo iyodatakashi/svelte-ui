@@ -3,61 +3,7 @@ import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
 import IconButton from '../lib/components/IconButton.svelte';
 
-// Explicit type definition for better type safety
-interface IconButtonArgs {
-	children: Snippet;
-	type?: 'button' | 'submit' | 'reset' | null | undefined;
-	size?: number;
-	fontSize?: number;
-	variant?: 'filled' | 'outlined' | 'ghost' | 'glass';
-	color?: string;
-	disabled?: boolean;
-	loading?: boolean;
-	tabindex?: number | null;
-	iconFilled?: boolean;
-	iconVariant?: 'outlined' | 'rounded' | 'sharp';
-	iconWeight?: number;
-	iconGrade?: number;
-	iconOpticalSize?: number;
-	customStyle?: string;
-	rounded?: boolean;
-	pressed?: boolean;
-	hasBadge?: boolean;
-	badgeCount?: number;
-	badgeVariant?: 'dot' | 'count';
-	badgeColor?: string;
-	badgeMax?: number;
-	reducedMotion?: boolean;
-	ariaLabel: string;
-	ariaDescribedby?: string;
-	ariaPressed?: boolean;
-	onclick?: (event: MouseEvent) => void;
-	// Additional event handler props
-	onfocus?: (event: FocusEvent) => void;
-	onblur?: (event: FocusEvent) => void;
-	onkeydown?: (event: KeyboardEvent) => void;
-	onkeyup?: (event: KeyboardEvent) => void;
-	onmousedown?: (event: MouseEvent) => void;
-	onmouseup?: (event: MouseEvent) => void;
-	onmouseenter?: (event: MouseEvent) => void;
-	onmouseleave?: (event: MouseEvent) => void;
-	onmouseover?: (event: MouseEvent) => void;
-	onmouseout?: (event: MouseEvent) => void;
-	oncontextmenu?: (event: MouseEvent) => void;
-	onauxclick?: (event: MouseEvent) => void;
-	ontouchstart?: (event: TouchEvent) => void;
-	ontouchend?: (event: TouchEvent) => void;
-	ontouchmove?: (event: TouchEvent) => void;
-	ontouchcancel?: (event: TouchEvent) => void;
-	onpointerdown?: (event: PointerEvent) => void;
-	onpointerup?: (event: PointerEvent) => void;
-	onpointerenter?: (event: PointerEvent) => void;
-	onpointerleave?: (event: PointerEvent) => void;
-	onpointermove?: (event: PointerEvent) => void;
-	onpointercancel?: (event: PointerEvent) => void;
-}
-
-const meta: Meta<IconButtonArgs> = {
+const meta = {
 	title: 'UI/IconButton',
 	component: IconButton,
 	parameters: {
@@ -276,10 +222,10 @@ const meta: Meta<IconButtonArgs> = {
 			description: 'Pointer cancel event'
 		}
 	}
-};
+} satisfies Meta<typeof IconButton>;
 
 export default meta;
-type Story = StoryObj<IconButtonArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for children
 const createChildrenSnippet = (iconName: string) =>

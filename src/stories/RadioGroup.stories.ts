@@ -2,18 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import RadioGroup from '../lib/components/RadioGroup.svelte';
 import type { Option, OptionValue } from '../lib/types/options';
 
-interface RadioGroupArgs {
-	name?: string;
-	options: Option[];
-	value: OptionValue;
-	direction?: 'vertical' | 'horizontal';
-	gap?: string | number;
-	wrap?: boolean;
-	minOptionWidth?: string | number;
-	onchange?: (value: OptionValue) => void;
-}
-
-const meta: Meta<RadioGroupArgs> = {
+const meta = {
 	title: 'Forms/RadioGroup',
 	component: RadioGroup,
 	parameters: {
@@ -65,10 +54,10 @@ const meta: Meta<RadioGroupArgs> = {
 			description: 'Change event when selection updates'
 		}
 	}
-};
+} satisfies Meta<typeof RadioGroup>;
 
 export default meta;
-type Story = StoryObj<RadioGroupArgs>;
+type Story = StoryObj<typeof meta>;
 
 const sampleOptions: Option[] = [
 	{ label: 'Option 1', value: 'option1' },

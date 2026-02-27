@@ -1,15 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import LoadingSpinner from '../lib/components/LoadingSpinner.svelte';
 
-interface LoadingSpinnerArgs {
-	size?: number;
-	color?: string;
-	strokeWidth?: number;
-	speed?: number;
-	reducedMotion?: boolean;
-}
-
-const meta: Meta<LoadingSpinnerArgs> = {
+const meta = {
 	title: 'UI/LoadingSpinner',
 	component: LoadingSpinner,
 	parameters: {
@@ -49,10 +41,10 @@ const meta: Meta<LoadingSpinnerArgs> = {
 			description: 'Disable animation for reduced motion / accessibility'
 		}
 	}
-};
+} satisfies Meta<typeof LoadingSpinner>;
 
 export default meta;
-type Story = StoryObj<LoadingSpinnerArgs>;
+type Story = StoryObj<typeof meta>;
 
 // 基本パターン
 export const Default: Story = {

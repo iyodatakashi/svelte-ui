@@ -2,14 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import type { MenuItem } from '../lib/types/menuItem';
 import PopupMenu from '../lib/components/PopupMenu.svelte';
 
-// 型安全性のための明示的な型定義
-interface PopupMenuArgs {
-	anchorElement: HTMLElement;
-	position?: 'top' | 'bottom' | 'left' | 'right';
-	menuItems: (MenuItem | 'separator')[];
-}
-
-const meta: Meta<PopupMenuArgs> = {
+const meta = {
 	title: 'UI/PopupMenu',
 	component: PopupMenu,
 	parameters: {
@@ -38,10 +31,10 @@ const meta: Meta<PopupMenuArgs> = {
 			description: 'HTML element to position menu relative to'
 		}
 	}
-};
+} satisfies Meta<typeof PopupMenu>;
 
 export default meta;
-type Story = StoryObj<PopupMenuArgs>;
+type Story = StoryObj<typeof meta>;
 
 // モックのアンカー要素を作成する関数
 const createMockAnchorElement = (): HTMLElement => {

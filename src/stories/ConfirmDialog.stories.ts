@@ -2,20 +2,7 @@ import type { Meta, StoryObj } from '@storybook/sveltekit';
 import ConfirmDialog from '../lib/components/ConfirmDialog.svelte';
 import ConfirmDialogExample from './ConfirmDialogExample.svelte';
 
-// 型安全性のための明示的な型定義
-interface ConfirmDialogArgs {
-	title?: string;
-	description?: string;
-	submitLabel?: string;
-	cancelLabel?: string;
-	danger?: boolean;
-	width?: string | number;
-	closeIfClickOutside?: boolean;
-	onSubmit?: () => void;
-	onCancel?: () => void;
-}
-
-const meta: Meta<ConfirmDialogArgs> = {
+const meta = {
 	title: 'UI/ConfirmDialog',
 	component: ConfirmDialog,
 	parameters: {
@@ -70,10 +57,10 @@ const meta: Meta<ConfirmDialogArgs> = {
 			description: 'Callback when cancel button is clicked'
 		}
 	}
-};
+} satisfies Meta<typeof ConfirmDialog>;
 
 export default meta;
-type Story = StoryObj<ConfirmDialogArgs>;
+type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {

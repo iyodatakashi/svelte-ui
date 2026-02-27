@@ -1,35 +1,11 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import Popup from '../lib/components/Popup.svelte';
 import PopupExample from './PopupExample.svelte';
 
-// Explicit type definition for better type safety
-interface PopupArgs {
-	position?:
-		| 'top'
-		| 'bottom'
-		| 'left'
-		| 'right'
-		| 'top-left'
-		| 'top-center'
-		| 'top-right'
-		| 'bottom-left'
-		| 'bottom-center'
-		| 'bottom-right'
-		| 'left-top'
-		| 'left-center'
-		| 'left-bottom'
-		| 'right-top'
-		| 'right-center'
-		| 'right-bottom'
-		| 'auto';
-	children: Snippet;
-}
-
-const meta: Meta<PopupArgs> = {
+const meta = {
 	title: 'UI/Popup',
-	component: Popup,
+	component: PopupExample,
 	parameters: {
 		layout: 'centered',
 		docs: {
@@ -75,10 +51,10 @@ const meta: Meta<PopupArgs> = {
 			description: 'Popup content'
 		}
 	}
-};
+} satisfies Meta<typeof PopupExample>;
 
 export default meta;
-type Story = StoryObj<PopupArgs>;
+type Story = StoryObj<typeof meta>;
 
 // Helper function to create snippet for children
 const createChildrenSnippet = (content: string) =>
