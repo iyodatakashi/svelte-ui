@@ -79,21 +79,24 @@ const sampleOptions: Option[] = [
 
 export const Default: Story = {
 	args: {
-		options: sampleOptions
+		options: sampleOptions,
+		value: 'option1'
 	}
 };
 
 export const Vertical: Story = {
 	args: {
 		options: sampleOptions,
-		direction: 'vertical'
+		direction: 'vertical',
+		value: 'option1'
 	}
 };
 
 export const Horizontal: Story = {
 	args: {
 		options: sampleOptions,
-		direction: 'horizontal'
+		direction: 'horizontal',
+		value: 'option1'
 	}
 };
 
@@ -111,7 +114,8 @@ export const WithWrap: Story = {
 		],
 		direction: 'horizontal',
 		wrap: true,
-		minOptionWidth: '150px'
+		minOptionWidth: '150px',
+		value: 'option1'
 	}
 };
 
@@ -126,7 +130,8 @@ export const WithCustomGap: Story = {
 	args: {
 		options: sampleOptions,
 		direction: 'vertical',
-		gap: '32px'
+		gap: '32px',
+		value: 'option1'
 	}
 };
 
