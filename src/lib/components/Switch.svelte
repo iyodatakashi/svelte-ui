@@ -341,6 +341,10 @@
 		contain: layout;
 	}
 
+	.switch--disabled {
+		cursor: not-allowed;
+	}
+
 	.switch-input {
 		position: absolute;
 		opacity: 0;
@@ -367,7 +371,6 @@
 		&--disabled {
 			cursor: not-allowed;
 			opacity: 0.5;
-			pointer-events: none;
 		}
 	}
 
@@ -391,7 +394,6 @@
 		.switch--disabled & {
 			opacity: var(--svelte-ui-switch-disabled-opacity);
 			cursor: not-allowed;
-			pointer-events: none;
 		}
 	}
 
