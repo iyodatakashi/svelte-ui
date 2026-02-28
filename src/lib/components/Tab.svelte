@@ -202,7 +202,7 @@
 		position: relative;
 		width: 100%;
 		height: 100%;
-		min-height: 36px;
+		min-height: var(--svelte-ui-tab-min-height);
 		overflow-x: auto;
 		overflow-y: visible;
 		-ms-overflow-style: none;

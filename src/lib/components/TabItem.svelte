@@ -146,14 +146,14 @@
 		display: flex;
 		justify-content: center;
 		align-items: center;
-		gap: 8px;
+		gap: var(--svelte-ui-tab-item-icon-gap);
 		position: relative;
-		padding: 8px 16px;
+		padding: var(--svelte-ui-tab-item-padding);
 		color: var(--svelte-ui-tab-item-text-color);
 		white-space: nowrap;
 		text-decoration: none;
 		transition-property: background-color, color, outline;
-		transition-duration: 0.3s;
+		transition-duration: var(--svelte-ui-transition-duration);
 		outline: none;
 	}
 
@@ -194,15 +194,15 @@
 		content: '';
 		display: block;
 		position: absolute;
-		left: 16px;
+		left: calc(var(--svelte-ui-tab-item-padding-x) - var(--svelte-ui-tab-item-selected-bar-offset));
 		bottom: 0;
-		width: calc(100% - 32px);
-		height: 4px;
+		width: calc(100% - 2 * var(--svelte-ui-tab-item-padding-x) + 2 * var(--svelte-ui-tab-item-selected-bar-offset));
+		height: var(--svelte-ui-tab-item-selected-bar-height);
 		background-color: var(--svelte-ui-tab-item-selected-bar-color);
-		border-radius: 3px 3px 0 0;
+		border-radius: var(--svelte-ui-tab-item-selected-bar-radius);
 		opacity: 0;
 		transition-property: opacity;
-		transition-duration: 0.3s;
+		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
 	.tab-item--selected {
@@ -215,7 +215,7 @@
 	}
 
 	.tab-item--disabled {
-		opacity: 0.5;
+		opacity: var(--svelte-ui-tab-item-disabled-opacity);
 		pointer-events: none;
 		cursor: default;
 	}

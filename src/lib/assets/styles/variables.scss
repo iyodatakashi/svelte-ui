@@ -359,9 +359,19 @@
 	--svelte-ui-segmented-control-hover-overlay: var(--svelte-ui-hover-overlay);
 
 	/* Tab */
+	--svelte-ui-tab-min-height: var(--svelte-ui-form-height);
 	--svelte-ui-tab-item-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-tab-item-selected-text-color: var(--svelte-ui-primary-color);
 	--svelte-ui-tab-item-selected-bar-color: var(--svelte-ui-primary-color);
+	--svelte-ui-tab-item-padding-x: 16px;
+	--svelte-ui-tab-item-padding-y: 8px;
+	--svelte-ui-tab-item-padding: var(--svelte-ui-tab-item-padding-y)
+		var(--svelte-ui-tab-item-padding-x);
+	--svelte-ui-tab-item-icon-gap: 8px;
+	--svelte-ui-tab-item-selected-bar-offset: 0px;
+	--svelte-ui-tab-item-selected-bar-height: 4px;
+	--svelte-ui-tab-item-selected-bar-radius: 3px 3px 0 0;
+	--svelte-ui-tab-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
 
 	/* Input */
 	--svelte-ui-input-height: var(--svelte-ui-form-height);
