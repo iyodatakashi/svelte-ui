@@ -315,13 +315,6 @@
 
 	const handleMouseDown = (event: MouseEvent) => {
 		if (disabled) return;
-
-		// readonly の場合、クリックによるフォーカスを抑止する
-		if (readonly) {
-			event.preventDefault();
-			return;
-		}
-
 		onmousedown?.(event);
 	};
 
@@ -982,10 +975,8 @@
  * 状態管理（disabled, readonly等）
  * ============================================= */
 	input[readonly] {
-		/* Keep cursor behavior but do not add a special background.
-		 * In this library, filled backgrounds are used to indicate editable fields,
-		 * so readonly inputs intentionally have no extra background color. */
 		cursor: default;
+		pointer-events: none;
 	}
 
 	/* disabled */

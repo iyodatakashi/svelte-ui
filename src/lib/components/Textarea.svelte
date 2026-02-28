@@ -759,6 +759,7 @@
  * ============================================= */
 	.textarea--readonly textarea {
 		cursor: default;
+		pointer-events: none;
 	}
 
 	.textarea--disabled {
