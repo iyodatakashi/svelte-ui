@@ -50,18 +50,15 @@ const meta = {
 		},
 		width: {
 			control: { type: 'text' },
-			description:
-				'Width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
+			description: 'Width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
 		},
 		minWidth: {
 			control: { type: 'text' },
-			description:
-				'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
+			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
 		},
 		maxWidth: {
 			control: { type: 'text' },
-			description:
-				'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
+			description: 'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
 		},
 		// ArgTypes for additional event handlers
 		onfocus: {
@@ -174,8 +171,7 @@ export default meta;
 // Default
 export const Default = {
 	args: {
-		value: '#3498db',
-		clearable: true
+		value: '#3498db'
 	}
 };
 
@@ -187,11 +183,10 @@ export const Rounded = {
 	}
 };
 
-// Rounded + Clearable
-export const RoundedClearable = {
+// Clearable
+export const Clearable = {
 	args: {
 		value: '#e74c3c',
-		rounded: true,
 		clearable: true
 	}
 };
@@ -215,7 +210,7 @@ export const NotClearable = {
 // Disabled
 export const Disabled = {
 	args: {
-		value: '#95a5a6',
+		value: '#3498db',
 		disabled: true
 	}
 };

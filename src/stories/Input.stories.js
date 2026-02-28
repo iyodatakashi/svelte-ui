@@ -15,80 +15,36 @@ const meta = {
 	},
 	tags: ['autodocs'],
 	argTypes: {
+		// 基本プロパティ
+		name: {
+			control: { type: 'text' },
+			description: 'Name attribute for the input'
+		},
 		value: {
 			control: { type: 'text' },
 			description: 'Input value'
+		},
+		// HTML 属性系
+		id: {
+			control: { type: 'text' },
+			description: 'ID attribute for the input element'
 		},
 		type: {
 			control: { type: 'select' },
 			options: ['text', 'password', 'email', 'tel', 'url', 'number'],
 			description: 'HTML input type'
 		},
-		variant: {
-			control: { type: 'radio' },
-			options: ['default', 'inline'],
-			description: 'Visual variant (default or inline)'
+		tabindex: {
+			control: { type: 'number' },
+			description: 'Tab index of the input'
 		},
-		focusStyle: {
-			control: { type: 'radio' },
-			options: ['background', 'outline', 'none'],
-			description: 'Focus style (background, outline, or none)'
+		maxlength: {
+			control: { type: 'number' },
+			description: 'Maximum number of characters allowed'
 		},
-		placeholder: {
+		pattern: {
 			control: { type: 'text' },
-			description: 'Placeholder text'
-		},
-		fullWidth: {
-			control: { type: 'boolean' },
-			description: 'Whether the input takes full width'
-		},
-		clearable: {
-			control: { type: 'boolean' },
-			description: 'Show clear button'
-		},
-		rounded: {
-			control: { type: 'boolean' },
-			description: 'Use rounded corners'
-		},
-		disabled: {
-			control: { type: 'boolean' },
-			description: 'Whether the input is disabled'
-		},
-		readonly: {
-			control: { type: 'boolean' },
-			description: 'Make the input read-only'
-		},
-		required: {
-			control: { type: 'boolean' },
-			description: 'Mark the field as required'
-		},
-		leftIconAriaLabel: {
-			control: { type: 'text' },
-			description: 'ARIA label for the left icon'
-		},
-		rightIconAriaLabel: {
-			control: { type: 'text' },
-			description: 'ARIA label for the right icon'
-		},
-		minWidth: {
-			control: { type: 'text' },
-			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "16rem")'
-		},
-		maxWidth: {
-			control: { type: 'text' },
-			description: 'Maximum width (number in px or CSS length string, e.g. "300", "80%", "24rem")'
-		},
-		rightIcon: {
-			control: { type: 'text' },
-			description: 'Right icon name'
-		},
-		leftIcon: {
-			control: { type: 'text' },
-			description: 'Left icon name'
-		},
-		iconFilled: {
-			control: { type: 'boolean' },
-			description: 'Render icons as filled variants'
+			description: 'Validation pattern (regular expression)'
 		},
 		min: {
 			control: { type: 'number' },
@@ -101,6 +57,18 @@ const meta = {
 		step: {
 			control: { type: 'number' },
 			description: 'Step value (for number type)'
+		},
+		size: {
+			control: { type: 'number' },
+			description: 'Size attribute for the input'
+		},
+		decimalPlaces: {
+			control: { type: 'number' },
+			description: 'Decimal places for number formatting'
+		},
+		enableThousandsSeparator: {
+			control: { type: 'boolean' },
+			description: 'Enable thousands separator for numbers'
 		},
 		autocomplete: {
 			control: { type: 'select' },
@@ -116,7 +84,182 @@ const meta = {
 			],
 			description: 'Autocomplete attribute'
 		},
-		// ArgTypes for additional event handlers
+		spellcheck: {
+			control: { type: 'boolean' },
+			description: 'Enable spell checking'
+		},
+		inputAttributes: {
+			control: { type: 'object' },
+			description: 'Additional native input attributes'
+		},
+		// スタイル/レイアウト
+		inline: {
+			control: { type: 'boolean' },
+			description: 'Render input as inline variant'
+		},
+		focusStyle: {
+			control: { type: 'radio' },
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
+		},
+		placeholder: {
+			control: { type: 'text' },
+			description: 'Placeholder text'
+		},
+		fullWidth: {
+			control: { type: 'boolean' },
+			description: 'Whether the input takes full width'
+		},
+		width: {
+			control: { type: 'text' },
+			description:
+				'Width (number in px or CSS length string, e.g. "200", "50%", "16rem"). When set, overrides minWidth.'
+		},
+		minWidth: {
+			control: { type: 'text' },
+			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "16rem")'
+		},
+		maxWidth: {
+			control: { type: 'text' },
+			description: 'Maximum width (number in px or CSS length string, e.g. "300", "80%", "24rem")'
+		},
+		rounded: {
+			control: { type: 'boolean' },
+			description: 'Use rounded corners'
+		},
+		customStyle: {
+			control: { type: 'text' },
+			description: 'Custom CSS style string applied to the input wrapper'
+		},
+		unit: {
+			control: { type: 'text' },
+			description: 'Unit label displayed next to numeric values'
+		},
+		// アイコン関連
+		rightIcon: {
+			control: { type: 'text' },
+			description: 'Right icon name'
+		},
+		leftIcon: {
+			control: { type: 'text' },
+			description: 'Left icon name'
+		},
+		leftIconAriaLabel: {
+			control: { type: 'text' },
+			description: 'ARIA label for the left icon'
+		},
+		rightIconAriaLabel: {
+			control: { type: 'text' },
+			description: 'ARIA label for the right icon'
+		},
+		iconFilled: {
+			control: { type: 'boolean' },
+			description: 'Render icons as filled variants'
+		},
+		iconWeight: {
+			control: { type: 'number' },
+			description: 'Material icon weight (wght)'
+		},
+		iconGrade: {
+			control: { type: 'number' },
+			description: 'Material icon grade (GRAD)'
+		},
+		iconOpticalSize: {
+			control: { type: 'number' },
+			description: 'Material icon optical size (opsz)'
+		},
+		iconVariant: {
+			control: { type: 'radio' },
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Material icon font family variant'
+		},
+		enablePasswordVisibilityToggle: {
+			control: { type: 'boolean' },
+			description: 'Show password visibility toggle for password type'
+		},
+		enableNumberStepper: {
+			control: { type: 'boolean' },
+			description: 'Show increment/decrement steppers for number type'
+		},
+		// 状態/動作
+		disabled: {
+			control: { type: 'boolean' },
+			description: 'Whether the input is disabled'
+		},
+		readonly: {
+			control: { type: 'boolean' },
+			description: 'Make the input read-only'
+		},
+		required: {
+			control: { type: 'boolean' },
+			description: 'Mark the field as required'
+		},
+		clearable: {
+			control: { type: 'boolean' },
+			description: 'Show clear button'
+		},
+		linkify: {
+			control: { type: 'boolean' },
+			description: 'Render URLs as clickable links when not focused'
+		},
+		// アイコンイベント
+		onRightIconClick: {
+			action: 'right icon clicked',
+			description: 'Click event on the right icon'
+		},
+		onLeftIconClick: {
+			action: 'left icon clicked',
+			description: 'Click event on the left icon'
+		},
+		onRightIconMouseDown: {
+			action: 'right icon mousedown',
+			description: 'Mousedown event on the right icon'
+		},
+		onLeftIconMouseDown: {
+			action: 'left icon mousedown',
+			description: 'Mousedown event on the left icon'
+		},
+		onRightIconMouseUp: {
+			action: 'right icon mouseup',
+			description: 'Mouseup event on the right icon'
+		},
+		onLeftIconMouseUp: {
+			action: 'left icon mouseup',
+			description: 'Mouseup event on the left icon'
+		},
+		onRightIconMouseLeave: {
+			action: 'right icon mouseleave',
+			description: 'Mouseleave event on the right icon'
+		},
+		onLeftIconMouseLeave: {
+			action: 'left icon mouseleave',
+			description: 'Mouseleave event on the left icon'
+		},
+		onRightIconTouchStart: {
+			action: 'right icon touchstart',
+			description: 'Touch start on the right icon'
+		},
+		onLeftIconTouchStart: {
+			action: 'left icon touchstart',
+			description: 'Touch start on the left icon'
+		},
+		onRightIconTouchEnd: {
+			action: 'right icon touchend',
+			description: 'Touch end on the right icon'
+		},
+		onLeftIconTouchEnd: {
+			action: 'left icon touchend',
+			description: 'Touch end on the left icon'
+		},
+		onRightIconTouchCancel: {
+			action: 'right icon touchcancel',
+			description: 'Touch cancel on the right icon'
+		},
+		onLeftIconTouchCancel: {
+			action: 'left icon touchcancel',
+			description: 'Touch cancel on the left icon'
+		},
+		// 入力・フォーカス・ポインターイベント
 		onfocus: {
 			action: 'focused',
 			description: 'Focus event'
@@ -233,6 +376,7 @@ export const Default = {
 export const Password = {
 	args: {
 		type: 'password',
+		enablePasswordVisibilityToggle: true,
 		placeholder: 'Enter password'
 	}
 };
@@ -245,63 +389,10 @@ export const Number = {
 	}
 };
 
-// Email
-export const Email = {
-	args: {
-		type: 'email',
-		placeholder: 'Enter email address'
-	}
-};
-
-// Tel
-export const Tel = {
-	args: {
-		type: 'tel',
-		placeholder: 'Enter phone number'
-	}
-};
-
-// URL
-export const URL = {
-	args: {
-		type: 'url',
-		placeholder: 'Enter URL'
-	}
-};
-
-// Number with min/max/step
-export const NumberWithConstraints = {
-	args: {
-		type: 'number',
-		placeholder: '0–100 range with 0.1 step',
-		min: 0,
-		max: 100,
-		step: 0.1
-	}
-};
-
-// Email with autocomplete
-export const EmailWithAutocomplete = {
-	args: {
-		type: 'email',
-		placeholder: 'Enter email address',
-		autocomplete: 'email'
-	}
-};
-
-// Tel with autocomplete
-export const TelWithAutocomplete = {
-	args: {
-		type: 'tel',
-		placeholder: 'Enter phone number',
-		autocomplete: 'tel'
-	}
-};
-
 // Inline
 export const Inline = {
 	args: {
-		variant: 'inline',
+		inline: true,
 		placeholder: 'Click to edit'
 	}
 };
@@ -319,22 +410,6 @@ export const FullWidth = {
 	args: {
 		fullWidth: true,
 		placeholder: 'Full-width input field'
-	}
-};
-
-// Disabled
-export const Disabled = {
-	args: {
-		disabled: true,
-		placeholder: 'Disabled state'
-	}
-};
-
-// Readonly
-export const ReadOnly = {
-	args: {
-		readonly: true,
-		placeholder: 'Read-only'
 	}
 };
 
@@ -379,13 +454,18 @@ export const WithBothIcons = {
 	}
 };
 
-// Icons Disabled State
-export const IconsDisabled = {
+// Disabled
+export const Disabled = {
 	args: {
-		placeholder: 'Icons in disabled state',
-		rightIcon: 'calendar_today',
-		leftIcon: 'person',
-		iconFilled: true,
-		disabled: true
+		disabled: true,
+		placeholder: 'Disabled Input'
+	}
+};
+
+// Readonly
+export const ReadOnly = {
+	args: {
+		readonly: true,
+		placeholder: 'Readonly Input'
 	}
 };

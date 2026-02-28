@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
-import type { Snippet } from 'svelte';
 import IconButton from '../lib/components/IconButton.svelte';
 
 const meta = {

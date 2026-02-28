@@ -67,13 +67,11 @@ const meta = {
 		},
 		minWidth: {
 			control: { type: 'text' },
-			description:
-				'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
+			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
 		},
 		maxWidth: {
 			control: { type: 'text' },
-			description:
-				'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
+			description: 'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
 		},
 		maxlength: {
 			control: { type: 'number' },
@@ -202,21 +200,6 @@ const countryOptions = [
 	'China'
 ];
 
-const colorOptions = [
-	'Red',
-	'Blue',
-	'Green',
-	'Yellow',
-	'Purple',
-	'Orange',
-	'Black',
-	'White',
-	'Gray',
-	'Pink'
-];
-
-const numberOptions = [1, 5, 10, 20, 50, 100, 200, 500, 1000];
-
 const programmingLanguages = [
 	'JavaScript',
 	'TypeScript',
@@ -300,4 +283,26 @@ export const WithWidthLimits: Story = {
 	}
 };
 
-// Custom styles (recommended to show in docs as code examples)
+// Disabled
+export const Disabled: Story = {
+	args: {
+		value: '',
+		options: programmingLanguages,
+		placeholder: 'Disabled combobox',
+		disabled: true,
+		minWidth: 200,
+		maxWidth: 300
+	}
+};
+
+// Readonly
+export const Readonly: Story = {
+	args: {
+		value: '',
+		options: programmingLanguages,
+		placeholder: 'Readonly combobox',
+		readonly: true,
+		minWidth: 200,
+		maxWidth: 300
+	}
+};
