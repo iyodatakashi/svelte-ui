@@ -431,12 +431,15 @@ select--focus-{focusStyle}"
  * ============================================= */
 	.select--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.select--disabled select {
+		cursor: not-allowed;
 	}
 
 	select:disabled {
 		opacity: 1;
-		cursor: not-allowed;
 	}
 
 	/* =============================================
