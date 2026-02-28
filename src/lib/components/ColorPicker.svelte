@@ -404,7 +404,7 @@
 			onclick={handleClick}
 			onkeydown={handleKeydown}
 			{disabled}
-			class="color-picker__color-input"
+			class="color-picker__trigger-input"
 			{...inputAttributes}
 			{...restProps}
 		/>
@@ -454,14 +454,13 @@
 		}
 	}
 
-	.color-picker__color-input {
+	.color-picker__trigger-input {
 		opacity: 0;
 		position: absolute;
 		width: 100%;
 		height: 100%;
 		padding: 0;
 		z-index: 2;
-		pointer-events: auto;
 		cursor: pointer;
 	}
 
@@ -469,7 +468,6 @@
 		display: block;
 		width: 100%;
 		height: 100%;
-		cursor: pointer;
 		position: relative;
 		border-radius: var(--svelte-ui-colorpicker-trigger-border-radius);
 		z-index: 1;
@@ -486,10 +484,9 @@
  * 状態管理（disabled, focused等）
  * ============================================= */
 	.color-picker--disabled {
-		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
-
-		.color-picker__color-input {
+		/* Input 側は .input--disabled で opacity を持つため、ラッパーでは opacity をかけない（二重防止） */
+		.color-picker__trigger {
+			opacity: var(--svelte-ui-input-disabled-opacity);
 			cursor: not-allowed;
 			pointer-events: none;
 		}
@@ -499,7 +496,7 @@
  * 状態管理（readonly等）
  * ============================================= */
 	.color-picker--readonly {
-		.color-picker__color-input,
+		.color-picker__trigger-input,
 		.color-picker__trigger {
 			pointer-events: none;
 		}

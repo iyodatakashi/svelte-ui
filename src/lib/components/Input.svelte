@@ -315,6 +315,13 @@
 
 	const handleMouseDown = (event: MouseEvent) => {
 		if (disabled) return;
+
+		// readonly の場合、クリックによるフォーカスを抑止する
+		if (readonly) {
+			event.preventDefault();
+			return;
+		}
+
 		onmousedown?.(event);
 	};
 
@@ -974,32 +981,34 @@
 	/* =============================================
  * 状態管理（disabled, readonly等）
  * ============================================= */
-	.input--disabled {
-		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
-
-		.input__icon-left,
-		.input__icon-right {
-			opacity: var(--svelte-ui-button-disabled-opacity);
-		}
-	}
-
-	.input--readonly {
-		input {
-			cursor: default;
-		}
-	}
-
-	input:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
-	}
-
 	input[readonly] {
 		/* Keep cursor behavior but do not add a special background.
 		 * In this library, filled backgrounds are used to indicate editable fields,
 		 * so readonly inputs intentionally have no extra background color. */
 		cursor: default;
+	}
+
+	/* disabled */
+	.input--disabled {
+		opacity: var(--svelte-ui-input-disabled-opacity);
+		cursor: not-allowed;
+
+		input,
+		.input__display-text,
+		.input__link-text {
+			cursor: not-allowed;
+		}
+
+		.input__icon-left,
+		.input__icon-right {
+			opacity: var(--svelte-ui-button-disabled-opacity);
+			cursor: not-allowed;
+			pointer-events: none;
+		}
+	}
+
+	input:disabled {
+		cursor: not-allowed;
 	}
 
 	/* =============================================

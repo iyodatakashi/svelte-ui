@@ -439,7 +439,6 @@ select--focus-{focusStyle}"
 	}
 
 	select:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
 

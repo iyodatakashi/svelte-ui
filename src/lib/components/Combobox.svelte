@@ -174,6 +174,8 @@
 	// =========================================================================
 	// オプションを選択
 	const selectOption = (option: string) => {
+		if (disabled || readonly) return;
+
 		value = option;
 		inputValue = option;
 		popupRef?.close();
@@ -192,9 +194,14 @@
 	// input要素のフォーカス/クリック時
 	const handleInputFocus = (event: FocusEvent) => {
 		if (disabled) return;
-		isFocused = true;
-		popupRef?.open();
-		highlightedIndex = -1;
+
+		// readonly の場合はフォーカスイベントだけ伝播し、ポップアップは開かない
+		if (!readonly) {
+			isFocused = true;
+			popupRef?.open();
+			highlightedIndex = -1;
+		}
+
 		onfocus(event);
 	};
 
@@ -223,18 +230,23 @@
 
 	const handleClick = (event: MouseEvent) => {
 		if (disabled) return;
-		// クリック時にもポップアップを開く
-		if (!isFocused) {
+
+		// readonly の場合はクリックイベントだけ伝播し、ポップアップは開かない
+		if (!readonly && !isFocused) {
 			isFocused = true;
 			popupRef?.open();
 			highlightedIndex = -1;
 		}
+
 		onclick?.(event);
 	};
 
 	const handleKeydown = (event: KeyboardEvent) => {
 		if (disabled) return;
 		onkeydown(event);
+
+		// readonly の場合はキーボード操作でのポップアップ制御や選択を無効化
+		if (readonly) return;
 
 		switch (event.key) {
 			case 'ArrowDown':
