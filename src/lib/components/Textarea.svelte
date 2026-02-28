@@ -500,7 +500,12 @@
 	// --------------------------------
 	// style from number
 	// --------------------------------
-	const minHeightStyle = $derived(getStyleFromNumber(minHeight));
+	// minHeight 未指定時は rows から算出（rows を効かせる）
+	const minHeightStyle = $derived(
+		minHeight != null
+			? getStyleFromNumber(minHeight)
+			: `calc(${rows - 1} * var(--svelte-ui-textarea-line-height) + var(--svelte-ui-textarea-min-height))`
+	);
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
 	const widthStyle = $derived(getStyleFromNumber(width));
 </script>

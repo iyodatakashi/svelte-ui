@@ -395,7 +395,8 @@
 
 	/* Textarea */
 	--svelte-ui-textarea-min-height: var(--svelte-ui-form-height);
-	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - 1.8em) / 2) 12px;
+	--svelte-ui-textarea-line-height: 1.8em;
+	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - var(--svelte-ui-textarea-line-height)) / 2) 12px;
 	--svelte-ui-textarea-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
 	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
