@@ -451,13 +451,13 @@
 	/* =============================================
    * Status
    * ============================================= */
-	.radio--disabled input[type='radio'],
-	.radio--disabled .radio__icon {
-		cursor: not-allowed;
+	.radio--disabled {
+		opacity: var(--svelte-ui-button-disabled-opacity);
 	}
 
+	.radio--disabled input[type='radio'],
+	.radio--disabled .radio__icon,
 	.radio--disabled .radio__label {
-		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
 

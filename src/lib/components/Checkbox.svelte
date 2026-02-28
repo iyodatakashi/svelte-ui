@@ -418,13 +418,13 @@
 	   ========================================================================= */
 
 	/* Disabled state */
-	.checkbox--disabled input[type='checkbox'],
-	.checkbox--disabled .checkbox__icon {
-		cursor: not-allowed;
+	.checkbox--disabled {
+		opacity: var(--svelte-ui-button-disabled-opacity);
 	}
 
+	.checkbox--disabled input[type='checkbox'],
+	.checkbox--disabled .checkbox__icon,
 	.checkbox--disabled .checkbox__label {
-		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
 	}
 
