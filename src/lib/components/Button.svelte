@@ -470,7 +470,7 @@
 	}
 
 	/* Hover effects */
-	.button:before {
+	.button::before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -486,7 +486,7 @@
 	}
 
 	@media (hover: hover) {
-		.button:hover:before {
+		.button:hover::before {
 			opacity: 1;
 		}
 	}
@@ -497,16 +497,14 @@
 		outline-offset: 2px;
 	}
 
-	/* Disabled state */
+	/* Disabled */
 	.button:disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
-		pointer-events: none;
-	}
+		cursor: not-allowed !important;
 
-	/* Loading state */
-	.button--loading {
-		cursor: wait;
+		&:hover::before {
+			opacity: 0;
+		}
 	}
 
 	/* Content sections */
@@ -586,7 +584,7 @@
 
 	/* Reduced motion */
 	.button--no-motion,
-	.button--no-motion:before,
+	.button--no-motion::before,
 	.button--no-motion .button__label {
 		transition-duration: 0.01s;
 	}
@@ -594,7 +592,7 @@
 	/* Prefers reduced motion */
 	@media (prefers-reduced-motion: reduce) {
 		.button,
-		.button:before,
+		.button::before,
 		.button__label {
 			transition-duration: 0.01s;
 		}
