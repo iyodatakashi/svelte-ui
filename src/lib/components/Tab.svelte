@@ -32,10 +32,10 @@
 		customPathMatcher,
 		currentPath,
 
-		// スタイル/レイアウト
-		textColor = 'var(--svelte-ui-text-subtle-color)',
-		selectedTextColor = 'var(--svelte-ui-primary-color)',
-		selectedBarColor = 'var(--svelte-ui-primary-color)',
+		// スタイル/レイアウト（未指定時は TabItem が variables の tab 用変数を直接参照）
+		textColor,
+		selectedTextColor,
+		selectedBarColor,
 
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Tabs',
@@ -59,6 +59,11 @@
 		}
 		return '';
 	};
+
+	// currentPath が渡されたときやマウント時に選択状態を反映
+	$effect(() => {
+		resolvedCurrentPath = getCurrentPath();
+	});
 
 	afterNavigate(() => {
 		resolvedCurrentPath = getCurrentPath();
@@ -104,40 +109,49 @@
 		return normalizedCurrentPath !== '' && normalizedCurrentPath.startsWith(itemHref);
 	};
 
-	// シンプルなキーボードナビゲーション
+	// 有効なタブのインデックス一覧（disabled を除く）
+	const enabledIndices = $derived(
+		tabItems.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
+	);
+
+	// シンプルなキーボードナビゲーション（disabled タブはスキップ）
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (tabItems.length === 0) return;
+		if (tabItems.length === 0 || enabledIndices.length === 0) return;
 
 		const tabList = event.currentTarget as HTMLElement;
-		const tabs = Array.from(tabList.querySelectorAll('a[role="tab"]')) as HTMLElement[];
+		const tabs = Array.from(tabList.querySelectorAll('[role="tab"]')) as HTMLElement[];
 		const currentTab = event.target as HTMLElement;
 		const currentIndex = tabs.indexOf(currentTab);
 
 		if (currentIndex === -1) return;
 
-		let nextIndex = currentIndex;
+		const currentEnabledPosition = enabledIndices.indexOf(currentIndex);
+		let nextEnabledPosition = currentEnabledPosition;
 
 		switch (event.key) {
 			case 'ArrowLeft':
 				event.preventDefault();
-				nextIndex = currentIndex > 0 ? currentIndex - 1 : tabs.length - 1;
+				nextEnabledPosition =
+					currentEnabledPosition > 0 ? currentEnabledPosition - 1 : enabledIndices.length - 1;
 				break;
 			case 'ArrowRight':
 				event.preventDefault();
-				nextIndex = currentIndex < tabs.length - 1 ? currentIndex + 1 : 0;
+				nextEnabledPosition =
+					currentEnabledPosition < enabledIndices.length - 1 ? currentEnabledPosition + 1 : 0;
 				break;
 			case 'Home':
 				event.preventDefault();
-				nextIndex = 0;
+				nextEnabledPosition = 0;
 				break;
 			case 'End':
 				event.preventDefault();
-				nextIndex = tabs.length - 1;
+				nextEnabledPosition = enabledIndices.length - 1;
 				break;
 			default:
 				return;
 		}
 
+		const nextIndex = enabledIndices[nextEnabledPosition];
 		tabs[nextIndex]?.focus();
 	};
 
@@ -173,6 +187,7 @@
 			{tabItem}
 			{pathPrefix}
 			isSelected={index === selectedTabIndex}
+			isDisabled={tabItem.disabled ?? false}
 			{textColor}
 			{selectedTextColor}
 			{selectedBarColor}

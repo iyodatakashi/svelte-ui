@@ -13,10 +13,10 @@
 		tabItem: MenuItem;
 		pathPrefix?: string;
 
-		// スタイル/レイアウト
-		textColor: string;
-		selectedTextColor: string;
-		selectedBarColor: string;
+		// スタイル/レイアウト（未指定時は variables の tab 用変数を参照）
+		textColor?: string;
+		selectedTextColor?: string;
+		selectedBarColor?: string;
 
 		// アイコン関連
 		iconFilled?: boolean;
@@ -27,6 +27,7 @@
 
 		// 状態/動作
 		isSelected?: boolean;
+		isDisabled?: boolean;
 	};
 
 	let {
@@ -47,7 +48,8 @@
 		iconVariant = 'outlined',
 
 		// 状態/動作
-		isSelected = false
+		isSelected = false,
+		isDisabled = false
 	}: TabItemProps = $props();
 
 	// =========================================================================
@@ -68,35 +70,76 @@
 		// pathPrefixを付与
 		return `${pathPrefix}${tabItem.href.startsWith('/') ? '' : '/'}${tabItem.href}`;
 	});
+
+	// 明示的に渡されたときだけ style で上書き。未渡しなら variables の tab 用変数をそのまま参照
+	const tabItemStyle = $derived.by(() => {
+		const parts: string[] = [];
+		if (textColor !== undefined) parts.push(`--svelte-ui-tab-item-text-color: ${textColor}`);
+		if (selectedTextColor !== undefined)
+			parts.push(`--svelte-ui-tab-item-selected-text-color: ${selectedTextColor}`);
+		if (selectedBarColor !== undefined)
+			parts.push(`--svelte-ui-tab-item-selected-bar-color: ${selectedBarColor}`);
+		return parts.length > 0 ? parts.join('; ') : undefined;
+	});
 </script>
 
-<a
-	href={hrefWithPrefix}
-	class="tab-item"
-	class:tab-item--selected={isSelected}
-	style="--svelte-ui-tab-item-text-color: {textColor}; --svelte-ui-tab-item-selected-text-color: {selectedTextColor}; --svelte-ui-tab-item-selected-bar-color: {selectedBarColor}"
-	role="tab"
-	aria-selected={isSelected}
-	tabindex={0}
-	data-testid="tab-item"
->
-	{#if tabItem.icon}
-		<div class="tab-item__icon">
-			<Icon
-				filled={iconFilled || isSelected}
-				weight={iconWeight}
-				grade={iconGrade}
-				opticalSize={iconOpticalSize}
-				variant={iconVariant}>{tabItem.icon}</Icon
-			>
-		</div>
-	{/if}
-	{#if tabItem.label}
-		<div class="tab-item__label">
-			{tabItem.label}
-		</div>
-	{/if}
-</a>
+{#if isDisabled}
+	<span
+		class="tab-item tab-item--disabled"
+		class:tab-item--selected={isSelected}
+		style={tabItemStyle}
+		role="tab"
+		aria-selected={isSelected}
+		aria-disabled="true"
+		tabindex="-1"
+		data-testid="tab-item"
+	>
+		{#if tabItem.icon}
+			<div class="tab-item__icon">
+				<Icon
+					filled={iconFilled || isSelected}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}>{tabItem.icon}</Icon
+				>
+			</div>
+		{/if}
+		{#if tabItem.label}
+			<div class="tab-item__label">
+				{tabItem.label}
+			</div>
+		{/if}
+	</span>
+{:else}
+	<a
+		href={hrefWithPrefix}
+		class="tab-item"
+		class:tab-item--selected={isSelected}
+		style={tabItemStyle}
+		role="tab"
+		aria-selected={isSelected}
+		tabindex={0}
+		data-testid="tab-item"
+	>
+		{#if tabItem.icon}
+			<div class="tab-item__icon">
+				<Icon
+					filled={iconFilled || isSelected}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}>{tabItem.icon}</Icon
+				>
+			</div>
+		{/if}
+		{#if tabItem.label}
+			<div class="tab-item__label">
+				{tabItem.label}
+			</div>
+		{/if}
+	</a>
+{/if}
 
 <style lang="scss">
 	.tab-item {
@@ -169,6 +212,12 @@
 
 	.tab-item--selected::before {
 		opacity: 1;
+	}
+
+	.tab-item--disabled {
+		opacity: 0.5;
+		pointer-events: none;
+		cursor: default;
 	}
 
 	.tab-item__label {

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Tab from '../lib/components/Tab.svelte';
-import type { MenuItem } from '../lib/types/menuItem';
+import TabExample from './TabExample.svelte';
 
 const meta = {
 	title: 'Navigation/Tab',
@@ -10,19 +10,24 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'A tab navigation component that keeps the active tab in sync with the current URL path. Designed to work with SvelteKit routing.'
+					'A tab navigation component that keeps the active tab in sync with the current URL path. Designed to work with SvelteKit routing. In Storybook you can switch tabs by clicking; the currentPath control simulates the initial URL.'
 			}
 		}
 	},
 	tags: ['autodocs'],
 	render: (args) => ({
-		Component: Tab,
+		Component: TabExample,
 		props: args
 	}),
 	argTypes: {
 		tabItems: {
 			control: 'object',
 			description: 'Array of menu items for tabs'
+		},
+		currentPath: {
+			control: 'text',
+			description:
+				'Current URL path. In an app this comes from the router; in Storybook set this to simulate which tab is selected (e.g. "/about")'
 		},
 		ariaLabel: {
 			control: 'text',
@@ -49,23 +54,12 @@ type Story = StoryObj<typeof meta>;
 // Basic text tabs
 export const Basic: Story = {
 	args: {
+		currentPath: '/about',
 		tabItems: [
-			{
-				label: 'Home',
-				href: '/'
-			},
-			{
-				label: 'About',
-				href: '/about'
-			},
-			{
-				label: 'Services',
-				href: '/services'
-			},
-			{
-				label: 'Contact',
-				href: '/contact'
-			}
+			{ label: 'Home', href: '/' },
+			{ label: 'About', href: '/about' },
+			{ label: 'Services', href: '/services' },
+			{ label: 'Contact', href: '/contact' }
 		]
 	}
 };
@@ -73,27 +67,25 @@ export const Basic: Story = {
 // Tabs with icons
 export const WithIcons: Story = {
 	args: {
+		currentPath: '/settings',
 		tabItems: [
-			{
-				label: 'Dashboard',
-				href: '/dashboard',
-				icon: 'dashboard'
-			},
-			{
-				label: 'Users',
-				href: '/users',
-				icon: 'people'
-			},
-			{
-				label: 'Settings',
-				href: '/settings',
-				icon: 'settings'
-			},
-			{
-				label: 'Analytics',
-				href: '/analytics',
-				icon: 'analytics'
-			}
+			{ label: 'Dashboard', href: '/dashboard', icon: 'dashboard' },
+			{ label: 'Users', href: '/users', icon: 'people' },
+			{ label: 'Settings', href: '/settings', icon: 'settings' },
+			{ label: 'Analytics', href: '/analytics', icon: 'analytics' }
+		]
+	}
+};
+
+// Tabs with disabled item
+export const WithDisabled: Story = {
+	args: {
+		currentPath: '/about',
+		tabItems: [
+			{ label: 'Home', href: '/' },
+			{ label: 'About', href: '/about' },
+			{ label: 'Services', href: '/services', disabled: true },
+			{ label: 'Contact', href: '/contact' }
 		]
 	}
 };
@@ -101,139 +93,11 @@ export const WithIcons: Story = {
 // Tabs with strict matching
 export const StrictMatching: Story = {
 	args: {
+		currentPath: '/blog',
 		tabItems: [
-			{
-				label: 'Home',
-				href: '/',
-				strictMatch: true
-			},
-			{
-				label: 'Blog',
-				href: '/blog',
-				strictMatch: true
-			},
-			{
-				label: 'Products',
-				href: '/products',
-				strictMatch: true
-			}
-		]
-	}
-};
-
-// Tabs with multiple matching paths
-export const MultipleMatchingPaths: Story = {
-	args: {
-		tabItems: [
-			{
-				label: 'Content',
-				href: '/content',
-				matchingPath: ['/content', '/articles', '/news']
-			},
-			{
-				label: 'User Management',
-				href: '/admin/users',
-				matchingPath: ['/admin/users', '/admin/roles', '/admin/permissions']
-			},
-			{
-				label: 'Reports',
-				href: '/reports',
-				matchingPath: ['/reports', '/analytics', '/metrics']
-			}
-		]
-	}
-};
-
-// Multi-tenant with pathPrefix
-export const MultiTenantWithPathPrefix: Story = {
-	args: {
-		pathPrefix: '/tenant-name',
-		tabItems: [
-			{
-				label: 'Dashboard',
-				href: '/dashboard',
-				icon: 'dashboard'
-			},
-			{
-				label: 'Articles',
-				href: '/articles',
-				icon: 'article'
-			},
-			{
-				label: 'Settings',
-				href: '/settings',
-				icon: 'settings'
-			}
-		]
-	}
-};
-
-// Multi-tenant with custom path matcher
-export const MultiTenantWithCustomMatcher: Story = {
-	args: {
-		customPathMatcher: (currentPath: string, itemHref: string, item: MenuItem) => {
-			// Remove tenant prefix from current path for matching
-			// Pattern: /tenant-name/path -> /path
-			const pathWithoutTenant = currentPath.replace(/^\/[^/]+/, '');
-
-			if (item.strictMatch) {
-				return pathWithoutTenant === itemHref;
-			} else {
-				// Handle root path
-				if (itemHref === '/') {
-					return pathWithoutTenant === '/' || pathWithoutTenant === '';
-				}
-				return pathWithoutTenant.startsWith(itemHref);
-			}
-		},
-		tabItems: [
-			{
-				label: 'Home',
-				href: '/',
-				icon: 'home'
-			},
-			{
-				label: 'Products',
-				href: '/products',
-				icon: 'inventory'
-			},
-			{
-				label: 'Analytics',
-				href: '/analytics',
-				icon: 'analytics'
-			}
-		]
-	}
-};
-
-// Mixed configuration (icons, strict match, multiple paths)
-export const ComplexConfiguration: Story = {
-	args: {
-		tabItems: [
-			{
-				label: 'Home',
-				href: '/',
-				icon: 'home',
-				strictMatch: true
-			},
-			{
-				label: 'Content',
-				href: '/content',
-				icon: 'article',
-				matchingPath: ['/content', '/articles', '/posts']
-			},
-			{
-				label: 'Admin',
-				href: '/admin',
-				icon: 'admin_panel_settings',
-				matchingPath: ['/admin', '/admin/users', '/admin/settings']
-			},
-			{
-				label: 'Help',
-				href: '/help',
-				icon: 'help',
-				strictMatch: true
-			}
+			{ label: 'Home', href: '/', strictMatch: true },
+			{ label: 'Blog', href: '/blog', strictMatch: true },
+			{ label: 'Products', href: '/products', strictMatch: true }
 		]
 	}
 };
@@ -241,19 +105,20 @@ export const ComplexConfiguration: Story = {
 // Many tabs (testing scrolling behavior)
 export const ManyTabs: Story = {
 	args: {
+		currentPath: '/tab5',
 		tabItems: [
-			{ title: 'Tab 1', href: '/tab1' },
-			{ title: 'Tab 2', href: '/tab2' },
-			{ title: 'Tab 3', href: '/tab3' },
-			{ title: 'Tab 4', href: '/tab4' },
-			{ title: 'Tab 5', href: '/tab5' },
-			{ title: 'Tab 6', href: '/tab6' },
-			{ title: 'Tab 7', href: '/tab7' },
-			{ title: 'Tab 8', href: '/tab8' },
-			{ title: 'Tab 9', href: '/tab9' },
-			{ title: 'Tab 10', href: '/tab10' },
-			{ title: 'Tab 11', href: '/tab11' },
-			{ title: 'Tab 12', href: '/tab12' }
+			{ label: 'Tab 1', href: '/tab1' },
+			{ label: 'Tab 2', href: '/tab2' },
+			{ label: 'Tab 3', href: '/tab3' },
+			{ label: 'Tab 4', href: '/tab4' },
+			{ label: 'Tab 5', href: '/tab5' },
+			{ label: 'Tab 6', href: '/tab6' },
+			{ label: 'Tab 7', href: '/tab7' },
+			{ label: 'Tab 8', href: '/tab8' },
+			{ label: 'Tab 9', href: '/tab9' },
+			{ label: 'Tab 10', href: '/tab10' },
+			{ label: 'Tab 11', href: '/tab11' },
+			{ label: 'Tab 12', href: '/tab12' }
 		]
 	}
 };
@@ -261,27 +126,12 @@ export const ManyTabs: Story = {
 // Long tab titles
 export const LongTitles: Story = {
 	args: {
+		currentPath: '/users',
 		tabItems: [
-			{
-				label: 'Dashboard Overview',
-				href: '/dashboard',
-				icon: 'dashboard'
-			},
-			{
-				label: 'User Management System',
-				href: '/users',
-				icon: 'people'
-			},
-			{
-				label: 'Advanced Settings Configuration',
-				href: '/settings',
-				icon: 'settings'
-			},
-			{
-				label: 'Analytics & Reporting Tools',
-				href: '/analytics',
-				icon: 'analytics'
-			}
+			{ label: 'Dashboard Overview', href: '/dashboard', icon: 'dashboard' },
+			{ label: 'User Management System', href: '/users', icon: 'people' },
+			{ label: 'Advanced Settings Configuration', href: '/settings', icon: 'settings' },
+			{ label: 'Analytics & Reporting Tools', href: '/analytics', icon: 'analytics' }
 		]
 	}
 };
@@ -289,13 +139,8 @@ export const LongTitles: Story = {
 // Single tab
 export const SingleTab: Story = {
 	args: {
-		tabItems: [
-			{
-				label: 'Only Tab',
-				href: '/only',
-				icon: 'tab'
-			}
-		]
+		currentPath: '/only',
+		tabItems: [{ label: 'Only Tab', href: '/only', icon: 'tab' }]
 	}
 };
 
@@ -303,42 +148,5 @@ export const SingleTab: Story = {
 export const EmptyTabs: Story = {
 	args: {
 		tabItems: []
-	}
-};
-
-// Accessibility features demonstration
-export const AccessibilityFeatures: Story = {
-	args: {
-		tabItems: [
-			{
-				label: 'Home',
-				href: '/',
-				icon: 'home'
-			},
-			{
-				label: 'Products',
-				href: '/products',
-				icon: 'inventory'
-			},
-			{
-				label: 'About',
-				href: '/about',
-				icon: 'info'
-			},
-			{
-				label: 'Contact',
-				href: '/contact',
-				icon: 'contact_mail'
-			}
-		],
-		ariaLabel: 'Main navigation tabs'
-	},
-	parameters: {
-		docs: {
-			description: {
-				story:
-					'Demonstrates accessibility features including keyboard navigation (arrow keys, Home/End), focus management, and screen reader support. Try using Tab to focus the tab list, then arrow keys to navigate between tabs.'
-			}
-		}
 	}
 };

@@ -358,6 +358,11 @@
 	--svelte-ui-segmented-control-selected-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-segmented-control-hover-overlay: var(--svelte-ui-hover-overlay);
 
+	/* Tab */
+	--svelte-ui-tab-item-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-tab-item-selected-text-color: var(--svelte-ui-primary-color);
+	--svelte-ui-tab-item-selected-bar-color: var(--svelte-ui-primary-color);
+
 	/* Input */
 	--svelte-ui-input-height: var(--svelte-ui-form-height);
 	--svelte-ui-input-padding: var(--svelte-ui-form-padding);
@@ -791,6 +796,11 @@
 		--svelte-ui-slider-custom-thumb-border: 2px solid HighlightText;
 		--svelte-ui-slider-custom-thumb-focus-shadow: 0 0 0 3px Highlight;
 		--svelte-ui-slider-custom-thumb-color: HighlightText;
+
+		/* Tab */
+		--svelte-ui-tab-item-text-color: CanvasText;
+		--svelte-ui-tab-item-selected-text-color: Highlight;
+		--svelte-ui-tab-item-selected-bar-color: Highlight;
 
 		/* Radio */
 		--svelte-ui-radio-border-color: CanvasText;

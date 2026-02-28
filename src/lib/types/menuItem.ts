@@ -5,4 +5,5 @@ export type MenuItem = {
 	icon?: string;
 	matchingPath?: string[];
 	strictMatch?: boolean;
+	disabled?: boolean;
 };
