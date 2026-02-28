@@ -478,15 +478,11 @@
 	};
 
 	const handlePopupOpen = () => {
-		// DatepickerCalendarのイベントハンドラーを有効にする
 		datapickerCalendarRef?.handlePopupOpen();
-		// キーボードで開いた場合は、最初のキーボード操作時にフォーカス表示が有効になる
 	};
 
 	const handlePopupClose = () => {
-		// DatepickerCalendarのイベントハンドラーを無効にする
 		datapickerCalendarRef?.handlePopupClose();
-		// 状態をリセット
 		openedViaKeyboard = false;
 	};
 
@@ -633,7 +629,6 @@
 		{iconGrade}
 		{iconOpticalSize}
 		{iconVariant}
-		onRightIconClick={handleClick}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -663,6 +658,14 @@
 		{inputAttributes}
 		{...restProps}
 	/>
+	{#if !enableTextInput && !disabled && enableClickToOpen}
+		<button
+			type="button"
+			class="datepicker__trigger-overlay"
+			aria-label={currentLocaleConfig.selectDateLabel}
+			onclick={handleClick}
+		></button>
+	{/if}
 </div>
 <Popup
 	bind:this={popupRef}
@@ -698,6 +701,17 @@
 		}
 	}
 
+	.datepicker__trigger-overlay {
+		position: absolute;
+		inset: 0;
+		z-index: 1;
+		padding: 0;
+		margin: 0;
+		border: none;
+		background: transparent;
+		cursor: pointer;
+	}
+
 	/* Datepicker uses a readonly Input when allowDirectInput is false.
-	 * Background behavior for readonly inputs is now handled globally in Input. */
+	 * Clicks are handled by the overlay above, not by modifying Input. */
 </style>
