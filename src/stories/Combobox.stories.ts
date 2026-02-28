@@ -24,6 +24,14 @@ const meta = {
 			control: { type: 'object' },
 			description: 'Array of selectable options'
 		},
+		name: {
+			control: { type: 'text' },
+			description: 'Form name attribute'
+		},
+		clearable: {
+			control: { type: 'boolean' },
+			description: 'Show clear button to reset value'
+		},
 		inline: {
 			control: { type: 'boolean' },
 			description: 'Display as inline editable text'
@@ -65,6 +73,10 @@ const meta = {
 			control: { type: 'boolean' },
 			description: 'Mark the field as required'
 		},
+		customStyle: {
+			control: { type: 'text' },
+			description: 'Custom CSS styles for the root element'
+		},
 		minWidth: {
 			control: { type: 'text' },
 			description: 'Minimum width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
@@ -76,6 +88,14 @@ const meta = {
 		maxlength: {
 			control: { type: 'number' },
 			description: 'Maximum input length'
+		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the input element'
+		},
+		tabindex: {
+			control: { type: 'number' },
+			description: 'Tab index for focus order'
 		},
 		// ArgTypes for additional event handlers
 		onfocus: {

@@ -55,6 +55,22 @@ const meta = {
 			control: { type: 'number' },
 			description: 'Number of visible rows'
 		},
+		customStyle: {
+			control: { type: 'text' },
+			description: 'Custom CSS styles for the root element'
+		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the select element'
+		},
+		name: {
+			control: { type: 'text' },
+			description: 'Form name attribute'
+		},
+		tabindex: {
+			control: { type: 'number' },
+			description: 'Tab index for focus order'
+		},
 		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',

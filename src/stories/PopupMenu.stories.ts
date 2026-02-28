@@ -29,6 +29,44 @@ const meta = {
 		anchorElement: {
 			control: false,
 			description: 'HTML element to position menu relative to'
+		},
+		isOpen: {
+			control: 'boolean',
+			description: 'Whether the menu is open (bindable)'
+		},
+		ariaLabel: {
+			control: 'text',
+			description: 'Accessible label for the menu'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the menu element'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'Use fullscreen layout on mobile'
+		},
+		iconFilled: {
+			control: 'boolean',
+			description: 'Whether menu item icons are filled'
+		},
+		iconVariant: {
+			control: 'radio',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Icon variant style'
+		},
+		iconWeight: {
+			control: 'select',
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'Icon grade'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'Icon optical size'
 		}
 	}
 } satisfies Meta<typeof PopupMenu>;

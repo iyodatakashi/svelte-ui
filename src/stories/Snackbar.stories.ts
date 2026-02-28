@@ -46,27 +46,6 @@ const meta: Meta<SnackbarStoryProps> = {
 		duration: {
 			control: 'number',
 			description: 'Default display duration in milliseconds. 0 means persistent (component prop)'
-		},
-		closable: {
-			control: 'boolean',
-			description: 'Whether to show a close button on each Snackbar'
-		},
-		actionLabel: {
-			control: 'text',
-			description: 'Label for action button. Empty string means no action button'
-		},
-		color: {
-			control: 'color',
-			description: 'Custom background color for SnackbarItem'
-		},
-		textColor: {
-			control: 'color',
-			description: 'Custom text color for SnackbarItem'
-		},
-		iconVariant: {
-			control: 'radio',
-			options: ['outlined', 'rounded', 'sharp'],
-			description: 'Icon variant passed to SnackbarItem (outside component props)'
 		}
 	}
 };

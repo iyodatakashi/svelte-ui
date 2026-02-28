@@ -26,6 +26,26 @@ const meta = {
 			control: 'object',
 			description: 'Array of menu items or separators'
 		},
+		ariaLabel: {
+			control: 'text',
+			description: 'Accessible label for the button'
+		},
+		disabled: {
+			control: 'boolean',
+			description: 'Whether the button is disabled'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the root element'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'Use fullscreen layout for menu on mobile'
+		},
+		cancelParentClick: {
+			control: 'boolean',
+			description: 'Whether to stop click from propagating to parent'
+		},
 		position: {
 			control: 'select',
 			options: [

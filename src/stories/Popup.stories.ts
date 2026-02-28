@@ -45,10 +45,63 @@ const meta = {
 			description:
 				'Position of popup relative to anchor element. Use "auto" for optimal positioning.'
 		},
-		// Snippet props are excluded from controls
 		children: {
 			control: false,
 			description: 'Popup content'
+		},
+		role: {
+			control: 'text',
+			description: 'ARIA role of the popup'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the popup element'
+		},
+		margin: {
+			control: 'number',
+			description: 'Gap in pixels between anchor and popup'
+		},
+		isOpen: {
+			control: 'boolean',
+			description: 'Whether the popup is open (bindable)'
+		},
+		focusTrap: {
+			control: 'boolean',
+			description: 'Trap focus inside popup when open'
+		},
+		restoreFocus: {
+			control: 'boolean',
+			description: 'Restore focus to trigger when closing'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'Use fullscreen layout on mobile'
+		},
+		enableAutoReposition: {
+			control: 'boolean',
+			description: 'Reposition popup when it would overflow viewport'
+		},
+		ariaLabel: {
+			control: 'text',
+			description: 'Accessible label for the popup'
+		},
+		ariaLabelledby: {
+			control: 'text',
+			description: 'ID of element that labels the popup'
+		},
+		ariaDescribedby: {
+			control: 'text',
+			description: 'ID of element that describes the popup'
+		},
+		onOpen: {
+			control: false,
+			action: 'opened',
+			description: 'Called when popup opens'
+		},
+		onClose: {
+			control: false,
+			action: 'closed',
+			description: 'Called when popup closes'
 		}
 	}
 } satisfies Meta<typeof PopupExample>;

@@ -25,6 +25,14 @@ const meta = {
 			control: { type: 'boolean' },
 			description: 'Switch state'
 		},
+		children: {
+			control: false,
+			description: 'Label or content next to the switch'
+		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the input element'
+		},
 		size: {
 			control: { type: 'radio' },
 			options: ['small', 'medium', 'large'],

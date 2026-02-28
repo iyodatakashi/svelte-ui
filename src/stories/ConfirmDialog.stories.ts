@@ -48,6 +48,14 @@ const meta = {
 			control: 'boolean',
 			description: 'Whether to close dialog when clicking outside'
 		},
+		id: {
+			control: 'text',
+			description: 'ID for the dialog element'
+		},
+		isOpen: {
+			control: 'boolean',
+			description: 'Whether the dialog is open (bindable)'
+		},
 		onSubmit: {
 			action: 'submitted',
 			description: 'Callback when submit button is clicked'

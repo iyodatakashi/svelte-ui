@@ -26,6 +26,18 @@ const meta = {
 			control: 'text',
 			description: 'Dialog title (displayed in header)'
 		},
+		ariaLabel: {
+			control: 'text',
+			description: 'Accessible label for screen readers'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the dialog element'
+		},
+		isOpen: {
+			control: 'boolean',
+			description: 'Whether the dialog is open (bindable)'
+		},
 		scrollable: {
 			control: 'boolean',
 			description: 'Whether the dialog content is scrollable'

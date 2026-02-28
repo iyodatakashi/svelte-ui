@@ -38,6 +38,10 @@ const meta = {
 		customStyle: {
 			control: 'text',
 			description: 'Custom CSS styles for the wrapper'
+		},
+		className: {
+			control: 'text',
+			description: 'Additional CSS class for the wrapper'
 		}
 	}
 } satisfies Meta;

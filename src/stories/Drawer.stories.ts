@@ -79,6 +79,14 @@ const meta = {
 		noPadding: {
 			control: 'boolean',
 			description: 'Remove default padding from body section'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the drawer element'
+		},
+		isOpen: {
+			control: 'boolean',
+			description: 'Whether the drawer is open (bindable)'
 		}
 	}
 } satisfies Meta<typeof Drawer>;

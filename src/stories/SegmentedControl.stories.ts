@@ -83,6 +83,14 @@ const meta = {
 			control: 'boolean',
 			description: 'Disable animations for reduced motion'
 		},
+		id: {
+			control: 'text',
+			description: 'ID for the root element'
+		},
+		name: {
+			control: 'text',
+			description: 'Form name attribute'
+		},
 		onchange: {
 			action: 'changed',
 			description: 'Called when selection changes'

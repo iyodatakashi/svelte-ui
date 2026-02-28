@@ -45,6 +45,23 @@ const meta = {
 			control: { type: 'text' },
 			description: 'Minimum width for each option'
 		},
+		disabled: {
+			control: { type: 'boolean' },
+			description: 'Whether the group is disabled'
+		},
+		required: {
+			control: { type: 'boolean' },
+			description: 'Whether at least one option must be selected'
+		},
+		size: {
+			control: { type: 'radio' },
+			options: ['small', 'medium', 'large'],
+			description: 'Size variant of the checkboxes'
+		},
+		reducedMotion: {
+			control: { type: 'boolean' },
+			description: 'Disable animations for reduced motion'
+		},
 		onchange: {
 			action: 'changed',
 			description: 'Change event when selection updates'

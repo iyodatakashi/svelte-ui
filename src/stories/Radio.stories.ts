@@ -26,6 +26,14 @@ const meta = {
 			control: { type: 'text' },
 			description: 'Group name the radio belongs to'
 		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the input element'
+		},
+		children: {
+			control: false,
+			description: 'Label or content next to the radio'
+		},
 		value: {
 			control: { type: 'text' },
 			description: 'Value represented by this radio'

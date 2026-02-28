@@ -74,6 +74,19 @@ const meta = {
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant'
 		},
+		id: {
+			control: 'text',
+			description: 'ID for the root element'
+		},
+		removeFileAriaLabel: {
+			control: 'text',
+			description: 'Accessible label for the remove file button'
+		},
+		onchange: {
+			control: false,
+			action: 'changed',
+			description: 'Callback when file selection changes'
+		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',

@@ -88,6 +88,19 @@ const meta = {
 			control: 'text',
 			description: 'Placeholder text (supports HTML)'
 		},
+		id: {
+			control: 'text',
+			description: 'ID for the root element'
+		},
+		removeFileAriaLabel: {
+			control: 'text',
+			description: 'Accessible label for the remove file button'
+		},
+		onchange: {
+			control: false,
+			action: 'changed',
+			description: 'Callback when file selection changes'
+		},
 		// 新しいイベントハンドラのargTypes
 		onfocus: {
 			action: 'focused',
@@ -137,6 +150,7 @@ type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
 	args: {
+		value: undefined,
 		accept: '.jpg,.jpeg,.png,.gif,.webp,.svg',
 		multiple: false,
 		maxFileSize: 5 * 1024 * 1024
@@ -145,12 +159,14 @@ export const Default: Story = {
 
 export const Multiple: Story = {
 	args: {
+		value: undefined,
 		multiple: true
 	}
 };
 
 export const Rectangle: Story = {
 	args: {
+		value: undefined,
 		width: 300,
 		height: 200
 	}
@@ -158,6 +174,7 @@ export const Rectangle: Story = {
 
 export const Rounded: Story = {
 	args: {
+		value: undefined,
 		width: 150,
 		height: 150,
 		rounded: true
@@ -166,12 +183,14 @@ export const Rounded: Story = {
 
 export const CustomIcon: Story = {
 	args: {
+		value: undefined,
 		icon: 'photo_camera'
 	}
 };
 
 export const CustomPlaceholder: Story = {
 	args: {
+		value: undefined,
 		placeholder: 'Click or drop image here<br />Max 5MB'
 	}
 };
@@ -179,6 +198,7 @@ export const CustomPlaceholder: Story = {
 // Responsive width examples
 export const ResponsiveWidth: Story = {
 	args: {
+		value: undefined,
 		width: 'calc(100vw - 80px)',
 		height: 200
 	}
@@ -186,6 +206,7 @@ export const ResponsiveWidth: Story = {
 
 export const AdaptivePreview: Story = {
 	args: {
+		value: undefined,
 		previewAdaptive: true,
 		width: 300
 	}

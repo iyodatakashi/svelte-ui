@@ -26,6 +26,14 @@ const meta = {
 			control: { type: 'boolean' },
 			description: 'Checked state'
 		},
+		children: {
+			control: false,
+			description: 'Label or content next to the checkbox'
+		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the input element'
+		},
 		indeterminate: {
 			control: { type: 'boolean' },
 			description: 'Indeterminate (mixed) state'

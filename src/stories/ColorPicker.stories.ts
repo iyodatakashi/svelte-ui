@@ -60,6 +60,14 @@ const meta = {
 			control: { type: 'text' },
 			description: 'Maximum width (number in px or CSS length string, e.g. "300", "80%", "32rem")'
 		},
+		clearButtonAriaLabel: {
+			control: { type: 'text' },
+			description: 'Accessible label for the clear button'
+		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the input element'
+		},
 		// ArgTypes for additional event handlers
 		onfocus: {
 			action: 'focused',

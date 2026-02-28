@@ -44,6 +44,18 @@ const meta = {
 		customPathMatcher: {
 			control: false,
 			description: 'Custom function to match current path against tab href'
+		},
+		selectedBarColor: {
+			control: 'text',
+			description: 'Custom color for the selected tab indicator bar'
+		},
+		selectedTextColor: {
+			control: 'text',
+			description: 'Custom text color for the selected tab'
+		},
+		textColor: {
+			control: 'text',
+			description: 'Custom text color for tabs'
 		}
 	}
 } satisfies Meta<typeof Tab>;

@@ -18,58 +18,21 @@ const meta = {
 			control: { type: 'text' },
 			description: 'Textarea value'
 		},
-		inline: {
-			control: { type: 'boolean' },
-			description: 'Borderless, transparent variant that inherits surrounding styles'
-		},
-		focusStyle: {
-			control: { type: 'radio' },
-			options: ['background', 'outline', 'none'],
-			description: 'Focus style (background, outline, or none)'
+		name: {
+			control: { type: 'text' },
+			description: 'Name attribute'
 		},
 		placeholder: {
 			control: { type: 'text' },
 			description: 'Placeholder text'
 		},
-		fullWidth: {
-			control: { type: 'boolean' },
-			description: 'Whether the textarea takes full width'
+		id: {
+			control: { type: 'text' },
+			description: 'ID attribute'
 		},
-		autoResize: {
-			control: { type: 'boolean' },
-			description: 'Automatically resize height based on content'
-		},
-		resizable: {
-			control: { type: 'boolean' },
-			description: 'Allow user-driven resize'
-		},
-		clearable: {
-			control: { type: 'boolean' },
-			description: 'Show clear button'
-		},
-		rounded: {
-			control: { type: 'boolean' },
-			description: 'Use rounded corners'
-		},
-		disabled: {
-			control: { type: 'boolean' },
-			description: 'Whether the textarea is disabled'
-		},
-		readonly: {
-			control: { type: 'boolean' },
-			description: 'Make the textarea read-only'
-		},
-		required: {
-			control: { type: 'boolean' },
-			description: 'Mark the field as required'
-		},
-		rows: {
-			control: { type: 'number', min: 1, max: 20 },
-			description: 'Initial row count'
-		},
-		minHeight: {
+		tabindex: {
 			control: { type: 'number' },
-			description: 'Minimum height in pixels'
+			description: 'Tab index'
 		},
 		maxlength: {
 			control: { type: 'number' },
@@ -90,6 +53,102 @@ const meta = {
 				'new-password'
 			],
 			description: 'Autocomplete attribute'
+		},
+		wrap: {
+			control: { type: 'radio' },
+			options: [null, 'soft', 'hard'],
+			description: 'Wrap attribute'
+		},
+		spellcheck: {
+			control: { type: 'boolean' },
+			description: 'Spellcheck attribute'
+		},
+		rows: {
+			control: { type: 'number', min: 1, max: 20 },
+			description: 'Initial row count'
+		},
+		minHeight: {
+			control: { type: 'number' },
+			description: 'Minimum height (number as px, or pass string in args)'
+		},
+		maxHeight: {
+			control: { type: 'number' },
+			description: 'Maximum height (number as px, or pass string in args)'
+		},
+		inline: {
+			control: { type: 'boolean' },
+			description: 'Borderless, transparent variant that inherits surrounding styles'
+		},
+		focusStyle: {
+			control: { type: 'radio' },
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
+		},
+		width: {
+			control: { type: 'text' },
+			description: 'Width (number as px or string e.g. "100%")'
+		},
+		fullWidth: {
+			control: { type: 'boolean' },
+			description: 'Whether the textarea takes full width'
+		},
+		fullHeight: {
+			control: { type: 'boolean' },
+			description: 'Whether the textarea takes full height'
+		},
+		customStyle: {
+			control: { type: 'text' },
+			description: 'Additional inline style'
+		},
+		autoResize: {
+			control: { type: 'boolean' },
+			description: 'Automatically resize height based on content'
+		},
+		resizable: {
+			control: { type: 'boolean' },
+			description: 'Allow user-driven resize'
+		},
+		clearable: {
+			control: { type: 'boolean' },
+			description: 'Show clear button'
+		},
+		clearButtonAriaLabel: {
+			control: { type: 'text' },
+			description: 'Aria label for clear button'
+		},
+		iconFilled: {
+			control: { type: 'boolean' },
+			description: 'Use filled icon variant for clear button'
+		},
+		iconVariant: {
+			control: { type: 'select' },
+			options: ['outlined', 'filled', 'rounded', 'sharp', 'two-tone'],
+			description: 'Icon variant for clear button'
+		},
+		rounded: {
+			control: { type: 'boolean' },
+			description: 'Use rounded corners'
+		},
+		disabled: {
+			control: { type: 'boolean' },
+			description: 'Whether the textarea is disabled'
+		},
+		readonly: {
+			control: { type: 'boolean' },
+			description: 'Make the textarea read-only'
+		},
+		required: {
+			control: { type: 'boolean' },
+			description: 'Mark the field as required'
+		},
+		linkify: {
+			control: { type: 'boolean' },
+			description: 'Parse and linkify URLs in content'
+		},
+		autocapitalize: {
+			control: { type: 'select' },
+			options: [null, 'off', 'none', 'on', 'sentences', 'words', 'characters'],
+			description: 'Autocapitalize attribute'
 		},
 		// ArgTypes for additional event handlers
 		onfocus: {
@@ -200,8 +259,7 @@ export default meta;
 // Default
 export const Default = {
 	args: {
-		placeholder: 'Enter multi-line text',
-		autoResize: true
+		placeholder: 'Enter multi-line text'
 	}
 };
 

@@ -96,6 +96,35 @@ const meta = {
 			options: ['en', 'ja', 'fr', 'de', 'es', 'zh-cn'],
 			description: 'Locale used for display'
 		},
+		iconFilled: {
+			control: 'boolean',
+			description: 'Whether the calendar icon is filled'
+		},
+		iconGrade: {
+			control: 'number',
+			description: 'Icon grade (Material Symbols)'
+		},
+		iconOpticalSize: {
+			control: 'number',
+			description: 'Icon optical size (Material Symbols)'
+		},
+		iconVariant: {
+			control: 'radio',
+			options: ['outlined', 'rounded', 'sharp'],
+			description: 'Icon variant style'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the input element'
+		},
+		rangeSeparator: {
+			control: 'text',
+			description: 'String between start and end date in range mode (e.g. " – ")'
+		},
+		readonly: {
+			control: 'boolean',
+			description: 'Make the input read-only'
+		},
 		onchange: {
 			control: false,
 			action: 'changed',

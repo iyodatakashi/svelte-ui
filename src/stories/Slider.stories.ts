@@ -57,7 +57,52 @@ const meta = {
 		disabled: {
 			control: { type: 'boolean' },
 			description: 'Whether the slider is disabled'
-		}
+		},
+		customStyle: {
+			control: { type: 'text' },
+			description: 'Custom CSS styles for the root element'
+		},
+		id: {
+			control: { type: 'text' },
+			description: 'ID for the input element'
+		},
+		name: {
+			control: { type: 'text' },
+			description: 'Form name attribute'
+		},
+		onchange: {
+			control: false,
+			action: 'changed',
+			description: 'Callback when value changes'
+		},
+		oninput: {
+			control: false,
+			action: 'input',
+			description: 'Input event'
+		},
+		onfocus: { control: false, action: 'focused' },
+		onblur: { control: false, action: 'blurred' },
+		onkeydown: { control: false, action: 'keydown' },
+		onkeyup: { control: false, action: 'keyup' },
+		onclick: { control: false, action: 'clicked' },
+		onmousedown: { control: false, action: 'mousedown' },
+		onmouseup: { control: false, action: 'mouseup' },
+		onmouseenter: { control: false, action: 'mouseenter' },
+		onmouseleave: { control: false, action: 'mouseleave' },
+		onmouseover: { control: false, action: 'mouseover' },
+		onmouseout: { control: false, action: 'mouseout' },
+		oncontextmenu: { control: false, action: 'contextmenu' },
+		onauxclick: { control: false, action: 'auxclick' },
+		ontouchstart: { control: false, action: 'touchstart' },
+		ontouchend: { control: false, action: 'touchend' },
+		ontouchmove: { control: false, action: 'touchmove' },
+		ontouchcancel: { control: false, action: 'touchcancel' },
+		onpointerdown: { control: false, action: 'pointerdown' },
+		onpointerup: { control: false, action: 'pointerup' },
+		onpointerenter: { control: false, action: 'pointerenter' },
+		onpointerleave: { control: false, action: 'pointerleave' },
+		onpointermove: { control: false, action: 'pointermove' },
+		onpointercancel: { control: false, action: 'pointercancel' }
 	}
 } satisfies Meta<typeof Slider>;
 

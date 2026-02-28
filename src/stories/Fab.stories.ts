@@ -22,6 +22,11 @@ const meta = {
 		props: args
 	}),
 	argTypes: {
+		type: {
+			control: 'radio',
+			options: ['button', 'submit', 'reset'],
+			description: 'HTML button type attribute'
+		},
 		variant: {
 			control: 'radio',
 			options: ['filled', 'outlined', 'ghost', 'glass'],
@@ -73,6 +78,38 @@ const meta = {
 			control: 'radio',
 			options: ['outlined', 'rounded', 'sharp'],
 			description: 'Icon variant'
+		},
+		children: {
+			control: false,
+			description: 'Icon or content (alternative to icon prop)'
+		},
+		ariaLabel: {
+			control: 'text',
+			description: 'Accessible label for screen readers'
+		},
+		ariaDescribedby: {
+			control: 'text',
+			description: 'ID of element that describes the button'
+		},
+		bottomOffset: {
+			control: 'text',
+			description: 'Distance from bottom edge (CSS length, e.g. "16px")'
+		},
+		sideOffset: {
+			control: 'text',
+			description: 'Distance from left/right edge (CSS length)'
+		},
+		useSafeArea: {
+			control: 'boolean',
+			description: 'Respect safe area insets on notched devices'
+		},
+		reducedMotion: {
+			control: 'boolean',
+			description: 'Disable animations for reduced motion'
+		},
+		customStyle: {
+			control: 'text',
+			description: 'Custom CSS styles'
 		},
 		// ArgTypes for additional event handlers
 		onclick: {

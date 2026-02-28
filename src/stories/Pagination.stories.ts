@@ -51,6 +51,10 @@ const meta = {
 			control: false,
 			action: 'page-changed',
 			description: 'Callback fired when the page changes'
+		},
+		id: {
+			control: 'text',
+			description: 'ID for the root element'
 		}
 	}
 } satisfies Meta<typeof Pagination>;
