@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'ページネーションコンポーネント。大量のデータを複数のページに分割して表示する際に使用します。'
+					'A pagination component for splitting large datasets across multiple pages.'
 			}
 		}
 	},
@@ -58,7 +58,7 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-// Default - 標準的なページネーション
+// Default
 export const Default: Story = {
 	args: {
 		total: 1000,
@@ -72,7 +72,7 @@ export const Default: Story = {
 	}
 };
 
-// Large Dataset - 大量のデータ
+// Large Dataset
 export const LargeDataset: Story = {
 	args: {
 		total: 50000,
@@ -86,7 +86,7 @@ export const LargeDataset: Story = {
 	}
 };
 
-// Small Dataset - 少量のデータ
+// Small Dataset
 export const SmallDataset: Story = {
 	args: {
 		total: 150,
@@ -100,7 +100,7 @@ export const SmallDataset: Story = {
 	}
 };
 
-// First Page - 最初のページ
+// First Page
 export const FirstPage: Story = {
 	args: {
 		total: 1000,
@@ -114,7 +114,7 @@ export const FirstPage: Story = {
 	}
 };
 
-// Last Page - 最後のページ
+// Last Page
 export const LastPage: Story = {
 	args: {
 		total: 1000,
@@ -128,7 +128,7 @@ export const LastPage: Story = {
 	}
 };
 
-// Middle Page - 中央のページ
+// Middle Page
 export const MiddlePage: Story = {
 	args: {
 		total: 1000,
@@ -142,7 +142,7 @@ export const MiddlePage: Story = {
 	}
 };
 
-// Single Page - 1ページのみ
+// Single Page
 export const SinglePage: Story = {
 	args: {
 		total: 15,
@@ -156,7 +156,7 @@ export const SinglePage: Story = {
 	}
 };
 
-// Few Pages - 少数のページ
+// Few Pages
 export const FewPages: Story = {
 	args: {
 		total: 85,
@@ -170,7 +170,7 @@ export const FewPages: Story = {
 	}
 };
 
-// Many Pages - 多数のページ（MAX_VISIBLE_PAGES以上）
+// Many Pages
 export const ManyPages: Story = {
 	args: {
 		total: 10000,
@@ -184,7 +184,7 @@ export const ManyPages: Story = {
 	}
 };
 
-// High Limit - 1ページあたりの件数が多い場合
+// High Limit
 export const HighLimit: Story = {
 	args: {
 		total: 5000,
@@ -198,9 +198,9 @@ export const HighLimit: Story = {
 	}
 };
 
-// Count Display Variants - count表示のバリエーション
+// Count Display Variants
 
-// No Count Display - count表示なし
+// No Count Display
 export const NoCountDisplay: Story = {
 	args: {
 		total: 1000,
@@ -214,7 +214,7 @@ export const NoCountDisplay: Story = {
 	}
 };
 
-// Range Only - 範囲のみ表示
+// Range Only
 export const RangeOnly: Story = {
 	args: {
 		total: 1000,
@@ -228,7 +228,7 @@ export const RangeOnly: Story = {
 	}
 };
 
-// Total Only - 総件数のみ表示
+// Total Only
 export const TotalOnly: Story = {
 	args: {
 		total: 1000,
@@ -242,7 +242,7 @@ export const TotalOnly: Story = {
 	}
 };
 
-// Custom Visible Pages - 表示ページ数カスタム
+// Custom Visible Pages
 export const CustomVisiblePages: Story = {
 	args: {
 		total: 1000,
@@ -256,7 +256,7 @@ export const CustomVisiblePages: Story = {
 	}
 };
 
-// Minimal Visible Pages - 最小表示ページ数
+// Minimal Visible Pages
 export const MinimalVisiblePages: Story = {
 	args: {
 		total: 1000,

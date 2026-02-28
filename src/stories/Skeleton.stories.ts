@@ -5,7 +5,40 @@ const meta = {
 	title: 'UI/Skeleton',
 	component: Skeleton,
 	parameters: {
-		layout: 'padded'
+		layout: 'padded',
+		docs: {
+			description: {
+				component:
+					'A skeleton loading component that displays placeholder content with configurable patterns (box, text, avatar, media, etc.) and presets for common layouts.'
+			}
+		}
+	},
+	tags: ['autodocs'],
+	argTypes: {
+		patterns: {
+			control: 'object',
+			description: 'Array of skeleton pattern configs (e.g. { type: "box" }, { type: "text", lines: 3 })'
+		},
+		repeat: {
+			control: 'number',
+			description: 'Number of times to repeat the pattern set'
+		},
+		repeatGap: {
+			control: 'text',
+			description: 'Gap between repeated pattern groups (CSS length)'
+		},
+		patternGap: {
+			control: 'text',
+			description: 'Gap between patterns within a group (CSS length)'
+		},
+		animated: {
+			control: 'boolean',
+			description: 'Whether to show loading animation'
+		},
+		customStyle: {
+			control: 'text',
+			description: 'Custom CSS styles for the wrapper'
+		}
 	}
 } satisfies Meta;
 
@@ -56,7 +89,7 @@ export const Heading: Story = {
 	}
 };
 
-// プリセットパターンのストーリー
+// Preset patterns
 export const ArticleDetailPreset: Story = {
 	args: {
 		patterns: [{ type: 'article-detail' }]

@@ -10,7 +10,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					"A tab navigation component that automatically manages active state based on current URL path. Uses SvelteKit's page state for efficient reactive updates. Now supports multi-tenant applications with pathPrefix and customPathMatcher."
+					'A tab navigation component that keeps the active tab in sync with the current URL path. Designed to work with SvelteKit routing.'
 			}
 		}
 	},

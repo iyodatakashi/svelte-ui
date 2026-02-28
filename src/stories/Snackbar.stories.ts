@@ -18,10 +18,8 @@ const meta: Meta<SnackbarStoryProps> = {
 		layout: 'padded',
 		docs: {
 			description: {
-				component: `
-You can control \`<Snackbar>\` props (\`position\`, \`maxVisible\`, \`variant\`, \`duration\`)
-and additional display options outside the component props (\`closable\`, \`actionLabel\`, \`color\`, \`textColor\`, \`iconVariant\`) via Storybook Controls.
-				`
+				component:
+					'A snackbar component that displays brief notifications at the top or bottom of the screen. Supports position, max visible count, filled/outlined variant, duration, and optional close button or action.'
 			}
 		}
 	},

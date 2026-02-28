@@ -10,7 +10,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'A segmented control component for switching between mutually exclusive options. Unlike Tab which is for navigation, this is for state switching within the same view.'
+					'A segmented control component for switching between mutually exclusive options (e.g. view mode, sort order) within a single view.'
 			}
 		}
 	},
