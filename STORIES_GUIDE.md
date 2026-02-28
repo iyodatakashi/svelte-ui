@@ -110,6 +110,14 @@ If in doubt:
 - Start with **`radio` for 2–4 short options**.
 - Switch to **`select`** if the controls panel becomes too tall or cluttered.
 
+**Material Symbols / icon props (consistent across all components):**
+
+- **`iconWeight`**: Use `control: 'select'` (or `{ type: 'select' }`) with `options: [100, 200, 300, 400, 500, 600, 700]`. Do not use `number` or `radio`.
+- **`iconGrade`**: Use `control: 'number'` (or `{ type: 'number' }`).
+- **`iconOpticalSize`**: Use `control: 'number'` (or `{ type: 'number' }`).
+
+Apply this to any component that exposes these props (Button, IconButton, Input, Textarea, Select, Combobox, Datepicker, Fab, FileUpload, ImageUploader, PopupMenu, SegmentedControl, etc.).
+
 ---
 
 ### 4. Language & naming

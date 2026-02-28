@@ -157,7 +157,8 @@ const meta = {
 			description: 'Render icons as filled variants'
 		},
 		iconWeight: {
-			control: { type: 'number' },
+			control: { type: 'select' },
+			options: [100, 200, 300, 400, 500, 600, 700],
 			description: 'Material icon weight (wght)'
 		},
 		iconGrade: {

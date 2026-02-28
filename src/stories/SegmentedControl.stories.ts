@@ -72,11 +72,11 @@ const meta = {
 			description: 'Icon weight'
 		},
 		iconGrade: {
-			control: { type: 'range', min: -25, max: 200, step: 25 },
+			control: 'number',
 			description: 'Icon grade'
 		},
 		iconOpticalSize: {
-			control: { type: 'range', min: 16, max: 48, step: 4 },
+			control: 'number',
 			description: 'Icon optical size'
 		},
 		reducedMotion: {

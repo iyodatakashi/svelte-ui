@@ -125,6 +125,19 @@ const meta = {
 			options: ['outlined', 'filled', 'rounded', 'sharp', 'two-tone'],
 			description: 'Icon variant for clear button'
 		},
+		iconWeight: {
+			control: { type: 'select' },
+			options: [100, 200, 300, 400, 500, 600, 700],
+			description: 'Icon weight for clear button (Material Symbols)'
+		},
+		iconGrade: {
+			control: { type: 'number' },
+			description: 'Icon grade for clear button (Material Symbols)'
+		},
+		iconOpticalSize: {
+			control: { type: 'number' },
+			description: 'Icon optical size for clear button (Material Symbols)'
+		},
 		rounded: {
 			control: { type: 'boolean' },
 			description: 'Use rounded corners'
