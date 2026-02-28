@@ -90,18 +90,6 @@ export const WithDisabled: Story = {
 	}
 };
 
-// Tabs with strict matching
-export const StrictMatching: Story = {
-	args: {
-		currentPath: '/blog',
-		tabItems: [
-			{ label: 'Home', href: '/', strictMatch: true },
-			{ label: 'Blog', href: '/blog', strictMatch: true },
-			{ label: 'Products', href: '/products', strictMatch: true }
-		]
-	}
-};
-
 // Many tabs (testing scrolling behavior)
 export const ManyTabs: Story = {
 	args: {
@@ -133,20 +121,5 @@ export const LongTitles: Story = {
 			{ label: 'Advanced Settings Configuration', href: '/settings', icon: 'settings' },
 			{ label: 'Analytics & Reporting Tools', href: '/analytics', icon: 'analytics' }
 		]
-	}
-};
-
-// Single tab
-export const SingleTab: Story = {
-	args: {
-		currentPath: '/only',
-		tabItems: [{ label: 'Only Tab', href: '/only', icon: 'tab' }]
-	}
-};
-
-// Empty tabs (edge case)
-export const EmptyTabs: Story = {
-	args: {
-		tabItems: []
 	}
 };
