@@ -219,7 +219,7 @@
 		color: var(--svelte-ui-pagination-button-text-color);
 		transition-duration: 0s;
 	}
-	.pagination__button:before {
+	.pagination__button::before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -235,7 +235,7 @@
 	}
 
 	@media (hover: hover) {
-		.pagination__button:hover:before {
+		.pagination__button:hover::before {
 			opacity: 1;
 		}
 	}
@@ -252,7 +252,7 @@
 		pointer-events: none;
 	}
 
-	.pagination__button:disabled:before {
+	.pagination__button:disabled::before {
 		opacity: 0;
 	}
 

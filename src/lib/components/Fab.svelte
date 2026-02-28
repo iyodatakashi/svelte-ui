@@ -406,7 +406,7 @@
 			z-index: 1;
 		}
 
-		&:before {
+		&::before {
 			content: '';
 			display: block;
 			position: absolute;
@@ -422,7 +422,7 @@
 		}
 
 		@media (hover: hover) {
-			&:hover:before {
+			&:hover::before {
 				opacity: 1;
 			}
 		}
@@ -499,7 +499,7 @@
 		}
 
 		&.fab--no-motion,
-		&.fab--no-motion:before {
+		&.fab--no-motion::before {
 			transition-duration: 0.01s;
 		}
 
@@ -551,7 +551,7 @@
 	/* Reduced motion */
 	@media (prefers-reduced-motion: reduce) {
 		.fab,
-		.fab:before {
+		.fab::before {
 			transition-duration: 0.01s;
 		}
 	}

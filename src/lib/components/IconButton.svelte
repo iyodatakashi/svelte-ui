@@ -445,7 +445,7 @@
 		-webkit-backdrop-filter: var(--svelte-ui-glass-blur);
 	}
 
-	.icon-button__button:before {
+	.icon-button__button::before {
 		content: '';
 		display: block;
 		position: absolute;
@@ -461,7 +461,7 @@
 	}
 
 	@media (hover: hover) {
-		.icon-button__button:hover:before {
+		.icon-button__button:hover::before {
 			opacity: 1;
 		}
 	}
@@ -475,7 +475,7 @@
 		transform: scale(0.95);
 	}
 
-	.icon-button__button--pressed:before {
+	.icon-button__button--pressed::before {
 		opacity: 0.12;
 	}
 
@@ -546,7 +546,7 @@
 	}
 
 	.icon-button__button--no-motion,
-	.icon-button__button--no-motion:before,
+	.icon-button__button--no-motion::before,
 	.icon-button__button--no-motion .icon-button__icon {
 		transition-duration: 0.01s;
 	}
@@ -557,7 +557,7 @@
 
 	@media (prefers-reduced-motion: reduce) {
 		.icon-button__button,
-		.icon-button__button:before,
+		.icon-button__button::before,
 		.icon-button__icon {
 			transition-duration: 0.01s;
 		}
