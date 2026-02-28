@@ -415,6 +415,10 @@
 		width: fit-content;
 	}
 
+	.icon-button:has(.icon-button__button:disabled) {
+		cursor: not-allowed;
+	}
+
 	.icon-button__button {
 		display: flex;
 		justify-content: center;
@@ -461,7 +465,7 @@
 	}
 
 	@media (hover: hover) {
-		.icon-button__button:hover::before {
+		.icon-button__button:hover:not(:disabled)::before {
 			opacity: 1;
 		}
 	}
@@ -482,11 +486,10 @@
 	.icon-button__button:disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 		cursor: not-allowed;
-		pointer-events: none;
 	}
 
-	.icon-button__button--loading {
-		cursor: wait;
+	.icon-button__button:disabled * {
+		cursor: not-allowed;
 	}
 
 	.icon-button__button > * {

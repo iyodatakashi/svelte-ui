@@ -508,7 +508,11 @@
 
 	.segmented-control--disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
-		pointer-events: none;
+		cursor: not-allowed;
+	}
+
+	.segmented-control--disabled .segmented-control__label {
+		cursor: not-allowed;
 	}
 
 	.segmented-control__item {

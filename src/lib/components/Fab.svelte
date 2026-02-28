@@ -422,7 +422,7 @@
 		}
 
 		@media (hover: hover) {
-			&:hover::before {
+			&:hover:not(:disabled)::before {
 				opacity: 1;
 			}
 		}
@@ -435,7 +435,10 @@
 		&:disabled {
 			opacity: var(--svelte-ui-button-disabled-opacity);
 			cursor: not-allowed;
-			pointer-events: none;
+		}
+
+		&:disabled * {
+			cursor: not-allowed;
 		}
 
 		&.fab--outlined {
@@ -492,10 +495,6 @@
 				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
 				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
 				0px 5px 22px 4px rgba(0, 0, 0, 0.12);
-		}
-
-		&.fab--loading {
-			cursor: wait;
 		}
 
 		&.fab--no-motion,
