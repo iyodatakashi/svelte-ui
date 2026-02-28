@@ -678,7 +678,6 @@
 		word-break: inherit;
 		opacity: 1;
 		transition: none;
-		cursor: text !important;
 		overflow-y: auto;
 		overflow-x: hidden;
 		scrollbar-width: none; /* Firefox */
@@ -758,26 +757,15 @@
 	/* =============================================
  * 状態管理（disabled, readonly等）
  * ============================================= */
+	.textarea--readonly textarea {
+		cursor: default;
+	}
+
 	.textarea--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
-	}
-
-	.textarea--readonly {
 		textarea {
-			cursor: default;
+			cursor: not-allowed;
 		}
-	}
-
-	textarea:disabled {
-		opacity: var(--svelte-ui-button-disabled-opacity);
-		cursor: not-allowed;
-	}
-
-	textarea[readonly] {
-		/* Match Input behavior: readonly fields keep the same background,
-		 * but use a default cursor to indicate non-editable. */
-		cursor: default;
 	}
 
 	/* =============================================
