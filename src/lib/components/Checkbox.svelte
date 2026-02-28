@@ -418,7 +418,8 @@
 	   ========================================================================= */
 
 	/* Disabled state */
-	.checkbox--disabled input[type='checkbox'] {
+	.checkbox--disabled input[type='checkbox'],
+	.checkbox--disabled .checkbox__icon {
 		cursor: not-allowed;
 	}
 

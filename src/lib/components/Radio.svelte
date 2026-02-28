@@ -451,7 +451,8 @@
 	/* =============================================
    * Status
    * ============================================= */
-	.radio--disabled input[type='radio'] {
+	.radio--disabled input[type='radio'],
+	.radio--disabled .radio__icon {
 		cursor: not-allowed;
 	}
 
