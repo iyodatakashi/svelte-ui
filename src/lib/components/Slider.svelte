@@ -444,7 +444,7 @@
 	 * ============================================= */
 	.slider--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
-		pointer-events: none;
+		cursor: not-allowed;
 	}
 
 	.slider--disabled .slider__input {
