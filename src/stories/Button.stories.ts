@@ -104,8 +104,7 @@ const meta = {
 		},
 		minWidth: {
 			control: 'text',
-			description:
-				'Minimum width (number in px or CSS length string, e.g. "160", "50%", "12rem")'
+			description: 'Minimum width (number in px or CSS length string, e.g. "160", "50%", "12rem")'
 		},
 		tabindex: {
 			control: 'number',
@@ -307,6 +306,7 @@ export const Disabled: Story = {
 // Loading
 export const Loading: Story = {
 	args: {
+		variant: 'filled',
 		loading: true,
 		children: createChildrenSnippet('Loading Button')
 	}
@@ -340,6 +340,7 @@ export const CustomColor: Story = {
 // Full width
 export const FullWidth: Story = {
 	args: {
+		variant: 'filled',
 		fullWidth: true,
 		children: createChildrenSnippet('Full Width Button')
 	},
