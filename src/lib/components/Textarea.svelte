@@ -41,9 +41,9 @@
 		maxHeight?: string | number | null;
 		inline?: boolean;
 		focusStyle?: FocusStyle;
+		width?: string | number | null;
 		fullWidth?: boolean;
 		fullHeight?: boolean;
-		width?: string | number | null;
 		rounded?: boolean;
 		customStyle?: string;
 
@@ -127,9 +127,9 @@
 		maxHeight = null,
 		inline = false,
 		focusStyle = 'outline',
+		width = null,
 		fullWidth = false,
 		fullHeight = false,
-		width = null,
 		rounded = false,
 		customStyle = '',
 
