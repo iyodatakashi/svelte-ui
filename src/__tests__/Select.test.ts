@@ -219,28 +219,14 @@ describe('Select Component', () => {
 	// 特殊な機能の検証
 	// =========================================================================
 	describe('Special Features', () => {
-		it('should validate single selection', () => {
+		it('should validate single selection props', () => {
 			const singleSelectProps = {
-				multiple: false,
 				value: 'option1',
 				size: 1
 			};
 
-			expect(typeof singleSelectProps.multiple).toBe('boolean');
 			expect(typeof singleSelectProps.value).toBe('string');
 			expect(typeof singleSelectProps.size).toBe('number');
-		});
-
-		it('should validate multiple selection', () => {
-			const multipleSelectProps = {
-				multiple: true,
-				value: ['option1', 'option2'],
-				size: 3
-			};
-
-			expect(typeof multipleSelectProps.multiple).toBe('boolean');
-			expect(Array.isArray(multipleSelectProps.value)).toBe(true);
-			expect(typeof multipleSelectProps.size).toBe('number');
 		});
 
 		it('should validate option groups', () => {

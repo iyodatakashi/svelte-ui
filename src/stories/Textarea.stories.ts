@@ -8,8 +8,7 @@ const meta = {
 		layout: 'padded',
 		docs: {
 			description: {
-				component:
-					'A multi-line text input component that supports auto-resize and inline editing.'
+				component: 'A multi-line text input component that supports auto-resize and inline editing.'
 			}
 		}
 	},
@@ -257,7 +256,8 @@ export const Clearable = {
 export const Disabled = {
 	args: {
 		disabled: true,
-		value: 'Disabled text.\nCannot be edited.'
+		placeholder: 'Disabled text',
+		value: ''
 	}
 };
 
@@ -278,12 +278,11 @@ export const WithMinHeight = {
 	}
 };
 
-// With maxlength
-export const WithMaxlength = {
+// With maxHeight
+export const WithMaxHeight = {
 	args: {
-		maxlength: 50,
-		placeholder: 'Up to 50 characters',
+		maxHeight: 300,
+		placeholder: 'Maximum height 300px',
 		rows: 2
 	}
 };
-

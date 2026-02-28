@@ -1,4 +1,3 @@
-// s../lib/components/atoms/Select.stories.ts
 import Select from '../lib/components/Select.svelte';
 
 const meta = {
@@ -9,7 +8,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'A styled select component that supports theming, inline editing, and various visual variants.'
+					'A styled select component that supports theming, inline display, and various visual variants.'
 			}
 		}
 	},
@@ -29,8 +28,8 @@ const meta = {
 		},
 		focusStyle: {
 			control: { type: 'radio' },
-			options: ['background', 'border', 'none'],
-			description: 'Focus style (background, border, or none)'
+			options: ['background', 'outline', 'none'],
+			description: 'Focus style (background, outline, or none)'
 		},
 		placeholder: {
 			control: { type: 'text' },
@@ -48,13 +47,13 @@ const meta = {
 			control: { type: 'boolean' },
 			description: 'Whether the select is disabled'
 		},
-		readonly: {
-			control: { type: 'boolean' },
-			description: 'Make the select read-only'
-		},
 		required: {
 			control: { type: 'boolean' },
 			description: 'Mark the field as required'
+		},
+		size: {
+			control: { type: 'number' },
+			description: 'Number of visible rows'
 		},
 		// ArgTypes for additional event handlers
 		onfocus: {
@@ -220,11 +219,10 @@ export const Disabled = {
 	}
 };
 
-export const ReadOnly = {
+export const Required = {
 	args: {
 		options: basicOptions,
-		readonly: true,
-		value: 'option1',
-		placeholder: 'Read-only'
+		required: true,
+		placeholder: 'Required (select one)'
 	}
 };
