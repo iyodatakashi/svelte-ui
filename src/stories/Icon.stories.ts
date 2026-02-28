@@ -57,11 +57,7 @@ const meta = {
 			control: 'boolean',
 			description: 'Whether the icon is decorative (hidden from screen readers)'
 		},
-		reducedMotion: {
-			control: 'boolean',
-			description: 'Disable animations for reduced motion'
-		},
-		style: {
+		customStyle: {
 			control: 'text',
 			description: 'Custom CSS styles'
 		},

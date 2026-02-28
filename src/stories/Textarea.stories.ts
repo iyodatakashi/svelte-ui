@@ -18,10 +18,9 @@ const meta = {
 			control: { type: 'text' },
 			description: 'Textarea value'
 		},
-		variant: {
-			control: { type: 'radio' },
-			options: ['default', 'inline'],
-			description: 'Visual variant (default or inline)'
+		inline: {
+			control: { type: 'boolean' },
+			description: 'Display as inline (single-line) variant'
 		},
 		focusStyle: {
 			control: { type: 'radio' },
