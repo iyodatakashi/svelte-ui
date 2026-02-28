@@ -35,7 +35,6 @@
 		min?: number | null;
 		max?: number | null;
 		step?: number | null;
-		size?: number | null;
 		decimalPlaces?: number | null;
 		enableThousandsSeparator?: boolean;
 		autocomplete?: HTMLInputElement['autocomplete'] | null;
@@ -146,7 +145,6 @@
 		min = null,
 		max = null,
 		step = null,
-		size = null,
 		decimalPlaces = null,
 		enableThousandsSeparator = false,
 		autocomplete = null,
@@ -503,7 +501,7 @@
 		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
 	);
 	const displayValue = $derived.by(() => {
-		if (!hasDisplayValue) return inline ? '&nbsp;' : '';
+		if (!hasDisplayValue) return placeholder ? convertToHtml(placeholder) : (inline ? '&nbsp;' : '');
 		if (type === 'number' && typeof value === 'number') {
 			const options = {
 				useGrouping: enableThousandsSeparator,
@@ -678,7 +676,10 @@
 >
 	<!-- 表示用テキスト -->
 	<div class="input__display-text" style={customStyle}>
-		<div class="input__display-text-content">
+		<div
+			class="input__display-text-content"
+			class:input__display-text-content--placeholder={!hasDisplayValue && placeholder !== ''}
+		>
 			{@html displayValue}
 			{#if type === 'number' && unit !== '' && hasDisplayValue}
 				<span class="input__unit-text">
@@ -707,7 +708,6 @@
 			{readonly}
 			{required}
 			{tabindex}
-			{size}
 			{spellcheck}
 			onchange={handleChange}
 			oninput={handleInput}
@@ -858,6 +858,9 @@
 		height: 100%;
 		padding: inherit;
 		border: none;
+		border-radius: var(--svelte-ui-input-border-radius);
+		background-color: var(--svelte-ui-input-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -874,8 +877,7 @@
 		min-width: 1em;
 		min-height: var(--svelte-ui-input-height);
 		padding: var(--svelte-ui-input-padding);
-		background-color: var(--svelte-ui-input-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
+		background-color: transparent;
 		border: none;
 		border-radius: var(--svelte-ui-input-border-radius);
 		font-size: inherit;
@@ -934,11 +936,9 @@
 	/* =============================================
  * 表示制御
  * ============================================= */
-	/* 非フォーカス時: inputを不可視化d */
+	/* 非フォーカス時: input要素自体を不可視化（枠線・背景はラッパーにあるため display-text のみ表示） */
 	.input:not(.input--focused) input {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
+		opacity: 0;
 	}
 
 	/* フォーカス時: display-textを非表示 */
@@ -950,7 +950,8 @@
  * プレースホルダー・テキスト表示
  * ============================================= */
 	input::placeholder,
-	.input__display-text:empty::before {
+	.input__display-text:empty::before,
+	.input__display-text-content--placeholder {
 		color: var(--svelte-ui-input-placeholder-color);
 	}
 
@@ -962,8 +963,11 @@
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.input--focus-background input:focus {
+	.input--focus-background.input--focused .input__wrapper {
 		background: var(--svelte-ui-hover-overlay);
+	}
+
+	.input--focus-background input:focus {
 		outline: none;
 	}
 
@@ -1134,9 +1138,7 @@
 	.input--type-password {
 		/* inputを常に表示（表示制御の非フォーカス時の不可視化を上書き） */
 		&:not(.input--focused) input {
-			color: inherit;
-			caret-color: inherit;
-			text-shadow: inherit;
+			opacity: 1;
 		}
 
 		/* display-textは常に非表示 */
@@ -1149,22 +1151,22 @@
  * デザインバリエーション
  * ============================================= */
 	/* rounded */
-	.input--rounded {
-		input {
-			border-radius: var(--svelte-ui-input-border-radius-rounded);
-		}
+	.input--rounded .input__wrapper,
+	.input--rounded input {
+		border-radius: var(--svelte-ui-input-border-radius-rounded);
 	}
 
 	/* inline */
-	.input--inline {
-		input {
-			min-height: inherit;
-			background-color: transparent;
-			box-shadow: none;
-			border: inherit;
-			border-radius: 0;
-		}
+	.input--inline .input__wrapper,
+	.input--inline input {
+		min-height: inherit;
+		background-color: transparent;
+		box-shadow: none;
+		border: inherit;
+		border-radius: 0;
+	}
 
+	.input--inline {
 		input,
 		.input__display-text,
 		.input__link-text {

@@ -58,10 +58,6 @@ const meta = {
 			control: { type: 'number' },
 			description: 'Step value (for number type)'
 		},
-		size: {
-			control: { type: 'number' },
-			description: 'Size attribute for the input'
-		},
 		decimalPlaces: {
 			control: { type: 'number' },
 			description: 'Decimal places for number formatting'
