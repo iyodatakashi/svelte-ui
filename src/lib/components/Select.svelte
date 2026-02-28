@@ -432,13 +432,10 @@ select--focus-{focusStyle}"
 	.select--disabled {
 		opacity: var(--svelte-ui-input-disabled-opacity);
 		pointer-events: none;
-
-		.select__dropdown-icon {
-			opacity: var(--svelte-ui-button-disabled-opacity);
-		}
 	}
 
 	select:disabled {
+		opacity: 1;
 		cursor: not-allowed;
 	}
 

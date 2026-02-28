@@ -992,7 +992,6 @@
 
 		.input__icon-left,
 		.input__icon-right {
-			opacity: var(--svelte-ui-button-disabled-opacity);
 			cursor: not-allowed;
 			pointer-events: none;
 		}
