@@ -20,7 +20,7 @@ const meta = {
 		},
 		inline: {
 			control: { type: 'boolean' },
-			description: 'Display as inline (single-line) variant'
+			description: 'Borderless, transparent variant that inherits surrounding styles'
 		},
 		focusStyle: {
 			control: { type: 'radio' },
@@ -201,8 +201,15 @@ export default meta;
 export const Default = {
 	args: {
 		placeholder: 'Enter multi-line text',
-		rows: 3,
 		autoResize: true
+	}
+};
+
+// Inline
+export const Inline = {
+	args: {
+		inline: true,
+		placeholder: 'Inline textarea'
 	}
 };
 
@@ -210,8 +217,7 @@ export const Default = {
 export const Rounded = {
 	args: {
 		rounded: true,
-		placeholder: 'Rounded textarea',
-		rows: 4
+		placeholder: 'Rounded textarea'
 	}
 };
 
@@ -219,17 +225,26 @@ export const Rounded = {
 export const FullWidth = {
 	args: {
 		fullWidth: true,
-		placeholder: 'Full-width textarea',
-		rows: 3
+		placeholder: 'Full-width textarea'
 	}
 };
 
-// Auto resize
-export const AutoResize = {
+// Single row (rows=1) with autoResize
+export const SingleRow = {
 	args: {
+		rows: 1,
 		autoResize: true,
-		placeholder: 'Auto-resize',
-		rows: 2
+		placeholder: 'Single row'
+	}
+};
+
+// Single row + rounded
+export const SingleRowRounded = {
+	args: {
+		rows: 1,
+		rounded: true,
+		autoResize: true,
+		placeholder: 'Single row rounded'
 	}
 };
 
@@ -237,8 +252,7 @@ export const AutoResize = {
 export const Resizable = {
 	args: {
 		resizable: true,
-		placeholder: 'Resizable',
-		rows: 3
+		placeholder: 'Resizable'
 	}
 };
 
@@ -272,8 +286,7 @@ export const ReadOnly = {
 export const WithMinHeight = {
 	args: {
 		minHeight: 100,
-		placeholder: 'Minimum height 100px',
-		rows: 2
+		placeholder: 'Minimum height 100px'
 	}
 };
 
@@ -281,7 +294,6 @@ export const WithMinHeight = {
 export const WithMaxHeight = {
 	args: {
 		maxHeight: 300,
-		placeholder: 'Maximum height 300px',
-		rows: 2
+		placeholder: 'Maximum height 300px'
 	}
 };
