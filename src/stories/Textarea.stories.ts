@@ -221,14 +221,6 @@ export const Rounded = {
 	}
 };
 
-// Full width
-export const FullWidth = {
-	args: {
-		fullWidth: true,
-		placeholder: 'Full-width textarea'
-	}
-};
-
 // Single row (rows=1) with autoResize
 export const SingleRow = {
 	args: {
@@ -256,6 +248,14 @@ export const Resizable = {
 	}
 };
 
+// With maxHeight
+export const WithMaxHeight = {
+	args: {
+		maxHeight: 300,
+		placeholder: 'Maximum height 300px'
+	}
+};
+
 // Clearable
 export const Clearable = {
 	args: {
@@ -279,21 +279,5 @@ export const ReadOnly = {
 	args: {
 		readonly: true,
 		value: 'Read-only text.\nCannot be edited.'
-	}
-};
-
-// With minHeight
-export const WithMinHeight = {
-	args: {
-		minHeight: 100,
-		placeholder: 'Minimum height 100px'
-	}
-};
-
-// With maxHeight
-export const WithMaxHeight = {
-	args: {
-		maxHeight: 300,
-		placeholder: 'Maximum height 300px'
 	}
 };
