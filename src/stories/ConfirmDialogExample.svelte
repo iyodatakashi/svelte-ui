@@ -9,6 +9,7 @@
 		cancelLabel?: string;
 		danger?: boolean;
 		width?: string | number;
+		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
 		onSubmit?: () => void;
 		onCancel?: () => void;
@@ -21,6 +22,7 @@
 		cancelLabel = 'Cancel',
 		danger = false,
 		width = 400,
+		scrollable = false,
 		closeIfClickOutside = true,
 		onSubmit = () => {},
 		onCancel = () => {}
@@ -45,6 +47,7 @@
 	{cancelLabel}
 	{danger}
 	{width}
+	{scrollable}
 	{closeIfClickOutside}
 	{onSubmit}
 	{onCancel}

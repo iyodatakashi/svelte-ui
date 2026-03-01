@@ -22,6 +22,7 @@
 		// スタイル/レイアウト
 		danger?: boolean;
 		width?: string | number;
+		scrollable?: boolean;
 
 		// 状態/動作
 		isOpen?: boolean;
@@ -45,6 +46,7 @@
 		// スタイル/レイアウト
 		danger = false,
 		width = 400,
+		scrollable = false,
 
 		// 状態/動作
 		isOpen = $bindable(false),
@@ -88,6 +90,7 @@
 	bind:isOpen
 	{title}
 	{width}
+	{scrollable}
 	{closeIfClickOutside}
 	id={id ? `${id}-dialog` : undefined}
 >
@@ -108,9 +111,3 @@
 		</Button>
 	{/snippet}
 </Dialog>
-
-<style lang="scss">
-	.confirm-dialog-message {
-		padding: 16px 0;
-	}
-</style>

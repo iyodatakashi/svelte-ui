@@ -44,6 +44,10 @@ const meta = {
 			control: 'text',
 			description: 'Dialog width (number for pixels, string for calc/vw/% etc.)'
 		},
+		scrollable: {
+			control: 'boolean',
+			description: 'Whether the dialog body is scrollable when content overflows'
+		},
 		closeIfClickOutside: {
 			control: 'boolean',
 			description: 'Whether to close dialog when clicking outside'
@@ -71,25 +75,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 export const Default: Story = {
-	args: {
-		title: 'Confirm Action',
-		description: 'Are you sure you want to proceed?',
-		submitLabel: 'Confirm',
-		cancelLabel: 'Cancel',
-		danger: false,
-		width: 400
-	}
-};
-
-export const Warning: Story = {
-	args: {
-		title: 'Warning',
-		description: 'This action may have unintended consequences. Do you want to continue?',
-		submitLabel: 'Continue',
-		cancelLabel: 'Cancel',
-		danger: false,
-		width: 450
-	}
+	args: {}
 };
 
 export const Danger: Story = {
@@ -103,48 +89,23 @@ export const Danger: Story = {
 	}
 };
 
-export const CustomLabels: Story = {
-	args: {
-		title: 'Save Changes',
-		description: 'You have unsaved changes. Would you like to save them before leaving?',
-		submitLabel: 'Save',
-		cancelLabel: 'Discard',
-		danger: false,
-		width: 450
-	}
-};
-
-export const LongMessage: Story = {
+export const Scrollable: Story = {
 	args: {
 		title: 'Terms and Conditions',
 		description:
-			'By clicking "Accept", you agree to our Terms of Service and Privacy Policy. This includes sharing your data with third-party services for analytics and improving our service. You can withdraw your consent at any time through your account settings.',
+			'By clicking "Accept", you agree to our Terms of Service and Privacy Policy.\n\n' +
+			'1. Acceptance of Terms\n' +
+			'By accessing and using this service, you accept and agree to be bound by the terms and provision of this agreement. If you do not agree to abide by the above, please do not use this service.\n\n' +
+			'2. Use License\n' +
+			'Permission is granted to temporarily access the materials on this service for personal, non-commercial transitory viewing only. This is the grant of a license, not a transfer of title, and under this license you may not: modify or copy the materials; use the materials for any commercial purpose; attempt to decompile or reverse engineer any software contained on this service; or remove any copyright or other proprietary notations from the materials.\n\n' +
+			'3. Data and Privacy\n' +
+			'We may collect and use your data for analytics, improving our service, and sharing with third-party service providers where necessary. You can withdraw your consent at any time through your account settings. We will not sell your personal information to third parties.\n\n' +
+			'4. Disclaimer\n' +
+			'The materials on this service are provided on an "as is" basis. We make no warranties, expressed or implied, and hereby disclaim and negate all other warranties including, without limitation, implied warranties or conditions of merchantability, fitness for a particular purpose, or non-infringement of intellectual property or other violation of rights.',
 		submitLabel: 'Accept',
 		cancelLabel: 'Decline',
+		scrollable: true,
 		danger: false,
 		width: 500
-	}
-};
-
-export const MinimalWidth: Story = {
-	args: {
-		title: 'Confirm',
-		description: 'Continue?',
-		submitLabel: 'Yes',
-		cancelLabel: 'No',
-		danger: false,
-		width: 300
-	}
-};
-
-export const MessageWithLineBreaks: Story = {
-	args: {
-		title: 'Multi-line Message',
-		description:
-			'This is the first line of the message.\nThis is the second line.\n\nThis is after an empty line.\n\nPlease confirm your action.',
-		submitLabel: 'Confirm',
-		cancelLabel: 'Cancel',
-		danger: false,
-		width: 450
 	}
 };
