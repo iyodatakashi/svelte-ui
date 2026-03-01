@@ -2,7 +2,7 @@
 	"name": "@14ch/svelte-ui",
 	"description": "Modern Svelte UI components library with TypeScript support",
 	"private": false,
-	"version": "0.0.18",
+	"version": "0.0.19",
 	"type": "module",
 	"keywords": [
 		"svelte",
@@ -106,6 +106,7 @@
 		"sass": "^1.89.2"
 	},
 	"peerDependencies": {
+		"@sveltejs/kit": "^2.0.0",
 		"svelte": "^5.0.0"
 	}
 }

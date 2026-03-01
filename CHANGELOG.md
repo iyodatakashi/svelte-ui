@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.19] - 2026-03-01
+
+### Added
+
+- **Modal, Drawer, Dialog, ConfirmDialog**: `focusFirstOnOpen` prop (default `false`). Set `true` to focus the first focusable element on open (modal spec behavior).
+
+### Fixed
+
+- **Drawer**: Slide animation now works correctly when the library is used via published package (`npm install`), not only via `npm link`. Modal no longer applies its fade to the drawer dialog.
+- **Drawer**: `position="right"` now correctly shows the drawer on the right.
+- **Modal**: Opening no longer auto-focuses the first focusable element by default; focus stays on the dialog.
+
 ## [0.0.18] - 2026-03-01
 
 ### Fixed
