@@ -48,9 +48,6 @@ export const t = (key: NestedKeyOf<typeof TRANSLATIONS.en>, params?: Record<stri
 	const message = key.split('.').reduce((obj: any, k: string) => obj?.[k], TRANSLATIONS[locale]);
 
 	if (typeof message !== 'string') {
-		if (import.meta.env.DEV) {
-			console.warn(`Translation key "${key}" not found for locale "${locale}"`);
-		}
 		return key;
 	}
 
