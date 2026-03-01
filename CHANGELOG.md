@@ -5,6 +5,38 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.17] - 2026-03-01
+
+### Added
+
+- **ConfirmDialog**: Added `scrollable` prop to control whether the dialog body scrolls when content overflows.
+- **Tab**: Added `disabled` prop.
+- **SnackbarItem**: Added `iconVariant` prop to control icon style.
+
+### Changed
+
+- **Input**: Removed `size` prop; internal structure updated. May affect custom styling that targeted internal elements.
+- **Snackbar**: Background now uses a frosted-glass (backdrop blur) style.
+- **SnackbarItem**: Adjusted action button color and layout.
+- **Drawer**: Default `scrollable` is now `false`; default body padding is 24px (use `noPadding` for no padding).
+- **Tab**: Styles moved to CSS variables for easier theming.
+
+### Fixed
+
+- **Datepicker**: Fixed calendar not opening when the field was clicked (regression from Input readonly handling).
+- **Textarea**: Fixed `rows` prop not being applied correctly.
+- **ColorPicker**: Fixed value not updating when typing in the Input.
+- **Switch**: Fixed disabled state so thumb is not dimmed and cursor does not show as pointer.
+- **Checkbox**: Fixed indeterminate icon not visible.
+- **Checkbox / Radio**: Fixed label alignment with `large`, `small` sizes and with mobile touch targets.
+- **IconButton**: Fixed badge styling.
+- **Dialog / Drawer**: Style adjustments.
+- **Input, Select, Textarea, ColorPicker, Combobox**: Improved disabled and readonly styling and behavior.
+- **Button, Fab, IconButton, SegmentedControl, Slider, Checkbox, Radio, Select**: Refined disabled-state styles.
+- **Input, Textarea**: Refined readonly-state styles.
+- **CheckboxGroup, RadioGroup**: Fixed `gap` styling.
+- **Popup**: Corrected mobile fullscreen detection (internal reactivity fix).
+
 ## [0.0.16] - 2026-02-25
 
 ### Added
