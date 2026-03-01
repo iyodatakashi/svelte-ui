@@ -465,6 +465,10 @@
 	// --------------------------------
 	// display & link value
 	// --------------------------------
+	const hasDisplayValue = $derived(
+		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
+	);
+
 	// HTML表示用の値（autoResize時の高さ調整用）
 	const displayValue = $derived.by(() => {
 		const normalizedValue = value ?? '';
@@ -477,14 +481,9 @@
 				return html + '&nbsp;';
 			}
 			return html;
-		} else {
-			// inline かつ value が空のとき
-			// 1行分の高さを確保するためにダミーの &nbsp; を入れる
-			if (inline) {
-				return '&nbsp;';
-			}
-			return '';
 		}
+		// 値が空のとき: placeholder があればその幅・高さを確保して表示、なければ inline 時のみ &nbsp;
+		return placeholder ? convertToHtml(placeholder) : inline ? '&nbsp;' : '';
 	});
 
 	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
@@ -530,6 +529,7 @@
 	<div
 		bind:this={displayTextRef}
 		class="textarea__display-text"
+		class:textarea__display-text--placeholder={!hasDisplayValue}
 		style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
 	>
 		{@html displayValue}
@@ -634,6 +634,9 @@
 		height: 100%;
 		padding: inherit;
 		border: none;
+		border-radius: var(--svelte-ui-textarea-border-radius);
+		background-color: var(--svelte-ui-textarea-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -649,8 +652,7 @@
 		height: auto;
 		min-height: var(--svelte-ui-textarea-min-height);
 		padding: var(--svelte-ui-textarea-padding);
-		background-color: var(--svelte-ui-textarea-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
+		background-color: transparent;
 		border: none;
 		border-radius: var(--svelte-ui-textarea-border-radius);
 		font-size: inherit;
@@ -738,7 +740,8 @@
  * プレースホルダー・テキスト表示
  * ============================================= */
 	textarea::placeholder,
-	.textarea__display-text:empty::before {
+	.textarea__display-text:empty::before,
+	.textarea__display-text--placeholder {
 		color: var(--svelte-ui-textarea-placeholder-color);
 	}
 
@@ -750,8 +753,11 @@
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.textarea--focus-background textarea:focus {
+	.textarea--focus-background.textarea--focused .textarea__wrapper {
 		background: var(--svelte-ui-hover-overlay);
+	}
+
+	.textarea--focus-background textarea:focus {
 		outline: none;
 	}
 
@@ -777,10 +783,9 @@
 	/* =============================================
 	 * 表示切り替え
 	 * ============================================= */
+	/* 非フォーカス時: textarea要素自体を不可視化（枠線・背景はラッパーにあるため display-text のみ表示） */
 	.textarea:not(.textarea--focused) textarea {
-		color: transparent;
-		caret-color: transparent;
-		text-shadow: none;
+		opacity: 0;
 	}
 
 	.textarea--focused {
@@ -838,10 +843,9 @@
  * デザインバリエーション
  * ============================================= */
 	/* rounded */
-	.textarea--rounded:not(.textarea--inline) {
-		textarea {
-			border-radius: var(--svelte-ui-textarea-border-radius-rounded);
-		}
+	.textarea--rounded:not(.textarea--inline) .textarea__wrapper,
+	.textarea--rounded:not(.textarea--inline) textarea {
+		border-radius: var(--svelte-ui-textarea-border-radius-rounded);
 	}
 
 	/* inline */
@@ -855,11 +859,15 @@
 			padding-left: inherit;
 		}
 
+		.textarea__wrapper,
 		textarea {
 			padding: inherit;
 			background: transparent;
 			box-shadow: none;
 			border-radius: 0;
+		}
+
+		textarea {
 			font-size: inherit;
 			font-weight: inherit;
 			color: inherit;

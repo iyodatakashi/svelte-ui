@@ -501,7 +501,7 @@
 		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
 	);
 	const displayValue = $derived.by(() => {
-		if (!hasDisplayValue) return placeholder ? convertToHtml(placeholder) : (inline ? '&nbsp;' : '');
+		if (!hasDisplayValue) return placeholder ? convertToHtml(placeholder) : inline ? '&nbsp;' : '';
 		if (type === 'number' && typeof value === 'number') {
 			const options = {
 				useGrouping: enableThousandsSeparator,
@@ -678,7 +678,7 @@
 	<div class="input__display-text" style={customStyle}>
 		<div
 			class="input__display-text-content"
-			class:input__display-text-content--placeholder={!hasDisplayValue && placeholder !== ''}
+			class:input__display-text-content--placeholder={!hasDisplayValue}
 		>
 			{@html displayValue}
 			{#if type === 'number' && unit !== '' && hasDisplayValue}
