@@ -2,7 +2,7 @@
 	"name": "@14ch/svelte-ui",
 	"description": "Modern Svelte UI components library with TypeScript support",
 	"private": false,
-	"version": "0.0.17",
+	"version": "0.0.18",
 	"type": "module",
 	"keywords": [
 		"svelte",
@@ -41,6 +41,8 @@
 		"dist/constants/",
 		"dist/assets/",
 		"dist/i18n/",
+		"dist/config.js",
+		"dist/config.d.ts",
 		"dist/index.js",
 		"dist/index.d.ts"
 	],
@@ -61,7 +63,8 @@
 		"test:browser": "vitest --config vitest.config.ts --run",
 		"storybook": "storybook dev -p 6006",
 		"build-storybook": "storybook build",
-		"prepublishOnly": "npm run package",
+		"verify-package": "node scripts/verify-package.js",
+		"prepublishOnly": "npm run package && npm run verify-package",
 		"publish": "npm publish"
 	},
 	"devDependencies": {
