@@ -115,7 +115,6 @@
 		}
 		styles.push('height: 100%');
 		styles.push('min-height: 100%');
-		styles.push(position === 'right' ? 'left: auto' : 'right: auto');
 		styles.push(`${position}: 0`);
 		return styles.join('; ');
 	});
@@ -277,16 +276,8 @@
 		animation: fadeInFromRight var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	:global(.drawer-wrapper--right.fade-in::backdrop) {
-		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
-	}
-
 	:global(.drawer-wrapper--left.fade-in) {
 		animation: fadeInFromLeft var(--svelte-ui-transition-duration, 300ms) forwards;
-	}
-
-	:global(.drawer-wrapper--left.fade-in::backdrop) {
-		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
 	:global(.drawer-wrapper--left.fade-out) {
@@ -295,10 +286,6 @@
 
 	:global(.drawer-wrapper--right.fade-out) {
 		animation: fadeOutToRight var(--svelte-ui-transition-duration, 300ms) forwards;
-	}
-
-	:global(.drawer-wrapper.fade-out::backdrop) {
-		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
 	.drawer {
@@ -377,14 +364,10 @@
 	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
 		:global(.drawer-wrapper.fade-in),
-		:global(.drawer-wrapper.fade-in::backdrop),
 		:global(.drawer-wrapper.fade-out),
-		:global(.drawer-wrapper.fade-out::backdrop),
 		:global(.drawer-wrapper--left.fade-in),
-		:global(.drawer-wrapper--left.fade-in::backdrop),
 		:global(.drawer-wrapper--left.fade-out),
 		:global(.drawer-wrapper--right.fade-in),
-		:global(.drawer-wrapper--right.fade-in::backdrop),
 		:global(.drawer-wrapper--right.fade-out) {
 			animation-duration: 0.01s;
 		}

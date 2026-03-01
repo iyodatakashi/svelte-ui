@@ -289,21 +289,25 @@
 		}
 	}
 
-	.modal.fade-in:not([class*='drawer-wrapper']),
-	.modal.fade-in:not([class*='drawer-wrapper'])::backdrop {
+	.modal.fade-in:not([class*='drawer-wrapper']) {
+		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
+	}
+	.modal.fade-in::backdrop {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	.modal.fade-out:not([class*='drawer-wrapper']),
-	.modal.fade-out:not([class*='drawer-wrapper'])::backdrop {
+	.modal.fade-out:not([class*='drawer-wrapper']) {
+		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
+	}
+	.modal.fade-out::backdrop {
 		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
 	@media (prefers-reduced-motion: reduce) {
-		.modal.fade-in:not([class*='drawer-wrapper']),
-		.modal.fade-in:not([class*='drawer-wrapper'])::backdrop,
-		.modal.fade-out:not([class*='drawer-wrapper']),
-		.modal.fade-out:not([class*='drawer-wrapper'])::backdrop {
+		.modal.fade-in,
+		.modal.fade-in::backdrop,
+		.modal.fade-out,
+		.modal.fade-out::backdrop {
 			animation-duration: 0.01s;
 		}
 	}
