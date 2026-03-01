@@ -3,6 +3,7 @@
 <script lang="ts">
 	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { getStyleFromNumber } from '$lib/utils/style';
+	import { t } from '$lib/i18n';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -21,6 +22,7 @@
 		id?: string;
 
 		// HTML属性系
+		ariaLabel?: string;
 		min?: number;
 		max?: number;
 		step?: number;
@@ -85,6 +87,7 @@
 		id = `slider-${Math.random().toString(36).substring(2, 15)}`,
 
 		// HTML属性系
+		ariaLabel,
 		min = 0,
 		max = 100,
 		step = 1,
@@ -317,6 +320,7 @@
 	<input
 		{id}
 		{name}
+		aria-label={ariaLabel ?? t('slider.accessibleName')}
 		bind:this={ref}
 		bind:value
 		type="range"

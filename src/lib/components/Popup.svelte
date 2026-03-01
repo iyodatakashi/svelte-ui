@@ -16,7 +16,7 @@
 
 	import type { Snippet } from 'svelte';
 	import { onDestroy, tick, onMount } from 'svelte';
-	import { isMobileDevice, disableBodyScroll, getViewportSize } from '$lib/utils/mobile';
+	import { isMobileDevice, disableBodyScroll } from '$lib/utils/mobile';
 	import { announceOpenClose } from '$lib/utils/accessibility';
 	import { popupManager } from '$lib/utils/popupManager';
 	import type { PopupPosition } from '$lib/types/propOptions';

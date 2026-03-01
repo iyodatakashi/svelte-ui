@@ -25,6 +25,15 @@ export const es = {
 		optionsList: 'Lista de opciones',
 		noOptions: 'No hay opciones coincidentes'
 	},
+	colorpicker: {
+		chooseColor: 'Elegir color'
+	},
+	select: {
+		accessibleName: 'Seleccionar opción'
+	},
+	slider: {
+		accessibleName: 'Control deslizante'
+	},
 	input: {
 		clear: 'Limpiar',
 		show_password: 'Mostrar contraseña',
@@ -33,6 +42,9 @@ export const es = {
 		right_icon: 'Icono derecho',
 		increment: 'Incrementar',
 		decrement: 'Decrementar'
+	},
+	popupMenuButton: {
+		openMenu: 'Abrir menú'
 	},
 	pagination: {
 		prevPage: 'Ir a la página anterior',

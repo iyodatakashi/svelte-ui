@@ -3,6 +3,7 @@
 <script lang="ts">
 	import IconButton from './IconButton.svelte';
 	import PopupMenu from './PopupMenu.svelte';
+	import { t } from '$lib/i18n';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import type { SvelteComponent, Snippet } from 'svelte';
 	import type {
@@ -138,6 +139,7 @@
 	let anchorRef: HTMLElement | undefined = $state();
 	let popupMenuRef: SvelteComponent | undefined = $state();
 	let buttonId: string = $state(`menu-button-${Math.random().toString(36).substring(2, 15)}`);
+	const resolvedMenuId = $derived(`${id ?? buttonId}-menu`);
 
 	// =========================================================================
 	// Methods
@@ -289,7 +291,7 @@
 
 <div class="button-block" bind:this={anchorRef} {id}>
 	<IconButton
-		{ariaLabel}
+		ariaLabel={ariaLabel ?? t('popupMenuButton.openMenu')}
 		{disabled}
 		{variant}
 		{size}
@@ -297,7 +299,7 @@
 		{rounded}
 		aria-haspopup="menu"
 		aria-expanded={popupMenuRef?.isOpen ? 'true' : 'false'}
-		aria-controls={popupMenuRef ? `${id}-menu-popup` : undefined}
+		aria-controls={popupMenuRef ? `${resolvedMenuId}-popup` : undefined}
 		onclick={handleClick}
 		onfocus={handleFocus}
 		onblur={handleBlur}
@@ -335,10 +337,10 @@
 	bind:this={popupMenuRef}
 	{menuItems}
 	anchorElement={anchorRef}
-	{ariaLabel}
+	ariaLabel={ariaLabel ?? t('popupMenuButton.openMenu')}
 	{position}
 	{mobileFullscreen}
-	id={id ? `${id}-menu` : undefined}
+	id={resolvedMenuId}
 />
 
 <style lang="scss">

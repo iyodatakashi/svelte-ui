@@ -25,6 +25,15 @@ export const en = {
 		optionsList: 'Options list',
 		noOptions: 'No matching options'
 	},
+	colorpicker: {
+		chooseColor: 'Choose color'
+	},
+	select: {
+		accessibleName: 'Select option'
+	},
+	slider: {
+		accessibleName: 'Slider'
+	},
 	input: {
 		clear: 'Clear',
 		show_password: 'Show password',
@@ -33,6 +42,9 @@ export const en = {
 		right_icon: 'Right icon',
 		increment: 'Increment',
 		decrement: 'Decrement'
+	},
+	popupMenuButton: {
+		openMenu: 'Open menu'
 	},
 	pagination: {
 		prevPage: 'Go to previous page',

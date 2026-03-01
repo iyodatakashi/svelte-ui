@@ -25,6 +25,15 @@ export const zhCn = {
 		optionsList: '选项列表',
 		noOptions: '没有匹配的选项'
 	},
+	colorpicker: {
+		chooseColor: '选择颜色'
+	},
+	select: {
+		accessibleName: '选择'
+	},
+	slider: {
+		accessibleName: '滑块'
+	},
 	input: {
 		clear: '清除',
 		show_password: '显示密码',
@@ -33,6 +42,9 @@ export const zhCn = {
 		right_icon: '右侧图标',
 		increment: '增加',
 		decrement: '减少'
+	},
+	popupMenuButton: {
+		openMenu: '打开菜单'
 	},
 	pagination: {
 		prevPage: '转到上一页',

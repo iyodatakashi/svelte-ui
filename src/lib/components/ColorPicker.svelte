@@ -23,6 +23,7 @@
 
 		// HTML属性系
 		id?: string;
+		ariaLabel?: string;
 		inputAttributes?: HTMLInputAttributes | undefined;
 
 		// スタイル/レイアウト
@@ -88,6 +89,7 @@
 
 		// HTML属性系
 		id = `colorpicker-${Math.random().toString(36).substring(2, 15)}`,
+		ariaLabel,
 		inputAttributes,
 
 		// スタイル/レイアウト
@@ -397,6 +399,7 @@
 	<div class="color-picker__trigger">
 		<input
 			type="color"
+			aria-label={ariaLabel ?? t('colorpicker.chooseColor')}
 			bind:value
 			onchange={handleValueChange}
 			onfocus={handleFocus}

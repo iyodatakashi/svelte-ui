@@ -165,6 +165,7 @@
 	let listElement = $state<HTMLDivElement>();
 	let comboboxElement = $state<HTMLDivElement>();
 	let popupRef = $state<any>();
+	let isPopupOpen = $state(false);
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 	let isKeyboardNavigation = $state(false);
@@ -382,7 +383,7 @@
 		onpointercancel?.(event);
 	};
 
-	// Popup が閉じられたときの処理
+	// Popup が閉じられたときの処理（isPopupOpen は bind:isOpen で同期される）
 	const handlePopupClose = () => {
 		isFocused = false;
 		highlightedIndex = -1;
@@ -419,10 +420,10 @@
 	class="combobox"
 	class:combobox--full-width={fullWidth}
 	role="combobox"
-	aria-expanded={!!popupRef}
-	aria-controls={listboxId}
+	aria-expanded={isPopupOpen}
+	aria-controls={isPopupOpen ? listboxId : undefined}
 	aria-haspopup="listbox"
-	aria-owns={listboxId}
+	aria-owns={isPopupOpen ? listboxId : undefined}
 	data-testid="combobox"
 >
 	<!-- Inputコンポーネントを使用 -->
@@ -476,11 +477,12 @@
 		{...restProps}
 		role="textbox"
 		aria-autocomplete="list"
-		aria-controls={listboxId}
+		aria-controls={isPopupOpen ? listboxId : undefined}
 	/>
 	<!-- オプションリスト -->
 	<Popup
 		bind:this={popupRef}
+		bind:isOpen={isPopupOpen}
 		anchorElement={comboboxElement}
 		position="bottom-left"
 		mobileFullscreen={false}

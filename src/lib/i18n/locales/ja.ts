@@ -25,6 +25,15 @@ export const ja = {
 		optionsList: 'オプション一覧',
 		noOptions: '該当するオプションがありません'
 	},
+	colorpicker: {
+		chooseColor: '色を選択'
+	},
+	select: {
+		accessibleName: '選択'
+	},
+	slider: {
+		accessibleName: 'スライダー'
+	},
 	input: {
 		clear: 'クリア',
 		show_password: 'パスワードを表示',
@@ -33,6 +42,9 @@ export const ja = {
 		right_icon: '右アイコン',
 		increment: '増やす',
 		decrement: '減らす'
+	},
+	popupMenuButton: {
+		openMenu: 'メニューを開く'
 	},
 	pagination: {
 		prevPage: '前のページへ移動',

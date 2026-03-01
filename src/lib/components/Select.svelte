@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import { t } from '$lib/i18n';
 	import type { HTMLSelectAttributes } from 'svelte/elements';
 	import type {
 		FocusHandler,
@@ -24,6 +25,7 @@
 
 		// HTML属性系
 		id?: string | null;
+		ariaLabel?: string;
 		tabindex?: number | null;
 		placeholder?: string;
 		selectAttributes?: HTMLSelectAttributes | undefined;
@@ -88,6 +90,7 @@
 
 		// HTML属性系
 		id = `select-${Math.random().toString(36).substring(2, 15)}`,
+		ariaLabel,
 		tabindex = null,
 		placeholder = '',
 		selectAttributes,
@@ -294,6 +297,7 @@ select--focus-{focusStyle}"
 		bind:this={selectRef}
 		{id}
 		{name}
+		aria-label={ariaLabel ?? t('select.accessibleName')}
 		bind:value
 		{disabled}
 		{required}
