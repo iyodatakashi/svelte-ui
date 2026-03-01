@@ -27,6 +27,7 @@
 		// 状態/動作
 		isOpen?: boolean;
 		closeIfClickOutside?: boolean;
+		focusFirstOnOpen?: boolean;
 
 		// イベントハンドラー
 		onSubmit?: () => void;
@@ -51,6 +52,7 @@
 		// 状態/動作
 		isOpen = $bindable(false),
 		closeIfClickOutside = true,
+		focusFirstOnOpen = false,
 
 		// イベントハンドラー
 		onSubmit = () => {}, // No params for type inference
@@ -92,6 +94,7 @@
 	{width}
 	{scrollable}
 	{closeIfClickOutside}
+	{focusFirstOnOpen}
 	id={id ? `${id}-dialog` : undefined}
 >
 	<div class="confirm-dialog-message">

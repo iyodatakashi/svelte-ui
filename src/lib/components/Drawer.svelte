@@ -44,6 +44,7 @@
 		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
 		restoreFocus?: boolean;
+		focusFirstOnOpen?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -74,6 +75,7 @@
 		scrollable = false,
 		closeIfClickOutside = true,
 		restoreFocus = false,
+		focusFirstOnOpen = false,
 
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Drawer',
@@ -113,6 +115,7 @@
 		}
 		styles.push('height: 100%');
 		styles.push('min-height: 100%');
+		styles.push(position === 'right' ? 'left: auto' : 'right: auto');
 		styles.push(`${position}: 0`);
 		return styles.join('; ');
 	});
@@ -143,6 +146,7 @@
 	bind:isOpen
 	{closeIfClickOutside}
 	{restoreFocus}
+	{focusFirstOnOpen}
 	componentType="Drawer"
 	{ariaLabel}
 	{ariaLabelledby}

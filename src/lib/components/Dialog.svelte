@@ -43,6 +43,7 @@
 		scrollable?: boolean;
 		closeIfClickOutside?: boolean;
 		restoreFocus?: boolean;
+		focusFirstOnOpen?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -72,6 +73,7 @@
 		scrollable = false,
 		closeIfClickOutside = true,
 		restoreFocus = false,
+		focusFirstOnOpen = false,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -130,6 +132,7 @@
 	bind:isOpen
 	{closeIfClickOutside}
 	{restoreFocus}
+	{focusFirstOnOpen}
 	componentType="Dialog"
 	{ariaLabel}
 	{ariaLabelledby}

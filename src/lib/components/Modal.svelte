@@ -33,6 +33,7 @@
 		isOpen?: boolean;
 		closeIfClickOutside?: boolean;
 		restoreFocus?: boolean;
+		focusFirstOnOpen?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -58,6 +59,7 @@
 		isOpen = $bindable(false),
 		closeIfClickOutside = true,
 		restoreFocus = false,
+		focusFirstOnOpen = false,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -172,19 +174,11 @@
 		dialogRef.showModal();
 
 		setTimeout(() => {
-			const firstFocusableElement = dialogRef?.querySelector(
-				'button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])'
-			) as HTMLElement;
-			firstFocusableElement?.focus();
-
+			if (!focusFirstOnOpen) {
+				dialogRef?.focus();
+			}
 			announceOpenClose(componentType, true, title || ariaLabel || '');
 		}, 0);
-
-		// 自動フォーカス時の枠線制御用クラス
-		dialogRef.classList.add('modal-opening');
-		setTimeout(() => {
-			dialogRef?.classList.remove('modal-opening');
-		}, 100); // 短い時間で制御
 	};
 
 	export const close = (title?: string): void => {
@@ -222,6 +216,7 @@
 	bind:this={dialogRef}
 	class="modal {customClass} {isOpen ? 'fade-in' : 'fade-out'}"
 	style={customStyles}
+	tabindex="-1"
 	aria-modal="true"
 	aria-label={ariaLabel}
 	aria-labelledby={ariaLabelledby}
@@ -268,11 +263,6 @@
 		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
 	}
 
-	/* 自動フォーカス時の枠線制御用 */
-	.modal.modal-opening *:focus {
-		outline: none !important;
-	}
-
 	.modal-contents {
 		width: 100%;
 		height: 100%;
@@ -299,22 +289,21 @@
 		}
 	}
 
-	.fade-in,
-	.fade-in::backdrop {
+	.modal.fade-in:not([class*='drawer-wrapper']),
+	.modal.fade-in:not([class*='drawer-wrapper'])::backdrop {
 		animation: fadeIn var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	.fade-out,
-	.fade-out::backdrop {
+	.modal.fade-out:not([class*='drawer-wrapper']),
+	.modal.fade-out:not([class*='drawer-wrapper'])::backdrop {
 		animation: fadeOut var(--svelte-ui-transition-duration, 300ms) forwards;
 	}
 
-	/* Reduced motion support */
 	@media (prefers-reduced-motion: reduce) {
-		.fade-in,
-		.fade-in::backdrop,
-		.fade-out,
-		.fade-out::backdrop {
+		.modal.fade-in:not([class*='drawer-wrapper']),
+		.modal.fade-in:not([class*='drawer-wrapper'])::backdrop,
+		.modal.fade-out:not([class*='drawer-wrapper']),
+		.modal.fade-out:not([class*='drawer-wrapper'])::backdrop {
 			animation-duration: 0.01s;
 		}
 	}
