@@ -282,6 +282,8 @@
 
 		border-radius: var(--svelte-ui-snackbar-border-radius);
 		box-shadow: var(--svelte-ui-snackbar-shadow);
+		backdrop-filter: var(--svelte-ui-snackbar-backdrop-filter);
+		-webkit-backdrop-filter: var(--svelte-ui-snackbar-backdrop-filter);
 
 		font-size: var(--svelte-ui-snackbar-font-size);
 		line-height: var(--svelte-ui-snackbar-line-height);

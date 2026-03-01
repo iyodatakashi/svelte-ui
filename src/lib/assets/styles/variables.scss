@@ -396,7 +396,10 @@
 	/* Textarea */
 	--svelte-ui-textarea-min-height: var(--svelte-ui-form-height);
 	--svelte-ui-textarea-line-height: 1.8em;
-	--svelte-ui-textarea-padding: calc((var(--svelte-ui-textarea-min-height) - var(--svelte-ui-textarea-line-height)) / 2) 12px;
+	--svelte-ui-textarea-padding: calc(
+			(var(--svelte-ui-textarea-min-height) - var(--svelte-ui-textarea-line-height)) / 2
+		)
+		12px;
 	--svelte-ui-textarea-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-textarea-border-radius-rounded: calc(var(--svelte-ui-textarea-min-height) / 2);
 	--svelte-ui-textarea-bg: var(--svelte-ui-form-bg);
@@ -651,39 +654,80 @@
 	--svelte-ui-snackbar-action-padding: 4px 8px;
 	--svelte-ui-snackbar-action-border-radius: 4px;
 	--svelte-ui-snackbar-content-gap: 8px;
+	--svelte-ui-snackbar-backdrop-filter: blur(12px);
 
 	/* Snackbar default */
-	--svelte-ui-snackbar-default-filled-bg: var(--svelte-ui-surface-inverse-color);
+	--svelte-ui-snackbar-default-filled-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-surface-inverse-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-default-filled-text-color: var(--svelte-ui-text-inverse-color);
-	--svelte-ui-snackbar-default-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-default-outlined-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-surface-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-default-outlined-text-color: var(--svelte-ui-text-color);
-	--svelte-ui-snackbar-default-outlined-border-color: var(--svelte-ui-border-color);
+	--svelte-ui-snackbar-default-outlined-border-color: var(--svelte-ui-surface-inverse-color);
 
 	/* Snackbar info */
-	--svelte-ui-snackbar-info-filled-bg: var(--svelte-ui-info-color);
+	--svelte-ui-snackbar-info-filled-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-info-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-info-filled-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-info-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-info-outlined-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-surface-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-info-outlined-text-color: var(--svelte-ui-info-color);
 	--svelte-ui-snackbar-info-outlined-border-color: var(--svelte-ui-info-color);
 
 	/* Snackbar success */
-	--svelte-ui-snackbar-success-filled-bg: var(--svelte-ui-success-color);
+	--svelte-ui-snackbar-success-filled-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-success-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-success-filled-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-success-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-success-outlined-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-surface-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-success-outlined-text-color: var(--svelte-ui-success-color);
 	--svelte-ui-snackbar-success-outlined-border-color: var(--svelte-ui-success-color);
 
 	/* Snackbar warning */
-	--svelte-ui-snackbar-warning-filled-bg: var(--svelte-ui-warning-color);
+	--svelte-ui-snackbar-warning-filled-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-warning-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-warning-filled-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-warning-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-warning-outlined-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-surface-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-warning-outlined-text-color: var(--svelte-ui-warning-color);
 	--svelte-ui-snackbar-warning-outlined-border-color: var(--svelte-ui-warning-color);
 
 	/* Snackbar error */
-	--svelte-ui-snackbar-error-filled-bg: var(--svelte-ui-error-color);
+	--svelte-ui-snackbar-error-filled-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-error-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-error-filled-text-color: var(--svelte-ui-text-on-filled-color);
-	--svelte-ui-snackbar-error-outlined-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-snackbar-error-outlined-bg: color-mix(
+		in srgb,
+		var(--svelte-ui-surface-color) 85%,
+		transparent
+	);
 	--svelte-ui-snackbar-error-outlined-text-color: var(--svelte-ui-error-color);
 	--svelte-ui-snackbar-error-outlined-border-color: var(--svelte-ui-error-color);
 
