@@ -3,7 +3,7 @@
 <script lang="ts">
 	import TabItem from './TabItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
-	import { afterNavigate } from '$app/navigation';
+	import { subscribeUrlChange } from '$lib/utils/urlChange';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -45,6 +45,21 @@
 	let resolvedCurrentPath = $state('');
 
 	// =========================================================================
+	// Effects
+	// =========================================================================
+	$effect(() => {
+		// props の currentPath が変更されたとき
+		resolvedCurrentPath = getCurrentPath();
+	});
+
+	$effect(() => {
+		// URL の変更を subscribe
+		return subscribeUrlChange(() => {
+			resolvedCurrentPath = getCurrentPath();
+		});
+	});
+
+	// =========================================================================
 	// Methods
 	// =========================================================================
 	const getCurrentPath = () => {
@@ -57,17 +72,9 @@
 		if (typeof window !== 'undefined') {
 			return window.location.pathname;
 		}
+
 		return '';
 	};
-
-	// currentPath が渡されたときやマウント時に選択状態を反映
-	$effect(() => {
-		resolvedCurrentPath = getCurrentPath();
-	});
-
-	afterNavigate(() => {
-		resolvedCurrentPath = getCurrentPath();
-	});
 
 	// パスの正規化処理
 	const normalizePath = (path: string): string => {
@@ -108,11 +115,6 @@
 		// その他のパス
 		return normalizedCurrentPath !== '' && normalizedCurrentPath.startsWith(itemHref);
 	};
-
-	// 有効なタブのインデックス一覧（disabled を除く）
-	const enabledIndices = $derived(
-		tabItems.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
-	);
 
 	// シンプルなキーボードナビゲーション（disabled タブはスキップ）
 	const handleKeyDown = (event: KeyboardEvent) => {
@@ -171,6 +173,11 @@
 		}
 		return -1;
 	});
+
+	// 有効なタブのインデックス一覧（disabled を除く）
+	const enabledIndices = $derived(
+		tabItems.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
+	);
 </script>
 
 <div
