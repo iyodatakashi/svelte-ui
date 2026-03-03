@@ -71,23 +71,19 @@
 		return `${pathPrefix}${tabItem.href.startsWith('/') ? '' : '/'}${tabItem.href}`;
 	});
 
-	// 明示的に渡されたときだけ style で上書き。未渡しなら variables の tab 用変数をそのまま参照
-	const tabItemStyle = $derived.by(() => {
-		const parts: string[] = [];
-		if (textColor !== undefined) parts.push(`--svelte-ui-tab-item-text-color: ${textColor}`);
-		if (selectedTextColor !== undefined)
-			parts.push(`--svelte-ui-tab-item-selected-text-color: ${selectedTextColor}`);
-		if (selectedBarColor !== undefined)
-			parts.push(`--svelte-ui-tab-item-selected-bar-color: ${selectedBarColor}`);
-		return parts.length > 0 ? parts.join('; ') : undefined;
-	});
+	// 明示的に渡されたときだけ内部CSS変数で上書き。未渡しなら variables の tab 用変数をそのまま参照
+	const internalTextColor = $derived(textColor);
+	const internalSelectedTextColor = $derived(selectedTextColor);
+	const internalSelectedBarColor = $derived(selectedBarColor);
 </script>
 
 {#if isDisabled}
 	<span
 		class="tab-item tab-item--disabled"
 		class:tab-item--selected={isSelected}
-		style={tabItemStyle}
+		style:--internal-tab-item-text-color={internalTextColor}
+		style:--internal-tab-item-selected-text-color={internalSelectedTextColor}
+		style:--internal-tab-item-selected-bar-color={internalSelectedBarColor}
 		role="tab"
 		aria-selected={isSelected}
 		aria-disabled="true"
@@ -116,7 +112,9 @@
 		href={hrefWithPrefix}
 		class="tab-item"
 		class:tab-item--selected={isSelected}
-		style={tabItemStyle}
+		style:--internal-tab-item-text-color={internalTextColor}
+		style:--internal-tab-item-selected-text-color={internalSelectedTextColor}
+		style:--internal-tab-item-selected-bar-color={internalSelectedBarColor}
 		role="tab"
 		aria-selected={isSelected}
 		tabindex={0}
@@ -149,7 +147,10 @@
 		gap: var(--svelte-ui-tab-item-icon-gap);
 		position: relative;
 		padding: var(--svelte-ui-tab-item-padding);
-		color: var(--svelte-ui-tab-item-text-color);
+		color: var(
+			--internal-tab-item-text-color,
+			var(--svelte-ui-tab-item-text-color)
+		);
 		white-space: nowrap;
 		text-decoration: none;
 		transition-property: background-color, color, outline;
@@ -159,7 +160,10 @@
 
 	@media (hover: hover) {
 		.tab-item:hover:not(.tab-item--selected) {
-			color: var(--svelte-ui-tab-item-selected-text-color);
+			color: var(
+				--internal-tab-item-selected-text-color,
+				var(--svelte-ui-tab-item-selected-text-color)
+			);
 		}
 
 		.tab-item:hover:not(.tab-item--selected)::before {
@@ -181,7 +185,10 @@
 		}
 
 		.tab-item:focus:not(.tab-item--selected) {
-			color: var(--svelte-ui-tab-item-selected-text-color);
+			color: var(
+				--internal-tab-item-selected-text-color,
+				var(--svelte-ui-tab-item-selected-text-color)
+			);
 		}
 
 		.tab-item:focus:not(.tab-item--selected)::before {
@@ -198,7 +205,10 @@
 		bottom: 0;
 		width: calc(100% - 2 * var(--svelte-ui-tab-item-padding-x) + 2 * var(--svelte-ui-tab-item-selected-bar-offset));
 		height: var(--svelte-ui-tab-item-selected-bar-height);
-		background-color: var(--svelte-ui-tab-item-selected-bar-color);
+		background-color: var(
+			--internal-tab-item-selected-bar-color,
+			var(--svelte-ui-tab-item-selected-bar-color)
+		);
 		border-radius: var(--svelte-ui-tab-item-selected-bar-radius);
 		opacity: 0;
 		transition-property: opacity;
@@ -206,7 +216,10 @@
 	}
 
 	.tab-item--selected {
-		color: var(--svelte-ui-tab-item-selected-text-color);
+		color: var(
+			--internal-tab-item-selected-text-color,
+			var(--svelte-ui-tab-item-selected-text-color)
+		);
 		background-color: transparent;
 	}
 

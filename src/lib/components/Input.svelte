@@ -672,7 +672,9 @@
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
 	data-testid="input"
-	style="width: {widthStyle}; max-width: {maxWidthStyle}; min-width: {minWidthStyle}"
+	style:width={widthStyle}
+	style:max-width={maxWidthStyle}
+	style:min-width={minWidthStyle}
 >
 	<!-- 表示用テキスト -->
 	<div class="input__display-text" style={customStyle}>

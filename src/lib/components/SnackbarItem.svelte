@@ -146,22 +146,33 @@
 
 <div
 	bind:this={snackbarRef}
-	class="snackbar-item snackbar-item--{position} {visible ? '' : 'snackbar-item--hidden'}"
+	class="snackbar-item"
+	class:snackbar-item--top={position === 'top'}
+	class:snackbar-item--bottom={position === 'bottom'}
+	class:snackbar-item--hidden={!visible}
 	data-testid="snackbar-item"
 >
 	<div
-		class="snackbar-item__content snackbar-item__content--{type} snackbar-item__content--{variant} snackbar-item__content--{position} {visible
-			? 'snackbar-item__content--visible'
-			: ''}"
-		style="--internal-snackbar-item-custom-color: {color ??
-			'unset'}; --internal-snackbar-item-custom-text-color: {textColor ?? 'unset'};"
+		class="snackbar-item__content"
+		class:snackbar-item__content--info={type === 'info'}
+		class:snackbar-item__content--success={type === 'success'}
+		class:snackbar-item__content--warning={type === 'warning'}
+		class:snackbar-item__content--error={type === 'error'}
+		class:snackbar-item__content--default={type === 'default'}
+		class:snackbar-item__content--filled={variant === 'filled'}
+		class:snackbar-item__content--outlined={variant === 'outlined'}
+		class:snackbar-item__content--top={position === 'top'}
+		class:snackbar-item__content--bottom={position === 'bottom'}
+		class:snackbar-item__content--visible={visible}
+		style:--internal-snackbar-item-custom-color={color ?? 'unset'}
+		style:--internal-snackbar-item-custom-text-color={textColor ?? 'unset'}
 		role={type === 'error' || type === 'warning' ? 'alert' : 'status'}
 		aria-live={type === 'error' || type === 'warning' ? 'assertive' : 'polite'}
 		aria-atomic="true"
 		aria-hidden={!visible}
 	>
 		{#if typeIcons[type]}
-			<div class="snackbar__icon" aria-hidden="true">
+			<div class="snackbar-item__icon" aria-hidden="true">
 				<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
 			</div>
 		{/if}

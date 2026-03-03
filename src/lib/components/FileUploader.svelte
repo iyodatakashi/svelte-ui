@@ -259,6 +259,7 @@
 	// $derived
 	// =========================================================================
 	const widthStyle = $derived(getStyleFromNumber(width) || '100%');
+	const heightStyle = $derived(getStyleFromNumber(height));
 </script>
 
 <button
@@ -266,10 +267,8 @@
 	class="file-uploader"
 	class:file-uploader--hover={isHover}
 	class:rounded
-	style="
-		--svelte-ui-file-uploader-width: {widthStyle};
-		--svelte-ui-file-uploader-height: {height}px
-	"
+	style:--internal-file-uploader-width={widthStyle}
+	style:--internal-file-uploader-height={heightStyle}
 	data-testid="file-uploader"
 	onclick={handleClick}
 	onfocus={handleFocus}
@@ -380,8 +379,14 @@
 		align-items: center;
 		gap: 16px;
 		position: relative;
-		width: var(--svelte-ui-file-uploader-width, 100%);
-		height: var(--svelte-ui-file-uploader-height);
+		width: var(
+			--internal-file-uploader-width,
+			var(--svelte-ui-file-uploader-width, 100%)
+		);
+		height: var(
+			--internal-file-uploader-height,
+			var(--svelte-ui-file-uploader-height, auto)
+		);
 		min-height: 100px;
 		padding: 16px;
 		background-color: var(--svelte-ui-file-uploader-bg);

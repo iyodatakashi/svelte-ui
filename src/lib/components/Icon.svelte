@@ -76,24 +76,24 @@
 		`'FILL' ${filled ? 1 : 0}, 'wght' ${weight}, 'GRAD' ${grade}, 'opsz' ${opticalSize}`
 	);
 
+	const sizeStyle = $derived(getStyleFromNumber(size));
+	const colorStyle = $derived(color || undefined);
+
 	const ariaAttributes = $derived({
 		'aria-hidden': decorative && !ariaLabel ? true : undefined,
 		'aria-label': ariaLabel || undefined,
 		role: !decorative && ariaLabel ? 'img' : undefined
 	});
-
-	const iconStyle = $derived.by(() => {
-		const sizeStyle = getStyleFromNumber(size);
-		return `width: ${sizeStyle}; height: ${sizeStyle}; font-size: ${sizeStyle}; 
-		color: ${color}; 
-		font-variation-settings: ${fontVariationSettings}; 
-		${customStyle}`;
-	});
 </script>
 
 <i
 	class={iconClasses}
-	style={iconStyle}
+	style:width={sizeStyle}
+	style:height={sizeStyle}
+	style:font-size={sizeStyle}
+	style:color={colorStyle}
+	style:font-variation-settings={fontVariationSettings}
+	style={customStyle}
 	{title}
 	{...ariaAttributes}
 	{...restProps}
@@ -106,6 +106,8 @@
 	<!-- Unicode文字での代替表示 -->
 	<span
 		class="icon-fallback-text"
+		style:font-size={sizeStyle}
+		style:color={colorStyle}
 		style={customStyle}
 		{...ariaAttributes}
 		{...restProps}

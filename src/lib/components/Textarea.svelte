@@ -524,13 +524,16 @@
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
 	data-testid="textarea"
-	style="width: {widthStyle}; {!inline ? `max-height: ${maxHeightStyle};` : ''}"
+	style:width={widthStyle}
+	style:max-height={!inline ? maxHeightStyle : undefined}
 >
 	<div
 		bind:this={displayTextRef}
 		class="textarea__display-text"
 		class:textarea__display-text--placeholder={!hasDisplayValue}
-		style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
+		style:min-height={minHeightStyle}
+		style:max-height={maxHeightStyle}
+		style={customStyle}
 	>
 		{@html displayValue}
 	</div>
@@ -552,7 +555,8 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style="min-height: {minHeightStyle}; {customStyle}"
+			style:min-height={minHeightStyle}
+			style={customStyle}
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -587,7 +591,9 @@
 		<div
 			bind:this={linkTextRef}
 			class="textarea__link-text"
-			style="min-height: {minHeightStyle}; max-height: {maxHeightStyle}; {customStyle}"
+			style:min-height={minHeightStyle}
+			style:max-height={maxHeightStyle}
+			style={customStyle}
 		>
 			{@html linkHtmlValue}
 		</div>

@@ -307,10 +307,11 @@
 	class:fab--shadow={shadow}
 	class:fab--loading={loading}
 	class:fab--no-motion={reducedMotion}
-	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
-		--fab-bottom: {bottomOffsetStyle};
-		--fab-side: {sideOffsetStyle};
-		{customStyle ?? ''};"
+	style:color={textColors[variant]}
+	style:background-color={backgroundColors[variant]}
+	style:--internal-fab-bottom={bottomOffsetStyle}
+	style:--internal-fab-side={sideOffsetStyle}
+	style={customStyle}
 	onclick={handleClick}
 	onfocus={handleFocus}
 	onblur={handleBlur}
@@ -369,7 +370,7 @@
 		justify-content: center;
 		align-items: center;
 		position: fixed;
-		bottom: var(--fab-bottom, 24px);
+		bottom: var(--internal-fab-bottom, 24px);
 		height: 56px;
 		padding: 0 20px;
 		background-color: transparent;
@@ -386,7 +387,7 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 
 		&.fab--left {
-			left: var(--fab-side, 24px);
+			left: var(--internal-fab-side, 24px);
 		}
 
 		&.fab--center {
@@ -395,11 +396,11 @@
 		}
 
 		&.fab--right {
-			right: var(--fab-side, 24px);
+			right: var(--internal-fab-side, 24px);
 		}
 
 		&.fab--safe-area {
-			bottom: calc(var(--fab-bottom, 24px) + env(safe-area-inset-bottom, 0px));
+			bottom: calc(var(--internal-fab-bottom, 24px) + env(safe-area-inset-bottom, 0px));
 		}
 
 		& > * {

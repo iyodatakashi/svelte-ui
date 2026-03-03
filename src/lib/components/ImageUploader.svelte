@@ -337,10 +337,8 @@
 	class:image-uploader--multiple={multiple}
 	class:image-uploader--rounded={rounded}
 	class:image-uploader--adaptive={previewAdaptive}
-	style="
-			--svelte-ui-image-uploader-button-width: {previewWidthStyle};
-			--svelte-ui-image-uploader-button-height: {previewHeightStyle};
-		"
+	style:--internal-image-uploader-button-width={previewWidthStyle}
+	style:--internal-image-uploader-button-height={previewHeightStyle}
 	data-testid="image-uploader"
 >
 	{#if multiple}
@@ -446,8 +444,14 @@
 		align-items: center;
 		position: relative;
 		max-width: 100%;
-		min-width: var(--svelte-ui-image-uploader-button-width);
-		min-height: var(--svelte-ui-image-uploader-button-height);
+		min-width: var(
+			--internal-image-uploader-button-width,
+			var(--svelte-ui-image-uploader-button-width)
+		);
+		min-height: var(
+			--internal-image-uploader-button-height,
+			var(--svelte-ui-image-uploader-button-height)
+		);
 		padding: 16px;
 		background-color: var(--svelte-ui-form-bg);
 		border-radius: var(--svelte-ui-border-radius);

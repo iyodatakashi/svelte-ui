@@ -284,28 +284,19 @@
 		oninput?.(value);
 	};
 
-	// パーセンテージ計算
+	// パーセンテージ計算（将来の表示用に保持）
 	const percentage = $derived(((value - min) / (max - min)) * 100);
 
 	// スタイル計算
-	const thumbColorStyle = $derived(
-		thumbColor ? `--svelte-ui-slider-thumb-background: ${thumbColor};` : ''
-	);
-
-	const thumbWidthStyle = $derived(
-		thumbWidth ? `--svelte-ui-slider-thumb-width: ${getStyleFromNumber(thumbWidth)};` : ''
-	);
-
-	const thumbHeightStyle = $derived(
-		thumbHeight ? `--svelte-ui-slider-thumb-height: ${getStyleFromNumber(thumbHeight)};` : ''
-	);
-
-	const sliderWidthStyle = $derived(width ? `width: ${getStyleFromNumber(width)};` : '');
-
+	const sliderWidthStyle = $derived(width ? getStyleFromNumber(width) : undefined);
 	const sliderHeightStyle = $derived(
-		thumbHeight
-			? `height: ${getStyleFromNumber(thumbHeight)};`
-			: 'height: var(--svelte-ui-slider-thumb-height);'
+		thumbHeight ? getStyleFromNumber(thumbHeight) : 'var(--svelte-ui-slider-thumb-height)'
+	);
+	const thumbWidthStyle = $derived(
+		thumbWidth ? getStyleFromNumber(thumbWidth) : undefined
+	);
+	const thumbHeightStyle = $derived(
+		thumbHeight ? getStyleFromNumber(thumbHeight) : undefined
 	);
 </script>
 
@@ -315,7 +306,12 @@
 	class:slider--disabled={disabled}
 	class:slider--focused={isFocused}
 	data-testid="slider"
-	style="{sliderWidthStyle} {sliderHeightStyle} {thumbColorStyle} {thumbWidthStyle} {thumbHeightStyle} {customStyle}"
+	style:width={sliderWidthStyle}
+	style:height={sliderHeightStyle}
+	style:--internal-slider-thumb-background={thumbColor}
+	style:--internal-slider-thumb-width={thumbWidthStyle}
+	style:--internal-slider-thumb-height={thumbHeightStyle}
+	style={customStyle}
 >
 	<input
 		{id}
@@ -382,7 +378,10 @@
 	 * ============================================= */
 	.slider__input {
 		width: 100%;
-		height: var(--svelte-ui-slider-track-height);
+		height: var(
+			--internal-slider-track-height,
+			var(--svelte-ui-slider-track-height)
+		);
 		margin: 0;
 		background: var(--svelte-ui-slider-track-background);
 		border-radius: var(--svelte-ui-slider-track-border-radius);
@@ -395,17 +394,35 @@
 	/* Track styles */
 	.slider__input::-webkit-slider-track {
 		width: 100%;
-		height: var(--svelte-ui-slider-track-height);
-		background: var(--svelte-ui-slider-track-background);
-		border-radius: var(--svelte-ui-slider-track-border-radius);
+		height: var(
+			--internal-slider-track-height,
+			var(--svelte-ui-slider-track-height)
+		);
+		background: var(
+			--internal-slider-track-background,
+			var(--svelte-ui-slider-track-background)
+		);
+		border-radius: var(
+			--internal-slider-track-border-radius,
+			var(--svelte-ui-slider-track-border-radius)
+		);
 		border: none;
 	}
 
 	.slider__input::-moz-range-track {
 		width: 100%;
-		height: var(--svelte-ui-slider-track-height);
-		background: var(--svelte-ui-slider-track-background);
-		border-radius: var(--svelte-ui-slider-track-border-radius);
+		height: var(
+			--internal-slider-track-height,
+			var(--svelte-ui-slider-track-height)
+		);
+		background: var(
+			--internal-slider-track-background,
+			var(--svelte-ui-slider-track-background)
+		);
+		border-radius: var(
+			--internal-slider-track-border-radius,
+			var(--svelte-ui-slider-track-border-radius)
+		);
 		border: none;
 	}
 
@@ -413,21 +430,51 @@
 	.slider__input::-webkit-slider-thumb {
 		-webkit-appearance: none;
 		appearance: none;
-		width: var(--svelte-ui-slider-thumb-width);
-		height: var(--svelte-ui-slider-thumb-height);
-		background: var(--svelte-ui-slider-thumb-background);
-		border-radius: var(--svelte-ui-slider-thumb-border-radius);
-		border: var(--svelte-ui-slider-thumb-border);
+		width: var(
+			--internal-slider-thumb-width,
+			var(--svelte-ui-slider-thumb-width)
+		);
+		height: var(
+			--internal-slider-thumb-height,
+			var(--svelte-ui-slider-thumb-height)
+		);
+		background: var(
+			--internal-slider-thumb-background,
+			var(--svelte-ui-slider-thumb-background)
+		);
+		border-radius: var(
+			--internal-slider-thumb-border-radius,
+			var(--svelte-ui-slider-thumb-border-radius)
+		);
+		border: var(
+			--internal-slider-thumb-border,
+			var(--svelte-ui-slider-thumb-border)
+		);
 		cursor: pointer;
 		box-shadow: var(--svelte-ui-slider-thumb-shadow);
 	}
 
 	.slider__input::-moz-range-thumb {
-		width: var(--svelte-ui-slider-thumb-width);
-		height: var(--svelte-ui-slider-thumb-height);
-		background: var(--svelte-ui-slider-thumb-background);
-		border-radius: var(--svelte-ui-slider-thumb-border-radius);
-		border: var(--svelte-ui-slider-thumb-border);
+		width: var(
+			--internal-slider-thumb-width,
+			var(--svelte-ui-slider-thumb-width)
+		);
+		height: var(
+			--internal-slider-thumb-height,
+			var(--svelte-ui-slider-thumb-height)
+		);
+		background: var(
+			--internal-slider-thumb-background,
+			var(--svelte-ui-slider-thumb-background)
+		);
+		border-radius: var(
+			--internal-slider-thumb-border-radius,
+			var(--svelte-ui-slider-thumb-border-radius)
+		);
+		border: var(
+			--internal-slider-thumb-border,
+			var(--svelte-ui-slider-thumb-border)
+		);
 		cursor: pointer;
 		box-shadow: var(--svelte-ui-slider-thumb-shadow);
 	}
