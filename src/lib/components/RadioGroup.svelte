@@ -73,11 +73,10 @@
 
 <ul
 	class="radio-group"
-	style="--svelte-ui-radio-group-flex-direction: {direction === 'vertical' ? 'column' : 'row'};
-    {gapStyle ? `--svelte-ui-radio-group-gap: ${gapStyle};` : ''}
-    --svelte-ui-radio-group-wrap: {wrap ? 'wrap' : 'none'};
-    --svelte-ui-radio-group-min-option-width: {minOptionWidthStyle}
-    "
+	style:--internal-radio-group-flex-direction={direction === 'vertical' ? 'column' : 'row'}
+	style:--internal-radio-group-gap={gapStyle}
+	style:--internal-radio-group-wrap={wrap ? 'wrap' : 'none'}
+	style:--internal-radio-group-min-option-width={minOptionWidthStyle}
 >
 	{#each options as option (option.value)}
 		<li class="radio-group__option">
@@ -100,12 +99,18 @@
 <style>
 	.radio-group {
 		display: flex;
-		flex-direction: var(--svelte-ui-radio-group-flex-direction);
-		gap: var(--svelte-ui-radio-group-gap);
-		flex-wrap: var(--svelte-ui-radio-group-wrap);
+		flex-direction: var(
+			--internal-radio-group-flex-direction,
+			var(--svelte-ui-radio-group-flex-direction)
+		);
+		gap: var(--internal-radio-group-gap, var(--svelte-ui-radio-group-gap));
+		flex-wrap: var(--internal-radio-group-wrap, var(--svelte-ui-radio-group-wrap));
 	}
 
 	.radio-group__option {
-		min-width: var(--svelte-ui-radio-group-min-option-width);
+		min-width: var(
+			--internal-radio-group-min-option-width,
+			var(--svelte-ui-radio-group-min-option-width)
+		);
 	}
 </style>

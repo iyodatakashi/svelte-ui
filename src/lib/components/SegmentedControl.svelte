@@ -399,7 +399,7 @@
 	role="radiogroup"
 	aria-label={ariaLabelledby ? undefined : ariaLabel}
 	aria-labelledby={ariaLabelledby}
-	style="--svelte-ui-segmented-control-selected-bg: {color || 'var(--svelte-ui-primary-color)'};"
+	style:--internal-segmented-control-selected-bg={color || 'var(--svelte-ui-primary-color)'}
 	{id}
 	data-testid="segmented-control"
 	{...restProps}
@@ -608,7 +608,10 @@
 
 	.segmented-control__input:checked + .segmented-control__label,
 	.segmented-control__label--selected {
-		background-color: var(--svelte-ui-segmented-control-selected-bg);
+		background-color: var(
+			--internal-segmented-control-selected-bg,
+			var(--svelte-ui-segmented-control-selected-bg)
+		);
 		color: var(--svelte-ui-segmented-control-selected-text-color, white);
 	}
 

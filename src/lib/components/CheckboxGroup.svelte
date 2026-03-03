@@ -87,11 +87,10 @@
 
 <ul
 	class="checkbox-group"
-	style="--svelte-ui-checkbox-group-flex-direction: {direction === 'vertical' ? 'column' : 'row'};
-    {gapStyle ? `--svelte-ui-checkbox-group-gap: ${gapStyle};` : ''}
-    --svelte-ui-checkbox-group-wrap: {wrap ? 'wrap' : 'none'};
-    --svelte-ui-checkbox-group-min-option-width: {minOptionWidthStyle}
-    "
+	style:--internal-checkbox-group-flex-direction={direction === 'vertical' ? 'column' : 'row'}
+	style:--internal-checkbox-group-gap={gapStyle}
+	style:--internal-checkbox-group-wrap={wrap ? 'wrap' : 'none'}
+	style:--internal-checkbox-group-min-option-width={minOptionWidthStyle}
 >
 	{#each options as option (option.value)}
 		{#if localValues[String(option.value)] !== undefined}
@@ -114,12 +113,18 @@
 <style>
 	.checkbox-group {
 		display: flex;
-		flex-direction: var(--svelte-ui-checkbox-group-flex-direction);
-		gap: var(--svelte-ui-checkbox-group-gap);
-		flex-wrap: var(--svelte-ui-checkbox-group-wrap);
+		flex-direction: var(
+			--internal-checkbox-group-flex-direction,
+			var(--svelte-ui-checkbox-group-flex-direction)
+		);
+		gap: var(--internal-checkbox-group-gap, var(--svelte-ui-checkbox-group-gap));
+		flex-wrap: var(--internal-checkbox-group-wrap, var(--svelte-ui-checkbox-group-wrap));
 	}
 
 	.checkbox-group__option {
-		min-width: var(--svelte-ui-checkbox-group-min-option-width);
+		min-width: var(
+			--internal-checkbox-group-min-option-width,
+			var(--svelte-ui-checkbox-group-min-option-width)
+		);
 	}
 </style>
