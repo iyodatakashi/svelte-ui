@@ -328,9 +328,10 @@
 	{type}
 	disabled={isDisabled}
 	class={buttonClasses}
-	style="color: {textColors[variant]}; background-color: {backgroundColors[variant]}; 
-		min-width: {minWidthStyle}; 
-		{customStyle ?? ''};"
+	style:color={textColors[variant]}
+	style:background-color={backgroundColors[variant]}
+	style:min-width={minWidthStyle}
+	style={customStyle}
 	onclick={handleClick}
 	onauxclick={handleAuxClick}
 	onfocus={handleFocus}
