@@ -5,7 +5,7 @@ const meta = {
 	title: 'UI/LoadingSpinner',
 	component: LoadingSpinner,
 	parameters: {
-		layout: 'centered',
+		layout: 'padded',
 		docs: {
 			description: {
 				component:
