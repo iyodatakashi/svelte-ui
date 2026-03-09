@@ -37,9 +37,6 @@
 		// ARIA/アクセシビリティ
 		reducedMotion?: boolean;
 
-		// 入力イベント
-		onchange?: (value: boolean) => void;
-
 		// フォーカスイベント
 		onfocus?: FocusHandler;
 		onblur?: FocusHandler;
@@ -73,6 +70,9 @@
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
 
+		// 入力イベント
+		onchange?: (value: boolean) => void;
+
 		// その他
 		[key: string]: any;
 	};
@@ -99,9 +99,6 @@
 
 		// ARIA/アクセシビリティ
 		reducedMotion = false,
-
-		// 入力イベント
-		onchange = () => {}, // No params for type inference
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -135,6 +132,9 @@
 		onpointerleave = () => {}, // No params for type inference
 		onpointermove = () => {}, // No params for type inference
 		onpointercancel = () => {}, // No params for type inference
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
 
 		// その他
 		...restProps

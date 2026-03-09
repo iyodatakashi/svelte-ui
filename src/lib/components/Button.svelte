@@ -141,7 +141,7 @@
 		onkeyup = () => {}, // No params for type inference
 
 		// マウスイベント
-		onclick,
+		onclick = () => {}, // No params for type inference
 		onmousedown = () => {}, // No params for type inference
 		onmouseup = () => {}, // No params for type inference
 		onmouseenter = () => {}, // No params for type inference
