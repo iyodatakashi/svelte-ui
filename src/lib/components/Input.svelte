@@ -889,7 +889,6 @@
 		text-align: inherit;
 
 		&[type='number'] {
-			text-align: right;
 			&::-webkit-outer-spin-button,
 			&::-webkit-inner-spin-button {
 				-webkit-appearance: none;
@@ -918,10 +917,15 @@
 		transition: none;
 	}
 
+	.input__display-text-content {
+		width: 100%;
+	}
+
 	.input__link-text {
 		position: absolute;
 		top: 0;
 		left: 0;
+		width: 100%;
 		height: 100%;
 		pointer-events: none;
 		z-index: 1;
@@ -1129,13 +1133,6 @@
 	/* =============================================
  * タイプ別スタイル
  * ============================================= */
-	/* type-number */
-	.input--type-number {
-		.input__display-text {
-			justify-content: flex-end;
-		}
-	}
-
 	/* type-password: セキュリティのため常にinputを表示（display-textは非表示） */
 	.input--type-password {
 		/* inputを常に表示（表示制御の非フォーカス時の不可視化を上書き） */
