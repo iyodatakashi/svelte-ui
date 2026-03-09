@@ -378,6 +378,7 @@ select--focus-{focusStyle}"
 		color: inherit;
 		line-height: inherit;
 		text-align: inherit;
+		cursor: pointer;
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
