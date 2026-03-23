@@ -335,7 +335,7 @@
    * ============================================= */
 
 	.switch {
-		display: flex;
+		display: inline-flex;
 		align-items: center;
 		width: fit-content;
 		contain: layout;
