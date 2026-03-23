@@ -5,6 +5,15 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.21] - 2026-03-10
+
+### Changed
+
+- **Input**: Number type inputs no longer force right-aligned text; alignment now inherits from the parent element.
+- **Select**: Added `cursor: pointer` on hover.
+- **Button, Checkbox, Radio**: Minor coding consistency fixes.
+- **LoadingSpinner**: Now fills 100% × 100% of its container and is always centered; CSS variables reorganized.
+
 ## [0.0.20] - 2026-03-02
 
 ### Changed
