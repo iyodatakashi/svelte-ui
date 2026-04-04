@@ -33,8 +33,6 @@
 		wrap?: 'soft' | 'hard' | null;
 		spellcheck?: boolean | null;
 		autocapitalize?: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | null;
-		textareaAttributes?: HTMLTextareaAttributes | undefined;
-
 		// スタイル/レイアウト
 		rows?: number;
 		minHeight?: string | number | null;
@@ -119,7 +117,6 @@
 		wrap = null,
 		spellcheck = null,
 		autocapitalize = null,
-		textareaAttributes,
 
 		// スタイル/レイアウト
 		rows = 3,
@@ -583,7 +580,6 @@
 			onpointermove={handlePointerMove}
 			onpointercancel={handlePointerCancel}
 			onscroll={handleScroll}
-			{...textareaAttributes}
 			{...restProps}
 		></textarea>
 	</div>

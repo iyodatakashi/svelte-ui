@@ -3,7 +3,6 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import { t } from '$lib/i18n';
-	import type { HTMLSelectAttributes } from 'svelte/elements';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -28,8 +27,6 @@
 		ariaLabel?: string;
 		tabindex?: number | null;
 		placeholder?: string;
-		selectAttributes?: HTMLSelectAttributes | undefined;
-
 		// スタイル/レイアウト
 		size?: number | null;
 		inline?: boolean;
@@ -93,7 +90,6 @@
 		ariaLabel,
 		tabindex = null,
 		placeholder = '',
-		selectAttributes,
 
 		// スタイル/レイアウト
 		size = null,
@@ -328,7 +324,6 @@ select--focus-{focusStyle}"
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
 		onchange={handleChange}
-		{...selectAttributes}
 		{...restProps}
 	>
 		<!-- プレースホルダーオプション -->

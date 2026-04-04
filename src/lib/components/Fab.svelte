@@ -21,7 +21,6 @@
 	// =========================================================================
 	export type FabProps = {
 		children?: Snippet;
-		buttonAttributes?: HTMLButtonAttributes | undefined;
 		type?: HTMLButtonAttributes['type'];
 		customStyle?: HTMLButtonAttributes['style'];
 		disabled?: boolean;
@@ -83,7 +82,6 @@
 
 		// HTML属性系
 		type = 'button',
-		buttonAttributes,
 
 		// スタイル/レイアウト
 		customStyle,
@@ -293,7 +291,6 @@
 <button
 	{type}
 	disabled={disabled || loading}
-	{...buttonAttributes}
 	{...restProps}
 	class="fab"
 	class:fab--outlined={variant === 'outlined'}

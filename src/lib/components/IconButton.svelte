@@ -24,7 +24,6 @@
 		children: Snippet;
 
 		// HTML属性系
-		buttonAttributes?: HTMLButtonAttributes | undefined;
 		type?: 'button' | 'submit' | 'reset' | null | undefined;
 		tabindex?: number | null;
 
@@ -104,7 +103,6 @@
 		children,
 
 		// HTML属性系
-		buttonAttributes,
 		type = 'button',
 		tabindex = null,
 
@@ -373,7 +371,6 @@
 		aria-pressed={ariaPressed !== undefined ? ariaPressed : pressed ? 'true' : undefined}
 		aria-busy={loading ? 'true' : undefined}
 		data-testid="icon-button"
-		{...buttonAttributes}
 		{...restProps}
 	>
 		{#if loading}
