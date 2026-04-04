@@ -1,7 +1,6 @@
 <!-- Slider.svelte -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import { t } from '$lib/i18n';
 	import type {
@@ -26,8 +25,6 @@
 		min?: number;
 		max?: number;
 		step?: number;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
 		// スタイル/レイアウト
 		width?: string | number | null;
 		fullWidth?: boolean;
@@ -91,7 +88,6 @@
 		min = 0,
 		max = 100,
 		step = 1,
-		inputAttributes,
 
 		// スタイル/レイアウト
 		width = null,
@@ -350,7 +346,6 @@
 		onpointerleave={handlePointerLeave}
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
-		{...inputAttributes}
 		{...restProps}
 	/>
 </div>

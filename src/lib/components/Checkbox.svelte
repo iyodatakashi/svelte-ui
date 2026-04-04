@@ -2,7 +2,6 @@
 
 <script lang="ts">
 	import { type Snippet } from 'svelte';
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -25,8 +24,6 @@
 
 		// HTML属性系
 		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
 		// スタイル/レイアウト
 		size?: 'small' | 'medium' | 'large';
 
@@ -88,7 +85,6 @@
 
 		// HTML属性系
 		id = `checkbox-${Math.random().toString(36).substring(2, 15)}`,
-		inputAttributes,
 
 		// スタイル/レイアウト
 		size = 'medium',
@@ -321,7 +317,6 @@
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
 		onchange={handleChange}
-		{...inputAttributes}
 		{...restProps}
 	/>
 	<label for={id} class="checkbox__icon"></label>

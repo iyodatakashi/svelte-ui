@@ -4,7 +4,6 @@
 	import { untrack } from 'svelte';
 	import Input from './Input.svelte';
 	import { t } from '$lib/i18n';
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant } from '$lib/types/icon';
 	import type {
 		FocusHandler,
@@ -24,8 +23,6 @@
 		// HTML属性系
 		id?: string;
 		ariaLabel?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
 		// スタイル/レイアウト
 		customStyle?: string;
 		focusStyle?: 'background' | 'outline' | 'none';
@@ -90,7 +87,6 @@
 		// HTML属性系
 		id = `colorpicker-${Math.random().toString(36).substring(2, 15)}`,
 		ariaLabel,
-		inputAttributes,
 
 		// スタイル/レイアウト
 		customStyle = '',
@@ -367,7 +363,6 @@
 		{maxWidth}
 		{rounded}
 		customStyle={`padding-left: var(--svelte-ui-colorpicker-text-padding-left); ${customStyle}`}
-		{inputAttributes}
 		onchange={handleChange}
 		oninput={handleInput}
 		onfocus={handleFocus}
@@ -408,7 +403,6 @@
 			onkeydown={handleKeydown}
 			{disabled}
 			class="color-picker__trigger-input"
-			{...inputAttributes}
 			{...restProps}
 		/>
 		<div

@@ -1,7 +1,6 @@
 <!-- Combobox.svelte -->
 
 <script lang="ts">
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import Input from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import { announceSelection } from '$lib/utils/accessibility';
@@ -25,7 +24,6 @@
 		options: string[];
 
 		// HTML属性系
-		inputAttributes?: HTMLInputAttributes | undefined;
 		id?: string | null;
 		tabindex?: number | null;
 		maxlength?: number | null;
@@ -96,7 +94,6 @@
 		options = [] as string[],
 
 		// HTML属性系
-		inputAttributes,
 		id = `combobox-${Math.random().toString(36).substring(2, 15)}`,
 		tabindex = null,
 		maxlength = null,
@@ -473,7 +470,6 @@
 		onpointerleave={handlePointerLeave}
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
-		{inputAttributes}
 		{...restProps}
 		role="textbox"
 		aria-autocomplete="list"

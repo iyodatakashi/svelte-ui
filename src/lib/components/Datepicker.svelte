@@ -15,7 +15,6 @@
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import { announceToScreenReader } from '$lib/utils/accessibility';
 	import { getLocale } from '$lib/config';
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import type {
 		BivariantValueHandler,
@@ -42,8 +41,6 @@
 
 		// HTML属性系
 		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
 		// スタイル/レイアウト
 		inline?: boolean;
 		focusStyle?: FocusStyle;
@@ -113,7 +110,6 @@
 
 		// HTML属性系
 		id = `datepicker-${Math.random().toString(36).substring(2, 15)}`,
-		inputAttributes,
 
 		// スタイル/レイアウト
 		inline = false,
@@ -655,7 +651,6 @@
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
 		{id}
-		{inputAttributes}
 		{...restProps}
 	/>
 	{#if !enableTextInput && !disabled && enableClickToOpen}

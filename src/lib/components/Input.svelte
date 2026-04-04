@@ -4,7 +4,6 @@
 	import IconButton from './IconButton.svelte';
 	import Icon from './Icon.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { t } from '$lib/i18n';
 	import { convertToHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
@@ -39,8 +38,6 @@
 		enableThousandsSeparator?: boolean;
 		autocomplete?: HTMLInputElement['autocomplete'] | null;
 		spellcheck?: boolean | null;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
 		// スタイル/レイアウト
 		inline?: boolean;
 		focusStyle?: FocusStyle;
@@ -149,7 +146,6 @@
 		enableThousandsSeparator = false,
 		autocomplete = null,
 		spellcheck = null,
-		inputAttributes,
 
 		// スタイル/レイアウト
 		inline = false,
@@ -738,7 +734,6 @@
 			onpointercancel={handlePointerCancel}
 			oncompositionstart={handleCompositionStart}
 			oncompositionend={handleCompositionEnd}
-			{...inputAttributes}
 			{...restProps}
 		/>
 	</div>

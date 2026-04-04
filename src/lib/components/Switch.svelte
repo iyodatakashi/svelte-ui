@@ -2,7 +2,6 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
-	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -23,8 +22,6 @@
 
 		// HTML属性系
 		id?: string;
-		inputAttributes?: HTMLInputAttributes | undefined;
-
 		// スタイル/レイアウト
 		size?: 'small' | 'medium' | 'large';
 
@@ -84,7 +81,6 @@
 
 		// HTML属性系
 		id = `switch-${Math.random().toString(36).substring(2, 15)}`,
-		inputAttributes,
 
 		// スタイル/レイアウト
 		size = 'medium',
@@ -290,7 +286,6 @@
 		{disabled}
 		{required}
 		{id}
-		{...inputAttributes}
 		onchange={handleChange}
 		onfocus={handleFocus}
 		onblur={handleBlur}
