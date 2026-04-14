@@ -1,5 +1,4 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import type { MenuItem } from '../lib/types/menuItem';
 import PopupMenu from '../lib/components/PopupMenu.svelte';
 
 const meta = {
@@ -120,19 +119,27 @@ export const WithLinks: Story = {
 		anchorElement: createMockAnchorElement(),
 		menuItems: [
 			{
-				label: 'Home',
-				icon: 'home',
-				href: '/'
-			},
-			{
-				label: 'About',
-				icon: 'info',
+				label: 'About (internal)',
+				icon: 'arrow_forward',
 				href: '/about'
 			},
 			{
-				label: 'Contact',
-				icon: 'contact_mail',
-				href: '/contact'
+				label: 'Settings (internal)',
+				icon: 'arrow_forward',
+				href: '/settings'
+			},
+			'separator',
+			{
+				label: 'GitHub (external)',
+				icon: 'open_in_new',
+				href: 'https://github.com',
+				target: '_blank'
+			},
+			{
+				label: 'MDN (external)',
+				icon: 'open_in_new',
+				href: 'https://developer.mozilla.org',
+				target: '_blank'
 			}
 		]
 	}

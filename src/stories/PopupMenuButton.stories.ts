@@ -554,3 +554,43 @@ export const PositionPlayground: Story = {
 		}
 	}
 };
+
+// href navigation
+export const WithLinks: Story = {
+	args: {
+		children: createChildrenSnippet('link'),
+		menuItems: [
+			{
+				label: 'About (internal)',
+				icon: 'arrow_forward',
+				href: '/about'
+			},
+			{
+				label: 'Settings (internal)',
+				icon: 'arrow_forward',
+				href: '/settings'
+			},
+			'separator',
+			{
+				label: 'GitHub (external)',
+				icon: 'open_in_new',
+				href: 'https://github.com',
+				target: '_blank'
+			},
+			{
+				label: 'MDN (external)',
+				icon: 'open_in_new',
+				href: 'https://developer.mozilla.org',
+				target: '_blank'
+			}
+		]
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'Internal links navigate in the same tab. External links (target="_blank") open in a new tab.'
+			}
+		}
+	}
+};
