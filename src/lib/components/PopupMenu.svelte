@@ -69,7 +69,9 @@
 
 	const executeMenuItem = (item: MenuItem, event?: MouseEvent) => {
 		event?.stopPropagation();
-		event?.preventDefault();
+		if (!item.href) {
+			event?.preventDefault();
+		}
 		if (item.callback) {
 			item.callback();
 		}
@@ -261,6 +263,7 @@
 								tabindex="-1"
 								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
 								href={item.href}
+								target={item.target}
 								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
 								onfocus={() => handleFocus(actionableIndex)}
