@@ -374,7 +374,8 @@ export const Password = {
 	args: {
 		type: 'password',
 		enablePasswordVisibilityToggle: true,
-		placeholder: 'Enter password'
+		placeholder: 'Enter password',
+		onRightIconClick: undefined
 	}
 };
 
