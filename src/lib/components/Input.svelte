@@ -653,7 +653,7 @@
 <div
 	class="input
 	input--focus-{focusStyle}
-	input--type-{resolvedType}"
+	input--type-{type}"
 	class:input--inline={inline}
 	class:input--linkify={isLinkifyActive}
 	class:input--auto-resize={inline}
