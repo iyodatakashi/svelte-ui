@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.24] - 2026-04-06
+
+### Added
+
+- **MenuItem**: Added `target` property (`'_blank' | '_self' | '_parent' | '_top'`) to control link behavior when `href` is specified.
+
+### Fixed
+
+- **PopupMenu**: Menu items with `href` now navigate correctly. Previously, `preventDefault` was always called, blocking navigation.
+
 ## [0.0.23] - 2026-04-06
 
 ### Fixed
