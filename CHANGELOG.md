@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.22] - 2026-04-04
+
+### Changed
+
+- **Button, Switch**: Changed `display` to `inline-flex` for more predictable inline layout behavior.
+- **All form components**: Removed the `inputAttributes` / `buttonAttributes` / `selectAttributes` / `textareaAttributes` props. These were redundant because any HTML attribute can be passed directly as a prop via rest props (e.g. `<Input form="my-form" />`).
+
 ## [0.0.21] - 2026-03-10
 
 ### Changed
