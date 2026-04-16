@@ -4,6 +4,7 @@
 	import TabItem from './TabItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import { subscribeUrlChange } from '$lib/utils/urlChange';
+	import { getCurrentPath as resolveCurrentPath, matchPath as doMatchPath } from '$lib/utils/navPath';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -49,72 +50,19 @@
 	// =========================================================================
 	$effect(() => {
 		// props の currentPath が変更されたとき
-		resolvedCurrentPath = getCurrentPath();
+		resolvedCurrentPath = resolveCurrentPath(currentPath);
 	});
 
 	$effect(() => {
 		// URL の変更を subscribe
 		return subscribeUrlChange(() => {
-			resolvedCurrentPath = getCurrentPath();
+			resolvedCurrentPath = resolveCurrentPath(currentPath);
 		});
 	});
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const getCurrentPath = () => {
-		// アプリ側から現在パスが明示的に渡されていればそれを優先（SSR対応）
-		if (currentPath && currentPath !== '') {
-			return currentPath;
-		}
-
-		// それ以外の場合はクライアント実行時のみ window.location から取得
-		if (typeof window !== 'undefined') {
-			return window.location.pathname;
-		}
-
-		return '';
-	};
-
-	// パスの正規化処理
-	const normalizePath = (path: string): string => {
-		if (!pathPrefix) return path;
-
-		// pathPrefixが設定されている場合、それを除去
-		if (path.startsWith(pathPrefix)) {
-			const normalized = path.substring(pathPrefix.length);
-			return normalized.startsWith('/') ? normalized : '/' + normalized;
-		}
-
-		return path;
-	};
-
-	// パスマッチング関数
-	const matchPath = (currentPath: string, itemHref: string, item: MenuItem): boolean => {
-		if (customPathMatcher) {
-			return customPathMatcher(currentPath, itemHref, item);
-		}
-
-		const normalizedCurrentPath = normalizePath(currentPath);
-
-		// matchingPathのチェック
-		if (item.matchingPath?.some((href) => normalizedCurrentPath.startsWith(href))) {
-			return true;
-		}
-
-		// strictMatchの場合
-		if (item.strictMatch) {
-			return normalizedCurrentPath === itemHref;
-		}
-
-		// ルートパス (/) の特別な処理
-		if (itemHref === '/') {
-			return normalizedCurrentPath === '/';
-		}
-
-		// その他のパス
-		return normalizedCurrentPath !== '' && normalizedCurrentPath.startsWith(itemHref);
-	};
 
 	// シンプルなキーボードナビゲーション（disabled タブはスキップ）
 	const handleKeyDown = (event: KeyboardEvent) => {
@@ -167,7 +115,7 @@
 			const item = tabItems[i];
 			if (!item.href) continue;
 
-			if (matchPath(resolvedCurrentPath, item.href, item)) {
+			if (doMatchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)) {
 				return i;
 			}
 		}
