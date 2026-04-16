@@ -231,16 +231,11 @@
 		justify-content: center;
 		flex: 1;
 		padding: var(--svelte-ui-nav-mobile-item-padding);
-		min-height: var(--svelte-ui-nav-mobile-min-height);
+		height: var(--svelte-ui-nav-mobile-min-height);
 		font-size: var(--svelte-ui-nav-mobile-item-font-size);
 		gap: var(--svelte-ui-nav-mobile-item-icon-gap);
 	}
 
-	@media (hover: hover) {
-		.nav-item--mobile:hover {
-			color: var(--svelte-ui-nav-item-selected-text-color);
-		}
-	}
 
 
 	// =========================================================================
@@ -258,10 +253,6 @@
 	}
 
 	@media (hover: hover) {
-		.nav-item--vertical:hover {
-			color: var(--svelte-ui-nav-item-selected-text-color);
-		}
-
 		.nav-item--vertical:hover::after {
 			opacity: 1;
 		}
@@ -282,10 +273,6 @@
 	}
 
 	@media (hover: hover) {
-		.nav-item--horizontal:hover {
-			color: var(--svelte-ui-nav-item-selected-text-color);
-		}
-
 		.nav-item--horizontal:hover::after {
 			opacity: 1;
 		}
