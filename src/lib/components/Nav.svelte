@@ -211,7 +211,6 @@
 	.nav--vertical {
 		flex-direction: column;
 		gap: var(--svelte-ui-nav-vertical-item-gap);
-		padding: var(--svelte-ui-nav-vertical-padding);
 		width: 100%;
 	}
 
