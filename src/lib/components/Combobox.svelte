@@ -561,6 +561,7 @@
 		background-color: transparent;
 		text-align: left;
 		cursor: pointer;
+		font-family: inherit;
 		font-size: inherit;
 		color: var(--svelte-ui-text-color);
 		transition: background-color var(--svelte-ui-transition-duration) ease;

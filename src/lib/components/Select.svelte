@@ -368,6 +368,7 @@ select--focus-{focusStyle}"
 		background: transparent;
 		border: none;
 		border-radius: 0;
+		font-family: inherit;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;

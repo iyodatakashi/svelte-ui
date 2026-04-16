@@ -1,8 +1,0 @@
-{
-  "permissions": {
-    "allow": [
-      "Bash(grep -r \"internal-\" /Users/iyoda/Documents/workspace/Web_Workspace/svelte-ui/src/lib/components/*.svelte)",
-      "Bash(grep -r \"\\\\$bindable\" /Users/iyoda/Documents/workspace/Web_Workspace/svelte-ui/src/lib/components/*.svelte)"
-    ]
-  }
-}

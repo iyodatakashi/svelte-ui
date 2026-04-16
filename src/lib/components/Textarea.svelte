@@ -657,6 +657,7 @@
 		background-color: transparent;
 		border: none;
 		border-radius: var(--svelte-ui-textarea-border-radius);
+		font-family: inherit;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
