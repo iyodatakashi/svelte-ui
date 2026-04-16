@@ -32,6 +32,7 @@
 
 		// スタイル/レイアウト
 		selectedStyle?: NavItemSelectedStyle;
+		gap?: number | string;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -58,6 +59,7 @@
 
 		// スタイル/レイアウト
 		selectedStyle,
+		gap,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -153,6 +155,7 @@
 	aria-label={ariaLabelledby ? undefined : ariaLabel}
 	aria-labelledby={ariaLabelledby}
 	aria-orientation={variant === 'vertical' ? 'vertical' : 'horizontal'}
+	style:--internal-nav-gap={gap != null ? (typeof gap === 'number' ? `${gap}px` : gap) : undefined}
 	tabindex="-1"
 	{id}
 	onkeydown={handleKeyDown}
@@ -210,14 +213,14 @@
 	// vertical バリアント
 	.nav--vertical {
 		flex-direction: column;
-		gap: var(--svelte-ui-nav-vertical-item-gap);
+		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 		width: 100%;
 	}
 
 	// horizontal バリアント
 	.nav--horizontal {
 		flex-direction: row;
-		gap: var(--svelte-ui-nav-horizontal-item-gap);
+		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
 		align-items: center;
 	}
 </style>
