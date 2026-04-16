@@ -14,7 +14,7 @@
 	// =========================================================================
 	export type NavProps = {
 		// 基本プロパティ
-		items?: MenuItem[];
+		navItems?: MenuItem[];
 		variant?: NavVariant;
 		pathPrefix?: string;
 		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
@@ -41,7 +41,7 @@
 
 	let {
 		// 基本プロパティ
-		items = [],
+		navItems = [],
 		variant = 'tab',
 		pathPrefix = '',
 		customPathMatcher,
@@ -85,12 +85,13 @@
 	// Methods
 	// =========================================================================
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (items.length === 0 || enabledIndices.length === 0) return;
+		if (navItems.length === 0 || enabledIndices.length === 0) return;
 
-		const navEl = event.currentTarget as HTMLElement;
-		const navItems = Array.from(navEl.querySelectorAll('[data-nav-item]')) as HTMLElement[];
+		const navItemEls = Array.from(
+			(event.currentTarget as HTMLElement).querySelectorAll('[data-nav-item]')
+		) as HTMLElement[];
 		const currentItem = event.target as HTMLElement;
-		const currentIndex = navItems.indexOf(currentItem);
+		const currentIndex = navItemEls.indexOf(currentItem);
 
 		if (currentIndex === -1) return;
 
@@ -125,15 +126,15 @@
 		}
 
 		const nextIndex = enabledIndices[nextEnabledPosition];
-		navItems[nextIndex]?.focus();
+		navItemEls[nextIndex]?.focus();
 	};
 
 	// =========================================================================
 	// $derived
 	// =========================================================================
 	const selectedIndex = $derived.by(() => {
-		for (let i = 0; i < items.length; i++) {
-			const item = items[i];
+		for (let i = 0; i < navItems.length; i++) {
+			const item = navItems[i];
 			if (!item.href) continue;
 			if (matchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)) {
 				return i;
@@ -143,7 +144,7 @@
 	});
 
 	const enabledIndices = $derived(
-		items.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
+		navItems.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
 	);
 
 	const isTabVariant = $derived(variant === 'tab');
@@ -161,7 +162,7 @@
 	onkeydown={handleKeyDown}
 	data-testid="nav"
 >
-	{#each items as item, index}
+	{#each navItems as item, index}
 		<NavItem
 			{item}
 			{variant}

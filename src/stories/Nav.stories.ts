@@ -19,7 +19,7 @@ const meta = {
 			options: ['tab', 'horizontal', 'vertical', 'mobile'],
 			description: 'Display variant'
 		},
-		items: {
+		navItems: {
 			control: 'object',
 			description: 'Array of navigation items (MenuItem[])'
 		},
@@ -62,7 +62,7 @@ const itemsWithDisabled = [
 export const Tab: Story = {
 	args: {
 		variant: 'tab',
-		items: baseItems,
+		navItems: baseItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Main navigation'
 	},
@@ -80,7 +80,7 @@ export const Tab: Story = {
 export const TabWithDisabled: Story = {
 	args: {
 		variant: 'tab',
-		items: itemsWithDisabled,
+		navItems: itemsWithDisabled,
 		currentPath: '/projects',
 		ariaLabel: 'Main navigation'
 	},
@@ -93,7 +93,7 @@ export const TabWithDisabled: Story = {
 export const Horizontal: Story = {
 	args: {
 		variant: 'horizontal',
-		items: baseItems,
+		navItems: baseItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Main navigation'
 	},
@@ -111,7 +111,7 @@ export const Horizontal: Story = {
 export const HorizontalWithoutIcons: Story = {
 	args: {
 		variant: 'horizontal',
-		items: [
+		navItems: [
 			{ label: 'Home', href: '/', strictMatch: true },
 			{ label: 'About', href: '/about' },
 			{ label: 'Pricing', href: '/pricing' },
@@ -130,7 +130,7 @@ export const HorizontalWithoutIcons: Story = {
 export const Vertical: Story = {
 	args: {
 		variant: 'vertical',
-		items: baseItems,
+		navItems: baseItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Vertical navigation'
 	},
@@ -148,7 +148,7 @@ export const Vertical: Story = {
 export const VerticalWithDisabled: Story = {
 	args: {
 		variant: 'vertical',
-		items: itemsWithDisabled,
+		navItems: itemsWithDisabled,
 		currentPath: '/projects',
 		ariaLabel: 'Vertical navigation'
 	},
@@ -161,7 +161,7 @@ export const VerticalWithDisabled: Story = {
 export const MobileTab: Story = {
 	args: {
 		variant: 'mobile',
-		items: [
+		navItems: [
 			{ label: 'Home', href: '/', icon: 'home', strictMatch: true },
 			{ label: 'Search', href: '/search', icon: 'search' },
 			{ label: 'Favorites', href: '/favorites', icon: 'favorite' },
