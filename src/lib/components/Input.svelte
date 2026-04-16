@@ -1130,7 +1130,10 @@
  * タイプ別スタイル
  * ============================================= */
 	/* type-password: セキュリティのため常にinputを表示（display-textは非表示） */
-	.input--type-password {
+	/* type-email/tel: オートフィルと display-text の競合を避けるため常にinputを表示 */
+	.input--type-password,
+	.input--type-email,
+	.input--type-tel {
 		/* inputを常に表示（表示制御の非フォーカス時の不可視化を上書き） */
 		&:not(.input--focused) input {
 			opacity: 1;
