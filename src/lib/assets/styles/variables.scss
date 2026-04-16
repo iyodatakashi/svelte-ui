@@ -376,7 +376,6 @@
 	/* Nav */
 	--svelte-ui-nav-item-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-nav-item-selected-text-color: var(--svelte-ui-primary-color);
-	--svelte-ui-nav-item-selected-bg-color: var(--svelte-ui-hover-overlay);
 	--svelte-ui-nav-item-filled-text-color: #ffffff;
 	--svelte-ui-nav-item-tonal-bg-color: color-mix(
 		in srgb,
@@ -394,7 +393,6 @@
 	--svelte-ui-nav-mobile-item-padding: 8px;
 	--svelte-ui-nav-mobile-item-icon-gap: 8px;
 	--svelte-ui-nav-mobile-item-font-size: 0.75rem;
-	--svelte-ui-nav-mobile-item-bar-width: 40px;
 	--svelte-ui-nav-item-padding: 8px 12px;
 	--svelte-ui-nav-item-border-radius: var(--svelte-ui-border-radius);
 	/* Nav: vertical */

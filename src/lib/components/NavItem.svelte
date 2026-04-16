@@ -232,7 +232,6 @@
 		flex: 1;
 		padding: var(--svelte-ui-nav-mobile-item-padding);
 		min-height: var(--svelte-ui-nav-mobile-min-height);
-		color: var(--svelte-ui-nav-item-text-color);
 		font-size: var(--svelte-ui-nav-mobile-item-font-size);
 		gap: var(--svelte-ui-nav-mobile-item-icon-gap);
 	}
@@ -252,7 +251,6 @@
 		padding: var(--svelte-ui-nav-item-padding);
 		min-height: var(--svelte-ui-nav-item-min-height);
 		border-radius: var(--svelte-ui-nav-item-border-radius);
-		color: var(--svelte-ui-nav-item-text-color);
 	}
 
 	.nav-item--vertical::after {
@@ -277,7 +275,6 @@
 		padding: var(--svelte-ui-nav-item-padding);
 		min-height: var(--svelte-ui-nav-item-min-height);
 		border-radius: var(--svelte-ui-nav-item-border-radius);
-		color: var(--svelte-ui-nav-item-text-color);
 	}
 
 	.nav-item--horizontal::after {
