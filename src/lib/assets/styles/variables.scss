@@ -373,6 +373,30 @@
 	--svelte-ui-tab-item-selected-bar-radius: 3px 3px 0 0;
 	--svelte-ui-tab-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
 
+	/* Nav */
+	--svelte-ui-nav-item-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-nav-item-selected-text-color: var(--svelte-ui-primary-color);
+	--svelte-ui-nav-item-selected-bg-color: var(--svelte-ui-hover-overlay);
+	--svelte-ui-nav-item-selected-bar-color: var(--svelte-ui-primary-color);
+	--svelte-ui-nav-item-selected-bar-height: 3px;
+	--svelte-ui-nav-item-selected-bar-radius: 2px;
+	--svelte-ui-nav-item-icon-gap: 8px;
+	--svelte-ui-nav-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
+	/* Nav: mobile-tab */
+	--svelte-ui-nav-mobile-min-height: 56px;
+	--svelte-ui-nav-mobile-item-padding: 8px;
+	--svelte-ui-nav-mobile-item-icon-gap: 8px;
+	--svelte-ui-nav-mobile-item-font-size: 0.75rem;
+	--svelte-ui-nav-mobile-item-bar-width: 40px;
+	/* Nav: sidebar */
+	--svelte-ui-nav-vertical-padding: 8px;
+	--svelte-ui-nav-vertical-item-gap: 8px;
+	--svelte-ui-nav-vertical-item-padding: 8px 16px;
+	/* Nav: header */
+	--svelte-ui-nav-horizontal-item-gap: 8px;
+	--svelte-ui-nav-horizontal-item-padding: 8px 12px;
+	--svelte-ui-nav-horizontal-item-border-radius: var(--svelte-ui-border-radius);
+
 	/* Input */
 	--svelte-ui-input-height: var(--svelte-ui-form-height);
 	--svelte-ui-input-padding: var(--svelte-ui-form-padding);

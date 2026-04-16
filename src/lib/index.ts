@@ -33,6 +33,8 @@ export { default as SkeletonText } from './components/skeleton/SkeletonText.svel
 export { default as SkeletonBox } from './components/skeleton/SkeletonBox.svelte';
 export { default as SkeletonAvatar } from './components/skeleton/SkeletonAvatar.svelte';
 export { default as Switch } from './components/Switch.svelte';
+export { default as Nav } from './components/Nav.svelte';
+export { default as NavItem } from './components/NavItem.svelte';
 export { default as Tab } from './components/Tab.svelte';
 export { default as TabItem } from './components/TabItem.svelte';
 export { default as Textarea } from './components/Textarea.svelte';
@@ -76,6 +78,8 @@ export type { SkeletonButtonProps } from './components/skeleton/SkeletonButton.s
 export type { SkeletonHeadingProps } from './components/skeleton/SkeletonHeading.svelte';
 export type { SkeletonMediaProps } from './components/skeleton/SkeletonMedia.svelte';
 export type { SwitchProps } from './components/Switch.svelte';
+export type { NavProps } from './components/Nav.svelte';
+export type { NavItemProps } from './components/NavItem.svelte';
 export type { TabProps } from './components/Tab.svelte';
 export type { TabItemProps } from './components/TabItem.svelte';
 export type { TextareaProps } from './components/Textarea.svelte';
@@ -91,7 +95,8 @@ export type {
 	SnackbarVariant,
 	BadgeVariant,
 	DatepickerMode,
-	FocusStyle
+	FocusStyle,
+	NavVariant
 } from './types/propOptions';
 
 // Types

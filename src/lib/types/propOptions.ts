@@ -79,3 +79,9 @@ export type DatepickerMode = 'single' | 'range';
  * Used by Input, Textarea, Datepicker components
  */
 export type FocusStyle = 'background' | 'outline' | 'none';
+
+/**
+ * Nav variant type
+ * Used by Nav component
+ */
+export type NavVariant = 'vertical' | 'horizontal' | 'mobile' | 'tab';
