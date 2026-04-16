@@ -9,6 +9,8 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
+	export type NavItemSelectedStyle = 'color' | 'filled' | 'tonal';
+
 	export type NavItemProps = {
 		// 基本プロパティ
 		item: MenuItem;
@@ -25,6 +27,7 @@
 		// 状態/動作
 		isSelected?: boolean;
 		isDisabled?: boolean;
+		selectedStyle?: NavItemSelectedStyle;
 	};
 
 	let {
@@ -42,7 +45,8 @@
 
 		// 状態/動作
 		isSelected = false,
-		isDisabled = false
+		isDisabled = false,
+		selectedStyle
 	}: NavItemProps = $props();
 
 	// =========================================================================
@@ -56,12 +60,20 @@
 	});
 
 	const isTabVariant = $derived(variant === 'tab');
+
+	// selectedStyle 未指定時のバリアント別デフォルト
+	const resolvedSelectedStyle = $derived(
+		selectedStyle ?? (variant === 'vertical' || variant === 'horizontal' ? 'tonal' : 'color')
+	);
 </script>
 
 {#if isDisabled}
 	<span
 		class="nav-item nav-item--{variant} nav-item--disabled"
 		class:nav-item--selected={isSelected}
+		class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
+		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
+		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		role={isTabVariant ? 'tab' : undefined}
 		aria-selected={isTabVariant ? isSelected : undefined}
 		aria-disabled="true"
@@ -89,6 +101,9 @@
 		href={hrefWithPrefix}
 		class="nav-item nav-item--{variant}"
 		class:nav-item--selected={isSelected}
+		class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
+		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
+		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		role={isTabVariant ? 'tab' : undefined}
 		aria-selected={isTabVariant ? isSelected : undefined}
 		aria-current={!isTabVariant && isSelected ? 'page' : undefined}
@@ -132,6 +147,19 @@
 		box-sizing: border-box;
 	}
 
+	// hover overlay（Button と同じ疑似要素方式）
+	// tab の ::before は下線バーで使用中のため ::after を使用
+	.nav-item::after {
+		content: '';
+		position: absolute;
+		inset: 0;
+		background-color: var(--svelte-ui-hover-overlay);
+		opacity: 0;
+		pointer-events: none;
+		transition-property: opacity;
+		transition-duration: var(--svelte-ui-transition-duration);
+	}
+
 	.nav-item--disabled {
 		opacity: var(--svelte-ui-nav-item-disabled-opacity);
 		pointer-events: none;
@@ -156,15 +184,16 @@
 	.nav-item--tab {
 		justify-content: center;
 		padding: var(--svelte-ui-tab-item-padding);
+		min-height: var(--svelte-ui-nav-item-min-height);
 		color: var(--svelte-ui-tab-item-text-color);
 	}
 
 	@media (hover: hover) {
-		.nav-item--tab:hover:not(.nav-item--selected) {
+		.nav-item--tab:hover {
 			color: var(--svelte-ui-tab-item-selected-text-color);
 		}
 
-		.nav-item--tab:hover:not(.nav-item--selected)::before {
+		.nav-item--tab:hover::before {
 			opacity: 1;
 		}
 	}
@@ -190,11 +219,6 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
-	.nav-item--tab.nav-item--selected {
-		color: var(--svelte-ui-tab-item-selected-text-color);
-		background-color: transparent;
-	}
-
 	.nav-item--tab.nav-item--selected::before {
 		opacity: 1;
 	}
@@ -207,64 +231,94 @@
 		justify-content: center;
 		flex: 1;
 		padding: var(--svelte-ui-nav-mobile-item-padding);
+		min-height: var(--svelte-ui-nav-mobile-min-height);
 		color: var(--svelte-ui-nav-item-text-color);
 		font-size: var(--svelte-ui-nav-mobile-item-font-size);
 		gap: var(--svelte-ui-nav-mobile-item-icon-gap);
 	}
 
 	@media (hover: hover) {
-		.nav-item--mobile:hover:not(.nav-item--selected) {
+		.nav-item--mobile:hover {
 			color: var(--svelte-ui-nav-item-selected-text-color);
 		}
-
-		.nav-item--mobile:hover:not(.nav-item--selected)::before {
-			opacity: 1;
-		}
 	}
 
-	.nav-item--mobile.nav-item--selected {
-		color: var(--svelte-ui-nav-item-selected-text-color);
-	}
 
 	// =========================================================================
 	// vertical バリアント（縦並び、左バーインジケーター）
 	// =========================================================================
 	.nav-item--vertical {
 		width: 100%;
-		padding: var(--svelte-ui-nav-vertical-item-padding);
+		padding: var(--svelte-ui-nav-item-padding);
+		min-height: var(--svelte-ui-nav-item-min-height);
+		border-radius: var(--svelte-ui-nav-item-border-radius);
 		color: var(--svelte-ui-nav-item-text-color);
 	}
 
+	.nav-item--vertical::after {
+		border-radius: var(--svelte-ui-nav-item-border-radius);
+	}
+
 	@media (hover: hover) {
-		.nav-item--vertical:hover:not(.nav-item--selected) {
-			background-color: var(--svelte-ui-hover-overlay);
+		.nav-item--vertical:hover {
 			color: var(--svelte-ui-nav-item-selected-text-color);
+		}
+
+		.nav-item--vertical:hover::after {
+			opacity: 1;
 		}
 	}
 
-	.nav-item--vertical.nav-item--selected {
-		background-color: var(--svelte-ui-nav-item-selected-bg-color);
-		color: var(--svelte-ui-nav-item-selected-text-color);
-	}
 
 	// =========================================================================
 	// horizontal バリアント（横並び、背景ハイライト）
 	// =========================================================================
 	.nav-item--horizontal {
-		padding: var(--svelte-ui-nav-horizontal-item-padding);
-		border-radius: var(--svelte-ui-nav-horizontal-item-border-radius);
+		padding: var(--svelte-ui-nav-item-padding);
+		min-height: var(--svelte-ui-nav-item-min-height);
+		border-radius: var(--svelte-ui-nav-item-border-radius);
 		color: var(--svelte-ui-nav-item-text-color);
 	}
 
+	.nav-item--horizontal::after {
+		border-radius: var(--svelte-ui-nav-item-border-radius);
+	}
+
 	@media (hover: hover) {
-		.nav-item--horizontal:hover:not(.nav-item--selected) {
-			background-color: var(--svelte-ui-hover-overlay);
+		.nav-item--horizontal:hover {
 			color: var(--svelte-ui-nav-item-selected-text-color);
+		}
+
+		.nav-item--horizontal:hover::after {
+			opacity: 1;
 		}
 	}
 
-	.nav-item--horizontal.nav-item--selected {
-		background-color: var(--svelte-ui-nav-item-selected-bg-color);
+
+	// =========================================================================
+	// selectedStyle: 選択状態の表示バリアント
+	// =========================================================================
+
+	// color: テキスト・アイコンを primary-color に
+	.nav-item--style-color {
+		color: var(--svelte-ui-nav-item-selected-text-color);
+	}
+
+	// tab バリアントは tab 用カラー変数を使用
+	.nav-item--tab.nav-item--style-color {
+		color: var(--svelte-ui-tab-item-selected-text-color);
+		background-color: transparent;
+	}
+
+	// filled: 背景を primary-color に
+	.nav-item--style-filled {
+		background-color: var(--svelte-ui-primary-color);
+		color: var(--svelte-ui-nav-item-filled-text-color);
+	}
+
+	// tonal: 背景を primary-color の薄いティントに
+	.nav-item--style-tonal {
+		background-color: var(--svelte-ui-nav-item-tonal-bg-color);
 		color: var(--svelte-ui-nav-item-selected-text-color);
 	}
 

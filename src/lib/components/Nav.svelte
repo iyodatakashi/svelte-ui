@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import NavItem from './NavItem.svelte';
+	import type { NavItemSelectedStyle } from './NavItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import type { NavVariant } from '$lib/types/propOptions';
 	import { subscribeUrlChange } from '$lib/utils/urlChange';
@@ -29,6 +30,9 @@
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
 
+		// スタイル/レイアウト
+		selectedStyle?: NavItemSelectedStyle;
+
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 		ariaLabelledby?: string;
@@ -51,6 +55,9 @@
 		iconGrade = 0,
 		iconOpticalSize = 24,
 		iconVariant = 'outlined',
+
+		// スタイル/レイアウト
+		selectedStyle,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -163,6 +170,7 @@
 			{iconGrade}
 			{iconOpticalSize}
 			{iconVariant}
+			{selectedStyle}
 		/>
 	{/each}
 </nav>
