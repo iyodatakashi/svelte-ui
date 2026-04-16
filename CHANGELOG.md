@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.25] - 2026-04-16
+
+### Added
+
+- **Nav**: New navigation component with four display variants: `tab`, `horizontal`, `vertical`, and `mobile`. Highlights the active item based on the current URL path (same logic as `Tab`). Supports `selectedStyle` prop (`'color' | 'filled' | 'tonal'`) to control the visual appearance of the selected item.
+
 ## [0.0.24] - 2026-04-06
 
 ### Added
