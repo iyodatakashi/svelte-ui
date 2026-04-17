@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.27] - 2026-04-17
+
+### Fixed
+
+- **Input**: Fixed `type="email"` and `type="tel"` becoming uninteractable after browser autofill. These types now always show the native input element, bypassing the display-text overlay that conflicted with autofill behavior.
+- **Input, Select, Textarea, Combobox**: Added `font-family: inherit` to native form elements (`input`, `select`, `textarea`, `button`) to match the surrounding document font and eliminate visual size differences from browser default fonts.
+
 ## [0.0.26] - 2026-04-16
 
 ### Added
