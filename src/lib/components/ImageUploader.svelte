@@ -22,20 +22,26 @@
 	// =========================================================================
 	export type ImageUploaderProps = {
 		// 基本プロパティ
+		/** Supports `bind:value`. */
 		value: FileList | null | undefined;
+		/** Allows selecting multiple images. @default false */
 		multiple?: boolean;
+		/** Maximum file size in bytes. Shows an error if exceeded. */
 		maxFileSize?: number;
 		placeholder?: string;
 
 		// HTML属性系
 		id?: string;
+		/** Accepted file types (e.g. `"image/*"`). */
 		accept?: string;
 
 		// スタイル/レイアウト
 		width?: string | number;
 		height?: string | number;
 		rounded?: boolean;
+		/** Preview display style. @default 'plain' */
 		previewStyle?: 'plain' | 'framed';
+		/** Adapts preview size to the image aspect ratio. @default false */
 		previewAdaptive?: boolean;
 
 		// アイコン系

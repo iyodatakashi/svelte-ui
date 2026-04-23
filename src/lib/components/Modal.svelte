@@ -23,6 +23,7 @@
 		children?: Snippet;
 
 		// 基本プロパティ
+		/** Internal label used for accessibility announcements. @default 'Modal' */
 		componentType?: string;
 
 		// スタイル/レイアウト
@@ -30,9 +31,13 @@
 		customStyles?: string;
 
 		// 状態/動作
+		/** Use `modalRef.open()` / `.close()` instead of binding this directly. */
 		isOpen?: boolean;
+		/** Closes when clicking the backdrop. @default true */
 		closeIfClickOutside?: boolean;
+		/** Returns focus to the trigger element on close. @default false */
 		restoreFocus?: boolean;
+		/** Focuses the first focusable element on open. @default false */
 		focusFirstOnOpen?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -163,6 +168,7 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
+	/** Opens the modal. */
 	export const open = (title?: string): void => {
 		if (!dialogRef) return;
 
@@ -181,6 +187,7 @@
 		}, 0);
 	};
 
+	/** Closes the modal. */
 	export const close = (title?: string): void => {
 		if (!dialogRef) return;
 
@@ -191,6 +198,7 @@
 		announceOpenClose(componentType, false, title || ariaLabel || '');
 	};
 
+	/** @internal Completes the close animation. Called automatically. */
 	export const closeEnd = (): void => {
 		if (!dialogRef) return;
 
@@ -203,6 +211,7 @@
 		previousActiveElement = null;
 	};
 
+	/** Toggles between open and closed. */
 	export const toggle = (title?: string): void => {
 		if (isOpen) {
 			close(title);

@@ -27,6 +27,7 @@
 
 		// HTML属性系
 		id?: string | null;
+		/** @default 'text' */
 		type?: 'text' | 'password' | 'email' | 'tel' | 'url' | 'number';
 		tabindex?: number | null;
 		maxlength?: number | null;
@@ -34,24 +35,32 @@
 		min?: number | null;
 		max?: number | null;
 		step?: number | null;
+		/** Decimal places to round and display. Only for `type="number"`. */
 		decimalPlaces?: number | null;
+		/** Show thousands separator in the displayed value. Only for `type="number"`. @default false */
 		enableThousandsSeparator?: boolean;
 		autocomplete?: HTMLInputElement['autocomplete'] | null;
 		spellcheck?: boolean | null;
 		// スタイル/レイアウト
+		/** Renders inline, sized to content. @default false */
 		inline?: boolean;
+		/** @default 'outline' */
 		focusStyle?: FocusStyle;
 		placeholder?: string;
 		fullWidth?: boolean;
+		/** Width as px number or CSS string. */
 		width?: string | number | null;
 		minWidth?: string | number | null;
 		maxWidth?: string | number | null;
 		rounded?: boolean;
 		customStyle?: string;
+		/** Unit label (e.g. `"px"`, `"kg"`) shown next to the value; hidden while focused. */
 		unit?: string;
 
 		// アイコン関連
+		/** Material Symbols icon name shown on the right. */
 		rightIcon?: string;
+		/** Material Symbols icon name shown on the left. */
 		leftIcon?: string;
 		leftIconAriaLabel?: string;
 		rightIconAriaLabel?: string;
@@ -65,9 +74,13 @@
 		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
+		/** Shows a clear (×) button when the input has a value. @default false */
 		clearable?: boolean;
+		/** Converts URLs in the value to clickable links. Only for `type="text"` or `type="url"`. @default false */
 		linkify?: boolean;
+		/** Adds a show/hide password toggle button. Only for `type="password"`. @default false */
 		enablePasswordVisibilityToggle?: boolean;
+		/** Adds increment/decrement stepper buttons. Only for `type="number"`. @default false */
 		enableNumberStepper?: boolean;
 
 		// フォーカスイベント

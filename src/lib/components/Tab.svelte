@@ -11,14 +11,21 @@
 	// =========================================================================
 	export type TabProps = {
 		// 基本プロパティ
+		/** `{ label, href, icon?, disabled? }[]` */
 		tabItems: MenuItem[];
+		/** Prepended to each item's href for active-state matching. */
 		pathPrefix?: string;
+		/** Custom function to determine if an item is active. */
 		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+		/** Overrides the auto-detected current path. */
 		currentPath?: string;
 
 		// スタイル/レイアウト
+		/** Custom CSS color for tab labels. */
 		textColor?: string;
+		/** Custom CSS color for the active tab label. */
 		selectedTextColor?: string;
+		/** Custom CSS color for the active tab indicator bar. */
 		selectedBarColor?: string;
 
 		// ARIA/アクセシビリティ

@@ -20,7 +20,9 @@
 	export type ComboboxProps = {
 		// 基本プロパティ
 		name?: string;
+		/** Supports `bind:value`. */
 		value: string | number | null | undefined;
+		/** Dropdown suggestion list. */
 		options: string[];
 
 		// HTML属性系
@@ -30,7 +32,9 @@
 
 		// スタイル/レイアウト
 		customStyle?: string;
+		/** Renders inline (no border/background). @default false */
 		inline?: boolean;
+		/** @default 'outline' */
 		focusStyle?: 'background' | 'outline' | 'none';
 		placeholder?: string;
 		fullWidth?: boolean;
@@ -43,7 +47,9 @@
 		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
+		/** Filters options based on typed input. @default false */
 		filterable?: boolean;
+		/** Shows a clear button when a value is entered. @default false */
 		clearable?: boolean;
 
 		// 入力イベント

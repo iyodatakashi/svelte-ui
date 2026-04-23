@@ -29,23 +29,32 @@
 		children: Snippet;
 
 		// DOM参照
+		/** The element the popup is anchored to. */
 		anchorElement: HTMLElement | null | undefined;
 
 		// 基本プロパティ
+		/** ARIA role for the popup container. @default 'menu' */
 		role?: string;
 
 		// HTML属性
 		id?: string;
 
 		// スタイル/レイアウト
+		/** @default 'bottom' */
 		position?: PopupPosition;
+		/** Gap in px between anchor and popup. @default 8 */
 		margin?: number;
 
 		// 状態/動作
+		/** Use `popupRef.open()` / `.close()` instead of binding this directly. */
 		isOpen?: boolean;
+		/** Traps keyboard focus inside the popup. @default false */
 		focusTrap?: boolean;
+		/** Returns focus to the anchor element on close. @default false */
 		restoreFocus?: boolean;
+		/** On mobile, displays as a fullscreen sheet. @default false */
 		mobileFullscreen?: boolean;
+		/** Repositions automatically when near viewport edges. @default false */
 		enableAutoReposition?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -432,6 +441,7 @@
 		};
 	};
 
+	/** Opens the popup. */
 	export const open = async () => {
 		// 他の開いているPopupをすべて閉じる
 		popupManager.closeOthers(close);
@@ -487,6 +497,7 @@
 		}, 1);
 	};
 
+	/** Closes the popup. */
 	export const close = () => {
 		isOpen = false;
 		removeEventListenersToClose();
@@ -498,6 +509,7 @@
 		// onCloseはアニメーション完了後に呼ぶ（closeEndで実行）
 	};
 
+	/** Toggles between open and closed. */
 	export const toggle = () => {
 		if (isOpen) {
 			close();
@@ -506,6 +518,7 @@
 		}
 	};
 
+	/** Returns whether the popup is currently open. */
 	export const getIsOpen = () => {
 		return isOpen;
 	};

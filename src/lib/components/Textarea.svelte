@@ -35,10 +35,15 @@
 		autocapitalize?: 'off' | 'none' | 'on' | 'sentences' | 'words' | 'characters' | null;
 		// スタイル/レイアウト
 		rows?: number;
+		/** Min height as px number or CSS string. */
 		minHeight?: string | number | null;
+		/** Max height as px number or CSS string. Applied when `autoResize` is enabled. */
 		maxHeight?: string | number | null;
+		/** Renders inline. @default false */
 		inline?: boolean;
+		/** @default 'outline' */
 		focusStyle?: FocusStyle;
+		/** Width as px number or CSS string. */
 		width?: string | number | null;
 		fullWidth?: boolean;
 		fullHeight?: boolean;
@@ -55,11 +60,15 @@
 
 		// 状態/動作
 		disabled?: boolean;
+		/** Automatically grows height to fit content. @default false */
 		autoResize?: boolean;
+		/** Allows manual resize via drag handle. @default false */
 		resizable?: boolean;
+		/** Shows a clear (×) button when the textarea has a value. @default false */
 		clearable?: boolean;
 		readonly?: boolean;
 		required?: boolean;
+		/** Converts URLs in the value to clickable links (non-focused view). @default false */
 		linkify?: boolean;
 
 		// フォーカスイベント

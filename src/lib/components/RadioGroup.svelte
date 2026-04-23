@@ -12,14 +12,18 @@
 	export type RadioGroupProps = {
 		// 基本プロパティ
 		name?: string;
+		/** `{ label, value, disabled? }[]` */
 		options: Option[];
+		/** Currently selected value. Supports `bind:value`. */
 		value: OptionValue;
 
 		// スタイル/レイアウト
+		/** @default 'vertical' */
 		direction?: 'vertical' | 'horizontal';
 		gap?: string | number;
 		wrap?: boolean;
 		minOptionWidth?: string | number;
+		/** @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
 
 		// 状態/動作
@@ -27,6 +31,7 @@
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 
 		// 入力イベント

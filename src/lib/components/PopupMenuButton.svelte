@@ -23,21 +23,28 @@
 		children?: Snippet;
 
 		// 基本プロパティ
+		/** `{ label, icon?, href?, callback?, disabled? }[]` or `'separator'` for dividers. */
 		menuItems: (MenuItem | 'separator')[];
 
 		// HTML属性
 		id?: string;
 
 		// スタイル/レイアウト
+		/** @default 'bottom' */
 		position?: PopupPosition;
+		/** @default 'ghost' */
 		variant?: ButtonVariant;
+		/** Button size in px. */
 		size?: number;
+		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
 		rounded?: boolean;
 
 		// 状態/動作
 		disabled?: boolean;
+		/** On mobile, displays the menu as a fullscreen sheet. @default true */
 		mobileFullscreen?: boolean;
+		/** Stops click event propagation to parent elements. @default false */
 		cancelParentClick?: boolean;
 
 		// フォーカスイベント

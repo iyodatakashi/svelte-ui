@@ -20,6 +20,7 @@
 		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
+		/** `{ label, value, disabled? }[]` */
 		options: Option[];
 
 		// HTML属性系
@@ -28,8 +29,11 @@
 		tabindex?: number | null;
 		placeholder?: string;
 		// スタイル/レイアウト
+		/** Number of visible rows (multi-line mode). @default null */
 		size?: number | null;
+		/** Renders inline. @default false */
 		inline?: boolean;
+		/** @default 'outline' */
 		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;

@@ -33,16 +33,21 @@
 	// =========================================================================
 	export type DatepickerProps = {
 		// 基本プロパティ
+		/** Selected date (single mode) or range (range mode). Supports `bind:value`. */
 		value: Date | { start: Date; end: Date } | undefined;
+		/** dayjs format string for display (e.g. `"YYYY/MM/DD"`). */
 		format?: string;
 		placeholder?: string;
 		locale?: 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn';
+		/** Separator between start and end dates in range mode. @default ' - ' */
 		rangeSeparator?: string;
 
 		// HTML属性系
 		id?: string;
 		// スタイル/レイアウト
+		/** Renders inline (no border/background). @default false */
 		inline?: boolean;
+		/** @default 'outline' */
 		focusStyle?: FocusStyle;
 		fullWidth?: boolean;
 		width?: string | number | null;
@@ -51,6 +56,7 @@
 		rounded?: boolean;
 
 		// アイコン関連
+		/** Shows a calendar icon. @default false */
 		hasIcon?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
@@ -61,8 +67,11 @@
 		// 状態/動作
 		disabled?: boolean;
 		readonly?: boolean;
+		/** `'single'` for one date, `'range'` for start/end selection. @default 'single' */
 		mode?: DatepickerMode;
+		/** Allows typing a date directly in the input. @default false */
 		enableTextInput?: boolean;
+		/** Opens the calendar when the input is clicked. @default true */
 		enableClickToOpen?: boolean;
 		minDate?: Date;
 		maxDate?: Date;
@@ -570,15 +579,18 @@
 		return match ? match[0] : trimmed;
 	};
 
+	/** Opens the calendar popup. */
 	export const open = () => {
 		datapickerCalendarRef?.reset();
 		popupRef?.open();
 	};
 
+	/** Closes the calendar popup. */
 	export const close = () => {
 		popupRef?.close();
 	};
 
+	/** Toggles the calendar popup. */
 	export const toggle = () => {
 		datapickerCalendarRef?.reset();
 		popupRef?.toggle();

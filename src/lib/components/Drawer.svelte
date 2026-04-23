@@ -34,16 +34,25 @@
 		id?: string;
 
 		// スタイル/レイアウト
+		/** Drawer width in px (number) or any CSS unit (string). */
 		width?: string | number | undefined;
+		/** @default 'left' */
 		position?: 'left' | 'right';
+		/** Inline style applied to the body area. */
 		bodyStyle?: string;
+		/** Removes default body padding. @default false */
 		noPadding?: boolean;
 
 		// 状態/動作
+		/** Use `drawerRef.open()` / `.close()` instead of binding this directly. */
 		isOpen?: boolean;
+		/** Makes the body area scrollable when content overflows. @default false */
 		scrollable?: boolean;
+		/** Closes when clicking the backdrop. @default true */
 		closeIfClickOutside?: boolean;
+		/** Returns focus to the trigger element on close. @default false */
 		restoreFocus?: boolean;
+		/** Focuses the first focusable element on open. @default false */
 		focusFirstOnOpen?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -87,18 +96,22 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
+	/** Opens the drawer. */
 	export const open = (): void => {
 		modalRef?.open(title || ariaLabel);
 	};
 
+	/** Closes the drawer. */
 	export const close = (): void => {
 		modalRef?.close(title || ariaLabel);
 	};
 
+	/** Toggles between open and closed. */
 	export const toggle = (): void => {
 		modalRef?.toggle(title || ariaLabel);
 	};
 
+	/** @internal Completes the close animation. Called automatically. */
 	export const closeEnd = (): void => {
 		modalRef?.closeEnd();
 	};

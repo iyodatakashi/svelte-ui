@@ -18,11 +18,13 @@
 		children?: Snippet;
 
 		// 基本プロパティ
+		/** Supports `bind:value`. */
 		value: boolean;
 
 		// HTML属性系
 		id?: string;
 		// スタイル/レイアウト
+		/** @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
 
 		// 状態/動作
@@ -30,6 +32,7 @@
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 
 		// フォーカスイベント

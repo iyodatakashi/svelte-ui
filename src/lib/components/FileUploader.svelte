@@ -21,13 +21,17 @@
 	// =========================================================================
 	export type FileUploaderProps = {
 		// 基本プロパティ
+		/** Supports `bind:value`. */
 		value: FileList | null | undefined;
+		/** Allows selecting multiple files. @default false */
 		multiple?: boolean;
+		/** Maximum file size in bytes. Shows an error if exceeded. */
 		maxFileSize?: number;
 		placeholder?: string;
 
 		// HTML属性系
 		id?: string;
+		/** Accepted file types (e.g. `"image/*"`, `".pdf,.docx"`). */
 		accept?: string;
 
 		// スタイル/レイアウト

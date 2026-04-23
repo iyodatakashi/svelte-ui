@@ -14,12 +14,17 @@
 	// Props, States & Constants
 	// =========================================================================
 	export type PopupMenuProps = {
+		/** Use `popupMenuRef.open()` / `.close()` instead of binding this directly. */
 		isOpen?: boolean;
+		/** The element the menu is anchored to. */
 		anchorElement: HTMLElement | null | undefined;
+		/** @default 'bottom' */
 		position?: PopupPosition;
+		/** `{ label, icon?, href?, callback?, disabled? }[]` or `'separator'` for dividers. */
 		menuItems: (MenuItem | 'separator')[];
 		id?: string;
 		ariaLabel?: string;
+		/** On mobile, displays as a fullscreen sheet. @default true */
 		mobileFullscreen?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
@@ -192,14 +197,17 @@
 		}
 	};
 
+	/** Opens the menu. */
 	export const open = () => {
 		popupRef?.open();
 	};
 
+	/** Closes the menu. */
 	export const close = () => {
 		popupRef?.close();
 	};
 
+	/** Toggles between open and closed. */
 	export const toggle = () => {
 		popupRef?.toggle();
 	};

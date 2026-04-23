@@ -14,10 +14,15 @@
 	// =========================================================================
 	export type NavProps = {
 		// 基本プロパティ
+		/** `{ label, href, icon?, disabled? }[]` */
 		navItems?: MenuItem[];
+		/** Layout variant. @default 'tab' */
 		variant?: NavVariant;
+		/** Prepended to each item's href for active-state matching. */
 		pathPrefix?: string;
+		/** Custom function to determine if an item is active. */
 		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+		/** Overrides the auto-detected current path. */
 		currentPath?: string;
 
 		// HTML属性
@@ -31,6 +36,7 @@
 		iconVariant?: IconVariant;
 
 		// スタイル/レイアウト
+		/** Visual style for the selected item. */
 		selectedStyle?: NavItemSelectedStyle;
 		gap?: number | string;
 

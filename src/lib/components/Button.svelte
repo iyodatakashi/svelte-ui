@@ -24,21 +24,27 @@
 		children: Snippet;
 
 		// HTML属性系
+		/** @default 'button' */
 		type?: HTMLButtonAttributes['type'];
 		tabindex?: number | null;
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
+		/** @default 'ghost' */
 		variant?: ButtonVariant;
+		/** @default 'medium' */
 		size?: ButtonSize;
+		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
 		fullWidth?: boolean;
+		/** Content alignment. Useful with `fullWidth`. @default 'center' */
 		align?: 'left' | 'center' | 'right';
-		minWidth?: string | number;
 		rounded?: boolean;
+		/** Adds a chevron-down icon. Use when the button opens a popup/dropdown. @default false */
 		popup?: boolean;
 
 		// アイコン関連
+		/** Material Symbols icon name. */
 		icon?: string;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
@@ -48,6 +54,7 @@
 
 		// 状態/動作
 		disabled?: boolean;
+		/** Shows a loading spinner and disables interaction. @default false */
 		loading?: boolean;
 
 		// ARIA/アクセシビリティ

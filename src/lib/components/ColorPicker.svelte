@@ -18,6 +18,7 @@
 	// =========================================================================
 	export type ColorPickerProps = {
 		// 基本プロパティ
+		/** Hex color string (e.g. `"#ff0000"`). Supports `bind:value`. */
 		value: string | null | undefined;
 
 		// HTML属性系
@@ -25,6 +26,7 @@
 		ariaLabel?: string;
 		// スタイル/レイアウト
 		customStyle?: string;
+		/** @default 'outline' */
 		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		width?: string | number | null;
@@ -35,6 +37,7 @@
 		// 状態/動作
 		disabled?: boolean;
 		readonly?: boolean;
+		/** Shows a clear button when a value is selected. @default false */
 		clearable?: boolean;
 		clearButtonAriaLabel?: string;
 		iconVariant?: IconVariant;

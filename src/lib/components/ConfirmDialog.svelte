@@ -20,12 +20,16 @@
 		id?: string;
 
 		// スタイル/レイアウト
+		/** Renders the confirm button in a destructive (red) style. @default false */
 		danger?: boolean;
+		/** @default 400 */
 		width?: string | number;
 		scrollable?: boolean;
 
 		// 状態/動作
+		/** Use `confirmDialogRef.open()` / `.close()` instead of binding this directly. */
 		isOpen?: boolean;
+		/** Closes when clicking the backdrop. @default true */
 		closeIfClickOutside?: boolean;
 		focusFirstOnOpen?: boolean;
 
@@ -74,14 +78,17 @@
 		close();
 	};
 
+	/** Opens the dialog. */
 	export const open = (): void => {
 		isOpen = true;
 	};
 
+	/** Closes the dialog. */
 	export const close = (): void => {
 		isOpen = false;
 	};
 
+	/** Toggles between open and closed. */
 	export const toggle = (): void => {
 		isOpen = !isOpen;
 	};

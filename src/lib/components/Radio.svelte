@@ -17,23 +17,30 @@
 	// =========================================================================
 	export type RadioProps = {
 		// Snippet
+		/** Label content displayed next to the radio button. */
 		children?: Snippet;
 
 		// 基本プロパティ
+		/** Radio group name. All radios in a group must share the same name. */
 		name: string;
+		/** This radio button's value. */
 		value: OptionValue;
+		/** The currently selected value in the group. Radio is checked when `value === currentValue`. Supports `bind:currentValue`. */
 		currentValue: OptionValue;
 
 		// HTML属性系
 		id?: string;
 		// スタイル/レイアウト
+		/** Radio button size. @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
 
 		// 状態/動作
+		/** Disables this radio button. @default false */
 		disabled?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Disables animations for users who prefer reduced motion. @default false */
 		reducedMotion?: boolean;
 
 		// フォーカスイベント

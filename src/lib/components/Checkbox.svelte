@@ -15,23 +15,30 @@
 	// =========================================================================
 	export type CheckboxProps = {
 		// Snippet
+		/** Label content displayed next to the checkbox. */
 		children?: Snippet;
 
 		// 基本プロパティ
+		/** Native `name` attribute. */
 		name?: string;
+		/** Checked state. Supports `bind:value` for two-way binding. */
 		value: boolean;
+		/** Shows the indeterminate (partially checked) state. @default false */
 		indeterminate?: boolean;
 
 		// HTML属性系
 		id?: string;
 		// スタイル/レイアウト
+		/** Checkbox size. @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
 
 		// 状態/動作
+		/** Disables the checkbox. @default false */
 		disabled?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Disables animations for users who prefer reduced motion. @default false */
 		reducedMotion?: boolean;
 
 		// フォーカスイベント

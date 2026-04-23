@@ -17,7 +17,9 @@
 	// =========================================================================
 	export type SegmentedControlProps = {
 		// 基本プロパティ
+		/** `{ label, value, icon?, disabled? }[]` */
 		items: SegmentedControlItem[];
+		/** Currently selected value. Supports `bind:value`. */
 		value: string;
 
 		// HTML属性系
@@ -25,8 +27,10 @@
 		name?: string;
 
 		// スタイル/レイアウト
+		/** @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
 		fullWidth?: boolean;
+		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
 		rounded?: boolean;
 
@@ -43,6 +47,7 @@
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 		ariaLabelledby?: string;
+		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 
 		// 入力イベント

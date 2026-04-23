@@ -21,23 +21,34 @@
 	// =========================================================================
 	export type FabProps = {
 		children?: Snippet;
+		/** @default 'button' */
 		type?: HTMLButtonAttributes['type'];
 		customStyle?: HTMLButtonAttributes['style'];
 		disabled?: boolean;
+		/** Shows a loading spinner and disables interaction. @default false */
 		loading?: boolean;
+		/** Material Symbols icon name. */
 		icon?: string;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
 		iconOpticalSize?: IconOpticalSize;
 		iconVariant?: IconVariant;
+		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
+		/** @default 'ghost' */
 		variant?: ButtonVariant;
+		/** Fixed position on screen. When set, the FAB is `position: fixed`. */
 		position?: FabPosition;
+		/** Distance from the bottom edge when `position` is set. */
 		bottomOffset?: string | number;
+		/** Distance from the side edge when `position` is set. */
 		sideOffset?: string | number;
+		/** Adds safe-area inset padding (for notched devices). @default false */
 		useSafeArea?: boolean;
+		/** @default false */
 		shadow?: boolean;
+		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 		ariaLabel?: string;
 		ariaDescribedby?: string;

@@ -16,18 +16,23 @@
 	// =========================================================================
 	export type SliderProps = {
 		// 基本プロパティ
+		/** Supports `bind:value`. */
 		value: number;
 		name?: string;
 		id?: string;
 
 		// HTML属性系
 		ariaLabel?: string;
+		/** @default 0 */
 		min?: number;
+		/** @default 100 */
 		max?: number;
+		/** @default 1 */
 		step?: number;
 		// スタイル/レイアウト
 		width?: string | number | null;
 		fullWidth?: boolean;
+		/** Custom CSS color for the thumb. */
 		thumbColor?: string | null;
 		thumbWidth?: string | number | null;
 		thumbHeight?: string | number | null;

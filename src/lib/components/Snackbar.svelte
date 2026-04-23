@@ -10,11 +10,15 @@
 	// =========================================================================
 	export type SnackbarProps = {
 		// スタイル/レイアウト
+		/** @default 'bottom' */
 		position?: SnackbarPosition;
+		/** Maximum number of snackbars shown at once. @default 5 */
 		maxVisible?: number;
+		/** @default 'filled' */
 		variant?: SnackbarVariant;
 
 		// 状態/動作
+		/** Auto-dismiss duration in milliseconds. @default 3000 */
 		duration?: number;
 	};
 

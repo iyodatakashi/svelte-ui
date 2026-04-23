@@ -21,21 +21,28 @@
 	// =========================================================================
 	export type IconButtonProps = {
 		// Snippet
+		/** Material Symbols icon name (e.g. `"close"`, `"edit"`). */
 		children: Snippet;
 
 		// HTML属性系
+		/** @default 'button' */
 		type?: 'button' | 'submit' | 'reset' | null | undefined;
 		tabindex?: number | null;
 
 		// スタイル/レイアウト
 		customStyle?: HTMLButtonAttributes['style'];
+		/** @default 'ghost' */
 		variant?: ButtonVariant;
+		/** Button size in px. */
 		size?: number;
+		/** Icon font size in px. */
 		fontSize?: number;
+		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
 		rounded?: boolean;
 
 		// アイコン関連
+		/** Additional Material Symbols icon rendered alongside children. */
 		icon?: string;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
@@ -44,21 +51,27 @@
 		iconVariant?: IconVariant;
 
 		// バッジ関連
+		/** Shows a badge indicator on the button. @default false */
 		hasBadge?: boolean;
+		/** Number shown inside the badge. */
 		badgeCount?: number;
 		badgeVariant?: BadgeVariant;
 		badgeColor?: string;
+		/** Caps the badge count display (shows `max+` when exceeded). */
 		badgeMax?: number;
 
 		// 状態/動作
 		disabled?: boolean;
+		/** Shows a loading spinner and disables interaction. @default false */
 		loading?: boolean;
+		/** Toggleable pressed state (for toggle buttons). @default false */
 		pressed?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel: string;
 		ariaDescribedby?: string;
 		ariaPressed?: boolean;
+		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 
 		// フォーカスイベント

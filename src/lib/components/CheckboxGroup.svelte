@@ -13,14 +13,18 @@
 
 	export type CheckboxGroupProps = {
 		// 基本プロパティ
+		/** `{ label, value, disabled? }[]` */
 		options: Option[];
+		/** Array of currently checked values. Supports `bind:value`. */
 		value: OptionValue[];
 
 		// スタイル/レイアウト
+		/** @default 'vertical' */
 		direction?: 'vertical' | 'horizontal';
 		gap?: string | number;
 		wrap?: boolean;
 		minOptionWidth?: string | number;
+		/** @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
 
 		// 状態/動作
@@ -28,6 +32,7 @@
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 
 		// 入力イベント
