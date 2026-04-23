@@ -1,0 +1,434 @@
+# @14ch/svelte-ui
+
+Svelte 5 UI component library. Material Design inspired, accessibility-first.
+Supports dark mode, high-contrast mode, and i18n (en/ja/fr/de/es/zh-cn).
+
+## Installation
+
+```bash
+npm install @14ch/svelte-ui
+```
+
+Import the stylesheet in your root layout:
+
+```svelte
+<!-- src/routes/+layout.svelte -->
+<script>
+  import '@14ch/svelte-ui/styles';
+</script>
+```
+
+## Global Configuration
+
+```typescript
+// src/lib/config.ts or app entry point
+import { setSvelteUiConfig } from '@14ch/svelte-ui';
+
+setSvelteUiConfig({
+  locale: 'ja',           // 'en' | 'ja' | 'fr' | 'de' | 'es' | 'zh-cn'
+  useBrowserLocale: true  // auto-detect from browser when locale is not set
+});
+```
+
+## Dark Mode
+
+Set `data-theme="dark"` on the `<html>` element to enable dark mode.
+
+```html
+<html data-theme="dark">
+```
+
+---
+
+## Components
+
+### Button
+
+```svelte
+<script>
+  import { Button } from '@14ch/svelte-ui';
+</script>
+
+<Button onclick={() => console.log('clicked')}>Label</Button>
+<Button variant="filled" size="small" loading={isLoading}>Submit</Button>
+<Button variant="outlined" icon="add" fullWidth>Add Item</Button>
+<Button href="/page">Link Button</Button>
+```
+
+Props: `variant` ('ghost'|'filled'|'outlined'|'glass'), `size` ('small'|'medium'|'large'), `icon` (Material Symbols name), `loading`, `disabled`, `fullWidth`, `rounded`, `popup`, `href`, `color`, `align`
+
+---
+
+### Icon
+
+Uses [Material Symbols](https://fonts.google.com/icons). Pass the icon name as children.
+
+```svelte
+<Icon>home</Icon>
+<Icon size={32} filled>settings</Icon>
+```
+
+### IconButton
+
+```svelte
+<IconButton ariaLabel="Close" onclick={handleClose}>close</IconButton>
+<IconButton variant="filled" size={40}>edit</IconButton>
+```
+
+### Fab (Floating Action Button)
+
+```svelte
+<Fab icon="add" ariaLabel="Add" onclick={handleAdd} />
+<Fab icon="add" position="bottom-right" />
+```
+
+---
+
+### Input
+
+```svelte
+<Input bind:value={text} placeholder="Enter text" />
+<Input bind:value={num} type="number" decimalPlaces={2} />
+<Input bind:value={pw} type="password" enablePasswordVisibilityToggle />
+<Input bind:value={url} linkify />
+<Input bind:value={text} unit="kg" />
+```
+
+Props: `type` ('text'|'number'|'email'|'tel'|'password'|...), `inline`, `focusStyle` ('outline'|'background'|'none'), `fullWidth`, `clearable`, `linkify`, `unit`, `decimalPlaces`, `enableThousandsSeparator`, `enablePasswordVisibilityToggle`, `enableNumberStepper`
+
+### Textarea
+
+```svelte
+<Textarea bind:value={text} placeholder="Enter text" />
+<Textarea bind:value={text} autoResize maxHeight={300} />
+<Textarea bind:value={text} clearable linkify />
+```
+
+### Select
+
+```svelte
+<script>
+  const options = [
+    { label: 'Option A', value: 'a' },
+    { label: 'Option B', value: 'b' },
+  ];
+</script>
+
+<Select bind:value={selected} {options} placeholder="Select..." />
+```
+
+### Combobox
+
+Text input with dropdown suggestions.
+
+```svelte
+<Combobox bind:value={val} options={['Apple', 'Banana', 'Cherry']} filterable />
+```
+
+### ColorPicker
+
+```svelte
+<ColorPicker bind:value={hex} clearable />
+<!-- value is a hex string e.g. "#ff0000" -->
+```
+
+### Checkbox
+
+```svelte
+<Checkbox bind:value={checked}>Label</Checkbox>
+<Checkbox bind:value={partial} indeterminate>Partial</Checkbox>
+```
+
+### CheckboxGroup
+
+```svelte
+<script>
+  const options = [
+    { label: 'A', value: 'a' },
+    { label: 'B', value: 'b' },
+  ];
+  let selected = ['a'];
+</script>
+
+<CheckboxGroup {options} bind:value={selected} />
+```
+
+### Radio / RadioGroup
+
+```svelte
+<!-- Individual radios sharing the same name -->
+<Radio name="size" value="s" bind:currentValue={size}>Small</Radio>
+<Radio name="size" value="m" bind:currentValue={size}>Medium</Radio>
+
+<!-- Or use RadioGroup -->
+<RadioGroup {options} bind:value={selected} />
+```
+
+### Switch
+
+```svelte
+<Switch bind:value={enabled} />
+```
+
+### Slider
+
+```svelte
+<Slider bind:value={num} min={0} max={100} step={1} />
+```
+
+### SegmentedControl
+
+```svelte
+<script>
+  const items = [
+    { label: 'Day', value: 'day' },
+    { label: 'Week', value: 'week' },
+    { label: 'Month', value: 'month' },
+  ];
+</script>
+
+<SegmentedControl {items} bind:value={period} />
+```
+
+---
+
+### Dialog
+
+**IMPORTANT**: Do not manage open state from the parent. Use `bind:this` and call `ref.open()` / `ref.close()`.
+
+```svelte
+<script>
+  import { Dialog } from '@14ch/svelte-ui';
+  let dialogRef;
+</script>
+
+<button onclick={() => dialogRef.open()}>Open</button>
+
+<Dialog bind:this={dialogRef} title="Confirm" onClose={() => console.log('closed')}>
+  Dialog body content here.
+  {#snippet footer()}
+    <button onclick={() => dialogRef.close()}>Close</button>
+  {/snippet}
+</Dialog>
+```
+
+Exported methods: `open()`, `close()`, `toggle()`
+
+### ConfirmDialog
+
+Opinionated dialog with confirm/cancel buttons.
+
+```svelte
+<script>
+  let confirmRef;
+</script>
+
+<button onclick={() => confirmRef.open()}>Delete</button>
+
+<ConfirmDialog
+  bind:this={confirmRef}
+  title="Delete item?"
+  description="This cannot be undone."
+  danger
+  onSubmit={handleDelete}
+/>
+```
+
+Exported methods: `open()`, `close()`, `toggle()`
+
+### Drawer
+
+```svelte
+<script>
+  let drawerRef;
+</script>
+
+<button onclick={() => drawerRef.open()}>Open Drawer</button>
+
+<Drawer bind:this={drawerRef} title="Settings" position="right">
+  Drawer content here.
+</Drawer>
+```
+
+Exported methods: `open()`, `close()`, `toggle()`
+
+### Popup
+
+Low-level popup anchored to an element. Use PopupMenu for menu use cases.
+
+```svelte
+<script>
+  let anchorEl;
+  let popupRef;
+</script>
+
+<button bind:this={anchorEl} onclick={() => popupRef.toggle()}>Toggle</button>
+
+<Popup bind:this={popupRef} {anchorElement} position="bottom">
+  Popup content here.
+</Popup>
+```
+
+Exported methods: `open()`, `close()`, `toggle()`, `getIsOpen()`
+
+### PopupMenu
+
+```svelte
+<script>
+  let anchorEl;
+  let menuRef;
+
+  const menuItems = [
+    { label: 'Edit', icon: 'edit', callback: handleEdit },
+    { label: 'Delete', icon: 'delete', callback: handleDelete },
+    'separator',
+    { label: 'Open page', icon: 'open_in_new', href: '/page' },
+  ];
+</script>
+
+<button bind:this={anchorEl} onclick={() => menuRef.toggle()}>Menu</button>
+
+<PopupMenu bind:this={menuRef} anchorElement={anchorEl} {menuItems} />
+```
+
+MenuItem type: `{ label: string, icon?: string, href?: string, callback?: () => void, disabled?: boolean }`
+
+Exported methods: `open()`, `close()`, `toggle()`
+
+### PopupMenuButton
+
+Pre-built three-dot menu button. No need to manage anchor element manually.
+
+```svelte
+<PopupMenuButton {menuItems} />
+```
+
+---
+
+### Datepicker
+
+```svelte
+<Datepicker bind:value={date} />
+<Datepicker bind:value={date} mode="range" />
+<Datepicker bind:value={date} format="YYYY/MM/DD" locale="ja" hasIcon />
+```
+
+Exported methods: `open()`, `close()`, `toggle()`
+
+---
+
+### Tab
+
+Navigation tabs linked to URL paths.
+
+```svelte
+<script>
+  const tabItems = [
+    { label: 'Home', href: '/' },
+    { label: 'Settings', href: '/settings' },
+  ];
+</script>
+
+<Tab {tabItems} />
+```
+
+### Nav
+
+Navigation menu. Supports horizontal, vertical, and mobile variants.
+
+```svelte
+<Nav
+  navItems={[
+    { label: 'Home', href: '/', icon: 'home' },
+    { label: 'Settings', href: '/settings', icon: 'settings' },
+  ]}
+  variant="vertical"
+/>
+```
+
+`variant`: 'tab' | 'horizontal' | 'vertical' | 'mobile'
+
+### Pagination
+
+```svelte
+<Pagination
+  total={200}
+  limit={20}
+  bind:currentPageNum={page}
+  onchange={(p) => loadPage(p)}
+/>
+```
+
+---
+
+### Snackbar
+
+Place `<Snackbar />` once in the root layout, then trigger from anywhere using the `snackbar` utility.
+
+```svelte
+<!-- src/routes/+layout.svelte -->
+<Snackbar />
+```
+
+```typescript
+import { snackbar } from '@14ch/svelte-ui';
+
+snackbar.success('Saved successfully');
+snackbar.error('Something went wrong');
+snackbar.warning('Please check your input');
+snackbar.info('New version available');
+```
+
+---
+
+### FileUploader / ImageUploader
+
+```svelte
+<FileUploader bind:value={files} accept=".pdf,.docx" multiple />
+<ImageUploader bind:value={images} accept="image/*" multiple previewStyle="framed" />
+```
+
+---
+
+### Skeleton
+
+Loading placeholder components.
+
+```svelte
+<SkeletonText lines={3} />
+<SkeletonBox width={200} height={120} />
+<SkeletonAvatar />
+```
+
+---
+
+### LoadingSpinner
+
+```svelte
+<LoadingSpinner size={32} />
+```
+
+---
+
+## Theme Customization
+
+Override CSS variables in your global stylesheet. All public variables are prefixed with `--svelte-ui-`.
+
+```css
+:root {
+  /* Primary color */
+  --primary-500: #6750a4;
+  --primary-600: #5b3d99;
+  --primary-700: #4f2d8e;
+
+  /* Or override directly */
+  --svelte-ui-primary-color: #6750a4;
+}
+```
+
+Key variables:
+- `--svelte-ui-primary-color` — accent color used across interactive components
+- `--svelte-ui-success-color`, `--svelte-ui-error-color`, `--svelte-ui-warning-color`
+- `--svelte-ui-text-color`, `--svelte-ui-border-color`, `--svelte-ui-bg-color`
+
+Component-level variables follow the pattern `--svelte-ui-{component}-{property}`, e.g. `--svelte-ui-button-border-radius`.
