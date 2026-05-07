@@ -7,25 +7,25 @@
 
 	const tabItems = [
 		{
-			title: 'Home',
+			label: 'Home',
 			href: '/',
 			icon: 'home',
 			strictMatch: true
 		},
 		{
-			title: 'Products',
+			label: 'Products',
 			href: '/products',
 			icon: 'inventory',
 			strictMatch: false // パスパラメーター対応
 		},
 		{
-			title: 'Services',
+			label: 'Services',
 			href: '/services',
 			icon: 'build',
 			strictMatch: true
 		},
 		{
-			title: 'About',
+			label: 'About',
 			href: '/about',
 			icon: 'info',
 			strictMatch: true
