@@ -102,6 +102,29 @@ export type {
 // Types
 export type { MenuItem } from './types/menuItem';
 export type { SegmentedControlItem } from './types/segmentedControlItem';
+export type { Option, OptionValue } from './types/options';
+export type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from './types/icon';
+export type {
+	DomEventHandler,
+	FocusHandler,
+	KeyboardHandler,
+	MouseHandler,
+	TouchHandler,
+	PointerHandler,
+	BivariantValueHandler
+} from './types/callbackHandlers';
+export type {
+	SkeletonPatternConfig,
+	SkeletonBoxConfig,
+	SkeletonTextConfig,
+	SkeletonAvatarConfig,
+	SkeletonAvatarImageConfig,
+	SkeletonMediaConfig,
+	SkeletonThumbnailConfig,
+	SkeletonButtonConfig,
+	SkeletonHeadingConfig,
+	SkeletonPresetConfig
+} from './types/skeleton';
 
 // Utils
 export * from './utils/accessibility';
