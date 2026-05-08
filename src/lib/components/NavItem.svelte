@@ -45,6 +45,8 @@
 		isSubMenuExpanded?: boolean;
 		/** For bar/accordion mode: called when this parent is clicked. */
 		onSubMenuToggle?: (item: MenuItem) => void;
+		/** Called when a leaf item (no children) is clicked — used to close any open sub-menu. */
+		onClose?: () => void;
 	};
 
 	let {
@@ -71,7 +73,8 @@
 		resolvedCurrentPath = '',
 		customPathMatcher,
 		isSubMenuExpanded = false,
-		onSubMenuToggle
+		onSubMenuToggle,
+		onClose
 	}: NavItemProps = $props();
 
 	// =========================================================================
@@ -94,10 +97,8 @@
 	// isChild=true のアイテムでは children を展開しない（無限再帰防止）
 	const hasChildren = $derived(!isChild && !!item.children?.length);
 
-	// accordion/expanded: <a> で遷移+トグル。popup/bar/bottom-sheet: <button> でサブメニューのみ
-	const isLinkParent = $derived(
-		hasChildren && (subMenuMode === 'accordion' || subMenuMode === 'expanded')
-	);
+	// 子メニューある親は常に <a> で遷移（href なしは最初の子へ）+ サブメニュートグル
+	const isLinkParent = $derived(hasChildren);
 
 	// 親クリック時の遷移先: 自身の href、なければ最初の子の href
 	const resolvedParentHref = $derived(
@@ -114,15 +115,30 @@
 			? false
 			: subMenuMode === 'expanded'
 				? true
-				: subMenuMode === 'bar' || subMenuMode === 'accordion'
-					? isSubMenuExpanded
-					: isSubMenuOpen
+				: subMenuMode === 'bottom-sheet'
+					? isSubMenuOpen
+					: isSubMenuExpanded
 	);
 
-	// chevron は accordion / popup / bottom-sheet モードで表示（expanded と bar は非表示）
+	// chevron は accordion / popup / bottom-sheet モードで表示（expanded・bar・mobile+popup は非表示）
 	const showChevron = $derived(
-		hasChildren && subMenuMode !== 'expanded' && subMenuMode !== 'bar'
+		hasChildren &&
+		subMenuMode !== 'expanded' &&
+		subMenuMode !== 'bar' &&
+		!(variant === 'mobile' && (subMenuMode === 'popup' || subMenuMode === 'bottom-sheet'))
 	);
+
+	// popup の方向に合わせたアイコン。それ以外は expand_more
+	const chevronIcon = $derived(
+		subMenuMode === 'popup' && variant === 'vertical'
+			? 'arrow_right'
+			: subMenuMode === 'popup' && variant === 'horizontal'
+				? 'arrow_drop_down'
+				: 'expand_more'
+	);
+
+	// popup 専用アイコンは方向固定なので展開時も回転しない
+	const chevronRotates = $derived(subMenuMode !== 'popup');
 
 
 	// =========================================================================
@@ -137,17 +153,15 @@
 	};
 
 	const handleButtonClick = () => {
-		if (subMenuMode === 'bar') {
-			onSubMenuToggle?.(item);
-		} else {
+		if (subMenuMode === 'bottom-sheet') {
 			toggleSubMenu();
+		} else {
+			onSubMenuToggle?.(item);
 		}
 	};
 
 	const handleLinkClick = () => {
-		if (subMenuMode === 'accordion') {
-			onSubMenuToggle?.(item);
-		}
+		onSubMenuToggle?.(item);
 	};
 
 	const isChildSelected = (child: MenuItem) =>
@@ -190,8 +204,8 @@
 		 親アイテム（子メニューあり）
 	=================================================================== -->
 	<div
-		class="nav-item-wrapper nav-item-wrapper--{variant}"
-		class:nav-item-wrapper--open={isSubMenuVisible}
+		class="nav-item__group nav-item__group--{variant}"
+		class:nav-item__group--open={isSubMenuVisible}
 	>
 		{#if isLinkParent}
 			<!-- accordion / expanded: <a> で遷移 + トグル -->
@@ -203,7 +217,7 @@
 				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 				aria-current={!isTabVariant && isSelected ? 'page' : undefined}
-				aria-expanded={subMenuMode === 'accordion' ? isSubMenuOpen : undefined}
+				aria-expanded={isSubMenuExpanded}
 				tabindex={0}
 				data-nav-item
 				data-testid="nav-item"
@@ -224,9 +238,9 @@
 					<div class="nav-item__label">{item.label}</div>
 				{/if}
 				{#if showChevron}
-					<div class="nav-item__chevron" class:nav-item__chevron--expanded={isSubMenuVisible}>
+					<div class="nav-item__chevron" class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}>
 						<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
-							>expand_more</Icon
+							>{chevronIcon}</Icon
 						>
 					</div>
 				{/if}
@@ -239,7 +253,7 @@
 				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-				aria-expanded={subMenuMode !== 'bar' ? isSubMenuOpen : isSubMenuExpanded}
+				aria-expanded={subMenuMode === 'bottom-sheet' ? isSubMenuOpen : isSubMenuExpanded}
 				aria-haspopup="menu"
 				tabindex={0}
 				data-nav-item
@@ -261,9 +275,9 @@
 					<div class="nav-item__label">{item.label}</div>
 				{/if}
 				{#if showChevron}
-					<div class="nav-item__chevron" class:nav-item__chevron--expanded={isSubMenuVisible}>
+					<div class="nav-item__chevron" class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}>
 						<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
-							>expand_more</Icon
+							>{chevronIcon}</Icon
 						>
 					</div>
 				{/if}
@@ -271,14 +285,9 @@
 		{/if}
 
 		<!-- popup サブメニュー -->
-		{#if subMenuMode === 'popup' && isSubMenuOpen}
+		{#if subMenuMode === 'popup' && isSubMenuExpanded}
 			<div
-				class="nav-popup-backdrop"
-				role="presentation"
-				onclick={closeSubMenu}
-			></div>
-			<div
-				class="nav-sub-popup nav-sub-popup--{variant}"
+				class="nav-item__popup nav-item__popup--{variant}"
 				role="menu"
 				transition:fly={{ y: -4, duration: 150 }}
 			>
@@ -298,6 +307,7 @@
 						{customPathMatcher}
 						isSelected={isChildSelected(child)}
 						isDisabled={child.disabled ?? false}
+						{onClose}
 					/>
 				{/each}
 			</div>
@@ -305,7 +315,7 @@
 
 		<!-- accordion / expanded サブメニュー -->
 		{#if (subMenuMode === 'accordion' || subMenuMode === 'expanded') && isSubMenuVisible}
-			<div class="nav-sub-accordion" transition:slide={{ duration: 200 }}>
+			<div class="nav-item__children" transition:slide={{ duration: 200 }}>
 				{#each item.children! as child}
 					<NavItem
 						item={child}
@@ -322,6 +332,7 @@
 						{customPathMatcher}
 						isSelected={isChildSelected(child)}
 						isDisabled={child.disabled ?? false}
+						{onClose}
 					/>
 				{/each}
 			</div>
@@ -330,13 +341,13 @@
 		<!-- bottom-sheet オーバーレイ -->
 		{#if subMenuMode === 'bottom-sheet' && isSubMenuOpen}
 			<div
-				class="nav-bottom-sheet-backdrop"
+				class="nav-item__bottom-sheet-backdrop"
 				role="presentation"
 				onclick={closeSubMenu}
 				transition:fade={{ duration: 200 }}
 			></div>
 			<div
-				class="nav-bottom-sheet"
+				class="nav-item__bottom-sheet"
 				role="menu"
 				transition:fly={{ y: 100, duration: 250 }}
 			>
@@ -356,6 +367,7 @@
 						{customPathMatcher}
 						isSelected={isChildSelected(child)}
 						isDisabled={child.disabled ?? false}
+						{onClose}
 					/>
 				{/each}
 			</div>
@@ -379,6 +391,7 @@
 		data-nav-item={!isChild ? '' : undefined}
 		data-nav-item-child={isChild ? '' : undefined}
 		data-testid="nav-item"
+		onclick={onClose}
 	>
 		{#if item.icon}
 			<div class="nav-item__icon">
@@ -422,7 +435,6 @@
 		border: none;
 		font: inherit;
 		text-align: left;
-		padding: 0;
 		width: 100%;
 	}
 
@@ -617,17 +629,18 @@
 	// =========================================================================
 	// 親アイテムラッパー
 	// =========================================================================
-	.nav-item-wrapper {
+	.nav-item__group {
 		position: relative;
 		display: flex;
 		flex-direction: column;
 	}
 
-	.nav-item-wrapper--vertical {
+	.nav-item__group--vertical {
 		width: 100%;
+		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 	}
 
-	.nav-item-wrapper--mobile {
+	.nav-item__group--mobile {
 		flex: 1;
 		flex-direction: column;
 	}
@@ -635,13 +648,7 @@
 	// =========================================================================
 	// popup サブメニュー
 	// =========================================================================
-	.nav-popup-backdrop {
-		position: fixed;
-		inset: 0;
-		z-index: 99;
-	}
-
-	.nav-sub-popup {
+	.nav-item__popup {
 		position: absolute;
 		z-index: 100;
 		min-width: var(--svelte-ui-nav-sub-popup-min-width);
@@ -654,27 +661,27 @@
 	}
 
 	// vertical: 右側に展開
-	.nav-sub-popup--vertical {
+	.nav-item__popup--vertical {
 		left: 100%;
 		top: 0;
 	}
 
 	// horizontal: 下側に展開
-	.nav-sub-popup--horizontal {
+	.nav-item__popup--horizontal {
 		top: 100%;
 		left: 0;
 	}
 
 	// mobile: 上側にセンター展開
-	.nav-sub-popup--mobile {
+	.nav-item__popup--mobile {
 		bottom: 100%;
 		left: 50%;
 		transform: translateX(-50%);
 	}
 
 	// popup 内の子アイテムはパディングを維持しつつ border-radius をリセット
-	.nav-sub-popup :global(.nav-item--vertical),
-	.nav-sub-popup :global(.nav-item--horizontal) {
+	.nav-item__popup :global(.nav-item--vertical),
+	.nav-item__popup :global(.nav-item--horizontal) {
 		border-radius: 0;
 		width: 100%;
 	}
@@ -682,7 +689,7 @@
 	// =========================================================================
 	// accordion / expanded サブメニュー
 	// =========================================================================
-	.nav-sub-accordion {
+	.nav-item__children {
 		display: flex;
 		flex-direction: column;
 		padding-left: var(--svelte-ui-nav-item-child-indent);
@@ -693,14 +700,14 @@
 	// =========================================================================
 	// bottom-sheet オーバーレイ（mobile バリアント）
 	// =========================================================================
-	.nav-bottom-sheet-backdrop {
+	.nav-item__bottom-sheet-backdrop {
 		position: fixed;
 		inset: 0;
 		z-index: 1000;
 		background-color: var(--svelte-ui-nav-bottom-sheet-overlay-bg);
 	}
 
-	.nav-bottom-sheet {
+	.nav-item__bottom-sheet {
 		position: fixed;
 		bottom: 0;
 		left: 0;

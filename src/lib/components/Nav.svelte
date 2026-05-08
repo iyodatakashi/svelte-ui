@@ -76,6 +76,7 @@
 	}: NavProps = $props();
 
 	let resolvedCurrentPath = $state('');
+	let navEl: HTMLElement;
 
 	// bar/accordion モード: 展開中の親アイテム（$state.raw で Proxy ラップを避け === 比較を正常にする）
 	let expandedParent: MenuItem | null = $state.raw(null);
@@ -92,6 +93,16 @@
 			resolvedCurrentPath = getCurrentPath(currentPath);
 			if (subMenuMode !== 'accordion') expandedParent = null;
 		});
+	});
+
+	// popup モード: nav 外クリックで閉じる
+	$effect(() => {
+		if (subMenuMode !== 'popup' || expandedParent == null) return;
+		const handleClickOutside = (e: MouseEvent) => {
+			if (!navEl.contains(e.target as Node)) expandedParent = null;
+		};
+		document.addEventListener('click', handleClickOutside);
+		return () => document.removeEventListener('click', handleClickOutside);
 	});
 
 	// accordion モード: アクティブな子を持つ親を自動展開
@@ -193,6 +204,7 @@
 </script>
 
 <nav
+	bind:this={navEl}
 	class="nav nav--{variant}"
 	role={isTabVariant ? 'tablist' : undefined}
 	aria-label={ariaLabelledby ? undefined : ariaLabel}
@@ -220,15 +232,16 @@
 			{subMenuMode}
 			{resolvedCurrentPath}
 			{customPathMatcher}
-			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion') && expandedParent === item}
+			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion' || subMenuMode === 'popup') && expandedParent === item}
 			onSubMenuToggle={handleSubMenuToggle}
+			onClose={() => { expandedParent = null; }}
 		/>
 	{/each}
 </nav>
 
 <!-- bar モード: 選択中の親の子アイテムを横バーとして表示 -->
 {#if showSubBar && expandedParent?.children}
-	<div class="nav-sub-bar" role="menu">
+	<div class="nav__sub-bar" role="menu">
 		{#each expandedParent.children as child}
 			<NavItem
 				item={child}
@@ -245,6 +258,7 @@
 				{customPathMatcher}
 				isSelected={isChildSelected(child)}
 				isDisabled={child.disabled ?? false}
+				onClose={() => { expandedParent = null; }}
 			/>
 		{/each}
 	</div>
@@ -297,7 +311,7 @@
 	}
 
 	// bar モード: サブバー
-	.nav-sub-bar {
+	.nav__sub-bar {
 		display: flex;
 		flex-direction: row;
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
