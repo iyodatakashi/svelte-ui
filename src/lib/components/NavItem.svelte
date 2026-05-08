@@ -655,7 +655,6 @@
 
 	.nav-item__group--vertical {
 		width: 100%;
-		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 	}
 
 	.nav-item__group--mobile {
@@ -680,6 +679,7 @@
 	.nav-item__children {
 		display: flex;
 		flex-direction: column;
+		padding-top: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 		padding-left: var(--svelte-ui-nav-item-child-indent);
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 		overflow: hidden;
