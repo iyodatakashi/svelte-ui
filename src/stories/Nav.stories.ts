@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Nav from '../lib/components/Nav.svelte';
+import NavExample from './NavExample.svelte';
 
 const meta = {
 	title: 'Navigation/Nav',
@@ -8,16 +9,25 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'URL-based navigation component with four display variants: `tab`, `header`, `sidebar`, and `mobile`. Highlights the active item by matching the current URL path.'
+					'URL-based navigation component with four display variants: `tab`, `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `subMenuMode` prop and `children` on `MenuItem`. In Storybook, clicking items updates the active state interactively.'
 			}
 		}
 	},
 	tags: ['autodocs'],
+	render: (args) => ({
+		Component: NavExample,
+		props: args
+	}),
 	argTypes: {
 		variant: {
 			control: 'radio',
 			options: ['tab', 'horizontal', 'vertical', 'mobile'],
 			description: 'Display variant'
+		},
+		subMenuMode: {
+			control: 'radio',
+			options: ['popup', 'accordion', 'expanded', 'bar', 'bottom-sheet'],
+			description: 'Sub-menu display mode for items with children'
 		},
 		navItems: {
 			control: 'object',
@@ -29,7 +39,7 @@ const meta = {
 		},
 		currentPath: {
 			control: 'text',
-			description: 'Override current path for selection (useful for Storybook preview)'
+			description: 'Initial active path (clicking items updates it interactively)'
 		},
 		ariaLabel: {
 			control: 'text',
@@ -56,6 +66,31 @@ const itemsWithDisabled = [
 	{ label: 'Settings', href: '/settings', icon: 'settings' }
 ];
 
+const hierarchicalItems = [
+	{ label: 'Home', href: '/', icon: 'home', strictMatch: true },
+	{
+		label: 'Products',
+		href: '/products',
+		icon: 'inventory_2',
+		strictMatch: true,
+		children: [
+			{ label: 'Electronics', href: '/products/electronics', icon: 'devices' },
+			{ label: 'Clothing', href: '/products/clothing', icon: 'checkroom' },
+			{ label: 'Books', href: '/products/books', icon: 'menu_book' }
+		]
+	},
+	{
+		label: 'Services',
+		icon: 'build',
+		children: [
+			{ label: 'Consulting', href: '/services/consulting' },
+			{ label: 'Support', href: '/services/support' },
+			{ label: 'Training', href: '/services/training' }
+		]
+	},
+	{ label: 'Settings', href: '/settings', icon: 'settings' }
+];
+
 // =========================================================================
 // tab バリアント
 // =========================================================================
@@ -70,8 +105,7 @@ export const Tab: Story = {
 		layout: 'padded',
 		docs: {
 			description: {
-				story:
-					'Horizontal tab-style navigation with a bottom bar indicator. Suitable for page-level navigation.'
+				story: 'Horizontal tab-style navigation with a bottom bar indicator.'
 			}
 		}
 	}
@@ -88,7 +122,7 @@ export const TabWithDisabled: Story = {
 };
 
 // =========================================================================
-// header バリアント
+// horizontal バリアント
 // =========================================================================
 export const Horizontal: Story = {
 	args: {
@@ -97,15 +131,7 @@ export const Horizontal: Story = {
 		currentPath: '/dashboard',
 		ariaLabel: 'Main navigation'
 	},
-	parameters: {
-		layout: 'padded',
-		docs: {
-			description: {
-				story:
-					'Horizontal navigation for use in app headers. Selected item is highlighted with a background color.'
-			}
-		}
-	}
+	parameters: { layout: 'padded' }
 };
 
 export const HorizontalWithoutIcons: Story = {
@@ -125,7 +151,7 @@ export const HorizontalWithoutIcons: Story = {
 };
 
 // =========================================================================
-// sidebar バリアント
+// vertical バリアント
 // =========================================================================
 export const Vertical: Story = {
 	args: {
@@ -134,15 +160,7 @@ export const Vertical: Story = {
 		currentPath: '/dashboard',
 		ariaLabel: 'Vertical navigation'
 	},
-	parameters: {
-		layout: 'padded',
-		docs: {
-			description: {
-				story:
-					'Vertical navigation for sidebars. Items are full-width with a left bar indicator on selection.'
-			}
-		}
-	}
+	parameters: { layout: 'padded' }
 };
 
 export const VerticalWithDisabled: Story = {
@@ -170,12 +188,156 @@ export const MobileTab: Story = {
 		currentPath: '/search',
 		ariaLabel: 'Bottom navigation'
 	},
+	parameters: { layout: 'padded' }
+};
+
+// =========================================================================
+// 階層メニュー: vertical
+// =========================================================================
+export const VerticalAccordion: Story = {
+	args: {
+		variant: 'vertical',
+		subMenuMode: 'accordion',
+		navItems: hierarchicalItems,
+		currentPath: '/products/electronics',
+		ariaLabel: 'Sidebar navigation'
+	},
 	parameters: {
 		layout: 'padded',
 		docs: {
 			description: {
 				story:
-					'Bottom navigation bar pattern for mobile. Icons are displayed above labels and items are evenly distributed.'
+					'Accordion sub-menus. Clicking a parent opens its children (exclusive: other open accordions close). The accordion containing the active child auto-expands on load.'
+			}
+		}
+	}
+};
+
+export const VerticalExpanded: Story = {
+	args: {
+		variant: 'vertical',
+		subMenuMode: 'expanded',
+		navItems: hierarchicalItems,
+		currentPath: '/services/support',
+		ariaLabel: 'Sidebar navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story: 'All child items are always visible — no collapse toggle.'
+			}
+		}
+	}
+};
+
+export const VerticalPopup: Story = {
+	args: {
+		variant: 'vertical',
+		subMenuMode: 'popup',
+		navItems: hierarchicalItems,
+		currentPath: '/dashboard',
+		ariaLabel: 'Sidebar navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story: 'Clicking a parent opens a floating panel to the right.'
+			}
+		}
+	}
+};
+
+// =========================================================================
+// 階層メニュー: horizontal
+// =========================================================================
+export const HorizontalPopup: Story = {
+	args: {
+		variant: 'horizontal',
+		subMenuMode: 'popup',
+		navItems: hierarchicalItems,
+		currentPath: '/dashboard',
+		ariaLabel: 'Header navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story: 'Clicking a parent opens a dropdown below.'
+			}
+		}
+	}
+};
+
+export const HorizontalBar: Story = {
+	args: {
+		variant: 'horizontal',
+		subMenuMode: 'bar',
+		navItems: hierarchicalItems,
+		currentPath: '/dashboard',
+		ariaLabel: 'Header navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story:
+					'Clicking a parent reveals a secondary horizontal bar of child items below the nav.'
+			}
+		}
+	}
+};
+
+// =========================================================================
+// 階層メニュー: mobile
+// =========================================================================
+const mobileHierarchicalItems = [
+	{ label: 'Home', href: '/', icon: 'home', strictMatch: true },
+	{
+		label: 'Shop',
+		icon: 'storefront',
+		children: [
+			{ label: 'New', href: '/shop/new', icon: 'fiber_new' },
+			{ label: 'Sale', href: '/shop/sale', icon: 'local_offer' },
+			{ label: 'All', href: '/shop/all', icon: 'grid_view' }
+		]
+	},
+	{ label: 'Favorites', href: '/favorites', icon: 'favorite' },
+	{ label: 'Profile', href: '/profile', icon: 'person' }
+];
+
+export const MobilePopup: Story = {
+	args: {
+		variant: 'mobile',
+		subMenuMode: 'popup',
+		navItems: mobileHierarchicalItems,
+		currentPath: '/',
+		ariaLabel: 'Bottom navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story: 'Tapping a parent opens a popup panel above the tapped item.'
+			}
+		}
+	}
+};
+
+export const MobileBottomSheet: Story = {
+	args: {
+		variant: 'mobile',
+		subMenuMode: 'bottom-sheet',
+		navItems: mobileHierarchicalItems,
+		currentPath: '/',
+		ariaLabel: 'Bottom navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story: 'Tapping a parent slides up a bottom-sheet overlay with child items.'
 			}
 		}
 	}
