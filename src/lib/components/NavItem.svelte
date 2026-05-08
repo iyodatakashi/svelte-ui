@@ -246,6 +246,8 @@
 		padding: var(--svelte-ui-nav-item-padding);
 		min-height: var(--svelte-ui-nav-item-min-height);
 		border-radius: var(--svelte-ui-nav-item-border-radius);
+		white-space: normal;
+		word-break: break-word;
 	}
 
 	.nav-item--vertical::after {
@@ -312,6 +314,7 @@
 	.nav-item__label {
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
+		line-height: var(--svelte-ui-nav-item-label-line-height);
 	}
 
 	.nav-item--mobile .nav-item__label {

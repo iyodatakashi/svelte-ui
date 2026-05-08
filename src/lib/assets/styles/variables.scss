@@ -388,13 +388,14 @@
 	--svelte-ui-nav-item-min-height: 40px;
 	--svelte-ui-nav-item-icon-gap: 8px;
 	--svelte-ui-nav-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
+	--svelte-ui-nav-item-padding: 8px 12px;
+	--svelte-ui-nav-item-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-nav-item-label-line-height: 1.3;
 	/* Nav: mobile-tab */
 	--svelte-ui-nav-mobile-min-height: 56px;
 	--svelte-ui-nav-mobile-item-padding: 8px;
 	--svelte-ui-nav-mobile-item-icon-gap: 8px;
 	--svelte-ui-nav-mobile-item-font-size: 0.75rem;
-	--svelte-ui-nav-item-padding: 8px 12px;
-	--svelte-ui-nav-item-border-radius: var(--svelte-ui-border-radius);
 	/* Nav: vertical */
 	--svelte-ui-nav-vertical-item-gap: 8px;
 	/* Nav: horizontal */
