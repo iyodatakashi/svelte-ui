@@ -537,12 +537,12 @@
 		border-radius: var(--svelte-ui-nav-item-border-radius);
 	}
 
-	// underline モード（tab エイリアス含む）: tab と同じ padding・センタリング・角丸なし
+	// underline モード: nav-item と同じ padding・センタリング・角丸なし
 	.nav-item--horizontal.nav-item--style-underline {
-		padding: var(--svelte-ui-tab-item-padding);
+		padding: var(--svelte-ui-nav-item-padding-y) var(--svelte-ui-nav-item-padding-x);
 		justify-content: center;
 		border-radius: 0;
-		color: var(--svelte-ui-tab-item-text-color);
+		color: var(--svelte-ui-nav-item-underline-text-color);
 	}
 
 	.nav-item--horizontal::after {
@@ -559,7 +559,7 @@
 		}
 
 		.nav-item--horizontal.nav-item--style-underline:hover {
-			color: var(--svelte-ui-tab-item-selected-text-color);
+			color: var(--svelte-ui-nav-item-underline-selected-text-color);
 		}
 
 		.nav-item--horizontal.nav-item--style-underline:hover::before {
@@ -590,7 +590,7 @@
 
 	// underline: 選択時のテキストカラー変更
 	.nav-item--horizontal.nav-item--style-underline.nav-item--selected {
-		color: var(--svelte-ui-tab-item-selected-text-color);
+		color: var(--svelte-ui-nav-item-underline-selected-text-color);
 	}
 
 	// underline: 下線バーの基本設定（常時 opacity: 0、選択・hover で表示）
@@ -599,11 +599,11 @@
 		display: block;
 		position: absolute;
 		bottom: 0;
-		left: calc(var(--svelte-ui-tab-item-padding-x) - var(--svelte-ui-tab-item-selected-bar-offset));
-		width: calc(100% - 2 * var(--svelte-ui-tab-item-padding-x) + 2 * var(--svelte-ui-tab-item-selected-bar-offset));
-		height: var(--svelte-ui-tab-item-selected-bar-height);
-		background-color: var(--svelte-ui-tab-item-selected-bar-color);
-		border-radius: var(--svelte-ui-tab-item-selected-bar-radius);
+		left: calc(var(--svelte-ui-nav-item-padding-x) - var(--svelte-ui-nav-item-underline-bar-offset));
+		width: calc(100% - 2 * var(--svelte-ui-nav-item-padding-x) + 2 * var(--svelte-ui-nav-item-underline-bar-offset));
+		height: var(--svelte-ui-nav-item-underline-bar-height);
+		background-color: var(--svelte-ui-nav-item-underline-bar-color);
+		border-radius: var(--svelte-ui-nav-item-underline-bar-radius);
 		opacity: 0;
 		transition-property: opacity;
 		transition-duration: var(--svelte-ui-transition-duration);

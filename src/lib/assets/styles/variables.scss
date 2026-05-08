@@ -358,21 +358,6 @@
 	--svelte-ui-segmented-control-selected-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-segmented-control-hover-overlay: var(--svelte-ui-hover-overlay);
 
-	/* Tab */
-	--svelte-ui-tab-min-height: var(--svelte-ui-form-height);
-	--svelte-ui-tab-item-text-color: var(--svelte-ui-text-color);
-	--svelte-ui-tab-item-selected-text-color: var(--svelte-ui-primary-color);
-	--svelte-ui-tab-item-selected-bar-color: var(--svelte-ui-primary-color);
-	--svelte-ui-tab-item-padding-x: 16px;
-	--svelte-ui-tab-item-padding-y: 8px;
-	--svelte-ui-tab-item-padding: var(--svelte-ui-tab-item-padding-y)
-		var(--svelte-ui-tab-item-padding-x);
-	--svelte-ui-tab-item-icon-gap: 8px;
-	--svelte-ui-tab-item-selected-bar-offset: 0px;
-	--svelte-ui-tab-item-selected-bar-height: 4px;
-	--svelte-ui-tab-item-selected-bar-radius: 3px 3px 0 0;
-	--svelte-ui-tab-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
-
 	/* Nav */
 	--svelte-ui-nav-item-text-color: var(--svelte-ui-text-color);
 	--svelte-ui-nav-item-selected-text-color: var(--svelte-ui-primary-color);
@@ -382,13 +367,22 @@
 		var(--svelte-ui-primary-color) 16%,
 		transparent
 	);
-	--svelte-ui-nav-item-selected-bar-color: var(--svelte-ui-primary-color);
-	--svelte-ui-nav-item-selected-bar-height: 3px;
-	--svelte-ui-nav-item-selected-bar-radius: 2px;
+	/* Nav: underline style（Tab はこれを参照するエイリアス） */
+	--svelte-ui-nav-item-underline-text-color: var(--svelte-ui-text-color);
+	--svelte-ui-nav-item-underline-selected-text-color: var(--svelte-ui-primary-color);
+	--svelte-ui-nav-item-underline-bar-color: var(--svelte-ui-primary-color);
+	--svelte-ui-nav-item-underline-bar-offset: 0px;
+	--svelte-ui-nav-item-underline-bar-height: 4px;
+	--svelte-ui-nav-item-underline-bar-radius: 3px 3px 0 0;
+
+	/* Tab */
+	--svelte-ui-tab-min-height: var(--svelte-ui-form-height);
 	--svelte-ui-nav-item-min-height: 40px;
 	--svelte-ui-nav-item-icon-gap: 8px;
 	--svelte-ui-nav-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
-	--svelte-ui-nav-item-padding: 8px 12px;
+	--svelte-ui-nav-item-padding-x: 12px;
+	--svelte-ui-nav-item-padding-y: 8px;
+	--svelte-ui-nav-item-padding: var(--svelte-ui-nav-item-padding-y) var(--svelte-ui-nav-item-padding-x);
 	--svelte-ui-nav-item-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-nav-item-label-line-height: 1.3;
 	/* Nav: mobile-tab */
@@ -888,10 +882,10 @@
 		--svelte-ui-slider-custom-thumb-focus-shadow: 0 0 0 3px Highlight;
 		--svelte-ui-slider-custom-thumb-color: HighlightText;
 
-		/* Tab */
-		--svelte-ui-tab-item-text-color: CanvasText;
-		--svelte-ui-tab-item-selected-text-color: Highlight;
-		--svelte-ui-tab-item-selected-bar-color: Highlight;
+		/* Nav: underline */
+		--svelte-ui-nav-item-underline-text-color: CanvasText;
+		--svelte-ui-nav-item-underline-selected-text-color: Highlight;
+		--svelte-ui-nav-item-underline-bar-color: Highlight;
 
 		/* Radio */
 		--svelte-ui-radio-border-color: CanvasText;

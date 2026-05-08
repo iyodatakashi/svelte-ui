@@ -36,7 +36,6 @@ export { default as Switch } from './components/Switch.svelte';
 export { default as Nav } from './components/Nav.svelte';
 export { default as NavItem } from './components/NavItem.svelte';
 export { default as Tab } from './components/Tab.svelte';
-export { default as TabItem } from './components/TabItem.svelte';
 export { default as Textarea } from './components/Textarea.svelte';
 
 // Component Props Types
@@ -81,7 +80,6 @@ export type { SwitchProps } from './components/Switch.svelte';
 export type { NavProps } from './components/Nav.svelte';
 export type { NavItemProps, NavItemSelectedStyle } from './components/NavItem.svelte';
 export type { TabProps } from './components/Tab.svelte';
-export type { TabItemProps } from './components/TabItem.svelte';
 export type { TextareaProps } from './components/Textarea.svelte';
 
 // Prop Optionss

@@ -21,8 +21,10 @@ test('renders Tab with basic props', async () => {
 
 	const tab = screen.container.querySelector('[data-testid="tab"]');
 	await expect.element(tab).toBeVisible();
-	await expect.element(tab).toHaveAttribute('role', 'tablist');
-	await expect.element(tab).toHaveAttribute('aria-label', 'Main navigation');
+
+	// Tab は <nav> でレンダリングされる（role="tablist" は使用しない）
+	const nav = screen.container.querySelector('[data-testid="nav"]');
+	await expect.element(nav).toHaveAttribute('aria-label', 'Main navigation');
 });
 
 test('renders Tab with custom aria-labelledby', async () => {
@@ -32,10 +34,9 @@ test('renders Tab with custom aria-labelledby', async () => {
 		ariaLabelledby: 'tab-heading'
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]');
-	await expect.element(tab).toBeVisible();
-	await expect.element(tab).toHaveAttribute('aria-labelledby', 'tab-heading');
-	await expect.element(tab).not.toHaveAttribute('aria-label');
+	const nav = screen.container.querySelector('[data-testid="nav"]');
+	await expect.element(nav).toHaveAttribute('aria-labelledby', 'tab-heading');
+	await expect.element(nav).not.toHaveAttribute('aria-label');
 });
 
 test('renders all tab items', async () => {
@@ -44,14 +45,13 @@ test('renders all tab items', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
-	expect(tabItems).toHaveLength(4);
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
+	expect(navItems).toHaveLength(4);
 
-	// 各タブアイテムの内容を確認
-	const homeTab = screen.container.querySelector('[data-testid="tab-item"][href="/"]');
-	const aboutTab = screen.container.querySelector('[data-testid="tab-item"][href="/about"]');
-	const contactTab = screen.container.querySelector('[data-testid="tab-item"][href="/contact"]');
-	const servicesTab = screen.container.querySelector('[data-testid="tab-item"][href="/services"]');
+	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/"]');
+	const aboutTab = screen.container.querySelector('[data-testid="nav-item"][href="/about"]');
+	const contactTab = screen.container.querySelector('[data-testid="nav-item"][href="/contact"]');
+	const servicesTab = screen.container.querySelector('[data-testid="nav-item"][href="/services"]');
 
 	expect(homeTab).toBeInTheDocument();
 	expect(aboutTab).toBeInTheDocument();
@@ -65,12 +65,11 @@ test('renders tab items with correct ARIA attributes', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
 
-	tabItems.forEach((tabItem) => {
-		expect(tabItem).toHaveAttribute('role', 'tab');
-		expect(tabItem).toHaveAttribute('aria-selected');
-		expect(tabItem).toHaveAttribute('tabindex', '0');
+	// URLベースのナビゲーション: aria-current="page" を使用
+	navItems.forEach((navItem) => {
+		expect(navItem).toHaveAttribute('tabindex', '0');
 	});
 });
 
@@ -80,10 +79,10 @@ test('renders tab items with icons', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
 
-	tabItems.forEach((tabItem) => {
-		const icon = tabItem.querySelector('.tab-item__icon');
+	navItems.forEach((navItem) => {
+		const icon = navItem.querySelector('.nav-item__icon');
 		expect(icon).toBeInTheDocument();
 	});
 });
@@ -94,10 +93,10 @@ test('renders tab items with text content', async () => {
 		tabItems: createTabItems()
 	});
 
-	const homeTab = screen.container.querySelector('[data-testid="tab-item"][href="/"]');
+	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/"]');
 	expect(homeTab).toHaveTextContent('Home');
 
-	const aboutTab = screen.container.querySelector('[data-testid="tab-item"][href="/about"]');
+	const aboutTab = screen.container.querySelector('[data-testid="nav-item"][href="/about"]');
 	expect(aboutTab).toHaveTextContent('About');
 });
 
@@ -110,8 +109,8 @@ test('handles empty tab items array', async () => {
 	const tab = screen.container.querySelector('[data-testid="tab"]');
 	expect(tab).toBeInTheDocument();
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
-	expect(tabItems).toHaveLength(0);
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
+	expect(navItems).toHaveLength(0);
 });
 
 test('handles single tab item', async () => {
@@ -122,10 +121,10 @@ test('handles single tab item', async () => {
 		tabItems: singleTabItem
 	});
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
-	expect(tabItems).toHaveLength(1);
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
+	expect(navItems).toHaveLength(1);
 
-	const homeTab = screen.container.querySelector('[data-testid="tab-item"][href="/"]');
+	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/"]');
 	expect(homeTab).toHaveTextContent('Home');
 });
 
@@ -140,11 +139,11 @@ test('handles tab items without icons', async () => {
 		tabItems: tabItemsWithoutIcons
 	});
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
-	expect(tabItems).toHaveLength(2);
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
+	expect(navItems).toHaveLength(2);
 
-	tabItems.forEach((tabItem) => {
-		const icon = tabItem.querySelector('.tab-item__icon');
+	navItems.forEach((navItem) => {
+		const icon = navItem.querySelector('.nav-item__icon');
 		expect(icon).toBeNull();
 	});
 });
@@ -160,7 +159,7 @@ test('handles tab items with custom path prefix', async () => {
 	await expect.element(tab).toBeVisible();
 
 	// pathPrefixが設定されている場合、hrefはpathPrefixが付与される
-	const homeTab = screen.container.querySelector('[data-testid="tab-item"][href="/app/"]');
+	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/app/"]');
 	expect(homeTab).toBeInTheDocument();
 });
 
@@ -170,17 +169,16 @@ test('handles keyboard navigation', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
-	const firstTab = tabItems[0];
-	const secondTab = tabItems[1];
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = navItems[0];
+	const secondTab = navItems[1];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
 	await new Promise(resolve => setTimeout(resolve, 10));
 	expect(document.activeElement).toBe(firstTab);
 
-	// ArrowRightキーを押す（フォーカスされているタブアイテムでイベントを発火）
+	// ArrowRightキーを押す（イベントはバブリングで nav の keydown ハンドラに届く）
 	const arrowRightEvent = new KeyboardEvent('keydown', { key: 'ArrowRight', bubbles: true, cancelable: true });
 	firstTab.dispatchEvent(arrowRightEvent);
 
@@ -195,10 +193,9 @@ test('handles ArrowLeft key navigation', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
-	const firstTab = tabItems[0];
-	const lastTab = tabItems[tabItems.length - 1];
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = navItems[0];
+	const lastTab = navItems[navItems.length - 1];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
@@ -220,10 +217,9 @@ test('handles Home key navigation', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
-	const firstTab = tabItems[0];
-	const lastTab = tabItems[tabItems.length - 1];
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = navItems[0];
+	const lastTab = navItems[navItems.length - 1];
 
 	// 最後のタブにフォーカス
 	lastTab.focus();
@@ -245,10 +241,9 @@ test('handles End key navigation', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
-	const firstTab = tabItems[0];
-	const lastTab = tabItems[tabItems.length - 1];
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = navItems[0];
+	const lastTab = navItems[navItems.length - 1];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
@@ -270,9 +265,8 @@ test('handles non-navigation keys', async () => {
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]') as HTMLElement;
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]') as NodeListOf<HTMLElement>;
-	const firstTab = tabItems[0];
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]') as NodeListOf<HTMLElement>;
+	const firstTab = navItems[0];
 
 	// 最初のタブにフォーカス
 	firstTab.focus();
@@ -280,7 +274,7 @@ test('handles non-navigation keys', async () => {
 
 	// 非ナビゲーションキーを押す
 	const spaceEvent = new KeyboardEvent('keydown', { key: ' ', bubbles: true });
-	tab.dispatchEvent(spaceEvent);
+	firstTab.dispatchEvent(spaceEvent);
 
 	// フォーカスが変わらないことを確認
 	await new Promise(resolve => setTimeout(resolve, 10));
@@ -296,9 +290,9 @@ test('applies correct CSS classes', async () => {
 	const tab = screen.container.querySelector('[data-testid="tab"]');
 	await expect.element(tab).toHaveClass('tab');
 
-	const tabItems = screen.container.querySelectorAll('[data-testid="tab-item"]');
-	tabItems.forEach((tabItem) => {
-		expect(tabItem).toHaveClass('tab-item');
+	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
+	navItems.forEach((navItem) => {
+		expect(navItem).toHaveClass('nav-item');
 	});
 });
 
@@ -309,12 +303,11 @@ test('renders tab items with correct structure', async () => {
 	});
 
 	const tab = screen.container.querySelector('[data-testid="tab"]');
-	const tabItems = tab?.querySelectorAll('[data-testid="tab-item"]');
+	const navItems = tab?.querySelectorAll('[data-testid="nav-item"]');
 
-	expect(tabItems).toHaveLength(4);
+	expect(navItems).toHaveLength(4);
 
-	tabItems?.forEach((tabItem) => {
-		expect(tabItem).toBeInTheDocument();
-		expect(tabItem).toHaveAttribute('role', 'tab');
+	navItems?.forEach((navItem) => {
+		expect(navItem).toBeInTheDocument();
 	});
 });
