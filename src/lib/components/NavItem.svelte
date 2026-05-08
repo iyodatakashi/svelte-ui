@@ -96,8 +96,8 @@
 	// isChild=true のアイテムでは children を展開しない（無限再帰防止）
 	const hasChildren = $derived(!isChild && !!item.children?.length);
 
-	// 子メニューある親は常に <a> で遷移（href なしは最初の子へ）+ サブメニュートグル
-	const isLinkParent = $derived(hasChildren);
+	// bottom-sheet は <button> でシートを開く。それ以外の親は <a> で遷移 + サブメニュートグル
+	const isLinkParent = $derived(hasChildren && subMenuMode !== 'bottom-sheet');
 
 	// 親クリック時の遷移先: 自身の href、なければ最初の子の href
 	const resolvedParentHref = $derived(
@@ -357,7 +357,6 @@
 						{customPathMatcher}
 						isSelected={isChildSelected(child)}
 						isDisabled={child.disabled ?? false}
-						{onClose}
 					/>
 				{/each}
 			</div>
@@ -392,7 +391,7 @@
 						{customPathMatcher}
 						isSelected={isChildSelected(child)}
 						isDisabled={child.disabled ?? false}
-						{onClose}
+						onClose={closeSubMenu}
 					/>
 				{/each}
 			</div>

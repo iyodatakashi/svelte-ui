@@ -174,6 +174,12 @@
 			if (item.href && matchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)) {
 				return i;
 			}
+			// bar モード: 子が選択されていれば親も選択とみなす
+			if (subMenuMode === 'bar' && item.children?.some(
+				(child) => child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
+			)) {
+				return i;
+			}
 		}
 		return -1;
 	});
@@ -195,11 +201,10 @@
 	aria-label={ariaLabelledby ? undefined : ariaLabel}
 	aria-labelledby={ariaLabelledby}
 	style:--internal-nav-gap={gap != null ? (typeof gap === 'number' ? `${gap}px` : gap) : undefined}
-	tabindex="-1"
 	{id}
-	onkeydown={handleKeyDown}
 	data-testid="nav"
 >
+	<div style="display: contents" role="presentation" onkeydown={handleKeyDown}>
 	{#each navItems as item, index}
 		<NavItem
 			{item}
@@ -221,6 +226,7 @@
 			onClose={() => { expandedParent = null; }}
 		/>
 	{/each}
+	</div>
 </nav>
 
 <!-- bar モード: 選択中の親の子アイテムを横バーとして表示 -->
@@ -242,7 +248,6 @@
 				{customPathMatcher}
 				isSelected={isChildSelected(child)}
 				isDisabled={child.disabled ?? false}
-				onClose={() => { expandedParent = null; }}
 			/>
 		{/each}
 	</div>
@@ -292,6 +297,5 @@
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
 		align-items: center;
 		min-height: var(--svelte-ui-nav-sub-bar-min-height);
-		border-top: 1px solid var(--svelte-ui-border-color, rgba(0, 0, 0, 0.12));
 	}
 </style>
