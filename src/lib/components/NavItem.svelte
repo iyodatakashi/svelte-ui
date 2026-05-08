@@ -96,10 +96,19 @@
 	// isChild=true のアイテムでは children を展開しない（無限再帰防止）
 	const hasChildren = $derived(!isChild && !!item.children?.length);
 
-	// 親クリック時の遷移先: 自身の href、なければ最初の子の href
-	const resolvedParentHref = $derived(
-		hrefWithPrefix ?? (hasChildren && item.children![0].href ? item.children![0].href : undefined)
-	);
+	// 親クリック時の遷移先: 自身の href、なければ選択中の子 → 最初の子 の優先順で決定
+	const resolvedParentHref = $derived.by(() => {
+		if (hrefWithPrefix) return hrefWithPrefix;
+		if (!hasChildren) return undefined;
+		const activeChild = item.children!.find(
+			child => !!child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
+		);
+		const target = activeChild ?? item.children![0];
+		if (!target.href) return undefined;
+		if (!pathPrefix) return target.href;
+		if (target.href === pathPrefix || target.href.startsWith(`${pathPrefix}/`)) return target.href;
+		return `${pathPrefix}${target.href.startsWith('/') ? '' : '/'}${target.href}`;
+	});
 
 	// =========================================================================
 	// States
