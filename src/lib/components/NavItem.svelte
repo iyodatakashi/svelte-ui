@@ -96,9 +96,6 @@
 	// isChild=true のアイテムでは children を展開しない（無限再帰防止）
 	const hasChildren = $derived(!isChild && !!item.children?.length);
 
-	// bottom-sheet は <button> でシートを開く。それ以外の親は <a> で遷移 + サブメニュートグル
-	const isLinkParent = $derived(hasChildren && subMenuMode !== 'bottom-sheet');
-
 	// 親クリック時の遷移先: 自身の href、なければ最初の子の href
 	const resolvedParentHref = $derived(
 		hrefWithPrefix ?? (hasChildren && item.children![0].href ? item.children![0].href : undefined)
@@ -175,6 +172,8 @@
 	const handleLinkClick = () => {
 		if (subMenuMode === 'popup') {
 			popupRef?.toggle();
+		} else if (subMenuMode === 'bottom-sheet') {
+			toggleSubMenu();
 		} else {
 			onSubMenuToggle?.(item);
 		}
@@ -222,7 +221,7 @@
 		class="nav-item__group nav-item__group--{variant}"
 		class:nav-item__group--open={isSubMenuVisible}
 	>
-		{#if isLinkParent}
+		{#if hasChildren}
 			<!-- accordion / expanded: <a> で遷移 + トグル -->
 			<a
 				href={resolvedParentHref}
