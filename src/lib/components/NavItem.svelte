@@ -82,12 +82,13 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const hrefWithPrefix = $derived.by(() => {
-		if (!item.href) return undefined;
-		if (!pathPrefix) return item.href;
-		if (item.href === pathPrefix || item.href.startsWith(`${pathPrefix}/`)) return item.href;
-		return `${pathPrefix}${item.href.startsWith('/') ? '' : '/'}${item.href}`;
-	});
+	const withPrefix = (href: string) => {
+		if (!pathPrefix) return href;
+		if (href === pathPrefix || href.startsWith(`${pathPrefix}/`)) return href;
+		return `${pathPrefix}${href.startsWith('/') ? '' : '/'}${href}`;
+	};
+
+	const hrefWithPrefix = $derived(item.href ? withPrefix(item.href) : undefined);
 
 	const resolvedSelectedStyle = $derived(
 		selectedStyle ?? (variant === 'vertical' || variant === 'horizontal' ? 'tonal' : 'color')
@@ -104,10 +105,7 @@
 			child => !!child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
 		);
 		const target = activeChild ?? item.children![0];
-		if (!target.href) return undefined;
-		if (!pathPrefix) return target.href;
-		if (target.href === pathPrefix || target.href.startsWith(`${pathPrefix}/`)) return target.href;
-		return `${pathPrefix}${target.href.startsWith('/') ? '' : '/'}${target.href}`;
+		return target.href ? withPrefix(target.href) : undefined;
 	});
 
 	// =========================================================================
@@ -168,16 +166,6 @@
 		isSubMenuOpen = false;
 	};
 
-	const handleButtonClick = () => {
-		if (subMenuMode === 'bottom-sheet') {
-			toggleSubMenu();
-		} else if (subMenuMode === 'popup') {
-			popupRef?.toggle();
-		} else {
-			onSubMenuToggle?.(item);
-		}
-	};
-
 	const handleLinkClick = () => {
 		if (subMenuMode === 'popup') {
 			popupRef?.toggle();
@@ -230,86 +218,44 @@
 		class="nav-item__group nav-item__group--{variant}"
 		class:nav-item__group--open={isSubMenuVisible}
 	>
-		{#if hasChildren}
-			<!-- accordion / expanded: <a> で遷移 + トグル -->
-			<a
-				href={resolvedParentHref}
-				bind:this={anchorEl}
-				class="nav-item nav-item--{variant} nav-item--has-children"
-				class:nav-item--selected={isSelected}
-				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
-				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
-				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-				class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
-				aria-current={isSelected ? 'page' : undefined}
-				aria-expanded={subMenuMode === 'popup' ? isPopupOpen : isSubMenuExpanded}
-				tabindex={0}
-				data-nav-item
-				data-testid="nav-item"
-				onclick={handleLinkClick}
-			>
-				{#if item.icon}
-					<div class="nav-item__icon">
-						<Icon
-							filled={iconFilled || isSelected}
-							weight={iconWeight}
-							grade={iconGrade}
-							opticalSize={iconOpticalSize}
-							variant={iconVariant}>{item.icon}</Icon
-						>
-					</div>
-				{/if}
-				{#if item.label}
-					<div class="nav-item__label">{item.label}</div>
-				{/if}
-				{#if showChevron}
-					<div class="nav-item__chevron" class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}>
-						<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
-							>{chevronIcon}</Icon
-						>
-					</div>
-				{/if}
-			</a>
-		{:else}
-			<!-- popup / bar / bottom-sheet: <button> でサブメニューのみ開く -->
-			<button
-				bind:this={anchorEl}
-				class="nav-item nav-item--{variant} nav-item--has-children"
-				class:nav-item--selected={isSelected}
-				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
-				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
-				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-				class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
-				aria-expanded={subMenuMode === 'bottom-sheet' ? isSubMenuOpen : subMenuMode === 'popup' ? isPopupOpen : isSubMenuExpanded}
-				aria-haspopup="menu"
-				tabindex={0}
-				data-nav-item
-				data-testid="nav-item"
-				onclick={handleButtonClick}
-			>
-				{#if item.icon}
-					<div class="nav-item__icon">
-						<Icon
-							filled={iconFilled || isSelected}
-							weight={iconWeight}
-							grade={iconGrade}
-							opticalSize={iconOpticalSize}
-							variant={iconVariant}>{item.icon}</Icon
-						>
-					</div>
-				{/if}
-				{#if item.label}
-					<div class="nav-item__label">{item.label}</div>
-				{/if}
-				{#if showChevron}
-					<div class="nav-item__chevron" class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}>
-						<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
-							>{chevronIcon}</Icon
-						>
-					</div>
-				{/if}
-			</button>
-		{/if}
+		<a
+			href={resolvedParentHref}
+			bind:this={anchorEl}
+			class="nav-item nav-item--{variant} nav-item--has-children"
+			class:nav-item--selected={isSelected}
+			class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
+			class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
+			class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
+			class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+			aria-current={isSelected ? 'page' : undefined}
+			aria-expanded={subMenuMode === 'popup' ? isPopupOpen : isSubMenuExpanded}
+			tabindex={0}
+			data-nav-item
+			data-testid="nav-item"
+			onclick={handleLinkClick}
+		>
+			{#if item.icon}
+				<div class="nav-item__icon">
+					<Icon
+						filled={iconFilled || isSelected}
+						weight={iconWeight}
+						grade={iconGrade}
+						opticalSize={iconOpticalSize}
+						variant={iconVariant}>{item.icon}</Icon
+					>
+				</div>
+			{/if}
+			{#if item.label}
+				<div class="nav-item__label">{item.label}</div>
+			{/if}
+			{#if showChevron}
+				<div class="nav-item__chevron" class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}>
+					<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
+						>{chevronIcon}</Icon
+					>
+				</div>
+			{/if}
+		</a>
 
 		<!-- popup サブメニュー -->
 		{#if subMenuMode === 'popup'}
@@ -458,15 +404,6 @@
 		transition-property: background-color, color, outline;
 		transition-duration: var(--svelte-ui-transition-duration);
 		box-sizing: border-box;
-	}
-
-	// button リセット（<button> を <a> と同じ見た目にする）
-	button.nav-item {
-		background: none;
-		border: none;
-		font: inherit;
-		text-align: left;
-		width: 100%;
 	}
 
 	// hover overlay（Button と同じ疑似要素方式）
