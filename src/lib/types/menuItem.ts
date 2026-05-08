@@ -7,4 +7,5 @@ export type MenuItem = {
 	matchingPath?: string[];
 	strictMatch?: boolean;
 	disabled?: boolean;
+	children?: MenuItem[];
 };

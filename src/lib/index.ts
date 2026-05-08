@@ -96,7 +96,8 @@ export type {
 	BadgeVariant,
 	DatepickerMode,
 	FocusStyle,
-	NavVariant
+	NavVariant,
+	SubMenuMode
 } from './types/propOptions';
 
 // Types

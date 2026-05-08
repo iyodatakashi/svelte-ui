@@ -85,3 +85,13 @@ export type FocusStyle = 'background' | 'outline' | 'none';
  * Used by Nav component
  */
 export type NavVariant = 'vertical' | 'horizontal' | 'mobile' | 'tab';
+
+/**
+ * Sub-menu display mode for Nav hierarchical menus.
+ * - `popup`: child items appear in a floating panel (all variants)
+ * - `accordion`: child items expand/collapse inline (vertical only)
+ * - `expanded`: child items are always visible inline (vertical only)
+ * - `bar`: child items appear in a secondary bar below the nav (horizontal only)
+ * - `bottom-sheet`: child items appear in a fixed bottom sheet overlay (mobile only)
+ */
+export type SubMenuMode = 'popup' | 'accordion' | 'expanded' | 'bar' | 'bottom-sheet';
