@@ -3,7 +3,9 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import NavItem from './NavItem.svelte';
+	import Popup from './Popup.svelte';
 	import { fade, fly, slide } from 'svelte/transition';
+	import type { PopupPosition } from '$lib/types/propOptions';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
@@ -12,7 +14,7 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type NavItemSelectedStyle = 'color' | 'filled' | 'tonal';
+	export type NavItemSelectedStyle = 'color' | 'filled' | 'tonal' | 'underline';
 
 	export type NavItemProps = {
 		// 基本プロパティ
@@ -52,7 +54,7 @@
 	let {
 		// 基本プロパティ
 		item,
-		variant = 'tab',
+		variant = 'horizontal',
 		pathPrefix = '',
 
 		// アイコン関連
@@ -87,9 +89,6 @@
 		return `${pathPrefix}${item.href.startsWith('/') ? '' : '/'}${item.href}`;
 	});
 
-	const isTabVariant = $derived(variant === 'tab');
-
-	// selectedStyle 未指定時のバリアント別デフォルト
 	const resolvedSelectedStyle = $derived(
 		selectedStyle ?? (variant === 'vertical' || variant === 'horizontal' ? 'tonal' : 'color')
 	);
@@ -109,6 +108,15 @@
 	// States
 	// =========================================================================
 	let isSubMenuOpen = $state(false);
+	let anchorEl: HTMLElement | undefined = $state();
+	let popupRef: Popup | undefined = $state();
+	let isPopupOpen = $state(false);
+
+	const popupPosition = $derived<PopupPosition>(
+		variant === 'vertical' ? 'right-top' :
+		variant === 'mobile' ? 'top-center' :
+		'bottom-left'
+	);
 
 	const isSubMenuVisible = $derived(
 		!hasChildren
@@ -117,7 +125,9 @@
 				? true
 				: subMenuMode === 'bottom-sheet'
 					? isSubMenuOpen
-					: isSubMenuExpanded
+					: subMenuMode === 'popup'
+						? isPopupOpen
+						: isSubMenuExpanded
 	);
 
 	// chevron は accordion / popup / bottom-sheet モードで表示（expanded・bar・mobile+popup は非表示）
@@ -155,13 +165,19 @@
 	const handleButtonClick = () => {
 		if (subMenuMode === 'bottom-sheet') {
 			toggleSubMenu();
+		} else if (subMenuMode === 'popup') {
+			popupRef?.toggle();
 		} else {
 			onSubMenuToggle?.(item);
 		}
 	};
 
 	const handleLinkClick = () => {
-		onSubMenuToggle?.(item);
+		if (subMenuMode === 'popup') {
+			popupRef?.toggle();
+		} else {
+			onSubMenuToggle?.(item);
+		}
 	};
 
 	const isChildSelected = (child: MenuItem) =>
@@ -176,8 +192,7 @@
 		class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-		role={isTabVariant ? 'tab' : undefined}
-		aria-selected={isTabVariant ? isSelected : undefined}
+		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
 		aria-disabled="true"
 		tabindex="-1"
 		data-nav-item={!isChild ? '' : undefined}
@@ -211,13 +226,15 @@
 			<!-- accordion / expanded: <a> で遷移 + トグル -->
 			<a
 				href={resolvedParentHref}
+				bind:this={anchorEl}
 				class="nav-item nav-item--{variant} nav-item--has-children"
 				class:nav-item--selected={isSelected}
 				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-				aria-current={!isTabVariant && isSelected ? 'page' : undefined}
-				aria-expanded={isSubMenuExpanded}
+				class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+				aria-current={isSelected ? 'page' : undefined}
+				aria-expanded={subMenuMode === 'popup' ? isPopupOpen : isSubMenuExpanded}
 				tabindex={0}
 				data-nav-item
 				data-testid="nav-item"
@@ -248,12 +265,14 @@
 		{:else}
 			<!-- popup / bar / bottom-sheet: <button> でサブメニューのみ開く -->
 			<button
+				bind:this={anchorEl}
 				class="nav-item nav-item--{variant} nav-item--has-children"
 				class:nav-item--selected={isSelected}
 				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-				aria-expanded={subMenuMode === 'bottom-sheet' ? isSubMenuOpen : isSubMenuExpanded}
+				class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+				aria-expanded={subMenuMode === 'bottom-sheet' ? isSubMenuOpen : subMenuMode === 'popup' ? isPopupOpen : isSubMenuExpanded}
 				aria-haspopup="menu"
 				tabindex={0}
 				data-nav-item
@@ -285,32 +304,38 @@
 		{/if}
 
 		<!-- popup サブメニュー -->
-		{#if subMenuMode === 'popup' && isSubMenuExpanded}
-			<div
-				class="nav-item__popup nav-item__popup--{variant}"
+		{#if subMenuMode === 'popup'}
+			<Popup
+				bind:this={popupRef}
+				bind:isOpen={isPopupOpen}
+				anchorElement={anchorEl}
+				position={popupPosition}
+				margin={4}
+				mobileFullscreen={false}
 				role="menu"
-				transition:fly={{ y: -4, duration: 150 }}
 			>
-				{#each item.children! as child}
-					<NavItem
-						item={child}
-						{variant}
-						{pathPrefix}
-						{iconFilled}
-						{iconWeight}
-						{iconGrade}
-						{iconOpticalSize}
-						{iconVariant}
-						{selectedStyle}
-						isChild={true}
-						{resolvedCurrentPath}
-						{customPathMatcher}
-						isSelected={isChildSelected(child)}
-						isDisabled={child.disabled ?? false}
-						{onClose}
-					/>
-				{/each}
-			</div>
+				<div class="nav-item__popup-content">
+					{#each item.children! as child}
+						<NavItem
+							item={child}
+							{variant}
+							{pathPrefix}
+							{iconFilled}
+							{iconWeight}
+							{iconGrade}
+							{iconOpticalSize}
+							{iconVariant}
+							{selectedStyle}
+							isChild={true}
+							{resolvedCurrentPath}
+							{customPathMatcher}
+							isSelected={isChildSelected(child)}
+							isDisabled={child.disabled ?? false}
+							onClose={() => popupRef?.close()}
+						/>
+					{/each}
+				</div>
+			</Popup>
 		{/if}
 
 		<!-- accordion / expanded サブメニュー -->
@@ -384,9 +409,8 @@
 		class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
-		role={isTabVariant ? 'tab' : undefined}
-		aria-selected={isTabVariant ? isSelected : undefined}
-		aria-current={!isTabVariant && isSelected ? 'page' : undefined}
+		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+		aria-current={isSelected ? 'page' : undefined}
 		tabindex={0}
 		data-nav-item={!isChild ? '' : undefined}
 		data-nav-item-child={isChild ? '' : undefined}
@@ -469,50 +493,6 @@
 		}
 	}
 
-	// =========================================================================
-	// tab バリアント（TabItem と同様のスタイル）
-	// =========================================================================
-	.nav-item--tab {
-		justify-content: center;
-		padding: var(--svelte-ui-tab-item-padding);
-		min-height: var(--svelte-ui-nav-item-min-height);
-		color: var(--svelte-ui-tab-item-text-color);
-	}
-
-	@media (hover: hover) {
-		.nav-item--tab:hover {
-			color: var(--svelte-ui-tab-item-selected-text-color);
-		}
-
-		.nav-item--tab:hover::before {
-			opacity: 1;
-		}
-	}
-
-	// 選択インジケーター（下線バー）
-	.nav-item--tab::before {
-		content: '';
-		display: block;
-		position: absolute;
-		left: calc(
-			var(--svelte-ui-tab-item-padding-x) - var(--svelte-ui-tab-item-selected-bar-offset)
-		);
-		bottom: 0;
-		width: calc(
-			100% - 2 * var(--svelte-ui-tab-item-padding-x) + 2 *
-				var(--svelte-ui-tab-item-selected-bar-offset)
-		);
-		height: var(--svelte-ui-tab-item-selected-bar-height);
-		background-color: var(--svelte-ui-tab-item-selected-bar-color);
-		border-radius: var(--svelte-ui-tab-item-selected-bar-radius);
-		opacity: 0;
-		transition-property: opacity;
-		transition-duration: var(--svelte-ui-transition-duration);
-	}
-
-	.nav-item--tab.nav-item--selected::before {
-		opacity: 1;
-	}
 
 	// =========================================================================
 	// mobile バリアント（アイコンが上、ラベルが下）
@@ -559,12 +539,32 @@
 		border-radius: var(--svelte-ui-nav-item-border-radius);
 	}
 
+	// underline モード（tab エイリアス含む）: tab と同じ padding・センタリング・角丸なし
+	.nav-item--horizontal.nav-item--style-underline {
+		padding: var(--svelte-ui-tab-item-padding);
+		justify-content: center;
+		border-radius: 0;
+		color: var(--svelte-ui-tab-item-text-color);
+	}
+
 	.nav-item--horizontal::after {
 		border-radius: var(--svelte-ui-nav-item-border-radius);
 	}
 
+	.nav-item--horizontal.nav-item--style-underline::after {
+		border-radius: 0;
+	}
+
 	@media (hover: hover) {
-		.nav-item--horizontal:hover::after {
+		.nav-item--horizontal:not(.nav-item--style-underline):hover::after {
+			opacity: 1;
+		}
+
+		.nav-item--horizontal.nav-item--style-underline:hover {
+			color: var(--svelte-ui-tab-item-selected-text-color);
+		}
+
+		.nav-item--horizontal.nav-item--style-underline:hover::before {
 			opacity: 1;
 		}
 	}
@@ -578,12 +578,6 @@
 		color: var(--svelte-ui-nav-item-selected-text-color);
 	}
 
-	// tab バリアントは tab 用カラー変数を使用
-	.nav-item--tab.nav-item--style-color {
-		color: var(--svelte-ui-tab-item-selected-text-color);
-		background-color: transparent;
-	}
-
 	// filled: 背景を primary-color に
 	.nav-item--style-filled {
 		background-color: var(--svelte-ui-primary-color);
@@ -594,6 +588,31 @@
 	.nav-item--style-tonal {
 		background-color: var(--svelte-ui-nav-item-tonal-bg-color);
 		color: var(--svelte-ui-nav-item-selected-text-color);
+	}
+
+	// underline: 選択時のテキストカラー変更
+	.nav-item--horizontal.nav-item--style-underline.nav-item--selected {
+		color: var(--svelte-ui-tab-item-selected-text-color);
+	}
+
+	// underline: 下線バーの基本設定（常時 opacity: 0、選択・hover で表示）
+	.nav-item--horizontal.nav-item--style-underline::before {
+		content: '';
+		display: block;
+		position: absolute;
+		bottom: 0;
+		left: calc(var(--svelte-ui-tab-item-padding-x) - var(--svelte-ui-tab-item-selected-bar-offset));
+		width: calc(100% - 2 * var(--svelte-ui-tab-item-padding-x) + 2 * var(--svelte-ui-tab-item-selected-bar-offset));
+		height: var(--svelte-ui-tab-item-selected-bar-height);
+		background-color: var(--svelte-ui-tab-item-selected-bar-color);
+		border-radius: var(--svelte-ui-tab-item-selected-bar-radius);
+		opacity: 0;
+		transition-property: opacity;
+		transition-duration: var(--svelte-ui-transition-duration);
+	}
+
+	.nav-item--horizontal.nav-item--style-underline.nav-item--selected::before {
+		opacity: 1;
 	}
 
 	// =========================================================================
@@ -648,42 +667,12 @@
 	// =========================================================================
 	// popup サブメニュー
 	// =========================================================================
-	.nav-item__popup {
-		position: absolute;
-		z-index: 100;
+	// popup 内コンテンツ
+	.nav-item__popup-content {
 		min-width: var(--svelte-ui-nav-sub-popup-min-width);
-		background-color: var(--svelte-ui-surface-color);
-		border-radius: var(--svelte-ui-nav-item-border-radius);
-		box-shadow: var(--svelte-ui-nav-sub-popup-shadow);
-		padding: 4px 0;
 		display: flex;
 		flex-direction: column;
-	}
-
-	// vertical: 右側に展開
-	.nav-item__popup--vertical {
-		left: 100%;
-		top: 0;
-	}
-
-	// horizontal: 下側に展開
-	.nav-item__popup--horizontal {
-		top: 100%;
-		left: 0;
-	}
-
-	// mobile: 上側にセンター展開
-	.nav-item__popup--mobile {
-		bottom: 100%;
-		left: 50%;
-		transform: translateX(-50%);
-	}
-
-	// popup 内の子アイテムはパディングを維持しつつ border-radius をリセット
-	.nav-item__popup :global(.nav-item--vertical),
-	.nav-item__popup :global(.nav-item--horizontal) {
-		border-radius: 0;
-		width: 100%;
+		padding: 4px 0;
 	}
 
 	// =========================================================================

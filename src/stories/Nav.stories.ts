@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'URL-based navigation component with four display variants: `tab`, `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `subMenuMode` prop and `children` on `MenuItem`. In Storybook, clicking items updates the active state interactively.'
+					'URL-based navigation component with three display variants: `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `subMenuMode` prop and `children` on `MenuItem`. Use `selectedStyle="underline"` on `horizontal` for a tab-bar appearance. In Storybook, clicking items updates the active state interactively.'
 			}
 		}
 	},
@@ -21,7 +21,7 @@ const meta = {
 	argTypes: {
 		variant: {
 			control: 'radio',
-			options: ['tab', 'horizontal', 'vertical', 'mobile'],
+			options: ['horizontal', 'vertical', 'mobile'],
 			description: 'Display variant'
 		},
 		subMenuMode: {
@@ -40,6 +40,11 @@ const meta = {
 		currentPath: {
 			control: 'text',
 			description: 'Initial active path (clicking items updates it interactively)'
+		},
+		selectedStyle: {
+			control: 'radio',
+			options: ['color', 'filled', 'tonal', 'underline'],
+			description: 'Visual style for the selected item'
 		},
 		ariaLabel: {
 			control: 'text',
@@ -92,11 +97,12 @@ const hierarchicalItems = [
 ];
 
 // =========================================================================
-// tab バリアント
+// horizontal + underline（タブバー外観）
 // =========================================================================
-export const Tab: Story = {
+export const HorizontalUnderline: Story = {
 	args: {
-		variant: 'tab',
+		variant: 'horizontal',
+		selectedStyle: 'underline',
 		navItems: baseItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Main navigation'
@@ -105,15 +111,16 @@ export const Tab: Story = {
 		layout: 'padded',
 		docs: {
 			description: {
-				story: 'Horizontal tab-style navigation with a bottom bar indicator.'
+				story: 'Horizontal navigation with a bottom bar indicator (`selectedStyle="underline"`).'
 			}
 		}
 	}
 };
 
-export const TabWithDisabled: Story = {
+export const HorizontalUnderlineWithDisabled: Story = {
 	args: {
-		variant: 'tab',
+		variant: 'horizontal',
+		selectedStyle: 'underline',
 		navItems: itemsWithDisabled,
 		currentPath: '/projects',
 		ariaLabel: 'Main navigation'

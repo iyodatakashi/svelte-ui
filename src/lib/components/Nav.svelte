@@ -16,7 +16,7 @@
 		// 基本プロパティ
 		/** `{ label, href, icon?, children?, disabled? }[]` */
 		navItems?: MenuItem[];
-		/** Layout variant. @default 'tab' */
+		/** Layout variant. @default 'horizontal' */
 		variant?: NavVariant;
 		/** Prepended to each item's href for active-state matching. */
 		pathPrefix?: string;
@@ -50,7 +50,7 @@
 	let {
 		// 基本プロパティ
 		navItems = [],
-		variant = 'tab',
+		variant = 'horizontal',
 		pathPrefix = '',
 		customPathMatcher,
 		currentPath,
@@ -76,7 +76,6 @@
 	}: NavProps = $props();
 
 	let resolvedCurrentPath = $state('');
-	let navEl: HTMLElement;
 
 	// bar/accordion モード: 展開中の親アイテム（$state.raw で Proxy ラップを避け === 比較を正常にする）
 	let expandedParent: MenuItem | null = $state.raw(null);
@@ -93,16 +92,6 @@
 			resolvedCurrentPath = getCurrentPath(currentPath);
 			if (subMenuMode !== 'accordion') expandedParent = null;
 		});
-	});
-
-	// popup モード: nav 外クリックで閉じる
-	$effect(() => {
-		if (subMenuMode !== 'popup' || expandedParent == null) return;
-		const handleClickOutside = (e: MouseEvent) => {
-			if (!navEl.contains(e.target as Node)) expandedParent = null;
-		};
-		document.addEventListener('click', handleClickOutside);
-		return () => document.removeEventListener('click', handleClickOutside);
 	});
 
 	// accordion モード: アクティブな子を持つ親を自動展開
@@ -193,8 +182,6 @@
 		navItems.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
 	);
 
-	const isTabVariant = $derived(variant === 'tab');
-
 	const showSubBar = $derived(
 		variant === 'horizontal' && subMenuMode === 'bar' && expandedParent != null
 	);
@@ -204,12 +191,9 @@
 </script>
 
 <nav
-	bind:this={navEl}
 	class="nav nav--{variant}"
-	role={isTabVariant ? 'tablist' : undefined}
 	aria-label={ariaLabelledby ? undefined : ariaLabel}
 	aria-labelledby={ariaLabelledby}
-	aria-orientation={variant === 'vertical' ? 'vertical' : 'horizontal'}
 	style:--internal-nav-gap={gap != null ? (typeof gap === 'number' ? `${gap}px` : gap) : undefined}
 	tabindex="-1"
 	{id}
@@ -232,7 +216,7 @@
 			{subMenuMode}
 			{resolvedCurrentPath}
 			{customPathMatcher}
-			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion' || subMenuMode === 'popup') && expandedParent === item}
+			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion') && expandedParent === item}
 			onSubMenuToggle={handleSubMenuToggle}
 			onClose={() => { expandedParent = null; }}
 		/>
@@ -270,24 +254,6 @@
 		box-sizing: border-box;
 	}
 
-	// tab バリアント（現行 Tab と同様）
-	.nav--tab {
-		flex-direction: row;
-		justify-content: start;
-		position: relative;
-		width: 100%;
-		height: 100%;
-		min-height: var(--svelte-ui-tab-min-height);
-		overflow-x: auto;
-		overflow-y: visible;
-		-ms-overflow-style: none;
-		overscroll-behavior: contain;
-	}
-
-	.nav--tab::-webkit-scrollbar {
-		display: none;
-	}
-
 	// mobile バリアント
 	.nav--mobile {
 		flex-direction: row;
@@ -303,11 +269,20 @@
 		width: 100%;
 	}
 
-	// horizontal バリアント
+	// horizontal バリアント（tab エイリアス含む）
 	.nav--horizontal {
 		flex-direction: row;
-		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
+		justify-content: start;
 		align-items: center;
+		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
+		overflow-x: auto;
+		overflow-y: visible;
+		-ms-overflow-style: none;
+		overscroll-behavior: none;
+	}
+
+	.nav--horizontal::-webkit-scrollbar {
+		display: none;
 	}
 
 	// bar モード: サブバー

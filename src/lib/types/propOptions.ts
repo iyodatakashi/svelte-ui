@@ -84,7 +84,7 @@ export type FocusStyle = 'background' | 'outline' | 'none';
  * Nav variant type
  * Used by Nav component
  */
-export type NavVariant = 'vertical' | 'horizontal' | 'mobile' | 'tab';
+export type NavVariant = 'vertical' | 'horizontal' | 'mobile';
 
 /**
  * Sub-menu display mode for Nav hierarchical menus.

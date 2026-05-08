@@ -37,8 +37,7 @@
 	const modesByVariant: Record<NavVariant, SubMenuMode[]> = {
 		vertical: ['accordion', 'expanded', 'popup'],
 		horizontal: ['popup', 'bar'],
-		mobile: ['popup', 'bottom-sheet'],
-		tab: []
+		mobile: ['popup', 'bottom-sheet']
 	};
 
 	$effect(() => {
