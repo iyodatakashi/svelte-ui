@@ -4,7 +4,7 @@
 	import NavItem from './NavItem.svelte';
 	import type { NavItemSelectedStyle } from './NavItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
-	import type { NavVariant } from '$lib/types/propOptions';
+	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
 	import { subscribeUrlChange } from '$lib/utils/urlChange';
 	import { getCurrentPath, matchPath } from '$lib/utils/navPath';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
@@ -14,7 +14,7 @@
 	// =========================================================================
 	export type NavProps = {
 		// 基本プロパティ
-		/** `{ label, href, icon?, disabled? }[]` */
+		/** `{ label, href, icon?, children?, disabled? }[]` */
 		navItems?: MenuItem[];
 		/** Layout variant. @default 'tab' */
 		variant?: NavVariant;
@@ -39,6 +39,8 @@
 		/** Visual style for the selected item. */
 		selectedStyle?: NavItemSelectedStyle;
 		gap?: number | string;
+		/** Sub-menu display mode for items that have children. @default 'popup' */
+		subMenuMode?: SubMenuMode;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -66,6 +68,7 @@
 		// スタイル/レイアウト
 		selectedStyle,
 		gap,
+		subMenuMode = 'popup',
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -73,6 +76,9 @@
 	}: NavProps = $props();
 
 	let resolvedCurrentPath = $state('');
+
+	// bar/accordion モード: 展開中の親アイテム（$state.raw で Proxy ラップを避け === 比較を正常にする）
+	let expandedParent: MenuItem | null = $state.raw(null);
 
 	// =========================================================================
 	// Effects
@@ -84,7 +90,21 @@
 	$effect(() => {
 		return subscribeUrlChange(() => {
 			resolvedCurrentPath = getCurrentPath(currentPath);
+			if (subMenuMode !== 'accordion') expandedParent = null;
 		});
+	});
+
+	// accordion モード: アクティブな子を持つ親を自動展開
+	$effect(() => {
+		if (subMenuMode !== 'accordion' || !resolvedCurrentPath) return;
+		const activeParent = navItems.find((item) =>
+			item.children?.some(
+				(child) =>
+					child.href &&
+					matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
+			)
+		);
+		if (activeParent) expandedParent = activeParent;
 	});
 
 	// =========================================================================
@@ -135,14 +155,23 @@
 		navItemEls[nextIndex]?.focus();
 	};
 
+	const handleSubMenuToggle = (item: MenuItem) => {
+		if (subMenuMode === 'accordion') {
+			// accordion: 開くのみ（再クリックで閉じない、他は自動的に閉じる）
+			expandedParent = item;
+		} else {
+			// bar: トグル
+			expandedParent = expandedParent === item ? null : item;
+		}
+	};
+
 	// =========================================================================
 	// $derived
 	// =========================================================================
 	const selectedIndex = $derived.by(() => {
 		for (let i = 0; i < navItems.length; i++) {
 			const item = navItems[i];
-			if (!item.href) continue;
-			if (matchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)) {
+			if (item.href && matchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)) {
 				return i;
 			}
 		}
@@ -154,6 +183,13 @@
 	);
 
 	const isTabVariant = $derived(variant === 'tab');
+
+	const showSubBar = $derived(
+		variant === 'horizontal' && subMenuMode === 'bar' && expandedParent != null
+	);
+
+	const isChildSelected = (child: MenuItem) =>
+		!!child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher);
 </script>
 
 <nav
@@ -181,9 +217,38 @@
 			{iconOpticalSize}
 			{iconVariant}
 			{selectedStyle}
+			{subMenuMode}
+			{resolvedCurrentPath}
+			{customPathMatcher}
+			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion') && expandedParent === item}
+			onSubMenuToggle={handleSubMenuToggle}
 		/>
 	{/each}
 </nav>
+
+<!-- bar モード: 選択中の親の子アイテムを横バーとして表示 -->
+{#if showSubBar && expandedParent?.children}
+	<div class="nav-sub-bar" role="menu">
+		{#each expandedParent.children as child}
+			<NavItem
+				item={child}
+				variant="horizontal"
+				{pathPrefix}
+				{iconFilled}
+				{iconWeight}
+				{iconGrade}
+				{iconOpticalSize}
+				{iconVariant}
+				{selectedStyle}
+				isChild={true}
+				{resolvedCurrentPath}
+				{customPathMatcher}
+				isSelected={isChildSelected(child)}
+				isDisabled={child.disabled ?? false}
+			/>
+		{/each}
+	</div>
+{/if}
 
 <style lang="scss">
 	.nav {
@@ -229,5 +294,15 @@
 		flex-direction: row;
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
 		align-items: center;
+	}
+
+	// bar モード: サブバー
+	.nav-sub-bar {
+		display: flex;
+		flex-direction: row;
+		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
+		align-items: center;
+		min-height: var(--svelte-ui-nav-sub-bar-min-height);
+		border-top: 1px solid var(--svelte-ui-border-color, rgba(0, 0, 0, 0.12));
 	}
 </style>

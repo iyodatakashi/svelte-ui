@@ -2,9 +2,12 @@
 
 <script lang="ts">
 	import Icon from './Icon.svelte';
+	import NavItem from './NavItem.svelte';
+	import { fade, fly, slide } from 'svelte/transition';
 	import type { MenuItem } from '$lib/types/menuItem';
-	import type { NavVariant } from '$lib/types/propOptions';
+	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
+	import { matchPath } from '$lib/utils/navPath';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -28,6 +31,20 @@
 		isSelected?: boolean;
 		isDisabled?: boolean;
 		selectedStyle?: NavItemSelectedStyle;
+
+		// サブメニュー関連
+		/** Sub-menu display mode. @default 'popup' */
+		subMenuMode?: SubMenuMode;
+		/** When true, this item does not render its own children (prevents infinite recursion). */
+		isChild?: boolean;
+		/** Current URL path passed from Nav for computing child selected state. */
+		resolvedCurrentPath?: string;
+		/** Custom function to determine if a child item is active. */
+		customPathMatcher?: (currentPath: string, itemHref: string, item: MenuItem) => boolean;
+		/** For bar/accordion mode: whether this item's sub-menu is currently expanded. */
+		isSubMenuExpanded?: boolean;
+		/** For bar/accordion mode: called when this parent is clicked. */
+		onSubMenuToggle?: (item: MenuItem) => void;
 	};
 
 	let {
@@ -46,7 +63,15 @@
 		// 状態/動作
 		isSelected = false,
 		isDisabled = false,
-		selectedStyle
+		selectedStyle,
+
+		// サブメニュー関連
+		subMenuMode = 'popup',
+		isChild = false,
+		resolvedCurrentPath = '',
+		customPathMatcher,
+		isSubMenuExpanded = false,
+		onSubMenuToggle
 	}: NavItemProps = $props();
 
 	// =========================================================================
@@ -65,6 +90,69 @@
 	const resolvedSelectedStyle = $derived(
 		selectedStyle ?? (variant === 'vertical' || variant === 'horizontal' ? 'tonal' : 'color')
 	);
+
+	// isChild=true のアイテムでは children を展開しない（無限再帰防止）
+	const hasChildren = $derived(!isChild && !!item.children?.length);
+
+	// accordion/expanded: <a> で遷移+トグル。popup/bar/bottom-sheet: <button> でサブメニューのみ
+	const isLinkParent = $derived(
+		hasChildren && (subMenuMode === 'accordion' || subMenuMode === 'expanded')
+	);
+
+	// 親クリック時の遷移先: 自身の href、なければ最初の子の href
+	const resolvedParentHref = $derived(
+		hrefWithPrefix ?? (hasChildren && item.children![0].href ? item.children![0].href : undefined)
+	);
+
+	// =========================================================================
+	// States
+	// =========================================================================
+	let isSubMenuOpen = $state(false);
+
+	const isSubMenuVisible = $derived(
+		!hasChildren
+			? false
+			: subMenuMode === 'expanded'
+				? true
+				: subMenuMode === 'bar' || subMenuMode === 'accordion'
+					? isSubMenuExpanded
+					: isSubMenuOpen
+	);
+
+	// chevron は accordion / popup / bottom-sheet モードで表示（expanded と bar は非表示）
+	const showChevron = $derived(
+		hasChildren && subMenuMode !== 'expanded' && subMenuMode !== 'bar'
+	);
+
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const toggleSubMenu = () => {
+		isSubMenuOpen = !isSubMenuOpen;
+	};
+
+	const closeSubMenu = () => {
+		isSubMenuOpen = false;
+	};
+
+	const handleButtonClick = () => {
+		if (subMenuMode === 'bar') {
+			onSubMenuToggle?.(item);
+		} else {
+			toggleSubMenu();
+		}
+	};
+
+	const handleLinkClick = () => {
+		if (subMenuMode === 'accordion') {
+			onSubMenuToggle?.(item);
+		}
+	};
+
+	const isChildSelected = (child: MenuItem) =>
+		!!child.href &&
+		matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher);
 </script>
 
 {#if isDisabled}
@@ -78,7 +166,8 @@
 		aria-selected={isTabVariant ? isSelected : undefined}
 		aria-disabled="true"
 		tabindex="-1"
-		data-nav-item
+		data-nav-item={!isChild ? '' : undefined}
+		data-nav-item-child={isChild ? '' : undefined}
 		data-testid="nav-item"
 	>
 		{#if item.icon}
@@ -96,7 +185,186 @@
 			<div class="nav-item__label">{item.label}</div>
 		{/if}
 	</span>
+{:else if hasChildren}
+	<!-- ===================================================================
+		 親アイテム（子メニューあり）
+	=================================================================== -->
+	<div
+		class="nav-item-wrapper nav-item-wrapper--{variant}"
+		class:nav-item-wrapper--open={isSubMenuVisible}
+	>
+		{#if isLinkParent}
+			<!-- accordion / expanded: <a> で遷移 + トグル -->
+			<a
+				href={resolvedParentHref}
+				class="nav-item nav-item--{variant} nav-item--has-children"
+				class:nav-item--selected={isSelected}
+				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
+				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
+				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
+				aria-current={!isTabVariant && isSelected ? 'page' : undefined}
+				aria-expanded={subMenuMode === 'accordion' ? isSubMenuOpen : undefined}
+				tabindex={0}
+				data-nav-item
+				data-testid="nav-item"
+				onclick={handleLinkClick}
+			>
+				{#if item.icon}
+					<div class="nav-item__icon">
+						<Icon
+							filled={iconFilled || isSelected}
+							weight={iconWeight}
+							grade={iconGrade}
+							opticalSize={iconOpticalSize}
+							variant={iconVariant}>{item.icon}</Icon
+						>
+					</div>
+				{/if}
+				{#if item.label}
+					<div class="nav-item__label">{item.label}</div>
+				{/if}
+				{#if showChevron}
+					<div class="nav-item__chevron" class:nav-item__chevron--expanded={isSubMenuVisible}>
+						<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
+							>expand_more</Icon
+						>
+					</div>
+				{/if}
+			</a>
+		{:else}
+			<!-- popup / bar / bottom-sheet: <button> でサブメニューのみ開く -->
+			<button
+				class="nav-item nav-item--{variant} nav-item--has-children"
+				class:nav-item--selected={isSelected}
+				class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
+				class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
+				class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
+				aria-expanded={subMenuMode !== 'bar' ? isSubMenuOpen : isSubMenuExpanded}
+				aria-haspopup="menu"
+				tabindex={0}
+				data-nav-item
+				data-testid="nav-item"
+				onclick={handleButtonClick}
+			>
+				{#if item.icon}
+					<div class="nav-item__icon">
+						<Icon
+							filled={iconFilled || isSelected}
+							weight={iconWeight}
+							grade={iconGrade}
+							opticalSize={iconOpticalSize}
+							variant={iconVariant}>{item.icon}</Icon
+						>
+					</div>
+				{/if}
+				{#if item.label}
+					<div class="nav-item__label">{item.label}</div>
+				{/if}
+				{#if showChevron}
+					<div class="nav-item__chevron" class:nav-item__chevron--expanded={isSubMenuVisible}>
+						<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
+							>expand_more</Icon
+						>
+					</div>
+				{/if}
+			</button>
+		{/if}
+
+		<!-- popup サブメニュー -->
+		{#if subMenuMode === 'popup' && isSubMenuOpen}
+			<div
+				class="nav-popup-backdrop"
+				role="presentation"
+				onclick={closeSubMenu}
+			></div>
+			<div
+				class="nav-sub-popup nav-sub-popup--{variant}"
+				role="menu"
+				transition:fly={{ y: -4, duration: 150 }}
+			>
+				{#each item.children! as child}
+					<NavItem
+						item={child}
+						{variant}
+						{pathPrefix}
+						{iconFilled}
+						{iconWeight}
+						{iconGrade}
+						{iconOpticalSize}
+						{iconVariant}
+						{selectedStyle}
+						isChild={true}
+						{resolvedCurrentPath}
+						{customPathMatcher}
+						isSelected={isChildSelected(child)}
+						isDisabled={child.disabled ?? false}
+					/>
+				{/each}
+			</div>
+		{/if}
+
+		<!-- accordion / expanded サブメニュー -->
+		{#if (subMenuMode === 'accordion' || subMenuMode === 'expanded') && isSubMenuVisible}
+			<div class="nav-sub-accordion" transition:slide={{ duration: 200 }}>
+				{#each item.children! as child}
+					<NavItem
+						item={child}
+						{variant}
+						{pathPrefix}
+						{iconFilled}
+						{iconWeight}
+						{iconGrade}
+						{iconOpticalSize}
+						{iconVariant}
+						{selectedStyle}
+						isChild={true}
+						{resolvedCurrentPath}
+						{customPathMatcher}
+						isSelected={isChildSelected(child)}
+						isDisabled={child.disabled ?? false}
+					/>
+				{/each}
+			</div>
+		{/if}
+
+		<!-- bottom-sheet オーバーレイ -->
+		{#if subMenuMode === 'bottom-sheet' && isSubMenuOpen}
+			<div
+				class="nav-bottom-sheet-backdrop"
+				role="presentation"
+				onclick={closeSubMenu}
+				transition:fade={{ duration: 200 }}
+			></div>
+			<div
+				class="nav-bottom-sheet"
+				role="menu"
+				transition:fly={{ y: 100, duration: 250 }}
+			>
+				{#each item.children! as child}
+					<NavItem
+						item={child}
+						{variant}
+						{pathPrefix}
+						{iconFilled}
+						{iconWeight}
+						{iconGrade}
+						{iconOpticalSize}
+						{iconVariant}
+						{selectedStyle}
+						isChild={true}
+						{resolvedCurrentPath}
+						{customPathMatcher}
+						isSelected={isChildSelected(child)}
+						isDisabled={child.disabled ?? false}
+					/>
+				{/each}
+			</div>
+		{/if}
+	</div>
 {:else}
+	<!-- ===================================================================
+		 通常アイテム（子メニューなし）
+	=================================================================== -->
 	<a
 		href={hrefWithPrefix}
 		class="nav-item nav-item--{variant}"
@@ -108,7 +376,8 @@
 		aria-selected={isTabVariant ? isSelected : undefined}
 		aria-current={!isTabVariant && isSelected ? 'page' : undefined}
 		tabindex={0}
-		data-nav-item
+		data-nav-item={!isChild ? '' : undefined}
+		data-nav-item-child={isChild ? '' : undefined}
 		data-testid="nav-item"
 	>
 		{#if item.icon}
@@ -145,6 +414,16 @@
 		transition-property: background-color, color, outline;
 		transition-duration: var(--svelte-ui-transition-duration);
 		box-sizing: border-box;
+	}
+
+	// button リセット（<button> を <a> と同じ見た目にする）
+	button.nav-item {
+		background: none;
+		border: none;
+		font: inherit;
+		text-align: left;
+		padding: 0;
+		width: 100%;
 	}
 
 	// hover overlay（Button と同じ疑似要素方式）
@@ -236,8 +515,6 @@
 		gap: var(--svelte-ui-nav-mobile-item-icon-gap);
 	}
 
-
-
 	// =========================================================================
 	// vertical バリアント（縦並び、左バーインジケーター）
 	// =========================================================================
@@ -248,6 +525,7 @@
 		border-radius: var(--svelte-ui-nav-item-border-radius);
 		white-space: normal;
 		word-break: break-word;
+		line-height: var(--svelte-ui-nav-item-label-line-height);
 	}
 
 	.nav-item--vertical::after {
@@ -259,7 +537,6 @@
 			opacity: 1;
 		}
 	}
-
 
 	// =========================================================================
 	// horizontal バリアント（横並び、背景ハイライト）
@@ -279,7 +556,6 @@
 			opacity: 1;
 		}
 	}
-
 
 	// =========================================================================
 	// selectedStyle: 選択状態の表示バリアント
@@ -309,7 +585,7 @@
 	}
 
 	// =========================================================================
-	// ラベル・アイコン
+	// ラベル・アイコン・シェブロン
 	// =========================================================================
 	.nav-item__label {
 		text-box-trim: trim-both;
@@ -319,5 +595,122 @@
 
 	.nav-item--mobile .nav-item__label {
 		text-align: center;
+	}
+
+	.nav-item__chevron {
+		display: flex;
+		align-items: center;
+		margin-left: auto;
+		flex-shrink: 0;
+		transition: transform var(--svelte-ui-transition-duration);
+	}
+
+	.nav-item--horizontal .nav-item__chevron,
+	.nav-item--mobile .nav-item__chevron {
+		margin-left: 2px;
+	}
+
+	.nav-item__chevron--expanded {
+		transform: rotate(180deg);
+	}
+
+	// =========================================================================
+	// 親アイテムラッパー
+	// =========================================================================
+	.nav-item-wrapper {
+		position: relative;
+		display: flex;
+		flex-direction: column;
+	}
+
+	.nav-item-wrapper--vertical {
+		width: 100%;
+	}
+
+	.nav-item-wrapper--mobile {
+		flex: 1;
+		flex-direction: column;
+	}
+
+	// =========================================================================
+	// popup サブメニュー
+	// =========================================================================
+	.nav-popup-backdrop {
+		position: fixed;
+		inset: 0;
+		z-index: 99;
+	}
+
+	.nav-sub-popup {
+		position: absolute;
+		z-index: 100;
+		min-width: var(--svelte-ui-nav-sub-popup-min-width);
+		background-color: var(--svelte-ui-surface-color);
+		border-radius: var(--svelte-ui-nav-item-border-radius);
+		box-shadow: var(--svelte-ui-nav-sub-popup-shadow);
+		padding: 4px 0;
+		display: flex;
+		flex-direction: column;
+	}
+
+	// vertical: 右側に展開
+	.nav-sub-popup--vertical {
+		left: 100%;
+		top: 0;
+	}
+
+	// horizontal: 下側に展開
+	.nav-sub-popup--horizontal {
+		top: 100%;
+		left: 0;
+	}
+
+	// mobile: 上側にセンター展開
+	.nav-sub-popup--mobile {
+		bottom: 100%;
+		left: 50%;
+		transform: translateX(-50%);
+	}
+
+	// popup 内の子アイテムはパディングを維持しつつ border-radius をリセット
+	.nav-sub-popup :global(.nav-item--vertical),
+	.nav-sub-popup :global(.nav-item--horizontal) {
+		border-radius: 0;
+		width: 100%;
+	}
+
+	// =========================================================================
+	// accordion / expanded サブメニュー
+	// =========================================================================
+	.nav-sub-accordion {
+		display: flex;
+		flex-direction: column;
+		padding-left: var(--svelte-ui-nav-item-child-indent);
+		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
+		overflow: hidden;
+	}
+
+	// =========================================================================
+	// bottom-sheet オーバーレイ（mobile バリアント）
+	// =========================================================================
+	.nav-bottom-sheet-backdrop {
+		position: fixed;
+		inset: 0;
+		z-index: 1000;
+		background-color: var(--svelte-ui-nav-bottom-sheet-overlay-bg);
+	}
+
+	.nav-bottom-sheet {
+		position: fixed;
+		bottom: 0;
+		left: 0;
+		right: 0;
+		z-index: 1001;
+		background-color: var(--svelte-ui-surface-color);
+		border-radius: var(--svelte-ui-nav-bottom-sheet-border-radius);
+		padding: var(--svelte-ui-nav-bottom-sheet-padding);
+		display: flex;
+		flex-direction: row;
+		justify-content: space-around;
 	}
 </style>
