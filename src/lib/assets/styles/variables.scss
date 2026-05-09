@@ -382,7 +382,8 @@
 	--svelte-ui-nav-item-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-nav-item-padding-x: 12px;
 	--svelte-ui-nav-item-padding-y: 8px;
-	--svelte-ui-nav-item-padding: var(--svelte-ui-nav-item-padding-y) var(--svelte-ui-nav-item-padding-x);
+	--svelte-ui-nav-item-padding: var(--svelte-ui-nav-item-padding-y)
+		var(--svelte-ui-nav-item-padding-x);
 	--svelte-ui-nav-item-border-radius: var(--svelte-ui-border-radius);
 	--svelte-ui-nav-item-label-line-height: 1.3;
 	/* Nav: mobile-tab */
@@ -398,7 +399,7 @@
 	--svelte-ui-nav-sub-popup-min-width: 160px;
 	--svelte-ui-nav-sub-popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
 	--svelte-ui-nav-sub-bar-min-height: 48px;
-	--svelte-ui-nav-item-child-indent: 16px;
+	--svelte-ui-nav-item-child-indent: 32px;
 	--svelte-ui-nav-bottom-sheet-overlay-bg: rgba(0, 0, 0, 0.4);
 	--svelte-ui-nav-bottom-sheet-border-radius: 16px 16px 0 0;
 	--svelte-ui-nav-bottom-sheet-padding: 16px 8px;
