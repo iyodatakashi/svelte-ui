@@ -76,6 +76,8 @@
 	}: NavProps = $props();
 
 	let resolvedCurrentPath = $state('');
+	let navEl: HTMLElement | undefined = $state();
+	let subBarEl: HTMLElement | undefined = $state();
 
 	// bar/accordion モード: 展開中の親アイテム（$state.raw で Proxy ラップを避け === 比較を正常にする）
 	let expandedParent: MenuItem | null = $state.raw(null);
@@ -110,19 +112,38 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
+	const focusExpandedParent = () => {
+		if (!expandedParent || !navEl) return;
+		const idx = navItems.indexOf(expandedParent);
+		const parentEls = Array.from(navEl.querySelectorAll<HTMLElement>('[data-nav-item]'));
+		parentEls[idx]?.focus();
+	};
+
 	const handleKeyDown = (event: KeyboardEvent) => {
-		if (navItems.length === 0 || enabledIndices.length === 0) return;
-
+		// accordion/expanded は子アイテムも DOM 順で含める
+		const includeChildren = subMenuMode === 'accordion' || subMenuMode === 'expanded';
+		const selector = includeChildren ? '[data-nav-item], [data-nav-item-child]' : '[data-nav-item]';
 		const navItemEls = Array.from(
-			(event.currentTarget as HTMLElement).querySelectorAll('[data-nav-item]')
-		) as HTMLElement[];
-		const currentItem = event.target as HTMLElement;
-		const currentIndex = navItemEls.indexOf(currentItem);
+			(event.currentTarget as HTMLElement).querySelectorAll<HTMLElement>(selector)
+		).filter(el => el.tabIndex !== -1);
 
+		if (navItemEls.length === 0) return;
+
+		const currentIndex = navItemEls.indexOf(event.target as HTMLElement);
 		if (currentIndex === -1) return;
 
-		const currentEnabledPosition = enabledIndices.indexOf(currentIndex);
-		let nextEnabledPosition = currentEnabledPosition;
+		// bar モード: 展開中の親で ArrowDown → サブバーの最初の子へ
+		if (subMenuMode === 'bar' && event.key === 'ArrowDown' && showSubBar) {
+			const allNavItemEls = Array.from(
+				(event.currentTarget as HTMLElement).querySelectorAll<HTMLElement>('[data-nav-item]')
+			);
+			const expandedEl = allNavItemEls[navItems.indexOf(expandedParent!)];
+			if (expandedEl && expandedEl.contains(event.target as Node)) {
+				event.preventDefault();
+				subBarEl?.querySelector<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')?.focus();
+				return;
+			}
+		}
 
 		const isVertical = variant === 'vertical';
 		const prevKey = isVertical ? 'ArrowUp' : 'ArrowLeft';
@@ -131,28 +152,60 @@
 		switch (event.key) {
 			case prevKey:
 				event.preventDefault();
-				nextEnabledPosition =
-					currentEnabledPosition > 0 ? currentEnabledPosition - 1 : enabledIndices.length - 1;
+				navItemEls[currentIndex > 0 ? currentIndex - 1 : navItemEls.length - 1]?.focus();
 				break;
 			case nextKey:
 				event.preventDefault();
-				nextEnabledPosition =
-					currentEnabledPosition < enabledIndices.length - 1 ? currentEnabledPosition + 1 : 0;
+				navItemEls[currentIndex < navItemEls.length - 1 ? currentIndex + 1 : 0]?.focus();
 				break;
 			case 'Home':
 				event.preventDefault();
-				nextEnabledPosition = 0;
+				navItemEls[0]?.focus();
 				break;
 			case 'End':
 				event.preventDefault();
-				nextEnabledPosition = enabledIndices.length - 1;
+				navItemEls[navItemEls.length - 1]?.focus();
 				break;
 			default:
 				return;
 		}
+	};
 
-		const nextIndex = enabledIndices[nextEnabledPosition];
-		navItemEls[nextIndex]?.focus();
+	const handleSubBarKeyDown = (event: KeyboardEvent) => {
+		const container = event.currentTarget as HTMLElement;
+		const items = Array.from(
+			container.querySelectorAll<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')
+		);
+		const currentIndex = items.indexOf(event.target as HTMLElement);
+		if (currentIndex === -1) return;
+
+		switch (event.key) {
+			case 'ArrowLeft':
+				event.preventDefault();
+				items[currentIndex > 0 ? currentIndex - 1 : items.length - 1]?.focus();
+				break;
+			case 'ArrowRight':
+				event.preventDefault();
+				items[currentIndex < items.length - 1 ? currentIndex + 1 : 0]?.focus();
+				break;
+			case 'ArrowUp':
+				event.preventDefault();
+				focusExpandedParent();
+				break;
+			case 'Home':
+				event.preventDefault();
+				items[0]?.focus();
+				break;
+			case 'End':
+				event.preventDefault();
+				items[items.length - 1]?.focus();
+				break;
+			case 'Escape':
+				event.preventDefault();
+				focusExpandedParent();
+				expandedParent = null;
+				break;
+		}
 	};
 
 	const handleSubMenuToggle = (item: MenuItem) => {
@@ -184,10 +237,6 @@
 		return -1;
 	});
 
-	const enabledIndices = $derived(
-		navItems.map((item, i) => (item.disabled ? -1 : i)).filter((i) => i >= 0)
-	);
-
 	const showSubBar = $derived(
 		variant === 'horizontal' && subMenuMode === 'bar' && expandedParent != null
 	);
@@ -203,6 +252,7 @@
 	style:--internal-nav-gap={gap != null ? (typeof gap === 'number' ? `${gap}px` : gap) : undefined}
 	{id}
 	data-testid="nav"
+	bind:this={navEl}
 >
 	<div style="display: contents" role="presentation" onkeydown={handleKeyDown}>
 	{#each navItems as item, index}
@@ -231,7 +281,7 @@
 
 <!-- bar モード: 選択中の親の子アイテムを横バーとして表示 -->
 {#if showSubBar && expandedParent?.children}
-	<div class="nav__sub-bar" role="menu">
+	<div class="nav__sub-bar" role="menu" tabindex="-1" onkeydown={handleSubBarKeyDown} bind:this={subBarEl}>
 		{#each expandedParent.children as child}
 			<NavItem
 				item={child}

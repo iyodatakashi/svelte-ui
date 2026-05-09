@@ -10,6 +10,7 @@
 	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { matchPath } from '$lib/utils/navPath';
+	import { tick } from 'svelte';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -115,6 +116,12 @@
 	let anchorEl: HTMLElement | undefined = $state();
 	let popupRef: Popup | undefined = $state();
 	let isPopupOpen = $state(false);
+	let bottomSheetEl: HTMLElement | undefined = $state();
+
+	const focusFirstChild = (container: HTMLElement | undefined) =>
+		container?.querySelector<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')?.focus();
+
+	$effect(() => { if (isSubMenuOpen) tick().then(() => focusFirstChild(bottomSheetEl)); });
 
 	const popupPosition = $derived<PopupPosition>(
 		variant === 'vertical' ? 'right-top' :
@@ -164,6 +171,73 @@
 
 	const closeSubMenu = () => {
 		isSubMenuOpen = false;
+	};
+
+	// popup の ArrowRight(vertical) / ArrowDown(horizontal) でサブメニューを開く
+	const handleTriggerKeyDown = (event: KeyboardEvent) => {
+		if (!hasChildren || subMenuMode !== 'popup' || isPopupOpen) return;
+		const openKey = variant === 'vertical' ? 'ArrowRight' : 'ArrowDown';
+		if (event.key !== openKey) return;
+		event.preventDefault();
+		popupRef?.toggle();
+	};
+
+	const handleSubMenuKeyDown = (event: KeyboardEvent, horizontal = false) => {
+		const container = event.currentTarget as HTMLElement;
+		const items = Array.from(
+			container.querySelectorAll<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')
+		);
+		const currentIndex = items.indexOf(event.target as HTMLElement);
+		if (currentIndex === -1) return;
+
+		// popup 終了キー: vertical→ArrowLeft で親に戻る / horizontal→先頭で ArrowUp で親に戻る
+		if (subMenuMode === 'popup') {
+			if (variant === 'vertical' && event.key === 'ArrowLeft') {
+				event.preventDefault();
+				popupRef?.close();
+				anchorEl?.focus();
+				return;
+			}
+			if (variant !== 'vertical' && event.key === 'ArrowUp' && currentIndex === 0) {
+				event.preventDefault();
+				popupRef?.close();
+				anchorEl?.focus();
+				return;
+			}
+		}
+
+		const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp';
+		const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown';
+
+		switch (event.key) {
+			case prevKey:
+				event.preventDefault();
+				items[currentIndex > 0 ? currentIndex - 1 : items.length - 1]?.focus();
+				break;
+			case nextKey:
+				event.preventDefault();
+				items[currentIndex < items.length - 1 ? currentIndex + 1 : 0]?.focus();
+				break;
+			case 'Home':
+				event.preventDefault();
+				items[0]?.focus();
+				break;
+			case 'End':
+				event.preventDefault();
+				items[items.length - 1]?.focus();
+				break;
+			case 'Escape':
+				if (subMenuMode === 'popup') {
+					event.preventDefault();
+					popupRef?.close();
+					anchorEl?.focus();
+				} else if (subMenuMode === 'bottom-sheet') {
+					event.preventDefault();
+					closeSubMenu();
+					anchorEl?.focus();
+				}
+				break;
+		}
 	};
 
 	const handleLinkClick = () => {
@@ -233,6 +307,7 @@
 			data-nav-item
 			data-testid="nav-item"
 			onclick={handleLinkClick}
+			onkeydown={handleTriggerKeyDown}
 		>
 			{#if item.icon}
 				<div class="nav-item__icon">
@@ -268,7 +343,7 @@
 				mobileFullscreen={false}
 				role="menu"
 			>
-				<div class="nav-item__popup-content">
+				<div class="nav-item__popup-content" role="presentation" onkeydown={handleSubMenuKeyDown}>
 					{#each item.children! as child}
 						<NavItem
 							item={child}
@@ -294,7 +369,7 @@
 
 		<!-- accordion / expanded サブメニュー -->
 		{#if (subMenuMode === 'accordion' || subMenuMode === 'expanded') && isSubMenuVisible}
-			<div class="nav-item__children" transition:slide={{ duration: 200 }}>
+			<div class="nav-item__children" role="presentation" transition:slide={{ duration: 200 }}>
 				{#each item.children! as child}
 					<NavItem
 						item={child}
@@ -327,7 +402,10 @@
 			<div
 				class="nav-item__bottom-sheet"
 				role="menu"
+				tabindex="-1"
 				transition:fly={{ y: 100, duration: 250 }}
+				onkeydown={(e) => handleSubMenuKeyDown(e, true)}
+				bind:this={bottomSheetEl}
 			>
 				{#each item.children! as child}
 					<NavItem
