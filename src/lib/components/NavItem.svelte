@@ -46,8 +46,8 @@
 		isDisabled?: boolean;
 		/** When true, this item does not render its own children (prevents infinite recursion). */
 		isChild?: boolean;
-		/** For bar/accordion mode: whether this item's sub-menu is currently expanded. */
-		isChildrenExpanded?: boolean;
+		/** Whether this item's children are currently visible. */
+		isChildrenVisible?: boolean;
 
 		// イベントハンドラ
 		/** For bar/accordion mode: called when this parent is clicked. */
@@ -80,7 +80,7 @@
 		isSelected = false,
 		isDisabled = false,
 		isChild = false,
-		isChildrenExpanded = false,
+		isChildrenVisible = $bindable(false),
 
 		// イベントハンドラ
 		onChildrenToggle,
@@ -121,36 +121,22 @@
 	// =========================================================================
 	// States
 	// =========================================================================
-	let isChildrenOpen = $state(false);
 	let anchorEl: HTMLElement | undefined = $state();
 	let popupMenuRef: PopupMenu | undefined = $state();
-	let isPopupOpen = $state(false);
 	let bottomSheetEl: HTMLElement | undefined = $state();
 
 	const focusFirstChild = (container: HTMLElement | undefined) =>
 		container?.querySelector<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')?.focus();
 
 	$effect(() => {
-		if (isChildrenOpen) tick().then(() => focusFirstChild(bottomSheetEl));
+		if (isChildrenVisible && childrenVariant === 'bottom-sheet') tick().then(() => focusFirstChild(bottomSheetEl));
 	});
 
 	const popupPosition = $derived<PopupPosition>(
 		variant === 'vertical' ? 'right-top' : variant === 'mobile' ? 'top-center' : 'bottom-left'
 	);
 
-	const isChildrenVisible = $derived(
-		!hasChildren
-			? false
-			: childrenVariant === 'expanded'
-				? true
-				: childrenVariant === 'bottom-sheet'
-					? isChildrenOpen
-					: childrenVariant === 'popup'
-						? isPopupOpen
-						: isChildrenExpanded
-	);
-
-	const showChevron = $derived(hasChildren && chevron && variant !== 'mobile');
+	const showChevron = $derived(hasChildren && chevron && variant !== 'mobile' && childrenVariant !== 'expanded');
 
 	// popup の方向に合わせたアイコン。それ以外は expand_more
 	const chevronIcon = $derived(
@@ -168,16 +154,16 @@
 	// Methods
 	// =========================================================================
 	const toggleOpen = () => {
-		isChildrenOpen = !isChildrenOpen;
+		isChildrenVisible = !isChildrenVisible;
 	};
 
 	const closeOpen = () => {
-		isChildrenOpen = false;
+		isChildrenVisible = false;
 	};
 
 	// popup の ArrowRight(vertical) / ArrowDown(horizontal) でサブメニューを開く
 	const handleTriggerKeyDown = (event: KeyboardEvent) => {
-		if (!hasChildren || childrenVariant !== 'popup' || isPopupOpen) return;
+		if (!hasChildren || childrenVariant !== 'popup' || isChildrenVisible) return;
 		const openKey = variant === 'vertical' ? 'ArrowRight' : 'ArrowDown';
 		if (event.key !== openKey) return;
 		event.preventDefault();
@@ -227,7 +213,7 @@
 			popupMenuRef?.toggle();
 		} else if (childrenVariant === 'bottom-sheet') {
 			toggleOpen();
-		} else {
+		} else if (childrenVariant !== 'expanded') {
 			onChildrenToggle?.(item);
 		}
 	};
@@ -273,7 +259,7 @@
 	=================================================================== -->
 	<div
 		class="nav-item__group nav-item__group--{variant}"
-		class:nav-item__group--open={isChildrenVisible}
+		class:nav-item__group--open={childrenVariant === 'expanded' || isChildrenVisible}
 	>
 		<a
 			href={resolvedParentHref}
@@ -285,7 +271,7 @@
 			class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 			class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
 			aria-current={isSelected ? 'page' : undefined}
-			aria-expanded={childrenVariant === 'popup' ? isPopupOpen : isChildrenExpanded}
+			aria-expanded={childrenVariant === 'expanded' || isChildrenVisible}
 			tabindex={0}
 			data-nav-item
 			data-testid="nav-item"
@@ -325,7 +311,7 @@
 		{#if childrenVariant === 'popup'}
 			<PopupMenu
 				bind:this={popupMenuRef}
-				bind:isOpen={isPopupOpen}
+				bind:isOpen={isChildrenVisible}
 				anchorElement={anchorEl}
 				position={popupPosition}
 				menuItems={item.children!}
@@ -339,7 +325,7 @@
 		{/if}
 
 		<!-- accordion / expanded サブメニュー -->
-		{#if (childrenVariant === 'accordion' || childrenVariant === 'expanded') && isChildrenVisible}
+		{#if childrenVariant === 'expanded' || (childrenVariant === 'accordion' && isChildrenVisible)}
 			<div class="nav-item__children" role="presentation" transition:slide={{ duration: 200 }}>
 				{#each item.children! as child}
 					<NavItem
@@ -363,7 +349,7 @@
 		{/if}
 
 		<!-- bottom-sheet オーバーレイ -->
-		{#if childrenVariant === 'bottom-sheet' && isChildrenOpen}
+		{#if childrenVariant === 'bottom-sheet' && isChildrenVisible}
 			<div
 				class="nav-item__bottom-sheet-backdrop"
 				role="presentation"

@@ -275,7 +275,7 @@
 			{chevron}
 			{resolvedCurrentPath}
 			{customPathMatcher}
-			isChildrenExpanded={(childrenVariant === 'bar' || childrenVariant === 'accordion') && expandedParent === item}
+			isChildrenVisible={(childrenVariant === 'bar' || childrenVariant === 'accordion') && expandedParent === item}
 			onChildrenToggle={handleToggle}
 			onChildrenClose={() => { expandedParent = null; }}
 		/>
