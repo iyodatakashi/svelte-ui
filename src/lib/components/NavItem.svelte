@@ -23,6 +23,10 @@
 		variant?: NavVariant;
 		pathPrefix?: string;
 
+		// スタイル/レイアウト
+		/** Show chevron icon on parent items. @default true */
+		chevron?: boolean;
+
 		// アイコン関連
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
@@ -65,6 +69,9 @@
 		iconOpticalSize = 24,
 		iconVariant = 'outlined',
 
+		// スタイル/レイアウト
+		chevron = true,
+
 		// 状態/動作
 		isSelected = false,
 		isDisabled = false,
@@ -103,7 +110,9 @@
 		if (hrefWithPrefix) return hrefWithPrefix;
 		if (!hasChildren) return undefined;
 		const activeChild = item.children!.find(
-			child => !!child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
+			(child) =>
+				!!child.href &&
+				matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
 		);
 		const target = activeChild ?? item.children![0];
 		return target.href ? withPrefix(target.href) : undefined;
@@ -121,12 +130,12 @@
 	const focusFirstChild = (container: HTMLElement | undefined) =>
 		container?.querySelector<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')?.focus();
 
-	$effect(() => { if (isSubMenuOpen) tick().then(() => focusFirstChild(bottomSheetEl)); });
+	$effect(() => {
+		if (isSubMenuOpen) tick().then(() => focusFirstChild(bottomSheetEl));
+	});
 
 	const popupPosition = $derived<PopupPosition>(
-		variant === 'vertical' ? 'right-top' :
-		variant === 'mobile' ? 'top-center' :
-		'bottom-left'
+		variant === 'vertical' ? 'right-top' : variant === 'mobile' ? 'top-center' : 'bottom-left'
 	);
 
 	const isSubMenuVisible = $derived(
@@ -141,13 +150,7 @@
 						: isSubMenuExpanded
 	);
 
-	// chevron は accordion / popup / bottom-sheet モードで表示（expanded・bar・mobile+popup は非表示）
-	const showChevron = $derived(
-		hasChildren &&
-		subMenuMode !== 'expanded' &&
-		subMenuMode !== 'bar' &&
-		!(variant === 'mobile' && (subMenuMode === 'popup' || subMenuMode === 'bottom-sheet'))
-	);
+	const showChevron = $derived(hasChildren && chevron);
 
 	// popup の方向に合わせたアイコン。それ以外は expand_more
 	const chevronIcon = $derived(
@@ -160,7 +163,6 @@
 
 	// popup 専用アイコンは方向固定なので展開時も回転しない
 	const chevronRotates = $derived(subMenuMode !== 'popup');
-
 
 	// =========================================================================
 	// Methods
@@ -324,9 +326,15 @@
 				<div class="nav-item__label">{item.label}</div>
 			{/if}
 			{#if showChevron}
-				<div class="nav-item__chevron" class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}>
-					<Icon weight={iconWeight} grade={iconGrade} opticalSize={iconOpticalSize} variant={iconVariant}
-						>{chevronIcon}</Icon
+				<div
+					class="nav-item__chevron"
+					class:nav-item__chevron--expanded={chevronRotates && isSubMenuVisible}
+				>
+					<Icon
+						weight={iconWeight}
+						grade={iconGrade}
+						opticalSize={iconOpticalSize}
+						variant={iconVariant}>{chevronIcon}</Icon
 					>
 				</div>
 			{/if}
@@ -515,7 +523,6 @@
 		}
 	}
 
-
 	// =========================================================================
 	// mobile バリアント（アイコンが上、ラベルが下）
 	// =========================================================================
@@ -623,8 +630,13 @@
 		display: block;
 		position: absolute;
 		bottom: 0;
-		left: calc(var(--svelte-ui-nav-item-padding-x) - var(--svelte-ui-nav-item-underline-bar-offset));
-		width: calc(100% - 2 * var(--svelte-ui-nav-item-padding-x) + 2 * var(--svelte-ui-nav-item-underline-bar-offset));
+		left: calc(
+			var(--svelte-ui-nav-item-padding-x) - var(--svelte-ui-nav-item-underline-bar-offset)
+		);
+		width: calc(
+			100% - 2 * var(--svelte-ui-nav-item-padding-x) + 2 *
+				var(--svelte-ui-nav-item-underline-bar-offset)
+		);
 		height: var(--svelte-ui-nav-item-underline-bar-height);
 		background-color: var(--svelte-ui-nav-item-underline-bar-color);
 		border-radius: var(--svelte-ui-nav-item-underline-bar-radius);
@@ -653,7 +665,7 @@
 	.nav-item__chevron {
 		display: flex;
 		align-items: center;
-		margin-left: auto;
+		margin: -12px -4px -12px auto;
 		flex-shrink: 0;
 		transition: transform var(--svelte-ui-transition-duration);
 	}

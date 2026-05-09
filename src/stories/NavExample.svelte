@@ -13,6 +13,7 @@
 		currentPath?: string;
 		selectedStyle?: NavItemSelectedStyle;
 		gap?: number | string;
+		chevron?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -29,6 +30,7 @@
 		currentPath: currentPathProp,
 		selectedStyle,
 		gap,
+		chevron,
 		iconFilled,
 		iconWeight,
 		iconGrade,
@@ -65,6 +67,7 @@
 		{currentPath}
 		{selectedStyle}
 		{gap}
+		{chevron}
 		{iconFilled}
 		{iconWeight}
 		{iconGrade}

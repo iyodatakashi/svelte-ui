@@ -46,6 +46,10 @@ const meta = {
 			options: ['color', 'filled', 'tonal', 'underline'],
 			description: 'Visual style for the selected item'
 		},
+		chevron: {
+			control: 'boolean',
+			description: 'Show chevron icon on parent items. @default true'
+		},
 		ariaLabel: {
 			control: 'text',
 			description: 'Accessible label for the nav element'

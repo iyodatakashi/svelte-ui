@@ -41,6 +41,8 @@
 		gap?: number | string;
 		/** Sub-menu display mode for items that have children. @default 'popup' */
 		subMenuMode?: SubMenuMode;
+		/** Show chevron icon on parent items. @default true */
+		chevron?: boolean;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -69,6 +71,7 @@
 		selectedStyle,
 		gap,
 		subMenuMode = 'popup',
+		chevron,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -269,6 +272,7 @@
 			{iconVariant}
 			{selectedStyle}
 			{subMenuMode}
+			{chevron}
 			{resolvedCurrentPath}
 			{customPathMatcher}
 			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion') && expandedParent === item}
