@@ -3,14 +3,14 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import NavItem from './NavItem.svelte';
-	import Popup from './Popup.svelte';
+	import PopupMenu from './PopupMenu.svelte';
 	import { fade, fly, slide } from 'svelte/transition';
 	import type { PopupPosition } from '$lib/types/propOptions';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-	import { matchPath } from '$lib/utils/navPath';
 	import { tick } from 'svelte';
+	import { matchPath } from '$lib/utils/navPath';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -123,7 +123,7 @@
 	// =========================================================================
 	let isSubMenuOpen = $state(false);
 	let anchorEl: HTMLElement | undefined = $state();
-	let popupRef: Popup | undefined = $state();
+	let popupMenuRef: PopupMenu | undefined = $state();
 	let isPopupOpen = $state(false);
 	let bottomSheetEl: HTMLElement | undefined = $state();
 
@@ -150,7 +150,7 @@
 						: isSubMenuExpanded
 	);
 
-	const showChevron = $derived(hasChildren && chevron);
+	const showChevron = $derived(hasChildren && chevron && variant !== 'mobile');
 
 	// popup の方向に合わせたアイコン。それ以外は expand_more
 	const chevronIcon = $derived(
@@ -181,7 +181,7 @@
 		const openKey = variant === 'vertical' ? 'ArrowRight' : 'ArrowDown';
 		if (event.key !== openKey) return;
 		event.preventDefault();
-		popupRef?.toggle();
+		popupMenuRef?.toggle();
 	};
 
 	const handleSubMenuKeyDown = (event: KeyboardEvent, horizontal = false) => {
@@ -191,22 +191,6 @@
 		);
 		const currentIndex = items.indexOf(event.target as HTMLElement);
 		if (currentIndex === -1) return;
-
-		// popup 終了キー: vertical→ArrowLeft で親に戻る / horizontal→先頭で ArrowUp で親に戻る
-		if (subMenuMode === 'popup') {
-			if (variant === 'vertical' && event.key === 'ArrowLeft') {
-				event.preventDefault();
-				popupRef?.close();
-				anchorEl?.focus();
-				return;
-			}
-			if (variant !== 'vertical' && event.key === 'ArrowUp' && currentIndex === 0) {
-				event.preventDefault();
-				popupRef?.close();
-				anchorEl?.focus();
-				return;
-			}
-		}
 
 		const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp';
 		const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown';
@@ -229,11 +213,7 @@
 				items[items.length - 1]?.focus();
 				break;
 			case 'Escape':
-				if (subMenuMode === 'popup') {
-					event.preventDefault();
-					popupRef?.close();
-					anchorEl?.focus();
-				} else if (subMenuMode === 'bottom-sheet') {
+				if (subMenuMode === 'bottom-sheet') {
 					event.preventDefault();
 					closeSubMenu();
 					anchorEl?.focus();
@@ -244,7 +224,7 @@
 
 	const handleLinkClick = () => {
 		if (subMenuMode === 'popup') {
-			popupRef?.toggle();
+			popupMenuRef?.toggle();
 		} else if (subMenuMode === 'bottom-sheet') {
 			toggleSubMenu();
 		} else {
@@ -260,6 +240,7 @@
 {#if isDisabled}
 	<span
 		class="nav-item nav-item--{variant} nav-item--disabled"
+		class:nav-item--child={isChild}
 		class:nav-item--selected={isSelected}
 		class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
@@ -342,37 +323,19 @@
 
 		<!-- popup サブメニュー -->
 		{#if subMenuMode === 'popup'}
-			<Popup
-				bind:this={popupRef}
+			<PopupMenu
+				bind:this={popupMenuRef}
 				bind:isOpen={isPopupOpen}
 				anchorElement={anchorEl}
 				position={popupPosition}
-				margin={4}
+				menuItems={item.children!}
 				mobileFullscreen={false}
-				role="menu"
-			>
-				<div class="nav-item__popup-content" role="presentation" onkeydown={handleSubMenuKeyDown}>
-					{#each item.children! as child}
-						<NavItem
-							item={child}
-							{variant}
-							{pathPrefix}
-							{iconFilled}
-							{iconWeight}
-							{iconGrade}
-							{iconOpticalSize}
-							{iconVariant}
-							{selectedStyle}
-							isChild={true}
-							{resolvedCurrentPath}
-							{customPathMatcher}
-							isSelected={isChildSelected(child)}
-							isDisabled={child.disabled ?? false}
-							onClose={() => popupRef?.close()}
-						/>
-					{/each}
-				</div>
-			</Popup>
+				{iconFilled}
+				{iconWeight}
+				{iconGrade}
+				{iconOpticalSize}
+				{iconVariant}
+			/>
 		{/if}
 
 		<!-- accordion / expanded サブメニュー -->
@@ -444,6 +407,7 @@
 	<a
 		href={hrefWithPrefix}
 		class="nav-item nav-item--{variant}"
+		class:nav-item--child={isChild}
 		class:nav-item--selected={isSelected}
 		class:nav-item--style-color={isSelected && resolvedSelectedStyle === 'color'}
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
@@ -698,26 +662,19 @@
 	}
 
 	// =========================================================================
-	// popup サブメニュー
-	// =========================================================================
-	// popup 内コンテンツ
-	.nav-item__popup-content {
-		min-width: var(--svelte-ui-nav-sub-popup-min-width);
-		display: flex;
-		flex-direction: column;
-		padding: 4px 0;
-	}
-
-	// =========================================================================
 	// accordion / expanded サブメニュー
 	// =========================================================================
 	.nav-item__children {
 		display: flex;
 		flex-direction: column;
 		padding-top: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
-		padding-left: var(--svelte-ui-nav-item-child-indent);
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 		overflow: hidden;
+	}
+
+	// 子アイテムは padding-left にインデントを加算（背景は全幅、コンテンツのみインデント）
+	.nav-item--child.nav-item--vertical {
+		padding-left: calc(var(--svelte-ui-nav-item-padding-x) + var(--svelte-ui-nav-item-child-indent));
 	}
 
 	// =========================================================================
