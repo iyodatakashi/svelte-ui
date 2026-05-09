@@ -2,13 +2,13 @@
 	import Nav from '../lib/components/Nav.svelte';
 	import type { NavItemSelectedStyle } from '../lib/components/NavItem.svelte';
 	import type { MenuItem } from '../lib/types/menuItem';
-	import type { NavVariant, SubMenuMode } from '../lib/types/propOptions';
+	import type { NavVariant, ChildrenVariant } from '../lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '../lib/types/icon';
 
 	type NavExampleProps = {
 		navItems?: MenuItem[];
 		variant?: NavVariant;
-		subMenuMode?: SubMenuMode;
+		childrenVariant?: ChildrenVariant;
 		pathPrefix?: string;
 		currentPath?: string;
 		selectedStyle?: NavItemSelectedStyle;
@@ -25,7 +25,7 @@
 	let {
 		navItems = [],
 		variant = 'vertical',
-		subMenuMode = 'accordion',
+		childrenVariant = 'accordion',
 		pathPrefix = '',
 		currentPath: currentPathProp,
 		selectedStyle,
@@ -62,7 +62,7 @@
 	<Nav
 		{navItems}
 		{variant}
-		{subMenuMode}
+		{childrenVariant}
 		{pathPrefix}
 		{currentPath}
 		{selectedStyle}

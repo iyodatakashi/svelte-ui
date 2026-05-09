@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'URL-based navigation component with three display variants: `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `subMenuMode` prop and `children` on `MenuItem`. Use `selectedStyle="underline"` on `horizontal` for a tab-bar appearance. In Storybook, clicking items updates the active state interactively.'
+					'URL-based navigation component with three display variants: `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `childrenVariant` prop and `children` on `MenuItem`. Use `selectedStyle="underline"` on `horizontal` for a tab-bar appearance. In Storybook, clicking items updates the active state interactively.'
 			}
 		}
 	},
@@ -24,7 +24,7 @@ const meta = {
 			options: ['horizontal', 'vertical', 'mobile'],
 			description: 'Display variant'
 		},
-		subMenuMode: {
+		childrenVariant: {
 			control: 'radio',
 			options: ['popup', 'accordion', 'expanded', 'bar', 'bottom-sheet'],
 			description: 'Sub-menu display mode for items with children'
@@ -208,7 +208,7 @@ export const MobileTab: Story = {
 export const VerticalAccordion: Story = {
 	args: {
 		variant: 'vertical',
-		subMenuMode: 'accordion',
+		childrenVariant: 'accordion',
 		navItems: hierarchicalItems,
 		currentPath: '/products/electronics',
 		ariaLabel: 'Sidebar navigation'
@@ -227,7 +227,7 @@ export const VerticalAccordion: Story = {
 export const VerticalExpanded: Story = {
 	args: {
 		variant: 'vertical',
-		subMenuMode: 'expanded',
+		childrenVariant: 'expanded',
 		navItems: hierarchicalItems,
 		currentPath: '/services/support',
 		ariaLabel: 'Sidebar navigation'
@@ -245,7 +245,7 @@ export const VerticalExpanded: Story = {
 export const VerticalPopup: Story = {
 	args: {
 		variant: 'vertical',
-		subMenuMode: 'popup',
+		childrenVariant: 'popup',
 		navItems: hierarchicalItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Sidebar navigation'
@@ -266,7 +266,7 @@ export const VerticalPopup: Story = {
 export const HorizontalPopup: Story = {
 	args: {
 		variant: 'horizontal',
-		subMenuMode: 'popup',
+		childrenVariant: 'popup',
 		navItems: hierarchicalItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Header navigation'
@@ -284,7 +284,7 @@ export const HorizontalPopup: Story = {
 export const HorizontalBar: Story = {
 	args: {
 		variant: 'horizontal',
-		subMenuMode: 'bar',
+		childrenVariant: 'bar',
 		navItems: hierarchicalItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Header navigation'
@@ -321,7 +321,7 @@ const mobileHierarchicalItems = [
 export const MobilePopup: Story = {
 	args: {
 		variant: 'mobile',
-		subMenuMode: 'popup',
+		childrenVariant: 'popup',
 		navItems: mobileHierarchicalItems,
 		currentPath: '/',
 		ariaLabel: 'Bottom navigation'
@@ -339,7 +339,7 @@ export const MobilePopup: Story = {
 export const MobileBottomSheet: Story = {
 	args: {
 		variant: 'mobile',
-		subMenuMode: 'bottom-sheet',
+		childrenVariant: 'bottom-sheet',
 		navItems: mobileHierarchicalItems,
 		currentPath: '/',
 		ariaLabel: 'Bottom navigation'

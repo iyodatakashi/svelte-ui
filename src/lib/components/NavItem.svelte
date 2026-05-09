@@ -7,7 +7,7 @@
 	import { fade, fly, slide } from 'svelte/transition';
 	import type { PopupPosition } from '$lib/types/propOptions';
 	import type { MenuItem } from '$lib/types/menuItem';
-	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
+	import type { NavVariant, ChildrenVariant } from '$lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { tick } from 'svelte';
 	import { matchPath } from '$lib/utils/navPath';
@@ -40,8 +40,8 @@
 		selectedStyle?: NavItemSelectedStyle;
 
 		// サブメニュー関連
-		/** Sub-menu display mode. @default 'popup' */
-		subMenuMode?: SubMenuMode;
+		/** How child items are displayed. Defaults to `expanded` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
+		childrenVariant?: ChildrenVariant;
 		/** When true, this item does not render its own children (prevents infinite recursion). */
 		isChild?: boolean;
 		/** Current URL path passed from Nav for computing child selected state. */
@@ -78,7 +78,7 @@
 		selectedStyle,
 
 		// サブメニュー関連
-		subMenuMode = 'popup',
+		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'expanded' : 'bar',
 		isChild = false,
 		resolvedCurrentPath = '',
 		customPathMatcher,
@@ -141,11 +141,11 @@
 	const isSubMenuVisible = $derived(
 		!hasChildren
 			? false
-			: subMenuMode === 'expanded'
+			: childrenVariant === 'expanded'
 				? true
-				: subMenuMode === 'bottom-sheet'
+				: childrenVariant === 'bottom-sheet'
 					? isSubMenuOpen
-					: subMenuMode === 'popup'
+					: childrenVariant === 'popup'
 						? isPopupOpen
 						: isSubMenuExpanded
 	);
@@ -154,15 +154,15 @@
 
 	// popup の方向に合わせたアイコン。それ以外は expand_more
 	const chevronIcon = $derived(
-		subMenuMode === 'popup' && variant === 'vertical'
+		childrenVariant === 'popup' && variant === 'vertical'
 			? 'arrow_right'
-			: subMenuMode === 'popup' && variant === 'horizontal'
+			: childrenVariant === 'popup' && variant === 'horizontal'
 				? 'arrow_drop_down'
 				: 'expand_more'
 	);
 
 	// popup 専用アイコンは方向固定なので展開時も回転しない
-	const chevronRotates = $derived(subMenuMode !== 'popup');
+	const chevronRotates = $derived(childrenVariant !== 'popup');
 
 	// =========================================================================
 	// Methods
@@ -177,7 +177,7 @@
 
 	// popup の ArrowRight(vertical) / ArrowDown(horizontal) でサブメニューを開く
 	const handleTriggerKeyDown = (event: KeyboardEvent) => {
-		if (!hasChildren || subMenuMode !== 'popup' || isPopupOpen) return;
+		if (!hasChildren || childrenVariant !== 'popup' || isPopupOpen) return;
 		const openKey = variant === 'vertical' ? 'ArrowRight' : 'ArrowDown';
 		if (event.key !== openKey) return;
 		event.preventDefault();
@@ -213,7 +213,7 @@
 				items[items.length - 1]?.focus();
 				break;
 			case 'Escape':
-				if (subMenuMode === 'bottom-sheet') {
+				if (childrenVariant === 'bottom-sheet') {
 					event.preventDefault();
 					closeSubMenu();
 					anchorEl?.focus();
@@ -223,9 +223,9 @@
 	};
 
 	const handleLinkClick = () => {
-		if (subMenuMode === 'popup') {
+		if (childrenVariant === 'popup') {
 			popupMenuRef?.toggle();
-		} else if (subMenuMode === 'bottom-sheet') {
+		} else if (childrenVariant === 'bottom-sheet') {
 			toggleSubMenu();
 		} else {
 			onSubMenuToggle?.(item);
@@ -285,7 +285,7 @@
 			class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 			class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
 			aria-current={isSelected ? 'page' : undefined}
-			aria-expanded={subMenuMode === 'popup' ? isPopupOpen : isSubMenuExpanded}
+			aria-expanded={childrenVariant === 'popup' ? isPopupOpen : isSubMenuExpanded}
 			tabindex={0}
 			data-nav-item
 			data-testid="nav-item"
@@ -322,7 +322,7 @@
 		</a>
 
 		<!-- popup サブメニュー -->
-		{#if subMenuMode === 'popup'}
+		{#if childrenVariant === 'popup'}
 			<PopupMenu
 				bind:this={popupMenuRef}
 				bind:isOpen={isPopupOpen}
@@ -339,7 +339,7 @@
 		{/if}
 
 		<!-- accordion / expanded サブメニュー -->
-		{#if (subMenuMode === 'accordion' || subMenuMode === 'expanded') && isSubMenuVisible}
+		{#if (childrenVariant === 'accordion' || childrenVariant === 'expanded') && isSubMenuVisible}
 			<div class="nav-item__children" role="presentation" transition:slide={{ duration: 200 }}>
 				{#each item.children! as child}
 					<NavItem
@@ -363,7 +363,7 @@
 		{/if}
 
 		<!-- bottom-sheet オーバーレイ -->
-		{#if subMenuMode === 'bottom-sheet' && isSubMenuOpen}
+		{#if childrenVariant === 'bottom-sheet' && isSubMenuOpen}
 			<div
 				class="nav-item__bottom-sheet-backdrop"
 				role="presentation"

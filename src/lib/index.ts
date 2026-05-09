@@ -95,7 +95,7 @@ export type {
 	DatepickerMode,
 	FocusStyle,
 	NavVariant,
-	SubMenuMode
+	ChildrenVariant
 } from './types/propOptions';
 
 // Types

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import type { Snippet } from 'svelte';
 	import Nav from '$lib/components/Nav.svelte';
-	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
+	import type { NavVariant, ChildrenVariant } from '$lib/types/propOptions';
 
 	let { children }: { children: Snippet } = $props();
 
@@ -31,10 +31,10 @@
 	];
 
 	let variant: NavVariant = $state('vertical');
-	let subMenuMode: SubMenuMode = $state('accordion');
+	let childrenVariant: ChildrenVariant = $state('accordion');
 
 	const variantOptions: NavVariant[] = ['vertical', 'horizontal', 'mobile'];
-	const modesByVariant: Record<NavVariant, SubMenuMode[]> = {
+	const modesByVariant: Record<NavVariant, ChildrenVariant[]> = {
 		vertical: ['accordion', 'expanded', 'popup'],
 		horizontal: ['popup', 'bar'],
 		mobile: ['popup', 'bottom-sheet']
@@ -42,7 +42,7 @@
 
 	$effect(() => {
 		const modes = modesByVariant[variant];
-		if (!modes.includes(subMenuMode)) subMenuMode = modes[0];
+		if (!modes.includes(childrenVariant)) childrenVariant = modes[0];
 	});
 </script>
 
@@ -57,12 +57,12 @@
 			>
 		{/each}
 		<span class="demo-toolbar__sep">|</span>
-		<span class="demo-toolbar__label">subMenuMode:</span>
+		<span class="demo-toolbar__label">childrenVariant:</span>
 		{#each modesByVariant[variant] as m}
 			<button
 				class="demo-toolbar__btn"
-				class:demo-toolbar__btn--active={subMenuMode === m}
-				onclick={() => (subMenuMode = m)}>{m}</button
+				class:demo-toolbar__btn--active={childrenVariant === m}
+				onclick={() => (childrenVariant = m)}>{m}</button
 			>
 		{/each}
 	</div>
@@ -70,15 +70,15 @@
 	<div class="demo-body" class:demo-body--horizontal={variant === 'horizontal'}>
 		{#if variant === 'vertical'}
 			<aside class="demo-sidebar">
-				<Nav {navItems} variant="vertical" {subMenuMode} ariaLabel="Demo nav" />
+				<Nav {navItems} variant="vertical" {childrenVariant} ariaLabel="Demo nav" />
 			</aside>
 		{:else if variant === 'horizontal'}
 			<div class="demo-topnav">
-				<Nav {navItems} variant="horizontal" {subMenuMode} ariaLabel="Demo nav" />
+				<Nav {navItems} variant="horizontal" {childrenVariant} ariaLabel="Demo nav" />
 			</div>
 		{:else if variant === 'mobile'}
 			<div class="demo-mobilenav">
-				<Nav {navItems} variant="mobile" {subMenuMode} ariaLabel="Demo nav" />
+				<Nav {navItems} variant="mobile" {childrenVariant} ariaLabel="Demo nav" />
 			</div>
 		{/if}
 

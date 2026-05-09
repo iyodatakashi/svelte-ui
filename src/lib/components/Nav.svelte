@@ -4,7 +4,7 @@
 	import NavItem from './NavItem.svelte';
 	import type { NavItemSelectedStyle } from './NavItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
-	import type { NavVariant, SubMenuMode } from '$lib/types/propOptions';
+	import type { NavVariant, ChildrenVariant } from '$lib/types/propOptions';
 	import { subscribeUrlChange } from '$lib/utils/urlChange';
 	import { getCurrentPath, matchPath } from '$lib/utils/navPath';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
@@ -39,8 +39,8 @@
 		/** Visual style for the selected item. */
 		selectedStyle?: NavItemSelectedStyle;
 		gap?: number | string;
-		/** Sub-menu display mode for items that have children. @default 'popup' */
-		subMenuMode?: SubMenuMode;
+		/** How child items are displayed. Defaults to `expanded` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
+		childrenVariant?: ChildrenVariant;
 		/** Show chevron icon on parent items. @default true */
 		chevron?: boolean;
 
@@ -70,7 +70,7 @@
 		// スタイル/レイアウト
 		selectedStyle,
 		gap,
-		subMenuMode = 'popup',
+		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'expanded' : 'bar',
 		chevron,
 
 		// ARIA/アクセシビリティ
@@ -95,13 +95,13 @@
 	$effect(() => {
 		return subscribeUrlChange(() => {
 			resolvedCurrentPath = getCurrentPath(currentPath);
-			if (subMenuMode !== 'accordion') expandedParent = null;
+			if (childrenVariant !== 'accordion') expandedParent = null;
 		});
 	});
 
 	// accordion モード: アクティブな子を持つ親を自動展開
 	$effect(() => {
-		if (subMenuMode !== 'accordion' || !resolvedCurrentPath) return;
+		if (childrenVariant !== 'accordion' || !resolvedCurrentPath) return;
 		const activeParent = navItems.find((item) =>
 			item.children?.some(
 				(child) =>
@@ -124,7 +124,7 @@
 
 	const handleKeyDown = (event: KeyboardEvent) => {
 		// accordion/expanded は子アイテムも DOM 順で含める
-		const includeChildren = subMenuMode === 'accordion' || subMenuMode === 'expanded';
+		const includeChildren = childrenVariant === 'accordion' || childrenVariant === 'expanded';
 		const selector = includeChildren ? '[data-nav-item], [data-nav-item-child]' : '[data-nav-item]';
 		const navItemEls = Array.from(
 			(event.currentTarget as HTMLElement).querySelectorAll<HTMLElement>(selector)
@@ -136,7 +136,7 @@
 		if (currentIndex === -1) return;
 
 		// bar モード: 展開中の親で ArrowDown → サブバーの最初の子へ
-		if (subMenuMode === 'bar' && event.key === 'ArrowDown' && showSubBar) {
+		if (childrenVariant === 'bar' && event.key === 'ArrowDown' && showSubBar) {
 			const allNavItemEls = Array.from(
 				(event.currentTarget as HTMLElement).querySelectorAll<HTMLElement>('[data-nav-item]')
 			);
@@ -212,7 +212,7 @@
 	};
 
 	const handleSubMenuToggle = (item: MenuItem) => {
-		if (subMenuMode === 'accordion') {
+		if (childrenVariant === 'accordion') {
 			// accordion: 開くのみ（再クリックで閉じない、他は自動的に閉じる）
 			expandedParent = item;
 		} else {
@@ -231,7 +231,7 @@
 				return i;
 			}
 			// bar モード: 子が選択されていれば親も選択とみなす
-			if (subMenuMode === 'bar' && item.children?.some(
+			if (childrenVariant === 'bar' && item.children?.some(
 				(child) => child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
 			)) {
 				return i;
@@ -241,7 +241,7 @@
 	});
 
 	const showSubBar = $derived(
-		variant === 'horizontal' && subMenuMode === 'bar' && expandedParent != null
+		variant === 'horizontal' && childrenVariant === 'bar' && expandedParent != null
 	);
 
 	const isChildSelected = (child: MenuItem) =>
@@ -271,11 +271,11 @@
 			{iconOpticalSize}
 			{iconVariant}
 			{selectedStyle}
-			{subMenuMode}
+			{childrenVariant}
 			{chevron}
 			{resolvedCurrentPath}
 			{customPathMatcher}
-			isSubMenuExpanded={(subMenuMode === 'bar' || subMenuMode === 'accordion') && expandedParent === item}
+			isSubMenuExpanded={(childrenVariant === 'bar' || childrenVariant === 'accordion') && expandedParent === item}
 			onSubMenuToggle={handleSubMenuToggle}
 			onClose={() => { expandedParent = null; }}
 		/>
