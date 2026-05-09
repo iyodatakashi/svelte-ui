@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.29] - 2026-05-09
+
+### Added
+
+- **Nav**: Hierarchical menu support via `children` on `MenuItem`. Use the `subMenuMode` prop to choose how child items are displayed: `popup`, `accordion`, `expanded`, `bar`, or `bottom-sheet`. Keyboard navigation is fully supported for all modes.
+- **Nav**: `chevron` prop (default `true`) to show/hide the chevron icon on parent items.
+
+### Changed
+
+- **Nav**: `tab` variant removed. Use `variant="horizontal"` with `selectedStyle="underline"` instead. **Breaking change.**
+- **Tab**: `TabItem` component removed. **Breaking change** for users importing `TabItem` directly.
+
 ## [0.0.28] - 2026-04-25
 
 ### Added
