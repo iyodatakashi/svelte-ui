@@ -55,11 +55,6 @@
 		/** Whether this item's children are currently visible. */
 		isChildrenVisible?: boolean;
 
-		// イベントハンドラ
-		/** For bar/accordion mode: called when this parent is clicked. */
-		onChildrenToggle?: (item: MenuItem) => void;
-		/** Called when a leaf item (no children) is clicked — used to close any open sub-menu. */
-		onChildrenClose?: () => void;
 	};
 
 	let {
@@ -91,9 +86,6 @@
 		isChild = false,
 		isChildrenVisible = $bindable(false),
 
-		// イベントハンドラ
-		onChildrenToggle,
-		onChildrenClose
 	}: NavItemProps = $props();
 
 	// =========================================================================
@@ -222,8 +214,6 @@
 			popupMenuRef?.toggle();
 		} else if (childrenVariant === 'bottom-sheet') {
 			toggleOpen();
-		} else if (childrenVariant !== 'expanded') {
-			onChildrenToggle?.(item);
 		}
 	};
 
@@ -373,6 +363,7 @@
 				role="menu"
 				tabindex="-1"
 				transition:fly={{ y: 100, duration: 250 }}
+				onclick={closeOpen}
 				onkeydown={(e) => handleChildKeyDown(e, true)}
 				bind:this={bottomSheetEl}
 			>
@@ -393,7 +384,6 @@
 						{customPathMatcher}
 						isSelected={isChildSelected(child)}
 						isDisabled={child.disabled ?? false}
-						onChildrenClose={closeOpen}
 					/>
 				{/each}
 			</div>
@@ -418,7 +408,6 @@
 		data-nav-item={!isChild ? '' : undefined}
 		data-nav-item-child={isChild ? '' : undefined}
 		data-testid="nav-item"
-		onclick={onChildrenClose}
 	>
 		{#if item.icon}
 			<div class="nav-item__icon">

@@ -111,7 +111,6 @@
 	$effect(() => {
 		return subscribeUrlChange(() => {
 			resolvedCurrentPath = getCurrentPath(currentPath);
-			if (childrenVariant !== 'accordion') expandedParent = null;
 		});
 	});
 
@@ -129,7 +128,7 @@
 						matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
 				)
 		);
-		if (activeParent) expandedParent = activeParent;
+		expandedParent = activeParent ?? null;
 	});
 
 	// =========================================================================
@@ -231,16 +230,6 @@
 		}
 	};
 
-	const handleToggle = (item: MenuItem) => {
-		if (childrenVariant === 'accordion') {
-			// accordion: 開くのみ（再クリックで閉じない、他は自動的に閉じる）
-			expandedParent = item;
-		} else {
-			// bar: トグル
-			expandedParent = expandedParent === item ? null : item;
-		}
-	};
-
 	// =========================================================================
 	// $derived
 	// =========================================================================
@@ -310,10 +299,6 @@
 				{customPathMatcher}
 				isChildrenVisible={(childrenVariant === 'bar' || childrenVariant === 'accordion') &&
 					expandedParent === item}
-				onChildrenToggle={handleToggle}
-				onChildrenClose={() => {
-					expandedParent = null;
-				}}
 			/>
 		{/each}
 	</div>
