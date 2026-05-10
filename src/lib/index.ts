@@ -78,7 +78,7 @@ export type { SkeletonHeadingProps } from './components/skeleton/SkeletonHeading
 export type { SkeletonMediaProps } from './components/skeleton/SkeletonMedia.svelte';
 export type { SwitchProps } from './components/Switch.svelte';
 export type { NavProps } from './components/Nav.svelte';
-export type { NavItemProps, NavItemSelectedStyle } from './components/NavItem.svelte';
+export type { NavItemProps, NavItemSelectedVariant } from './components/NavItem.svelte';
 export type { TabProps } from './components/Tab.svelte';
 export type { TextareaProps } from './components/Textarea.svelte';
 

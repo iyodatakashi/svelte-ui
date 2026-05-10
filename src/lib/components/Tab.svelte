@@ -80,7 +80,7 @@
 	<Nav
 		navItems={tabItems}
 		variant="horizontal"
-		selectedStyle="underline"
+		selectedVariant="underline"
 		{pathPrefix}
 		{customPathMatcher}
 		{currentPath}
