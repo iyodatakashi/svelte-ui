@@ -667,7 +667,7 @@
 	.nav-item__children {
 		display: flex;
 		flex-direction: column;
-		padding-top: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
+		padding-top: var(--svelte-ui-nav-children-offset);
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-vertical-item-gap));
 		overflow: hidden;
 	}

@@ -395,6 +395,8 @@
 	--svelte-ui-nav-vertical-item-gap: 8px;
 	/* Nav: horizontal */
 	--svelte-ui-nav-horizontal-item-gap: 8px;
+	/* Nav: children spacing (parent item → children list) */
+	--svelte-ui-nav-children-offset: 8px;
 	/* Nav: sub-menu */
 	--svelte-ui-nav-sub-popup-min-width: 160px;
 	--svelte-ui-nav-sub-popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);

@@ -78,7 +78,11 @@
 		// スタイル/レイアウト
 		selectedVariant,
 		gap,
-		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'accordion' : 'bar',
+		childrenVariant = variant === 'mobile'
+			? 'bottom-sheet'
+			: variant === 'vertical'
+				? 'accordion'
+				: 'bar',
 		chevron,
 		customContainerStyle,
 		customItemStyle,
@@ -111,15 +115,19 @@
 		});
 	});
 
-	// accordion モード: アクティブな子を持つ親を自動展開
+	// accordion / bar モード: アクティブな親を自動展開
 	$effect(() => {
-		if (childrenVariant !== 'accordion' || !resolvedCurrentPath) return;
-		const activeParent = navItems.find((item) =>
-			item.children?.some(
-				(child) =>
-					child.href &&
-					matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
-			)
+		if ((childrenVariant !== 'accordion' && childrenVariant !== 'bar') || !resolvedCurrentPath)
+			return;
+		const selected = navItems[selectedIndex];
+		const activeParent = navItems.find(
+			(item) =>
+				(item === selected && !!item.children?.length) ||
+				item.children?.some(
+					(child) =>
+						child.href &&
+						matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
+				)
 		);
 		if (activeParent) expandedParent = activeParent;
 	});
@@ -140,7 +148,7 @@
 		const selector = includeChildren ? '[data-nav-item], [data-nav-item-child]' : '[data-nav-item]';
 		const navItemEls = Array.from(
 			(event.currentTarget as HTMLElement).querySelectorAll<HTMLElement>(selector)
-		).filter(el => el.tabIndex !== -1);
+		).filter((el) => el.tabIndex !== -1);
 
 		if (navItemEls.length === 0) return;
 
@@ -239,13 +247,21 @@
 	const selectedIndex = $derived.by(() => {
 		for (let i = 0; i < navItems.length; i++) {
 			const item = navItems[i];
-			if (item.href && matchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)) {
+			if (
+				item.href &&
+				matchPath(resolvedCurrentPath, item.href, item, pathPrefix, customPathMatcher)
+			) {
 				return i;
 			}
 			// bar モード: 子が選択されていれば親も選択とみなす
-			if (childrenVariant === 'bar' && item.children?.some(
-				(child) => child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
-			)) {
+			if (
+				childrenVariant === 'bar' &&
+				item.children?.some(
+					(child) =>
+						child.href &&
+						matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher)
+				)
+			) {
 				return i;
 			}
 		}
@@ -257,7 +273,8 @@
 	);
 
 	const isChildSelected = (child: MenuItem) =>
-		!!child.href && matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher);
+		!!child.href &&
+		matchPath(resolvedCurrentPath, child.href, child, pathPrefix, customPathMatcher);
 </script>
 
 <nav
@@ -271,37 +288,47 @@
 	bind:this={navEl}
 >
 	<div style="display: contents" role="presentation" onkeydown={handleKeyDown}>
-	{#each navItems as item, index}
-		<NavItem
-			{item}
-			{variant}
-			{pathPrefix}
-			isSelected={index === selectedIndex}
-			isDisabled={item.disabled ?? false}
-			{iconFilled}
-			{iconWeight}
-			{iconGrade}
-			{iconOpticalSize}
-			{iconVariant}
-			{selectedVariant}
-			{childrenVariant}
-			{chevron}
-			customStyle={customItemStyle}
-			customChildrenStyle={customChildrenItemStyle}
-			{customChildrenContainerStyle}
-			{resolvedCurrentPath}
-			{customPathMatcher}
-			isChildrenVisible={(childrenVariant === 'bar' || childrenVariant === 'accordion') && expandedParent === item}
-			onChildrenToggle={handleToggle}
-			onChildrenClose={() => { expandedParent = null; }}
-		/>
-	{/each}
+		{#each navItems as item, index}
+			<NavItem
+				{item}
+				{variant}
+				{pathPrefix}
+				isSelected={index === selectedIndex}
+				isDisabled={item.disabled ?? false}
+				{iconFilled}
+				{iconWeight}
+				{iconGrade}
+				{iconOpticalSize}
+				{iconVariant}
+				{selectedVariant}
+				{childrenVariant}
+				{chevron}
+				customStyle={customItemStyle}
+				customChildrenStyle={customChildrenItemStyle}
+				{customChildrenContainerStyle}
+				{resolvedCurrentPath}
+				{customPathMatcher}
+				isChildrenVisible={(childrenVariant === 'bar' || childrenVariant === 'accordion') &&
+					expandedParent === item}
+				onChildrenToggle={handleToggle}
+				onChildrenClose={() => {
+					expandedParent = null;
+				}}
+			/>
+		{/each}
 	</div>
 </nav>
 
 <!-- bar モード: 選択中の親の子アイテムを横バーとして表示 -->
 {#if showSubBar && expandedParent?.children}
-	<div class="nav__children-bar" role="menu" tabindex="-1" style={customChildrenContainerStyle} onkeydown={handleSubBarKeyDown} bind:this={subBarEl}>
+	<div
+		class="nav__children-bar"
+		role="menu"
+		tabindex="-1"
+		style={customChildrenContainerStyle}
+		onkeydown={handleSubBarKeyDown}
+		bind:this={subBarEl}
+	>
 		{#each expandedParent.children as child}
 			<NavItem
 				item={child}
@@ -367,5 +394,6 @@
 		flex-direction: row;
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
 		align-items: center;
+		padding-top: var(--svelte-ui-nav-children-offset);
 	}
 </style>
