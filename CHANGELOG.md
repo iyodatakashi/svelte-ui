@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.33] - 2026-05-10
+
+### Added
+
+- **Tab**: New props for inline style customization: `customContainerStyle`, `customItemStyle`, `customChildrenContainerStyle`, `customChildrenItemStyle` (forwarded to the internal `Nav`).
+- **Nav**: New CSS variable `--svelte-ui-nav-children-offset` (default `8px`) controls the spacing between a parent item and its children list, independent of `--svelte-ui-nav-vertical-item-gap` / `--svelte-ui-nav-horizontal-item-gap`.
+
+### Fixed
+
+- **Nav**: In `accordion` and `bar` modes, navigating directly to a parent item's own URL now auto-expands its children. Previously only navigating to a child's URL triggered auto-expansion.
+
 ## [0.0.32] - 2026-05-10
 
 ### Added
