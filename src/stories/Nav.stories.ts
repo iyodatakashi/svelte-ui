@@ -9,7 +9,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'URL-based navigation component with three display variants: `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `childrenVariant` prop and `children` on `MenuItem`. Use `selectedStyle="underline"` on `horizontal` for a tab-bar appearance. In Storybook, clicking items updates the active state interactively.'
+					'URL-based navigation component with three display variants: `horizontal`, `vertical`, and `mobile`. Supports hierarchical menus via the `childrenVariant` prop and `children` on `MenuItem`. Use `selectedVariant="underline"` on `horizontal` for a tab-bar appearance. In Storybook, clicking items updates the active state interactively.'
 			}
 		}
 	},
@@ -41,7 +41,7 @@ const meta = {
 			control: 'text',
 			description: 'Initial active path (clicking items updates it interactively)'
 		},
-		selectedStyle: {
+		selectedVariant: {
 			control: 'radio',
 			options: ['color', 'filled', 'tonal', 'underline'],
 			description: 'Visual style for the selected item'
@@ -49,6 +49,22 @@ const meta = {
 		chevron: {
 			control: 'boolean',
 			description: 'Show chevron icon on parent items. @default true'
+		},
+		customContainerStyle: {
+			control: 'text',
+			description: 'Inline style applied to the nav container element'
+		},
+		customItemStyle: {
+			control: 'text',
+			description: 'Inline style applied to each nav item element'
+		},
+		customChildrenContainerStyle: {
+			control: 'text',
+			description: 'Inline style applied to the children container'
+		},
+		customChildrenItemStyle: {
+			control: 'text',
+			description: 'Inline style applied to each child nav item element'
 		},
 		ariaLabel: {
 			control: 'text',
@@ -106,7 +122,7 @@ const hierarchicalItems = [
 export const HorizontalUnderline: Story = {
 	args: {
 		variant: 'horizontal',
-		selectedStyle: 'underline',
+		selectedVariant: 'underline',
 		navItems: baseItems,
 		currentPath: '/dashboard',
 		ariaLabel: 'Main navigation'
@@ -115,7 +131,7 @@ export const HorizontalUnderline: Story = {
 		layout: 'padded',
 		docs: {
 			description: {
-				story: 'Horizontal navigation with a bottom bar indicator (`selectedStyle="underline"`).'
+				story: 'Horizontal navigation with a bottom bar indicator (`selectedVariant="underline"`).'
 			}
 		}
 	}
@@ -124,7 +140,7 @@ export const HorizontalUnderline: Story = {
 export const HorizontalUnderlineWithDisabled: Story = {
 	args: {
 		variant: 'horizontal',
-		selectedStyle: 'underline',
+		selectedVariant: 'underline',
 		navItems: itemsWithDisabled,
 		currentPath: '/projects',
 		ariaLabel: 'Main navigation'

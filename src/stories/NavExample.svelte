@@ -1,6 +1,6 @@
 <script lang="ts">
 	import Nav from '../lib/components/Nav.svelte';
-	import type { NavItemSelectedStyle } from '../lib/components/NavItem.svelte';
+	import type { NavItemSelectedVariant } from '../lib/components/NavItem.svelte';
 	import type { MenuItem } from '../lib/types/menuItem';
 	import type { NavVariant, ChildrenVariant } from '../lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '../lib/types/icon';
@@ -11,9 +11,13 @@
 		childrenVariant?: ChildrenVariant;
 		pathPrefix?: string;
 		currentPath?: string;
-		selectedStyle?: NavItemSelectedStyle;
+		selectedVariant?: NavItemSelectedVariant;
 		gap?: number | string;
 		chevron?: boolean;
+		customContainerStyle?: string;
+		customItemStyle?: string;
+		customChildrenContainerStyle?: string;
+		customChildrenItemStyle?: string;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -28,9 +32,13 @@
 		childrenVariant = 'accordion',
 		pathPrefix = '',
 		currentPath: currentPathProp,
-		selectedStyle,
+		selectedVariant,
 		gap,
 		chevron,
+		customContainerStyle,
+		customItemStyle,
+		customChildrenContainerStyle,
+		customChildrenItemStyle,
 		iconFilled,
 		iconWeight,
 		iconGrade,
@@ -65,9 +73,13 @@
 		{childrenVariant}
 		{pathPrefix}
 		{currentPath}
-		{selectedStyle}
+		{selectedVariant}
 		{gap}
 		{chevron}
+		{customContainerStyle}
+		{customItemStyle}
+		{customChildrenContainerStyle}
+		{customChildrenItemStyle}
 		{iconFilled}
 		{iconWeight}
 		{iconGrade}

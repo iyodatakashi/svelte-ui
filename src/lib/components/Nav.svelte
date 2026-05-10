@@ -2,7 +2,7 @@
 
 <script lang="ts">
 	import NavItem from './NavItem.svelte';
-	import type { NavItemSelectedStyle } from './NavItem.svelte';
+	import type { NavItemSelectedVariant } from './NavItem.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import type { NavVariant, ChildrenVariant } from '$lib/types/propOptions';
 	import { subscribeUrlChange } from '$lib/utils/urlChange';
@@ -37,12 +37,20 @@
 
 		// スタイル/レイアウト
 		/** Visual style for the selected item. */
-		selectedStyle?: NavItemSelectedStyle;
+		selectedVariant?: NavItemSelectedVariant;
 		gap?: number | string;
 		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
 		childrenVariant?: ChildrenVariant;
 		/** Show chevron icon on parent items. @default true */
 		chevron?: boolean;
+		/** Inline style applied to the nav container element. */
+		customContainerStyle?: string;
+		/** Inline style applied to each nav item element. */
+		customItemStyle?: string;
+		/** Inline style applied to each child nav item element. */
+		customChildrenItemStyle?: string;
+		/** Inline style applied to the children container (accordion/expanded list, bar row). */
+		customChildrenContainerStyle?: string;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -68,10 +76,14 @@
 		iconVariant = 'outlined',
 
 		// スタイル/レイアウト
-		selectedStyle,
+		selectedVariant,
 		gap,
 		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'accordion' : 'bar',
 		chevron,
+		customContainerStyle,
+		customItemStyle,
+		customChildrenItemStyle,
+		customChildrenContainerStyle,
 
 		// ARIA/アクセシビリティ
 		ariaLabel,
@@ -253,6 +265,7 @@
 	aria-label={ariaLabelledby ? undefined : ariaLabel}
 	aria-labelledby={ariaLabelledby}
 	style:--internal-nav-gap={gap != null ? (typeof gap === 'number' ? `${gap}px` : gap) : undefined}
+	style={customContainerStyle}
 	{id}
 	data-testid="nav"
 	bind:this={navEl}
@@ -270,9 +283,12 @@
 			{iconGrade}
 			{iconOpticalSize}
 			{iconVariant}
-			{selectedStyle}
+			{selectedVariant}
 			{childrenVariant}
 			{chevron}
+			customStyle={customItemStyle}
+			customChildrenStyle={customChildrenItemStyle}
+			{customChildrenContainerStyle}
 			{resolvedCurrentPath}
 			{customPathMatcher}
 			isChildrenVisible={(childrenVariant === 'bar' || childrenVariant === 'accordion') && expandedParent === item}
@@ -285,7 +301,7 @@
 
 <!-- bar モード: 選択中の親の子アイテムを横バーとして表示 -->
 {#if showSubBar && expandedParent?.children}
-	<div class="nav__sub-bar" role="menu" tabindex="-1" onkeydown={handleSubBarKeyDown} bind:this={subBarEl}>
+	<div class="nav__children-bar" role="menu" tabindex="-1" style={customChildrenContainerStyle} onkeydown={handleSubBarKeyDown} bind:this={subBarEl}>
 		{#each expandedParent.children as child}
 			<NavItem
 				item={child}
@@ -296,7 +312,8 @@
 				{iconGrade}
 				{iconOpticalSize}
 				{iconVariant}
-				{selectedStyle}
+				{selectedVariant}
+				customStyle={customChildrenItemStyle}
 				isChild={true}
 				{resolvedCurrentPath}
 				{customPathMatcher}
@@ -345,11 +362,10 @@
 	}
 
 	// bar モード: サブバー
-	.nav__sub-bar {
+	.nav__children-bar {
 		display: flex;
 		flex-direction: row;
 		gap: var(--internal-nav-gap, var(--svelte-ui-nav-horizontal-item-gap));
 		align-items: center;
-		min-height: var(--svelte-ui-nav-sub-bar-min-height);
 	}
 </style>

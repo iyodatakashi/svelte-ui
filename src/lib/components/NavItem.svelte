@@ -15,7 +15,7 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type NavItemSelectedStyle = 'color' | 'filled' | 'tonal' | 'underline';
+	export type NavItemSelectedVariant = 'color' | 'filled' | 'tonal' | 'underline';
 
 	export type NavItemProps = {
 		// 基本プロパティ
@@ -37,9 +37,15 @@
 		// スタイル/レイアウト
 		/** Show chevron icon on parent items. @default true */
 		chevron?: boolean;
-		selectedStyle?: NavItemSelectedStyle;
+		selectedVariant?: NavItemSelectedVariant;
 		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
 		childrenVariant?: ChildrenVariant;
+		/** Inline style applied to this nav item element. */
+		customStyle?: string;
+		/** Inline style applied to each child nav item element. */
+		customChildrenStyle?: string;
+		/** Inline style applied to the children container (accordion/expanded list). */
+		customChildrenContainerStyle?: string;
 
 		// 状態/動作
 		isSelected?: boolean;
@@ -73,8 +79,11 @@
 
 		// スタイル/レイアウト
 		chevron = true,
-		selectedStyle,
+		selectedVariant,
 		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'accordion' : 'bar',
+		customStyle,
+		customChildrenStyle,
+		customChildrenContainerStyle,
 
 		// 状態/動作
 		isSelected = false,
@@ -99,7 +108,7 @@
 	const hrefWithPrefix = $derived(item.href ? withPrefix(item.href) : undefined);
 
 	const resolvedSelectedStyle = $derived(
-		selectedStyle ?? (variant === 'vertical' || variant === 'horizontal' ? 'tonal' : 'color')
+		selectedVariant ?? (variant === 'vertical' || variant === 'horizontal' ? 'tonal' : 'color')
 	);
 
 	// isChild=true のアイテムでは children を展開しない（無限再帰防止）
@@ -232,6 +241,7 @@
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+		style={customStyle}
 		aria-disabled="true"
 		tabindex="-1"
 		data-nav-item={!isChild ? '' : undefined}
@@ -270,6 +280,7 @@
 			class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 			class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 			class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+			style={customStyle}
 			aria-current={isSelected ? 'page' : undefined}
 			aria-expanded={childrenVariant === 'expanded' || isChildrenVisible}
 			tabindex={0}
@@ -326,7 +337,7 @@
 
 		<!-- accordion / expanded サブメニュー -->
 		{#if childrenVariant === 'expanded' || (childrenVariant === 'accordion' && isChildrenVisible)}
-			<div class="nav-item__children" role="presentation" transition:slide={{ duration: 200 }}>
+			<div class="nav-item__children" role="presentation" style={customChildrenContainerStyle} transition:slide={{ duration: 200 }}>
 				{#each item.children! as child}
 					<NavItem
 						item={child}
@@ -337,7 +348,8 @@
 						{iconGrade}
 						{iconOpticalSize}
 						{iconVariant}
-						{selectedStyle}
+						{selectedVariant}
+						customStyle={customChildrenStyle}
 						isChild={true}
 						{resolvedCurrentPath}
 						{customPathMatcher}
@@ -374,7 +386,8 @@
 						{iconGrade}
 						{iconOpticalSize}
 						{iconVariant}
-						{selectedStyle}
+						{selectedVariant}
+						customStyle={customChildrenStyle}
 						isChild={true}
 						{resolvedCurrentPath}
 						{customPathMatcher}
@@ -399,6 +412,7 @@
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+		style={customStyle}
 		aria-current={isSelected ? 'page' : undefined}
 		tabindex={0}
 		data-nav-item={!isChild ? '' : undefined}
@@ -549,7 +563,7 @@
 	}
 
 	// =========================================================================
-	// selectedStyle: 選択状態の表示バリアント
+	// selectedVariant: 選択状態の表示バリアント
 	// =========================================================================
 
 	// color: テキスト・アイコンを primary-color に
