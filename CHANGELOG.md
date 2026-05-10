@@ -5,6 +5,17 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.32] - 2026-05-10
+
+### Added
+
+- **Nav**: New props for inline style customization: `customContainerStyle` (nav container element), `customItemStyle` (each parent nav item), `customChildrenContainerStyle` (children list or bar row), `customChildrenItemStyle` (each child nav item).
+- **NavItem**: New props `customStyle` (item element), `customChildrenStyle` (child item elements), `customChildrenContainerStyle` (children container).
+
+### Changed
+
+- **Nav, NavItem**: `selectedStyle` prop renamed to `selectedVariant`. `NavItemSelectedStyle` type renamed to `NavItemSelectedVariant`. **Breaking change.**
+
 ## [0.0.31] - 2026-05-09
 
 ### Fixed
