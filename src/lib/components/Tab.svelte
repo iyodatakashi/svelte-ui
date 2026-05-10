@@ -36,6 +36,14 @@
 		selectedTextColor?: string;
 		/** Custom CSS color for the active tab indicator bar. */
 		selectedBarColor?: string;
+		/** Inline style applied to the tab container element. */
+		customContainerStyle?: string;
+		/** Inline style applied to each tab item element. */
+		customItemStyle?: string;
+		/** Inline style applied to the children container. */
+		customChildrenContainerStyle?: string;
+		/** Inline style applied to each child item element. */
+		customChildrenItemStyle?: string;
 
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
@@ -63,6 +71,10 @@
 		textColor,
 		selectedTextColor,
 		selectedBarColor,
+		customContainerStyle,
+		customItemStyle,
+		customChildrenContainerStyle,
+		customChildrenItemStyle,
 
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Tabs',
@@ -90,6 +102,10 @@
 		{iconGrade}
 		{iconOpticalSize}
 		{iconVariant}
+		{customContainerStyle}
+		{customItemStyle}
+		{customChildrenContainerStyle}
+		{customChildrenItemStyle}
 		{ariaLabel}
 		{ariaLabelledby}
 	/>
