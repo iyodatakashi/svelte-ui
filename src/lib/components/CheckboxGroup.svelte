@@ -3,7 +3,6 @@
 <script lang="ts">
 	import type { Option, OptionValue } from '$lib/types/options';
 	import Checkbox from './Checkbox.svelte';
-	import { onMount } from 'svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
 
@@ -62,14 +61,19 @@
 		onchange = () => {} // No params for type inference
 	}: CheckboxGroupProps = $props();
 
-	let localValues: Record<string, boolean> = $state({});
+	let localValues: Record<string, boolean> = $state(
+		Object.fromEntries(options.map((opt) => [String(opt.value), (value ?? []).includes(opt.value)]))
+	);
 
 	// =========================================================================
-	// Lifecycle
+	// Effects
 	// =========================================================================
-	onMount(() => {
+	$effect(() => {
 		options.forEach((option) => {
-			localValues[String(option.value)] = false;
+			const key = String(option.value);
+			if (!(key in localValues)) {
+				localValues[key] = (value ?? []).includes(option.value);
+			}
 		});
 	});
 
@@ -98,20 +102,18 @@
 	style:--internal-checkbox-group-min-option-width={minOptionWidthStyle}
 >
 	{#each options as option (option.value)}
-		{#if localValues[String(option.value)] !== undefined}
-			<li class="checkbox-group__option">
-				<Checkbox
-					bind:value={localValues[String(option.value)]}
-					{size}
-					{disabled}
-					{required}
-					{reducedMotion}
-					onchange={handleChange}
-				>
-					{option.label}
-				</Checkbox>
-			</li>
-		{/if}
+		<li class="checkbox-group__option">
+			<Checkbox
+				bind:value={localValues[String(option.value)]}
+				{size}
+				{disabled}
+				{required}
+				{reducedMotion}
+				onchange={handleChange}
+			>
+				{option.label}
+			</Checkbox>
+		</li>
 	{/each}
 </ul>
 
