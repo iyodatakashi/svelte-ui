@@ -61,34 +61,18 @@
 		onchange = () => {} // No params for type inference
 	}: CheckboxGroupProps = $props();
 
-	let localValues: Record<string, boolean> = $state(
-		Object.fromEntries(options.map((opt) => [String(opt.value), (value ?? []).includes(opt.value)]))
-	);
-
-	// =========================================================================
-	// Effects
-	// =========================================================================
-	$effect(() => {
-		options.forEach((option) => {
-			const key = String(option.value);
-			if (!(key in localValues)) {
-				localValues[key] = (value ?? []).includes(option.value);
-			}
-		});
-	});
-
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const handleChange = () => {
-		value = options
-			.filter((option) => localValues[String(option.value)])
-			.map((option) => option.value);
+	const handleChange = (optionValue: OptionValue, checked: boolean) => {
+		value = checked
+			? [...(value ?? []), optionValue]
+			: (value ?? []).filter((v) => v !== optionValue);
 		onchange(value);
 	};
 
 	// =========================================================================
-	// $defived
+	// $derived
 	// =========================================================================
 	const gapStyle = $derived(gap !== undefined ? getStyleFromNumber(gap) : undefined);
 	const minOptionWidthStyle = $derived(getStyleFromNumber(minOptionWidth));
@@ -104,12 +88,12 @@
 	{#each options as option (option.value)}
 		<li class="checkbox-group__option">
 			<Checkbox
-				bind:value={localValues[String(option.value)]}
+				value={(value ?? []).includes(option.value)}
 				{size}
-				{disabled}
+				disabled={disabled || (option.disabled ?? false)}
 				{required}
 				{reducedMotion}
-				onchange={handleChange}
+				onchange={(checked) => handleChange(option.value, checked)}
 			>
 				{option.label}
 			</Checkbox>
