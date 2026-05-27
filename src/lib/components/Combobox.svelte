@@ -163,7 +163,7 @@
 		...restProps
 	}: ComboboxProps = $props();
 
-	let inputValue = $state('');
+	let inputValue = $state(value != null ? String(value) : '');
 	let inputRef = $state<any>();
 	let listElement = $state<HTMLDivElement>();
 	let comboboxElement = $state<HTMLDivElement>();
@@ -172,6 +172,15 @@
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
 	let isKeyboardNavigation = $state(false);
+
+	// =========================================================================
+	// Effects
+	// =========================================================================
+	$effect(() => {
+		if (!isFocused) {
+			inputValue = value != null ? String(value) : '';
+		}
+	});
 
 	// =========================================================================
 	// Methods
@@ -447,7 +456,7 @@
 		{readonly}
 		{required}
 		{clearable}
-		rightIcon={inline ? undefined : 'arrow_drop_down'}
+		rightIcon="arrow_drop_down"
 		{tabindex}
 		{maxlength}
 		{rounded}

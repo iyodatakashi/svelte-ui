@@ -1199,6 +1199,10 @@
 			.input__link-text {
 				padding-right: var(--svelte-ui-input-icon-space-inline);
 			}
+
+			.input__icon-right {
+				right: 0;
+			}
 		}
 
 		&.input--clearable {
