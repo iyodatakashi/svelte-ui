@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.37] - 2026-05-27
+
+### Fixed
+
+- **Combobox**: Initial `value` prop is now correctly reflected in the displayed text.
+- **Combobox**: Changing `value` externally now updates the displayed text (when not focused).
+- **Combobox**: `inline` mode now shows the dropdown arrow icon, matching `Select` behavior. The icon position is also corrected to align with the text.
+
 ## [0.0.36] - 2026-05-13
 
 ### Fixed
