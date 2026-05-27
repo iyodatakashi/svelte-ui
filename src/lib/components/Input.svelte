@@ -919,15 +919,20 @@
 		color: inherit;
 		line-height: inherit;
 		text-align: inherit;
-		white-space: nowrap;
-		overflow: hidden;
-		text-overflow: ellipsis;
 		opacity: 1;
 		transition: none;
 	}
 
 	.input__display-text-content {
 		width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
+	}
+
+	.input__link-text-content {
+		width: 100%;
+		overflow: hidden;
+		white-space: nowrap;
 	}
 
 	.input__link-text {
