@@ -271,11 +271,10 @@
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: 50%;
+		top: calc((var(--svelte-ui-select-height) - 32px) / 2);
 		right: 4px;
 		width: 32px;
 		height: 32px;
-		transform: translateY(-50%);
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: none;
@@ -343,7 +342,9 @@
 		}
 
 		.multi-select__dropdown-icon {
+			top: 50%;
 			right: 0;
+			transform: translateY(-50%);
 		}
 	}
 
