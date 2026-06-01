@@ -64,8 +64,33 @@ const basicOptions = [
 	{ value: 'apple', label: 'Apple' },
 	{ value: 'banana', label: 'Banana' },
 	{ value: 'cherry', label: 'Cherry' },
-	{ value: 'durian', label: 'Durian', disabled: true },
-	{ value: 'elderberry', label: 'Elderberry' }
+	{ value: 'date', label: 'Date' },
+	{ value: 'elderberry', label: 'Elderberry' },
+	{ value: 'fig', label: 'Fig' },
+	{ value: 'grape', label: 'Grape' },
+	{ value: 'honeydew', label: 'Honeydew' },
+	{ value: 'kiwi', label: 'Kiwi' },
+	{ value: 'lemon', label: 'Lemon' },
+	{ value: 'mango', label: 'Mango' },
+	{ value: 'nectarine', label: 'Nectarine' },
+	{ value: 'orange', label: 'Orange' },
+	{ value: 'papaya', label: 'Papaya' },
+	{ value: 'quince', label: 'Quince' },
+	{ value: 'raspberry', label: 'Raspberry' },
+	{ value: 'strawberry', label: 'Strawberry' },
+	{ value: 'tangerine', label: 'Tangerine' },
+	{ value: 'watermelon', label: 'Watermelon' },
+	{ value: 'apricot', label: 'Apricot' },
+	{ value: 'blueberry', label: 'Blueberry' },
+	{ value: 'coconut', label: 'Coconut' },
+	{ value: 'dragonfruit', label: 'Dragon Fruit' },
+	{ value: 'guava', label: 'Guava' },
+	{ value: 'jackfruit', label: 'Jackfruit', disabled: true },
+	{ value: 'kumquat', label: 'Kumquat' },
+	{ value: 'lychee', label: 'Lychee' },
+	{ value: 'mulberry', label: 'Mulberry' },
+	{ value: 'passion', label: 'Passion Fruit' },
+	{ value: 'yuzu', label: 'Yuzu' }
 ];
 
 const countryOptions = [
@@ -79,7 +104,7 @@ const countryOptions = [
 export const Default = {
 	args: {
 		options: basicOptions,
-		values: [],
+		value: [],
 		placeholder: 'Select items'
 	}
 };
@@ -87,7 +112,7 @@ export const Default = {
 export const WithPreselected = {
 	args: {
 		options: basicOptions,
-		values: ['apple', 'cherry'],
+		value: ['apple', 'cherry'],
 		placeholder: 'Select items'
 	}
 };
@@ -95,7 +120,7 @@ export const WithPreselected = {
 export const Rounded = {
 	args: {
 		options: basicOptions,
-		values: [],
+		value: [],
 		rounded: true,
 		placeholder: 'Rounded multi-select'
 	}
@@ -104,7 +129,7 @@ export const Rounded = {
 export const FullWidth = {
 	args: {
 		options: countryOptions,
-		values: [],
+		value: [],
 		fullWidth: true,
 		placeholder: 'Select countries'
 	},
@@ -116,7 +141,7 @@ export const FullWidth = {
 export const Disabled = {
 	args: {
 		options: basicOptions,
-		values: ['apple'],
+		value: ['apple'],
 		disabled: true,
 		placeholder: 'Disabled state'
 	}
