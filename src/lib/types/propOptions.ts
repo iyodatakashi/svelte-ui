@@ -95,3 +95,12 @@ export type NavVariant = 'vertical' | 'horizontal' | 'mobile';
  * - `bottom-sheet`: child items appear in a fixed bottom sheet overlay (mobile only)
  */
 export type ChildrenVariant = 'popup' | 'accordion' | 'expanded' | 'bar' | 'bottom-sheet';
+
+/**
+ * Reason why a Popup was closed.
+ * Used by Popup's onClose callback to allow consumers to differentiate close triggers.
+ * - `escape`: closed via Escape key
+ * - `outside`: closed by clicking outside the popup
+ * - `explicit`: closed programmatically (e.g. popupRef.close(), selecting an option)
+ */
+export type CloseReason = 'escape' | 'outside' | 'explicit';

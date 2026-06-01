@@ -19,7 +19,7 @@
 	import { isMobileDevice, disableBodyScroll } from '$lib/utils/mobile';
 	import { announceOpenClose } from '$lib/utils/accessibility';
 	import { popupManager } from '$lib/utils/popupManager';
-	import type { PopupPosition } from '$lib/types/propOptions';
+	import type { CloseReason, PopupPosition } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -64,7 +64,7 @@
 
 		// イベントハンドラー
 		onOpen?: () => void;
-		onClose?: () => void;
+		onClose?: (reason: CloseReason) => void;
 	};
 
 	let {
@@ -105,6 +105,7 @@
 	let previousActiveElement: HTMLElement | null = null;
 	let isMobile: boolean = $state(false);
 	let bodyScrollCleanup: (() => void) | undefined = $state();
+	let pendingCloseReason: CloseReason = 'explicit';
 
 	// =========================================================================
 	// Lifecycle
@@ -147,7 +148,7 @@
 		switch (event.key) {
 			case 'Escape':
 				event.preventDefault();
-				close();
+				close('escape');
 				break;
 			case 'Tab':
 				if (focusTrap) {
@@ -343,15 +344,17 @@
 		}
 	};
 
+	const closeOnResize = () => close();
+
 	const addEventListenersToClose = () => {
 		if (typeof window === 'undefined' || typeof document === 'undefined') return;
-		window.addEventListener('resize', close);
+		window.addEventListener('resize', closeOnResize);
 		document.addEventListener('scroll', handleScroll, true);
 	};
 
 	const removeEventListenersToClose = () => {
 		if (typeof window === 'undefined' || typeof document === 'undefined') return;
-		window.removeEventListener('resize', close);
+		window.removeEventListener('resize', closeOnResize);
 		document.removeEventListener('scroll', handleScroll, true);
 	};
 
@@ -413,7 +416,9 @@
 		previousActiveElement = null;
 
 		// アニメーション完了後にonCloseを呼ぶ
-		onClose?.();
+		const reason = pendingCloseReason;
+		pendingCloseReason = 'explicit';
+		onClose?.(reason);
 	};
 
 	const clickOutside = (element: HTMLElement, callbackFunction: () => void) => {
@@ -498,7 +503,10 @@
 	};
 
 	/** Closes the popup. */
-	export const close = () => {
+	export const close = (reason: CloseReason = 'explicit') => {
+		if (pendingCloseReason === 'explicit') {
+			pendingCloseReason = reason;
+		}
 		isOpen = false;
 		removeEventListenersToClose();
 		removeKeyboardListener();
@@ -544,7 +552,7 @@
 	aria-modal={undefined}
 	id={popupId}
 	use:clickOutside={() => {
-		close();
+		close('outside');
 	}}
 >
 	{@render children()}

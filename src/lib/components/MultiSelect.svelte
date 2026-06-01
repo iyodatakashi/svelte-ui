@@ -127,8 +127,10 @@
 		triggerWidth = triggerEl?.offsetWidth ?? 0;
 	};
 
-	const handlePopupClose = () => {
-		triggerEl?.focus();
+	const handlePopupClose = (reason: 'escape' | 'outside' | 'explicit') => {
+		if (reason !== 'outside') {
+			triggerEl?.focus();
+		}
 	};
 </script>
 

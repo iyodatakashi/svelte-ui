@@ -189,10 +189,10 @@
 		announceMenuOpened();
 	};
 
-	const handlePopupClose = () => {
+	const handlePopupClose = (reason: 'escape' | 'outside' | 'explicit') => {
 		activeIndex = -1;
 
-		if (anchorElement) {
+		if (anchorElement && reason !== 'outside') {
 			anchorElement.focus();
 		}
 	};

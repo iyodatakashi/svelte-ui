@@ -292,7 +292,6 @@
 				highlightedIndex = -1;
 				isKeyboardNavigation = false;
 				popupRef?.close();
-				isFocused = false;
 				break;
 		}
 	};
@@ -396,8 +395,10 @@
 	};
 
 	// Popup が閉じられたときの処理（isPopupOpen は bind:isOpen で同期される）
-	const handlePopupClose = () => {
-		isFocused = false;
+	const handlePopupClose = (reason: 'escape' | 'outside' | 'explicit') => {
+		if (reason !== 'escape') {
+			isFocused = false;
+		}
 		highlightedIndex = -1;
 	};
 	const handleBlur = (event: FocusEvent) => {
