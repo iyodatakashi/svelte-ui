@@ -84,13 +84,8 @@
 	// =========================================================================
 	const listboxId = $derived(`${id}-listbox`);
 
-	const displayText = $derived(
-		values.length > 0
-			? options
-					.filter((o) => values.includes(o.value))
-					.map((o) => o.label)
-					.join(' ')
-			: ''
+	const selectedLabels = $derived(
+		options.filter((o) => values.includes(o.value)).map((o) => o.label)
 	);
 
 	// =========================================================================
@@ -166,8 +161,12 @@
 		onclick={handleTriggerClick}
 		onkeydown={handleTriggerKeydown}
 	>
-		{#if displayText}
-			<span class="multi-select__display-text">{displayText}</span>
+		{#if selectedLabels.length > 0}
+			<span class="multi-select__display-text">
+				{#each selectedLabels as label, i}
+					<span>{label}{#if i < selectedLabels.length - 1},{/if}</span>
+				{/each}
+			</span>
 		{:else if placeholder}
 			<span class="multi-select__placeholder">{placeholder}</span>
 		{/if}
@@ -242,7 +241,6 @@
 		cursor: pointer;
 		display: flex;
 		align-items: center;
-		overflow: hidden;
 
 		&:focus,
 		&:focus-visible {
@@ -252,10 +250,10 @@
 	}
 
 	.multi-select__display-text {
-		display: block;
-		overflow: hidden;
-		text-overflow: ellipsis;
-		white-space: nowrap;
+		display: flex;
+		flex-wrap: wrap;
+		align-items: baseline;
+		gap: 0 0.5em;
 		flex: 1;
 	}
 
@@ -326,7 +324,6 @@
 			border: none;
 			border-radius: var(--svelte-ui-select-border-radius);
 			font-size: 1rem;
-			line-height: var(--svelte-ui-select-height);
 		}
 	}
 
