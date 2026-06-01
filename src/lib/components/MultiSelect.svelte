@@ -200,6 +200,7 @@
 						value={values.includes(option.value)}
 						disabled={option.disabled}
 						fullWidth
+						customStyle="padding: 8px 12px"
 						onchange={() => toggleOption(option.value)}
 					>
 						{option.label}
