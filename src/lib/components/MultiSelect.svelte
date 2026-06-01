@@ -168,7 +168,9 @@
 			{#if selectedLabels.length > 0}
 				<span class="multi-select__display-text">
 					{#each selectedLabels as label, i}
-						<span>{label}{#if i < selectedLabels.length - 1},{/if}</span>
+						<span
+							>{label}{#if i < selectedLabels.length - 1},{/if}</span
+						>
 					{/each}
 				</span>
 			{:else if placeholder}
@@ -234,7 +236,6 @@
 		width: 100%;
 		min-height: var(--svelte-ui-select-height);
 		padding: var(--svelte-ui-select-padding);
-		padding-right: 0;
 		background: transparent;
 		border: none;
 		font-family: inherit;
@@ -261,6 +262,7 @@
 		display: flex;
 		align-items: center;
 		padding-right: var(--svelte-ui-select-icon-space);
+		margin-right: -12px;
 	}
 
 	.multi-select__display-text {
@@ -365,6 +367,7 @@
 		}
 
 		.multi-select__dropdown-icon {
+			top: calc((1lh - 32px) / 2);
 			right: 0;
 			margin-top: 0;
 			margin-bottom: 0;
