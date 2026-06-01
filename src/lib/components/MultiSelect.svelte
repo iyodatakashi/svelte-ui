@@ -32,6 +32,7 @@
 		focusStyle?: 'background' | 'outline' | 'none';
 		fullWidth?: boolean;
 		rounded?: boolean;
+		customStyle?: string;
 
 		// 状態/動作
 		disabled?: boolean;
@@ -60,6 +61,7 @@
 		focusStyle = 'outline',
 		fullWidth = false,
 		rounded = false,
+		customStyle = '',
 
 		disabled = false,
 		required = false,
@@ -156,24 +158,27 @@
 		aria-required={required ? 'true' : undefined}
 		{tabindex}
 		{disabled}
+		style={customStyle}
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onclick={handleTriggerClick}
 		onkeydown={handleTriggerKeydown}
 	>
-		{#if selectedLabels.length > 0}
-			<span class="multi-select__display-text">
-				{#each selectedLabels as label, i}
-					<span>{label}{#if i < selectedLabels.length - 1},{/if}</span>
-				{/each}
+		<span class="multi-select__inner">
+			{#if selectedLabels.length > 0}
+				<span class="multi-select__display-text">
+					{#each selectedLabels as label, i}
+						<span>{label}{#if i < selectedLabels.length - 1},{/if}</span>
+					{/each}
+				</span>
+			{:else if placeholder}
+				<span class="multi-select__placeholder">{placeholder}</span>
+			{/if}
+			<span class="multi-select__dropdown-icon" aria-hidden="true">
+				<Icon>arrow_drop_down</Icon>
 			</span>
-		{:else if placeholder}
-			<span class="multi-select__placeholder">{placeholder}</span>
-		{/if}
+		</span>
 	</button>
-	<div class="multi-select__dropdown-icon" aria-hidden="true">
-		<Icon>arrow_drop_down</Icon>
-	</div>
 
 	<Popup
 		bind:this={popupRef}
@@ -229,7 +234,7 @@
 		width: 100%;
 		min-height: var(--svelte-ui-select-height);
 		padding: var(--svelte-ui-select-padding);
-		padding-right: var(--svelte-ui-select-icon-space);
+		padding-right: 0;
 		background: transparent;
 		border: none;
 		font-family: inherit;
@@ -247,6 +252,15 @@
 			outline: var(--svelte-ui-focus-outline-inner);
 			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 		}
+	}
+
+	.multi-select__inner {
+		position: relative;
+		flex: 1;
+		align-self: stretch;
+		display: flex;
+		align-items: center;
+		padding-right: var(--svelte-ui-select-icon-space);
 	}
 
 	.multi-select__display-text {
@@ -271,8 +285,10 @@
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: calc((var(--svelte-ui-select-height) - 32px) / 2);
+		top: 0;
 		right: 4px;
+		margin-top: calc((var(--svelte-ui-select-height) - 32px) / 2);
+		margin-bottom: calc((var(--svelte-ui-select-height) - 32px) / 2);
 		width: 32px;
 		height: 32px;
 		font-size: var(--svelte-ui-select-dropdown-icon-size);
@@ -332,7 +348,7 @@
 	.multi-select.multi-select--inline {
 		.multi-select__trigger {
 			padding: inherit;
-			padding-right: var(--svelte-ui-input-icon-space-inline);
+			padding-right: 0;
 			background: transparent;
 			border: none;
 			border-radius: 0;
@@ -341,10 +357,16 @@
 			line-height: inherit;
 		}
 
+		.multi-select__inner {
+			align-self: auto;
+			align-items: flex-start;
+			padding-right: var(--svelte-ui-input-icon-space-inline);
+		}
+
 		.multi-select__dropdown-icon {
-			top: 50%;
 			right: 0;
-			transform: translateY(-50%);
+			margin-top: 0;
+			margin-bottom: 0;
 		}
 	}
 
