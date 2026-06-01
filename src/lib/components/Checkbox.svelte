@@ -28,9 +28,11 @@
 
 		// HTML属性系
 		id?: string;
+
 		// スタイル/レイアウト
 		/** Checkbox size. @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
+		customStyle?: string;
 
 		// 状態/動作
 		/** Disables the checkbox. @default false */
@@ -97,6 +99,7 @@
 
 		// スタイル/レイアウト
 		size = 'medium',
+		customStyle = '',
 
 		// 状態/動作
 		disabled = false,
@@ -292,7 +295,7 @@
 	);
 </script>
 
-<label class={containerClasses} data-testid="checkbox">
+<label class={containerClasses} style={customStyle} data-testid="checkbox">
 	<input
 		type="checkbox"
 		bind:checked={value}
@@ -371,7 +374,7 @@
 		line-height: var(--svelte-ui-checkbox-line-height);
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
-		margin-block-start: calc((var(--svelte-ui-checkbox-min-height) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-checkbox-min-height) - 1cap) / 2);
 	}
 
 	/* Checkbox box */
@@ -385,7 +388,7 @@
 		transition-property: background-color, border-color, opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
 		flex-shrink: 0;
-		margin-block-start: calc((var(--svelte-ui-checkbox-min-height) - var(--svelte-ui-checkbox-size)) / 2);
+		margin-block: calc((var(--svelte-ui-checkbox-min-height) - var(--svelte-ui-checkbox-size)) / 2);
 	}
 
 	/* Check mark */
@@ -489,7 +492,9 @@
 	.checkbox--small .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-sm);
 		height: var(--svelte-ui-checkbox-size-sm);
-		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-sm) - var(--svelte-ui-checkbox-size-sm)) / 2);
+		margin-block: calc(
+			(var(--svelte-ui-checkbox-min-height-sm) - var(--svelte-ui-checkbox-size-sm)) / 2
+		);
 	}
 
 	.checkbox--small .checkbox__icon::after {
@@ -497,7 +502,7 @@
 	}
 
 	.checkbox--small .checkbox__label {
-		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-sm) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-checkbox-min-height-sm) - 1cap) / 2);
 	}
 
 	.checkbox--large {
@@ -507,7 +512,9 @@
 	.checkbox--large .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-lg);
 		height: var(--svelte-ui-checkbox-size-lg);
-		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-lg) - var(--svelte-ui-checkbox-size-lg)) / 2);
+		margin-block: calc(
+			(var(--svelte-ui-checkbox-min-height-lg) - var(--svelte-ui-checkbox-size-lg)) / 2
+		);
 	}
 
 	.checkbox--large .checkbox__icon::after {
@@ -515,7 +522,7 @@
 	}
 
 	.checkbox--large .checkbox__label {
-		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-lg) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-checkbox-min-height-lg) - 1cap) / 2);
 	}
 
 	/* =========================================================================

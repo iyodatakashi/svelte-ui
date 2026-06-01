@@ -30,9 +30,11 @@
 
 		// HTML属性系
 		id?: string;
+
 		// スタイル/レイアウト
 		/** Radio button size. @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
+		customStyle?: string;
 
 		// 状態/動作
 		/** Disables this radio button. @default false */
@@ -99,6 +101,7 @@
 
 		// スタイル/レイアウト
 		size = 'medium',
+		customStyle = '',
 
 		// 状態/動作
 		disabled = false,
@@ -313,13 +316,19 @@
 	const isChecked: boolean = $derived(currentValue === value);
 
 	const containerClasses = $derived(
-		['radio', `radio--${size}`, disabled && 'radio--disabled', fullWidth && 'radio--full-width', reducedMotion && 'radio--no-motion']
+		[
+			'radio',
+			`radio--${size}`,
+			disabled && 'radio--disabled',
+			fullWidth && 'radio--full-width',
+			reducedMotion && 'radio--no-motion'
+		]
 			.filter(Boolean)
 			.join(' ')
 	);
 </script>
 
-<label class={containerClasses} data-testid="radio">
+<label class={containerClasses} style={customStyle} data-testid="radio">
 	<input
 		type="radio"
 		checked={isChecked}
@@ -397,7 +406,7 @@
 		line-height: var(--svelte-ui-radio-line-height);
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
-		margin-block-start: calc((var(--svelte-ui-radio-min-height) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-radio-min-height) - 1cap) / 2);
 	}
 
 	/* Icon */
@@ -410,7 +419,7 @@
 		font-size: inherit;
 		color: inherit;
 		flex-shrink: 0;
-		margin-block-start: calc((var(--svelte-ui-radio-min-height) - var(--svelte-ui-radio-size)) / 2);
+		margin-block: calc((var(--svelte-ui-radio-min-height) - var(--svelte-ui-radio-size)) / 2);
 	}
 
 	.radio__icon::before,
@@ -502,11 +511,11 @@
 	.radio--small .radio__icon {
 		width: var(--svelte-ui-radio-size-sm);
 		height: var(--svelte-ui-radio-size-sm);
-		margin-block-start: calc((var(--svelte-ui-radio-min-height-sm) - var(--svelte-ui-radio-size-sm)) / 2);
+		margin-block: calc((var(--svelte-ui-radio-min-height-sm) - var(--svelte-ui-radio-size-sm)) / 2);
 	}
 
 	.radio--small .radio__label {
-		margin-block-start: calc((var(--svelte-ui-radio-min-height-sm) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-radio-min-height-sm) - 1cap) / 2);
 	}
 
 	.radio--small .radio__icon::after {
@@ -531,11 +540,11 @@
 	.radio--large .radio__icon {
 		width: var(--svelte-ui-radio-size-lg);
 		height: var(--svelte-ui-radio-size-lg);
-		margin-block-start: calc((var(--svelte-ui-radio-min-height-lg) - var(--svelte-ui-radio-size-lg)) / 2);
+		margin-block: calc((var(--svelte-ui-radio-min-height-lg) - var(--svelte-ui-radio-size-lg)) / 2);
 	}
 
 	.radio--large .radio__label {
-		margin-block-start: calc((var(--svelte-ui-radio-min-height-lg) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-radio-min-height-lg) - 1cap) / 2);
 	}
 
 	.radio--large .radio__icon::after {

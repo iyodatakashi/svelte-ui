@@ -26,6 +26,7 @@
 		// スタイル/レイアウト
 		/** @default 'medium' */
 		size?: 'small' | 'medium' | 'large';
+		customStyle?: string;
 
 		// 状態/動作
 		disabled?: boolean;
@@ -89,6 +90,7 @@
 
 		// スタイル/レイアウト
 		size = 'medium',
+		customStyle = '',
 
 		// 状態/動作
 		disabled = false,
@@ -283,6 +285,7 @@
 	class:switch--full-width={fullWidth}
 	class:switch--checked={value}
 	class:switch--reduced-motion={reducedMotion}
+	style={customStyle}
 	data-testid="switch"
 >
 	<input
@@ -378,7 +381,7 @@
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
 		user-select: none;
-		margin-block-start: calc((var(--svelte-ui-switch-min-height) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-switch-min-height) - 1cap) / 2);
 		&--disabled {
 			opacity: 0.5;
 		}
@@ -396,7 +399,7 @@
 			background-color var(--svelte-ui-transition-duration) ease,
 			filter var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
-		margin-block-start: calc(
+		margin-block: calc(
 			(var(--svelte-ui-switch-min-height) - var(--switch-height, var(--svelte-ui-switch-height))) / 2
 		);
 
@@ -443,13 +446,13 @@
 	}
 
 	.switch--small .switch__track {
-		margin-block-start: calc(
+		margin-block: calc(
 			(var(--svelte-ui-switch-min-height-sm) - var(--svelte-ui-switch-height-sm)) / 2
 		);
 	}
 
 	.switch--small .switch__label {
-		margin-block-start: calc((var(--svelte-ui-switch-min-height-sm) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-switch-min-height-sm) - 1cap) / 2);
 	}
 
 	.switch--medium {
@@ -472,13 +475,13 @@
 	}
 
 	.switch--large .switch__track {
-		margin-block-start: calc(
+		margin-block: calc(
 			(var(--svelte-ui-switch-min-height-lg) - var(--svelte-ui-switch-height-lg)) / 2
 		);
 	}
 
 	.switch--large .switch__label {
-		margin-block-start: calc((var(--svelte-ui-switch-min-height-lg) - 1cap) / 2);
+		margin-block: calc((var(--svelte-ui-switch-min-height-lg) - 1cap) / 2);
 	}
 
 	/* =============================================
@@ -500,13 +503,13 @@
 		}
 
 		.switch__track {
-			margin-block-start: calc(
+			margin-block: calc(
 				(var(--svelte-ui-touch-target) - var(--switch-height, var(--svelte-ui-switch-height))) / 2
 			);
 		}
 
 		.switch__label {
-			margin-block-start: calc((var(--svelte-ui-touch-target) - 1cap) / 2);
+			margin-block: calc((var(--svelte-ui-touch-target) - 1cap) / 2);
 		}
 
 		.switch--small {
@@ -514,13 +517,13 @@
 		}
 
 		.switch--small .switch__track {
-			margin-block-start: calc(
+			margin-block: calc(
 				(var(--svelte-ui-touch-target-sm) - var(--switch-height, var(--svelte-ui-switch-height-sm))) / 2
 			);
 		}
 
 		.switch--small .switch__label {
-			margin-block-start: calc((var(--svelte-ui-touch-target-sm) - 1cap) / 2);
+			margin-block: calc((var(--svelte-ui-touch-target-sm) - 1cap) / 2);
 		}
 
 		.switch--large {
@@ -528,13 +531,13 @@
 		}
 
 		.switch--large .switch__track {
-			margin-block-start: calc(
+			margin-block: calc(
 				(var(--svelte-ui-touch-target-lg) - var(--switch-height, var(--svelte-ui-switch-height-lg))) / 2
 			);
 		}
 
 		.switch--large .switch__label {
-			margin-block-start: calc((var(--svelte-ui-touch-target-lg) - 1cap) / 2);
+			margin-block: calc((var(--svelte-ui-touch-target-lg) - 1cap) / 2);
 		}
 	}
 
