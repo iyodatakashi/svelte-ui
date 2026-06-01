@@ -334,7 +334,7 @@
 
 	.switch {
 		display: inline-flex;
-		align-items: center;
+		align-items: flex-start;
 		width: fit-content;
 		contain: layout;
 	}
@@ -360,12 +360,12 @@
 	.switch__label {
 		display: block;
 		padding-left: var(--svelte-ui-switch-gap);
-		white-space: nowrap;
 		line-height: var(--svelte-ui-checkbox-line-height);
 		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
 		user-select: none;
+		margin-block-start: calc((var(--switch-height, var(--svelte-ui-switch-height)) - 1cap) / 2);
 		&--disabled {
 			cursor: not-allowed;
 			opacity: 0.5;

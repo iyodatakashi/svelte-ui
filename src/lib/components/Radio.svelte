@@ -368,7 +368,7 @@
 
 	.radio {
 		display: inline-flex;
-		align-items: center;
+		align-items: flex-start;
 		width: fit-content;
 		min-height: var(--svelte-ui-radio-min-height);
 		vertical-align: top;
@@ -389,13 +389,13 @@
 	.radio__label {
 		display: block;
 		padding-left: var(--svelte-ui-radio-gap);
-		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
 		line-height: var(--svelte-ui-radio-line-height);
 		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
+		margin-block-start: calc((var(--svelte-ui-radio-size) - 1cap) / 2);
 	}
 
 	/* Icon */
@@ -404,11 +404,11 @@
 		display: flex;
 		align-items: center;
 		width: var(--svelte-ui-radio-size);
-		white-space: nowrap;
+		height: var(--svelte-ui-radio-size);
 		font-size: inherit;
 		color: inherit;
 		cursor: pointer;
-		min-height: var(--svelte-ui-radio-min-height);
+		flex-shrink: 0;
 	}
 
 	.radio__icon::before,
@@ -493,7 +493,11 @@
 
 	.radio--small .radio__icon {
 		width: var(--svelte-ui-radio-size-sm);
-		min-height: var(--svelte-ui-radio-min-height-sm);
+		height: var(--svelte-ui-radio-size-sm);
+	}
+
+	.radio--small .radio__label {
+		margin-block-start: calc((var(--svelte-ui-radio-size-sm) - 1cap) / 2);
 	}
 
 	.radio--small .radio__icon::after {
@@ -517,7 +521,11 @@
 
 	.radio--large .radio__icon {
 		width: var(--svelte-ui-radio-size-lg);
-		min-height: var(--svelte-ui-radio-min-height-lg);
+		height: var(--svelte-ui-radio-size-lg);
+	}
+
+	.radio--large .radio__label {
+		margin-block-start: calc((var(--svelte-ui-radio-size-lg) - 1cap) / 2);
 	}
 
 	.radio--large .radio__icon::after {

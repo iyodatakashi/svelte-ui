@@ -342,7 +342,7 @@
 
 	.checkbox {
 		display: inline-flex;
-		align-items: center;
+		align-items: flex-start;
 		width: fit-content;
 		min-height: var(--svelte-ui-checkbox-min-height);
 		vertical-align: top;
@@ -362,13 +362,13 @@
 	.checkbox__label {
 		display: block;
 		padding-left: var(--svelte-ui-checkbox-gap);
-		white-space: nowrap;
 		font-size: inherit;
 		color: inherit;
 		line-height: var(--svelte-ui-checkbox-line-height);
 		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
+		margin-block-start: calc((var(--svelte-ui-checkbox-size) - 1cap) / 2);
 	}
 
 	/* Checkbox box */
@@ -486,6 +486,10 @@
 		font-size: var(--svelte-ui-checkbox-icon-size-sm);
 	}
 
+	.checkbox--small .checkbox__label {
+		margin-block-start: calc((var(--svelte-ui-checkbox-size-sm) - 1cap) / 2);
+	}
+
 	.checkbox--large {
 		font-size: inherit;
 	}
@@ -497,6 +501,10 @@
 
 	.checkbox--large .checkbox__icon::after {
 		font-size: var(--svelte-ui-checkbox-icon-size-lg);
+	}
+
+	.checkbox--large .checkbox__label {
+		margin-block-start: calc((var(--svelte-ui-checkbox-size-lg) - 1cap) / 2);
 	}
 
 	/* =========================================================================
