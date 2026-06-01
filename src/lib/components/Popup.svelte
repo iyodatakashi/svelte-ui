@@ -559,6 +559,7 @@
 			0 24px 38px 3px rgb(0 0 0 / 14%),
 			0 9px 46px 8px rgb(0 0 0 / 12%);
 		background: var(--svelte-ui-surface-color);
+		color: var(--svelte-ui-text-color);
 		z-index: 1000; /* Popupを最前面に表示 */
 	}
 
