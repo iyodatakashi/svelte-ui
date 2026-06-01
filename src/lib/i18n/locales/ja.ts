@@ -31,6 +31,10 @@ export const ja = {
 	select: {
 		accessibleName: '選択'
 	},
+	multiSelect: {
+		accessibleName: '複数選択',
+		placeholder: '選択してください'
+	},
 	slider: {
 		accessibleName: 'スライダー'
 	},

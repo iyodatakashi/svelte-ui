@@ -31,6 +31,10 @@ export const fr = {
 	select: {
 		accessibleName: 'Choisir une option'
 	},
+	multiSelect: {
+		accessibleName: 'Sélectionner des options',
+		placeholder: 'Sélectionnez des options'
+	},
 	slider: {
 		accessibleName: 'Curseur'
 	},

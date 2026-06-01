@@ -17,6 +17,7 @@ export { default as ImageUploader } from './components/ImageUploader.svelte';
 export { default as Input } from './components/Input.svelte';
 export { default as LoadingSpinner } from './components/LoadingSpinner.svelte';
 export { default as Modal } from './components/Modal.svelte';
+export { default as MultiSelect } from './components/MultiSelect.svelte';
 export { default as Pagination } from './components/Pagination.svelte';
 export { default as Popup } from './components/Popup.svelte';
 export { default as PopupMenu } from './components/PopupMenu.svelte';
@@ -58,6 +59,7 @@ export type { ImageUploaderPreviewProps } from './components/ImageUploaderPrevie
 export type { InputProps } from './components/Input.svelte';
 export type { LoadingSpinnerProps } from './components/LoadingSpinner.svelte';
 export type { ModalProps } from './components/Modal.svelte';
+export type { MultiSelectProps } from './components/MultiSelect.svelte';
 export type { PaginationProps } from './components/Pagination.svelte';
 export type { PopupProps } from './components/Popup.svelte';
 export type { PopupMenuProps } from './components/PopupMenu.svelte';

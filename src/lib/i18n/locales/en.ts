@@ -31,6 +31,10 @@ export const en = {
 	select: {
 		accessibleName: 'Select option'
 	},
+	multiSelect: {
+		accessibleName: 'Select options',
+		placeholder: 'Select options'
+	},
 	slider: {
 		accessibleName: 'Slider'
 	},

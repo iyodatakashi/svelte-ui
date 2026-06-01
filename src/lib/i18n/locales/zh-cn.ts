@@ -31,6 +31,10 @@ export const zhCn = {
 	select: {
 		accessibleName: '选择'
 	},
+	multiSelect: {
+		accessibleName: '多选',
+		placeholder: '请选择'
+	},
 	slider: {
 		accessibleName: '滑块'
 	},
