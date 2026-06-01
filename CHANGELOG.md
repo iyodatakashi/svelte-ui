@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.40] - 2026-06-02
+
+### Added
+
+- **MultiSelect**: New `customStyle` prop for inline style customization of the trigger button.
+
+### Fixed
+
+- **Popup**: Clicking outside to close no longer incorrectly restores focus to the anchor element.
+- **MultiSelect**: Dropdown icon stays pinned to the first-line position when selected items wrap to multiple lines.
+- **MultiSelect** (inline): Minimum height of one line is now guaranteed even when no placeholder or value is set.
+
 ## [0.0.39] - 2026-06-01
 
 ### Fixed
