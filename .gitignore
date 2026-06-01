@@ -27,5 +27,6 @@ vite.config.ts.timestamp-*
 storybook-static
 
 # Claude Code / Kiro
+CLAUDE.md
 .claude/
 .kiro/
