@@ -498,6 +498,9 @@
 	--svelte-ui-switch-thumb-size-lg: calc(
 		var(--svelte-ui-switch-height-lg) - var(--svelte-ui-switch-thumb-margin) * 2
 	);
+	--svelte-ui-switch-min-height: 1.8em;
+	--svelte-ui-switch-min-height-sm: 1.6em;
+	--svelte-ui-switch-min-height-lg: 2.2em;
 	--svelte-ui-switch-gap: 8px;
 	--svelte-ui-switch-line-height: 1.2em;
 	--svelte-ui-switch-disabled-opacity: var(--svelte-ui-disabled-opacity);

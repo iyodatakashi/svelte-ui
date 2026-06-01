@@ -37,6 +37,8 @@
 		// 状態/動作
 		/** Disables this radio button. @default false */
 		disabled?: boolean;
+		/** Stretches the radio to fill its container width. @default false */
+		fullWidth?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -100,6 +102,7 @@
 
 		// 状態/動作
 		disabled = false,
+		fullWidth = false,
 		required = false,
 
 		// ARIA/アクセシビリティ
@@ -310,13 +313,13 @@
 	const isChecked: boolean = $derived(currentValue === value);
 
 	const containerClasses = $derived(
-		['radio', `radio--${size}`, disabled && 'radio--disabled', reducedMotion && 'radio--no-motion']
+		['radio', `radio--${size}`, disabled && 'radio--disabled', fullWidth && 'radio--full-width', reducedMotion && 'radio--no-motion']
 			.filter(Boolean)
 			.join(' ')
 	);
 </script>
 
-<div class={containerClasses} data-testid="radio">
+<label class={containerClasses} data-testid="radio">
 	<input
 		type="radio"
 		checked={isChecked}
@@ -352,14 +355,14 @@
 		onchange={handleChange}
 		{...restProps}
 	/>
-	<label for={id} class="radio__icon"></label>
+	<span class="radio__icon"></span>
 
 	{#if children}
-		<label for={id} class="radio__label">
+		<span class="radio__label">
 			{@render children()}
-		</label>
+		</span>
 	{/if}
-</div>
+</label>
 
 <style>
 	/* =============================================
@@ -373,6 +376,7 @@
 		min-height: var(--svelte-ui-radio-min-height);
 		vertical-align: top;
 		contain: layout;
+		cursor: pointer;
 	}
 
 	.radio input[type='radio'] {
@@ -382,7 +386,6 @@
 		margin: 0;
 		line-height: 1px;
 		opacity: 0;
-		cursor: pointer;
 	}
 
 	/* Label */
@@ -392,10 +395,9 @@
 		font-size: inherit;
 		color: inherit;
 		line-height: var(--svelte-ui-radio-line-height);
-		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
-		margin-block-start: calc((var(--svelte-ui-radio-size) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-radio-min-height) - 1cap) / 2);
 	}
 
 	/* Icon */
@@ -407,8 +409,8 @@
 		height: var(--svelte-ui-radio-size);
 		font-size: inherit;
 		color: inherit;
-		cursor: pointer;
 		flex-shrink: 0;
+		margin-block-start: calc((var(--svelte-ui-radio-min-height) - var(--svelte-ui-radio-size)) / 2);
 	}
 
 	.radio__icon::before,
@@ -453,13 +455,19 @@
 	/* =============================================
    * Status
    * ============================================= */
+	.radio--full-width {
+		width: 100%;
+	}
+
+	.radio--full-width .radio__label {
+		flex: 1;
+	}
+
 	.radio--disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 	}
 
-	.radio--disabled input[type='radio'],
-	.radio--disabled .radio__icon,
-	.radio--disabled .radio__label {
+	.radio--disabled {
 		cursor: not-allowed;
 	}
 
@@ -494,10 +502,11 @@
 	.radio--small .radio__icon {
 		width: var(--svelte-ui-radio-size-sm);
 		height: var(--svelte-ui-radio-size-sm);
+		margin-block-start: calc((var(--svelte-ui-radio-min-height-sm) - var(--svelte-ui-radio-size-sm)) / 2);
 	}
 
 	.radio--small .radio__label {
-		margin-block-start: calc((var(--svelte-ui-radio-size-sm) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-radio-min-height-sm) - 1cap) / 2);
 	}
 
 	.radio--small .radio__icon::after {
@@ -522,10 +531,11 @@
 	.radio--large .radio__icon {
 		width: var(--svelte-ui-radio-size-lg);
 		height: var(--svelte-ui-radio-size-lg);
+		margin-block-start: calc((var(--svelte-ui-radio-min-height-lg) - var(--svelte-ui-radio-size-lg)) / 2);
 	}
 
 	.radio--large .radio__label {
-		margin-block-start: calc((var(--svelte-ui-radio-size-lg) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-radio-min-height-lg) - 1cap) / 2);
 	}
 
 	.radio--large .radio__icon::after {

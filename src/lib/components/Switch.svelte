@@ -29,6 +29,8 @@
 
 		// 状態/動作
 		disabled?: boolean;
+		/** Stretches the switch to fill its container width. @default false */
+		fullWidth?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -90,6 +92,7 @@
 
 		// 状態/動作
 		disabled = false,
+		fullWidth = false,
 		required = false,
 
 		// ARIA/アクセシビリティ
@@ -271,12 +274,13 @@
 	};
 </script>
 
-<div
+<label
 	class="switch"
 	class:switch--small={size === 'small'}
 	class:switch--medium={size === 'medium'}
 	class:switch--large={size === 'large'}
 	class:switch--disabled={disabled}
+	class:switch--full-width={fullWidth}
 	class:switch--checked={value}
 	class:switch--reduced-motion={reducedMotion}
 	data-testid="switch"
@@ -316,16 +320,16 @@
 		{...restProps}
 	/>
 
-	<label for={id} class="switch__track">
+	<span class="switch__track">
 		<span class="switch-thumb"></span>
-	</label>
+	</span>
 
-	<label for={id} class="switch__label" class:switch__label--disabled={disabled}>
+	<span class="switch__label" class:switch__label--disabled={disabled}>
 		{#if children}
 			{@render children()}
 		{/if}
-	</label>
-</div>
+	</span>
+</label>
 
 <style lang="scss">
 	/* =============================================
@@ -336,7 +340,17 @@
 		display: inline-flex;
 		align-items: flex-start;
 		width: fit-content;
+		min-height: var(--svelte-ui-switch-min-height);
 		contain: layout;
+		cursor: pointer;
+	}
+
+	.switch--full-width {
+		width: 100%;
+	}
+
+	.switch--full-width .switch__label {
+		flex: 1;
 	}
 
 	.switch--disabled {
@@ -361,16 +375,15 @@
 		display: block;
 		padding-left: var(--svelte-ui-switch-gap);
 		line-height: var(--svelte-ui-checkbox-line-height);
-		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
 		user-select: none;
-		margin-block-start: calc((var(--switch-height, var(--svelte-ui-switch-height)) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-switch-min-height) - 1cap) / 2);
 		&--disabled {
-			cursor: not-allowed;
 			opacity: 0.5;
 		}
 	}
+
 
 	// スイッチトラック
 	.switch__track {
@@ -383,7 +396,9 @@
 			background-color var(--svelte-ui-transition-duration) ease,
 			filter var(--svelte-ui-transition-duration) ease;
 		flex-shrink: 0;
-		cursor: pointer;
+		margin-block-start: calc(
+			(var(--svelte-ui-switch-min-height) - var(--switch-height, var(--svelte-ui-switch-height))) / 2
+		);
 
 		.switch--checked & {
 			background-color: var(--switch-active-color, var(--svelte-ui-switch-active-color));
@@ -424,6 +439,17 @@
 		--switch-thumb-margin: var(--svelte-ui-switch-thumb-margin);
 		--switch-border-radius: var(--svelte-ui-switch-border-radius);
 		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
+		min-height: var(--svelte-ui-switch-min-height-sm);
+	}
+
+	.switch--small .switch__track {
+		margin-block-start: calc(
+			(var(--svelte-ui-switch-min-height-sm) - var(--svelte-ui-switch-height-sm)) / 2
+		);
+	}
+
+	.switch--small .switch__label {
+		margin-block-start: calc((var(--svelte-ui-switch-min-height-sm) - 1cap) / 2);
 	}
 
 	.switch--medium {
@@ -442,6 +468,17 @@
 		--switch-thumb-margin: var(--svelte-ui-switch-thumb-margin);
 		--switch-border-radius: var(--svelte-ui-switch-border-radius);
 		--switch-thumb-border-radius: var(--svelte-ui-switch-thumb-border-radius);
+		min-height: var(--svelte-ui-switch-min-height-lg);
+	}
+
+	.switch--large .switch__track {
+		margin-block-start: calc(
+			(var(--svelte-ui-switch-min-height-lg) - var(--svelte-ui-switch-height-lg)) / 2
+		);
+	}
+
+	.switch--large .switch__label {
+		margin-block-start: calc((var(--svelte-ui-switch-min-height-lg) - 1cap) / 2);
 	}
 
 	/* =============================================
@@ -462,12 +499,42 @@
 			min-height: var(--svelte-ui-touch-target);
 		}
 
+		.switch__track {
+			margin-block-start: calc(
+				(var(--svelte-ui-touch-target) - var(--switch-height, var(--svelte-ui-switch-height))) / 2
+			);
+		}
+
+		.switch__label {
+			margin-block-start: calc((var(--svelte-ui-touch-target) - 1cap) / 2);
+		}
+
 		.switch--small {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
+		.switch--small .switch__track {
+			margin-block-start: calc(
+				(var(--svelte-ui-touch-target-sm) - var(--switch-height, var(--svelte-ui-switch-height-sm))) / 2
+			);
+		}
+
+		.switch--small .switch__label {
+			margin-block-start: calc((var(--svelte-ui-touch-target-sm) - 1cap) / 2);
+		}
+
 		.switch--large {
 			min-height: var(--svelte-ui-touch-target-lg);
+		}
+
+		.switch--large .switch__track {
+			margin-block-start: calc(
+				(var(--svelte-ui-touch-target-lg) - var(--switch-height, var(--svelte-ui-switch-height-lg))) / 2
+			);
+		}
+
+		.switch--large .switch__label {
+			margin-block-start: calc((var(--svelte-ui-touch-target-lg) - 1cap) / 2);
 		}
 	}
 

@@ -35,6 +35,8 @@
 		// 状態/動作
 		/** Disables the checkbox. @default false */
 		disabled?: boolean;
+		/** Stretches the checkbox to fill its container width. @default false */
+		fullWidth?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
@@ -98,6 +100,7 @@
 
 		// 状態/動作
 		disabled = false,
+		fullWidth = false,
 		required = false,
 
 		// ARIA/アクセシビリティ
@@ -281,6 +284,7 @@
 			'checkbox',
 			`checkbox--${size}`,
 			disabled && 'checkbox--disabled',
+			fullWidth && 'checkbox--full-width',
 			reducedMotion && 'checkbox--no-motion'
 		]
 			.filter(Boolean)
@@ -288,7 +292,7 @@
 	);
 </script>
 
-<div class={containerClasses} data-testid="checkbox">
+<label class={containerClasses} data-testid="checkbox">
 	<input
 		type="checkbox"
 		bind:checked={value}
@@ -326,14 +330,14 @@
 		onchange={handleChange}
 		{...restProps}
 	/>
-	<label for={id} class="checkbox__icon"></label>
+	<span class="checkbox__icon"></span>
 
 	{#if children}
-		<label for={id} class="checkbox__label">
+		<span class="checkbox__label">
 			{@render children()}
-		</label>
+		</span>
 	{/if}
-</div>
+</label>
 
 <style>
 	/* =========================================================================
@@ -347,6 +351,7 @@
 		min-height: var(--svelte-ui-checkbox-min-height);
 		vertical-align: top;
 		contain: layout;
+		cursor: pointer;
 	}
 
 	.checkbox input[type='checkbox'] {
@@ -355,7 +360,6 @@
 		height: 16px;
 		margin: 0;
 		opacity: 0;
-		cursor: pointer;
 	}
 
 	/* Label */
@@ -365,10 +369,9 @@
 		font-size: inherit;
 		color: inherit;
 		line-height: var(--svelte-ui-checkbox-line-height);
-		cursor: pointer;
 		text-box-trim: trim-both;
 		text-box-edge: cap alphabetic;
-		margin-block-start: calc((var(--svelte-ui-checkbox-size) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-checkbox-min-height) - 1cap) / 2);
 	}
 
 	/* Checkbox box */
@@ -382,7 +385,7 @@
 		transition-property: background-color, border-color, opacity;
 		transition-duration: var(--svelte-ui-transition-duration);
 		flex-shrink: 0;
-		cursor: pointer;
+		margin-block-start: calc((var(--svelte-ui-checkbox-min-height) - var(--svelte-ui-checkbox-size)) / 2);
 	}
 
 	/* Check mark */
@@ -420,13 +423,19 @@
 	   ========================================================================= */
 
 	/* Disabled state */
+	.checkbox--full-width {
+		width: 100%;
+	}
+
+	.checkbox--full-width .checkbox__label {
+		flex: 1;
+	}
+
 	.checkbox--disabled {
 		opacity: var(--svelte-ui-button-disabled-opacity);
 	}
 
-	.checkbox--disabled input[type='checkbox'],
-	.checkbox--disabled .checkbox__icon,
-	.checkbox--disabled .checkbox__label {
+	.checkbox--disabled {
 		cursor: not-allowed;
 	}
 
@@ -480,6 +489,7 @@
 	.checkbox--small .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-sm);
 		height: var(--svelte-ui-checkbox-size-sm);
+		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-sm) - var(--svelte-ui-checkbox-size-sm)) / 2);
 	}
 
 	.checkbox--small .checkbox__icon::after {
@@ -487,7 +497,7 @@
 	}
 
 	.checkbox--small .checkbox__label {
-		margin-block-start: calc((var(--svelte-ui-checkbox-size-sm) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-sm) - 1cap) / 2);
 	}
 
 	.checkbox--large {
@@ -497,6 +507,7 @@
 	.checkbox--large .checkbox__icon {
 		width: var(--svelte-ui-checkbox-size-lg);
 		height: var(--svelte-ui-checkbox-size-lg);
+		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-lg) - var(--svelte-ui-checkbox-size-lg)) / 2);
 	}
 
 	.checkbox--large .checkbox__icon::after {
@@ -504,7 +515,7 @@
 	}
 
 	.checkbox--large .checkbox__label {
-		margin-block-start: calc((var(--svelte-ui-checkbox-size-lg) - 1cap) / 2);
+		margin-block-start: calc((var(--svelte-ui-checkbox-min-height-lg) - 1cap) / 2);
 	}
 
 	/* =========================================================================
