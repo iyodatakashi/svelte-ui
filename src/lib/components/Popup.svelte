@@ -553,7 +553,7 @@
 <style lang="scss">
 	:popover-open {
 		border: solid 1px var(--svelte-ui-border-weak-color);
-		border-radius: 4px;
+		border-radius: var(--svelte-ui-popup-border-radius);
 		box-shadow:
 			0 11px 15px -7px rgb(0 0 0 / 20%),
 			0 24px 38px 3px rgb(0 0 0 / 14%),

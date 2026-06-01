@@ -562,7 +562,6 @@
 		width: max-content;
 		max-width: var(--svelte-ui-combobox-max-width);
 		background: var(--svelte-ui-combobox-bg);
-		border-radius: var(--svelte-ui-combobox-border-radius);
 		max-height: var(--svelte-ui-combobox-options-max-height);
 		overflow-y: auto;
 		margin: 0;
