@@ -699,12 +699,6 @@
 		transition: none;
 		overflow-y: auto;
 		overflow-x: hidden;
-		scrollbar-width: none; /* Firefox */
-		-ms-overflow-style: none; /* IE and Edge */
-
-		&::-webkit-scrollbar {
-			display: none; /* Chrome, Safari, Opera */
-		}
 
 		&::before {
 			content: '';
@@ -712,6 +706,20 @@
 
 		&:empty::before {
 			content: attr(data-placeholder);
+		}
+	}
+
+	/* display-text: スクロールバーの幅を確保しつつ透明にする（textarea と幅を一致させる） */
+	.textarea__display-text {
+		scrollbar-color: transparent transparent;
+	}
+
+	/* link-text: 絶対配置のオーバーレイなのでスクロールバーを完全に非表示 */
+	.textarea__link-text {
+		scrollbar-width: none;
+
+		&::-webkit-scrollbar {
+			display: none;
 		}
 	}
 
