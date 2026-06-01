@@ -5,6 +5,24 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.38] - 2026-06-01
+
+### Added
+
+- **MultiSelect**: New component for selecting multiple options from a dropdown list, with keyboard navigation and mobile fullscreen support.
+- **Checkbox**, **Radio**, **Switch**: New `fullWidth` prop stretches the component to full width with the label taking remaining space.
+- **Checkbox**, **Radio**, **Switch**: New `customStyle` prop for inline style customization of the root element.
+
+### Changed
+
+- **Checkbox**, **Radio**, **Switch**: Labels now wrap to multiple lines.
+
+### Fixed
+
+- **Input**: Text no longer overlaps the icon in narrow containers.
+- **Textarea**: Line break position mismatch between the display layer and the textarea element has been corrected.
+- **Popup**: Text color inside popups now correctly uses `--svelte-ui-text-color`, fixing an issue where `color: inherit` failed in the browser top layer (affected MultiSelect option text).
+
 ## [0.0.37] - 2026-05-27
 
 ### Fixed
