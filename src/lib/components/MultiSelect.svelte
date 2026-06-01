@@ -360,6 +360,7 @@
 		.multi-select__inner {
 			align-self: auto;
 			align-items: flex-start;
+			min-height: 1lh;
 			padding-right: var(--svelte-ui-input-icon-space-inline);
 		}
 
