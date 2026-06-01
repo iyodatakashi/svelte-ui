@@ -14,9 +14,8 @@
 	// =========================================================================
 	export type MultiSelectProps = {
 		// 基本プロパティ
-		name?: string;
-		/** Selected values array. Supports `bind:values`. */
-		values: OptionValue[];
+		/** Selected values array. Supports `bind:value`. */
+		value: OptionValue[];
 		/** `{ label, value, disabled? }[]` */
 		options: Option[];
 
@@ -49,8 +48,7 @@
 	};
 
 	let {
-		name,
-		values = $bindable([]),
+		value = $bindable([]),
 		options = [],
 
 		id = `multi-select-${Math.random().toString(36).substring(2, 15)}`,
@@ -85,19 +83,19 @@
 	const listboxId = $derived(`${id}-listbox`);
 
 	const selectedLabels = $derived(
-		options.filter((o) => values.includes(o.value)).map((o) => o.label)
+		options.filter((o) => value.includes(o.value)).map((o) => o.label)
 	);
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
 	const toggleOption = (optionValue: OptionValue) => {
-		if (values.includes(optionValue)) {
-			values = values.filter((v) => v !== optionValue);
+		if (value.includes(optionValue)) {
+			value = value.filter((v) => v !== optionValue);
 		} else {
-			values = [...values, optionValue];
+			value = [...value, optionValue];
 		}
-		onchange(values);
+		onchange(value);
 	};
 
 	const handleTriggerClick = () => {
@@ -196,7 +194,7 @@
 			{#each options as option, i (option.value)}
 				<li role="presentation" class="multi-select__item">
 					<Checkbox
-						value={values.includes(option.value)}
+						value={value.includes(option.value)}
 						disabled={option.disabled}
 						fullWidth
 						customStyle="padding: 8px 12px"
