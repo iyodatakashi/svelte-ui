@@ -4,7 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import { t } from '$lib/i18n';
-	import { convertToHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
+	import { escapeHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import type {
@@ -475,21 +475,14 @@
 		value !== null && value !== undefined && !(typeof value === 'string' && value === '')
 	);
 
-	// HTML表示用の値（autoResize時の高さ調整用）
+	// HTML表示用の値（pre-wrap で表示するため HTML エスケープのみ行う）
 	const displayValue = $derived.by(() => {
 		const normalizedValue = value ?? '';
 		if (normalizedValue !== '') {
-			const converted = convertToHtml(normalizedValue);
-			const html = String(converted ?? '');
-			// 最後の行が空だったら空白を追加（高さ調整のため）
-			const lines = html.split('<br />');
-			if (lines.length > 0 && lines[lines.length - 1] === '') {
-				return html + '&nbsp;';
-			}
-			return html;
+			return escapeHtml(normalizedValue);
 		}
 		// 値が空のとき: placeholder があればその幅・高さを確保して表示、なければ inline 時のみ &nbsp;
-		return placeholder ? convertToHtml(placeholder) : inline ? '&nbsp;' : '';
+		return placeholder ? escapeHtml(placeholder) : inline ? '&nbsp;' : '';
 	});
 
 	// URLをリンク化した表示用HTML（クリック検出用オーバーレイで使用）
@@ -631,6 +624,7 @@
 		position: relative;
 		width: auto;
 		max-width: 100%;
+		overflow: hidden;
 
 		&.textarea--full-height {
 			height: 100%;
@@ -699,6 +693,7 @@
 		transition: none;
 		overflow-y: auto;
 		overflow-x: hidden;
+		max-height: 100%;
 
 		&::before {
 			content: '';
@@ -709,8 +704,9 @@
 		}
 	}
 
-	/* display-text: スクロールバーの幅を確保しつつ透明にする（textarea と幅を一致させる） */
+	/* display-text: textarea の white-space: pre-wrap に合わせて空白・改行を同じルールで扱う */
 	.textarea__display-text {
+		white-space: pre-wrap;
 		scrollbar-color: transparent transparent;
 	}
 
