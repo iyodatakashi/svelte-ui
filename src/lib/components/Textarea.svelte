@@ -4,7 +4,7 @@
 	import IconButton from './IconButton.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import { t } from '$lib/i18n';
-	import { escapeHtml, convertToHtmlWithLink } from '$lib/utils/formatText';
+	import { escapeHtml, convertToLink } from '$lib/utils/formatText';
 	import type { HTMLTextareaAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import type {
@@ -491,8 +491,7 @@
 		if (!linkify || normalizedValue === '') {
 			return '';
 		}
-		const result = convertToHtmlWithLink(normalizedValue);
-		return String(result ?? '');
+		return convertToLink(escapeHtml(normalizedValue));
 	});
 
 	// --------------------------------
@@ -710,8 +709,9 @@
 		scrollbar-color: transparent transparent;
 	}
 
-	/* link-text: 絶対配置のオーバーレイなのでスクロールバーを完全に非表示 */
+	/* link-text: 絶対配置オーバーレイ。pre-wrap で textarea と空白・改行を同じルールで扱う */
 	.textarea__link-text {
+		white-space: pre-wrap;
 		scrollbar-width: none;
 
 		&::-webkit-scrollbar {

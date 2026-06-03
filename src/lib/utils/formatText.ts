@@ -21,7 +21,7 @@ export const convertToLink = (str: string): string => {
 	let text = str;
 	text = text.replace(
 		/((http|https|ftp):\/\/[\w?=&./#~%-;,*!$'():@+]+(?![\w\s?&./#~%";,=*'()-]*>))/g,
-		'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a> '
+		'<a href="$1" target="_blank" rel="noopener noreferrer">$1</a>'
 	);
 	return text;
 };
