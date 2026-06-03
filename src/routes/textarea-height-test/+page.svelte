@@ -12,11 +12,22 @@
 9行目: Temporibus autem quibusdam et aut officiis debitis aut rerum necessitatibus.
 10行目: Quis autem vel eum iure reprehenderit qui in ea voluptate velit.`;
 
+	const linkifyText = `1行目: 参考リンク https://example.com/page1 をご確認ください。
+2行目: 詳細は https://developer.mozilla.org/ja/docs/Web/CSS/white-space を参照。
+3行目: Lorem ipsum dolor sit amet, consectetur adipiscing elit sed do eiusmod.
+4行目: リポジトリは https://github.com/example/repo にあります。
+5行目: Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi.
+6行目: Duis aute irure dolor in reprehenderit in voluptate velit esse cillum.
+7行目: お問い合わせは https://example.com/contact までお願いします。
+8行目: Excepteur sint occaecat cupidatat non proident, sunt in culpa officia.`;
+
 	let value1 = $state(longText);
 	let value2 = $state(longText);
 	let value3 = $state(longText);
 	let value4 = $state(longText);
 	let value5 = $state(longText);
+	let value6 = $state(linkifyText);
+	let value7 = $state(linkifyText);
 </script>
 
 <svelte:head>
@@ -74,6 +85,20 @@
 			<div class="parent parent--overflow-hidden">
 				<Textarea bind:value={value5} autoResize={false} />
 			</div>
+		</section>
+
+		<!-- ケース6: linkify=true（制限なし） -->
+		<section>
+			<h2>ケース 6: <code>linkify=true</code>（高さ制限なし）</h2>
+			<p class="note">非フォーカス時は link-text（URLがリンク化）、フォーカス時は textarea が表示される。切り替え時に改行位置がズレないか確認。</p>
+			<Textarea bind:value={value6} linkify />
+		</section>
+
+		<!-- ケース7: linkify=true + maxHeight -->
+		<section>
+			<h2>ケース 7: <code>linkify=true</code> + <code>maxHeight=150</code></h2>
+			<p class="note">高さ制限ありの linkify。link-text と textarea のスクロール・改行位置が一致するか確認。</p>
+			<Textarea bind:value={value7} linkify maxHeight={150} />
 		</section>
 	</div>
 </main>
