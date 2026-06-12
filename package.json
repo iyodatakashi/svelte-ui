@@ -31,7 +31,7 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.js"
 		},
-		"./styles": "./dist/assets/styles/import.scss",
+		"./styles": "./dist/assets/styles/import.css",
 		"./styles/*": "./dist/assets/styles/*"
 	},
 	"files": [
@@ -51,7 +51,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"package": "svelte-package",
+		"package": "svelte-package && sass src/lib/assets/styles/import.scss dist/assets/styles/import.css --no-source-map",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",
