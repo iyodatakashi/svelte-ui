@@ -70,10 +70,10 @@ test('PopupMenuButton is disabled when disabled prop is true', async () => {
 
 	// 無効なボタンはクリックできない
 	await button.click();
-	// メニューが開かないことを確認（ポップアップが表示されない）
+	// メニューが開かないことを確認（ポップアップが開かない）
 	await new Promise(resolve => setTimeout(resolve, 50));
 	const popup = screen.container.querySelector('[data-testid="popup"]');
-	expect(popup).not.toBeInTheDocument();
+	expect(popup?.matches(':popover-open')).toBeFalsy();
 });
 
 test('PopupMenuButton handles click events', async () => {

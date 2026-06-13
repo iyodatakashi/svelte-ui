@@ -33,6 +33,9 @@ export { default as Skeleton } from './components/skeleton/Skeleton.svelte';
 export { default as SkeletonText } from './components/skeleton/SkeletonText.svelte';
 export { default as SkeletonBox } from './components/skeleton/SkeletonBox.svelte';
 export { default as SkeletonAvatar } from './components/skeleton/SkeletonAvatar.svelte';
+export { default as SkeletonButton } from './components/skeleton/SkeletonButton.svelte';
+export { default as SkeletonHeading } from './components/skeleton/SkeletonHeading.svelte';
+export { default as SkeletonMedia } from './components/skeleton/SkeletonMedia.svelte';
 export { default as Switch } from './components/Switch.svelte';
 export { default as Nav } from './components/Nav.svelte';
 export { default as NavItem } from './components/NavItem.svelte';
@@ -91,6 +94,7 @@ export type {
 	FabPosition,
 	ButtonVariant,
 	ButtonSize,
+	ComponentSize,
 	SnackbarType,
 	SnackbarVariant,
 	BadgeVariant,

@@ -7,8 +7,10 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler
+		PointerHandler,
+		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
+	import type { ComponentSize } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -25,16 +27,18 @@
 		id?: string;
 		// スタイル/レイアウト
 		/** @default 'medium' */
-		size?: 'small' | 'medium' | 'large';
+		size?: ComponentSize;
 		customStyle?: string;
+		/** Stretches the switch to fill its container width. @default false */
+		fullWidth?: boolean;
 
 		// 状態/動作
 		disabled?: boolean;
-		/** Stretches the switch to fill its container width. @default false */
-		fullWidth?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Accessible label, used when no visible label (children) is provided. */
+		ariaLabel?: string;
 		/** Disables animations for accessibility. @default false */
 		reducedMotion?: boolean;
 
@@ -72,7 +76,7 @@
 		onpointercancel?: PointerHandler;
 
 		// 入力イベント
-		onchange?: (value: boolean) => void;
+		onchange?: BivariantValueHandler<boolean>;
 
 		// その他
 		[key: string]: any;
@@ -91,13 +95,14 @@
 		// スタイル/レイアウト
 		size = 'medium',
 		customStyle = '',
+		fullWidth = false,
 
 		// 状態/動作
 		disabled = false,
-		fullWidth = false,
 		required = false,
 
 		// ARIA/アクセシビリティ
+		ariaLabel,
 		reducedMotion = false,
 
 		// フォーカスイベント
@@ -296,6 +301,7 @@
 		{disabled}
 		{required}
 		{id}
+		aria-label={ariaLabel}
 		onchange={handleChange}
 		onfocus={handleFocus}
 		onblur={handleBlur}

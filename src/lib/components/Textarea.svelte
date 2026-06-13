@@ -12,7 +12,8 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler
+		PointerHandler,
+		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
 	import type { FocusStyle } from '$lib/types/propOptions';
 
@@ -71,6 +72,10 @@
 		/** Converts URLs in the value to clickable links (non-focused view). @default false */
 		linkify?: boolean;
 
+		// ARIA/アクセシビリティ
+		/** Accessible label for the textarea, used when no associated visible label exists. */
+		ariaLabel?: string;
+
 		// フォーカスイベント
 		onfocus?: FocusHandler;
 		onblur?: FocusHandler;
@@ -105,8 +110,8 @@
 		onpointercancel?: PointerHandler;
 
 		// 入力イベント
-		onchange?: (value: string) => void;
-		oninput?: (value: string) => void;
+		onchange?: BivariantValueHandler<string>;
+		oninput?: BivariantValueHandler<string>;
 
 		// その他
 		[key: string]: any;
@@ -155,6 +160,9 @@
 		readonly = false,
 		required = false,
 		linkify = false,
+
+		// ARIA/アクセシビリティ
+		ariaLabel,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -547,6 +555,7 @@
 			{readonly}
 			{required}
 			{maxlength}
+			aria-label={ariaLabel}
 			{tabindex}
 			{autocomplete}
 			{wrap}

@@ -12,7 +12,6 @@
 ```
 src/lib/
 ├── components/          # 38+ Svelteコンポーネント
-│   └── COMPONENT_DESIGN_GUIDELINES.md  # 設計ガイドライン（必読）
 ├── types/
 │   ├── propOptions.ts   # 共有型ユニオン (ButtonVariant, PopupPosition等)
 │   ├── callbackHandlers.ts  # イベントハンドラ型定義
@@ -48,10 +47,9 @@ src/lib/
 
     // 3. HTML属性
     id?: string;
-    class?: string;
-    style?: string;
 
     // 4. スタイル/レイアウト
+    customStyle?: string;
     variant?: 'default' | 'filled';
     size?: 'small' | 'medium' | 'large';
 
@@ -70,6 +68,7 @@ src/lib/
     children,
     title,
     id,
+    customStyle,
     variant = 'default',
     disabled = false,
     ariaLabel,
@@ -79,7 +78,7 @@ src/lib/
 </script>
 
 <!-- data-testid は必ず最上位要素に設定 -->
-<div class="my-component" {id} data-testid="my-component" aria-label={ariaLabel}>
+<div class="my-component" {id} style={customStyle} data-testid="my-component" aria-label={ariaLabel}>
   {#if children}
     {@render children()}
   {/if}
@@ -91,6 +90,8 @@ src/lib/
 - **修正内容をコメントで記録しない**（コードは常にリリース可能な状態を維持する。技術的な理由の説明は許容）
 - Props順序: snippets → 基本props → HTML属性 → スタイル → 状態/動作 → ARIA → イベントハンドラ
 - `data-testid` は必ず最上位要素に設定（コンポーネント名をベースに命名）
+- ラッパーコンポーネント（自前の DOM 最上位要素を持たず単一の子コンポーネントをそのままレンダリングするもの。例: ConfirmDialog）は独自の `data-testid` を付与せず、内包する子コンポーネントの `data-testid` で特定する。薄いアンカー用コンテナ（例: PopupMenuButton のアンカー `div`）も内包要素の testid に委譲してよい
+- カスタムインラインスタイルは生の `style` ではなくプロジェクト標準の `customStyle?: string` で受け取る（Modal は歴史的経緯で `customStyles` / `customClass`、一部 Skeleton 系は `className` を使用。後方互換のため統一されていないが、新規コンポーネントは `customStyle` に揃える）
 
 ## CSSシステム
 
@@ -266,4 +267,4 @@ npm run check        # svelte-check + TypeScript検査
 | `src/lib/types/callbackHandlers.ts` | イベントハンドラ型 |
 | `src/lib/index.ts` | バレルエクスポート（追加時はここも更新） |
 | `src/lib/config.ts` | グローバル設定・ロケール |
-| `src/lib/components/COMPONENT_DESIGN_GUIDELINES.md` | 設計ガイドライン（詳細ルール） |
+| `docs/COMPONENT_DESIGN_GUIDELINES.md` | 設計ガイドライン（詳細ルール） |

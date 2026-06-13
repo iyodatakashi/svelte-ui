@@ -416,9 +416,10 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	// 各要素のIDを生成
-	const inputId = $derived(`${id}-input`);
-	const listboxId = $derived(`${id}-listbox`);
+	// 各要素のIDを生成（id 未指定時は安定した一意のフォールバックを使用）
+	const fallbackId = `combobox-${Math.random().toString(36).substring(2, 15)}`;
+	const inputId = $derived(`${id ?? fallbackId}-input`);
+	const listboxId = $derived(`${id ?? fallbackId}-listbox`);
 
 	// フィルタリングされたオプション
 	const filteredOptions = $derived.by(() => {

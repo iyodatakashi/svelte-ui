@@ -11,6 +11,7 @@
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
 	import type { OptionValue } from '$lib/types/options';
+	import type { ComponentSize } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -33,17 +34,19 @@
 
 		// スタイル/レイアウト
 		/** Radio button size. @default 'medium' */
-		size?: 'small' | 'medium' | 'large';
+		size?: ComponentSize;
 		customStyle?: string;
+		/** Stretches the radio to fill its container width. @default false */
+		fullWidth?: boolean;
 
 		// 状態/動作
 		/** Disables this radio button. @default false */
 		disabled?: boolean;
-		/** Stretches the radio to fill its container width. @default false */
-		fullWidth?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Accessible label, used when no visible label (children) is provided. */
+		ariaLabel?: string;
 		/** Disables animations for users who prefer reduced motion. @default false */
 		reducedMotion?: boolean;
 
@@ -102,13 +105,14 @@
 		// スタイル/レイアウト
 		size = 'medium',
 		customStyle = '',
+		fullWidth = false,
 
 		// 状態/動作
 		disabled = false,
-		fullWidth = false,
 		required = false,
 
 		// ARIA/アクセシビリティ
+		ariaLabel,
 		reducedMotion = false,
 
 		// フォーカスイベント
@@ -337,6 +341,7 @@
 		{value}
 		{disabled}
 		{required}
+		aria-label={ariaLabel}
 		aria-describedby={undefined}
 		onfocus={handleFocus}
 		onblur={handleBlur}

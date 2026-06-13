@@ -83,6 +83,10 @@
 		/** Adds increment/decrement stepper buttons. Only for `type="number"`. @default false */
 		enableNumberStepper?: boolean;
 
+		// ARIA/アクセシビリティ
+		/** Accessible label for the input, used when no associated visible label exists. */
+		ariaLabel?: string;
+
 		// フォーカスイベント
 		onfocus?: FocusHandler;
 		onblur?: FocusHandler;
@@ -191,6 +195,9 @@
 		clearable = false,
 		clearButtonAriaLabel = t('input.clear'),
 		linkify = false,
+
+		// ARIA/アクセシビリティ
+		ariaLabel,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -718,6 +725,7 @@
 			{disabled}
 			{readonly}
 			{required}
+			aria-label={ariaLabel}
 			{tabindex}
 			{spellcheck}
 			onchange={handleChange}
@@ -1099,7 +1107,6 @@
 		width: 32px;
 		height: 32px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-input-icon-color);
 		pointer-events: none;
 		z-index: 1;
@@ -1115,7 +1122,6 @@
 		width: 32px;
 		height: 32px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-input-icon-color);
 		pointer-events: none;
 		z-index: 2;

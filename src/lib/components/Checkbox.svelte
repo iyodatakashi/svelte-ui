@@ -7,8 +7,10 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler
+		PointerHandler,
+		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
+	import type { ComponentSize } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -31,17 +33,19 @@
 
 		// スタイル/レイアウト
 		/** Checkbox size. @default 'medium' */
-		size?: 'small' | 'medium' | 'large';
+		size?: ComponentSize;
 		customStyle?: string;
+		/** Stretches the checkbox to fill its container width. @default false */
+		fullWidth?: boolean;
 
 		// 状態/動作
 		/** Disables the checkbox. @default false */
 		disabled?: boolean;
-		/** Stretches the checkbox to fill its container width. @default false */
-		fullWidth?: boolean;
 		required?: boolean;
 
 		// ARIA/アクセシビリティ
+		/** Accessible label, used when no visible label (children) is provided. */
+		ariaLabel?: string;
 		/** Disables animations for users who prefer reduced motion. @default false */
 		reducedMotion?: boolean;
 
@@ -79,7 +83,7 @@
 		onpointercancel?: PointerHandler;
 
 		// 入力イベント
-		onchange?: (value: boolean) => void;
+		onchange?: BivariantValueHandler<boolean>;
 
 		// その他
 		[key: string]: any;
@@ -100,13 +104,14 @@
 		// スタイル/レイアウト
 		size = 'medium',
 		customStyle = '',
+		fullWidth = false,
 
 		// 状態/動作
 		disabled = false,
-		fullWidth = false,
 		required = false,
 
 		// ARIA/アクセシビリティ
+		ariaLabel,
 		reducedMotion = false,
 
 		// フォーカスイベント
@@ -304,6 +309,7 @@
 		{name}
 		{disabled}
 		{required}
+		aria-label={ariaLabel}
 		aria-invalid={false}
 		aria-required={required ? 'true' : 'false'}
 		aria-describedby={undefined}
@@ -444,7 +450,6 @@
 
 	/* Checked state */
 	input[type='checkbox']:checked + .checkbox__icon::after {
-		width: var(--svelte-ui-checkbox-icon-width);
 		clip-path: inset(0 0 0 0);
 		opacity: 1;
 		transition-delay:
@@ -454,7 +459,6 @@
 	/* Indeterminate state */
 	input[type='checkbox']:indeterminate + .checkbox__icon::after {
 		content: 'remove';
-		width: var(--svelte-ui-checkbox-icon-width);
 		clip-path: inset(0 0 0 0);
 		opacity: 1;
 		transition-delay:

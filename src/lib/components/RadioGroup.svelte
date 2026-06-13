@@ -5,6 +5,7 @@
 	import Radio from './Radio.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
+	import type { ComponentSize } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -24,7 +25,7 @@
 		wrap?: boolean;
 		minOptionWidth?: string | number;
 		/** @default 'medium' */
-		size?: 'small' | 'medium' | 'large';
+		size?: ComponentSize;
 
 		// 状態/動作
 		disabled?: boolean;
@@ -82,6 +83,7 @@
 	style:--internal-radio-group-gap={gapStyle}
 	style:--internal-radio-group-wrap={wrap ? 'wrap' : 'none'}
 	style:--internal-radio-group-min-option-width={minOptionWidthStyle}
+	data-testid="radio-group"
 >
 	{#each options as option (option.value)}
 		<li class="radio-group__option">
@@ -104,12 +106,9 @@
 <style>
 	.radio-group {
 		display: flex;
-		flex-direction: var(
-			--internal-radio-group-flex-direction,
-			var(--svelte-ui-radio-group-flex-direction)
-		);
+		flex-direction: var(--internal-radio-group-flex-direction);
 		gap: var(--internal-radio-group-gap, var(--svelte-ui-radio-group-gap));
-		flex-wrap: var(--internal-radio-group-wrap, var(--svelte-ui-radio-group-wrap));
+		flex-wrap: var(--internal-radio-group-wrap);
 	}
 
 	.radio-group__option {

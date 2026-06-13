@@ -114,7 +114,7 @@
 			const requiredMargin = -containerHeight;
 
 			snackbarRef.style.setProperty(
-				'--svelte-ui-snackbar-item-collapse-margin',
+				'--internal-snackbar-item-collapse-margin',
 				`${requiredMargin}px`
 			);
 
@@ -237,7 +237,7 @@
 		}
 		100% {
 			opacity: 0;
-			margin-bottom: var(--svelte-ui-snackbar-item-collapse-margin);
+			margin-bottom: var(--internal-snackbar-item-collapse-margin);
 		}
 	}
 
@@ -248,7 +248,7 @@
 		}
 		100% {
 			opacity: 0;
-			margin-top: var(--svelte-ui-snackbar-item-collapse-margin);
+			margin-top: var(--internal-snackbar-item-collapse-margin);
 		}
 	}
 

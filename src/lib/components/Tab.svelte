@@ -82,13 +82,7 @@
 	}: TabProps = $props();
 </script>
 
-<div
-	class="tab"
-	style:--svelte-ui-nav-item-underline-text-color={textColor}
-	style:--svelte-ui-nav-item-underline-selected-text-color={selectedTextColor}
-	style:--svelte-ui-nav-item-underline-bar-color={selectedBarColor}
-	data-testid="tab"
->
+<div class="tab" data-testid="tab">
 	<Nav
 		navItems={tabItems}
 		variant="horizontal"
@@ -102,6 +96,9 @@
 		{iconGrade}
 		{iconOpticalSize}
 		{iconVariant}
+		{textColor}
+		{selectedTextColor}
+		{selectedBarColor}
 		{customContainerStyle}
 		{customItemStyle}
 		{customChildrenContainerStyle}

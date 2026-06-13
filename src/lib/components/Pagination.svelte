@@ -4,6 +4,7 @@
 	import Icon from './Icon.svelte';
 	import { announceToScreenReader } from '$lib/utils/accessibility';
 	import { t } from '$lib/i18n';
+	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -31,7 +32,7 @@
 		showTotal?: boolean;
 
 		// イベントハンドラー
-		onchange: (pageNum: number) => void;
+		onchange?: BivariantValueHandler<number>;
 	};
 
 	let {
@@ -151,7 +152,7 @@
 	});
 </script>
 
-<div class="pagination" {id}>
+<div class="pagination" {id} data-testid="pagination">
 	{#if showCount && rangeText}
 		<div class="pagination__count">{rangeText}</div>
 	{/if}

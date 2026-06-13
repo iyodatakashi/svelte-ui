@@ -127,6 +127,7 @@
 	/* State Colors */
 	--svelte-ui-success-color: #12b073;
 	--svelte-ui-error-color: #f54d4d;
+	--svelte-ui-error-container-color: transparent;
 	--svelte-ui-danger-color: #f54d4d;
 	--svelte-ui-warning-color: #f57c00;
 	--svelte-ui-info-color: #13a3b4;
@@ -277,6 +278,7 @@
 	--svelte-ui-form-height-lg: 44px;
 	--svelte-ui-form-padding: 0 12px;
 	--svelte-ui-form-padding-left: 12px;
+	--svelte-ui-form-padding-inline: 12px;
 	--svelte-ui-form-icon-offset: 4px;
 	--svelte-ui-form-icon-space: 32px;
 	--svelte-ui-form-icon-space-inline: 32px;
@@ -528,9 +530,11 @@
 
 	/* CheckboxGroup */
 	--svelte-ui-checkbox-group-gap: 8px 24px;
+	--svelte-ui-checkbox-group-min-option-width: auto;
 
 	/* RadioGroup */
 	--svelte-ui-radio-group-gap: 8px 24px;
+	--svelte-ui-radio-group-min-option-width: auto;
 	--svelte-ui-radio-disabled-opacity: var(--svelte-ui-disabled-opacity);
 	--svelte-ui-radio-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-radio-bg-checked: var(--svelte-ui-radio-checked-color);
@@ -581,6 +585,7 @@
 	/* FileUploader */
 	--svelte-ui-file-uploader-border-width: 1px;
 	--svelte-ui-file-uploader-border-style: dashed;
+	--svelte-ui-file-uploader-height: auto;
 	--svelte-ui-file-uploader-bg: var(--svelte-ui-form-bg);
 	--svelte-ui-file-uploader-border-color: var(--svelte-ui-border-color);
 	--svelte-ui-file-uploader-hover-bg: var(--svelte-ui-hover-overlay);

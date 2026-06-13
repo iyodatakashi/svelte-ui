@@ -82,7 +82,8 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const listboxId = $derived(`${id}-listbox`);
+	const fallbackId = `multi-select-${Math.random().toString(36).substring(2, 15)}`;
+	const listboxId = $derived(`${id ?? fallbackId}-listbox`);
 
 	const selectedLabels = $derived(
 		options.filter((o) => value.includes(o.value)).map((o) => o.label)
@@ -293,7 +294,6 @@
 		margin-right: calc(0px - var(--svelte-ui-select-icon-space));
 		width: 32px;
 		height: 32px;
-		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: none;
 	}

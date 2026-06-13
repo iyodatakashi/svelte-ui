@@ -45,10 +45,16 @@ export type FabPosition = 'left' | 'center' | 'right';
 export type ButtonVariant = 'ghost' | 'filled' | 'outlined' | 'glass';
 
 /**
- * Button size type
- * Used by Button component
+ * Common component size type
+ * Used by Button, Checkbox, CheckboxGroup, Radio, RadioGroup, SegmentedControl, Switch
  */
-export type ButtonSize = 'small' | 'medium' | 'large';
+export type ComponentSize = 'small' | 'medium' | 'large';
+
+/**
+ * Button size type
+ * Alias of ComponentSize, kept for backward compatibility
+ */
+export type ButtonSize = ComponentSize;
 
 /**
  * Snackbar type

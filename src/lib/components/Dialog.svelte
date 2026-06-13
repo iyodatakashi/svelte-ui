@@ -153,7 +153,7 @@
 	customStyles={dialogStyles}
 	id={id ? `${id}-modal` : undefined}
 >
-	<div class="dialog {scrollable ? 'dialog--scrollable' : ''}">
+	<div class="dialog {scrollable ? 'dialog--scrollable' : ''}" data-testid="dialog">
 		{#if header || title}
 			<div class="dialog__header">
 				{#if header}

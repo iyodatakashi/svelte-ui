@@ -110,6 +110,7 @@
 	class:image-uploader-preview--adaptive={previewAdaptive}
 	class:image-uploader-preview--plain={previewStyle === 'plain'}
 	style={imageSizeStyle}
+	data-testid="image-uploader-preview"
 >
 	<img
 		src={getImageUrl(file)}

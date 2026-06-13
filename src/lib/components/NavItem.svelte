@@ -38,6 +38,12 @@
 		/** Show chevron icon on parent items. @default true */
 		chevron?: boolean;
 		selectedVariant?: NavItemSelectedVariant;
+		/** Custom CSS color for the item label (underline variant). */
+		textColor?: string;
+		/** Custom CSS color for the selected item label (underline variant). */
+		selectedTextColor?: string;
+		/** Custom CSS color for the selected underline bar (underline variant). */
+		selectedBarColor?: string;
 		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
 		childrenVariant?: ChildrenVariant;
 		/** Inline style applied to this nav item element. */
@@ -75,6 +81,9 @@
 		// スタイル/レイアウト
 		chevron = true,
 		selectedVariant,
+		textColor,
+		selectedTextColor,
+		selectedBarColor,
 		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'accordion' : 'bar',
 		customStyle,
 		customChildrenStyle,
@@ -231,6 +240,9 @@
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+		style:--internal-nav-item-underline-text-color={textColor}
+		style:--internal-nav-item-underline-selected-text-color={selectedTextColor}
+		style:--internal-nav-item-underline-bar-color={selectedBarColor}
 		style={customStyle}
 		aria-disabled="true"
 		tabindex="-1"
@@ -260,6 +272,9 @@
 	<div
 		class="nav-item__group nav-item__group--{variant}"
 		class:nav-item__group--open={childrenVariant === 'expanded' || isChildrenVisible}
+		style:--internal-nav-item-underline-text-color={textColor}
+		style:--internal-nav-item-underline-selected-text-color={selectedTextColor}
+		style:--internal-nav-item-underline-bar-color={selectedBarColor}
 	>
 		<a
 			href={resolvedParentHref}
@@ -402,6 +417,9 @@
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
+		style:--internal-nav-item-underline-text-color={textColor}
+		style:--internal-nav-item-underline-selected-text-color={selectedTextColor}
+		style:--internal-nav-item-underline-bar-color={selectedBarColor}
 		style={customStyle}
 		aria-current={isSelected ? 'page' : undefined}
 		tabindex={0}
@@ -526,7 +544,10 @@
 		padding: var(--svelte-ui-nav-item-padding-y) var(--svelte-ui-nav-item-padding-x);
 		justify-content: center;
 		border-radius: 0;
-		color: var(--svelte-ui-nav-item-underline-text-color);
+		color: var(
+			--internal-nav-item-underline-text-color,
+			var(--svelte-ui-nav-item-underline-text-color)
+		);
 	}
 
 	.nav-item--horizontal::after {
@@ -543,7 +564,10 @@
 		}
 
 		.nav-item--horizontal.nav-item--style-underline:hover {
-			color: var(--svelte-ui-nav-item-underline-selected-text-color);
+			color: var(
+				--internal-nav-item-underline-selected-text-color,
+				var(--svelte-ui-nav-item-underline-selected-text-color)
+			);
 		}
 
 		.nav-item--horizontal.nav-item--style-underline:hover::before {
@@ -574,7 +598,10 @@
 
 	// underline: 選択時のテキストカラー変更
 	.nav-item--horizontal.nav-item--style-underline.nav-item--selected {
-		color: var(--svelte-ui-nav-item-underline-selected-text-color);
+		color: var(
+			--internal-nav-item-underline-selected-text-color,
+			var(--svelte-ui-nav-item-underline-selected-text-color)
+		);
 	}
 
 	// underline: 下線バーの基本設定（常時 opacity: 0、選択・hover で表示）
@@ -591,7 +618,10 @@
 				var(--svelte-ui-nav-item-underline-bar-offset)
 		);
 		height: var(--svelte-ui-nav-item-underline-bar-height);
-		background-color: var(--svelte-ui-nav-item-underline-bar-color);
+		background-color: var(
+			--internal-nav-item-underline-bar-color,
+			var(--svelte-ui-nav-item-underline-bar-color)
+		);
 		border-radius: var(--svelte-ui-nav-item-underline-bar-radius);
 		opacity: 0;
 		transition-property: opacity;

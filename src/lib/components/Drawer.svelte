@@ -167,7 +167,7 @@
 	customStyles={drawerStyles()}
 	id={id ? `${id}-modal` : undefined}
 >
-	<div class="drawer drawer--{position} {scrollable ? 'drawer--scrollable' : ''}">
+	<div class="drawer drawer--{position} {scrollable ? 'drawer--scrollable' : ''}" data-testid="drawer">
 		{#if header || title}
 			<div class="drawer__header">
 				{#if header}

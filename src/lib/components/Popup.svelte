@@ -551,6 +551,7 @@
 	aria-describedby={ariaDescribedby}
 	aria-modal={undefined}
 	id={popupId}
+	data-testid="popup"
 	use:clickOutside={() => {
 		close('outside');
 	}}

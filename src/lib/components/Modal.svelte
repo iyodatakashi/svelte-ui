@@ -26,6 +26,9 @@
 		/** Internal label used for accessibility announcements. @default 'Modal' */
 		componentType?: string;
 
+		// HTML属性
+		id?: string;
+
 		// スタイル/レイアウト
 		customClass?: string;
 		customStyles?: string;
@@ -44,9 +47,6 @@
 		ariaLabel?: string;
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
-
-		// HTML属性
-		id?: string;
 	};
 
 	let {
@@ -55,6 +55,9 @@
 
 		// 基本プロパティ
 		componentType = 'Modal',
+
+		// HTML属性
+		id,
 
 		// スタイル/レイアウト
 		customClass = '',
@@ -69,10 +72,7 @@
 		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaLabelledby,
-		ariaDescribedby,
-
-		// HTML属性
-		id
+		ariaDescribedby
 	}: ModalProps = $props();
 
 	let dialogRef: HTMLDialogElement;

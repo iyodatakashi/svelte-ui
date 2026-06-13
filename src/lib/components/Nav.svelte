@@ -38,6 +38,12 @@
 		// スタイル/レイアウト
 		/** Visual style for the selected item. */
 		selectedVariant?: NavItemSelectedVariant;
+		/** Custom CSS color for item labels (underline variant). */
+		textColor?: string;
+		/** Custom CSS color for the selected item label (underline variant). */
+		selectedTextColor?: string;
+		/** Custom CSS color for the selected underline bar (underline variant). */
+		selectedBarColor?: string;
 		gap?: number | string;
 		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
 		childrenVariant?: ChildrenVariant;
@@ -77,6 +83,9 @@
 
 		// スタイル/レイアウト
 		selectedVariant,
+		textColor,
+		selectedTextColor,
+		selectedBarColor,
 		gap,
 		childrenVariant = variant === 'mobile'
 			? 'bottom-sheet'
@@ -290,6 +299,9 @@
 				{iconOpticalSize}
 				{iconVariant}
 				{selectedVariant}
+				{textColor}
+				{selectedTextColor}
+				{selectedBarColor}
 				{childrenVariant}
 				{chevron}
 				customStyle={customItemStyle}
@@ -325,6 +337,9 @@
 				{iconOpticalSize}
 				{iconVariant}
 				{selectedVariant}
+				{textColor}
+				{selectedTextColor}
+				{selectedBarColor}
 				customStyle={customChildrenItemStyle}
 				isChild={true}
 				{resolvedCurrentPath}

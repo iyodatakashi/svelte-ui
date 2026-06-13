@@ -8,7 +8,8 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler
+		PointerHandler,
+		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
 
 	// =========================================================================
@@ -75,8 +76,8 @@
 		onpointercancel?: PointerHandler;
 
 		// 入力イベント
-		onchange?: (value: number) => void;
-		oninput?: (value: number) => void;
+		onchange?: BivariantValueHandler<number>;
+		oninput?: BivariantValueHandler<number>;
 
 		// その他
 		[key: string]: any;

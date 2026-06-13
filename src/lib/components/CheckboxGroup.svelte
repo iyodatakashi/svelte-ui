@@ -5,6 +5,7 @@
 	import Checkbox from './Checkbox.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
+	import type { ComponentSize } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -24,7 +25,7 @@
 		wrap?: boolean;
 		minOptionWidth?: string | number;
 		/** @default 'medium' */
-		size?: 'small' | 'medium' | 'large';
+		size?: ComponentSize;
 
 		// 状態/動作
 		disabled?: boolean;
@@ -84,6 +85,7 @@
 	style:--internal-checkbox-group-gap={gapStyle}
 	style:--internal-checkbox-group-wrap={wrap ? 'wrap' : 'none'}
 	style:--internal-checkbox-group-min-option-width={minOptionWidthStyle}
+	data-testid="checkbox-group"
 >
 	{#each options as option (option.value)}
 		<li class="checkbox-group__option">
@@ -104,12 +106,9 @@
 <style>
 	.checkbox-group {
 		display: flex;
-		flex-direction: var(
-			--internal-checkbox-group-flex-direction,
-			var(--svelte-ui-checkbox-group-flex-direction)
-		);
+		flex-direction: var(--internal-checkbox-group-flex-direction);
 		gap: var(--internal-checkbox-group-gap, var(--svelte-ui-checkbox-group-gap));
-		flex-wrap: var(--internal-checkbox-group-wrap, var(--svelte-ui-checkbox-group-wrap));
+		flex-wrap: var(--internal-checkbox-group-wrap);
 	}
 
 	.checkbox-group__option {

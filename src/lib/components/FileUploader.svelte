@@ -383,14 +383,8 @@
 		align-items: center;
 		gap: 16px;
 		position: relative;
-		width: var(
-			--internal-file-uploader-width,
-			var(--svelte-ui-file-uploader-width, 100%)
-		);
-		height: var(
-			--internal-file-uploader-height,
-			var(--svelte-ui-file-uploader-height, auto)
-		);
+		width: var(--internal-file-uploader-width);
+		height: var(--internal-file-uploader-height, var(--svelte-ui-file-uploader-height));
 		min-height: 100px;
 		padding: 16px;
 		background-color: var(--svelte-ui-file-uploader-bg);

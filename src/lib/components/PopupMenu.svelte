@@ -250,6 +250,7 @@
 		aria-activedescendant={activeIndex >= 0 ? getMenuItemId(activeIndex) : undefined}
 		tabindex="-1"
 		{id}
+		data-testid="popup-menu"
 		onclick={cancelParentEvent}
 		onkeydown={handleKeyDown}
 	>

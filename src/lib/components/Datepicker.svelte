@@ -599,7 +599,8 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
-	const calendarId = $derived(`${id}-calendar`);
+	const fallbackId = `datepicker-${Math.random().toString(36).substring(2, 15)}`;
+	const calendarId = $derived(`${id ?? fallbackId}-calendar`);
 	const currentLocaleConfig = $derived(localeConfig[resolvedLocale]);
 	const finalFormat = $derived(
 		format ||

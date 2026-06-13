@@ -9,8 +9,10 @@
 		KeyboardHandler,
 		MouseHandler,
 		TouchHandler,
-		PointerHandler
+		PointerHandler,
+		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
+	import type { ComponentSize } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -28,7 +30,7 @@
 
 		// スタイル/レイアウト
 		/** @default 'medium' */
-		size?: 'small' | 'medium' | 'large';
+		size?: ComponentSize;
 		fullWidth?: boolean;
 		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
@@ -51,7 +53,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: (value: string) => void;
+		onchange?: BivariantValueHandler<string>;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;

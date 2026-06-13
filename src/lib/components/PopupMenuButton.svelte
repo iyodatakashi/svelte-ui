@@ -47,6 +47,9 @@
 		/** Stops click event propagation to parent elements. @default false */
 		cancelParentClick?: boolean;
 
+		// ARIA/アクセシビリティ
+		ariaLabel?: string;
+
 		// フォーカスイベント
 		onfocus?: FocusHandler;
 		onblur?: FocusHandler;
@@ -79,9 +82,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// ARIA/アクセシビリティ
-		ariaLabel?: string;
 	};
 
 	let {
@@ -105,6 +105,9 @@
 		disabled = false,
 		mobileFullscreen = true,
 		cancelParentClick = false,
+
+		// ARIA/アクセシビリティ
+		ariaLabel,
 
 		// フォーカスイベント
 		onfocus = () => {}, // No params for type inference
@@ -138,9 +141,6 @@
 		onpointerleave = () => {}, // No params for type inference
 		onpointermove = () => {}, // No params for type inference
 		onpointercancel = () => {}, // No params for type inference
-
-		// ARIA/アクセシビリティ
-		ariaLabel
 	}: PopupMenuButtonProps = $props();
 
 	let anchorRef: HTMLElement | undefined = $state();

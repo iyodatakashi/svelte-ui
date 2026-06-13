@@ -47,7 +47,7 @@
 
 <div
 	class="loading-spinner"
-	class:spinner--no-motion={reducedMotion}
+	class:loading-spinner--no-motion={reducedMotion}
 	style:--internal-loading-spinner-grow-duration="{growDuration}s"
 	style:--internal-loading-spinner-rotate-duration="{rotateDuration}s"
 	style:--internal-loading-spinner-size="{size}px"
@@ -114,8 +114,8 @@
 	}
 
 	/* Reduced motion */
-	.spinner--no-motion svg,
-	.spinner--no-motion circle {
+	.loading-spinner--no-motion svg,
+	.loading-spinner--no-motion circle {
 		animation-duration: 0.01s;
 	}
 

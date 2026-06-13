@@ -400,7 +400,6 @@ select--focus-{focusStyle}"
 		width: 32px;
 		height: 32px;
 		transform: translateY(-50%);
-		font-size: var(--svelte-ui-select-dropdown-icon-size);
 		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: none;
 	}
