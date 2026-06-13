@@ -24,8 +24,8 @@ test('FileUploader - カスタムサイズ', async () => {
 	const uploader = container.querySelector('[data-testid="file-uploader"]') as HTMLElement;
 	// CSS変数はgetComputedStyleで確認
 	const computedStyle = getComputedStyle(uploader);
-	expect(computedStyle.getPropertyValue('--svelte-ui-file-uploader-width').trim()).toBe('300px');
-	expect(computedStyle.getPropertyValue('--svelte-ui-file-uploader-height').trim()).toBe('200px');
+	expect(computedStyle.getPropertyValue('--internal-file-uploader-width').trim()).toBe('300px');
+	expect(computedStyle.getPropertyValue('--internal-file-uploader-height').trim()).toBe('200px');
 });
 
 test('FileUploader - 角丸', async () => {
@@ -146,7 +146,7 @@ test('FileUploader - CSS変数', async () => {
 
 	// CSS変数の存在確認
 	const computedStyle = getComputedStyle(uploader!);
-	expect(computedStyle.getPropertyValue('--svelte-ui-file-uploader-width')).toBeTruthy();
+	expect(computedStyle.getPropertyValue('--internal-file-uploader-width')).toBeTruthy();
 });
 
 // =========================================================================
@@ -162,7 +162,7 @@ test('FileUploader width property changes reactively', async () => {
 	const uploader = screen.getByTestId('file-uploader');
 	await expect
 		.element(uploader)
-		.toHaveAttribute('style', expect.stringContaining('--svelte-ui-file-uploader-width: 200px'));
+		.toHaveAttribute('style', expect.stringContaining('--internal-file-uploader-width: 200px'));
 
 	// プロパティを更新
 	screen.rerender({
@@ -172,5 +172,5 @@ test('FileUploader width property changes reactively', async () => {
 
 	await expect
 		.element(uploader)
-		.toHaveAttribute('style', expect.stringContaining('--svelte-ui-file-uploader-width: 300px'));
+		.toHaveAttribute('style', expect.stringContaining('--internal-file-uploader-width: 300px'));
 });
