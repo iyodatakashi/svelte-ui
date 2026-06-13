@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.43] - 2026-06-13
+
+### Added
+
+- **SkeletonButton**, **SkeletonHeading**, **SkeletonMedia**: These skeleton components are now exported from the library.
+- **ComponentSize**: New shared type exported from the library.
+- **Input**, **Textarea**, **Checkbox**, **Radio**, **Switch**: New `ariaLabel` prop for accessible labeling.
+
+### Changed
+
+- The `./styles` package entry now points to a pre-compiled CSS file (`import.css`) instead of the SCSS source, removing the need for a Sass preprocessor when importing library styles.
+
+### Fixed
+
+- **Combobox**, **MultiSelect**, **Datepicker**: No longer output `undefined` as element IDs when the `id` prop is omitted.
+
 ## [0.0.42] - 2026-06-03
 
 ### Fixed
