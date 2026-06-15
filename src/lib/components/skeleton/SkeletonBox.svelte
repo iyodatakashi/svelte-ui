@@ -73,7 +73,7 @@
 
 		&--animated {
 			.skeleton-box__content {
-				animation: skeleton-pulse 4s infinite;
+				animation: skeleton-pulse 3s infinite;
 			}
 		}
 	}
@@ -91,7 +91,7 @@
 			animation-timing-function: ease-in-out;
 		}
 		50% {
-			opacity: 0.5;
+			opacity: 0.3;
 			animation-timing-function: ease-in-out;
 		}
 		100% {
