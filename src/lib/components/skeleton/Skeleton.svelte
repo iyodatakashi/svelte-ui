@@ -170,14 +170,7 @@
 							{:else if patternConfig.type === 'button'}
 								{@const { width, height, radius, align, customStyle } = patternConfig}
 								<div class="skeleton__button">
-									<SkeletonButton
-										{width}
-										{height}
-										{radius}
-										{align}
-										{customStyle}
-										{animated}
-									/>
+									<SkeletonButton {width} {height} {radius} {align} {customStyle} {animated} />
 								</div>
 							{/if}
 						{/each}
@@ -193,7 +186,6 @@
 		display: block;
 		width: 100%;
 		max-width: 100%;
-		overflow-x: hidden;
 	}
 
 	.skeleton__items {
