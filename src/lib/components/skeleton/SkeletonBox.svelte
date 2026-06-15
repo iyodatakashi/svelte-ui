@@ -61,28 +61,16 @@
 		: ''} {finalAspectRatioStyle
 		? `aspect-ratio: ${finalAspectRatioStyle};`
 		: ''} border-radius: {radiusStyle}; {customStyle}"
->
-	<div class="skeleton-box__content"></div>
-</div>
+></div>
 
 <style lang="scss">
 	.skeleton-box {
 		display: block;
-		position: relative;
-		overflow: hidden;
+		background-color: var(--svelte-ui-skeleton-color);
 
 		&--animated {
-			.skeleton-box__content {
-				animation: skeleton-pulse 3s infinite;
-			}
+			animation: skeleton-pulse 3s infinite;
 		}
-	}
-
-	.skeleton-box__content {
-		width: 100%;
-		height: 100%;
-		background-color: var(--svelte-ui-skeleton-color);
-		display: block;
 	}
 
 	@keyframes skeleton-pulse {
