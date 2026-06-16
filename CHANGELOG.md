@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.45] - 2026-06-16
+
+### Fixed
+
+- **Button**, **Switch**: Fixed vertical misalignment when placed inline alongside other form elements (e.g. `Input`, `Select`). Both components now use `vertical-align: top`, consistent with the rest of the library.
+
 ## [0.0.44] - 2026-06-15
 
 ### Changed
