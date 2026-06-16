@@ -347,6 +347,7 @@
 
 	.switch {
 		display: inline-flex;
+		vertical-align: top;
 		align-items: flex-start;
 		width: fit-content;
 		min-height: var(--svelte-ui-switch-min-height);

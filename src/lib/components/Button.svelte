@@ -398,6 +398,7 @@
 <style>
 	.button {
 		display: inline-flex;
+		vertical-align: top;
 		justify-content: center;
 		align-items: center;
 		gap: 4px;
