@@ -31,7 +31,10 @@
 			"import": "./dist/index.js",
 			"require": "./dist/index.js"
 		},
-		"./styles": "./dist/assets/styles/import.css",
+		"./styles": {
+			"types": "./dist/assets/styles/import.css.d.ts",
+			"default": "./dist/assets/styles/import.css"
+		},
 		"./styles/*": "./dist/assets/styles/*"
 	},
 	"files": [
