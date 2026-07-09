@@ -487,7 +487,9 @@
 	const displayValue = $derived.by(() => {
 		const normalizedValue = value ?? '';
 		if (normalizedValue !== '') {
-			return escapeHtml(normalizedValue);
+			const html = escapeHtml(normalizedValue);
+			// 末尾が改行のとき、pre-wrap では最終行の高さが確保されず textarea と1行分ずれるためダミー空白を足す
+			return normalizedValue.endsWith('\n') ? html + '&nbsp;' : html;
 		}
 		// 値が空のとき: placeholder があればその幅・高さを確保して表示、なければ inline 時のみ &nbsp;
 		return placeholder ? escapeHtml(placeholder) : inline ? '&nbsp;' : '';

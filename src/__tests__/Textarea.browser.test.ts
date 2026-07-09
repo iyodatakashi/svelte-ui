@@ -100,6 +100,24 @@ test('clearable Textarea shows clear button and clears value', async () => {
 	await expect.element(textarea).toHaveValue('');
 });
 
+// autoResize時、末尾が改行のとき pre-wrap の display-text は最終行の高さを描画しない一方で
+// textarea はキャレット用に1行分高くなる。この差でスクロールバーが出るのを防ぐため、
+// display-text の末尾にダミー空白(&nbsp;)を足して高さを揃えている。この処理を削除すると失敗する。
+test('display-text reserves last line height when value ends with a newline', async () => {
+	const screen = render(Textarea, { value: 'Hello\n' });
+	const displayText = screen.container.querySelector('.textarea__display-text');
+	expect(displayText).toBeTruthy();
+	// 末尾改行の後にダミー空白(non-breaking space)が入っていること
+	expect(displayText?.textContent?.endsWith('\u00a0')).toBe(true);
+});
+
+test('display-text has no trailing dummy space when value does not end with a newline', async () => {
+	const screen = render(Textarea, { value: 'Hello' });
+	const displayText = screen.container.querySelector('.textarea__display-text');
+	expect(displayText).toBeTruthy();
+	expect(displayText?.textContent).toBe('Hello');
+});
+
 test('form submission works correctly', async () => {
 	const screen = render(Textarea, { name: 'message', value: 'Test message' });
 	const textarea = screen.getByRole('textbox');
