@@ -886,6 +886,7 @@
 			padding-top: inherit;
 			padding-bottom: inherit;
 			padding-left: inherit;
+			padding-right: inherit;
 		}
 
 		.textarea__wrapper,
