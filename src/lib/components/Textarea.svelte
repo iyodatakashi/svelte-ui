@@ -704,6 +704,8 @@
 		overflow-y: auto;
 		overflow-x: hidden;
 		max-height: 100%;
+		/* textarea の UA デフォルト(overflow-wrap: break-word)に合わせ、長い連続文字列の折り返し位置を一致させる */
+		overflow-wrap: break-word;
 
 		&::before {
 			content: '';

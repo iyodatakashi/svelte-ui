@@ -118,6 +118,20 @@ test('display-text has no trailing dummy space when value does not end with a ne
 	expect(displayText?.textContent).toBe('Hello');
 });
 
+// textarea は UA デフォルトで overflow-wrap: break-word。display-text/link-text をこれに揃えないと、
+// 長い連続文字列(URL等)が行末に来たとき折り返し位置が textarea と1文字ぶんズレる。この処理を削除すると失敗する。
+test('display-text wraps long unbreakable tokens the same as the textarea', async () => {
+	const value = 'aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggg';
+	const screen = render(Textarea, { value, width: 200, maxHeight: 400 });
+	await new Promise((resolve) => setTimeout(resolve, 100));
+
+	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
+	const textarea = screen.container.querySelector('textarea') as HTMLTextAreaElement;
+
+	// 折り返し(=行数=scrollHeight)が textarea と一致すること
+	expect(displayText.scrollHeight).toBe(textarea.scrollHeight);
+});
+
 test('form submission works correctly', async () => {
 	const screen = render(Textarea, { name: 'message', value: 'Test message' });
 	const textarea = screen.getByRole('textbox');
