@@ -283,6 +283,30 @@ test('垂直方向でもコネクターが次のマーカーへ届く（自身�
 	});
 });
 
+// 2.3 表示中リングが overflow で切れない（水平リストは overflow-y も auto になるため上下に余白が要る）
+test('表示中マーカーの外周リングが水平リストの clip 領域で切れない', () => {
+	const items: StepItem[] = [
+		{ label: 'A', value: 'a' },
+		{ label: 'B', value: 'b' },
+		{ label: 'C', value: 'c' }
+	];
+	const screen = render(StepNav, { items, value: 'b', progress: 1 });
+	const root = screen.container.querySelector('.step-nav') as HTMLElement;
+	root.style.setProperty('--svelte-ui-step-nav-marker-size', '32px');
+	root.style.setProperty('--svelte-ui-step-nav-ring-offset', '2px');
+	root.style.setProperty('--svelte-ui-step-nav-ring-width', '2px');
+	flushSync();
+
+	const list = screen.container.querySelector('.step-nav__list') as HTMLElement;
+	const marker = screen.container.querySelector(
+		'.step-nav__step--viewing .step-nav__marker'
+	) as HTMLElement;
+	const listTop = list.getBoundingClientRect().top;
+	const ringTop = marker.getBoundingClientRect().top - 4; // ring-offset + ring-width = 4px
+	// リング上端が clip 領域（list 上端）の内側にある
+	expect(ringTop).toBeGreaterThanOrEqual(listTop - 0.5);
+});
+
 // =========================================================================
 // 4.2 キーボード・URL 連動
 // =========================================================================

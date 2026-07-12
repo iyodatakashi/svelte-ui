@@ -153,7 +153,9 @@
 						item.href,
 						item as unknown as MenuItem,
 						pathPrefix,
-						customPathMatcher as ((currentPath: string, itemHref: string, item: MenuItem) => boolean) | undefined
+						customPathMatcher as
+							| ((currentPath: string, itemHref: string, item: MenuItem) => boolean)
+							| undefined
 					)
 			);
 		}
@@ -195,9 +197,12 @@
 
 	const isStepDisabled = (item: StepItem): boolean => disabled || item.disabled === true;
 
-	// インページ方式でクリック遷移が有効なステップか
-	const isStepButton = (item: StepItem): boolean =>
-		!isLinkMode && clickable && !isStepDisabled(item);
+	// 対話的なステップか（URL方式はリンク、インページ方式かつ clickable はボタン）。無効なら常に非対話。
+	const isStepInteractive = (item: StepItem): boolean =>
+		!isStepDisabled(item) && (isLinkMode || clickable);
+
+	// インページ方式でクリック遷移が有効なステップか（ボタン描画・クリック処理の判定）
+	const isStepButton = (item: StepItem): boolean => isStepInteractive(item) && !isLinkMode;
 
 	const stepClasses = (item: StepItem, status: StepStatus, isViewing: boolean): string =>
 		[
@@ -322,67 +327,59 @@
 		<!-- キーボード補助はランドマークを汚さないよう presentation ラッパーで受ける -->
 		<div style="display: contents" role="presentation" onkeydown={handleKeyDown}>
 			<ol class="step-nav__list" role="list">
-			{#each items as item, index (index)}
-				{@const status = getStatus(index)}
-				{@const isViewing = index === activeIndex}
-				<li class="step-nav__item" role="listitem">
-					{#if isLinkMode}
-						{#if isStepDisabled(item)}
+				{#each items as item, index (index)}
+					{@const status = getStatus(index)}
+					{@const isViewing = index === activeIndex}
+					<li class="step-nav__item" role="listitem">
+						{#if !isStepInteractive(item)}
+							<!-- 非対話（URL/インページを問わず共通）: 表示のみ。無効ステップは aria-disabled を付与 -->
 							<span
 								class={stepClasses(item, status, isViewing)}
 								aria-current={isViewing ? 'step' : undefined}
 								aria-invalid={item.error ? 'true' : undefined}
-								aria-disabled="true"
+								aria-disabled={isStepDisabled(item) ? 'true' : undefined}
 								aria-label={item.ariaLabel ?? undefined}
 							>
 								{@render stepInner(item, index, status)}
 							</span>
-						{:else}
+						{:else if isLinkMode}
+							<!-- 対話 × URL 方式: リンクとして描画し標準遷移に委ねる -->
 							<a
 								href={item.href}
 								class={stepClasses(item, status, isViewing)}
 								aria-current={isViewing ? 'step' : undefined}
 								aria-label={item.ariaLabel ?? undefined}
 								data-step-nav-interactive
-								onfocus={onfocus}
-								onblur={onblur}
+								{onfocus}
+								{onblur}
 							>
 								{@render stepInner(item, index, status)}
 							</a>
+						{:else}
+							<!-- 対話 × インページ方式: ボタンとして表示中を更新 -->
+							<button
+								type="button"
+								class={stepClasses(item, status, isViewing)}
+								aria-current={isViewing ? 'step' : undefined}
+								aria-label={item.ariaLabel ?? undefined}
+								data-step-nav-interactive
+								onclick={(event) => handleStepClick(item, index, event)}
+								{onfocus}
+								{onblur}
+							>
+								{@render stepInner(item, index, status)}
+							</button>
 						{/if}
-					{:else if isStepButton(item)}
-						<button
-							type="button"
-							class={stepClasses(item, status, isViewing)}
-							aria-current={isViewing ? 'step' : undefined}
-							aria-label={item.ariaLabel ?? undefined}
-							data-step-nav-interactive
-							onclick={(event) => handleStepClick(item, index, event)}
-							onfocus={onfocus}
-							onblur={onblur}
-						>
-							{@render stepInner(item, index, status)}
-						</button>
-					{:else}
-						<span
-							class={stepClasses(item, status, isViewing)}
-							aria-current={isViewing ? 'step' : undefined}
-							aria-invalid={item.error ? 'true' : undefined}
-							aria-label={item.ariaLabel ?? undefined}
-						>
-							{@render stepInner(item, index, status)}
-						</span>
-					{/if}
 
-					{#if index < items.length - 1}
-						<span
-							class="step-nav__connector"
-							class:step-nav__connector--completed={index < progressIndex}
-							aria-hidden="true"
-						></span>
-					{/if}
-				</li>
-			{/each}
+						{#if index < items.length - 1}
+							<span
+								class="step-nav__connector"
+								class:step-nav__connector--completed={index < progressIndex}
+								aria-hidden="true"
+							></span>
+						{/if}
+					</li>
+				{/each}
 			</ol>
 		</div>
 	</nav>
@@ -390,22 +387,21 @@
 
 <style lang="scss">
 	.step-nav {
-		--sn-accent: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
-		--sn-marker-size: var(--svelte-ui-step-nav-marker-size);
-		--sn-font-size: var(--svelte-ui-step-nav-font-size);
+		--internal-step-nav-marker-size: var(--svelte-ui-step-nav-marker-size);
+		--internal-step-nav-font-size: var(--svelte-ui-step-nav-font-size);
 		display: block;
 		box-sizing: border-box;
 		max-width: 100%;
 	}
 
 	.step-nav--small {
-		--sn-marker-size: var(--svelte-ui-step-nav-marker-size-sm);
-		--sn-font-size: var(--svelte-ui-step-nav-font-size-sm);
+		--internal-step-nav-marker-size: var(--svelte-ui-step-nav-marker-size-sm);
+		--internal-step-nav-font-size: var(--svelte-ui-step-nav-font-size-sm);
 	}
 
 	.step-nav--large {
-		--sn-marker-size: var(--svelte-ui-step-nav-marker-size-lg);
-		--sn-font-size: var(--svelte-ui-step-nav-font-size-lg);
+		--internal-step-nav-marker-size: var(--svelte-ui-step-nav-marker-size-lg);
+		--internal-step-nav-font-size: var(--svelte-ui-step-nav-font-size-lg);
 	}
 
 	.step-nav__list {
@@ -432,7 +428,7 @@
 		padding: 0;
 		margin: 0;
 		font-family: inherit;
-		font-size: var(--sn-font-size);
+		font-size: var(--internal-step-nav-font-size);
 		color: var(--svelte-ui-step-nav-label-color);
 		text-align: left;
 		text-decoration: none;
@@ -463,10 +459,10 @@
 		align-items: center;
 		justify-content: center;
 		flex: 0 0 auto;
-		width: var(--sn-marker-size);
-		height: var(--sn-marker-size);
+		width: var(--internal-step-nav-marker-size);
+		height: var(--internal-step-nav-marker-size);
 		border-radius: 50%;
-		font-size: calc(var(--sn-font-size) * 0.95);
+		font-size: calc(var(--internal-step-nav-font-size) * 0.95);
 		font-weight: 600;
 		line-height: 1;
 		box-sizing: border-box;
@@ -488,15 +484,17 @@
 	/* current: primary アウトライン + 番号 */
 	.step-nav__step--current .step-nav__marker {
 		background: var(--svelte-ui-surface-color);
-		color: var(--sn-accent);
-		border: var(--svelte-ui-step-nav-marker-border-width) solid var(--sn-accent);
+		color: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
+		border: var(--svelte-ui-step-nav-marker-border-width) solid
+			var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 	}
 
 	/* completed: primary 塗り + check */
 	.step-nav__step--completed .step-nav__marker {
-		background: var(--sn-accent);
+		background: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 		color: var(--svelte-ui-step-nav-marker-text-color);
-		border: var(--svelte-ui-step-nav-marker-border-width) solid var(--sn-accent);
+		border: var(--svelte-ui-step-nav-marker-border-width) solid
+			var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 	}
 
 	/* error: error 色 + error アイコン（進捗軸を上書き） */
@@ -509,7 +507,8 @@
 
 	/* 表示中: 外周リング（フォーカス表示とは別レイヤー・別色） */
 	.step-nav__step--viewing .step-nav__marker {
-		box-shadow: 0 0 0 var(--svelte-ui-step-nav-ring-offset) var(--svelte-ui-surface-color),
+		box-shadow:
+			0 0 0 var(--svelte-ui-step-nav-ring-offset) var(--svelte-ui-surface-color),
 			0 0 0 calc(var(--svelte-ui-step-nav-ring-offset) + var(--svelte-ui-step-nav-ring-width))
 				var(--svelte-ui-step-nav-ring-color);
 	}
@@ -559,13 +558,19 @@
 		flex-direction: row;
 		overflow-x: auto;
 		overscroll-behavior: contain;
+		/* overflow-x を指定すると overflow-y も auto に計算され、マーカー上端の
+		   外周リング／フォーカス表示が切れる。上下に余白を確保して回避する。 */
+		padding-block: max(
+			calc(var(--svelte-ui-step-nav-ring-offset) + var(--svelte-ui-step-nav-ring-width)),
+			calc(var(--svelte-ui-focus-outline-offset-outer, 2px) + 2px)
+		);
 	}
 
 	.step-nav--horizontal .step-nav__item {
 		/* 等幅カラムにしてマーカー中心を等間隔に揃える（コネクターの整列に必須）。
 		   min-width をフロアにして、ステップが多いときは横スクロールで収める（Req 5.4）。 */
 		flex: 1 1 0;
-		min-width: calc(var(--sn-marker-size) * 2.5);
+		min-width: calc(var(--internal-step-nav-marker-size) * 2.5);
 		flex-direction: column;
 		align-items: center;
 		text-align: center;
@@ -584,10 +589,10 @@
 
 	/* 各ステップの右側に、次のマーカーへ向けてコネクターを描画（等幅前提で 100% 幅が隣の中心に一致） */
 	.step-nav--horizontal .step-nav__connector {
-		top: calc(var(--sn-marker-size) / 2);
+		top: calc(var(--internal-step-nav-marker-size) / 2);
 		transform: translateY(-50%);
-		left: calc(50% + var(--sn-marker-size) / 2);
-		width: calc(100% - var(--sn-marker-size));
+		left: calc(50% + var(--internal-step-nav-marker-size) / 2);
+		width: calc(100% - var(--internal-step-nav-marker-size));
 		height: var(--svelte-ui-step-nav-connector-thickness);
 	}
 
@@ -610,10 +615,10 @@
 	/* 各ステップの下側に、次のマーカーへ向けてコネクターを描画。
 	   縦 padding（step-gap）ぶんマーカーが下がっているので、開始位置に加味する（自身の高さ基準で可変高さでも整合）。 */
 	.step-nav--vertical .step-nav__connector {
-		left: calc(var(--sn-marker-size) / 2);
+		left: calc(var(--internal-step-nav-marker-size) / 2);
 		transform: translateX(-50%);
-		top: calc(var(--sn-marker-size) + var(--svelte-ui-step-nav-step-gap));
-		height: calc(100% - var(--sn-marker-size));
+		top: calc(var(--internal-step-nav-marker-size) + var(--svelte-ui-step-nav-step-gap));
+		height: calc(100% - var(--internal-step-nav-marker-size));
 		width: var(--svelte-ui-step-nav-connector-thickness);
 	}
 
