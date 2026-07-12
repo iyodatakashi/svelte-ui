@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.52] - 2026-07-13
+
+### Added
+
+- **StepNav**: `progress` now also accepts an item's unique key (its `value`, or the index string when `value` is omitted) in addition to a numeric index. This lets you track the furthest-reached step by a stable key rather than a positional index, and works the same way in both in-page and URL modes.
+- **StepNav**, **Nav**, **Tab**: The items prop now accepts a common `items` alias in addition to the component-specific name (`stepItems` / `navItems` / `tabItems`). The specific name takes precedence when both are provided.
+
 ## [0.0.51] - 2026-07-13
 
 ### Changed
