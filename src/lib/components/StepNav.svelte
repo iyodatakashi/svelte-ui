@@ -181,7 +181,14 @@
 	);
 
 	const rootStyle = $derived(
-		[color ? `--internal-step-nav-accent:${color}` : '', customStyle].filter(Boolean).join('; ')
+		[
+			// color 指定時は強調色を上書き。リングは半透明の色なので同率で合成した値も注入する。
+			color ? `--internal-step-nav-accent:${color}` : '',
+			color ? `--internal-step-nav-ring-color:color-mix(in srgb, ${color} 40%, transparent)` : '',
+			customStyle
+		]
+			.filter(Boolean)
+			.join('; ')
 	);
 
 	// =========================================================================
@@ -463,7 +470,7 @@
 		height: var(--internal-step-nav-marker-size);
 		border-radius: 50%;
 		font-size: calc(var(--internal-step-nav-font-size) * 0.95);
-		font-weight: 600;
+		font-weight: bold;
 		line-height: 1;
 		box-sizing: border-box;
 		position: relative;
@@ -510,7 +517,7 @@
 		box-shadow:
 			0 0 0 var(--svelte-ui-step-nav-ring-offset) var(--svelte-ui-surface-color),
 			0 0 0 calc(var(--svelte-ui-step-nav-ring-offset) + var(--svelte-ui-step-nav-ring-width))
-				var(--svelte-ui-step-nav-ring-color);
+				var(--internal-step-nav-ring-color, var(--svelte-ui-step-nav-ring-color));
 	}
 
 	/* ---- ラベル/説明 ---- */
@@ -525,12 +532,15 @@
 		white-space: nowrap;
 	}
 
-	.step-nav__step--viewing .step-nav__label {
-		font-weight: 700;
-	}
-
+	/* ラベル色の優先順位（同一詳細度のためソース順で解決）: upcoming < viewing < error */
 	.step-nav__step--upcoming .step-nav__label {
 		color: var(--svelte-ui-step-nav-upcoming-text-color);
+	}
+
+	/* 表示中: 強調色 + 太字（Nav の選択中＝primary 文字色と同じ規則。color prop で上書き可） */
+	.step-nav__step--viewing .step-nav__label {
+		color: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
+		font-weight: bold;
 	}
 
 	.step-nav__step--error .step-nav__label {
@@ -550,7 +560,7 @@
 	}
 
 	.step-nav__connector--completed {
-		background: var(--svelte-ui-step-nav-connector-completed-color);
+		background: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-connector-completed-color));
 	}
 
 	/* ======================= 水平レイアウト ======================= */
