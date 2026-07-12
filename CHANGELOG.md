@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.50] - 2026-07-12
+
+### Added
+
+- **StepNav**: New step navigation (stepper) component that visualizes the progress and current position of a multi-step flow (wizard, form, onboarding, checkout). It distinguishes two independent axes — `progress` (furthest reached) and the viewing step (`value`/current path) — and can display "completed" markers and the "viewing" highlight on the same step at once. Supports both in-page mode (`bind:value` + `onchange`, with optional `clickable` navigation) and URL mode (`href` links matched against the current path), horizontal/vertical orientation, three sizes, per-step icons, error and disabled states, custom accent color, and full accessibility (landmark/list structure, `aria-current`, screen-reader status text, keyboard focus support). Exposes `StepNav`, `StepNavProps`, `StepItem`, and `StepNavOrientation`.
+
 ## [0.0.49] - 2026-07-11
 
 ### Fixed
