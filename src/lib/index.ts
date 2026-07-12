@@ -26,6 +26,7 @@ export { default as Radio } from './components/Radio.svelte';
 export { default as RadioGroup } from './components/RadioGroup.svelte';
 export { default as Select } from './components/Select.svelte';
 export { default as SegmentedControl } from './components/SegmentedControl.svelte';
+export { default as StepNav } from './components/StepNav.svelte';
 export { default as Slider } from './components/Slider.svelte';
 export { default as Snackbar } from './components/Snackbar.svelte';
 export { default as SnackbarItem } from './components/SnackbarItem.svelte';
@@ -71,6 +72,7 @@ export type { RadioProps } from './components/Radio.svelte';
 export type { RadioGroupProps } from './components/RadioGroup.svelte';
 export type { SelectProps } from './components/Select.svelte';
 export type { SegmentedControlProps } from './components/SegmentedControl.svelte';
+export type { StepNavProps } from './components/StepNav.svelte';
 export type { SliderProps } from './components/Slider.svelte';
 export type { SnackbarProps } from './components/Snackbar.svelte';
 export type { SnackbarItemProps } from './components/SnackbarItem.svelte';
@@ -101,11 +103,13 @@ export type {
 	DatepickerMode,
 	FocusStyle,
 	NavVariant,
-	ChildrenVariant
+	ChildrenVariant,
+	StepNavOrientation
 } from './types/propOptions';
 
 // Types
 export type { MenuItem } from './types/menuItem';
+export type { StepItem } from './types/stepItem';
 export type { SegmentedControlItem } from './types/segmentedControlItem';
 export type { Option, OptionValue } from './types/options';
 export type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from './types/icon';

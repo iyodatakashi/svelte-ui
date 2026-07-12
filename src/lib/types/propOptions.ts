@@ -93,6 +93,12 @@ export type FocusStyle = 'background' | 'outline' | 'none';
 export type NavVariant = 'vertical' | 'horizontal' | 'mobile';
 
 /**
+ * StepNav orientation type
+ * Used by StepNav component
+ */
+export type StepNavOrientation = 'horizontal' | 'vertical';
+
+/**
  * Display variant for Nav hierarchical (children) menus.
  * - `popup`: child items appear in a floating panel (all variants)
  * - `accordion`: child items expand/collapse inline (vertical only)

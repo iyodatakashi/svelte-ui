@@ -55,5 +55,12 @@ export const zhCn = {
 		nextPage: '转到下一页',
 		goToPage: '转到第{{page}}页',
 		ellipsis: '省略的页面'
+	},
+	stepNav: {
+		step: '第{{number}}步',
+		completed: '已完成',
+		current: '当前步骤',
+		upcoming: '未开始',
+		error: '错误'
 	}
 } as const;

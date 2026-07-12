@@ -55,5 +55,12 @@ export const ja = {
 		nextPage: '次のページへ移動',
 		goToPage: '{{page}}ページ目へ移動',
 		ellipsis: '省略されたページ'
+	},
+	stepNav: {
+		step: 'ステップ{{number}}',
+		completed: '完了',
+		current: '現在のステップ',
+		upcoming: '未到達',
+		error: 'エラー'
 	}
 } as const;

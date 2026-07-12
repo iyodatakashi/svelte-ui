@@ -55,5 +55,12 @@ export const en = {
 		nextPage: 'Go to next page',
 		goToPage: 'Go to page {{page}}',
 		ellipsis: 'Omitted pages'
+	},
+	stepNav: {
+		step: 'Step {{number}}',
+		completed: 'Completed',
+		current: 'Current step',
+		upcoming: 'Not started',
+		error: 'Error'
 	}
 } as const;
