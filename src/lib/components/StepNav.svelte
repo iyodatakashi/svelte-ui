@@ -58,7 +58,7 @@
 		iconOpticalSize?: IconOpticalSize;
 
 		// 状態/動作
-		/** インページ方式でステップのクリック遷移を許可。 @default false */
+		/** インページ方式でステップのクリック遷移を許可。到達済み（progress 以下）のステップのみクリック可能。 @default false */
 		clickable?: boolean;
 		/** コンポーネント全体を無効化。 @default false */
 		disabled?: boolean;
@@ -204,12 +204,10 @@
 
 	const isStepDisabled = (item: StepItem): boolean => disabled || item.disabled === true;
 
-	// 対話的なステップか（URL方式はリンク、インページ方式かつ clickable はボタン）。無効なら常に非対話。
-	const isStepInteractive = (item: StepItem): boolean =>
-		!isStepDisabled(item) && (isLinkMode || clickable);
-
-	// インページ方式でクリック遷移が有効なステップか（ボタン描画・クリック処理の判定）
-	const isStepButton = (item: StepItem): boolean => isStepInteractive(item) && !isLinkMode;
+	// 対話的なステップか。到達済み（index <= progressIndex）のステップのみ対話可能。
+	// URL方式はリンク、インページ方式は clickable のときボタン。未到達の先のステップへは飛べない。無効なら常に非対話。
+	const isStepInteractive = (item: StepItem, index: number): boolean =>
+		!isStepDisabled(item) && index <= progressIndex && (isLinkMode || clickable);
 
 	const stepClasses = (item: StepItem, status: StepStatus, isViewing: boolean): string =>
 		[
@@ -235,8 +233,8 @@
 		return `${step}: ${state}`;
 	};
 
+	// クリック可能なインページボタンからのみ呼ばれる（未到達/無効/URL/非clickable は非対話要素で描画される）
 	const handleStepClick = (item: StepItem, index: number, event: MouseEvent) => {
-		if (!isStepButton(item)) return;
 		const nextValue = item.value ?? String(index);
 		value = nextValue;
 		onchange(nextValue);
@@ -338,7 +336,7 @@
 					{@const status = getStatus(index)}
 					{@const isViewing = index === activeIndex}
 					<li class="step-nav__item" role="listitem">
-						{#if !isStepInteractive(item)}
+						{#if !isStepInteractive(item, index)}
 							<!-- 非対話（URL/インページを問わず共通）: 表示のみ。無効ステップは aria-disabled を付与 -->
 							<span
 								class={stepClasses(item, status, isViewing)}

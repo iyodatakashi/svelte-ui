@@ -101,6 +101,7 @@ test('clickable 時はクリックで表示中が変わり onchange が発火す
 	const screen = render(StepNav, {
 		items: baseItems,
 		value: 'account',
+		progress: 2, // 全ステップ到達済み → すべてクリック可能
 		clickable: true,
 		onchange
 	});
@@ -111,6 +112,40 @@ test('clickable 時はクリックで表示中が変わり onchange が発火す
 	expect(onchange).toHaveBeenCalledWith('confirm');
 	const steps = screen.container.querySelectorAll('.step-nav__step');
 	expect(steps[2].classList.contains('step-nav__step--viewing')).toBe(true);
+});
+
+test('未到達（progress 到達外）のステップは clickable でもクリックできない', () => {
+	const onchange = vi.fn();
+	// progress=0: step0 のみ到達済み。step1/step2 は upcoming。
+	const screen = render(StepNav, {
+		items: baseItems,
+		value: 'account',
+		progress: 0,
+		clickable: true,
+		onchange
+	});
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[0].tagName).toBe('BUTTON'); // 現在（到達済み）はクリック可
+	expect(steps[1].tagName).not.toBe('BUTTON'); // 未到達
+	expect(steps[2].tagName).not.toBe('BUTTON'); // 未到達
+	(steps[2] as HTMLElement).click();
+	expect(onchange).not.toHaveBeenCalled();
+});
+
+test('到達済み（完了）のステップは clickable でクリックして戻れる', () => {
+	const onchange = vi.fn();
+	// value=confirm(index2) を表示中、progress=2 で全到達済み → 過去の完了ステップに戻れる
+	const screen = render(StepNav, {
+		items: baseItems,
+		value: 'confirm',
+		progress: 2,
+		clickable: true,
+		onchange
+	});
+	const buttons = screen.container.querySelectorAll('button.step-nav__step');
+	expect(buttons.length).toBe(3);
+	(buttons[0] as HTMLButtonElement).click(); // 完了済みの step0 へ戻る
+	expect(onchange).toHaveBeenCalledWith('account');
 });
 
 test('clickable でない場合はクリックしても表示中を変更しない', () => {
@@ -130,7 +165,7 @@ test('個別 disabled ステップは対話要素にならず選択を無効化�
 		{ label: 'A', value: 'a' },
 		{ label: 'B', value: 'b', disabled: true }
 	];
-	const screen = render(StepNav, { items, clickable: true, onchange });
+	const screen = render(StepNav, { items, value: 'a', progress: 1, clickable: true, onchange });
 	const steps = screen.container.querySelectorAll('.step-nav__step');
 	// 有効な A は button、無効な B は button ではない
 	expect(steps[0].tagName).toBe('BUTTON');
@@ -158,7 +193,8 @@ test('href を持つ items はリンク(<a>)として描画される', () => {
 		{ label: 'A', href: '/a' },
 		{ label: 'B', href: '/b' }
 	];
-	const screen = render(StepNav, { items, currentPath: '/a' });
+	// progress=1 で両ステップとも到達済み → どちらもリンク
+	const screen = render(StepNav, { items, currentPath: '/a', progress: 1 });
 	const links = screen.container.querySelectorAll('a.step-nav__step');
 	expect(links.length).toBe(2);
 	expect(links[0].getAttribute('href')).toBe('/a');
@@ -171,9 +207,24 @@ test('URL 方式で個別 disabled はリンク化しない', () => {
 		{ label: 'A', href: '/a' },
 		{ label: 'B', href: '/b', disabled: true }
 	];
-	const screen = render(StepNav, { items, currentPath: '/a' });
+	// progress=1 で両ステップとも到達済み → 無効な B だけがリンク化しないことを確認
+	const screen = render(StepNav, { items, currentPath: '/a', progress: 1 });
 	const links = screen.container.querySelectorAll('a.step-nav__step');
 	expect(links.length).toBe(1);
+});
+
+test('URL 方式でも未到達（progress 到達外）のステップはリンク化しない', () => {
+	const items: StepItem[] = [
+		{ label: 'A', href: '/a' },
+		{ label: 'B', href: '/b' },
+		{ label: 'C', href: '/c' }
+	];
+	// currentPath=/a, progress 未指定 → progressIndex=0。/b・/c は未到達。
+	const screen = render(StepNav, { items, currentPath: '/a' });
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[0].tagName).toBe('A'); // 現在（到達済み）
+	expect(steps[1].tagName).not.toBe('A'); // 未到達
+	expect(steps[2].tagName).not.toBe('A'); // 未到達
 });
 
 // 2.5 レイアウト/バリアント
@@ -359,6 +410,7 @@ test('方向キーで対話ステップ間をフォーカス移動する（水�
 	const screen = render(StepNav, {
 		items: baseItems,
 		value: 'account',
+		progress: 2,
 		clickable: true,
 		orientation: 'horizontal'
 	});
@@ -372,7 +424,12 @@ test('方向キーで対話ステップ間をフォーカス移動する（水�
 });
 
 test('Home / End で先頭・末尾の対話ステップへフォーカス移動する', () => {
-	const screen = render(StepNav, { items: baseItems, value: 'account', clickable: true });
+	const screen = render(StepNav, {
+		items: baseItems,
+		value: 'account',
+		progress: 2,
+		clickable: true
+	});
 	const buttons = Array.from(
 		screen.container.querySelectorAll<HTMLButtonElement>('button.step-nav__step')
 	);
@@ -388,7 +445,7 @@ test('方向キー移動は無効ステップをスキップする', () => {
 		{ label: 'B', value: 'b', disabled: true },
 		{ label: 'C', value: 'c' }
 	];
-	const screen = render(StepNav, { items, value: 'a', clickable: true });
+	const screen = render(StepNav, { items, value: 'a', progress: 2, clickable: true });
 	// 無効な B は button にならないため、フォーカス可能なのは A と C
 	const buttons = Array.from(
 		screen.container.querySelectorAll<HTMLButtonElement>('button.step-nav__step')
@@ -402,6 +459,7 @@ test('垂直方向では ArrowDown/ArrowUp でフォーカス移動する', () =
 	const screen = render(StepNav, {
 		items: baseItems,
 		value: 'account',
+		progress: 2,
 		clickable: true,
 		orientation: 'vertical'
 	});
@@ -423,7 +481,8 @@ test('URL 方式で SPA 遷移（pushState）に応じてアクティブ表示�
 	const original = window.location.pathname;
 	try {
 		window.history.pushState({}, '', '/sn-foo');
-		const screen = render(StepNav, { items });
+		// progress=1 で両ステップとも常に到達済み（リンク）→ aria-current の再評価に集中
+		const screen = render(StepNav, { items, progress: 1 });
 		const links = screen.container.querySelectorAll('a.step-nav__step');
 		expect(links[0].getAttribute('aria-current')).toBe('step');
 		expect(links[1].getAttribute('aria-current')).toBeNull();
