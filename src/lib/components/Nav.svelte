@@ -16,6 +16,8 @@
 		// 基本プロパティ
 		/** `{ label, href, icon?, children?, disabled? }[]` */
 		navItems?: MenuItem[];
+		/** `navItems` のエイリアス。両方指定された場合は `navItems` が優先。 */
+		items?: MenuItem[];
 		/** Layout variant. @default 'horizontal' */
 		variant?: NavVariant;
 		/** Prepended to each item's href for active-state matching. */
@@ -65,7 +67,8 @@
 
 	let {
 		// 基本プロパティ
-		navItems = [],
+		navItems: navItemsProp,
+		items: itemsAlias,
 		variant = 'horizontal',
 		pathPrefix = '',
 		customPathMatcher,
@@ -102,6 +105,9 @@
 		ariaLabel,
 		ariaLabelledby
 	}: NavProps = $props();
+
+	// navItems（正式名）を優先し、items（エイリアス）へフォールバック
+	const navItems = $derived<MenuItem[]>(navItemsProp ?? itemsAlias ?? []);
 
 	let resolvedCurrentPath = $state('');
 	let navEl: HTMLElement | undefined = $state();

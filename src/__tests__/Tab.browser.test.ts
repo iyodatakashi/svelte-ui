@@ -27,6 +27,19 @@ test('renders Tab with basic props', async () => {
 	await expect.element(nav).toHaveAttribute('aria-label', 'Main navigation');
 });
 
+test('items（エイリアス）でも tabItems と同様に指定できる', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Tab,
+		items: createTabItems(),
+		ariaLabel: 'Main navigation'
+	});
+	const tab = screen.container.querySelector('[data-testid="tab"]');
+	await expect.element(tab).toBeVisible();
+	// エイリアスで渡したアイテムが描画される
+	expect(screen.container.textContent).toContain('Home');
+	expect(screen.container.textContent).toContain('Contact');
+});
+
 test('renders Tab with custom aria-labelledby', async () => {
 	const screen = render(ComponentWrapper, {
 		component: Tab,

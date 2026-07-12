@@ -21,12 +21,17 @@
 	// =========================================================================
 	export type StepNavProps = {
 		// 基本プロパティ
-		/** `{ label, value?, href?, description?, icon?, error?, disabled? }[]` */
-		items: StepItem[];
+		/** ステップ配列（正式名称）。`{ label, value?, href?, description?, icon?, error?, disabled? }[]` */
+		stepItems?: StepItem[];
+		/** `stepItems` のエイリアス。両方指定された場合は `stepItems` が優先。 */
+		items?: StepItem[];
 		/** 表示中ステップの値（インページ方式）。`bind:value` 対応。`item.value` 省略時は配列 index の文字列（'0','1',...）が暗黙の値になる。 */
 		value?: string;
-		/** 到達済みの最遠ステップの 0 始まりインデックス（進捗軸）。未指定時は表示中ステップ位置。 */
-		progress?: number;
+		/**
+		 * 到達済みの最遠ステップ（進捗軸）。未指定時は表示中ステップ位置。
+		 * 数値なら 0 始まりのインデックス、文字列ならアイテムのユニークキー（`value`。省略時は配列 index の文字列）で指定する。URL方式でも `value` をキーに使う。
+		 */
+		progress?: number | string;
 
 		// URL 方式（href 使用時）
 		/** 各 href のアクティブ判定に前置するパス。 */
@@ -80,7 +85,8 @@
 
 	let {
 		// 基本プロパティ
-		items = [],
+		stepItems,
+		items: itemsAlias,
 		value = $bindable(''),
 		progress,
 
@@ -141,6 +147,9 @@
 	// =========================================================================
 	// Derived state
 	// =========================================================================
+	// stepItems（正式名）を優先し、items（エイリアス）へフォールバック
+	const items = $derived<StepItem[]>(stepItems ?? itemsAlias ?? []);
+
 	const isLinkMode = $derived(items.some((item) => item.href != null));
 
 	const activeIndex = $derived.by(() => {
@@ -162,7 +171,12 @@
 		return items.findIndex((item, index) => (item.value ?? String(index)) === value);
 	});
 
-	const progressIndex = $derived(progress ?? activeIndex);
+	// progress を数値インデックスへ解決する。文字列ならアイテムのユニークキー（value）で一致判定。未指定なら表示中位置。
+	const progressIndex = $derived.by(() => {
+		if (progress == null) return activeIndex;
+		if (typeof progress === 'number') return progress;
+		return items.findIndex((item, index) => (item.value ?? String(index)) === progress);
+	});
 
 	const resolvedIconSize = $derived(
 		iconOpticalSize || (size === 'small' ? 16 : size === 'large' ? 24 : 20)

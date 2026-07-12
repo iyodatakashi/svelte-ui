@@ -27,6 +27,30 @@ test('items を配列順に描画し、最上位に data-testid を付与する'
 	expect(markers).toEqual(['1', '2', '3']);
 });
 
+test('stepItems（正式名）でステップを指定できる', () => {
+	const screen = render(StepNav, { stepItems: baseItems });
+	const labels = Array.from(screen.container.querySelectorAll('.step-nav__label')).map((el) =>
+		el.textContent?.trim()
+	);
+	expect(labels).toEqual(['アカウント', '住所', '確認']);
+});
+
+test('items（エイリアス）でも指定でき、両方指定時は stepItems が優先される', () => {
+	// items エイリアス単体
+	const aliasOnly = render(StepNav, { items: baseItems });
+	expect(aliasOnly.container.querySelectorAll('.step-nav__label').length).toBe(3);
+
+	// 両方指定 → stepItems が優先
+	const both = render(StepNav, {
+		stepItems: [{ label: '正式', value: 'a' }],
+		items: baseItems
+	});
+	const labels = Array.from(both.container.querySelectorAll('.step-nav__label')).map((el) =>
+		el.textContent?.trim()
+	);
+	expect(labels).toEqual(['正式']);
+});
+
 test('description を表示する', () => {
 	const screen = render(StepNav, {
 		items: [{ label: 'アカウント', value: 'a', description: '氏名を入力' }]
@@ -48,6 +72,39 @@ test('progress 指定で completed / current / upcoming を導出する', () => 
 	expect(steps[0].classList.contains('step-nav__step--completed')).toBe(true);
 	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
 	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
+});
+
+test('progress をアイテムのキー(value)で指定できる（インページ方式）', () => {
+	// progress='address'(index1) → step0 completed / step1 current / step2 upcoming（progress=1 と同等）
+	const screen = render(StepNav, { items: baseItems, value: 'account', progress: 'address' });
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[0].classList.contains('step-nav__step--completed')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
+	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
+});
+
+test('progress は URL方式でもアイテムのユニークキー(value)で指定する', () => {
+	const items: StepItem[] = [
+		{ label: 'A', href: '/a', value: 'a' },
+		{ label: 'B', href: '/b', value: 'b' },
+		{ label: 'C', href: '/c', value: 'c' }
+	];
+	// currentPath=/a（表示中は A）だが progress='b'（value キー）で B まで到達済み
+	const screen = render(StepNav, { items, currentPath: '/a', progress: 'b' });
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[0].classList.contains('step-nav__step--completed')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
+	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
+	// A・B は到達済みでリンク、C は未到達で非リンク
+	expect(steps[0].tagName).toBe('A');
+	expect(steps[1].tagName).toBe('A');
+	expect(steps[2].tagName).not.toBe('A');
+});
+
+test('数値の progress も引き続き使える（後方互換）', () => {
+	const screen = render(StepNav, { items: baseItems, value: 'account', progress: 1 });
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
 });
 
 test('進捗と表示中がズレたとき、完了表示と表示中強調を同一ステップで両立する', () => {

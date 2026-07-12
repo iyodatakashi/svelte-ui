@@ -12,6 +12,8 @@
 		// 基本プロパティ
 		/** `{ label, href, icon?, disabled? }[]` */
 		tabItems?: MenuItem[];
+		/** `tabItems` のエイリアス。両方指定された場合は `tabItems` が優先。 */
+		items?: MenuItem[];
 		/** Prepended to each item's href for active-state matching. */
 		pathPrefix?: string;
 		/** Custom function to determine if an item is active. */
@@ -52,7 +54,8 @@
 
 	let {
 		// 基本プロパティ
-		tabItems = [],
+		tabItems: tabItemsProp,
+		items: itemsAlias,
 		pathPrefix = '',
 		customPathMatcher,
 		currentPath,
@@ -80,6 +83,9 @@
 		ariaLabel = 'Tabs',
 		ariaLabelledby
 	}: TabProps = $props();
+
+	// tabItems（正式名）を優先し、items（エイリアス）へフォールバック
+	const tabItems = $derived<MenuItem[]>(tabItemsProp ?? itemsAlias ?? []);
 </script>
 
 <div class="tab" data-testid="tab">
