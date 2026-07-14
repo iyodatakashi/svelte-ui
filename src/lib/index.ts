@@ -96,6 +96,7 @@ export type {
 	FabPosition,
 	ButtonVariant,
 	ButtonSize,
+	IconPosition,
 	ComponentSize,
 	SnackbarType,
 	SnackbarVariant,

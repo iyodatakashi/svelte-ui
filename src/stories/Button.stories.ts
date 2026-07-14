@@ -94,6 +94,11 @@ const meta = {
 			control: 'text',
 			description: 'Icon name from Material Symbols'
 		},
+		iconPosition: {
+			control: 'radio',
+			options: ['left', 'right'],
+			description: 'Icon position relative to the label'
+		},
 		color: {
 			control: 'color',
 			description: 'Button color'
@@ -317,6 +322,15 @@ export const WithIcon: Story = {
 	args: {
 		icon: 'add',
 		children: createChildrenSnippet('Add Item')
+	}
+};
+
+// With icon on the right
+export const WithIconRight: Story = {
+	args: {
+		icon: 'arrow_forward',
+		iconPosition: 'right',
+		children: createChildrenSnippet('Next')
 	}
 };
 

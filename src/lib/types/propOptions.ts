@@ -45,6 +45,12 @@ export type FabPosition = 'left' | 'center' | 'right';
 export type ButtonVariant = 'ghost' | 'filled' | 'outlined' | 'glass';
 
 /**
+ * Icon position type (left/right)
+ * Used by Button, Fab components
+ */
+export type IconPosition = 'left' | 'right';
+
+/**
  * Common component size type
  * Used by Button, Checkbox, CheckboxGroup, Radio, RadioGroup, SegmentedControl, Switch
  */

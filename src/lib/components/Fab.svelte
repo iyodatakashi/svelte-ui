@@ -11,7 +11,7 @@
 		TouchHandler,
 		PointerHandler
 	} from '$lib/types/callbackHandlers';
-	import type { ButtonVariant, FabPosition } from '$lib/types/propOptions';
+	import type { ButtonVariant, FabPosition, IconPosition } from '$lib/types/propOptions';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
@@ -29,6 +29,8 @@
 		loading?: boolean;
 		/** Material Symbols icon name. */
 		icon?: string;
+		/** Icon position relative to the label. @default 'left' */
+		iconPosition?: IconPosition;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -106,6 +108,7 @@
 
 		// アイコン関連
 		icon = '',
+		iconPosition = 'left',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -348,26 +351,36 @@
 	aria-busy={loading ? 'true' : undefined}
 	data-testid="fab"
 >
+	{#snippet iconContent()}
+		<Icon
+			filled={iconFilled}
+			weight={iconWeight}
+			grade={iconGrade}
+			opticalSize={iconOpticalSize}
+			variant={iconVariant}
+			size={24}>{icon}</Icon
+		>
+	{/snippet}
+
 	{#if loading}
 		<div class="fab__loading">
 			<LoadingSpinner size={24} strokeWidth={2} color="currentColor" />
 		</div>
-	{:else if icon}
-		<div class="fab__icon">
-			<Icon
-				filled={iconFilled}
-				weight={iconWeight}
-				grade={iconGrade}
-				opticalSize={iconOpticalSize}
-				variant={iconVariant}
-				size={24}>{icon}</Icon
-			>
+	{:else if icon && iconPosition === 'left'}
+		<div class="fab__icon fab__icon--left">
+			{@render iconContent()}
 		</div>
 	{/if}
 
 	{#if children}
 		<div class="fab__label" class:fab__label--hidden={loading}>
 			{@render children()}
+		</div>
+	{/if}
+
+	{#if icon && iconPosition === 'right' && !loading}
+		<div class="fab__icon fab__icon--right">
+			{@render iconContent()}
 		</div>
 	{/if}
 </button>
@@ -512,11 +525,18 @@
 		}
 
 		.fab__icon {
-			margin: 0 8px 0 -8px;
 			user-select: none;
 			display: flex;
 			align-items: center;
 			justify-content: center;
+		}
+
+		.fab__icon--left {
+			margin: 0 8px 0 -8px;
+		}
+
+		.fab__icon--right {
+			margin: 0 -8px 0 8px;
 		}
 
 		.fab__loading {

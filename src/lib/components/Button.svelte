@@ -11,7 +11,7 @@
 		TouchHandler,
 		PointerHandler
 	} from '$lib/types/callbackHandlers';
-	import type { ButtonVariant, ButtonSize } from '$lib/types/propOptions';
+	import type { ButtonVariant, ButtonSize, IconPosition } from '$lib/types/propOptions';
 	import Icon from './Icon.svelte';
 	import LoadingSpinner from './LoadingSpinner.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
@@ -46,6 +46,8 @@
 		// アイコン関連
 		/** Material Symbols icon name. */
 		icon?: string;
+		/** Icon position relative to the label. @default 'left' */
+		iconPosition?: IconPosition;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
 		iconGrade?: IconGrade;
@@ -121,6 +123,7 @@
 
 		// アイコン関連
 		icon = '',
+		iconPosition = 'left',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
@@ -368,25 +371,35 @@
 	data-testid="button"
 	{...restProps}
 >
+	{#snippet iconContent()}
+		<Icon
+			filled={iconFilled}
+			weight={iconWeight}
+			grade={iconGrade}
+			opticalSize={iconOpticalSize}
+			variant={iconVariant}>{icon}</Icon
+		>
+	{/snippet}
+
 	{#if loading}
 		<div class="button__loading">
 			<LoadingSpinner size={18} strokeWidth={2} color="currentColor" />
 		</div>
-	{:else if icon}
-		<div class="button__icon">
-			<Icon
-				filled={iconFilled}
-				weight={iconWeight}
-				grade={iconGrade}
-				opticalSize={iconOpticalSize}
-				variant={iconVariant}>{icon}</Icon
-			>
+	{:else if icon && iconPosition === 'left'}
+		<div class="button__icon button__icon--left">
+			{@render iconContent()}
 		</div>
 	{/if}
 
 	<div class="button__label" class:button__label--hidden={loading}>
 		{@render children()}
 	</div>
+
+	{#if icon && iconPosition === 'right' && !loading}
+		<div class="button__icon button__icon--right">
+			{@render iconContent()}
+		</div>
+	{/if}
 
 	{#if popup && !loading}
 		<div class="button__popup-icon">
@@ -519,10 +532,22 @@
 	}
 
 	.button__icon {
-		margin: -12px 0 -12px -4px;
+		margin: -12px 0;
 		display: flex;
 		align-items: center;
 		justify-content: center;
+	}
+
+	.button__icon--left {
+		margin-left: -4px;
+	}
+
+	.button__icon--right {
+		margin-right: -4px;
+	}
+
+	.button--align-left .button__icon--right {
+		margin-left: auto;
 	}
 
 	.button__label {
@@ -562,8 +587,12 @@
 	}
 
 	/* Size-specific adjustments */
-	.button--small .button__icon {
+	.button--small .button__icon--left {
 		margin-left: -2px;
+	}
+
+	.button--small .button__icon--right {
+		margin-right: -2px;
 	}
 
 	.button--small .button__popup-icon {
@@ -575,8 +604,12 @@
 		margin-right: -2px;
 	}
 
-	.button--large .button__icon {
+	.button--large .button__icon--left {
 		margin-left: -6px;
+	}
+
+	.button--large .button__icon--right {
+		margin-right: -6px;
 	}
 
 	.button--large .button__popup-icon {

@@ -41,6 +41,11 @@ const meta = {
 			control: 'text',
 			description: 'Material Symbol icon name'
 		},
+		iconPosition: {
+			control: 'radio',
+			options: ['left', 'right'],
+			description: 'Icon position relative to the label'
+		},
 		color: {
 			control: 'color',
 			description: 'Custom color (optional)'
@@ -281,5 +286,14 @@ export const WithLabel: Story = {
 		icon: 'edit',
 		position: 'center',
 		children: createChildrenSnippet('Edit')
+	}
+};
+
+export const WithLabelIconRight: Story = {
+	args: {
+		icon: 'arrow_forward',
+		iconPosition: 'right',
+		position: 'center',
+		children: createChildrenSnippet('Next')
 	}
 };
