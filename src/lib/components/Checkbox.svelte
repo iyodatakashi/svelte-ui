@@ -361,6 +361,7 @@
 		vertical-align: top;
 		contain: layout;
 		cursor: pointer;
+		font-weight: inherit;
 	}
 
 	.checkbox input[type='checkbox'] {

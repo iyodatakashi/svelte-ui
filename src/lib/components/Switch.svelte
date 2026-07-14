@@ -353,6 +353,7 @@
 		min-height: var(--svelte-ui-switch-min-height);
 		contain: layout;
 		cursor: pointer;
+		font-weight: inherit;
 	}
 
 	.switch--full-width {

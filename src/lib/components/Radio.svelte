@@ -391,6 +391,7 @@
 		vertical-align: top;
 		contain: layout;
 		cursor: pointer;
+		font-weight: inherit;
 	}
 
 	.radio input[type='radio'] {
