@@ -239,7 +239,7 @@
 
 	.dialog--scrollable .dialog__header {
 		margin-bottom: 0;
-		border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
+		border-bottom: solid 1px var(--svelte-ui-border-color);
 	}
 
 	.dialog--scrollable .dialog__body {
@@ -249,6 +249,6 @@
 	}
 
 	.dialog--scrollable .dialog__footer {
-		border-top: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
+		border-top: solid 1px var(--svelte-ui-border-color);
 	}
 </style>
