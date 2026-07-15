@@ -366,8 +366,10 @@
 		<div class="fab__loading">
 			<LoadingSpinner size={24} strokeWidth={2} color="currentColor" />
 		</div>
-	{:else if icon && iconPosition === 'left'}
-		<div class="fab__icon fab__icon--left">
+	{/if}
+
+	{#if icon && iconPosition === 'left'}
+		<div class="fab__icon fab__icon--left" class:fab__icon--hidden={loading}>
 			{@render iconContent()}
 		</div>
 	{/if}
@@ -378,8 +380,8 @@
 		</div>
 	{/if}
 
-	{#if icon && iconPosition === 'right' && !loading}
-		<div class="fab__icon fab__icon--right">
+	{#if icon && iconPosition === 'right'}
+		<div class="fab__icon fab__icon--right" class:fab__icon--hidden={loading}>
 			{@render iconContent()}
 		</div>
 	{/if}
@@ -560,7 +562,8 @@
 			transition-duration: var(--svelte-ui-transition-duration);
 		}
 
-		.fab__label--hidden {
+		.fab__label--hidden,
+		.fab__icon--hidden {
 			opacity: 0;
 		}
 	}

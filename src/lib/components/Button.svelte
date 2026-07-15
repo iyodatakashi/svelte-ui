@@ -385,8 +385,10 @@
 		<div class="button__loading">
 			<LoadingSpinner size={18} strokeWidth={2} color="currentColor" />
 		</div>
-	{:else if icon && iconPosition === 'left'}
-		<div class="button__icon button__icon--left">
+	{/if}
+
+	{#if icon && iconPosition === 'left'}
+		<div class="button__icon button__icon--left" class:button__icon--hidden={loading}>
 			{@render iconContent()}
 		</div>
 	{/if}
@@ -395,14 +397,14 @@
 		{@render children()}
 	</div>
 
-	{#if icon && iconPosition === 'right' && !loading}
-		<div class="button__icon button__icon--right">
+	{#if icon && iconPosition === 'right'}
+		<div class="button__icon button__icon--right" class:button__icon--hidden={loading}>
 			{@render iconContent()}
 		</div>
 	{/if}
 
-	{#if popup && !loading}
-		<div class="button__popup-icon">
+	{#if popup}
+		<div class="button__popup-icon" class:button__popup-icon--hidden={loading}>
 			<Icon>arrow_drop_down</Icon>
 		</div>
 	{/if}
@@ -560,7 +562,9 @@
 		transition-duration: var(--svelte-ui-transition-duration);
 	}
 
-	.button__label--hidden {
+	.button__label--hidden,
+	.button__icon--hidden,
+	.button__popup-icon--hidden {
 		opacity: 0;
 	}
 
