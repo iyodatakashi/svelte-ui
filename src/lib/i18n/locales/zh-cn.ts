@@ -58,8 +58,8 @@ export const zhCn = {
 	},
 	stepNav: {
 		step: '第{{number}}步',
-		completed: '已完成',
-		current: '当前步骤',
+		done: '已完成',
+		inProgress: '当前步骤',
 		upcoming: '未开始',
 		error: '错误'
 	}

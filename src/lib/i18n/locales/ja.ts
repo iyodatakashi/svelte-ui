@@ -58,8 +58,8 @@ export const ja = {
 	},
 	stepNav: {
 		step: 'ステップ{{number}}',
-		completed: '完了',
-		current: '現在のステップ',
+		done: '完了',
+		inProgress: '現在のステップ',
 		upcoming: '未到達',
 		error: 'エラー'
 	}

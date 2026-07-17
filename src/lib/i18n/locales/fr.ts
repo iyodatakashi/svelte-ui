@@ -58,8 +58,8 @@ export const fr = {
 	},
 	stepNav: {
 		step: 'Étape {{number}}',
-		completed: 'Terminé',
-		current: 'Étape actuelle',
+		done: 'Terminé',
+		inProgress: 'Étape actuelle',
 		upcoming: 'Non commencé',
 		error: 'Erreur'
 	}

@@ -60,7 +60,7 @@ describe('StepNav i18n namespace', () => {
 	});
 
 	it('状態テキスト（完了・現在・未到達・エラー）が全ロケールで非空文字列で解決する', () => {
-		const statusKeys = ['completed', 'current', 'upcoming', 'error'] as const;
+		const statusKeys = ['done', 'inProgress', 'upcoming', 'error'] as const;
 		for (const locale of locales) {
 			setLocale(locale);
 			for (const key of statusKeys) {

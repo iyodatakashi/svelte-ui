@@ -51,7 +51,8 @@ const meta = {
 		},
 		progress: {
 			control: 'number',
-			description: 'Zero-based index of the furthest reached step (progress axis)'
+			description:
+				'Furthest reached step (progress axis). Number (index), string (value key), or `{ step, status: "in-progress" | "done" }` to also mark the pointed step as done (no in-progress step)'
 		},
 		orientation: {
 			control: 'radio',
@@ -65,7 +66,7 @@ const meta = {
 		},
 		color: {
 			control: 'color',
-			description: 'Accent color for current/completed steps (overrides theme)'
+			description: 'Accent color for in-progress/done steps (overrides theme)'
 		},
 		showIcon: {
 			control: 'boolean',
@@ -198,6 +199,24 @@ export const ProgressAheadOfViewing: Story = {
 			description: {
 				story:
 					'進捗はステップ4まで到達（progress=3）しつつ、表示中はステップ1（value=account）。完了表示と表示中強調が同一ステップ上で両立する。'
+			}
+		}
+	}
+};
+
+// 全ステップ完了（進行中なし）
+export const AllCompleted: Story = {
+	args: {
+		items: inPageItems,
+		value: 'confirm',
+		progress: { step: 3, status: 'done' },
+		ariaLabel: '登録手順'
+	},
+	parameters: {
+		docs: {
+			description: {
+				story:
+					'`progress={{ step: 3, status: "done" }}` で最終ステップまで完了扱いにする。進行中（in-progress）ステップは無くなり、全ステップが done 表示になる。'
 			}
 		}
 	}

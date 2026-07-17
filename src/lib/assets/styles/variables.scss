@@ -410,8 +410,8 @@
 	/* StepNav */
 	/* 強調色（現在／完了）。color prop 指定時は --internal-step-nav-accent が優先。 */
 	--svelte-ui-step-nav-accent-color: var(--svelte-ui-primary-color);
-	--svelte-ui-step-nav-completed-color: var(--svelte-ui-step-nav-accent-color);
-	--svelte-ui-step-nav-current-color: var(--svelte-ui-step-nav-accent-color);
+	--svelte-ui-step-nav-done-color: var(--svelte-ui-step-nav-accent-color);
+	--svelte-ui-step-nav-in-progress-color: var(--svelte-ui-step-nav-accent-color);
 	/* マーカー */
 	--svelte-ui-step-nav-marker-size-sm: 24px;
 	--svelte-ui-step-nav-marker-size: 32px;
@@ -431,7 +431,7 @@
 	--svelte-ui-step-nav-label-line-height: 1.3;
 	/* コネクター（完了区間 / 未完了区間） */
 	--svelte-ui-step-nav-connector-color: var(--svelte-ui-border-color);
-	--svelte-ui-step-nav-connector-completed-color: var(--svelte-ui-step-nav-accent-color);
+	--svelte-ui-step-nav-connector-done-color: var(--svelte-ui-step-nav-accent-color);
 	--svelte-ui-step-nav-connector-thickness: 2px;
 	/* 間隔 */
 	--svelte-ui-step-nav-marker-label-gap: 8px;
@@ -947,7 +947,7 @@
 		--svelte-ui-step-nav-description-color: CanvasText;
 		--svelte-ui-step-nav-error-color: CanvasText;
 		--svelte-ui-step-nav-connector-color: CanvasText;
-		--svelte-ui-step-nav-connector-completed-color: Highlight;
+		--svelte-ui-step-nav-connector-done-color: Highlight;
 		--svelte-ui-step-nav-ring-color: Highlight;
 		--svelte-ui-step-nav-focus-color: CanvasText;
 

@@ -66,20 +66,20 @@ test('空配列では何も描画せず例外を出さない', () => {
 });
 
 // 2.2 / 2.3 進捗軸の状態導出と 2 軸合成
-test('progress 指定で completed / current / upcoming を導出する', () => {
+test('progress 指定で done / in-progress / upcoming を導出する', () => {
 	const screen = render(StepNav, { items: baseItems, value: 'account', progress: 1 });
 	const steps = screen.container.querySelectorAll('.step-nav__step');
-	expect(steps[0].classList.contains('step-nav__step--completed')).toBe(true);
-	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
+	expect(steps[0].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--in-progress')).toBe(true);
 	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
 });
 
 test('progress をアイテムのキー(value)で指定できる（インページ方式）', () => {
-	// progress='address'(index1) → step0 completed / step1 current / step2 upcoming（progress=1 と同等）
+	// progress='address'(index1) → step0 done / step1 in-progress / step2 upcoming（progress=1 と同等）
 	const screen = render(StepNav, { items: baseItems, value: 'account', progress: 'address' });
 	const steps = screen.container.querySelectorAll('.step-nav__step');
-	expect(steps[0].classList.contains('step-nav__step--completed')).toBe(true);
-	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
+	expect(steps[0].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--in-progress')).toBe(true);
 	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
 });
 
@@ -92,8 +92,8 @@ test('progress は URL方式でもアイテムのユニークキー(value)で指
 	// currentPath=/a（表示中は A）だが progress='b'（value キー）で B まで到達済み
 	const screen = render(StepNav, { items, currentPath: '/a', progress: 'b' });
 	const steps = screen.container.querySelectorAll('.step-nav__step');
-	expect(steps[0].classList.contains('step-nav__step--completed')).toBe(true);
-	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
+	expect(steps[0].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--in-progress')).toBe(true);
 	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
 	// A・B は到達済みでリンク、C は未到達で非リンク
 	expect(steps[0].tagName).toBe('A');
@@ -104,14 +104,49 @@ test('progress は URL方式でもアイテムのユニークキー(value)で指
 test('数値の progress も引き続き使える（後方互換）', () => {
 	const screen = render(StepNav, { items: baseItems, value: 'account', progress: 1 });
 	const steps = screen.container.querySelectorAll('.step-nav__step');
-	expect(steps[1].classList.contains('step-nav__step--current')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--in-progress')).toBe(true);
+});
+
+test('progress={ step, status: "done" } で指したステップも完了扱いになる（進行中なし）', () => {
+	// 最終ステップ(index2)まで done → 全て done、in-progress は存在しない
+	const screen = render(StepNav, {
+		items: baseItems,
+		progress: { step: 2, status: 'done' }
+	});
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[0].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[2].classList.contains('step-nav__step--done')).toBe(true);
+	expect(screen.container.querySelector('.step-nav__step--in-progress')).toBeNull();
+});
+
+test('progress={ step, status: "in-progress" } は数値指定と同じ（指したステップが進行中）', () => {
+	const screen = render(StepNav, {
+		items: baseItems,
+		progress: { step: 1, status: 'in-progress' }
+	});
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	expect(steps[0].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[1].classList.contains('step-nav__step--in-progress')).toBe(true);
+	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
+});
+
+test('progress={ step, status } の step はキー(value)でも指定できる', () => {
+	const screen = render(StepNav, {
+		items: baseItems,
+		progress: { step: 'address', status: 'done' }
+	});
+	const steps = screen.container.querySelectorAll('.step-nav__step');
+	// address(index1) まで done、confirm(index2) は upcoming
+	expect(steps[1].classList.contains('step-nav__step--done')).toBe(true);
+	expect(steps[2].classList.contains('step-nav__step--upcoming')).toBe(true);
 });
 
 test('進捗と表示中がズレたとき、完了表示と表示中強調を同一ステップで両立する', () => {
 	// step3 まで到達(progress=2) しつつ step1 を閲覧(value=account)
 	const screen = render(StepNav, { items: baseItems, value: 'account', progress: 2 });
 	const step0 = screen.container.querySelectorAll('.step-nav__step')[0];
-	expect(step0.classList.contains('step-nav__step--completed')).toBe(true);
+	expect(step0.classList.contains('step-nav__step--done')).toBe(true);
 	expect(step0.classList.contains('step-nav__step--viewing')).toBe(true);
 	expect(step0.getAttribute('aria-current')).toBe('step');
 	// 完了マーカーは check アイコン
@@ -133,9 +168,9 @@ test('隣接ステップ間にコネクターを描画し、到達点で完了�
 	// 先頭以外に (items-1) 本
 	expect(connectors.length).toBe(2);
 	// step0→step1 の区間は完了
-	expect(connectors[0].classList.contains('step-nav__connector--completed')).toBe(true);
+	expect(connectors[0].classList.contains('step-nav__connector--done')).toBe(true);
 	// step1→step2 の区間は未完了
-	expect(connectors[1].classList.contains('step-nav__connector--completed')).toBe(false);
+	expect(connectors[1].classList.contains('step-nav__connector--done')).toBe(false);
 });
 
 // 2.2 value 制御と 2.4 クリック操作
@@ -315,10 +350,10 @@ test('color 指定は完了コネクターと表示中リングの色にも反�
 		color: 'rgb(255, 0, 0)'
 	});
 	// 完了区間コネクター（step0→1）が指定色になる
-	const completedConnector = screen.container.querySelector(
-		'.step-nav__connector--completed'
+	const doneConnector = screen.container.querySelector(
+		'.step-nav__connector--done'
 	) as HTMLElement;
-	expect(getComputedStyle(completedConnector).backgroundColor).toBe('rgb(255, 0, 0)');
+	expect(getComputedStyle(doneConnector).backgroundColor).toBe('rgb(255, 0, 0)');
 
 	// 表示中マーカーのリング（box-shadow）が指定色の半透明合成になる
 	const root = screen.container.querySelector('.step-nav') as HTMLElement;

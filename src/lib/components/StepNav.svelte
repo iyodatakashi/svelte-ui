@@ -30,8 +30,9 @@
 		/**
 		 * 到達済みの最遠ステップ（進捗軸）。未指定時は表示中ステップ位置。
 		 * 数値なら 0 始まりのインデックス、文字列ならアイテムのユニークキー（`value`。省略時は配列 index の文字列）で指定する。URL方式でも `value` をキーに使う。
+		 * `{ step, status }` を渡すと指したステップの状態を明示できる。`status: 'done'` なら当該ステップも完了表示（進行中なし）。数値／文字列のみ指定時は `'in-progress'` 扱い。
 		 */
-		progress?: number | string;
+		progress?: number | string | { step: number | string; status: 'in-progress' | 'done' };
 
 		// URL 方式（href 使用時）
 		/** 各 href のアクティブ判定に前置するパス。 */
@@ -171,11 +172,20 @@
 		return items.findIndex((item, index) => (item.value ?? String(index)) === value);
 	});
 
+	// progress の step 部分（オブジェクト形なら .step、それ以外は progress 自身）。
+	const progressStep = $derived(
+		typeof progress === 'object' && progress !== null ? progress.step : progress
+	);
+	// 指したステップの状態。オブジェクト形の status のみ 'done' になり得る。未指定は 'in-progress'。
+	const progressStepStatus = $derived<'in-progress' | 'done'>(
+		typeof progress === 'object' && progress !== null ? progress.status : 'in-progress'
+	);
+
 	// progress を数値インデックスへ解決する。文字列ならアイテムのユニークキー（value）で一致判定。未指定なら表示中位置。
 	const progressIndex = $derived.by(() => {
-		if (progress == null) return activeIndex;
-		if (typeof progress === 'number') return progress;
-		return items.findIndex((item, index) => (item.value ?? String(index)) === progress);
+		if (progressStep == null) return activeIndex;
+		if (typeof progressStep === 'number') return progressStep;
+		return items.findIndex((item, index) => (item.value ?? String(index)) === progressStep);
 	});
 
 	const resolvedIconSize = $derived(
@@ -208,11 +218,11 @@
 	// =========================================================================
 	// Helpers
 	// =========================================================================
-	type StepStatus = 'completed' | 'current' | 'upcoming';
+	type StepStatus = 'done' | 'in-progress' | 'upcoming';
 
 	const getStatus = (index: number): StepStatus => {
-		if (index < progressIndex) return 'completed';
-		if (index === progressIndex) return 'current';
+		if (index < progressIndex) return 'done';
+		if (index === progressIndex) return progressStepStatus === 'done' ? 'done' : 'in-progress';
 		return 'upcoming';
 	};
 
@@ -239,10 +249,10 @@
 		const step = t('stepNav.step', { number: index + 1 });
 		const state = item.error
 			? t('stepNav.error')
-			: getStatus(index) === 'completed'
-				? t('stepNav.completed')
-				: getStatus(index) === 'current'
-					? t('stepNav.current')
+			: getStatus(index) === 'done'
+				? t('stepNav.done')
+				: getStatus(index) === 'in-progress'
+					? t('stepNav.inProgress')
 					: t('stepNav.upcoming');
 		return `${step}: ${state}`;
 	};
@@ -304,7 +314,7 @@
 				variant={iconVariant}
 				filled>error</Icon
 			>
-		{:else if status === 'completed'}
+		{:else if status === 'done'}
 			<Icon size={resolvedIconSize} weight={iconWeight} grade={iconGrade} variant={iconVariant}
 				>check</Icon
 			>
@@ -393,7 +403,7 @@
 						{#if index < items.length - 1}
 							<span
 								class="step-nav__connector"
-								class:step-nav__connector--completed={index < progressIndex}
+								class:step-nav__connector--done={index < progressIndex}
 								aria-hidden="true"
 							></span>
 						{/if}
@@ -500,16 +510,16 @@
 			var(--svelte-ui-step-nav-upcoming-marker-color);
 	}
 
-	/* current: primary アウトライン + 番号 */
-	.step-nav__step--current .step-nav__marker {
+	/* in-progress: primary アウトライン + 番号 */
+	.step-nav__step--in-progress .step-nav__marker {
 		background: var(--svelte-ui-surface-color);
 		color: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 		border: var(--svelte-ui-step-nav-marker-border-width) solid
 			var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 	}
 
-	/* completed: primary 塗り + check */
-	.step-nav__step--completed .step-nav__marker {
+	/* done: primary 塗り + check */
+	.step-nav__step--done .step-nav__marker {
 		background: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 		color: var(--svelte-ui-step-nav-marker-text-color);
 		border: var(--svelte-ui-step-nav-marker-border-width) solid
@@ -571,8 +581,8 @@
 		background: var(--svelte-ui-step-nav-connector-color);
 	}
 
-	.step-nav__connector--completed {
-		background: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-connector-completed-color));
+	.step-nav__connector--done {
+		background: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-connector-done-color));
 	}
 
 	/* ======================= 水平レイアウト ======================= */
