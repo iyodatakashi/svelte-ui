@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.56] - 2026-07-17
+
+### Added
+
+- **StepNav**: `progress` now accepts an object form `{ step, status: 'in-progress' | 'done' }`. Passing `status: 'done'` marks the pointed step (and all preceding steps) as completed with no in-progress step, so a fully completed flow can be expressed (e.g. `progress={{ step: lastIndex, status: 'done' }}`). The existing number/string forms are unchanged.
+
+### Changed
+
+- **StepNav** (breaking): Step status naming was unified to `in-progress` / `done` / `upcoming`. The CSS class modifiers (`.step-nav__step--completed` → `--done`, `--current` → `--in-progress`, `.step-nav__connector--completed` → `--done`) and theme CSS variables (`--svelte-ui-step-nav-completed-color` → `--svelte-ui-step-nav-done-color`, `--svelte-ui-step-nav-current-color` → `--svelte-ui-step-nav-in-progress-color`, `--svelte-ui-step-nav-connector-completed-color` → `--svelte-ui-step-nav-connector-done-color`) were renamed accordingly. Update any overrides of these classes or variables.
+
 ## [0.0.55] - 2026-07-16
 
 ### Fixed
