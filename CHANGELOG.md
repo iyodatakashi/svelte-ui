@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.57] - 2026-07-19
+
+### Changed
+
+- (breaking) Component prop types are now strict. The permissive `[key: string]: any` fallback was removed from 15 components (Button, IconButton, Fab, Input, Textarea, Select, Combobox, Datepicker, ColorPicker, Checkbox, Radio, Switch, Slider, Icon, SegmentedControl); their props now derive from the matching DOM attribute types. Unknown or misspelled props are reported as type errors at compile time, while standard HTML attributes (`data-*`, `aria-*`, etc.) are still accepted and forwarded to the root element. Update any code passing props that are not part of a component's documented API.
+
+### Added
+
+- **Button** (`minWidth`) and **Input** (`clearButtonAriaLabel`) are now part of the typed public API (previously accepted only implicitly).
+
 ## [0.0.56] - 2026-07-17
 
 ### Added
