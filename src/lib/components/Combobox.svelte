@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import Input from './Input.svelte';
+	import type { InputProps } from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import { announceSelection } from '$lib/utils/accessibility';
 	import { t } from '$lib/i18n';
@@ -17,7 +18,36 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type ComboboxProps = {
+	export type ComboboxProps = Omit<
+		InputProps,
+		// 独自ハンドラ型と独自型の value は除外して衝突を避ける（余剰プロパティは Input へ転送）
+		| 'value'
+		| 'onchange'
+		| 'oninput'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		// 基本プロパティ
 		name?: string;
 		/** Supports `bind:value`. */
@@ -88,9 +118,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

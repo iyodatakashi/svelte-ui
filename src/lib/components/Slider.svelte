@@ -3,6 +3,7 @@
 <script lang="ts">
 	import { getStyleFromNumber } from '$lib/utils/style';
 	import { t } from '$lib/i18n';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -15,7 +16,36 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type SliderProps = {
+	export type SliderProps = Omit<
+		HTMLInputAttributes,
+		// 独自型で再定義する props / イベントは除外して衝突を避ける
+		| 'value'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+		| 'onchange'
+		| 'oninput'
+	> & {
 		// 基本プロパティ
 		/** Supports `bind:value`. */
 		value: number;
@@ -78,9 +108,6 @@
 		// 入力イベント
 		onchange?: BivariantValueHandler<number>;
 		oninput?: BivariantValueHandler<number>;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

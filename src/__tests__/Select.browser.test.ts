@@ -77,7 +77,6 @@ test('Select variants render correctly', async () => {
 	const screenDefault = render(Select, {
 		value: '',
 		options: [{ value: 'test', label: 'Test' }],
-		variant: 'default',
 		id: 'select-default'
 	});
 	const containerDefault = screenDefault.container.querySelector('[data-testid="select"]');

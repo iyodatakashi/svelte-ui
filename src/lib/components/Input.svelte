@@ -16,11 +16,52 @@
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
 	import type { FocusStyle } from '$lib/types/propOptions';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type InputProps = {
+	export type InputProps = Omit<
+		HTMLInputAttributes,
+		// 独自の型で再定義するためベースの HTML 属性から除外
+		| 'value'
+		| 'type'
+		| 'id'
+		| 'tabindex'
+		| 'maxlength'
+		| 'pattern'
+		| 'min'
+		| 'max'
+		| 'step'
+		| 'autocomplete'
+		| 'spellcheck'
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+		| 'onchange'
+		| 'oninput'
+	> & {
 		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
@@ -76,6 +117,7 @@
 		required?: boolean;
 		/** Shows a clear (×) button when the input has a value. @default false */
 		clearable?: boolean;
+		clearButtonAriaLabel?: string;
 		/** Converts URLs in the value to clickable links. Only for `type="text"` or `type="url"`. @default false */
 		linkify?: boolean;
 		/** Adds a show/hide password toggle button. Only for `type="password"`. @default false */
@@ -139,9 +181,6 @@
 		onLeftIconTouchEnd?: TouchHandler;
 		onRightIconTouchCancel?: TouchHandler;
 		onLeftIconTouchCancel?: TouchHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

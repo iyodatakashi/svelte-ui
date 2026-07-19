@@ -13,11 +13,39 @@
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
 	import type { ComponentSize } from '$lib/types/propOptions';
+	import type { HTMLAttributes } from 'svelte/elements';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type SegmentedControlProps = {
+	export type SegmentedControlProps = Omit<
+		HTMLAttributes<HTMLDivElement>,
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系は除外して衝突を避ける
+		| 'onchange'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		// 基本プロパティ
 		/** `{ label, value, icon?, disabled? }[]` */
 		items: SegmentedControlItem[];
@@ -87,9 +115,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

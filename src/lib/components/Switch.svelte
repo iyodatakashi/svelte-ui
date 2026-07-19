@@ -2,6 +2,7 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -15,7 +16,37 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type SwitchProps = {
+	export type SwitchProps = Omit<
+		HTMLInputAttributes,
+		// 独自型で再定義する props / イベントは除外して衝突を避ける
+		| 'children'
+		| 'value'
+		| 'size'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+		| 'onchange'
+	> & {
 		// Snippet
 		children?: Snippet;
 
@@ -77,9 +108,6 @@
 
 		// 入力イベント
 		onchange?: BivariantValueHandler<boolean>;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

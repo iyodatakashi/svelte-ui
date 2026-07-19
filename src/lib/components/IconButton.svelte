@@ -19,7 +19,34 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type IconButtonProps = {
+	export type IconButtonProps = Omit<
+		HTMLButtonAttributes,
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系は除外して衝突を避ける
+		| 'children'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		// Snippet
 		/** Material Symbols icon name (e.g. `"close"`, `"edit"`). */
 		children: Snippet;
@@ -106,9 +133,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

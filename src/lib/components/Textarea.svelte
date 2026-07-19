@@ -20,7 +20,44 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type TextareaProps = {
+	export type TextareaProps = Omit<
+		HTMLTextareaAttributes,
+		// 独自の型で再定義するためベースの HTML 属性から除外
+		| 'value'
+		| 'id'
+		| 'tabindex'
+		| 'maxlength'
+		| 'autocomplete'
+		| 'wrap'
+		| 'spellcheck'
+		| 'autocapitalize'
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+		| 'onchange'
+		| 'oninput'
+	> & {
 		// 基本プロパティ
 		name?: string;
 		value: string | null | undefined;
@@ -112,9 +149,6 @@
 		// 入力イベント
 		onchange?: BivariantValueHandler<string>;
 		oninput?: BivariantValueHandler<string>;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

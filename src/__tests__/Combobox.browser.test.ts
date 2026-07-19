@@ -87,7 +87,7 @@ test('Combobox variants render correctly', async () => {
 	const screenInline = render(Combobox, {
 		value: undefined,
 		options: ['Option 1'],
-		variant: 'inline',
+		inline: true,
 		id: 'combobox-inline'
 	});
 	const comboboxInline = screenInline.container.querySelector('#combobox-inline');

@@ -19,7 +19,34 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type FabProps = {
+	export type FabProps = Omit<
+		HTMLButtonAttributes,
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系は除外して衝突を避ける
+		| 'children'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		children?: Snippet;
 		/** @default 'button' */
 		type?: HTMLButtonAttributes['type'];
@@ -86,7 +113,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-		[key: string]: any;
 	};
 
 	let {

@@ -173,7 +173,7 @@
 	>
 		{#if typeIcons[type]}
 			<div class="snackbar-item__icon" aria-hidden="true">
-				<Icon name={typeIcons[type]} size={32}>{typeIcons[type]}</Icon>
+				<Icon size={32}>{typeIcons[type]}</Icon>
 			</div>
 		{/if}
 

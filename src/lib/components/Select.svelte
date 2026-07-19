@@ -12,11 +12,44 @@
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
 	import type { Option } from '$lib/types/options';
+	import type { HTMLSelectAttributes } from 'svelte/elements';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type SelectProps = {
+	export type SelectProps = Omit<
+		HTMLSelectAttributes,
+		// 独自の型で再定義するためベースの HTML 属性から除外
+		| 'value'
+		| 'id'
+		| 'tabindex'
+		| 'size'
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+		| 'onchange'
+	> & {
 		// 基本プロパティ
 		name?: string;
 		value: string | number | null | undefined;
@@ -78,9 +111,6 @@
 
 		// 入力イベント
 		onchange?: BivariantValueHandler<string | number | null | undefined>;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

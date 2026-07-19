@@ -19,7 +19,34 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type ButtonProps = {
+	export type ButtonProps = Omit<
+		HTMLButtonAttributes,
+		// 独自ハンドラ型（callbackHandlers）で再定義するイベント系は除外して衝突を避ける
+		| 'children'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		// Snippet
 		children: Snippet;
 
@@ -39,6 +66,8 @@
 		fullWidth?: boolean;
 		/** Content alignment. Useful with `fullWidth`. @default 'center' */
 		align?: 'left' | 'center' | 'right';
+		/** Minimum width. A number is treated as px. @default 0 */
+		minWidth?: number;
 		rounded?: boolean;
 		/** Adds a chevron-down icon. Use when the button opens a popup/dropdown. @default false */
 		popup?: boolean;
@@ -97,9 +126,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

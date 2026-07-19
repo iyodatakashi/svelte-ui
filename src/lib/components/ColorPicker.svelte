@@ -3,6 +3,7 @@
 <script lang="ts">
 	import { untrack } from 'svelte';
 	import Input from './Input.svelte';
+	import type { HTMLInputAttributes } from 'svelte/elements';
 	import { t } from '$lib/i18n';
 	import type { IconVariant } from '$lib/types/icon';
 	import type {
@@ -17,7 +18,46 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type ColorPickerProps = {
+	export type ColorPickerProps = Omit<
+		HTMLInputAttributes,
+		// Input と生の color input の両方へ転送するため、Input が絞り込むキーと独自ハンドラを除外
+		| 'value'
+		| 'type'
+		| 'id'
+		| 'tabindex'
+		| 'maxlength'
+		| 'pattern'
+		| 'min'
+		| 'max'
+		| 'step'
+		| 'autocomplete'
+		| 'spellcheck'
+		| 'onchange'
+		| 'oninput'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		// 基本プロパティ
 		/** Hex color string (e.g. `"#ff0000"`). Supports `bind:value`. */
 		value: string | null | undefined;
@@ -79,9 +119,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

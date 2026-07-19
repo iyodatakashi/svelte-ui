@@ -11,6 +11,7 @@
 	import 'dayjs/locale/es';
 	import 'dayjs/locale/zh-cn';
 	import Input from './Input.svelte';
+	import type { InputProps } from './Input.svelte';
 	import Popup from './Popup.svelte';
 	import DatepickerCalendar from './DatepickerCalendar.svelte';
 	import { announceToScreenReader } from '$lib/utils/accessibility';
@@ -31,7 +32,36 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type DatepickerProps = {
+	export type DatepickerProps = Omit<
+		InputProps,
+		// 独自ハンドラ型と独自型の value は除外して衝突を避ける（余剰プロパティは Input へ転送）
+		| 'value'
+		| 'onchange'
+		| 'oninput'
+		| 'onfocus'
+		| 'onblur'
+		| 'onkeydown'
+		| 'onkeyup'
+		| 'onclick'
+		| 'onmousedown'
+		| 'onmouseup'
+		| 'onmouseenter'
+		| 'onmouseleave'
+		| 'onmouseover'
+		| 'onmouseout'
+		| 'oncontextmenu'
+		| 'onauxclick'
+		| 'ontouchstart'
+		| 'ontouchend'
+		| 'ontouchmove'
+		| 'ontouchcancel'
+		| 'onpointerdown'
+		| 'onpointerup'
+		| 'onpointerenter'
+		| 'onpointerleave'
+		| 'onpointermove'
+		| 'onpointercancel'
+	> & {
 		// 基本プロパティ
 		/** Selected date (single mode) or range (range mode). Supports `bind:value`. */
 		value: Date | { start: Date; end: Date } | undefined;
@@ -104,9 +134,6 @@
 		onpointerleave?: PointerHandler;
 		onpointermove?: PointerHandler;
 		onpointercancel?: PointerHandler;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {

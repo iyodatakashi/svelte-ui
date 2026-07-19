@@ -2,13 +2,14 @@
 
 <script lang="ts">
 	import type { Snippet } from 'svelte';
+	import type { HTMLAttributes } from 'svelte/elements';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
 	import { getStyleFromNumber } from '$lib/utils/style';
 
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type IconProps = {
+	export type IconProps = Omit<HTMLAttributes<HTMLElement>, 'children'> & {
 		// Snippet
 		/** Material Symbols icon name (e.g. `"home"`, `"settings"`). */
 		children: Snippet;
@@ -39,9 +40,6 @@
 		ariaLabel?: string;
 		/** Marks the icon as decorative (hidden from screen readers). @default true */
 		decorative?: boolean;
-
-		// その他
-		[key: string]: any;
 	};
 
 	let {
