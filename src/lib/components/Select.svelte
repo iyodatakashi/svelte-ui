@@ -486,7 +486,7 @@ select--focus-{focusStyle}"
 			box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-select-border-color);
 			border: none;
 			border-radius: var(--svelte-ui-select-border-radius);
-			font-size: 1rem;
+			font-size: var(--svelte-ui-font-size);
 			line-height: var(--svelte-ui-select-height);
 		}
 	}

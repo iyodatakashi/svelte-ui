@@ -697,7 +697,7 @@
 	}
 
 	.datepicker-calendar__header__month-label-button {
-		font-size: 1.4rem;
+		font-size: var(--svelte-ui-font-size-xl);
 		font-weight: bold;
 		color: var(--svelte-ui-datepicker-date-color);
 		background: none;
@@ -730,7 +730,7 @@
 		border-radius: var(--svelte-ui-border-radius);
 		background-color: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-datepicker-date-color);
-		font-size: 1rem;
+		font-size: var(--svelte-ui-font-size);
 		cursor: pointer;
 		transition: background-color var(--svelte-ui-transition-duration);
 
@@ -783,7 +783,7 @@
 		display: flex;
 		justify-content: center;
 		padding: 2px 0;
-		font-size: 1rem;
+		font-size: var(--svelte-ui-font-size);
 		width: calc(100% / 7);
 	}
 

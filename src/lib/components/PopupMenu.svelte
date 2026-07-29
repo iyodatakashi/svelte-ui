@@ -355,7 +355,7 @@
 		padding: 8px 16px;
 		background: transparent;
 		border: none;
-		font-size: 1rem;
+		font-size: var(--svelte-ui-font-size);
 		color: var(--svelte-ui-popupmenu-text-color);
 		text-align: left;
 		white-space: nowrap;
@@ -415,7 +415,7 @@
 
 	:global(.popup--fullscreen) .popup-menu__button {
 		padding: 16px 24px;
-		font-size: 1.1rem;
+		font-size: var(--svelte-ui-font-size);
 		min-height: var(--svelte-ui-touch-target-lg);
 	}
 </style>
