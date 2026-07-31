@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.58] - 2026-07-31
+
+### Changed
+
+- Typography scale was reorganized and now drives component font sizes, so they follow the root font size. A new `xxl` (2rem) step was added, and `lg` / `xl` were enlarged (`lg` 1.125rem → 1.25rem/20px, `xl` 1.25rem → 1.5rem/24px). The final scale is `xs` 12px / `sm` 14px / base 16px / `lg` 20px / `xl` 24px / `xxl` 32px. As a result, **Dialog** / **Drawer** titles and the **Datepicker** month label are larger, and **SegmentedControl** font sizes were raised one step.
+- Subtle and placeholder text colors were darkened for better contrast in both light and dark themes: `--svelte-ui-text-subtle-color`, `--svelte-ui-text-inverse-subtle-color`, and `--svelte-ui-text-placeholder-color` now use the 500 tone instead of 400.
+
 ## [0.0.57] - 2026-07-19
 
 ### Changed
