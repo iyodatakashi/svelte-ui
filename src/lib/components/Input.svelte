@@ -930,6 +930,8 @@
  * 基本コンポーネント
  * ============================================= */
 	input {
+		/* block にして親の line-height による行ボックス内ベースライン配置のズレを防ぐ */
+		display: block;
 		width: 100%;
 		min-width: 1em;
 		min-height: var(--svelte-ui-input-height);
@@ -941,7 +943,7 @@
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
-		line-height: inherit;
+		line-height: var(--svelte-ui-input-height);
 		text-align: inherit;
 
 		&[type='number'] {
@@ -964,7 +966,7 @@
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
-		line-height: inherit;
+		line-height: var(--svelte-ui-input-height);
 		text-align: inherit;
 		opacity: 1;
 		transition: none;
@@ -1221,6 +1223,7 @@
 	.input--inline .input__wrapper,
 	.input--inline input {
 		min-height: inherit;
+		line-height: inherit;
 		background-color: transparent;
 		box-shadow: none;
 		border: inherit;
@@ -1232,7 +1235,18 @@
 		.input__display-text,
 		.input__link-text {
 			height: inherit;
+			line-height: inherit;
 			padding: inherit;
+		}
+
+		/*
+		 * 箱は継承 line-height（周囲テキストへの追従）を保ちつつ、表示テキストの内側だけ
+		 * 自然な line-height にして flex 中央寄せする。input は line-height に依らず内容ボックス
+		 * 中央にテキストを描画するため、こうすると focus 切り替え時の縦位置が一致する
+		 */
+		.input__display-text-content,
+		.input__link-text-content {
+			line-height: normal;
 		}
 
 		&.input--has-left-icon {
