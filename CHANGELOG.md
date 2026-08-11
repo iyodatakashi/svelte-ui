@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.60] - 2026-08-11
+
+### Fixed
+
+- **Input** (`inline`): Fixed the displayed text shifting vertically on focus when a non-default `line-height` is inherited from an ancestor. The inline field still inherits `line-height` for layout, but its displayed text is now vertically centered to match the focused input, so it no longer jumps (previously off by about 1px depending on the font and inherited `line-height`).
+
+## [0.0.59] - 2026-08-11
+
+### Fixed
+
+- **Input**: The text no longer shifts vertically when the field gains focus (switching from the display text to the actual input). The shift was most noticeable when a non-default `line-height` or `font-size` was inherited from an ancestor, where it could reach several pixels. Descenders are also no longer clipped under a tight inherited `line-height`.
+
 ## [0.0.58] - 2026-07-31
 
 ### Changed
