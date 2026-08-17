@@ -560,6 +560,7 @@
 	class:textarea--full-width={fullWidth}
 	class:textarea--full-height={fullHeight}
 	class:textarea--auto-resize={autoResize}
+	class:textarea--max-height={maxHeight != null && !inline}
 	class:textarea--clearable={clearable}
 	class:textarea--rounded={rounded}
 	class:textarea--disabled={disabled}
@@ -795,6 +796,12 @@
 	.textarea--auto-resize {
 		textarea {
 			height: 100%;
+			/* maxHeight 未指定時は高さが常に中身と一致するため、丸め由来の 1px オーバーフローで
+			   スクロールバーが出ないよう hidden にする。maxHeight 指定時のみ auto でスクロールさせる */
+			overflow-y: hidden;
+		}
+
+		&.textarea--max-height textarea {
 			overflow-y: auto;
 		}
 	}
