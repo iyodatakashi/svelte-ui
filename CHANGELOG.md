@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.61] - 2026-08-17
+
+### Fixed
+
+- **Textarea** (`autoResize`): Fixed a spurious vertical scrollbar that appeared once the content grew beyond a certain length when no `maxHeight` was set. In auto-resize mode without `maxHeight` the textarea no longer scrolls (sub-pixel rounding could push its content 1px past the box); scrolling still works as before when `maxHeight` is specified.
+
 ## [0.0.60] - 2026-08-11
 
 ### Fixed
