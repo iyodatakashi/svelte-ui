@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.62] - 2026-09-06
+
+### Fixed
+
+- **Snackbar**: Snackbars now appear above modal dialogs. They are promoted to the browser top layer (via the Popover API), so they are no longer hidden behind a `Dialog` / `Modal` opened with the native top layer. On browsers without Popover API support, the previous `z-index` behavior is used as a fallback.
+
 ## [0.0.61] - 2026-08-17
 
 ### Fixed
