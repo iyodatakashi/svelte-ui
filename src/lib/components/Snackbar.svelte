@@ -55,6 +55,26 @@
 	let bottomItems: SnackbarData[] = $derived(
 		snackbarManager.items.filter((item) => item.position === 'bottom')
 	);
+
+	// =========================================================================
+	// Top layer (popover)
+	// =========================================================================
+	// Modal は <dialog>.showModal() でトップレイヤーに載るため、通常の z-index では前面に出せない。
+	// Snackbar 自身も popover でトップレイヤーに載せて Dialog より前面に表示する。
+	let topEl: HTMLDivElement | null = $state(null);
+	let bottomEl: HTMLDivElement | null = $state(null);
+
+	const ensureShown = (el: HTMLDivElement | null) => {
+		if (!el || typeof el.showPopover !== 'function') return;
+		if (!el.matches(':popover-open')) el.showPopover();
+	};
+
+	$effect(() => {
+		if (topItems.length > 0) ensureShown(topEl);
+	});
+	$effect(() => {
+		if (bottomItems.length > 0) ensureShown(bottomEl);
+	});
 </script>
 
 {#snippet snackbarItemSnippet(item: SnackbarData, index: number)}
@@ -79,7 +99,7 @@
 
 <!-- Snackbar Top Items -->
 {#if topItems.length > 0}
-	<div class="snackbar snackbar--top" data-testid="snackbar">
+	<div bind:this={topEl} class="snackbar snackbar--top" popover="manual" data-testid="snackbar">
 		{#each topItems as item, index (item.id)}
 			{@render snackbarItemSnippet(item, index)}
 		{/each}
@@ -88,7 +108,12 @@
 
 <!-- Snackbar Bottom Items -->
 {#if bottomItems.length > 0}
-	<div class="snackbar snackbar--bottom" data-testid="snackbar">
+	<div
+		bind:this={bottomEl}
+		class="snackbar snackbar--bottom"
+		popover="manual"
+		data-testid="snackbar"
+	>
 		{#each bottomItems as item, index (item.id)}
 			{@render snackbarItemSnippet(item, index)}
 		{/each}
@@ -97,12 +122,23 @@
 
 <style>
 	.snackbar {
+		/* popover の UA デフォルトスタイルを打ち消す（inset/margin/border/padding/背景/overflow）。
+		   inset は left より先に打ち消す（あとに置くと left の中央寄せを上書きしてしまう） */
+		inset: auto;
+		margin: 0;
+		padding: 0;
+		border: 0;
+		background: transparent;
+		overflow: visible;
+		color: inherit;
+
 		position: fixed;
 		left: 50%;
 		transform: translateX(-50%);
 		width: max-content;
 		max-width: 90vw;
 		pointer-events: none;
+		/* popover 非対応ブラウザ向けフォールバック（対応時はトップレイヤーで最前面になる） */
 		z-index: var(--svelte-ui-snackbar-z-index, 1000);
 		display: flex;
 		flex-direction: column;
