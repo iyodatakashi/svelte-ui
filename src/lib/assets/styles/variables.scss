@@ -200,18 +200,18 @@
 	--svelte-ui-text-placeholder-color: var(--white-500-transparent);
 
 	/* ボーダーカラー */
-	--svelte-ui-border-color: var(--white-400-transparent);
-	--svelte-ui-border-weak-color: var(--white-200-transparent);
-	--svelte-ui-border-strong-color: var(--white-600-transparent);
+	--svelte-ui-border-color: var(--white-200-transparent);
+	--svelte-ui-border-weak-color: var(--white-100-transparent);
+	--svelte-ui-border-strong-color: var(--white-300-transparent);
 
 	/* 非アクティブ色 */
-	--svelte-ui-inactive-color: var(--white-400-transparent);
+	--svelte-ui-inactive-color: var(--white-200-transparent);
 
 	/* 入力欄背景色 */
 	--svelte-ui-form-bg: var(--white-100-transparent);
 
 	/* サーフェス背景色 */
-	--svelte-ui-surface-color: var(--base-900);
+	--svelte-ui-surface-color: var(--base-950);
 	--svelte-ui-surface-accent-color: var(--white-50-transparent);
 	--svelte-ui-surface-inverse-color: var(--white-800-transparent);
 
@@ -220,7 +220,7 @@
 
 	/* hover & select 効果 */
 	--svelte-ui-hover-overlay: var(--white-100-transparent);
-	--svelte-ui-select-overlay: var(--primary-200-transparent);
+	--svelte-ui-select-overlay: var(--primary-800-transparent);
 
 	/* ドロップダウンアイコン */
 	--svelte-ui-dropdown-icon-color: var(--svelte-ui-text-subtle-color);
@@ -232,7 +232,7 @@
 	--svelte-ui-disabled-bg: var(--white-100-transparent);
 
 	/* Glass色 */
-	--svelte-ui-glass-bg: var(--white-200-transparent);
+	--svelte-ui-glass-bg: var(--white-100-transparent);
 }
 
 :where(:root),
