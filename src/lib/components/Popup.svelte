@@ -553,7 +553,7 @@
 	id={popupId}
 	data-testid="popup"
 	use:clickOutside={() => {
-		close('outside');
+		if (isOpen) close('outside');
 	}}
 >
 	{@render children()}
