@@ -2,6 +2,7 @@ import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import Dialog from '../lib/components/Dialog.svelte';
+import StackedDialogs from './helpers/StackedDialogs.svelte';
 
 test('renders Dialog with default props', async () => {
 	const screen = render(ComponentWrapper, {
@@ -171,4 +172,23 @@ test('Dialog width property changes reactively', async () => {
 	});
 
 	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 500px'));
+});
+
+test('Escape closes only the topmost of two stacked Dialogs', async () => {
+	const { userEvent } = await import('@vitest/browser/context');
+	const screen = render(StackedDialogs);
+
+	screen.component.openBoth();
+
+	const outer = screen.container.querySelector('#outer-modal') as HTMLDialogElement;
+	const inner = screen.container.querySelector('#inner-modal') as HTMLDialogElement;
+	expect(outer.open).toBe(true);
+	expect(inner.open).toBe(true);
+
+	await userEvent.keyboard('{Escape}');
+
+	// The inner dialog closes after its fade-out animation; the outer one must stay open.
+	await expect.poll(() => inner.open).toBe(false);
+	expect(outer.open).toBe(true);
+	expect(outer).toHaveClass('fade-in');
 });

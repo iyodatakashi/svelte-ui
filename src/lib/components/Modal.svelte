@@ -103,18 +103,20 @@
 	});
 
 	$effect(() => {
-		if (!isOpen || !dialogRef) return;
+		if (!dialogRef) return;
 
-		const handleKeyDown = (event: KeyboardEvent) => {
-			if (event.key === 'Escape') {
-				close();
-			}
+		// showModal() した dialog は最前面の1つだけに cancel が配送されるため、
+		// Escape で多重の Modal がまとめて閉じることを防げる。ネイティブの即時
+		// クローズは抑止し、fade-out アニメーション付きの close() を使う。
+		const handleCancel = (event: Event) => {
+			event.preventDefault();
+			close();
 		};
 
-		document.addEventListener('keydown', handleKeyDown);
+		dialogRef.addEventListener('cancel', handleCancel);
 
 		return () => {
-			document.removeEventListener('keydown', handleKeyDown);
+			dialogRef.removeEventListener('cancel', handleCancel);
 		};
 	});
 
