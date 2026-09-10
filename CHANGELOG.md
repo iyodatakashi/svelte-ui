@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.65] - 2026-09-11
+
+### Added
+
+- **Modal** / **Dialog** / **Drawer** / **ConfirmDialog**: New `onOpen` and `onClose` props. These components recommended `onOpen` / `onClose` for side effects, but the props did not exist, so there was no way to react to a dialog being dismissed with Escape or a backdrop click. `onClose` is called after the close animation completes and receives a `CloseReason` (`'escape'` / `'outside'` / `'explicit'`), matching **Popup**.
+- `CloseReason` is now exported from the package entry point, so handlers for **Popup**'s existing `onClose` can be typed as well.
+
+### Changed
+
+- **ConfirmDialog**: `onCancel` now also fires when the dialog is dismissed with Escape or a backdrop click, not only when the cancel button is clicked. This matches how the native `<dialog>` element treats Escape.
+
+### Fixed
+
+- **Modal** / **Dialog** / **Drawer**: The component no longer announces itself as closed to screen readers on mount, before it has ever been opened. Internal open/close handling also no longer runs twice for a single state change.
+
 ## [0.0.64] - 2026-09-11
 
 ### Fixed
