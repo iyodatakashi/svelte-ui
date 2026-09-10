@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.63] - 2026-09-08
+
+### Changed
+
+- **Dark theme**: Refined dark-theme colors for better consistency with the light theme. Borders are more subtle, the surface background is slightly darker, and the selected-item highlight (e.g. Combobox options) uses a brighter accent tone that reads more naturally on dark backgrounds.
+
 ## [0.0.62] - 2026-09-06
 
 ### Fixed
