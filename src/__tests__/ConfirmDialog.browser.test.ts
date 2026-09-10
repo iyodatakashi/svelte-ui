@@ -70,6 +70,44 @@ test('ConfirmDialog cancel button works correctly', async () => {
 	expect(cancelCalled).toBe(true);
 });
 
+test('ConfirmDialog treats Escape as cancel', async () => {
+	const { userEvent } = await import('@vitest/browser/context');
+	let cancelCount = 0;
+	render(ComponentWrapper, {
+		component: ConfirmDialog,
+		isOpen: true,
+		onCancel: () => {
+			cancelCount += 1;
+		},
+		id: 'escape-cancel-dialog-test'
+	});
+
+	await userEvent.keyboard('{Escape}');
+
+	await expect.poll(() => cancelCount).toBe(1);
+});
+
+test('ConfirmDialog does not double-call onCancel when the cancel button is used', async () => {
+	let cancelCount = 0;
+	const screen = render(ComponentWrapper, {
+		component: ConfirmDialog,
+		isOpen: true,
+		onCancel: () => {
+			cancelCount += 1;
+		},
+		id: 'cancel-once-dialog-test'
+	});
+
+	const cancelButton = screen.container.querySelector(
+		'button[data-testid="button"]:first-child'
+	) as HTMLButtonElement | null;
+
+	await cancelButton?.click();
+	await new Promise((resolve) => setTimeout(resolve, 400));
+
+	expect(cancelCount).toBe(1);
+});
+
 test('ConfirmDialog danger prop renders correctly', async () => {
 	// Test default (non-danger)
 	const screenDefault = render(ComponentWrapper, {

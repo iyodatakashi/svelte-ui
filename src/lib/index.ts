@@ -105,7 +105,8 @@ export type {
 	FocusStyle,
 	NavVariant,
 	ChildrenVariant,
-	StepNavOrientation
+	StepNavOrientation,
+	CloseReason
 } from './types/propOptions';
 
 // Types

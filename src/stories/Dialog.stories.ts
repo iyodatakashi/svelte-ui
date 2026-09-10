@@ -82,6 +82,16 @@ const meta = {
 		noPadding: {
 			control: 'boolean',
 			description: 'Remove default padding from body section'
+		},
+		onOpen: {
+			control: false,
+			action: 'opened',
+			description: 'Called when the dialog opens'
+		},
+		onClose: {
+			control: false,
+			action: 'closed',
+			description: 'Called when the dialog closes, with the close reason'
 		}
 	}
 } satisfies Meta<typeof Dialog>;

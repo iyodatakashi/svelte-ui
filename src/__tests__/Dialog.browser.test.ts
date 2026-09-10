@@ -1,8 +1,10 @@
 import { test, expect } from 'vitest';
+import { tick } from 'svelte';
 import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import Dialog from '../lib/components/Dialog.svelte';
 import StackedDialogs from './helpers/StackedDialogs.svelte';
+import DialogCallbacks from './helpers/DialogCallbacks.svelte';
 
 test('renders Dialog with default props', async () => {
 	const screen = render(ComponentWrapper, {
@@ -172,6 +174,57 @@ test('Dialog width property changes reactively', async () => {
 	});
 
 	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 500px'));
+});
+
+// =========================================================================
+// onOpen / onClose
+// =========================================================================
+
+test('Dialog calls onOpen once when opened', async () => {
+	const screen = render(DialogCallbacks);
+
+	screen.component.open();
+
+	await expect.poll(() => screen.component.getOpenCount()).toBe(1);
+});
+
+test('Dialog calls onClose with "explicit" when closed via ref', async () => {
+	const screen = render(DialogCallbacks);
+
+	screen.component.open();
+	screen.component.close();
+
+	await expect.poll(() => screen.component.getCloseReasons()).toEqual(['explicit']);
+});
+
+test('Dialog calls onClose with "escape" when closed by the Escape key', async () => {
+	const { userEvent } = await import('@vitest/browser/context');
+	const screen = render(DialogCallbacks);
+
+	screen.component.open();
+	await userEvent.keyboard('{Escape}');
+
+	await expect.poll(() => screen.component.getCloseReasons()).toEqual(['escape']);
+});
+
+test('Dialog calls onClose with "outside" when the backdrop is clicked', async () => {
+	const screen = render(DialogCallbacks);
+
+	screen.component.open();
+	// 外側クリックのリスナーは isOpen を見る $effect で張られるため、反映を待つ
+	await tick();
+	const dialog = screen.container.querySelector('#callbacks-modal') as HTMLDialogElement;
+	dialog.dispatchEvent(new MouseEvent('click', { bubbles: true }));
+
+	await expect.poll(() => screen.component.getCloseReasons()).toEqual(['outside']);
+});
+
+test('Dialog does not call onClose while it has never been opened', async () => {
+	const screen = render(DialogCallbacks);
+
+	await new Promise((resolve) => setTimeout(resolve, 50));
+
+	expect(screen.component.getCloseReasons()).toEqual([]);
 });
 
 test('Escape closes only the topmost of two stacked Dialogs', async () => {

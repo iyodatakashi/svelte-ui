@@ -66,7 +66,17 @@ const meta = {
 		},
 		onCancel: {
 			action: 'cancelled',
-			description: 'Callback when cancel button is clicked'
+			description: 'Callback on cancel, including Escape and backdrop dismissal'
+		},
+		onOpen: {
+			control: false,
+			action: 'opened',
+			description: 'Called when the dialog opens'
+		},
+		onClose: {
+			control: false,
+			action: 'closed',
+			description: 'Called when the dialog closes, with the close reason'
 		}
 	}
 } satisfies Meta<typeof ConfirmDialog>;

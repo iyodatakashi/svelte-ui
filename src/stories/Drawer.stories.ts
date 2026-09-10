@@ -87,6 +87,16 @@ const meta = {
 		isOpen: {
 			control: 'boolean',
 			description: 'Whether the drawer is open (bindable)'
+		},
+		onOpen: {
+			control: false,
+			action: 'opened',
+			description: 'Called when the drawer opens'
+		},
+		onClose: {
+			control: false,
+			action: 'closed',
+			description: 'Called when the drawer closes, with the close reason'
 		}
 	}
 } satisfies Meta<typeof Drawer>;

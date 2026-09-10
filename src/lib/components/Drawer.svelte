@@ -14,6 +14,7 @@
 	 * This prevents state synchronization bugs and ensures consistent behavior.
 	 */
 	import type { Snippet } from 'svelte';
+	import type { CloseReason } from '$lib/types/propOptions';
 	import Modal from './Modal.svelte';
 	import { getStyleFromNumber } from '$lib/utils/style';
 
@@ -58,6 +59,11 @@
 		// ARIA/アクセシビリティ
 		ariaLabel?: string;
 		ariaDescribedby?: string;
+
+		// イベントハンドラー
+		onOpen?: () => void;
+		/** Called after the close animation completes, with the reason it was closed. */
+		onClose?: (reason: CloseReason) => void;
 	};
 
 	let {
@@ -88,7 +94,11 @@
 
 		// ARIA/アクセシビリティ
 		ariaLabel = 'Drawer',
-		ariaDescribedby
+		ariaDescribedby,
+
+		// イベントハンドラー
+		onOpen = () => {}, // No params for type inference
+		onClose = () => {}
 	}: DrawerProps = $props();
 
 	let modalRef: Modal;
@@ -159,6 +169,8 @@
 	{closeIfClickOutside}
 	{restoreFocus}
 	{focusFirstOnOpen}
+	{onOpen}
+	{onClose}
 	componentType="Drawer"
 	{ariaLabel}
 	{ariaLabelledby}

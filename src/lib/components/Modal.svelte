@@ -13,6 +13,7 @@
 	 * This prevents state synchronization bugs and ensures consistent behavior.
 	 */
 	import type { Snippet } from 'svelte';
+	import type { CloseReason } from '$lib/types/propOptions';
 	import { announceOpenClose } from '$lib/utils/accessibility';
 
 	// =========================================================================
@@ -47,6 +48,11 @@
 		ariaLabel?: string;
 		ariaLabelledby?: string;
 		ariaDescribedby?: string;
+
+		// イベントハンドラー
+		onOpen?: () => void;
+		/** Called after the close animation completes, with the reason it was closed. */
+		onClose?: (reason: CloseReason) => void;
 	};
 
 	let {
@@ -72,12 +78,19 @@
 		// ARIA/アクセシビリティ
 		ariaLabel,
 		ariaLabelledby,
-		ariaDescribedby
+		ariaDescribedby,
+
+		// イベントハンドラー
+		onOpen = () => {}, // No params for type inference
+		onClose = () => {}
 	}: ModalProps = $props();
 
 	let dialogRef: HTMLDialogElement;
 	let containerRef: HTMLDivElement;
 	let previousActiveElement: HTMLElement | null = null;
+	// isOpen は bind でも変わるため、実際に開いているかは内部で持つ
+	let isVisible = false;
+	let pendingCloseReason: CloseReason | null = null;
 
 	// =========================================================================
 	// Effects
@@ -89,7 +102,7 @@
 			if (!closeIfClickOutside) return;
 			if (!containerRef || !event.target) return;
 			if (!containerRef.contains(event.target as Node)) {
-				close();
+				close(undefined, 'outside');
 			}
 		};
 
@@ -110,7 +123,7 @@
 		// クローズは抑止し、fade-out アニメーション付きの close() を使う。
 		const handleCancel = (event: Event) => {
 			event.preventDefault();
-			close();
+			close(undefined, 'escape');
 		};
 
 		dialogRef.addEventListener('cancel', handleCancel);
@@ -172,11 +185,14 @@
 	// =========================================================================
 	/** Opens the modal. */
 	export const open = (title?: string): void => {
-		if (!dialogRef) return;
+		if (!dialogRef || isVisible) return;
 
+		isVisible = true;
 		isOpen = true;
 		previousActiveElement = document.activeElement as HTMLElement;
 
+		// 閉じるアニメーションの途中で開き直した場合は close を取り消す
+		pendingCloseReason = null;
 		dialogRef.classList.add('fade-in');
 		dialogRef.removeEventListener('animationend', closeEnd);
 		dialogRef.showModal();
@@ -186,14 +202,17 @@
 				dialogRef?.focus();
 			}
 			announceOpenClose(componentType, true, title || ariaLabel || '');
+			onOpen?.();
 		}, 0);
 	};
 
 	/** Closes the modal. */
-	export const close = (title?: string): void => {
-		if (!dialogRef) return;
+	export const close = (title?: string, reason: CloseReason = 'explicit'): void => {
+		if (!dialogRef || !isVisible) return;
 
+		isVisible = false;
 		isOpen = false;
+		pendingCloseReason = reason;
 		dialogRef.classList.add('fade-out');
 		dialogRef.addEventListener('animationend', closeEnd, { once: true });
 
@@ -211,11 +230,18 @@
 			previousActiveElement.focus();
 		}
 		previousActiveElement = null;
+
+		// アニメーション完了後に onClose を呼ぶ
+		if (pendingCloseReason) {
+			const reason = pendingCloseReason;
+			pendingCloseReason = null;
+			onClose?.(reason);
+		}
 	};
 
 	/** Toggles between open and closed. */
 	export const toggle = (title?: string): void => {
-		if (isOpen) {
+		if (isVisible) {
 			close(title);
 		} else {
 			open(title);

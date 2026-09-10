@@ -228,6 +228,12 @@ let { isOpen = $bindable(false) }: Props = $props();
 <Dialog bind:isOpen />
 ```
 
+開閉に伴う副作用は `onOpen` / `onClose` で受け取る。`onClose` は閉じるアニメーション完了後に `CloseReason`（`'escape'` / `'outside'` / `'explicit'`）を伴って呼ばれる。Modal / Dialog / Drawer / ConfirmDialog / Popup で共通。
+
+```svelte
+<Dialog bind:this={dialogRef} onClose={(reason) => { if (reason !== 'explicit') discardDraft(); }} />
+```
+
 ## エクスポートパターン
 
 ```typescript

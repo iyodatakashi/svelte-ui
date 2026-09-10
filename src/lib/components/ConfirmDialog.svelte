@@ -5,6 +5,7 @@
 	import Button from './Button.svelte';
 	import { convertToHtml } from '$lib/utils/formatText';
 	import type { SvelteComponent } from 'svelte';
+	import type { CloseReason } from '$lib/types/propOptions';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -35,7 +36,11 @@
 
 		// イベントハンドラー
 		onSubmit?: () => void;
+		/** Called on cancel, including dismissal via Escape or a backdrop click. */
 		onCancel?: () => void;
+		onOpen?: () => void;
+		/** Called after the close animation completes, with the reason it was closed. */
+		onClose?: (reason: CloseReason) => void;
 	};
 
 	let {
@@ -60,7 +65,9 @@
 
 		// イベントハンドラー
 		onSubmit = () => {}, // No params for type inference
-		onCancel = () => {} // No params for type inference
+		onCancel = () => {}, // No params for type inference
+		onOpen = () => {},
+		onClose = () => {}
 	}: ConfirmDialogProps = $props();
 
 	let dialogRef: SvelteComponent | undefined = $state();
@@ -76,6 +83,14 @@
 	const handleCancel = (): void => {
 		onCancel();
 		close();
+	};
+
+	const handleClose = (reason: CloseReason): void => {
+		// Escape / 背景クリックでの離脱もキャンセルとして扱う
+		if (reason !== 'explicit') {
+			onCancel();
+		}
+		onClose(reason);
 	};
 
 	/** Opens the dialog. */
@@ -102,6 +117,8 @@
 	{scrollable}
 	{closeIfClickOutside}
 	{focusFirstOnOpen}
+	{onOpen}
+	onClose={handleClose}
 	id={id ? `${id}-dialog` : undefined}
 >
 	<div class="confirm-dialog-message">
