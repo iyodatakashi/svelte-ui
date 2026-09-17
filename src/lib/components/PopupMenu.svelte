@@ -243,7 +243,7 @@
 		onkeydown={handleKeyDown}
 	>
 		<ul class="popup-menu__list" role="none">
-			{#each menuItems as item, index}
+			{#each menuItems as item, index (item === 'separator' ? `separator-${index}` : item)}
 				<li class="popup-menu__item" role="none">
 					{#if item === 'separator'}
 						<div class="popup-menu__separator" role="separator" aria-orientation="horizontal"></div>
