@@ -5,8 +5,7 @@ import PopupEscape from './helpers/PopupEscape.svelte';
 
 const isPopoverOpen = (el: Element) => el.matches(':popover-open');
 
-// The outside-click listener is registered 1ms after mount.
-const waitForClickOutsideListener = () => new Promise((r) => setTimeout(r, 20));
+const settle = () => new Promise((r) => setTimeout(r, 20));
 
 test('Escape closes the Popup with reason "escape" while focus stays on the anchor', async () => {
 	const onClose = vi.fn();
@@ -29,7 +28,7 @@ test('outside click while the Popup is closed does not leak into the next close 
 	render(PopupEscape, { onClose });
 	const popup = document.querySelector('#popup-alone')!;
 
-	await waitForClickOutsideListener();
+	await settle();
 	await userEvent.click(document.querySelector('#neutral')!);
 	expect(onClose).not.toHaveBeenCalled();
 

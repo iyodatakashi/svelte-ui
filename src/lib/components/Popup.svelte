@@ -18,6 +18,7 @@
 	import { onDestroy, tick, onMount } from 'svelte';
 	import { isMobileDevice, disableBodyScroll } from '$lib/utils/mobile';
 	import { announceOpenClose } from '$lib/utils/accessibility';
+	import { waitForAnimations } from '$lib/utils/animation';
 	import { popupManager } from '$lib/utils/popupManager';
 	import type { CloseReason, PopupPosition } from '$lib/types/propOptions';
 
@@ -106,6 +107,10 @@
 	let isMobile: boolean = $state(false);
 	let bodyScrollCleanup: (() => void) | undefined = $state();
 	let pendingCloseReason: CloseReason = 'explicit';
+	let openTimer: ReturnType<typeof setTimeout> | undefined;
+	// open()/close() のたびに進め、進行中の終了処理が古い場合に破棄するための番号
+	let closeSequence = 0;
+	let isClosing = false;
 
 	// =========================================================================
 	// Lifecycle
@@ -115,6 +120,9 @@
 	});
 
 	onDestroy(() => {
+		cancelPendingOpen();
+		closeSequence++;
+		isClosing = false;
 		removeEventListenersToClose();
 		removeKeyboardListener();
 		cleanupMobileFeatures();
@@ -346,16 +354,25 @@
 
 	const closeOnResize = () => close();
 
+	const handleClickOutside = (event: MouseEvent) => {
+		if (!(event.target instanceof Node)) return;
+		if (popupRef?.contains(event.target)) return;
+		if (anchorElement?.contains(event.target)) return;
+		close('outside');
+	};
+
 	const addEventListenersToClose = () => {
 		if (typeof window === 'undefined' || typeof document === 'undefined') return;
 		window.addEventListener('resize', closeOnResize);
 		document.addEventListener('scroll', handleScroll, true);
+		document.addEventListener('click', handleClickOutside, true);
 	};
 
 	const removeEventListenersToClose = () => {
 		if (typeof window === 'undefined' || typeof document === 'undefined') return;
 		window.removeEventListener('resize', closeOnResize);
 		document.removeEventListener('scroll', handleScroll, true);
+		document.removeEventListener('click', handleClickOutside, true);
 	};
 
 	const addKeyboardListener = () => {
@@ -403,6 +420,9 @@
 	};
 
 	const closeEnd = () => {
+		if (!isClosing) return;
+		isClosing = false;
+
 		popupRef?.hidePopover();
 
 		if (popupRef) {
@@ -421,29 +441,19 @@
 		onClose?.(reason);
 	};
 
-	const clickOutside = (element: HTMLElement, callbackFunction: () => void) => {
-		function onClick(event: MouseEvent) {
-			if (!(event.target instanceof Node)) return;
+	/** 閉じるアニメーションの完了を待って後始末する。 */
+	const finishClose = async (sequence: number) => {
+		await tick();
+		await waitForAnimations(popupRef);
 
-			const isInsidePopup = element.contains(event.target);
-			const isInsideAnchor = anchorElement && anchorElement.contains(event.target);
-			const isOutside = !isInsidePopup && !isInsideAnchor;
+		if (sequence !== closeSequence) return;
+		closeEnd();
+	};
 
-			if (isOutside) {
-				callbackFunction();
-			}
-		}
-		setTimeout(() => {
-			document.body.addEventListener('click', onClick);
-		}, 1);
-		return {
-			update(newCallbackFunction: () => void) {
-				callbackFunction = newCallbackFunction;
-			},
-			destroy() {
-				document.body.removeEventListener('click', onClick);
-			}
-		};
+	const cancelPendingOpen = () => {
+		if (openTimer === undefined) return;
+		clearTimeout(openTimer);
+		openTimer = undefined;
 	};
 
 	/** Opens the popup. */
@@ -451,10 +461,17 @@
 		// 他の開いているPopupをすべて閉じる
 		popupManager.closeOthers(close);
 
+		// 閉じるアニメーションの途中で開き直した場合は close を取り消す
+		closeSequence++;
+		isClosing = false;
+		pendingCloseReason = 'explicit';
+
 		previousActiveElement = document.activeElement as HTMLElement;
 
-		setTimeout(async () => {
-			popupRef?.removeEventListener('animationend', closeEnd);
+		cancelPendingOpen();
+		openTimer = setTimeout(async () => {
+			openTimer = undefined;
+			if (!popupRef?.isConnected) return;
 
 			if (shouldUseFullscreen && popupRef) {
 				// ボトムシート: showPopover()の前に位置を画面下部に設定
@@ -504,17 +521,22 @@
 
 	/** Closes the popup. */
 	export const close = (reason: CloseReason = 'explicit') => {
+		cancelPendingOpen();
+		// 開いていないPopupのcloseは、close reasonを汚さないよう何もしない
+		if (!isOpen && !isClosing && !popupRef?.matches(':popover-open')) return;
+
 		if (pendingCloseReason === 'explicit') {
 			pendingCloseReason = reason;
 		}
 		isOpen = false;
+		isClosing = true;
 		removeEventListenersToClose();
 		removeKeyboardListener();
 		cleanupMobileFeatures();
 		popupManager.unregister(close);
 		// アニメーション完了後に閉じる（fullscreen/通常共通）
-		popupRef?.addEventListener('animationend', closeEnd, { once: true });
 		// onCloseはアニメーション完了後に呼ぶ（closeEndで実行）
+		void finishClose(++closeSequence);
 	};
 
 	/** Toggles between open and closed. */
@@ -552,9 +574,6 @@
 	aria-modal={undefined}
 	id={popupId}
 	data-testid="popup"
-	use:clickOutside={() => {
-		if (isOpen) close('outside');
-	}}
 >
 	{@render children()}
 </div>
