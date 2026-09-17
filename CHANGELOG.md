@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.67] - 2026-09-17
+
+### Fixed
+
+- **PopupMenu** / **PopupMenuButton**: Menu items in the rendered list are now keyed. Without a key, changing the order of `menuItems` while the menu was open could leave the internal element references pointing at the wrong entries, so arrow-key navigation could focus the wrong item.
+
 ## [0.0.66] - 2026-09-17
 
 ### Fixed
