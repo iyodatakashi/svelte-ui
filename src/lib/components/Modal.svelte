@@ -12,9 +12,11 @@
 	 *
 	 * This prevents state synchronization bugs and ensures consistent behavior.
 	 */
+	import { tick } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import type { CloseReason } from '$lib/types/propOptions';
 	import { announceOpenClose } from '$lib/utils/accessibility';
+	import { waitForAnimations } from '$lib/utils/animation';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -194,7 +196,6 @@
 		// 閉じるアニメーションの途中で開き直した場合は close を取り消す
 		pendingCloseReason = null;
 		dialogRef.classList.add('fade-in');
-		dialogRef.removeEventListener('animationend', closeEnd);
 		dialogRef.showModal();
 
 		setTimeout(() => {
@@ -214,9 +215,19 @@
 		isOpen = false;
 		pendingCloseReason = reason;
 		dialogRef.classList.add('fade-out');
-		dialogRef.addEventListener('animationend', closeEnd, { once: true });
+		void finishClose();
 
 		announceOpenClose(componentType, false, title || ariaLabel || '');
+	};
+
+	/** 閉じるアニメーションの完了を待って後始末する。 */
+	const finishClose = async (): Promise<void> => {
+		await tick();
+		await waitForAnimations(dialogRef);
+
+		// 閉じるアニメーションの途中で開き直した場合は何もしない
+		if (pendingCloseReason === null) return;
+		closeEnd();
 	};
 
 	/** @internal Completes the close animation. Called automatically. */

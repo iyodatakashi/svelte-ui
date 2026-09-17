@@ -1,9 +1,10 @@
 <!-- SnackbarItem.svelte -->
 
 <script lang="ts">
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy, tick } from 'svelte';
 	import type { Snippet } from 'svelte';
 	import { snackbar } from '$lib/utils/snackbar.svelte';
+	import { waitForAnimations } from '$lib/utils/animation';
 	import type { IconVariant } from '$lib/types/icon';
 	import type { SnackbarType, SnackbarVariant, SnackbarPosition } from '$lib/types/propOptions';
 	import Icon from './Icon.svelte';
@@ -89,15 +90,23 @@
 	onMount(() => {
 		if (duration > 0) {
 			timeoutId = setTimeout(() => {
+				timeoutId = null;
 				handleClose();
 			}, duration);
+		}
+	});
+
+	onDestroy(() => {
+		if (timeoutId !== null) {
+			clearTimeout(timeoutId);
+			timeoutId = null;
 		}
 	});
 
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const handleClose = () => {
+	const handleClose = async () => {
 		// アニメーション開始前に、他のSnackbarの位置を測定
 		if (snackbarRef) {
 			// 現在の要素の位置と親コンテナを取得
@@ -119,21 +128,17 @@
 			);
 
 			// CSSカスタムプロパティが確実に設定されるまで少し待つ
-			requestAnimationFrame(() => {
-				visible = false;
-			});
+			await new Promise((resolve) => requestAnimationFrame(resolve));
+			visible = false;
 
-			// animationendイベントでSnackbar削除
-			snackbarRef.addEventListener(
-				'animationend',
-				() => {
-					snackbar.remove(id);
-				},
-				{ once: true }
-			);
+			// アニメーション完了後にSnackbar削除
+			await tick();
+			await waitForAnimations(snackbarRef);
 		} else {
 			visible = false;
 		}
+
+		snackbar.remove(id);
 	};
 
 	const handleAction = () => {

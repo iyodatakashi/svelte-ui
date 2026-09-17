@@ -12,7 +12,7 @@
 	import 'dayjs/locale/es';
 	import 'dayjs/locale/zh-cn';
 	import IconButton from './IconButton.svelte';
-	import { onMount } from 'svelte';
+	import { onMount, onDestroy } from 'svelte';
 	import { t } from '$lib/i18n';
 	import type { BivariantValueHandler } from '$lib/types/callbackHandlers';
 
@@ -149,6 +149,10 @@
 		} else {
 			focusedDate = dayjs();
 		}
+	});
+
+	onDestroy(() => {
+		document.removeEventListener('keydown', handleKeyDown);
 	});
 
 	// =========================================================================

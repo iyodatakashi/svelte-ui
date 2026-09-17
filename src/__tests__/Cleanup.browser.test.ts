@@ -3,13 +3,17 @@
 // 検証する2点:
 //   1. 開いている間だけ登録するグローバルリスナーが、unmount 後に残らないこと
 //   2. 閉じる処理が animationend に依存せず、アニメーションが動かない環境でも完了すること
-//      （完了しないと popover が画面に残り、以降のクリックを奪う）
+//      （完了しないと popover / <dialog> / Snackbar が画面に残り、以降のクリックを奪う）
 
-import { test, expect, beforeAll, beforeEach } from 'vitest';
+import { test, expect, beforeAll, beforeEach, afterEach } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import { userEvent } from '@vitest/browser/context';
 import { popupManager } from '../lib/utils/popupManager';
+import { snackbar } from '../lib/utils/snackbar.svelte';
+import Snackbar from '../lib/components/Snackbar.svelte';
+import CleanupCalendar from './helpers/CleanupCalendar.svelte';
 import CleanupPopupMenu from './helpers/CleanupPopupMenu.svelte';
+import DialogCallbacks from './helpers/DialogCallbacks.svelte';
 
 // add されて remove されていないグローバルリスナーを追跡する。
 // Svelte の delegated listener も含まれるため、判定は必ず unmount 後に行うこと。
@@ -59,6 +63,10 @@ beforeEach(() => {
 	live.clear();
 });
 
+afterEach(() => {
+	snackbar.clear();
+});
+
 test('Popup: unmounting right after mount leaves no global listener', async () => {
 	const { unmount } = render(CleanupPopupMenu);
 	unmount();
@@ -103,4 +111,41 @@ test('Popup: close() hides the popover even when animations are disabled', async
 	await settle();
 	expect(leakedListeners()).toEqual({});
 	restoreAnimations();
+});
+
+test('Modal: close() closes the dialog and reports the reason when animations are disabled', async () => {
+	const restoreAnimations = disableAnimations();
+
+	const screen = render(DialogCallbacks);
+	screen.component.open();
+	await settle();
+	const dialog = document.querySelector('dialog') as HTMLDialogElement;
+	expect(dialog.open).toBe(true);
+
+	screen.component.close();
+	await expect.poll(() => dialog.open).toBe(false);
+	expect(screen.component.getCloseReasons()).toEqual(['explicit']);
+
+	restoreAnimations();
+});
+
+test('Snackbar: auto-dismiss removes the item when animations are disabled', async () => {
+	const restoreAnimations = disableAnimations();
+
+	render(Snackbar, { duration: 50 });
+	snackbar.info('hello');
+
+	await expect.poll(() => snackbar.items.length).toBe(0);
+	expect(document.querySelectorAll('[data-testid="snackbar-item"]')).toHaveLength(0);
+
+	restoreAnimations();
+});
+
+test('DatepickerCalendar: unmounting while open removes the document keydown listener', async () => {
+	const screen = render(CleanupCalendar);
+	screen.component.openCalendar();
+	screen.unmount();
+
+	await settle();
+	expect(leakedListeners()).toEqual({});
 });
