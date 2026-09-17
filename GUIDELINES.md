@@ -253,6 +253,12 @@ export type { ButtonProps } from './components/Button.svelte';
 - フォーカス管理: `focus-visible` スタイル、Popup/Modal でのフォーカストラップ
 - `.sr-only` クラス (`core.scss` 定義) でスクリーンリーダー専用テキスト
 
+## CHANGELOG / バージョン
+
+- **`CHANGELOG.md` と `package.json` の `version` は、`/prepare-publish` を実行されたときだけ編集する。**
+- それ以外では一切触らない。バグを直した直後でも、リリース準備の流れの途中でも、同じセッションで一度 `/prepare-publish` を実行済みでも、追記・修正しない。
+- 「この修正は CHANGELOG に載せるべき」と判断したら、書かずに報告だけする。載せるかどうかは依頼者が決める。
+
 ## ビルドコマンド
 
 ```bash
