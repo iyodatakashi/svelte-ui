@@ -3,6 +3,7 @@
 <script lang="ts">
 	import Popup from './Popup.svelte';
 	import Icon from './Icon.svelte';
+	import { announceToScreenReader } from '$lib/utils/accessibility';
 	import type { MenuItem } from '$lib/types/menuItem';
 
 	import type { SvelteComponent } from 'svelte';
@@ -167,26 +168,13 @@
 		activeIndex = index;
 	};
 
-	const announceMenuOpened = () => {
-		const announcement = document.createElement('div');
-		announcement.setAttribute('aria-live', 'polite');
-		announcement.setAttribute('aria-atomic', 'true');
-		announcement.className = 'sr-only';
-		announcement.textContent = `${ariaLabel} opened with ${actionableItems.length} items`;
-		document.body.appendChild(announcement);
-
-		setTimeout(() => {
-			document.body.removeChild(announcement);
-		}, 1000);
-	};
-
 	const handlePopupOpen = () => {
 		activeIndex = -1; // 初期状態ではハイライトなし
 		tick().then(() => {
 			menuContainerRef?.focus();
 		});
 
-		announceMenuOpened();
+		announceToScreenReader(`${ariaLabel} opened with ${actionableItems.length} items`);
 	};
 
 	const handlePopupClose = (reason: 'escape' | 'outside' | 'explicit') => {

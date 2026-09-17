@@ -399,7 +399,7 @@
 		}
 	};
 
-	const announceToScreenReader = () => {
+	const announceOpened = () => {
 		if (!ariaLabel && !ariaLabelledby) return;
 		announceOpenClose('Popup', true, ariaLabel);
 	};
@@ -514,7 +514,7 @@
 				focusFirstElement();
 			}
 
-			announceToScreenReader();
+			announceOpened();
 			onOpen?.();
 		}, 1);
 	};
