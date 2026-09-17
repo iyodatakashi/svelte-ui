@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.66] - 2026-09-17
+
+### Fixed
+
+- **Popup** / **PopupMenu** / **PopupMenuButton** / **Modal** / **Dialog** / **Drawer** / **ConfirmDialog** / **Snackbar**: Closing now completes even when CSS animations do not run (animations disabled by the host page, `animation: none`, or a test environment). These components waited for an `animationend` event before finishing the close, so with no animation the event never fired: the element stayed in the browser top layer, `onClose` was never called, and the leftover overlay swallowed clicks — they landed on the right elements, but their handlers never ran. A left-open `<dialog>` made the rest of the page unusable. Snackbars additionally stayed in the queue forever.
+- **Popup** / **PopupMenu** / **PopupMenuButton** / **Datepicker** / **DatepickerCalendar** / **Snackbar**: Global listeners and timers are no longer left behind on unmount. **Popup**'s outside-click handler was attached to `document.body` for the whole lifetime of the component — even while closed — and unmounting right after opening left `keydown` / `scroll` / `resize` listeners attached and the popup registered in the internal popup manager. **DatepickerCalendar** leaked its `document` `keydown` listener, and **Snackbar** left its auto-dismiss timer running.
+
 ## [0.0.65] - 2026-09-11
 
 ### Added
