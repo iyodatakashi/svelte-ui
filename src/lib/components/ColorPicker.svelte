@@ -377,8 +377,7 @@
 </script>
 
 <div
-	class="color-picker
-	focus-style-{focusStyle}"
+	class="color-picker"
 	class:color-picker--full-width={fullWidth}
 	class:color-picker--rounded={rounded}
 	class:color-picker--clearable={clearable}

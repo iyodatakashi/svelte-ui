@@ -201,7 +201,7 @@
 			aria-label={ariaLabel ?? t('multiSelect.accessibleName')}
 			style:min-width="{triggerWidth}px"
 		>
-			{#each options as option, i (option.value)}
+			{#each options as option (option.value)}
 				<li role="presentation" class="multi-select__item">
 					<Checkbox
 						value={value.includes(option.value)}
