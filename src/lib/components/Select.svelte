@@ -412,12 +412,6 @@ select--focus-{focusStyle}"
 		-webkit-appearance: none;
 		-moz-appearance: none;
 		appearance: none;
-
-		&:focus,
-		&:focus-visible {
-			outline: var(--svelte-ui-focus-outline-inner);
-			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-		}
 	}
 
 	.select__dropdown-icon {
@@ -456,8 +450,14 @@ select--focus-{focusStyle}"
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.select--focus-background select:focus {
+	/* デザインバリアントの背景指定より詳細度を上げるため .select を併記 */
+	.select.select--focus-background select:focus {
+		outline: none;
 		background: var(--svelte-ui-hover-overlay);
+	}
+
+	.select--focus-none select:focus {
+		outline: none;
 	}
 
 	/* =============================================

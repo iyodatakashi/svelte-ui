@@ -249,12 +249,6 @@
 		cursor: pointer;
 		display: flex;
 		align-items: center;
-
-		&:focus,
-		&:focus-visible {
-			outline: var(--svelte-ui-focus-outline-inner);
-			outline-offset: var(--svelte-ui-focus-outline-offset-inner);
-		}
 	}
 
 	.multi-select__inner {
@@ -313,8 +307,14 @@
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.multi-select--focus-background .multi-select__trigger:focus {
+	/* デザインバリアントの背景指定より詳細度を上げるため .multi-select を併記 */
+	.multi-select.multi-select--focus-background .multi-select__trigger:focus {
+		outline: none;
 		background: var(--svelte-ui-hover-overlay);
+	}
+
+	.multi-select--focus-none .multi-select__trigger:focus {
+		outline: none;
 	}
 
 	/* =============================================
