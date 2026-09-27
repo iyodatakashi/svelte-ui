@@ -124,7 +124,7 @@
 		// 基本プロパティ
 		name = '',
 		value = $bindable(false),
-		indeterminate = $bindable(false),
+		indeterminate = $bindable(),
 
 		// HTML属性系
 		id = `checkbox-${Math.random().toString(36).substring(2, 15)}`,

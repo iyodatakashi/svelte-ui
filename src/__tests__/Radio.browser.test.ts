@@ -166,6 +166,18 @@ test('Radio value attribute works correctly', async () => {
 	expect(radio).toHaveAttribute('value', 'test-value');
 });
 
+test('currentValue が undefined でもクラッシュせず未選択になる', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Radio,
+		children: 'Undefined',
+		value: 'test-value',
+		currentValue: undefined
+	});
+	const radio = screen.getByRole('radio');
+	await expect.element(radio).toBeVisible();
+	expect((radio.element() as HTMLInputElement).checked).toBe(false);
+});
+
 test('should not reference undefined CSS variables', async () => {
 	const screen = render(ComponentWrapper, {
 		component: Radio,

@@ -123,7 +123,7 @@
 
 	let {
 		// 基本プロパティ
-		value = $bindable(''),
+		value = $bindable(),
 
 		// HTML属性系
 		id = `colorpicker-${Math.random().toString(36).substring(2, 15)}`,
@@ -435,7 +435,7 @@
 		<input
 			type="color"
 			aria-label={ariaLabel ?? t('colorpicker.chooseColor')}
-			bind:value
+			bind:value={localValue}
 			onchange={handleValueChange}
 			onfocus={handleFocus}
 			onblur={handleBlur}

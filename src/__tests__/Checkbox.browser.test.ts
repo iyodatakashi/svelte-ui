@@ -161,6 +161,18 @@ test('Checkbox name attribute works correctly', async () => {
 	expect(checkbox).toHaveAttribute('name', 'test-checkbox');
 });
 
+test('indeterminate が undefined でもクラッシュせず false 扱いになる', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Checkbox,
+		children: 'Undefined',
+		value: false,
+		indeterminate: undefined
+	});
+	const checkbox = screen.getByRole('checkbox');
+	await expect.element(checkbox).toBeVisible();
+	expect((checkbox.element() as HTMLInputElement).indeterminate).toBe(false);
+});
+
 test('should not reference undefined CSS variables', async () => {
 	const screen = render(ComponentWrapper, {
 		component: Checkbox

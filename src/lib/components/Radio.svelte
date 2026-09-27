@@ -125,7 +125,7 @@
 		// 基本プロパティ
 		name = '',
 		value = '',
-		currentValue = $bindable(null),
+		currentValue = $bindable(),
 
 		// HTML属性系
 		id = `radio-${Math.random().toString(36).substring(2, 15)}`,

@@ -175,6 +175,18 @@ test('ColorPicker input event works correctly', async () => {
 	expect(colorInput.value).toBe('#00ff00');
 });
 
+test('value が undefined でもクラッシュせず空の入力として描画される', async () => {
+	const screen = render(ColorPicker, {
+		value: undefined,
+		id: 'colorpicker-undefined'
+	});
+	const textInput = screen.container.querySelector(
+		'#colorpicker-undefined-input'
+	) as HTMLInputElement;
+	expect(textInput).not.toBeNull();
+	expect(textInput.value).toBe('');
+});
+
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('ColorPicker CSS variables used are defined (computed) in the page', async () => {

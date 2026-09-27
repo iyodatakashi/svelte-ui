@@ -613,3 +613,9 @@ test('URL 方式で全体 disabled は全ステップをリンク化しない', 
 		screen.container.querySelector('.step-nav')?.classList.contains('step-nav--disabled')
 	).toBe(true);
 });
+
+test('value が undefined でもクラッシュせずアクティブなステップが無い状態で描画される', () => {
+	const screen = render(StepNav, { items: baseItems, value: undefined });
+	expect(screen.container.querySelector('[data-testid="step-nav"]')).not.toBeNull();
+	expect(screen.container.querySelectorAll('[aria-current="step"]').length).toBe(0);
+});

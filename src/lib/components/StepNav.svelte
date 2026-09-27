@@ -88,7 +88,7 @@
 		// 基本プロパティ
 		stepItems,
 		items: itemsAlias,
-		value = $bindable(''),
+		value = $bindable(),
 		progress,
 
 		// URL 方式
