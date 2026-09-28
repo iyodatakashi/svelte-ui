@@ -5,6 +5,14 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.68] - 2026-09-28
+
+### Fixed
+
+- **RadioGroup** / **Radio** / **ColorPicker** / **StepNav** / **Checkbox**: Passing `undefined` for a value prop no longer crashes the component. `Radio`'s `currentValue`, `ColorPicker`'s `value`, `StepNav`'s `value` and `Checkbox`'s `indeterminate` declared a fallback value, so binding `undefined` to them threw Svelte's `props_invalid_value` error — in production builds as well as in development. Their types accept `undefined`, and `RadioGroup` binds its own `value` straight through to `Radio`, so rendering a `RadioGroup` with no selected value (for example a field missing from the loaded data) always crashed. These props now accept `undefined` and render as unselected.
+- **ColorPicker**: `value` is no longer overwritten with `#000000` when it is `undefined`. The native color input was bound directly to `value`, and such a binding adopts the element's own value when it receives `undefined`, writing black back into the bound variable.
+- **Select** / **MultiSelect**: `focusStyle` now takes effect. The focus outline was applied unconditionally, so `focusStyle="none"` still drew an outline and `focusStyle="background"` drew both an outline and no background, because the background rule lost to the default design variant.
+
 ## [0.0.67] - 2026-09-17
 
 ### Fixed
