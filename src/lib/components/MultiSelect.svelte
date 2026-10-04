@@ -201,7 +201,7 @@
 			role="listbox"
 			aria-multiselectable="true"
 			aria-label={ariaLabel ?? t('multiSelect.accessibleName')}
-			style:min-width="{triggerWidth}px"
+			style:--internal-multi-select-trigger-width="{triggerWidth}px"
 		>
 			{#each options as option, index (option === 'separator' ? `separator-${index}` : option.value)}
 				{#if option === 'separator'}
@@ -356,7 +356,7 @@
 	.multi-select.multi-select--inline {
 		.multi-select__trigger {
 			padding: inherit;
-			padding-right: var(--svelte-ui-input-icon-space-inline);
+			padding-right: var(--svelte-ui-select-icon-space-inline);
 			background: transparent;
 			border: none;
 			border-radius: 0;
@@ -376,7 +376,7 @@
 			right: 0;
 			margin-top: 0;
 			margin-bottom: 0;
-			margin-right: calc(0px - var(--svelte-ui-input-icon-space-inline));
+			margin-right: calc(0px - var(--svelte-ui-select-icon-space-inline));
 		}
 	}
 
@@ -394,8 +394,12 @@
 		list-style: none;
 		margin: 0;
 		padding: 0;
-		min-width: 160px;
-		max-height: var(--svelte-ui-combobox-options-max-height);
+		/* トリガー幅に合わせつつ、トリガーが狭いときはテーマの下限を保つ */
+		min-width: max(
+			var(--internal-multi-select-trigger-width, 0px),
+			var(--svelte-ui-select-options-min-width)
+		);
+		max-height: var(--svelte-ui-select-options-max-height);
 		overflow-y: auto;
 	}
 

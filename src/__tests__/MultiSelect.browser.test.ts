@@ -24,6 +24,13 @@ const getTrigger = (screen: Screen) =>
 const getPopup = (screen: Screen) =>
 	screen.container.querySelector('[data-testid="popup"]') as HTMLElement;
 
+const getThemeMinWidth = () =>
+	parseFloat(
+		getComputedStyle(document.documentElement).getPropertyValue(
+			'--svelte-ui-select-options-min-width'
+		)
+	);
+
 const openPopup = async (screen: Screen) => {
 	getTrigger(screen).click();
 	await vi.waitFor(() => {
@@ -54,6 +61,15 @@ test('separator はトリガーの表示ラベルに含まれない', () => {
 	expect(screen.container.querySelector('.multi-select__display-text')?.textContent?.trim()).toBe(
 		'All items,Archived'
 	);
+});
+
+test('リストの最小幅はトリガー幅とテーマの下限の大きい方になる', async () => {
+	const screen = render(MultiSelect, { value: [], options, placeholder: 'Filter' });
+	await openPopup(screen);
+
+	const listbox = screen.container.querySelector('.multi-select__options') as HTMLElement;
+	const expected = Math.max(getTrigger(screen).offsetWidth, getThemeMinWidth());
+	expect(parseFloat(getComputedStyle(listbox).minWidth)).toBeCloseTo(expected, 0);
 });
 
 test('separator を挟んでも選択の切り替えが動作する', async () => {
