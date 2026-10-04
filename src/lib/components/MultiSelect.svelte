@@ -16,8 +16,8 @@
 		// 基本プロパティ
 		/** Selected values array. Supports `bind:value`. */
 		value: OptionValue[];
-		/** `{ label, value, disabled? }[]` */
-		options: Option[];
+		/** `{ label, value, disabled? }[]` or `'separator'` for dividers. */
+		options: (Option | 'separator')[];
 
 		// HTML属性系
 		id?: string | null;
@@ -86,7 +86,9 @@
 	const listboxId = $derived(`${id ?? fallbackId}-listbox`);
 
 	const selectedLabels = $derived(
-		options.filter((o) => value.includes(o.value)).map((o) => o.label)
+		options
+			.filter((option): option is Option => option !== 'separator' && value.includes(option.value))
+			.map((option) => option.label)
 	);
 
 	// =========================================================================
@@ -201,18 +203,22 @@
 			aria-label={ariaLabel ?? t('multiSelect.accessibleName')}
 			style:min-width="{triggerWidth}px"
 		>
-			{#each options as option (option.value)}
-				<li role="presentation" class="multi-select__item">
-					<Checkbox
-						value={value.includes(option.value)}
-						disabled={option.disabled}
-						fullWidth
-						customStyle="padding: 8px 12px"
-						onchange={() => toggleOption(option.value)}
-					>
-						{option.label}
-					</Checkbox>
-				</li>
+			{#each options as option, index (option === 'separator' ? `separator-${index}` : option.value)}
+				{#if option === 'separator'}
+					<li class="multi-select__separator" role="separator"></li>
+				{:else}
+					<li role="presentation" class="multi-select__item">
+						<Checkbox
+							value={value.includes(option.value)}
+							disabled={option.disabled}
+							fullWidth
+							customStyle="padding: 8px 12px"
+							onchange={() => toggleOption(option.value)}
+						>
+							{option.label}
+						</Checkbox>
+					</li>
+				{/if}
 			{/each}
 		</ul>
 	</Popup>
@@ -405,13 +411,9 @@
 		}
 	}
 
-	.multi-select__option-cover {
-		position: absolute;
-		inset: 0;
-		cursor: pointer;
-
-		&--disabled {
-			cursor: not-allowed;
-		}
+	.multi-select__separator {
+		height: 0;
+		margin: var(--svelte-ui-select-separator-margin);
+		border-bottom: solid 1px var(--svelte-ui-select-separator-color);
 	}
 </style>

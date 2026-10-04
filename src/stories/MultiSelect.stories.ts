@@ -20,7 +20,7 @@ const meta = {
 		},
 		options: {
 			control: { type: 'object' },
-			description: 'Array of selectable options'
+			description: "Array of selectable options. Pass 'separator' to insert a divider"
 		},
 		placeholder: {
 			control: { type: 'text' },
@@ -144,5 +144,20 @@ export const Disabled = {
 		value: ['apple'],
 		disabled: true,
 		placeholder: 'Disabled state'
+	}
+};
+
+export const WithSeparators = {
+	args: {
+		options: [
+			{ value: 'all', label: 'All items' },
+			'separator',
+			{ value: 'active', label: 'Active' },
+			{ value: 'archived', label: 'Archived' },
+			'separator',
+			{ value: 'trash', label: 'Trash' }
+		],
+		value: [],
+		placeholder: 'Filter'
 	}
 };
