@@ -8,7 +8,7 @@ const meta = {
 		docs: {
 			description: {
 				component:
-					'A styled select component that supports theming, inline display, and various visual variants.'
+					'A select component built on Popup instead of the native select element. Supports separators, theming, inline display, and various visual variants.'
 			}
 		}
 	},
@@ -20,7 +20,7 @@ const meta = {
 		},
 		options: {
 			control: { type: 'object' },
-			description: 'Array of selectable options'
+			description: "Array of selectable options. Pass 'separator' to insert a divider"
 		},
 		inline: {
 			control: { type: 'boolean' },
@@ -51,9 +51,10 @@ const meta = {
 			control: { type: 'boolean' },
 			description: 'Mark the field as required'
 		},
-		size: {
-			control: { type: 'number' },
-			description: 'Number of visible rows'
+		position: {
+			control: { type: 'select' },
+			options: ['bottom-left', 'bottom', 'bottom-right', 'top-left', 'top', 'top-right', 'auto'],
+			description: 'Popup position relative to the trigger'
 		},
 		customStyle: {
 			control: { type: 'text' },
@@ -61,7 +62,7 @@ const meta = {
 		},
 		id: {
 			control: { type: 'text' },
-			description: 'ID for the select element'
+			description: 'ID for the trigger element'
 		},
 		name: {
 			control: { type: 'text' },
@@ -240,5 +241,32 @@ export const Required = {
 		options: basicOptions,
 		required: true,
 		placeholder: 'Required (select one)'
+	}
+};
+
+// Separators
+export const WithSeparators = {
+	args: {
+		options: [
+			{ value: 'all', label: 'All items' },
+			'separator',
+			{ value: 'active', label: 'Active' },
+			{ value: 'archived', label: 'Archived' },
+			'separator',
+			{ value: 'trash', label: 'Trash' }
+		],
+		placeholder: 'Filter'
+	}
+};
+
+// Disabled option
+export const WithDisabledOption = {
+	args: {
+		options: [
+			{ value: 'jp', label: 'Japan' },
+			{ value: 'us', label: 'United States' },
+			{ value: 'uk', label: 'United Kingdom', disabled: true }
+		],
+		placeholder: 'Select a country'
 	}
 };

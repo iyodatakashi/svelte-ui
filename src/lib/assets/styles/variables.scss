@@ -507,6 +507,15 @@
 	--svelte-ui-select-border-color: var(--svelte-ui-border-weak-color);
 	--svelte-ui-select-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
 	--svelte-ui-select-placeholder-color: var(--svelte-ui-text-placeholder-color);
+	--svelte-ui-select-options-min-width: 160px;
+	--svelte-ui-select-options-max-height: 280px;
+	--svelte-ui-select-option-padding: 8px 12px;
+	--svelte-ui-select-option-gap: 4px;
+	--svelte-ui-select-option-check-size: 18px;
+	--svelte-ui-select-option-hover-bg: var(--svelte-ui-hover-overlay);
+	--svelte-ui-select-option-selected-bg: var(--svelte-ui-select-overlay);
+	--svelte-ui-select-separator-margin: 4px 0;
+	--svelte-ui-select-separator-color: var(--svelte-ui-border-color);
 
 	/* Checkbox */
 	--svelte-ui-checkbox-size: 16px;
@@ -910,6 +919,7 @@
 		--svelte-ui-select-border-color: CanvasText;
 		--svelte-ui-select-text-color: CanvasText;
 		--svelte-ui-select-dropdown-icon-color: CanvasText;
+		--svelte-ui-select-separator-color: CanvasText;
 		--svelte-ui-colorpicker-border-color: CanvasText;
 		--svelte-ui-colorpicker-trigger-border-color: CanvasText;
 		--svelte-ui-colorpicker-bg: Canvas;
@@ -965,6 +975,8 @@
 		/* ===== オーバーレイ・インタラクション色の上書き ===== */
 		--svelte-ui-hover-overlay: Highlight;
 		--svelte-ui-select-overlay: Highlight;
+		--svelte-ui-select-option-hover-bg: Highlight;
+		--svelte-ui-select-option-selected-bg: Highlight;
 		--svelte-ui-combobox-option-hover-bg: Highlight;
 		--svelte-ui-combobox-option-selected-bg: Highlight;
 
