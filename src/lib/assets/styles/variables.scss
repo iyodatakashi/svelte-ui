@@ -141,10 +141,13 @@
 
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text-color: var(--base-800-transparent);
-	--svelte-ui-text-subtle-color: var(--base-500-transparent);
+	--svelte-ui-text-weak-color: var(--base-500-transparent);
+	/* weak のエイリアス。weak から派生させることでどちらを上書きしても効く */
+	--svelte-ui-text-subtle-color: var(--svelte-ui-text-weak-color);
 	--svelte-ui-text-on-filled-color: #ffffff;
 	--svelte-ui-text-inverse-color: var(--white-800-transparent);
-	--svelte-ui-text-inverse-subtle-color: var(--white-500-transparent);
+	--svelte-ui-text-inverse-weak-color: var(--white-500-transparent);
+	--svelte-ui-text-inverse-subtle-color: var(--svelte-ui-text-inverse-weak-color);
 	--svelte-ui-text-placeholder-color: var(--base-500-transparent);
 
 	/* ボーダーカラー */
@@ -193,10 +196,12 @@
 [data-theme='dark'] {
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text-color: var(--white-800-transparent);
-	--svelte-ui-text-subtle-color: var(--white-500-transparent);
+	--svelte-ui-text-weak-color: var(--white-500-transparent);
+	--svelte-ui-text-subtle-color: var(--svelte-ui-text-weak-color);
 	--svelte-ui-text-on-filled-color: #ffffff;
 	--svelte-ui-text-inverse-color: var(--base-800-transparent);
-	--svelte-ui-text-inverse-subtle-color: var(--base-500-transparent);
+	--svelte-ui-text-inverse-weak-color: var(--base-500-transparent);
+	--svelte-ui-text-inverse-subtle-color: var(--svelte-ui-text-inverse-weak-color);
 	--svelte-ui-text-placeholder-color: var(--white-500-transparent);
 
 	/* ボーダーカラー */
@@ -860,7 +865,7 @@
 	[data-theme='dark'] {
 		/* ===== 基本色の上書き ===== */
 		--svelte-ui-text-color: CanvasText;
-		--svelte-ui-text-subtle-color: CanvasText;
+		--svelte-ui-text-weak-color: CanvasText;
 		--svelte-ui-surface-accent-color: CanvasText;
 		--svelte-ui-text-on-filled-color: HighlightText;
 		--svelte-ui-text-placeholder-color: CanvasText;
