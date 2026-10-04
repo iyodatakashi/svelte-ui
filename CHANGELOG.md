@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.69] - 2026-10-05
+
+### Added
+
+- **Select** / **MultiSelect**: Options can now be separated with dividers. `options` accepts `'separator'` entries alongside `{ label, value, disabled? }`, the same way **PopupMenu** takes `'separator'` in `menuItems`.
+- **Select**: New `position` prop (a `PopupPosition`, default `'bottom-left'`) controls where the dropdown opens relative to the field, matching **MultiSelect**.
+- Text colors can also be overridden as `--svelte-ui-text-weak-color` / `--svelte-ui-text-inverse-weak-color`, matching the `weak` naming used for borders. The existing `subtle` names keep working.
+
+### Changed
+
+- **Select** is no longer a styled native `<select>`. It is now built on **Popup** with a `role="listbox"` dropdown, like **MultiSelect** and **Combobox**, because the native element cannot express dividers or custom option rendering. The dropdown is drawn by the library, so its appearance no longer depends on the browser: the selected option carries a leading check mark, and option rows follow the theme. Keyboard behavior is preserved: arrow keys, `Home` / `End`, `Enter` / `Space`, `Escape`, and first-letter type-ahead, with the highlighted option reported through `aria-activedescendant`. When `name` is set, the value is submitted through a hidden input, so form submission keeps working. This brings breaking changes:
+  - The `size` prop (number of visible rows) was removed; multi-row display was specific to the native element.
+  - `SelectProps` no longer extends `HTMLSelectAttributes`, and extra props are no longer forwarded to the underlying element, so native-only attributes such as `autocomplete`, `form` or `multiple` can no longer be passed.
+  - `required` now only sets `aria-required`. Native form validation no longer applies, as with other custom form components.
+- **MultiSelect**: The dropdown is now themed by the same `--svelte-ui-select-*` variables as **Select**, instead of borrowing `--svelte-ui-combobox-options-max-height` for its height and `--svelte-ui-input-icon-space-inline` for inline spacing. The two components differ only in single versus multiple selection, so one theme override now covers both. As a result the dropdown's maximum height changes from 200px to 280px, matching **Select**.
+
+### Fixed
+
+- **MultiSelect**: The dropdown's minimum width is applied again. The width floor was declared in the stylesheet while the trigger width was set inline on the same element, so the inline style always won and the floor (160px) had no effect — a dropdown anchored to a narrow field could render narrower than intended. The dropdown is now at least as wide as the trigger and never narrower than `--svelte-ui-select-options-min-width`.
+
 ## [0.0.68] - 2026-09-28
 
 ### Fixed
