@@ -469,13 +469,18 @@
 		const width = rect.width;
 		if (!height || !width) return;
 
+		// 箱（ルート）は padding を持つため、textarea の実寸に padding 分を足す
+		const rootStyle = getComputedStyle(containerRef);
+		const paddingY = parseFloat(rootStyle.paddingTop) + parseFloat(rootStyle.paddingBottom);
+		const paddingX = parseFloat(rootStyle.paddingLeft) + parseFloat(rootStyle.paddingRight);
+
 		// コンポーネント全体の高さは textarea に合わせる
-		containerRef.style.height = `${height}px`;
+		containerRef.style.height = `${height + paddingY}px`;
 
 		// 幅は、初期状態では width プロップを優先し、
 		// ユーザーがリサイズ（ResizeObserver 経由）したあとは textarea の幅で上書きする
 		if (forceWidth || !widthStyle) {
-			containerRef.style.width = `${width}px`;
+			containerRef.style.width = `${width + paddingX}px`;
 		}
 
 		// display-text / link-text はコンテナにフィットさせる
@@ -549,9 +554,24 @@
 	);
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
 	const widthStyle = $derived(getStyleFromNumber(width));
-	// アイコンの領域は customStyle で消されないよう、customStyle より後ろに指定する
-	const fieldStyle = $derived(
-		[customStyle, clearable ? 'padding-right: var(--svelte-ui-textarea-icon-space)' : '']
+	// 箱（ルート）は border-box、内側のテキスト層は padding を持たないので縦 padding を差し引く
+	const innerMinHeightStyle = $derived(
+		`calc(${minHeightStyle} - var(--internal-textarea-vertical-padding))`
+	);
+	const innerMaxHeightStyle = $derived(
+		maxHeightStyle
+			? `calc(${maxHeightStyle} - var(--internal-textarea-vertical-padding))`
+			: undefined
+	);
+	// アイコンの領域は customStyle で消されないよう、customStyle より後ろに指定する。
+	// style: ディレクティブは style 属性に勝つため、幅・最大高さも同じ文字列に混ぜる
+	const boxStyle = $derived(
+		[
+			customStyle,
+			clearable ? 'padding-right: var(--svelte-ui-textarea-icon-space)' : '',
+			widthStyle ? `width: ${widthStyle}` : '',
+			!inline && maxHeightStyle ? `max-height: ${maxHeightStyle}` : ''
+		]
 			.filter(Boolean)
 			.join('; ')
 	);
@@ -573,16 +593,14 @@
 	class:textarea--readonly={readonly}
 	class:textarea--focused={isFocused}
 	data-testid="textarea"
-	style:width={widthStyle}
-	style:max-height={!inline ? maxHeightStyle : undefined}
+	style={boxStyle}
 >
 	<div
 		bind:this={displayTextRef}
 		class="textarea__display-text"
 		class:textarea__display-text--placeholder={!hasDisplayValue}
-		style:min-height={minHeightStyle}
-		style:max-height={maxHeightStyle}
-		style={fieldStyle}
+		style:min-height={innerMinHeightStyle}
+		style:max-height={innerMaxHeightStyle}
 	>
 		{@html displayValue}
 	</div>
@@ -605,8 +623,7 @@
 			{spellcheck}
 			{autocapitalize}
 			class:resizable
-			style:min-height={minHeightStyle}
-			style={fieldStyle}
+			style:min-height={innerMinHeightStyle}
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -640,9 +657,8 @@
 		<div
 			bind:this={linkTextRef}
 			class="textarea__link-text"
-			style:min-height={minHeightStyle}
-			style:max-height={maxHeightStyle}
-			style={fieldStyle}
+			style:min-height={innerMinHeightStyle}
+			style:max-height={innerMaxHeightStyle}
 		>
 			{@html linkHtmlValue}
 		</div>
@@ -676,6 +692,13 @@
 		width: auto;
 		max-width: 100%;
 		overflow: hidden;
+		--internal-textarea-vertical-padding: calc(
+			var(--svelte-ui-textarea-min-height) - var(--svelte-ui-textarea-line-height)
+		);
+		padding: var(--svelte-ui-textarea-padding);
+		background-color: var(--svelte-ui-textarea-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
+		border-radius: var(--svelte-ui-textarea-border-radius);
 
 		&.textarea--full-height {
 			height: 100%;
@@ -690,9 +713,8 @@
 		height: 100%;
 		padding: inherit;
 		border: none;
-		border-radius: var(--svelte-ui-textarea-border-radius);
-		background-color: var(--svelte-ui-textarea-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-textarea-border-color);
+		border-radius: inherit;
+		background-color: transparent;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -706,11 +728,11 @@
 	textarea {
 		width: 100%;
 		height: auto;
-		min-height: var(--svelte-ui-textarea-min-height);
-		padding: var(--svelte-ui-textarea-padding);
+		min-height: var(--svelte-ui-textarea-line-height);
+		padding: 0;
 		background-color: transparent;
 		border: none;
-		border-radius: var(--svelte-ui-textarea-border-radius);
+		border-radius: inherit;
 		font-family: inherit;
 		font-size: inherit;
 		font-weight: inherit;
@@ -730,10 +752,10 @@
 	.textarea__link-text {
 		display: block;
 		width: 100%;
-		min-height: var(--svelte-ui-textarea-min-height);
-		padding: var(--svelte-ui-textarea-padding);
-		background: inherit;
-		border: inherit;
+		min-height: var(--svelte-ui-textarea-line-height);
+		padding: 0;
+		background: transparent;
+		border: none;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -780,6 +802,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		padding: inherit;
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -824,21 +847,17 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.textarea--focus-outline textarea:focus {
+	textarea:focus {
+		outline: none;
+	}
+
+	.textarea--focus-outline.textarea--focused .textarea__wrapper {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.textarea--focus-background.textarea--focused .textarea__wrapper {
 		background: var(--svelte-ui-hover-overlay);
-	}
-
-	.textarea--focus-background textarea:focus {
-		outline: none;
-	}
-
-	.textarea--focus-none textarea:focus {
-		outline: none;
 	}
 
 	/* =============================================
@@ -859,7 +878,7 @@
 	/* =============================================
 	 * 表示切り替え
 	 * ============================================= */
-	/* 非フォーカス時: textarea要素自体を不可視化（枠線・背景はラッパーにあるため display-text のみ表示） */
+	/* 非フォーカス時: textarea要素自体を不可視化（枠線・背景はルートにあるため display-text のみ表示） */
 	.textarea:not(.textarea--focused) textarea {
 		opacity: 0;
 	}
@@ -911,29 +930,22 @@
  * デザインバリエーション
  * ============================================= */
 	/* rounded */
-	.textarea--rounded:not(.textarea--inline) .textarea__wrapper,
-	.textarea--rounded:not(.textarea--inline) textarea {
+	.textarea--rounded:not(.textarea--inline) {
 		border-radius: var(--svelte-ui-textarea-border-radius-rounded);
 	}
 
 	/* inline */
 	.textarea--inline {
+		--internal-textarea-vertical-padding: 0px;
+		padding: 0;
+		background-color: transparent;
+		box-shadow: none;
+		border-radius: 0;
+
 		.textarea__display-text,
 		.textarea__link-text,
 		textarea {
 			min-height: auto;
-			padding-top: inherit;
-			padding-bottom: inherit;
-			padding-left: inherit;
-			padding-right: inherit;
-		}
-
-		.textarea__wrapper,
-		textarea {
-			padding: inherit;
-			background: transparent;
-			box-shadow: none;
-			border-radius: 0;
 		}
 
 		textarea {

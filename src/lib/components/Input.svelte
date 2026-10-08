@@ -718,11 +718,23 @@
 			.filter(Boolean)
 			.join('; ')
 	);
-	const fieldStyle = $derived([customStyle, iconPaddingStyle].filter(Boolean).join('; '));
-
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
 	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
+
+	// style: ディレクティブは style 属性に勝つため、幅の指定も customStyle と同じ文字列に混ぜる。
+	// 専用プロップが指定されたときだけ customStyle より後ろに置いてプロップを優先させる
+	const boxStyle = $derived(
+		[
+			customStyle,
+			iconPaddingStyle,
+			widthStyle ? `width: ${widthStyle}` : '',
+			minWidthStyle ? `min-width: ${minWidthStyle}` : '',
+			maxWidthStyle ? `max-width: ${maxWidthStyle}` : ''
+		]
+			.filter(Boolean)
+			.join('; ')
+	);
 </script>
 
 <div
@@ -743,12 +755,10 @@
 	class:input--readonly={readonly}
 	class:input--focused={isFocused}
 	data-testid="input"
-	style:width={widthStyle}
-	style:max-width={maxWidthStyle}
-	style:min-width={minWidthStyle}
+	style={boxStyle}
 >
 	<!-- 表示用テキスト -->
-	<div class="input__display-text" style={fieldStyle}>
+	<div class="input__display-text">
 		<div
 			class="input__display-text-content"
 			class:input__display-text-content--placeholder={!hasDisplayValue}
@@ -769,7 +779,6 @@
 			bind:value
 			bind:this={ref}
 			type={resolvedType}
-			style={fieldStyle}
 			{placeholder}
 			{autocomplete}
 			{min}
@@ -814,7 +823,7 @@
 		/>
 	</div>
 	{#if isLinkifyActive}
-		<div class="input__link-text" style={fieldStyle}>
+		<div class="input__link-text">
 			<div class="input__link-text-content">
 				{@html linkHtmlValue}
 			</div>
@@ -921,6 +930,11 @@
 		width: auto;
 		max-width: 100%;
 		height: inherit;
+		min-height: var(--svelte-ui-input-height);
+		padding: var(--svelte-ui-input-padding);
+		background-color: var(--svelte-ui-input-bg);
+		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
+		border-radius: var(--svelte-ui-input-border-radius);
 	}
 
 	.input__wrapper {
@@ -931,9 +945,8 @@
 		height: 100%;
 		padding: inherit;
 		border: none;
-		border-radius: var(--svelte-ui-input-border-radius);
-		background-color: var(--svelte-ui-input-bg);
-		box-shadow: 0 0 0 var(--svelte-ui-border-width) inset var(--svelte-ui-input-border-color);
+		border-radius: inherit;
+		background-color: transparent;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -951,10 +964,10 @@
 		width: 100%;
 		min-width: 1em;
 		min-height: var(--svelte-ui-input-height);
-		padding: var(--svelte-ui-input-padding);
+		padding: 0;
 		background-color: transparent;
 		border: none;
-		border-radius: var(--svelte-ui-input-border-radius);
+		border-radius: inherit;
 		font-family: inherit;
 		font-size: inherit;
 		font-weight: inherit;
@@ -978,7 +991,7 @@
 		width: 100%;
 		min-width: 1em;
 		height: var(--svelte-ui-input-height);
-		padding: var(--svelte-ui-input-padding);
+		padding: 0;
 		font-size: inherit;
 		font-weight: inherit;
 		color: inherit;
@@ -1006,6 +1019,7 @@
 		left: 0;
 		width: 100%;
 		height: 100%;
+		padding: inherit;
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -1021,7 +1035,7 @@
 	/* =============================================
  * 表示制御
  * ============================================= */
-	/* 非フォーカス時: input要素自体を不可視化（枠線・背景はラッパーにあるため display-text のみ表示） */
+	/* 非フォーカス時: input要素自体を不可視化（枠線・背景はルートにあるため display-text のみ表示） */
 	.input:not(.input--focused) input {
 		opacity: 0;
 	}
@@ -1043,21 +1057,17 @@
 	/* =============================================
  * フォーカス効果バリエーション
  * ============================================= */
-	.input--focus-outline input:focus {
+	input:focus {
+		outline: none;
+	}
+
+	.input--focus-outline.input--focused .input__wrapper {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
 	.input--focus-background.input--focused .input__wrapper {
 		background: var(--svelte-ui-hover-overlay);
-	}
-
-	.input--focus-background input:focus {
-		outline: none;
-	}
-
-	.input--focus-none input:focus {
-		outline: none;
 	}
 
 	/* =============================================
@@ -1198,29 +1208,27 @@
  * デザインバリエーション
  * ============================================= */
 	/* rounded */
-	.input--rounded .input__wrapper,
-	.input--rounded input {
+	.input--rounded {
 		border-radius: var(--svelte-ui-input-border-radius-rounded);
 	}
 
 	/* inline */
-	.input--inline .input__wrapper,
-	.input--inline input {
-		min-height: inherit;
-		line-height: inherit;
+	.input--inline {
+		min-height: 0;
+		padding: 0;
 		background-color: transparent;
 		box-shadow: none;
-		border: inherit;
 		border-radius: 0;
-	}
 
-	.input--inline {
+		input {
+			min-height: 0;
+		}
+
 		input,
 		.input__display-text,
 		.input__link-text {
 			height: inherit;
 			line-height: inherit;
-			padding: inherit;
 		}
 
 		/*

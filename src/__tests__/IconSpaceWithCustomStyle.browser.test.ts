@@ -1,6 +1,7 @@
 /**
  * customStyle に padding を指定しても、アイコン / クリアボタン / スウォッチ用に
  * 確保した余白が消えないことを検証する（コンポーネント横断の不変条件）。
+ * 余白は背景・ボーダーを描く箱（ルート要素）の padding として確保される。
  */
 import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
@@ -44,7 +45,7 @@ test('Input: rightIcon の余白が customStyle で消えない', () => {
 		render(Input, { value: 'x', rightIcon: 'search' }).container,
 		render(Input, { value: 'x', rightIcon: 'search', customStyle: CUSTOM_STYLE }).container,
 		render(Input, { value: 'x' }).container,
-		'input',
+		'.input',
 		'Right'
 	);
 });
@@ -54,7 +55,7 @@ test('Input: leftIcon の余白が customStyle で消えない', () => {
 		render(Input, { value: 'x', leftIcon: 'search' }).container,
 		render(Input, { value: 'x', leftIcon: 'search', customStyle: CUSTOM_STYLE }).container,
 		render(Input, { value: 'x' }).container,
-		'input',
+		'.input',
 		'Left'
 	);
 });
@@ -64,7 +65,7 @@ test('Input: clearable の余白が customStyle で消えない', () => {
 		render(Input, { value: 'x', clearable: true }).container,
 		render(Input, { value: 'x', clearable: true, customStyle: CUSTOM_STYLE }).container,
 		render(Input, { value: 'x' }).container,
-		'input',
+		'.input',
 		'Right'
 	);
 });
@@ -79,7 +80,7 @@ test('Input: rightIcon と clearable 併用時の余白が customStyle で消え
 			customStyle: CUSTOM_STYLE
 		}).container,
 		render(Input, { value: 'x' }).container,
-		'input',
+		'.input',
 		'Right'
 	);
 });
@@ -94,7 +95,7 @@ test('Input: inline でも rightIcon の余白が customStyle で消えない', 
 			customStyle: CUSTOM_STYLE
 		}).container,
 		render(Input, { value: 'x', inline: true }).container,
-		'input',
+		'.input',
 		'Right'
 	);
 });
@@ -104,7 +105,7 @@ test('Textarea: clearable の余白が customStyle で消えない', () => {
 		render(Textarea, { value: 'x', clearable: true }).container,
 		render(Textarea, { value: 'x', clearable: true, customStyle: CUSTOM_STYLE }).container,
 		render(Textarea, { value: 'x' }).container,
-		'textarea',
+		'.textarea',
 		'Right'
 	);
 });
@@ -114,7 +115,7 @@ test('Combobox: ドロップダウンアイコンの余白が customStyle で消
 		render(Combobox, { value: '', options: ['a'] }).container,
 		render(Combobox, { value: '', options: ['a'], customStyle: CUSTOM_STYLE }).container,
 		render(Input, { value: 'x' }).container,
-		'input',
+		'.input',
 		'Right'
 	);
 });
@@ -124,7 +125,7 @@ test('ColorPicker: スウォッチの余白が customStyle で消えない', () 
 		render(ColorPicker, { value: '#ff0000' }).container,
 		render(ColorPicker, { value: '#ff0000', customStyle: CUSTOM_STYLE }).container,
 		render(Input, { value: 'x' }).container,
-		'input',
+		'.input',
 		'Left'
 	);
 });
