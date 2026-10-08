@@ -355,18 +355,18 @@ test('color 指定は完了コネクターと表示中リングの色にも反�
 	) as HTMLElement;
 	expect(getComputedStyle(doneConnector).backgroundColor).toBe('rgb(255, 0, 0)');
 
-	// 表示中マーカーのリング（box-shadow）が指定色の半透明合成になる
+	// 表示中マーカーのリング（outline）が指定色の半透明合成になる
+	// （このファイルはテーマ変数を読み込まないため、outline の太さ・オフセットを明示する）
 	const root = screen.container.querySelector('.step-nav') as HTMLElement;
 	root.style.setProperty('--svelte-ui-step-nav-ring-offset', '2px');
 	root.style.setProperty('--svelte-ui-step-nav-ring-width', '2px');
-	root.style.setProperty('--svelte-ui-surface-color', 'rgb(255, 255, 255)');
 	const viewingMarker = screen.container.querySelector(
 		'.step-nav__step--viewing .step-nav__marker'
 	) as HTMLElement;
-	const boxShadow = getComputedStyle(viewingMarker).boxShadow;
+	const outlineColor = getComputedStyle(viewingMarker).outlineColor;
 	// 指定色(赤)の 40% 合成がリングに使われる（primary 由来ではない）。
 	// Chromium は color-mix を color(srgb 1 0 0 / 0.4) 形式で直列化する。
-	expect(boxShadow).toContain('srgb 1 0 0');
+	expect(outlineColor).toContain('srgb 1 0 0');
 });
 
 test('表示中ステップのラベルは強調色になり、color 指定がそこに反映される', () => {

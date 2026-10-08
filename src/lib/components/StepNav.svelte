@@ -504,7 +504,6 @@
 
 	/* upcoming: 淡いアウトライン + 番号 */
 	.step-nav__step--upcoming .step-nav__marker {
-		background: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-step-nav-upcoming-text-color);
 		border: var(--svelte-ui-step-nav-marker-border-width) solid
 			var(--svelte-ui-step-nav-upcoming-marker-color);
@@ -512,7 +511,6 @@
 
 	/* in-progress: primary アウトライン + 番号 */
 	.step-nav__step--in-progress .step-nav__marker {
-		background: var(--svelte-ui-surface-color);
 		color: var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
 		border: var(--svelte-ui-step-nav-marker-border-width) solid
 			var(--internal-step-nav-accent, var(--svelte-ui-step-nav-accent-color));
@@ -528,18 +526,17 @@
 
 	/* error: error 色 + error アイコン（進捗軸を上書き） */
 	.step-nav__step--error .step-nav__marker {
-		background: var(--svelte-ui-surface-color);
 		color: var(--svelte-ui-step-nav-error-color);
 		border: var(--svelte-ui-step-nav-marker-border-width) solid
 			var(--svelte-ui-step-nav-error-color);
 	}
 
-	/* 表示中: 外周リング（フォーカス表示とは別レイヤー・別色） */
+	/* 表示中: 外周リング（フォーカス表示とは別レイヤー・別色）。
+	   リングとマーカーの隙間に背景が透けるよう、box-shadow ではなく outline で描く */
 	.step-nav__step--viewing .step-nav__marker {
-		box-shadow:
-			0 0 0 var(--svelte-ui-step-nav-ring-offset) var(--svelte-ui-surface-color),
-			0 0 0 calc(var(--svelte-ui-step-nav-ring-offset) + var(--svelte-ui-step-nav-ring-width))
-				var(--internal-step-nav-ring-color, var(--svelte-ui-step-nav-ring-color));
+		outline: var(--svelte-ui-step-nav-ring-width) solid
+			var(--internal-step-nav-ring-color, var(--svelte-ui-step-nav-ring-color));
+		outline-offset: var(--svelte-ui-step-nav-ring-offset);
 	}
 
 	/* ---- ラベル/説明 ---- */
