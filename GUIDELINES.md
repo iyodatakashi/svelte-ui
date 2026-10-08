@@ -91,6 +91,7 @@ src/lib/
 - Props順序: snippets → 基本props → HTML属性 → スタイル → 状態/動作 → ARIA → イベントハンドラ
 - `data-testid` は必ず最上位要素に設定（コンポーネント名をベースに命名）
 - ラッパーコンポーネント（自前の DOM 最上位要素を持たず単一の子コンポーネントをそのままレンダリングするもの。例: ConfirmDialog）は独自の `data-testid` を付与せず、内包する子コンポーネントの `data-testid` で特定する。薄いアンカー用コンテナ（例: PopupMenuButton のアンカー `div`）も内包要素の testid に委譲してよい
+- `customStyle` は背景色とボーダーを描く「箱」＝最上位要素に適用する（`padding` も箱に 1 箇所だけ持たせる）。詳細は `docs/COMPONENT_DESIGN_GUIDELINES.md`
 - カスタムインラインスタイルは生の `style` ではなくプロジェクト標準の `customStyle?: string` で受け取る（Modal は歴史的経緯で `customStyles` / `customClass`、一部 Skeleton 系は `className` を使用。後方互換のため統一されていないが、新規コンポーネントは `customStyle` に揃える）
 
 ## CSSシステム

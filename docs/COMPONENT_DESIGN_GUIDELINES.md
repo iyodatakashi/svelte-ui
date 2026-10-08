@@ -68,6 +68,17 @@ onclick = () => {}, // パラメータなしで型推論を可能にする
 onchange = () => {}, // パラメータなしで型推論を可能にする
 ```
 
+### customStyle の適用先
+
+- **`customStyle` は、背景色とボーダーを描く「箱」そのものに適用する。** その箱は原則としてコンポーネントの最上位要素（`data-testid` を付けた要素）であり、Select / MultiSelect のようにトリガー要素が箱を兼ねる場合はその要素。
+- **`padding` は箱に 1 箇所だけ持たせる。** 複数の層に分散させると、`customStyle` の `padding` がどちらに効くのかが決まらず、`background-color` を指定したときにボーダーが覆われる等の破綻が起きる。
+- Input / Textarea のように「表示用テキスト層・入力層・リンク層」を重ねる構造では、
+  - 箱（ルート）: `padding` / `background-color` / ボーダー（inset `box-shadow`） / `border-radius`
+  - 絶対配置でルートの padding box を覆う層（`__wrapper` / `__link-text`）: `padding: inherit`
+  - 通常フローの層と入力要素本体: `padding: 0`、背景は `transparent`
+  - フォーカスリングは入力要素ではなく箱に描く（入力要素はルートの content box しか占めないため）
+- アイコン・クリアボタン用の余白は `customStyle` より後ろに `padding-left` / `padding-right` として箱に追加し、`customStyle` の `padding` で消えないようにする。不変条件は `src/__tests__/IconSpaceWithCustomStyle.browser.test.ts` と `src/__tests__/CustomStyleBackground.browser.test.ts` で検証する。
+
 ### コメント方針
 
 - プロパティ・要素を追加する際、説明用のJSDocやコメントは付けない。型名やコードで十分なものはコメントで補足しない。
