@@ -12,6 +12,7 @@
 		KeyboardHandler,
 		BivariantValueHandler
 	} from '$lib/types/callbackHandlers';
+	import { getStyleFromNumber } from '$lib/utils/style';
 	import { getCurrentPath, matchPath } from '$lib/utils/navPath';
 	import { subscribeUrlChange } from '$lib/utils/urlChange';
 	import { t } from '$lib/i18n';
@@ -52,6 +53,10 @@
 		size?: ComponentSize;
 		/** 現在／完了ステップの強調色。テーマ色より優先。 */
 		color?: string;
+		/** 幅。数値は px として扱う。 */
+		width?: string | number | null;
+		minWidth?: string | number | null;
+		maxWidth?: string | number | null;
 		/** 番号の代わりに各ステップの icon を表示。 @default false */
 		showIcon?: boolean;
 		/** 追加インラインスタイル。 */
@@ -103,6 +108,9 @@
 		orientation = 'horizontal',
 		size = 'medium',
 		color,
+		width = null,
+		minWidth = null,
+		maxWidth = null,
 		showIcon = false,
 		customStyle = '',
 
@@ -204,12 +212,19 @@
 			.join(' ')
 	);
 
+	const widthStyle = $derived(getStyleFromNumber(width));
+	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
+	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
+
 	const rootStyle = $derived(
 		[
 			// color 指定時は強調色を上書き。リングは半透明の色なので同率で合成した値も注入する。
 			color ? `--internal-step-nav-accent:${color}` : '',
 			color ? `--internal-step-nav-ring-color:color-mix(in srgb, ${color} 40%, transparent)` : '',
-			customStyle
+			customStyle,
+			widthStyle ? `width: ${widthStyle}` : '',
+			minWidthStyle ? `min-width: ${minWidthStyle}` : '',
+			maxWidthStyle ? `max-width: ${maxWidthStyle}` : ''
 		]
 			.filter(Boolean)
 			.join('; ')

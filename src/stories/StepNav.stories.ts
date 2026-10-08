@@ -43,7 +43,8 @@ const meta = {
 	argTypes: {
 		items: {
 			control: 'object',
-			description: 'Array of step items ({ label, value?, href?, description?, icon?, error?, disabled? }[])'
+			description:
+				'Array of step items ({ label, value?, href?, description?, icon?, error?, disabled? }[])'
 		},
 		value: {
 			control: 'text',
@@ -67,6 +68,18 @@ const meta = {
 		color: {
 			control: 'color',
 			description: 'Accent color for in-progress/done steps (overrides theme)'
+		},
+		width: {
+			control: 'text',
+			description: 'Width as px number or CSS string'
+		},
+		minWidth: {
+			control: 'text',
+			description: 'Minimum width as px number or CSS string'
+		},
+		maxWidth: {
+			control: 'text',
+			description: 'Maximum width as px number or CSS string'
 		},
 		showIcon: {
 			control: 'boolean',

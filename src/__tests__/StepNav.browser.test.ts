@@ -342,6 +342,40 @@ test('color を渡すと強調色の internal 変数が設定される', () => {
 	expect(root.style.getPropertyValue('--internal-step-nav-accent')).toBe('rgb(255, 0, 0)');
 });
 
+test('width / minWidth / maxWidth が箱に反映される（数値は px）', () => {
+	const screen = render(StepNav, {
+		items: baseItems,
+		width: 300,
+		minWidth: '10rem',
+		maxWidth: 320
+	});
+	const style = getComputedStyle(screen.container.querySelector('.step-nav') as HTMLElement);
+
+	expect(style.width).toBe('300px');
+	expect(style.minWidth).toBe('160px');
+	expect(style.maxWidth).toBe('320px');
+});
+
+test('幅のプロップは customStyle より優先される', () => {
+	const screen = render(StepNav, {
+		items: baseItems,
+		width: 300,
+		customStyle: 'width: 120px'
+	});
+
+	expect(getComputedStyle(screen.container.querySelector('.step-nav') as HTMLElement).width).toBe(
+		'300px'
+	);
+});
+
+test('幅のプロップ未指定なら customStyle の width が効く', () => {
+	const screen = render(StepNav, { items: baseItems, customStyle: 'width: 120px' });
+
+	expect(getComputedStyle(screen.container.querySelector('.step-nav') as HTMLElement).width).toBe(
+		'120px'
+	);
+});
+
 test('color 指定は完了コネクターと表示中リングの色にも反映される', () => {
 	const screen = render(StepNav, {
 		items: baseItems,
