@@ -72,6 +72,27 @@ test('リストの最小幅はトリガー幅とテーマの下限の大きい�
 	expect(parseFloat(getComputedStyle(listbox).minWidth)).toBeCloseTo(expected, 0);
 });
 
+test('customStyle で padding を指定してもアイコンの領域が消えない', () => {
+	const screen = render(MultiSelect, {
+		value: ['all'],
+		options,
+		customStyle: 'padding: 8px 12px'
+	});
+
+	const trigger = getTrigger(screen).getBoundingClientRect();
+	const icon = (
+		screen.container.querySelector('.multi-select__dropdown-icon') as HTMLElement
+	).getBoundingClientRect();
+	const label = (
+		screen.container.querySelector('.multi-select__display-text') as HTMLElement
+	).getBoundingClientRect();
+
+	expect(icon.width).toBeGreaterThan(0);
+	// アイコンはトリガーからはみ出さず、ラベルと重ならない
+	expect(icon.right).toBeLessThanOrEqual(trigger.right + 0.5);
+	expect(label.right).toBeLessThanOrEqual(icon.left + 0.5);
+});
+
 test('separator を挟んでも選択の切り替えが動作する', async () => {
 	let changed: OptionValue[] | undefined;
 	const screen = render(MultiSelect, {

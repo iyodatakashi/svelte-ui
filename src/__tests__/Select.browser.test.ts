@@ -266,6 +266,23 @@ test('required / tabindex / ariaLabel がトリガーに反映される', () => 
 	expect(trigger).toHaveAttribute('aria-label', 'Pick one');
 });
 
+test('customStyle で padding を指定してもアイコンの領域が消えない', () => {
+	const screen = render(Select, { value: 'option2', options, customStyle: 'padding: 8px 12px' });
+
+	const trigger = getTrigger(screen).getBoundingClientRect();
+	const icon = (
+		screen.container.querySelector('.select__dropdown-icon') as HTMLElement
+	).getBoundingClientRect();
+	const label = (
+		screen.container.querySelector('.select__display-text') as HTMLElement
+	).getBoundingClientRect();
+
+	expect(icon.width).toBeGreaterThan(0);
+	// アイコンはトリガーからはみ出さず、ラベルと重ならない
+	expect(icon.right).toBeLessThanOrEqual(trigger.right + 0.5);
+	expect(label.right).toBeLessThanOrEqual(icon.left + 0.5);
+});
+
 test('レイアウト系のクラスが適用される', () => {
 	const screen = render(Select, {
 		value: undefined,

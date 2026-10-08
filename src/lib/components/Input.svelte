@@ -704,6 +704,22 @@
 	// --------------------------------
 	// style from number
 	// --------------------------------
+	// アイコンの領域は customStyle で消されないよう、customStyle より後ろに指定する
+	const iconSpaceSuffix = $derived(inline ? '-inline' : '');
+	const iconPaddingStyle = $derived(
+		[
+			hasLeftIcon ? `padding-left: var(--svelte-ui-input-icon-space${iconSpaceSuffix})` : '',
+			clearable && hasRightIcon
+				? `padding-right: var(--svelte-ui-input-icon-space-double${iconSpaceSuffix})`
+				: clearable || hasRightIcon
+					? `padding-right: var(--svelte-ui-input-icon-space${iconSpaceSuffix})`
+					: ''
+		]
+			.filter(Boolean)
+			.join('; ')
+	);
+	const fieldStyle = $derived([customStyle, iconPaddingStyle].filter(Boolean).join('; '));
+
 	const widthStyle = $derived(getStyleFromNumber(width));
 	const maxWidthStyle = $derived(getStyleFromNumber(maxWidth));
 	const minWidthStyle = $derived(getStyleFromNumber(minWidth));
@@ -732,7 +748,7 @@
 	style:min-width={minWidthStyle}
 >
 	<!-- 表示用テキスト -->
-	<div class="input__display-text" style={customStyle}>
+	<div class="input__display-text" style={fieldStyle}>
 		<div
 			class="input__display-text-content"
 			class:input__display-text-content--placeholder={!hasDisplayValue}
@@ -753,7 +769,7 @@
 			bind:value
 			bind:this={ref}
 			type={resolvedType}
-			style={customStyle}
+			style={fieldStyle}
 			{placeholder}
 			{autocomplete}
 			{min}
@@ -798,7 +814,7 @@
 		/>
 	</div>
 	{#if isLinkifyActive}
-		<div class="input__link-text" style={customStyle}>
+		<div class="input__link-text" style={fieldStyle}>
 			<div class="input__link-text-content">
 				{@html linkHtmlValue}
 			</div>
@@ -1089,22 +1105,6 @@
 		transition: var(--svelte-ui-transition-duration);
 	}
 
-	.input--clearable {
-		input,
-		.input__display-text,
-		.input__link-text {
-			padding-right: var(--svelte-ui-input-icon-space);
-		}
-	}
-
-	.input--clearable.input--has-right-icon {
-		input,
-		.input__display-text,
-		.input__link-text {
-			padding-right: var(--svelte-ui-input-icon-space-double);
-		}
-	}
-
 	.input--has-right-icon .input__clear-button {
 		right: var(--svelte-ui-input-icon-space);
 	}
@@ -1122,22 +1122,6 @@
 	}
 
 	/* アイコン */
-	.input--has-left-icon {
-		input,
-		.input__display-text,
-		.input__link-text {
-			padding-left: var(--svelte-ui-input-icon-space);
-		}
-	}
-
-	.input--has-right-icon {
-		input,
-		.input__display-text,
-		.input__link-text {
-			padding-right: var(--svelte-ui-input-icon-space);
-		}
-	}
-
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
@@ -1249,39 +1233,9 @@
 			line-height: normal;
 		}
 
-		&.input--has-left-icon {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-left: var(--svelte-ui-input-icon-space-inline);
-			}
-		}
-
 		&.input--has-right-icon {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-right: var(--svelte-ui-input-icon-space-inline);
-			}
-
 			.input__icon-right {
 				right: 0;
-			}
-		}
-
-		&.input--clearable {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-right: var(--svelte-ui-input-icon-space-inline);
-			}
-		}
-
-		&.input--clearable.input--has-right-icon {
-			input,
-			.input__display-text,
-			.input__link-text {
-				padding-right: var(--svelte-ui-input-icon-space-double-inline);
 			}
 		}
 	}

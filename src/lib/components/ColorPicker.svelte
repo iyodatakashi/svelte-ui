@@ -402,7 +402,7 @@
 		{minWidth}
 		{maxWidth}
 		{rounded}
-		customStyle={`padding-left: var(--svelte-ui-colorpicker-text-padding-left); ${customStyle}`}
+		customStyle={`${customStyle}; padding-left: var(--svelte-ui-colorpicker-text-padding-left)`}
 		onchange={handleChange}
 		oninput={handleInput}
 		onfocus={handleFocus}

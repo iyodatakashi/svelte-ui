@@ -549,6 +549,12 @@
 	);
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
 	const widthStyle = $derived(getStyleFromNumber(width));
+	// アイコンの領域は customStyle で消されないよう、customStyle より後ろに指定する
+	const fieldStyle = $derived(
+		[customStyle, clearable ? 'padding-right: var(--svelte-ui-textarea-icon-space)' : '']
+			.filter(Boolean)
+			.join('; ')
+	);
 </script>
 
 <div
@@ -576,7 +582,7 @@
 		class:textarea__display-text--placeholder={!hasDisplayValue}
 		style:min-height={minHeightStyle}
 		style:max-height={maxHeightStyle}
-		style={customStyle}
+		style={fieldStyle}
 	>
 		{@html displayValue}
 	</div>
@@ -600,7 +606,7 @@
 			{autocapitalize}
 			class:resizable
 			style:min-height={minHeightStyle}
-			style={customStyle}
+			style={fieldStyle}
 			onchange={handleChange}
 			oninput={handleInput}
 			onfocus={handleFocus}
@@ -636,7 +642,7 @@
 			class="textarea__link-text"
 			style:min-height={minHeightStyle}
 			style:max-height={maxHeightStyle}
-			style={customStyle}
+			style={fieldStyle}
 		>
 			{@html linkHtmlValue}
 		</div>
@@ -868,14 +874,6 @@
 	 * 機能バリエーション
 	 * ============================================= */
 	/* clearable */
-	.textarea--clearable {
-		textarea,
-		.textarea__display-text,
-		.textarea__link-text {
-			padding-right: var(--svelte-ui-textarea-icon-space);
-		}
-	}
-
 	@media (hover: hover) {
 		.textarea--clearable:hover .textarea__clear-button {
 			opacity: 1;

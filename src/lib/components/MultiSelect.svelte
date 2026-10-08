@@ -82,6 +82,13 @@
 	// =========================================================================
 	// $derived
 	// =========================================================================
+	// アイコンの領域は customStyle で消されないよう、customStyle より後ろに指定する
+	const triggerStyle = $derived(
+		[customStyle, `padding-right: var(--svelte-ui-select-icon-space${inline ? '-inline' : ''})`]
+			.filter(Boolean)
+			.join('; ')
+	);
+
 	const fallbackId = `multi-select-${Math.random().toString(36).substring(2, 15)}`;
 	const listboxId = $derived(`${id ?? fallbackId}-listbox`);
 
@@ -161,7 +168,7 @@
 		aria-required={required ? 'true' : undefined}
 		{tabindex}
 		{disabled}
-		style={customStyle}
+		style={triggerStyle}
 		onfocus={handleFocus}
 		onblur={handleBlur}
 		onclick={handleTriggerClick}
@@ -243,7 +250,6 @@
 		width: 100%;
 		min-height: var(--svelte-ui-select-height);
 		padding: var(--svelte-ui-select-padding);
-		padding-right: var(--svelte-ui-select-icon-space);
 		background: transparent;
 		border: none;
 		font-family: inherit;
@@ -258,7 +264,6 @@
 	}
 
 	.multi-select__inner {
-		position: relative;
 		flex: 1;
 		align-self: stretch;
 		display: flex;
@@ -287,11 +292,9 @@
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: 0;
+		top: 50%;
 		right: 4px;
-		margin-top: calc((var(--svelte-ui-select-height) - 32px) / 2);
-		margin-bottom: calc((var(--svelte-ui-select-height) - 32px) / 2);
-		margin-right: calc(0px - var(--svelte-ui-select-icon-space));
+		transform: translateY(-50%);
 		width: 32px;
 		height: 32px;
 		color: var(--svelte-ui-select-dropdown-icon-color);
@@ -356,7 +359,6 @@
 	.multi-select.multi-select--inline {
 		.multi-select__trigger {
 			padding: inherit;
-			padding-right: var(--svelte-ui-select-icon-space-inline);
 			background: transparent;
 			border: none;
 			border-radius: 0;
@@ -374,9 +376,7 @@
 		.multi-select__dropdown-icon {
 			top: calc((1lh - 32px) / 2);
 			right: 0;
-			margin-top: 0;
-			margin-bottom: 0;
-			margin-right: calc(0px - var(--svelte-ui-select-icon-space-inline));
+			transform: none;
 		}
 	}
 
