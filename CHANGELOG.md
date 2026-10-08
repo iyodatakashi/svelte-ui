@@ -5,6 +5,26 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.70] - 2026-10-09
+
+### Added
+
+- **StepNav**: New `width` / `minWidth` / `maxWidth` props, taking a px number or a CSS string like **Input** and **Textarea**. In the horizontal layout the step list scrolls horizontally when the steps do not fit within the given width.
+
+### Changed
+
+- **Input** / **Textarea**: `customStyle` is now applied to the field's box — the top-level element that draws the background and the border — instead of the inner input element and text layers. The box also owns the `padding`, so `customStyle` reaches the background, border, border-radius, padding and width through a single element, the way it already did for **Button**, **Select** and **MultiSelect**. Two consequences:
+  - A vertical `padding` in `customStyle` now makes the box taller, instead of only shrinking the text area inside a fixed-height box. Horizontal padding, the space reserved for icons, and every dimension without `customStyle` are unchanged.
+  - A `width` in `customStyle` now sizes the field itself rather than the inner input element. The `width` / `minWidth` / `maxWidth` props still take precedence when they are set.
+- **Input** / **Textarea**: The focus ring is drawn on the field's box rather than on the input element, so it surrounds the whole field regardless of the field's padding.
+- **StepNav**: Markers for upcoming, in-progress and error steps are no longer filled with the surface color, so the background behind the component shows through the circle. Only completed steps keep the accent fill. The ring around the viewing step is now drawn with `outline` and `outline-offset` instead of a two-layer `box-shadow`, so the gap between the marker and the ring is transparent as well. The ring's size and color still come from `--svelte-ui-step-nav-ring-width` / `--svelte-ui-step-nav-ring-offset` / `--svelte-ui-step-nav-ring-color`.
+
+### Fixed
+
+- **Input** / **Textarea**: Setting `background-color` through `customStyle` no longer erases the field's border. The background and border were drawn by an inner wrapper while `customStyle` landed on the input element layered above it, so a custom background painted over the border.
+- **Input** / **Textarea** / **Combobox** / **ColorPicker** / **Select** / **MultiSelect**: The space reserved for icons, clear buttons and the color swatch is no longer removed when `customStyle` sets `padding`. The space was reserved as padding on the very element `customStyle` is applied to, so any `padding` wiped it out and the text ran under the decoration. Padding on the other sides still applies; override `--svelte-ui-*-icon-space` to change the reserved width.
+- **Select** / **MultiSelect**: The dropdown icon no longer overflows 20px past the right edge of the trigger.
+
 ## [0.0.69] - 2026-10-05
 
 ### Added
