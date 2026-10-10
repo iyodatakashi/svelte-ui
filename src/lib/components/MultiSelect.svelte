@@ -186,9 +186,9 @@
 			{:else if placeholder}
 				<span class="multi-select__placeholder">{placeholder}</span>
 			{/if}
-			<span class="multi-select__dropdown-icon" aria-hidden="true">
-				<Icon>arrow_drop_down</Icon>
-			</span>
+		</span>
+		<span class="multi-select__dropdown-icon" aria-hidden="true">
+			<Icon>arrow_drop_down</Icon>
 		</span>
 	</button>
 
@@ -247,6 +247,7 @@
 	 * トリガーボタン
 	 * ============================================= */
 	.multi-select__trigger {
+		position: relative;
 		width: 100%;
 		min-height: var(--svelte-ui-select-height);
 		padding: var(--svelte-ui-select-padding);
@@ -287,16 +288,17 @@
 		flex: 1;
 	}
 
+	/* アイコンはテキストと同じ content box を基準に中央寄せする（padding-block: inherit）。
+	   絶対配置の基準はトリガーの padding box なので、そのままだと padding が上下非対称なときにズレる */
 	.multi-select__dropdown-icon {
 		display: flex;
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: 50%;
+		inset-block: 0;
 		right: 4px;
-		transform: translateY(-50%);
 		width: 32px;
-		height: 32px;
+		padding-block: inherit;
 		color: var(--svelte-ui-select-dropdown-icon-color);
 		pointer-events: none;
 	}
@@ -374,9 +376,12 @@
 		}
 
 		.multi-select__dropdown-icon {
-			top: calc((1lh - 32px) / 2);
+			/* 複数行になりうるので、箱の中央ではなく最初の行にそろえる */
+			bottom: auto;
+			box-sizing: content-box;
+			height: 1lh;
+			padding-bottom: 0;
 			right: 0;
-			transform: none;
 		}
 	}
 

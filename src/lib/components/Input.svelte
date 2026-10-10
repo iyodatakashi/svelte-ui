@@ -1104,13 +1104,17 @@
  * 機能バリエーション
  * ============================================= */
 	/* clearable */
+	/* 装飾はテキストと同じ content box を基準に中央寄せする（padding-block: inherit）。
+	   絶対配置の基準はルートの padding box なので、そのままだと padding が上下非対称なときにズレる */
 	.input__clear-button {
+		display: flex;
+		justify-content: center;
+		align-items: center;
 		position: absolute;
-		top: 50%;
+		inset-block: 0;
 		right: 4px;
 		width: 32px;
-		height: 32px;
-		transform: translate(0, -50%);
+		padding-block: inherit;
 		opacity: 0;
 		transition: var(--svelte-ui-transition-duration);
 	}
@@ -1137,11 +1141,10 @@
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: 50%;
+		inset-block: 0;
 		left: 4px;
 		width: 32px;
-		height: 32px;
-		transform: translateY(-50%);
+		padding-block: inherit;
 		color: var(--svelte-ui-input-icon-color);
 		pointer-events: none;
 		z-index: 1;
@@ -1152,11 +1155,10 @@
 		justify-content: center;
 		align-items: center;
 		position: absolute;
-		top: 50%;
+		inset-block: 0;
 		right: 4px;
 		width: 32px;
-		height: 32px;
-		transform: translateY(-50%);
+		padding-block: inherit;
 		color: var(--svelte-ui-input-icon-color);
 		pointer-events: none;
 		z-index: 2;
