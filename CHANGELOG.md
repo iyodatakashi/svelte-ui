@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.71] - 2026-10-10
+
+### Fixed
+
+- **Input** / **Combobox** / **Select** / **MultiSelect**: Icons and clear buttons now line up with the text when `customStyle` sets a vertically asymmetric `padding`. The decorations were centered on the field's box while the text is centered inside the padding, so a value such as `padding: 24px 12px 8px` left the icon sitting 8px above the text — 20px for an inline **Select**. Positions without `customStyle` are unchanged.
+- **ColorPicker**: `customStyle` is no longer applied twice. It was set on the wrapper as well as forwarded to the underlying **Input**, so a `padding` counted twice and made the component taller than requested. The color swatch sits outside the field and cannot follow its padding, so a vertically asymmetric `padding` still offsets it from the text.
+
 ## [0.0.70] - 2026-10-09
 
 ### Added
