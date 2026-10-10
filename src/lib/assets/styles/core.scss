@@ -19,6 +19,8 @@
 button {
 	background: transparent;
 	border: none;
+	/* UA 既定の color: buttontext は継承より強く、ダークテーマでも黒のままになる */
+	color: inherit;
 	font-size: inherit;
 	font-weight: inherit;
 	cursor: pointer;
