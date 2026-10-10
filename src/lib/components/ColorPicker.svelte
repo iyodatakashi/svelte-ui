@@ -385,7 +385,6 @@
 	class:color-picker--readonly={readonly}
 	class:color-picker--focused={isFocused}
 	data-testid="color-picker"
-	style={customStyle}
 >
 	<Input
 		id={id ? `${id}-input` : undefined}
