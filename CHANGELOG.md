@@ -5,6 +5,21 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.72] - 2026-10-10
+
+### Added
+
+- Drop shadows are now themeable through `--svelte-ui-shadow-color-strong`, `--svelte-ui-shadow-color` and `--svelte-ui-shadow-color-weak`. They set only the color of the elevation shadows; offsets, blur and spread stay per component.
+- Surfaces that float above the page have their own color, `--svelte-ui-surface-elevated-color`. In the light theme it matches `--svelte-ui-surface-color`; in the dark theme it is one step lighter.
+
+### Changed
+
+- **Popup** / **Modal** / **Dialog** / **Drawer** / **ConfirmDialog** / **PopupMenu** / **Combobox** / **Snackbar** / **Fab** / **Nav**: Floating surfaces now read as lifted in the dark theme. Both themes used the same near-transparent black shadow, which barely registers against a dark background, and every surface used the same color as the page, so a popup with no backdrop blended into it. Shadows are about three times stronger in dark, and popups, dialogs, sheets and dropdown lists are drawn one step lighter than the page. The light theme is unchanged apart from two shadow values rounded onto the shared scale: **PopupMenu** and **Snackbar** go from 15% to 14% opacity, and **Popup**'s mobile bottom sheet from 10%/6% to 12%.
+
+### Fixed
+
+- Buttons without an explicit color no longer render black text in the dark theme. The base stylesheet reset the background, border and font of `button` but left `color`, and the browser default wins over inheritance, so the text stayed black whatever the theme. This affected **Datepicker**'s trigger and **FileUploader**'s drop zone, as well as any plain `<button>` placed in a dark UI.
+
 ## [0.0.71] - 2026-10-10
 
 ### Fixed
