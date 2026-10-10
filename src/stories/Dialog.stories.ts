@@ -127,13 +127,15 @@ export const WithFooter: Story = {
 		children: createContentSnippet(`
 			<div>
 				<p>Are you sure you want to delete this item?</p>
-				<p style="color: #666; font-size: 0.9em;">This action cannot be undone.</p>
+				<p style="color: var(--svelte-ui-text-subtle-color); font-size: 0.9em;">This action cannot be undone.</p>
 			</div>
 		`),
 		footer: createRawSnippet(() => ({
 			render: () => `
-				<button style="padding: 8px 16px; border: 1px solid var(--svelte-ui-border-color, #ccc); background: var(--svelte-ui-surface-color, white); border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit;">Cancel</button>
-				<button style="padding: 8px 16px; border: none; background: #d32f2f; color: white; border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit;">Delete</button>
+				<div style="display: contents;">
+					<button style="padding: 8px 16px; border-radius: var(--svelte-ui-border-radius); font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; border: 1px solid var(--svelte-ui-border-color); background: transparent; color: var(--svelte-ui-text-color);">Cancel</button>
+					<button style="padding: 8px 16px; border-radius: var(--svelte-ui-border-radius); font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; border: none; background: var(--svelte-ui-error-color); color: var(--svelte-ui-text-on-filled-color);">Delete</button>
+				</div>
 			`
 		}))
 	}
@@ -159,8 +161,10 @@ export const Scrollable: Story = {
 		`),
 		footer: createRawSnippet(() => ({
 			render: () => `
-				<button style="padding: 8px 16px; border: 1px solid var(--svelte-ui-border-color, #ccc); background: var(--svelte-ui-surface-color, white); border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit;">Cancel</button>
-				<button style="padding: 8px 16px; border: none; background: #1976d2; color: white; border-radius: 4px; font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit;">Save</button>
+				<div style="display: contents;">
+					<button style="padding: 8px 16px; border-radius: var(--svelte-ui-border-radius); font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; border: 1px solid var(--svelte-ui-border-color); background: transparent; color: var(--svelte-ui-text-color);">Cancel</button>
+					<button style="padding: 8px 16px; border-radius: var(--svelte-ui-border-radius); font-size: 0.875rem; font-weight: 500; cursor: pointer; font-family: inherit; border: none; background: var(--svelte-ui-primary-color); color: var(--svelte-ui-text-on-filled-color);">Save</button>
+				</div>
 			`
 		}))
 	}
@@ -173,13 +177,13 @@ export const NoPadding: Story = {
 		noPadding: true,
 		children: createContentSnippet(`
 			<ul>
-				<li style="padding: 16px 24px; border-top: 1px solid #dee2e6;">
+				<li style="padding: 16px 24px; border-top: 1px solid var(--svelte-ui-border-color);">
 					Section 1
 				</li>
-				<li style="padding: 16px 24px; border-top: 1px solid #dee2e6;">
+				<li style="padding: 16px 24px; border-top: 1px solid var(--svelte-ui-border-color);">
 					Section 2
 				</li>
-				<li style="padding: 16px 24px; border-top: 1px solid #dee2e6;">
+				<li style="padding: 16px 24px; border-top: 1px solid var(--svelte-ui-border-color);">
 					Section 3
 				</li>
 			</ul>
