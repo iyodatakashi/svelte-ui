@@ -283,11 +283,11 @@
 	.modal {
 		padding: 0;
 		border-width: 0;
-		background-color: var(--svelte-ui-surface-color);
+		background-color: var(--svelte-ui-surface-elevated-color);
 		box-shadow:
-			0 11px 15px -7px rgb(0 0 0 / 20%),
-			0 24px 38px 3px rgb(0 0 0 / 14%),
-			0 9px 46px 8px rgb(0 0 0 / 12%);
+			0 11px 15px -7px var(--svelte-ui-shadow-color-strong),
+			0 24px 38px 3px var(--svelte-ui-shadow-color),
+			0 9px 46px 8px var(--svelte-ui-shadow-color-weak);
 	}
 
 	.modal::backdrop {

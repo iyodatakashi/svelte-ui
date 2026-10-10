@@ -318,9 +318,9 @@
 
 <style lang="scss">
 	.popup-menu {
-		background-color: var(--svelte-ui-surface-color);
+		background-color: var(--svelte-ui-surface-elevated-color);
 		border-radius: 4px;
-		box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+		box-shadow: 0 4px 12px var(--svelte-ui-shadow-color);
 		outline: none;
 		min-width: 160px;
 	}

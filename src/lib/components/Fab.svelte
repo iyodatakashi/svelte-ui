@@ -502,49 +502,49 @@
 
 		&.fab--shadow {
 			box-shadow:
-				0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-				0px 6px 10px 0px rgba(0, 0, 0, 0.14),
-				0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+				0px 3px 5px -1px var(--svelte-ui-shadow-color-strong),
+				0px 6px 10px 0px var(--svelte-ui-shadow-color),
+				0px 1px 18px 0px var(--svelte-ui-shadow-color-weak);
 		}
 
 		&.fab--outlined.fab--shadow {
 			box-shadow:
 				inset 0 0 0 var(--svelte-ui-border-width) currentColor,
-				0px 3px 5px -1px rgba(0, 0, 0, 0.2),
-				0px 6px 10px 0px rgba(0, 0, 0, 0.14),
-				0px 1px 18px 0px rgba(0, 0, 0, 0.12);
+				0px 3px 5px -1px var(--svelte-ui-shadow-color-strong),
+				0px 6px 10px 0px var(--svelte-ui-shadow-color),
+				0px 1px 18px 0px var(--svelte-ui-shadow-color-weak);
 		}
 
 		@media (hover: hover) {
 			&.fab--shadow:hover {
 				box-shadow:
-					0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-					0px 8px 10px 1px rgba(0, 0, 0, 0.14),
-					0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+					0px 5px 5px -3px var(--svelte-ui-shadow-color-strong),
+					0px 8px 10px 1px var(--svelte-ui-shadow-color),
+					0px 3px 14px 2px var(--svelte-ui-shadow-color-weak);
 			}
 
 			&.fab--outlined.fab--shadow:hover {
 				box-shadow:
 					inset 0 0 0 var(--svelte-ui-border-width) currentColor,
-					0px 5px 5px -3px rgba(0, 0, 0, 0.2),
-					0px 8px 10px 1px rgba(0, 0, 0, 0.14),
-					0px 3px 14px 2px rgba(0, 0, 0, 0.12);
+					0px 5px 5px -3px var(--svelte-ui-shadow-color-strong),
+					0px 8px 10px 1px var(--svelte-ui-shadow-color),
+					0px 3px 14px 2px var(--svelte-ui-shadow-color-weak);
 			}
 		}
 
 		&.fab--shadow:active {
 			box-shadow:
-				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
-				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
-				0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+				0px 7px 8px -4px var(--svelte-ui-shadow-color-strong),
+				0px 12px 17px 2px var(--svelte-ui-shadow-color),
+				0px 5px 22px 4px var(--svelte-ui-shadow-color-weak);
 		}
 
 		&.fab--outlined.fab--shadow:active {
 			box-shadow:
 				inset 0 0 0 var(--svelte-ui-border-width) currentColor,
-				0px 7px 8px -4px rgba(0, 0, 0, 0.2),
-				0px 12px 17px 2px rgba(0, 0, 0, 0.14),
-				0px 5px 22px 4px rgba(0, 0, 0, 0.12);
+				0px 7px 8px -4px var(--svelte-ui-shadow-color-strong),
+				0px 12px 17px 2px var(--svelte-ui-shadow-color),
+				0px 5px 22px 4px var(--svelte-ui-shadow-color-weak);
 		}
 
 		&.fab--no-motion,

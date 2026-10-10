@@ -583,10 +583,10 @@
 		border: solid 1px var(--svelte-ui-border-weak-color);
 		border-radius: var(--svelte-ui-popup-border-radius);
 		box-shadow:
-			0 11px 15px -7px rgb(0 0 0 / 20%),
-			0 24px 38px 3px rgb(0 0 0 / 14%),
-			0 9px 46px 8px rgb(0 0 0 / 12%);
-		background: var(--svelte-ui-surface-color);
+			0 11px 15px -7px var(--svelte-ui-shadow-color-strong),
+			0 24px 38px 3px var(--svelte-ui-shadow-color),
+			0 9px 46px 8px var(--svelte-ui-shadow-color-weak);
+		background: var(--svelte-ui-surface-elevated-color);
 		color: var(--svelte-ui-text-color);
 		z-index: 1000; /* Popupを最前面に表示 */
 	}
@@ -646,9 +646,9 @@
 		border-bottom-left-radius: 0;
 		border-bottom-right-radius: 0;
 		box-shadow:
-			0 -4px 6px -1px rgb(0 0 0 / 10%),
-			0 -2px 4px -1px rgb(0 0 0 / 6%);
-		background: var(--svelte-ui-surface-color);
+			0 -4px 6px -1px var(--svelte-ui-shadow-color-weak),
+			0 -2px 4px -1px var(--svelte-ui-shadow-color-weak);
+		background: var(--svelte-ui-surface-elevated-color);
 		z-index: var(--svelte-ui-z-modal);
 		overflow-y: auto;
 		overflow-x: hidden;

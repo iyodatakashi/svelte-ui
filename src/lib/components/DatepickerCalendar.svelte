@@ -732,7 +732,8 @@
 	.datepicker-calendar__month-button {
 		padding: 8px;
 		border-radius: var(--svelte-ui-border-radius);
-		background-color: var(--svelte-ui-surface-color);
+		/* 器（ポップアップ）の色に追従させる */
+		background-color: transparent;
 		color: var(--svelte-ui-datepicker-date-color);
 		font-size: var(--svelte-ui-font-size);
 		cursor: pointer;

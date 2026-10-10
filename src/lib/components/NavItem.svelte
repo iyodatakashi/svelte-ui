@@ -60,7 +60,6 @@
 		isChild?: boolean;
 		/** Whether this item's children are currently visible. */
 		isChildrenVisible?: boolean;
-
 	};
 
 	let {
@@ -84,7 +83,11 @@
 		textColor,
 		selectedTextColor,
 		selectedBarColor,
-		childrenVariant = variant === 'mobile' ? 'bottom-sheet' : variant === 'vertical' ? 'accordion' : 'bar',
+		childrenVariant = variant === 'mobile'
+			? 'bottom-sheet'
+			: variant === 'vertical'
+				? 'accordion'
+				: 'bar',
 		customStyle,
 		customChildrenStyle,
 		customChildrenContainerStyle,
@@ -93,8 +96,7 @@
 		isSelected = false,
 		isDisabled = false,
 		isChild = false,
-		isChildrenVisible = $bindable(false),
-
+		isChildrenVisible = $bindable(false)
 	}: NavItemProps = $props();
 
 	// =========================================================================
@@ -139,14 +141,17 @@
 		container?.querySelector<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')?.focus();
 
 	$effect(() => {
-		if (isChildrenVisible && childrenVariant === 'bottom-sheet') tick().then(() => focusFirstChild(bottomSheetEl));
+		if (isChildrenVisible && childrenVariant === 'bottom-sheet')
+			tick().then(() => focusFirstChild(bottomSheetEl));
 	});
 
 	const popupPosition = $derived<PopupPosition>(
 		variant === 'vertical' ? 'right-top' : variant === 'mobile' ? 'top-center' : 'bottom-left'
 	);
 
-	const showChevron = $derived(hasChildren && chevron && variant !== 'mobile' && childrenVariant !== 'expanded');
+	const showChevron = $derived(
+		hasChildren && chevron && variant !== 'mobile' && childrenVariant !== 'expanded'
+	);
 
 	// popup の方向に合わせたアイコン。それ以外は expand_more
 	const chevronIcon = $derived(
@@ -342,7 +347,12 @@
 
 		<!-- accordion / expanded サブメニュー -->
 		{#if childrenVariant === 'expanded' || (childrenVariant === 'accordion' && isChildrenVisible)}
-			<div class="nav-item__children" role="presentation" style={customChildrenContainerStyle} transition:slide={{ duration: 200 }}>
+			<div
+				class="nav-item__children"
+				role="presentation"
+				style={customChildrenContainerStyle}
+				transition:slide={{ duration: 200 }}
+			>
 				{#each item.children! as child}
 					<NavItem
 						item={child}
@@ -693,7 +703,9 @@
 
 	// 子アイテムは padding-left にインデントを加算（背景は全幅、コンテンツのみインデント）
 	.nav-item--child.nav-item--vertical {
-		padding-left: calc(var(--svelte-ui-nav-item-padding-x) + var(--svelte-ui-nav-item-child-indent));
+		padding-left: calc(
+			var(--svelte-ui-nav-item-padding-x) + var(--svelte-ui-nav-item-child-indent)
+		);
 	}
 
 	// =========================================================================
@@ -712,7 +724,7 @@
 		left: 0;
 		right: 0;
 		z-index: 1001;
-		background-color: var(--svelte-ui-surface-color);
+		background-color: var(--svelte-ui-surface-elevated-color);
 		border-radius: var(--svelte-ui-nav-bottom-sheet-border-radius);
 		padding: var(--svelte-ui-nav-bottom-sheet-padding);
 		display: flex;

@@ -163,6 +163,8 @@
 
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--white);
+	/* 浮き上がる面（ポップアップ・ダイアログ等）。ライトは白より明るくできないため地の面と同じ */
+	--svelte-ui-surface-elevated-color: var(--svelte-ui-surface-color);
 	--svelte-ui-surface-accent-color: var(--base-50-transparent);
 	--svelte-ui-surface-inverse-color: var(--base-800-transparent);
 
@@ -187,6 +189,11 @@
 
 	/* Glass色 */
 	--svelte-ui-glass-bg: var(--base-50-transparent);
+
+	/* 影の色（浮き上がり表現） */
+	--svelte-ui-shadow-color-strong: rgba(0, 0, 0, 0.2);
+	--svelte-ui-shadow-color: rgba(0, 0, 0, 0.14);
+	--svelte-ui-shadow-color-weak: rgba(0, 0, 0, 0.12);
 }
 
 /* ====================================
@@ -217,6 +224,8 @@
 
 	/* サーフェス背景色 */
 	--svelte-ui-surface-color: var(--base-950);
+	/* 浮き上がる面。暗いテーマでは「明るい＝手前」で奥行きを示すため一段明るくする */
+	--svelte-ui-surface-elevated-color: var(--base-900);
 	--svelte-ui-surface-accent-color: var(--white-50-transparent);
 	--svelte-ui-surface-inverse-color: var(--white-800-transparent);
 
@@ -238,6 +247,11 @@
 
 	/* Glass色 */
 	--svelte-ui-glass-bg: var(--white-100-transparent);
+
+	/* 影の色（浮き上がり表現）。暗い背景では黒い影が沈んで見えないため濃くする */
+	--svelte-ui-shadow-color-strong: rgba(0, 0, 0, 0.6);
+	--svelte-ui-shadow-color: rgba(0, 0, 0, 0.45);
+	--svelte-ui-shadow-color-weak: rgba(0, 0, 0, 0.4);
 }
 
 :where(:root),
@@ -407,7 +421,7 @@
 	--svelte-ui-nav-children-offset: 8px;
 	/* Nav: sub-menu */
 	--svelte-ui-nav-sub-popup-min-width: 160px;
-	--svelte-ui-nav-sub-popup-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+	--svelte-ui-nav-sub-popup-shadow: 0 4px 16px var(--svelte-ui-shadow-color-weak);
 	--svelte-ui-nav-item-child-indent: 32px;
 	--svelte-ui-nav-bottom-sheet-overlay-bg: rgba(0, 0, 0, 0.4);
 	--svelte-ui-nav-bottom-sheet-border-radius: 16px 16px 0 0;
@@ -631,7 +645,7 @@
 	--svelte-ui-combobox-border-radius: var(--svelte-ui-form-border-radius);
 	--svelte-ui-combobox-border-radius-rounded: var(--svelte-ui-form-border-radius-rounded);
 	--svelte-ui-combobox-border-color: var(--svelte-ui-border-weak-color);
-	--svelte-ui-combobox-bg: var(--svelte-ui-surface-color);
+	--svelte-ui-combobox-bg: var(--svelte-ui-surface-elevated-color);
 	--svelte-ui-combobox-dropdown-icon-color: var(--svelte-ui-dropdown-icon-color);
 	--svelte-ui-combobox-option-hover-bg: var(--svelte-ui-hover-overlay);
 	--svelte-ui-combobox-option-selected-bg: var(--svelte-ui-select-overlay);
@@ -744,7 +758,7 @@
 	--svelte-ui-snackbar-z-index: 9999;
 	--svelte-ui-snackbar-font-size: var(--svelte-ui-font-size);
 	--svelte-ui-snackbar-line-height: 1.4;
-	--svelte-ui-snackbar-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+	--svelte-ui-snackbar-shadow: 0 4px 12px var(--svelte-ui-shadow-color);
 	--svelte-ui-snackbar-action-font-size: var(--svelte-ui-font-size-xs);
 	--svelte-ui-snackbar-action-font-weight: 600;
 	--svelte-ui-snackbar-action-padding: 4px 8px;
@@ -761,7 +775,7 @@
 	--svelte-ui-snackbar-default-filled-text-color: var(--svelte-ui-text-inverse-color);
 	--svelte-ui-snackbar-default-outlined-bg: color-mix(
 		in srgb,
-		var(--svelte-ui-surface-color) 85%,
+		var(--svelte-ui-surface-elevated-color) 85%,
 		transparent
 	);
 	--svelte-ui-snackbar-default-outlined-text-color: var(--svelte-ui-text-color);
@@ -776,7 +790,7 @@
 	--svelte-ui-snackbar-info-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-info-outlined-bg: color-mix(
 		in srgb,
-		var(--svelte-ui-surface-color) 85%,
+		var(--svelte-ui-surface-elevated-color) 85%,
 		transparent
 	);
 	--svelte-ui-snackbar-info-outlined-text-color: var(--svelte-ui-info-color);
@@ -791,7 +805,7 @@
 	--svelte-ui-snackbar-success-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-success-outlined-bg: color-mix(
 		in srgb,
-		var(--svelte-ui-surface-color) 85%,
+		var(--svelte-ui-surface-elevated-color) 85%,
 		transparent
 	);
 	--svelte-ui-snackbar-success-outlined-text-color: var(--svelte-ui-success-color);
@@ -806,7 +820,7 @@
 	--svelte-ui-snackbar-warning-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-warning-outlined-bg: color-mix(
 		in srgb,
-		var(--svelte-ui-surface-color) 85%,
+		var(--svelte-ui-surface-elevated-color) 85%,
 		transparent
 	);
 	--svelte-ui-snackbar-warning-outlined-text-color: var(--svelte-ui-warning-color);
@@ -821,7 +835,7 @@
 	--svelte-ui-snackbar-error-filled-text-color: var(--svelte-ui-text-on-filled-color);
 	--svelte-ui-snackbar-error-outlined-bg: color-mix(
 		in srgb,
-		var(--svelte-ui-surface-color) 85%,
+		var(--svelte-ui-surface-elevated-color) 85%,
 		transparent
 	);
 	--svelte-ui-snackbar-error-outlined-text-color: var(--svelte-ui-error-color);
