@@ -305,10 +305,13 @@
 		}
 	}}
 	aria-label={t('fileUploader.uploadFile')}
-	aria-describedby={`${id}-help`}
+	aria-describedby={`${id}-description`}
 >
 	{#if value && value.length > 0}
-		<div class="file-uploader__description file-uploader__description--with-file">
+		<div
+			id={`${id}-description`}
+			class="file-uploader__description file-uploader__description--with-file"
+		>
 			<Icon
 				size={iconSize}
 				filled={iconFilled}
@@ -340,7 +343,7 @@
 			{/each}
 		</ul>
 	{:else}
-		<div class="file-uploader__description">
+		<div id={`${id}-description`} class="file-uploader__description">
 			<Icon
 				size={iconSize}
 				filled={iconFilled}

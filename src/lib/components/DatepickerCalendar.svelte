@@ -506,6 +506,10 @@
 		return `calendar-date-${date.format('YYYY-MM-DD')}`;
 	};
 
+	// id 未指定でも aria の参照先が作れるようフォールバックを持つ
+	const fallbackId = `datepicker-calendar-${Math.random().toString(36).substring(2, 15)}`;
+	const monthLabelId = $derived(`${id ?? fallbackId}-month-label`);
+
 	const handleMouseEnter = (date: dayjs.Dayjs) => {
 		if (mode !== 'range' || isOutOfRange(date)) return;
 		hoveredDate = date;
@@ -584,6 +588,7 @@
 		</div>
 		<button
 			type="button"
+			id={monthLabelId}
 			class="datepicker-calendar__header__month-label-button"
 			aria-live="polite"
 			aria-atomic="true"
@@ -632,7 +637,7 @@
 			{/each}
 		</div>
 	{:else}
-		<div class="datepicker-calendar__date-selection" role="grid" aria-labelledby="month-label">
+		<div class="datepicker-calendar__date-selection" role="grid" aria-labelledby={monthLabelId}>
 			<div class="datepicker-calendar__day-list" role="row">
 				{#each DAY_ARRAY as day}
 					<div class="datepicker-calendar__day-item" role="columnheader">
