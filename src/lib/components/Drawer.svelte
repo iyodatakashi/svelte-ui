@@ -348,7 +348,6 @@
 		gap: var(--svelte-ui-drawer-gap);
 		align-items: center;
 		justify-content: stretch;
-		min-height: var(--svelte-ui-drawer-header-height);
 		padding: var(--svelte-ui-drawer-header-padding);
 
 		.drawer__title {
@@ -383,8 +382,12 @@
 	}
 
 	.drawer--scrollable {
+		/* 線で区切られた固定バーになるため、高さは変数で決める。
+		   明示した min-height はフレックスアイテムの自動最小サイズを打ち消すので縮小を止める */
 		.drawer__header {
-			margin-bottom: 0;
+			flex-shrink: 0;
+			min-height: var(--svelte-ui-drawer-header-height);
+			padding-block: 0;
 			border-bottom: solid var(--svelte-ui-border-width, 1px) var(--svelte-ui-border-weak-color);
 		}
 

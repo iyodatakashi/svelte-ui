@@ -221,7 +221,6 @@
 		gap: var(--svelte-ui-dialog-gap);
 		align-items: center;
 		justify-content: stretch;
-		min-height: var(--svelte-ui-dialog-header-height);
 		padding: var(--svelte-ui-dialog-padding);
 
 		.dialog__title {
@@ -259,8 +258,12 @@
 		overflow: hidden;
 	}
 
+	/* scrollable では線で区切られた固定バーになるため、高さは変数で決める。
+	   明示した min-height はフレックスアイテムの自動最小サイズを打ち消すので縮小を止める */
 	.dialog--scrollable .dialog__header {
-		margin-bottom: 0;
+		flex-shrink: 0;
+		min-height: var(--svelte-ui-dialog-header-height);
+		padding-block: 0;
 		border-bottom: solid 1px var(--svelte-ui-border-color);
 	}
 
