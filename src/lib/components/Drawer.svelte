@@ -93,7 +93,7 @@
 		focusFirstOnOpen = false,
 
 		// ARIA/アクセシビリティ
-		ariaLabel = 'Drawer',
+		ariaLabel,
 		ariaDescribedby,
 
 		// イベントハンドラー
@@ -108,17 +108,17 @@
 	// =========================================================================
 	/** Opens the drawer. */
 	export const open = (): void => {
-		modalRef?.open(title || ariaLabel);
+		modalRef?.open(title || ariaLabelValue);
 	};
 
 	/** Closes the drawer. */
 	export const close = (): void => {
-		modalRef?.close(title || ariaLabel);
+		modalRef?.close(title || ariaLabelValue);
 	};
 
 	/** Toggles between open and closed. */
 	export const toggle = (): void => {
-		modalRef?.toggle(title || ariaLabel);
+		modalRef?.toggle(title || ariaLabelValue);
 	};
 
 	/** @internal Completes the close animation. Called automatically. */
@@ -157,9 +157,19 @@
 		['drawer-wrapper', `drawer-wrapper--${position}`].filter(Boolean).join(' ')
 	);
 
-	const ariaLabelledby = $derived(title ? 'drawer-title' : undefined);
+	// id 未指定でも aria の参照先が作れるようフォールバックを持つ
+	const fallbackId = `drawer-${Math.random().toString(36).substring(2, 15)}`;
+	const baseId = $derived(id ?? fallbackId);
+	const titleId = $derived(`${baseId}-drawer-title`);
+	const descriptionId = $derived(`${baseId}-drawer-description`);
+
+	// 名前は 1 つだけ与える。aria-labelledby は aria-label より優先されるため、両方は付けない。
+	// header を差し替えるとタイトル要素が描画されないので、そのときは title を aria-label で渡す
+	const hasTitleElement = $derived(!!title && !header);
+	const ariaLabelValue = $derived(ariaLabel ?? (hasTitleElement ? undefined : title || 'Drawer'));
+	const ariaLabelledby = $derived(!ariaLabelValue && hasTitleElement ? titleId : undefined);
 	const ariaDescribedbyValue = $derived(
-		ariaDescribedby || (description ? 'drawer-description' : undefined)
+		ariaDescribedby || (description ? descriptionId : undefined)
 	);
 </script>
 
@@ -172,27 +182,30 @@
 	{onOpen}
 	{onClose}
 	componentType="Drawer"
-	{ariaLabel}
+	ariaLabel={ariaLabelValue}
 	{ariaLabelledby}
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={drawerClasses}
 	customStyles={drawerStyles()}
 	id={id ? `${id}-modal` : undefined}
 >
-	<div class="drawer drawer--{position} {scrollable ? 'drawer--scrollable' : ''}" data-testid="drawer">
+	<div
+		class="drawer drawer--{position} {scrollable ? 'drawer--scrollable' : ''}"
+		data-testid="drawer"
+	>
 		{#if header || title}
 			<div class="drawer__header">
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="drawer__title" id={id ? `${id}-drawer-title` : undefined}>
+					<div class="drawer__title" id={titleId}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="drawer__description" id={id ? `${id}-drawer-description` : undefined}>
+			<div class="drawer__description" id={descriptionId}>
 				{description}
 			</div>
 		{/if}

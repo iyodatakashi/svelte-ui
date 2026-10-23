@@ -143,9 +143,19 @@
 
 	const dialogClasses = $derived('');
 
-	const ariaLabelledby = $derived(title ? 'dialog-title' : undefined);
+	// id 未指定でも aria の参照先が作れるようフォールバックを持つ
+	const fallbackId = `dialog-${Math.random().toString(36).substring(2, 15)}`;
+	const baseId = $derived(id ?? fallbackId);
+	const titleId = $derived(`${baseId}-dialog-title`);
+	const descriptionId = $derived(`${baseId}-dialog-description`);
+
+	// 名前は 1 つだけ与える。aria-labelledby は aria-label より優先されるため、両方は付けない。
+	// header を差し替えるとタイトル要素が描画されないので、そのときは title を aria-label で渡す
+	const hasTitleElement = $derived(!!title && !header);
+	const ariaLabelValue = $derived(ariaLabel || (title && !hasTitleElement ? title : undefined));
+	const ariaLabelledby = $derived(!ariaLabelValue && hasTitleElement ? titleId : undefined);
 	const ariaDescribedbyValue = $derived(
-		ariaDescribedby || (description ? 'dialog-description' : undefined)
+		ariaDescribedby || (description ? descriptionId : undefined)
 	);
 </script>
 
@@ -158,7 +168,7 @@
 	{onOpen}
 	{onClose}
 	componentType="Dialog"
-	{ariaLabel}
+	ariaLabel={ariaLabelValue}
 	{ariaLabelledby}
 	ariaDescribedby={ariaDescribedbyValue}
 	customClass={dialogClasses}
@@ -171,14 +181,14 @@
 				{#if header}
 					{@render header()}
 				{:else}
-					<div class="dialog__title" id={id ? `${id}-dialog-title` : undefined}>
+					<div class="dialog__title" id={titleId}>
 						{title || ''}
 					</div>
 				{/if}
 			</div>
 		{/if}
 		{#if description}
-			<div class="dialog__description" id={id ? `${id}-dialog-description` : undefined}>
+			<div class="dialog__description" id={descriptionId}>
 				{description}
 			</div>
 		{/if}
