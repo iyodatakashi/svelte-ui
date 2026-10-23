@@ -5,6 +5,19 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.73] - 2026-10-24
+
+### Changed
+
+- **Drawer**: `ariaLabel` no longer defaults to `"Drawer"`. The default always filled `aria-label`, which outranks the title, so a drawer with a `title` was announced as "Drawer". The literal is now used only when neither `title` nor `ariaLabel` is given.
+- **Dialog** / **Drawer**: The accessible name comes from either `aria-label` or `aria-labelledby`, never both, since the latter wins and silently discards the former. An explicit `ariaLabel` takes precedence over `title`.
+
+### Fixed
+
+- **Dialog** / **Drawer**: A dialog given a `title` now has an accessible name. `aria-labelledby` pointed at a fixed id that no element carried — the title element only got an id when `id` was passed, and even then the value did not match — so screen readers announced an unnamed dialog. The title and description elements now always carry an id, generated when `id` is omitted, and the references point at them. Passing a `header` snippet replaces the title element, and in that case `title` is used as the `aria-label`.
+- **Datepicker** / **DatepickerCalendar**: The date grid now has an accessible name. Its `aria-labelledby` pointed at a fixed id that the month label did not carry.
+- **FileUploader**: `aria-describedby` no longer points at a missing element. It now references the visible description text.
+
 ## [0.0.72] - 2026-10-10
 
 ### Added
