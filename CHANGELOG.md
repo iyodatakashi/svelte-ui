@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.74] - 2026-10-24
+
+### Changed
+
+- **Dialog** / **Drawer**: The header height is now decided differently depending on `scrollable`, matching how the header is drawn in each mode. Without `scrollable` the header has no divider and reads as part of the body, so its height follows its padding and content, as before. With `scrollable` the header is a fixed bar separated by a divider, so its height comes from `--svelte-ui-dialog-header-height` / `--svelte-ui-drawer-header-height` and its vertical padding is dropped. Those variables previously had no effect, because the default title needs more height than their 56px value; setting one now resizes the bar, which is useful for lining a drawer header up with a page header. A scrollable header with default settings is 56px tall instead of 68px.
+
+### Fixed
+
+- **Dialog** / **Drawer**: The header is no longer squashed when the body is long. The header declared a `min-height`, which cancels a flex item's automatic minimum size, so once the dialog reached its maximum height the header shrank below its content and clipped it — a title-only dialog dropped from 68px to 56px, and a custom `header` snippet needing 140px was forced into 56px.
+
 ## [0.0.73] - 2026-10-24
 
 ### Changed
