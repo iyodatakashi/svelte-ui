@@ -563,12 +563,10 @@
 			? `calc(${maxHeightStyle} - var(--internal-textarea-vertical-padding))`
 			: undefined
 	);
-	// アイコンの領域は customStyle で消されないよう、customStyle より後ろに指定する。
 	// style: ディレクティブは style 属性に勝つため、幅・最大高さも同じ文字列に混ぜる
 	const boxStyle = $derived(
 		[
 			customStyle,
-			clearable ? 'padding-right: var(--svelte-ui-textarea-icon-space)' : '',
 			widthStyle ? `width: ${widthStyle}` : '',
 			!inline && maxHeightStyle ? `max-height: ${maxHeightStyle}` : ''
 		]
@@ -807,10 +805,30 @@
 		z-index: 1;
 	}
 
+	/* ボタンを右から 4px に置き、残りの領域を内側に確保する */
+	.textarea.textarea--clearable {
+		padding-right: 4px;
+	}
+
+	/* ルートの実際の padding は継承させ、追加のボタン領域だけ内側に確保する */
+	.textarea--clearable .textarea__display-text,
+	.textarea--clearable textarea {
+		padding-right: calc(var(--svelte-ui-textarea-icon-space) - 4px);
+	}
+
+	.textarea--clearable .textarea__link-text {
+		width: calc(100% - var(--svelte-ui-textarea-icon-space) + 4px);
+	}
+
 	.textarea--clearable .textarea__clear-button {
 		position: absolute;
-		top: var(--svelte-ui-textarea-icon-top);
-		right: 4px;
+		top: calc(
+			var(--svelte-ui-textarea-icon-top) -
+				(var(--svelte-ui-textarea-min-height) - var(--svelte-ui-textarea-line-height)) / 2
+		);
+		padding-top: inherit;
+		right: 0;
+		padding-right: inherit;
 		opacity: 0;
 		transition: var(--svelte-ui-transition-duration);
 	}

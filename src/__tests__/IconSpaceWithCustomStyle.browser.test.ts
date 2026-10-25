@@ -1,7 +1,7 @@
 /**
  * customStyle に padding を指定しても、アイコン / クリアボタン / スウォッチ用に
  * 確保した余白が消えないことを検証する（コンポーネント横断の不変条件）。
- * 余白は背景・ボーダーを描く箱（ルート要素）の padding として確保される。
+ * Textarea はルートの padding を保ち、追加のボタン領域を内側で確保する。
  */
 import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
@@ -101,13 +101,26 @@ test('Input: inline でも rightIcon の余白が customStyle で消えない', 
 });
 
 test('Textarea: clearable の余白が customStyle で消えない', () => {
-	expectIconSpaceKept(
-		render(Textarea, { value: 'x', clearable: true }).container,
-		render(Textarea, { value: 'x', clearable: true, customStyle: CUSTOM_STYLE }).container,
-		render(Textarea, { value: 'x' }).container,
-		'.textarea',
-		'Right'
-	);
+	const plain = render(Textarea, { value: 'x' }).container;
+	const base = render(Textarea, { value: 'x', clearable: true }).container;
+	const custom = render(Textarea, {
+		value: 'x',
+		clearable: true,
+		customStyle: CUSTOM_STYLE
+	}).container;
+	const textRightSpace = (container: Element) => {
+		const root = container.querySelector('.textarea') as HTMLElement;
+		const display = container.querySelector('.textarea__display-text') as HTMLElement;
+		return (
+			root.getBoundingClientRect().right -
+			display.getBoundingClientRect().right +
+			parseFloat(getComputedStyle(display).paddingRight)
+		);
+	};
+
+	expect(textRightSpace(base)).toBeGreaterThan(textRightSpace(plain));
+	expect(textRightSpace(custom)).toBeGreaterThan(textRightSpace(base));
+	expect(sidePadding(custom, '.textarea', 'Right')).toBe(12);
 });
 
 test('Combobox: ドロップダウンアイコンの余白が customStyle で消えない', () => {
