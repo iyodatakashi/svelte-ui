@@ -105,7 +105,7 @@
 		/** Material Symbols icon name shown on the left. */
 		leftIcon?: string;
 		/** Custom content shown instead of `leftIcon`. Reserve text space with `customStyle` when using it. */
-		leftDecoration?: Snippet;
+		leftContent?: Snippet;
 		leftIconAriaLabel?: string;
 		rightIconAriaLabel?: string;
 		iconFilled?: boolean;
@@ -220,7 +220,7 @@
 		// アイコン関連
 		rightIcon = undefined,
 		leftIcon = undefined,
-		leftDecoration,
+		leftContent,
 		leftIconAriaLabel = t('input.left_icon'),
 		rightIconAriaLabel = t('input.right_icon'),
 		enablePasswordVisibilityToggle = false,
@@ -618,7 +618,7 @@
 	);
 
 	// has icon
-	const hasLeftIcon = $derived(!!resolvedLeftIcon && !leftDecoration);
+	const hasLeftIcon = $derived(!!resolvedLeftIcon && !leftContent);
 	const hasLeftIconClickable = $derived(
 		!!resolvedLeftIcon &&
 			(!!resolvedLeftIconClick ||
@@ -851,9 +851,9 @@
 	{/if}
 
 	<!-- Left Icon -->
-	{#if leftDecoration}
-		<div class="input__decoration-left">
-			{@render leftDecoration()}
+	{#if leftContent}
+		<div class="input__content-left">
+			{@render leftContent()}
 		</div>
 	{/if}
 
@@ -1101,7 +1101,7 @@
 
 		.input__icon-left,
 		.input__icon-right,
-		.input__decoration-left {
+		.input__content-left {
 			cursor: not-allowed;
 			pointer-events: none;
 		}
@@ -1147,7 +1147,7 @@
 	}
 
 	/* アイコン */
-	.input__decoration-left {
+	.input__content-left {
 		display: flex;
 		align-items: center;
 		position: absolute;

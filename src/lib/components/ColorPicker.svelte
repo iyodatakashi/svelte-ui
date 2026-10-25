@@ -429,7 +429,7 @@
 		onpointercancel={handlePointerCancel}
 		{...restProps}
 	>
-		{#snippet leftDecoration()}
+		{#snippet leftContent()}
 			<div class="color-picker__trigger">
 				<input
 					type="color"
