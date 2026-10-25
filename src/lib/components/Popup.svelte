@@ -55,7 +55,7 @@
 		restoreFocus?: boolean;
 		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;
-		/** Repositions automatically when near viewport edges. @default false */
+		/** Repositions automatically when near viewport edges. @default true */
 		enableAutoReposition?: boolean;
 
 		// ARIA/アクセシビリティ

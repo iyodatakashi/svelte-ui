@@ -98,7 +98,7 @@
 
 		// 状態/動作
 		disabled?: boolean;
-		/** Automatically grows height to fit content. @default false */
+		/** Automatically grows height to fit content. @default true */
 		autoResize?: boolean;
 		/** Allows manual resize via drag handle. @default false */
 		resizable?: boolean;

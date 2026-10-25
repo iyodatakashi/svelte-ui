@@ -65,7 +65,7 @@
 		iconVariant?: IconVariant;
 		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
-		/** @default 'ghost' */
+		/** @default 'filled' */
 		variant?: ButtonVariant;
 		/** Fixed position on screen. When set, the FAB is `position: fixed`. */
 		position?: FabPosition;
@@ -73,7 +73,7 @@
 		bottomOffset?: string | number;
 		/** Distance from the side edge when `position` is set. */
 		sideOffset?: string | number;
-		/** Adds safe-area inset padding (for notched devices). @default false */
+		/** Adds safe-area inset padding (for notched devices). @default true */
 		useSafeArea?: boolean;
 		/** @default false */
 		shadow?: boolean;

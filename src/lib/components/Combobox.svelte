@@ -77,7 +77,7 @@
 		disabled?: boolean;
 		readonly?: boolean;
 		required?: boolean;
-		/** Filters options based on typed input. @default false */
+		/** Filters options based on typed input. @default true */
 		filterable?: boolean;
 		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;

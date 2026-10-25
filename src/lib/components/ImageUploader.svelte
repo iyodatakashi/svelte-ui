@@ -39,7 +39,7 @@
 		width?: string | number;
 		height?: string | number;
 		rounded?: boolean;
-		/** Preview display style. @default 'plain' */
+		/** Preview display style. @default 'framed' */
 		previewStyle?: 'plain' | 'framed';
 		/** Adapts preview size to the image aspect ratio. @default false */
 		previewAdaptive?: boolean;

@@ -56,7 +56,7 @@
 		name?: string;
 		/** Checked state. Supports `bind:value` for two-way binding. */
 		value: boolean;
-		/** Shows the indeterminate (partially checked) state. @default false */
+		/** Shows the indeterminate (partially checked) state. */
 		indeterminate?: boolean;
 
 		// HTML属性系
