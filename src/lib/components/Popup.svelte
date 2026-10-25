@@ -607,9 +607,21 @@
 		}
 	}
 
-	:popover-open,
+	@keyframes backdropFadeIn {
+		from {
+			opacity: 0;
+		}
+		to {
+			opacity: 1;
+		}
+	}
+
+	:popover-open {
+		animation: fadeIn var(--svelte-ui-transition-duration) forwards;
+	}
+
 	:popover-open::backdrop {
-		animation: fadeIn 300ms forwards;
+		animation: backdropFadeIn var(--svelte-ui-transition-duration) forwards;
 	}
 
 	/* ボトムシートのときは背面スクロールを止めるので、モーダルだと分かるよう背景を覆う。
@@ -629,9 +641,21 @@
 		}
 	}
 
-	:popover-open.popup--fade-out,
+	@keyframes backdropFadeOut {
+		from {
+			opacity: 1;
+		}
+		to {
+			opacity: 0;
+		}
+	}
+
+	:popover-open.popup--fade-out {
+		animation: fadeOut var(--svelte-ui-transition-duration) forwards;
+	}
+
 	:popover-open.popup--fade-out::backdrop {
-		animation: fadeOut 300ms forwards;
+		animation: backdropFadeOut var(--svelte-ui-transition-duration) forwards;
 	}
 
 	/* =============================================
@@ -663,11 +687,11 @@
 
 	:popover-open.popup--fullscreen {
 		transform: translateY(0);
-		animation: slideUpMobile 300ms ease-out;
+		animation: slideUpMobile var(--svelte-ui-transition-duration) ease-out;
 	}
 
 	:popover-open.popup--fullscreen.popup--fade-out {
-		animation: slideDownMobile 300ms ease-in;
+		animation: slideDownMobile var(--svelte-ui-transition-duration) ease-in;
 	}
 
 	@keyframes slideUpMobile {
