@@ -4,12 +4,11 @@
 	import Icon from './Icon.svelte';
 	import NavItem from './NavItem.svelte';
 	import PopupMenu from './PopupMenu.svelte';
-	import { fade, fly, slide } from 'svelte/transition';
+	import { slide } from 'svelte/transition';
 	import type { PopupPosition } from '$lib/types/propOptions';
 	import type { MenuItem } from '$lib/types/menuItem';
 	import type { NavVariant, ChildrenVariant } from '$lib/types/propOptions';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-	import { tick } from 'svelte';
 	import { matchPath } from '$lib/utils/navPath';
 
 	// =========================================================================
@@ -44,7 +43,7 @@
 		selectedTextColor?: string;
 		/** Custom CSS color for the selected underline bar (underline variant). */
 		selectedBarColor?: string;
-		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
+		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `popup` (mobile). */
 		childrenVariant?: ChildrenVariant;
 		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;
@@ -85,11 +84,11 @@
 		textColor,
 		selectedTextColor,
 		selectedBarColor,
-		childrenVariant = variant === 'mobile'
-			? 'bottom-sheet'
-			: variant === 'vertical'
-				? 'accordion'
-				: 'bar',
+		childrenVariant = variant === 'vertical'
+			? 'accordion'
+			: variant === 'horizontal'
+				? 'bar'
+				: 'popup',
 		mobileFullscreen = false,
 		customStyle,
 		customChildrenStyle,
@@ -138,15 +137,6 @@
 	// =========================================================================
 	let anchorEl: HTMLElement | undefined = $state();
 	let popupMenuRef: PopupMenu | undefined = $state();
-	let bottomSheetEl: HTMLElement | undefined = $state();
-
-	const focusFirstChild = (container: HTMLElement | undefined) =>
-		container?.querySelector<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')?.focus();
-
-	$effect(() => {
-		if (isChildrenVisible && childrenVariant === 'bottom-sheet')
-			tick().then(() => focusFirstChild(bottomSheetEl));
-	});
 
 	const popupPosition = $derived<PopupPosition>(
 		variant === 'vertical' ? 'right-top' : variant === 'mobile' ? 'top-center' : 'bottom-left'
@@ -171,14 +161,6 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const toggleOpen = () => {
-		isChildrenVisible = !isChildrenVisible;
-	};
-
-	const closeOpen = () => {
-		isChildrenVisible = false;
-	};
-
 	// popup の ArrowRight(vertical) / ArrowDown(horizontal) でサブメニューを開く
 	const handleTriggerKeyDown = (event: KeyboardEvent) => {
 		if (!hasChildren || childrenVariant !== 'popup' || isChildrenVisible) return;
@@ -188,49 +170,9 @@
 		popupMenuRef?.toggle();
 	};
 
-	const handleChildKeyDown = (event: KeyboardEvent, horizontal = false) => {
-		const container = event.currentTarget as HTMLElement;
-		const items = Array.from(
-			container.querySelectorAll<HTMLElement>('[data-nav-item-child]:not([tabindex="-1"])')
-		);
-		const currentIndex = items.indexOf(event.target as HTMLElement);
-		if (currentIndex === -1) return;
-
-		const prevKey = horizontal ? 'ArrowLeft' : 'ArrowUp';
-		const nextKey = horizontal ? 'ArrowRight' : 'ArrowDown';
-
-		switch (event.key) {
-			case prevKey:
-				event.preventDefault();
-				items[currentIndex > 0 ? currentIndex - 1 : items.length - 1]?.focus();
-				break;
-			case nextKey:
-				event.preventDefault();
-				items[currentIndex < items.length - 1 ? currentIndex + 1 : 0]?.focus();
-				break;
-			case 'Home':
-				event.preventDefault();
-				items[0]?.focus();
-				break;
-			case 'End':
-				event.preventDefault();
-				items[items.length - 1]?.focus();
-				break;
-			case 'Escape':
-				if (childrenVariant === 'bottom-sheet') {
-					event.preventDefault();
-					closeOpen();
-					anchorEl?.focus();
-				}
-				break;
-		}
-	};
-
 	const handleLinkClick = () => {
 		if (childrenVariant === 'popup') {
 			popupMenuRef?.toggle();
-		} else if (childrenVariant === 'bottom-sheet') {
-			toggleOpen();
 		}
 	};
 
@@ -355,45 +297,6 @@
 				role="presentation"
 				style={customChildrenContainerStyle}
 				transition:slide={{ duration: 200 }}
-			>
-				{#each item.children! as child}
-					<NavItem
-						item={child}
-						{variant}
-						{pathPrefix}
-						{iconFilled}
-						{iconWeight}
-						{iconGrade}
-						{iconOpticalSize}
-						{iconVariant}
-						{selectedVariant}
-						customStyle={customChildrenStyle}
-						isChild={true}
-						{resolvedCurrentPath}
-						{customPathMatcher}
-						isSelected={isChildSelected(child)}
-						isDisabled={child.disabled ?? false}
-					/>
-				{/each}
-			</div>
-		{/if}
-
-		<!-- bottom-sheet オーバーレイ -->
-		{#if childrenVariant === 'bottom-sheet' && isChildrenVisible}
-			<div
-				class="nav-item__bottom-sheet-backdrop"
-				role="presentation"
-				onclick={closeOpen}
-				transition:fade={{ duration: 200 }}
-			></div>
-			<div
-				class="nav-item__bottom-sheet"
-				role="menu"
-				tabindex="-1"
-				transition:fly={{ y: 100, duration: 250 }}
-				onclick={closeOpen}
-				onkeydown={(e) => handleChildKeyDown(e, true)}
-				bind:this={bottomSheetEl}
 			>
 				{#each item.children! as child}
 					<NavItem
@@ -709,29 +612,5 @@
 		padding-left: calc(
 			var(--svelte-ui-nav-item-padding-x) + var(--svelte-ui-nav-item-child-indent)
 		);
-	}
-
-	// =========================================================================
-	// bottom-sheet オーバーレイ（mobile バリアント）
-	// =========================================================================
-	.nav-item__bottom-sheet-backdrop {
-		position: fixed;
-		inset: 0;
-		z-index: 1000;
-		background-color: var(--svelte-ui-nav-bottom-sheet-overlay-bg);
-	}
-
-	.nav-item__bottom-sheet {
-		position: fixed;
-		bottom: 0;
-		left: 0;
-		right: 0;
-		z-index: 1001;
-		background-color: var(--svelte-ui-surface-elevated-color);
-		border-radius: var(--svelte-ui-nav-bottom-sheet-border-radius);
-		padding: var(--svelte-ui-nav-bottom-sheet-padding);
-		display: flex;
-		flex-direction: row;
-		justify-content: space-around;
 	}
 </style>

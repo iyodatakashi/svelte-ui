@@ -37,7 +37,7 @@
 	const modesByVariant: Record<NavVariant, ChildrenVariant[]> = {
 		vertical: ['accordion', 'expanded', 'popup'],
 		horizontal: ['popup', 'bar'],
-		mobile: ['popup', 'bottom-sheet']
+		mobile: ['popup']
 	};
 
 	$effect(() => {

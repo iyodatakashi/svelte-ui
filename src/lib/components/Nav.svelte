@@ -47,7 +47,7 @@
 		/** Custom CSS color for the selected underline bar (underline variant). */
 		selectedBarColor?: string;
 		gap?: number | string;
-		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
+		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `popup` (mobile). */
 		childrenVariant?: ChildrenVariant;
 		/** On mobile, displays the popup submenu as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;
@@ -92,11 +92,11 @@
 		selectedTextColor,
 		selectedBarColor,
 		gap,
-		childrenVariant = variant === 'mobile'
-			? 'bottom-sheet'
-			: variant === 'vertical'
-				? 'accordion'
-				: 'bar',
+		childrenVariant = variant === 'vertical'
+			? 'accordion'
+			: variant === 'horizontal'
+				? 'bar'
+				: 'popup',
 		mobileFullscreen = false,
 		chevron,
 		customContainerStyle,

@@ -423,9 +423,6 @@
 	/* Nav: children spacing (parent item → children list) */
 	--svelte-ui-nav-children-offset: 8px;
 	--svelte-ui-nav-item-child-indent: 32px;
-	--svelte-ui-nav-bottom-sheet-overlay-bg: var(--svelte-ui-overlay-bg);
-	--svelte-ui-nav-bottom-sheet-border-radius: 16px 16px 0 0;
-	--svelte-ui-nav-bottom-sheet-padding: 16px 8px;
 
 	/* StepNav */
 	/* 強調色（現在／完了）。color prop 指定時は --internal-step-nav-accent が優先。 */

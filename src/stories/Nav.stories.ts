@@ -26,7 +26,7 @@ const meta = {
 		},
 		childrenVariant: {
 			control: 'radio',
-			options: ['popup', 'accordion', 'expanded', 'bar', 'bottom-sheet'],
+			options: ['popup', 'accordion', 'expanded', 'bar'],
 			description: 'Sub-menu display mode for items with children'
 		},
 		navItems: {
@@ -358,7 +358,8 @@ export const MobilePopup: Story = {
 export const MobileBottomSheet: Story = {
 	args: {
 		variant: 'mobile',
-		childrenVariant: 'bottom-sheet',
+		childrenVariant: 'popup',
+		mobileFullscreen: true,
 		navItems: mobileHierarchicalItems,
 		currentPath: '/',
 		ariaLabel: 'Bottom navigation'
@@ -367,7 +368,8 @@ export const MobileBottomSheet: Story = {
 		layout: 'padded',
 		docs: {
 			description: {
-				story: 'Tapping a parent slides up a bottom-sheet overlay with child items.'
+				story:
+					'With `mobileFullscreen`, tapping a parent on a mobile device slides up a bottom sheet with child items.'
 			}
 		}
 	}

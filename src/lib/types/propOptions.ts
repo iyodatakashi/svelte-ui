@@ -110,9 +110,8 @@ export type StepNavOrientation = 'horizontal' | 'vertical';
  * - `accordion`: child items expand/collapse inline (vertical only)
  * - `expanded`: child items are always visible inline (vertical only)
  * - `bar`: child items appear in a secondary bar below the nav (horizontal only)
- * - `bottom-sheet`: child items appear in a fixed bottom sheet overlay (mobile only)
  */
-export type ChildrenVariant = 'popup' | 'accordion' | 'expanded' | 'bar' | 'bottom-sheet';
+export type ChildrenVariant = 'popup' | 'accordion' | 'expanded' | 'bar';
 
 /**
  * Reason why a Popup was closed.
