@@ -293,7 +293,7 @@
 	.modal::backdrop {
 		position: fixed;
 		inset: 0;
-		background: rgb(0 0 0 / 40%);
+		background: var(--svelte-ui-overlay-bg);
 	}
 
 	.modal:focus {

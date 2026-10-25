@@ -42,7 +42,7 @@
 
 		// 状態/動作
 		disabled?: boolean;
-		/** On mobile, displays the menu as a fullscreen sheet. @default true */
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;
 		/** Stops click event propagation to parent elements. @default false */
 		cancelParentClick?: boolean;
@@ -103,7 +103,7 @@
 
 		// 状態/動作
 		disabled = false,
-		mobileFullscreen = true,
+		mobileFullscreen = false,
 		cancelParentClick = false,
 
 		// ARIA/アクセシビリティ

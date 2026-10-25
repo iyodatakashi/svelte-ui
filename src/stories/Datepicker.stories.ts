@@ -226,6 +226,10 @@ const meta = {
 		oninput: {
 			action: 'input',
 			description: 'Input event'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'On mobile, displays the popup as a sheet that slides up from the bottom'
 		}
 	}
 } satisfies Meta<typeof Datepicker>;

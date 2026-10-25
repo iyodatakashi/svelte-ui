@@ -53,7 +53,7 @@
 		focusTrap?: boolean;
 		/** Returns focus to the anchor element on close. @default false */
 		restoreFocus?: boolean;
-		/** On mobile, displays as a fullscreen sheet. @default false */
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;
 		/** Repositions automatically when near viewport edges. @default false */
 		enableAutoReposition?: boolean;
@@ -89,7 +89,7 @@
 		isOpen = $bindable(false),
 		focusTrap = false,
 		restoreFocus = false,
-		mobileFullscreen = true,
+		mobileFullscreen = false,
 		enableAutoReposition = true,
 
 		// ARIA/アクセシビリティ
@@ -610,6 +610,12 @@
 	:popover-open,
 	:popover-open::backdrop {
 		animation: fadeIn 300ms forwards;
+	}
+
+	/* ボトムシートのときは背面スクロールを止めるので、モーダルだと分かるよう背景を覆う。
+	   通常のポップアップは非モーダルなので覆わない */
+	:popover-open.popup--fullscreen::backdrop {
+		background: var(--svelte-ui-overlay-bg);
 	}
 
 	@keyframes fadeOut {

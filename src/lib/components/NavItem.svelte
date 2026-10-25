@@ -46,6 +46,8 @@
 		selectedBarColor?: string;
 		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
 		childrenVariant?: ChildrenVariant;
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
+		mobileFullscreen?: boolean;
 		/** Inline style applied to this nav item element. */
 		customStyle?: string;
 		/** Inline style applied to each child nav item element. */
@@ -88,6 +90,7 @@
 			: variant === 'vertical'
 				? 'accordion'
 				: 'bar',
+		mobileFullscreen = false,
 		customStyle,
 		customChildrenStyle,
 		customChildrenContainerStyle,
@@ -336,7 +339,7 @@
 				anchorElement={anchorEl}
 				position={popupPosition}
 				menuItems={item.children!}
-				mobileFullscreen={false}
+				{mobileFullscreen}
 				{iconFilled}
 				{iconWeight}
 				{iconGrade}

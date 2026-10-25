@@ -79,6 +79,8 @@
 		required?: boolean;
 		/** Filters options based on typed input. @default false */
 		filterable?: boolean;
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
+		mobileFullscreen?: boolean;
 		/** Shows a clear button when a value is entered. @default false */
 		clearable?: boolean;
 
@@ -147,6 +149,7 @@
 		readonly = false,
 		required = false,
 		filterable = true,
+		mobileFullscreen = false,
 		clearable = false,
 
 		// 入力イベント
@@ -525,7 +528,7 @@
 		bind:isOpen={isPopupOpen}
 		anchorElement={comboboxElement}
 		position="bottom-left"
-		mobileFullscreen={false}
+		{mobileFullscreen}
 		onClose={handlePopupClose}
 		margin={4}
 	>

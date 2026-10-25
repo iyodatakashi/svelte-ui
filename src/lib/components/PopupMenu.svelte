@@ -25,7 +25,7 @@
 		menuItems: (MenuItem | 'separator')[];
 		id?: string;
 		ariaLabel?: string;
-		/** On mobile, displays as a fullscreen sheet. @default true */
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
 		mobileFullscreen?: boolean;
 		iconFilled?: boolean;
 		iconWeight?: IconWeight;
@@ -49,7 +49,7 @@
 
 		// 状態/動作
 		isOpen = $bindable(false),
-		mobileFullscreen = true,
+		mobileFullscreen = false,
 
 		// アイコン関連
 		iconFilled = false,

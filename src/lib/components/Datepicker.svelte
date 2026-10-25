@@ -80,6 +80,8 @@
 		/** @default 'outline' */
 		focusStyle?: FocusStyle;
 		fullWidth?: boolean;
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
+		mobileFullscreen?: boolean;
 		width?: string | number | null;
 		minWidth?: string | number | null;
 		maxWidth?: string | number | null;
@@ -151,6 +153,7 @@
 		inline = false,
 		focusStyle = 'outline',
 		fullWidth = false,
+		mobileFullscreen = false,
 		width,
 		minWidth,
 		maxWidth,
@@ -706,6 +709,7 @@
 	bind:this={popupRef}
 	anchorElement={containerElement}
 	position="bottom"
+	{mobileFullscreen}
 	margin={4}
 	onOpen={handlePopupOpen}
 	onClose={handlePopupClose}

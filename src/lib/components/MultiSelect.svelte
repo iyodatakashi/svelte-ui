@@ -41,6 +41,8 @@
 		// ポップアップ
 		/** @default 'bottom-left' */
 		position?: PopupPosition;
+		/** On mobile, displays the popup as a sheet that slides up from the bottom. @default false */
+		mobileFullscreen?: boolean;
 
 		// イベントハンドラ
 		onfocus?: FocusHandler;
@@ -67,6 +69,7 @@
 		required = false,
 
 		position = 'bottom-left',
+		mobileFullscreen = false,
 
 		onfocus = () => {},
 		onblur = () => {},
@@ -197,7 +200,7 @@
 		bind:isOpen={isPopupOpen}
 		anchorElement={triggerEl}
 		{position}
-		mobileFullscreen={true}
+		{mobileFullscreen}
 		onOpen={handlePopupOpen}
 		onClose={handlePopupClose}
 		margin={4}

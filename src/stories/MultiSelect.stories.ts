@@ -54,6 +54,10 @@ const meta = {
 		onchange: {
 			action: 'changed',
 			description: 'Fires when selection changes'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'On mobile, displays the popup as a sheet that slides up from the bottom'
 		}
 	}
 };

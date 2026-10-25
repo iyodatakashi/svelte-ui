@@ -168,6 +168,10 @@ const meta = {
 		onchange: {
 			action: 'changed',
 			description: 'Change event'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'On mobile, displays the popup as a sheet that slides up from the bottom'
 		}
 	}
 };

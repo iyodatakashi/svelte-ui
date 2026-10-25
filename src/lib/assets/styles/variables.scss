@@ -288,6 +288,9 @@
 	/* z-index */
 	--svelte-ui-z-dropdown: 1000;
 	--svelte-ui-z-modal: 1050;
+
+	/* 背面を覆うオーバーレイ（モーダル・ボトムシート） */
+	--svelte-ui-overlay-bg: rgba(0, 0, 0, 0.4);
 	--svelte-ui-z-popover: 1060;
 	--svelte-ui-z-tooltip: 1070;
 	--svelte-ui-z-toast: 1080;
@@ -423,7 +426,7 @@
 	--svelte-ui-nav-sub-popup-min-width: 160px;
 	--svelte-ui-nav-sub-popup-shadow: 0 4px 16px var(--svelte-ui-shadow-color-weak);
 	--svelte-ui-nav-item-child-indent: 32px;
-	--svelte-ui-nav-bottom-sheet-overlay-bg: rgba(0, 0, 0, 0.4);
+	--svelte-ui-nav-bottom-sheet-overlay-bg: var(--svelte-ui-overlay-bg);
 	--svelte-ui-nav-bottom-sheet-border-radius: 16px 16px 0 0;
 	--svelte-ui-nav-bottom-sheet-padding: 16px 8px;
 

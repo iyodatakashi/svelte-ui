@@ -49,6 +49,8 @@
 		gap?: number | string;
 		/** How child items are displayed. Defaults to `accordion` (vertical), `bar` (horizontal), `bottom-sheet` (mobile). */
 		childrenVariant?: ChildrenVariant;
+		/** On mobile, displays the popup submenu as a sheet that slides up from the bottom. @default false */
+		mobileFullscreen?: boolean;
 		/** Show chevron icon on parent items. @default true */
 		chevron?: boolean;
 		/** Inline style applied to the nav container element. */
@@ -95,6 +97,7 @@
 			: variant === 'vertical'
 				? 'accordion'
 				: 'bar',
+		mobileFullscreen = false,
 		chevron,
 		customContainerStyle,
 		customItemStyle,
@@ -309,6 +312,7 @@
 				{selectedTextColor}
 				{selectedBarColor}
 				{childrenVariant}
+				{mobileFullscreen}
 				{chevron}
 				customStyle={customItemStyle}
 				customChildrenStyle={customChildrenItemStyle}

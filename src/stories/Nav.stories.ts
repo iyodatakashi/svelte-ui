@@ -69,6 +69,10 @@ const meta = {
 		ariaLabel: {
 			control: 'text',
 			description: 'Accessible label for the nav element'
+		},
+		mobileFullscreen: {
+			control: 'boolean',
+			description: 'On mobile, displays the popup as a sheet that slides up from the bottom'
 		}
 	}
 } satisfies Meta<typeof Nav>;
@@ -309,8 +313,7 @@ export const HorizontalBar: Story = {
 		layout: 'padded',
 		docs: {
 			description: {
-				story:
-					'Clicking a parent reveals a secondary horizontal bar of child items below the nav.'
+				story: 'Clicking a parent reveals a secondary horizontal bar of child items below the nav.'
 			}
 		}
 	}
