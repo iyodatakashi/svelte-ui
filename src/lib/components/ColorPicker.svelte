@@ -428,27 +428,29 @@
 		onpointermove={handlePointerMove}
 		onpointercancel={handlePointerCancel}
 		{...restProps}
-	/>
-
-	<div class="color-picker__trigger">
-		<input
-			type="color"
-			aria-label={ariaLabel ?? t('colorpicker.chooseColor')}
-			bind:value={localValue}
-			onchange={handleValueChange}
-			onfocus={handleFocus}
-			onblur={handleBlur}
-			onclick={handleClick}
-			onkeydown={handleKeydown}
-			{disabled}
-			class="color-picker__trigger-input"
-			{...restProps}
-		/>
-		<div
-			class="color-picker__color-display"
-			style="background-color: {getNormalizedValue(value)};"
-		></div>
-	</div>
+	>
+		{#snippet leftDecoration()}
+			<div class="color-picker__trigger">
+				<input
+					type="color"
+					aria-label={ariaLabel ?? t('colorpicker.chooseColor')}
+					bind:value={localValue}
+					onchange={handleValueChange}
+					onfocus={handleFocus}
+					onblur={handleBlur}
+					onclick={handleClick}
+					onkeydown={handleKeydown}
+					{disabled}
+					class="color-picker__trigger-input"
+					{...restProps}
+				/>
+				<div
+					class="color-picker__color-display"
+					style="background-color: {getNormalizedValue(value)};"
+				></div>
+			</div>
+		{/snippet}
+	</Input>
 </div>
 
 <style>
@@ -470,7 +472,7 @@
  * ============================================= */
 
 	.color-picker__trigger {
-		position: absolute;
+		position: relative;
 		left: var(--svelte-ui-colorpicker-trigger-offset);
 		display: inline-block;
 		width: var(--svelte-ui-colorpicker-trigger-size);
@@ -520,9 +522,7 @@
  * 状態管理（disabled, focused等）
  * ============================================= */
 	.color-picker--disabled {
-		/* Input 側は .input--disabled で opacity を持つため、ラッパーでは opacity をかけない（二重防止） */
 		.color-picker__trigger {
-			opacity: var(--svelte-ui-input-disabled-opacity);
 			cursor: not-allowed;
 			pointer-events: none;
 		}

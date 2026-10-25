@@ -8,6 +8,7 @@ import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Textarea from '../lib/components/Textarea.svelte';
 import Input from '../lib/components/Input.svelte';
+import ColorPicker from '../lib/components/ColorPicker.svelte';
 import Combobox from '../lib/components/Combobox.svelte';
 import Select from '../lib/components/Select.svelte';
 import MultiSelect from '../lib/components/MultiSelect.svelte';
@@ -61,6 +62,26 @@ test('Input: クリアボタンが padding 指定時もテキストに揃う', (
 		'.input__clear-button'
 	);
 });
+
+for (const customStyle of ['', ASYMMETRIC_PADDING]) {
+	test(`ColorPicker: スウォッチがテキストに揃う (${customStyle || 'default'})`, () => {
+		const { container } = render(ColorPicker, { value: '#ff0000', customStyle });
+		const field = container.querySelector('.input') as HTMLElement;
+		const swatch = container.querySelector('.color-picker__trigger') as HTMLElement;
+		const nativeInput = swatch.querySelector('input[type="color"]');
+		const fieldRect = field.getBoundingClientRect();
+		const swatchRect = swatch.getBoundingClientRect();
+		expect(field.contains(swatch)).toBe(true);
+		expect(centerY(swatch)).toBeCloseTo(centerY(field.querySelector('.input__display-text')), 1);
+		expect(swatchRect.left - fieldRect.left).toBeCloseTo(4, 1);
+		expect(
+			document.elementFromPoint(
+				swatchRect.left + swatchRect.width / 2,
+				swatchRect.top + swatchRect.height / 2
+			)
+		).toBe(nativeInput);
+	});
+}
 
 test('Combobox: ドロップダウンアイコンが padding 指定時もテキストに揃う', () => {
 	expectAligned(

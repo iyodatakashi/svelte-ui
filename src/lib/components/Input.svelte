@@ -17,6 +17,7 @@
 	} from '$lib/types/callbackHandlers';
 	import type { FocusStyle } from '$lib/types/propOptions';
 	import type { HTMLInputAttributes } from 'svelte/elements';
+	import type { Snippet } from 'svelte';
 
 	// =========================================================================
 	// Props, States & Constants
@@ -103,6 +104,8 @@
 		rightIcon?: string;
 		/** Material Symbols icon name shown on the left. */
 		leftIcon?: string;
+		/** Custom content shown instead of `leftIcon`. Reserve text space with `customStyle` when using it. */
+		leftDecoration?: Snippet;
 		leftIconAriaLabel?: string;
 		rightIconAriaLabel?: string;
 		iconFilled?: boolean;
@@ -217,6 +220,7 @@
 		// アイコン関連
 		rightIcon = undefined,
 		leftIcon = undefined,
+		leftDecoration,
 		leftIconAriaLabel = t('input.left_icon'),
 		rightIconAriaLabel = t('input.right_icon'),
 		enablePasswordVisibilityToggle = false,
@@ -614,7 +618,7 @@
 	);
 
 	// has icon
-	const hasLeftIcon = $derived(!!resolvedLeftIcon);
+	const hasLeftIcon = $derived(!!resolvedLeftIcon && !leftDecoration);
 	const hasLeftIconClickable = $derived(
 		!!resolvedLeftIcon &&
 			(!!resolvedLeftIconClick ||
@@ -847,6 +851,12 @@
 	{/if}
 
 	<!-- Left Icon -->
+	{#if leftDecoration}
+		<div class="input__decoration-left">
+			{@render leftDecoration()}
+		</div>
+	{/if}
+
 	{#if hasLeftIcon}
 		<div class="input__icon-left">
 			{#if resolvedLeftIconClick || resolvedLeftIconMouseDown || resolvedLeftIconMouseUp || resolvedLeftIconMouseLeave || resolvedLeftIconTouchStart || resolvedLeftIconTouchEnd || resolvedLeftIconTouchCancel}
@@ -1090,7 +1100,8 @@
 		}
 
 		.input__icon-left,
-		.input__icon-right {
+		.input__icon-right,
+		.input__decoration-left {
 			cursor: not-allowed;
 			pointer-events: none;
 		}
@@ -1136,6 +1147,16 @@
 	}
 
 	/* アイコン */
+	.input__decoration-left {
+		display: flex;
+		align-items: center;
+		position: absolute;
+		inset-block: 0;
+		left: 0;
+		padding-block: inherit;
+		z-index: 3;
+	}
+
 	.input__icon-left {
 		display: flex;
 		justify-content: center;
