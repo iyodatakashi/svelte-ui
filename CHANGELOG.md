@@ -5,6 +5,27 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.75] - 2026-10-25
+
+### Added
+
+- **Select** / **MultiSelect** / **Combobox** / **Datepicker** / **Nav**: New `mobileFullscreen` prop to show the popup as a bottom sheet on mobile.
+- **Input**: New `leftContent` snippet for showing custom content on the left side.
+- New `--svelte-ui-overlay-bg` variable for the overlay color behind modal surfaces.
+
+### Changed
+
+- **Popup** / **PopupMenu** / **PopupMenuButton** / **Select** / **MultiSelect** / **Datepicker**: `mobileFullscreen` now defaults to `false`. Pass it to keep the bottom sheet on mobile.
+- **Popup**: The bottom sheet now has an overlay behind it.
+- **Popup**: Animation durations now follow `--svelte-ui-transition-duration`.
+- **Nav**: `childrenVariant="bottom-sheet"` has been removed. The `mobile` variant now defaults to `popup`; pass `mobileFullscreen` to show it as a bottom sheet on mobile. The `--svelte-ui-nav-bottom-sheet-*` variables have been removed.
+- **Dialog**: `--svelte-ui-dialog-padding` is replaced by `--svelte-ui-dialog-non-scrollable-header-padding` and `--svelte-ui-dialog-scrollable-header-padding`.
+
+### Fixed
+
+- **Textarea**: With `clearable`, `padding` in `customStyle` no longer misplaces the clear button or gets overwritten.
+- **ColorPicker**: The swatch now lines up with the text when `customStyle` sets a `padding`.
+
 ## [0.0.74] - 2026-10-24
 
 ### Changed
