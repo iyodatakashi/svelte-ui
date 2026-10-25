@@ -221,7 +221,6 @@
 		gap: var(--svelte-ui-dialog-gap);
 		align-items: center;
 		justify-content: stretch;
-		padding: var(--svelte-ui-dialog-padding);
 
 		.dialog__title {
 			flex-grow: 1;
@@ -253,6 +252,10 @@
 		border-bottom: 1px solid var(--svelte-ui-border-weak-color);
 	}
 
+	.dialog:not(.dialog--scrollable) .dialog__header {
+		padding: var(--svelte-ui-dialog-non-scrollable-header-padding);
+	}
+
 	/* scrollable=true 時: ヘッダー/フッター固定 + bodyのみスクロール */
 	.dialog--scrollable {
 		overflow: hidden;
@@ -263,7 +266,7 @@
 	.dialog--scrollable .dialog__header {
 		flex-shrink: 0;
 		min-height: var(--svelte-ui-dialog-header-height);
-		padding-block: 0;
+		padding: var(--svelte-ui-dialog-scrollable-header-padding);
 		border-bottom: solid 1px var(--svelte-ui-border-color);
 	}
 

@@ -718,7 +718,8 @@
 	/* Dialog */
 	--svelte-ui-dialog-gap: 16px;
 	--svelte-ui-dialog-gap-sm: 8px;
-	--svelte-ui-dialog-padding: 16px 24px;
+	--svelte-ui-dialog-non-scrollable-header-padding: 16px 24px;
+	--svelte-ui-dialog-scrollable-header-padding: 0 24px;
 	--svelte-ui-dialog-body-padding: 24px;
 	--svelte-ui-dialog-header-height: 56px;
 	--svelte-ui-dialog-title-font-size: var(--svelte-ui-font-size-xl);
