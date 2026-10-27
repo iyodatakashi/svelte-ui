@@ -1,7 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
-import type { Snippet } from 'svelte';
-import type { MenuItem } from '../lib/types/menuItem';
 import PopupMenuButton from '../lib/components/PopupMenuButton.svelte';
 
 const meta = {
@@ -235,11 +233,6 @@ export const CustomIcon: Story = {
 				icon: 'account_circle',
 				callback: () => alert('Account settings')
 			},
-			{
-				label: 'Privacy',
-				icon: 'privacy_tip',
-				callback: () => alert('Privacy settings')
-			},
 			'separator',
 			{
 				label: 'About',
@@ -250,164 +243,9 @@ export const CustomIcon: Story = {
 	}
 };
 
-// File operations menu
-export const FileOperations: Story = {
-	args: {
-		children: createChildrenSnippet('folder'),
-		menuItems: [
-			{
-				label: 'New File',
-				icon: 'add',
-				callback: () => alert('New File')
-			},
-			{
-				label: 'Open',
-				icon: 'folder_open',
-				callback: () => alert('Open')
-			},
-			'separator',
-			{
-				label: 'Save',
-				icon: 'save',
-				callback: () => alert('Save')
-			},
-			{
-				label: 'Save As...',
-				icon: 'save_as',
-				callback: () => alert('Save As')
-			},
-			'separator',
-			{
-				label: 'Export',
-				icon: 'file_download',
-				callback: () => alert('Export')
-			},
-			{
-				label: 'Print',
-				icon: 'print',
-				callback: () => alert('Print')
-			}
-		]
-	}
-};
-
-// User menu
-export const UserMenu: Story = {
-	args: {
-		children: createChildrenSnippet('account_circle'),
-		menuItems: [
-			{
-				label: 'Profile',
-				icon: 'person',
-				href: '/profile'
-			},
-			{
-				label: 'Settings',
-				icon: 'settings',
-				href: '/settings'
-			},
-			'separator',
-			{
-				label: 'Help',
-				icon: 'help',
-				callback: () => alert('Help')
-			},
-			{
-				label: 'Feedback',
-				icon: 'feedback',
-				callback: () => alert('Feedback')
-			},
-			'separator',
-			{
-				label: 'Logout',
-				icon: 'logout',
-				callback: () => alert('Logout')
-			}
-		]
-	}
-};
-
-// Account switcher with checked item
-export const WithCheckedItems: Story = {
-	args: {
-		children: createChildrenSnippet('account_circle'),
-		menuItems: [
-			{
-				label: 'work@example.com',
-				checked: true,
-				callback: () => alert('work@example.com')
-			},
-			{
-				label: 'me@example.com',
-				checked: false,
-				callback: () => alert('me@example.com')
-			},
-			{
-				label: 'Add account',
-				icon: 'person_add',
-				callback: () => alert('Add account')
-			},
-			'separator',
-			{
-				label: 'Settings',
-				icon: 'settings',
-				callback: () => alert('Settings')
-			}
-		]
-	}
-};
-
-// Context menu (right-click style)
-export const ContextMenu: Story = {
-	args: {
-		children: createChildrenSnippet('more_horiz'),
-		menuItems: [
-			{
-				label: 'View Details',
-				icon: 'info',
-				callback: () => alert('View Details')
-			},
-			{
-				label: 'Rename',
-				icon: 'edit',
-				callback: () => alert('Rename')
-			},
-			{
-				label: 'Duplicate',
-				icon: 'content_copy',
-				callback: () => alert('Duplicate')
-			},
-			'separator',
-			{
-				label: 'Move to Folder',
-				icon: 'drive_file_move',
-				callback: () => alert('Move to Folder')
-			},
-			{
-				label: 'Add to Favorites',
-				icon: 'star',
-				callback: () => alert('Add to Favorites')
-			},
-			'separator',
-			{
-				label: 'Share',
-				icon: 'share',
-				callback: () => alert('Share')
-			},
-			'separator',
-			{
-				label: 'Delete',
-				icon: 'delete',
-				callback: () => alert('Delete')
-			}
-		]
-	}
-};
-
 // Simple menu without icons
 export const WithoutIcons: Story = {
 	args: {
-		children: createChildrenSnippet('more_vert'),
 		menuItems: [
 			{
 				label: 'Option A',
@@ -425,170 +263,9 @@ export const WithoutIcons: Story = {
 	}
 };
 
-// === NEW POSITIONING FEATURES ===
-
-// Auto positioning demo
-export const AutoPositioning: Story = {
-	args: {
-		position: 'auto',
-		children: createChildrenSnippet('auto_fix_high'),
-		menuItems: [
-			{
-				label: '🤖 Auto Position',
-				icon: 'auto_fix_high',
-				callback: () => alert('Auto positioning finds the best spot!')
-			},
-			{
-				label: 'Smart Placement',
-				icon: 'psychology',
-				callback: () => alert('Automatically adjusts to viewport')
-			},
-			'separator',
-			{
-				label: 'Try moving to screen edges',
-				icon: 'info',
-				callback: () =>
-					alert('Position this button near screen edges to see auto positioning in action')
-			}
-		]
-	},
-	parameters: {
-		docs: {
-			description: {
-				story:
-					'Auto positioning automatically selects the best position based on available viewport space. Try moving this button to different screen edges!'
-			}
-		}
-	}
-};
-
-// Corner positioning examples
-export const TopLeftPosition: Story = {
-	args: {
-		position: 'top-left',
-		children: createChildrenSnippet('north_west'),
-		menuItems: [
-			{
-				label: '📍 Top-Left',
-				icon: 'north_west',
-				callback: () => alert('Top-Left aligned')
-			},
-			{
-				label: 'Corner alignment',
-				callback: () => alert('Aligned to top-left corner')
-			}
-		]
-	}
-};
-
-export const BottomRightPosition: Story = {
-	args: {
-		position: 'bottom-right',
-		children: createChildrenSnippet('south_east'),
-		menuItems: [
-			{
-				label: '📍 Bottom-Right',
-				icon: 'south_east',
-				callback: () => alert('Bottom-Right aligned')
-			},
-			{
-				label: 'Corner alignment',
-				callback: () => alert('Aligned to bottom-right corner')
-			}
-		]
-	}
-};
-
-// Side positioning examples
-export const LeftTopPosition: Story = {
-	args: {
-		position: 'left-top',
-		children: createChildrenSnippet('keyboard_arrow_left'),
-		menuItems: [
-			{
-				label: '← Left-Top',
-				icon: 'keyboard_arrow_left',
-				callback: () => alert('Left side, top aligned')
-			},
-			{
-				label: 'Side placement',
-				callback: () => alert('Perfect for toolbar buttons')
-			}
-		]
-	}
-};
-
-export const RightBottomPosition: Story = {
-	args: {
-		position: 'right-bottom',
-		children: createChildrenSnippet('keyboard_arrow_right'),
-		menuItems: [
-			{
-				label: 'Right-Bottom →',
-				icon: 'keyboard_arrow_right',
-				callback: () => alert('Right side, bottom aligned')
-			},
-			{
-				label: 'Side placement',
-				callback: () => alert('Great for contextual menus')
-			}
-		]
-	}
-};
-
-// Position testing playground
-export const PositionPlayground: Story = {
-	args: {
-		position: 'bottom',
-		children: createChildrenSnippet('tune'),
-		menuItems: [
-			{
-				label: '🎯 Position Test',
-				icon: 'tune',
-				callback: () => alert('Use the position control above to test different placements!')
-			},
-			'separator',
-			{
-				label: 'Available Positions:',
-				icon: 'list'
-			},
-			{
-				label: '• auto (smart)',
-				callback: () => alert('Auto selects best position')
-			},
-			{
-				label: '• 4 basic (top/bottom/left/right)',
-				callback: () => alert('Traditional positioning')
-			},
-			{
-				label: '• 12 detailed positions',
-				callback: () => alert('Precise corner & side alignment')
-			},
-			'separator',
-			{
-				label: 'Test Instructions',
-				icon: 'help',
-				callback: () =>
-					alert(
-						'1. Use position control above\n2. Try all 17 positions\n3. Move to screen edges\n4. Test auto positioning'
-					)
-			}
-		]
-	},
-	parameters: {
-		docs: {
-			description: {
-				story:
-					'Interactive playground for testing all positioning options. Use the position control in the Controls panel to test different placements.'
-			}
-		}
-	}
-};
-
 // href navigation
 export const WithLinks: Story = {
 	args: {
-		children: createChildrenSnippet('link'),
 		menuItems: [
 			{
 				label: 'About (internal)',
@@ -622,5 +299,34 @@ export const WithLinks: Story = {
 					'Internal links navigate in the same tab. External links (target="_blank") open in a new tab.'
 			}
 		}
+	}
+};
+
+// Account switcher with checked item
+export const WithCheckedItems: Story = {
+	args: {
+		menuItems: [
+			{
+				label: 'work@example.com',
+				checked: true,
+				callback: () => alert('work@example.com')
+			},
+			{
+				label: 'me@example.com',
+				checked: false,
+				callback: () => alert('me@example.com')
+			},
+			{
+				label: 'Add account',
+				icon: 'person_add',
+				callback: () => alert('Add account')
+			},
+			'separator',
+			{
+				label: 'Settings',
+				icon: 'settings',
+				callback: () => alert('Settings')
+			}
+		]
 	}
 };
