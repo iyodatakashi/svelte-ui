@@ -5,6 +5,18 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.76] - 2026-10-28
+
+### Added
+
+- **PopupMenu** / **PopupMenuButton**: New `checked` field on `MenuItem` for showing the selected item. Items with `checked` are exposed as `menuitemradio` with `aria-checked`, and show a check mark in the icon column; unchecked items keep the same space so labels line up. `icon` is not shown on these items.
+- **Modal** / **Dialog** / **Drawer** / **ConfirmDialog**: New `closeIfEscape` prop (default `true`). Set it to `false` to keep the dialog open when Escape is pressed.
+- New `--svelte-ui-popupmenu-disabled-opacity` variable.
+
+### Fixed
+
+- **PopupMenu** / **PopupMenuButton**: `MenuItem.disabled` now takes effect. Disabled items get `aria-disabled="true"` and a dimmed look, and clicking them or pressing Enter / Space does nothing and keeps the menu open. They can still receive focus with the arrow keys. Disabled link items do not navigate.
+
 ## [0.0.75] - 2026-10-25
 
 ### Added
