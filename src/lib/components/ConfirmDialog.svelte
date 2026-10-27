@@ -32,6 +32,8 @@
 		isOpen?: boolean;
 		/** Closes when clicking the backdrop. @default true */
 		closeIfClickOutside?: boolean;
+		/** Closes when pressing Escape. @default true */
+		closeIfEscape?: boolean;
 		focusFirstOnOpen?: boolean;
 
 		// イベントハンドラー
@@ -61,6 +63,7 @@
 		// 状態/動作
 		isOpen = $bindable(false),
 		closeIfClickOutside = true,
+		closeIfEscape = true,
 		focusFirstOnOpen = false,
 
 		// イベントハンドラー
@@ -116,6 +119,7 @@
 	{width}
 	{scrollable}
 	{closeIfClickOutside}
+	{closeIfEscape}
 	{focusFirstOnOpen}
 	{onOpen}
 	onClose={handleClose}

@@ -41,6 +41,8 @@
 		isOpen?: boolean;
 		/** Closes when clicking the backdrop. @default true */
 		closeIfClickOutside?: boolean;
+		/** Closes when pressing Escape. @default true */
+		closeIfEscape?: boolean;
 		/** Returns focus to the trigger element on close. @default false */
 		restoreFocus?: boolean;
 		/** Focuses the first focusable element on open. @default false */
@@ -74,6 +76,7 @@
 		// 状態/動作
 		isOpen = $bindable(false),
 		closeIfClickOutside = true,
+		closeIfEscape = true,
 		restoreFocus = false,
 		focusFirstOnOpen = false,
 
@@ -125,6 +128,7 @@
 		// クローズは抑止し、fade-out アニメーション付きの close() を使う。
 		const handleCancel = (event: Event) => {
 			event.preventDefault();
+			if (!closeIfEscape) return;
 			close(undefined, 'escape');
 		};
 
@@ -139,6 +143,12 @@
 		if (!isOpen || !dialogRef) return;
 
 		const handleKeyDown = (event: KeyboardEvent) => {
+			// Chrome は cancel を連続して抑止すると次の Escape で cancel を経ずに閉じるため、
+			// keydown の段階で止める
+			if (event.key === 'Escape' && !closeIfEscape) {
+				event.preventDefault();
+				return;
+			}
 			if (event.key !== 'Tab') return;
 
 			const focusableElements = dialogRef.querySelectorAll(

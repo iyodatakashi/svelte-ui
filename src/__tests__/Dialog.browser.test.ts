@@ -207,6 +207,24 @@ test('Dialog calls onClose with "escape" when closed by the Escape key', async (
 	await expect.poll(() => screen.component.getCloseReasons()).toEqual(['escape']);
 });
 
+test('Dialog with closeIfEscape disabled stays open on Escape', async () => {
+	const { userEvent } = await import('@vitest/browser/context');
+	const screen = render(ComponentWrapper, {
+		component: Dialog,
+		isOpen: true,
+		closeIfEscape: false,
+		id: 'dialog-no-escape-test'
+	});
+	const dialog = screen.container.querySelector('#dialog-no-escape-test-modal') as HTMLDialogElement;
+	await expect.poll(() => dialog.open).toBe(true);
+
+	await userEvent.keyboard('{Escape}');
+	await userEvent.keyboard('{Escape}');
+	await new Promise((resolve) => setTimeout(resolve, 300));
+
+	expect(dialog.open).toBe(true);
+});
+
 test('Dialog calls onClose with "outside" when the backdrop is clicked', async () => {
 	const screen = render(DialogCallbacks);
 

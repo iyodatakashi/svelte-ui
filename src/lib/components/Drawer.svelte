@@ -51,6 +51,8 @@
 		scrollable?: boolean;
 		/** Closes when clicking the backdrop. @default true */
 		closeIfClickOutside?: boolean;
+		/** Closes when pressing Escape. @default true */
+		closeIfEscape?: boolean;
 		/** Returns focus to the trigger element on close. @default false */
 		restoreFocus?: boolean;
 		/** Focuses the first focusable element on open. @default false */
@@ -89,6 +91,7 @@
 		isOpen = $bindable(false),
 		scrollable = false,
 		closeIfClickOutside = true,
+		closeIfEscape = true,
 		restoreFocus = false,
 		focusFirstOnOpen = false,
 
@@ -177,6 +180,7 @@
 	bind:this={modalRef}
 	bind:isOpen
 	{closeIfClickOutside}
+	{closeIfEscape}
 	{restoreFocus}
 	{focusFirstOnOpen}
 	{onOpen}
