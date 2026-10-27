@@ -79,6 +79,10 @@
 
 	const executeMenuItem = (item: MenuItem, event?: MouseEvent) => {
 		event?.stopPropagation();
+		if (item.disabled) {
+			event?.preventDefault();
+			return;
+		}
 		if (!item.href) {
 			event?.preventDefault();
 		}
@@ -165,6 +169,7 @@
 	};
 
 	const handleMouseEnter = (index: number) => {
+		if (actionableItems[index].item.disabled) return;
 		activeIndex = index;
 	};
 
@@ -291,11 +296,13 @@
 								id={getMenuItemId(actionableIndex)}
 								class="popup-menu__button"
 								class:popup-menu__button--active={isActive}
+							class:popup-menu__button--disabled={item.disabled}
 								role={isCheckable(item) ? 'menuitemradio' : 'menuitem'}
 								tabindex="-1"
 								aria-checked={item.checked}
+							aria-disabled={item.disabled}
 								aria-describedby={hasIcon(item) ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
-								href={item.href}
+								href={item.disabled ? undefined : item.href}
 								target={item.target}
 								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
@@ -309,9 +316,11 @@
 								id={getMenuItemId(actionableIndex)}
 								class="popup-menu__button"
 								class:popup-menu__button--active={isActive}
+							class:popup-menu__button--disabled={item.disabled}
 								role={isCheckable(item) ? 'menuitemradio' : 'menuitem'}
 								tabindex="-1"
 								aria-checked={item.checked}
+							aria-disabled={item.disabled}
 								aria-describedby={hasIcon(item) ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
 								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
@@ -364,7 +373,7 @@
 	}
 
 	@media (hover: hover) {
-		.popup-menu__button:hover,
+		.popup-menu__button:hover:not(.popup-menu__button--disabled),
 		.popup-menu__button--active {
 			background-color: var(--svelte-ui-hover-overlay);
 			outline: none;
@@ -387,6 +396,11 @@
 		flex-shrink: 0;
 		width: 24px;
 		height: 24px;
+	}
+
+	.popup-menu__button--disabled {
+		opacity: var(--svelte-ui-popupmenu-disabled-opacity);
+		cursor: default;
 	}
 
 	.popup-menu__text {

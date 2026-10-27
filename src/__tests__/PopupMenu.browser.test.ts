@@ -238,6 +238,40 @@ test('renders checked items as menuitemradio with aligned mark column', async ()
 	expect(buttons[2].hasAttribute('aria-checked')).toBe(false);
 });
 
+test('disabled items are announced as disabled and do not execute', async () => {
+	let executed = false;
+	const anchor = createAnchorElement();
+	const screen = render(ComponentWrapper, {
+		component: PopupMenu,
+		anchorElement: anchor,
+		menuItems: [
+			{ label: 'Switch', checked: false, disabled: true, callback: () => (executed = true) },
+			{ label: 'Docs', href: '/docs', disabled: true }
+		],
+		isOpen: true,
+		id: 'popup-menu-disabled'
+	});
+
+	const items = screen.container.querySelectorAll<HTMLElement>(
+		'#popup-menu-disabled .popup-menu__button'
+	);
+	expect(items[0].getAttribute('aria-disabled')).toBe('true');
+	expect(items[1].getAttribute('aria-disabled')).toBe('true');
+	expect(items[1].hasAttribute('href')).toBe(false);
+
+	const menu = screen.container.querySelector('#popup-menu-disabled') as HTMLElement;
+	await expect.poll(() => document.activeElement).toBe(menu);
+	items[0].click();
+	const press = (key: string) =>
+		menu.dispatchEvent(new KeyboardEvent('keydown', { key, bubbles: true }));
+	press('ArrowDown');
+	await expect.poll(() => document.activeElement).toBe(items[0]);
+	press('Enter');
+
+	expect(executed).toBe(false);
+	await expect.element(menu).toBeVisible();
+});
+
 test('applies correct CSS variables', async () => {
 	const anchor = createAnchorElement();
 	const screen = render(ComponentWrapper, {

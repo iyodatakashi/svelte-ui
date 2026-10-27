@@ -330,3 +330,29 @@ export const WithCheckedItems: Story = {
 		]
 	}
 };
+
+// Disabled items
+export const WithDisabledItems: Story = {
+	args: {
+		menuItems: [
+			{
+				label: 'Edit',
+				icon: 'edit',
+				callback: () => alert('Edit clicked')
+			},
+			{
+				label: 'Copy',
+				icon: 'content_copy',
+				disabled: true,
+				callback: () => alert('Copy clicked')
+			},
+			'separator',
+			{
+				label: 'Delete',
+				icon: 'delete',
+				disabled: true,
+				callback: () => alert('Delete clicked')
+			}
+		]
+	}
+};
