@@ -327,6 +327,36 @@ export const UserMenu: Story = {
 	}
 };
 
+// Account switcher with checked item
+export const WithCheckedItems: Story = {
+	args: {
+		children: createChildrenSnippet('account_circle'),
+		menuItems: [
+			{
+				label: 'work@example.com',
+				checked: true,
+				callback: () => alert('work@example.com')
+			},
+			{
+				label: 'me@example.com',
+				checked: false,
+				callback: () => alert('me@example.com')
+			},
+			{
+				label: 'Add account',
+				icon: 'person_add',
+				callback: () => alert('Add account')
+			},
+			'separator',
+			{
+				label: 'Settings',
+				icon: 'settings',
+				callback: () => alert('Settings')
+			}
+		]
+	}
+};
+
 // Context menu (right-click style)
 export const ContextMenu: Story = {
 	args: {

@@ -206,6 +206,38 @@ test('shows icons when provided', async () => {
 	await expect.element(popupMenu).toBeVisible();
 });
 
+test('renders checked items as menuitemradio with aligned mark column', async () => {
+	const anchor = createAnchorElement();
+	const screen = render(ComponentWrapper, {
+		component: PopupMenu,
+		anchorElement: anchor,
+		menuItems: [
+			{ label: 'work@example.com', checked: true, icon: 'person', callback: () => {} },
+			{ label: 'me@example.com', checked: false, callback: () => {} },
+			{ label: 'Add account', icon: 'person_add', callback: () => {} }
+		],
+		isOpen: true,
+		id: 'popup-menu-checked'
+	});
+
+	const buttons = screen.container.querySelectorAll('#popup-menu-checked .popup-menu__button');
+	expect(buttons[0].getAttribute('role')).toBe('menuitemradio');
+	expect(buttons[0].getAttribute('aria-checked')).toBe('true');
+	expect(buttons[0].hasAttribute('aria-describedby')).toBe(false);
+	expect(buttons[0].querySelector('.popup-menu__check')?.textContent?.trim()).toBe('check');
+
+	expect(buttons[1].getAttribute('role')).toBe('menuitemradio');
+	expect(buttons[1].getAttribute('aria-checked')).toBe('false');
+	expect(buttons[1].querySelector('.popup-menu__check')?.textContent?.trim()).toBe('');
+
+	const checkedText = buttons[0].querySelector('.popup-menu__text')!.getBoundingClientRect();
+	const uncheckedText = buttons[1].querySelector('.popup-menu__text')!.getBoundingClientRect();
+	expect(uncheckedText.left).toBe(checkedText.left);
+
+	expect(buttons[2].getAttribute('role')).toBe('menuitem');
+	expect(buttons[2].hasAttribute('aria-checked')).toBe(false);
+});
+
 test('applies correct CSS variables', async () => {
 	const anchor = createAnchorElement();
 	const screen = render(ComponentWrapper, {

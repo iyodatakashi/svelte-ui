@@ -21,7 +21,7 @@
 		anchorElement: HTMLElement | null | undefined;
 		/** @default 'bottom' */
 		position?: PopupPosition;
-		/** `{ label, icon?, href?, callback?, disabled? }[]` or `'separator'` for dividers. */
+		/** `{ label, icon?, checked?, href?, callback?, disabled? }[]` or `'separator'` for dividers. */
 		menuItems: (MenuItem | 'separator')[];
 		id?: string;
 		ariaLabel?: string;
@@ -72,6 +72,10 @@
 	// Methods
 	// =========================================================================
 	const getMenuItemId = (index: number): string => `${menuId}-item-${index}`;
+
+	const isCheckable = (item: MenuItem): boolean => item.checked !== undefined;
+
+	const hasIcon = (item: MenuItem): boolean => !isCheckable(item) && !!item.icon;
 
 	const executeMenuItem = (item: MenuItem, event?: MouseEvent) => {
 		event?.stopPropagation();
@@ -219,6 +223,37 @@
 	);
 </script>
 
+{#snippet itemContent(item: MenuItem, actionableIndex: number)}
+	{#if isCheckable(item)}
+		<span class="popup-menu__check" aria-hidden="true">
+			{#if item.checked}
+				<Icon
+					filled={iconFilled}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}
+				>
+					check
+				</Icon>
+			{/if}
+		</span>
+	{:else if item.icon}
+		<Icon
+			id="{getMenuItemId(actionableIndex)}-icon"
+			aria-hidden="true"
+			filled={iconFilled}
+			weight={iconWeight}
+			grade={iconGrade}
+			opticalSize={iconOpticalSize}
+			variant={iconVariant}
+		>
+			{item.icon}
+		</Icon>
+	{/if}
+	<span class="popup-menu__text">{item.label}</span>
+{/snippet}
+
 <Popup
 	bind:this={popupRef}
 	bind:isOpen
@@ -256,29 +291,17 @@
 								id={getMenuItemId(actionableIndex)}
 								class="popup-menu__button"
 								class:popup-menu__button--active={isActive}
-								role="menuitem"
+								role={isCheckable(item) ? 'menuitemradio' : 'menuitem'}
 								tabindex="-1"
-								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
+								aria-checked={item.checked}
+								aria-describedby={hasIcon(item) ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
 								href={item.href}
 								target={item.target}
 								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
 								onfocus={() => handleFocus(actionableIndex)}
 							>
-								{#if item.icon}
-									<Icon
-										id="{getMenuItemId(actionableIndex)}-icon"
-										aria-hidden="true"
-										filled={iconFilled}
-										weight={iconWeight}
-										grade={iconGrade}
-										opticalSize={iconOpticalSize}
-										variant={iconVariant}
-									>
-										{item.icon}
-									</Icon>
-								{/if}
-								<span class="popup-menu__text">{item.label}</span>
+								{@render itemContent(item, actionableIndex)}
 							</a>
 						{:else}
 							<button
@@ -286,27 +309,15 @@
 								id={getMenuItemId(actionableIndex)}
 								class="popup-menu__button"
 								class:popup-menu__button--active={isActive}
-								role="menuitem"
+								role={isCheckable(item) ? 'menuitemradio' : 'menuitem'}
 								tabindex="-1"
-								aria-describedby={item.icon ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
+								aria-checked={item.checked}
+								aria-describedby={hasIcon(item) ? `${getMenuItemId(actionableIndex)}-icon` : undefined}
 								onclick={(e) => executeMenuItem(item, e)}
 								onmouseenter={() => handleMouseEnter(actionableIndex)}
 								onfocus={() => handleFocus(actionableIndex)}
 							>
-								{#if item.icon}
-									<Icon
-										id="{getMenuItemId(actionableIndex)}-icon"
-										aria-hidden="true"
-										filled={iconFilled}
-										weight={iconWeight}
-										grade={iconGrade}
-										opticalSize={iconOpticalSize}
-										variant={iconVariant}
-									>
-										{item.icon}
-									</Icon>
-								{/if}
-								<span class="popup-menu__text">{item.label}</span>
+								{@render itemContent(item, actionableIndex)}
 							</button>
 						{/if}
 					{/if}
@@ -369,6 +380,13 @@
 		background-color: var(--svelte-ui-hover-overlay);
 		outline: 2px solid var(--svelte-ui-popupmenu-focus-color);
 		outline-offset: -2px;
+	}
+
+	.popup-menu__check {
+		display: flex;
+		flex-shrink: 0;
+		width: 24px;
+		height: 24px;
 	}
 
 	.popup-menu__text {
