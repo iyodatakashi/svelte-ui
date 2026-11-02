@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.78] - 2026-11-02
+
+### Fixed
+
+- **Modal** / **Dialog** / **ConfirmDialog**: On iOS Safari, the dialog no longer collapses to zero height and stays invisible behind the backdrop when opened.
+
 ## [0.0.77] - 2026-11-02
 
 ### Fixed
