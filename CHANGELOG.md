@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.80] - 2026-11-03
+
+### Fixed
+
+- **Radio** / **Checkbox**: On touch devices, the icon and label are now vertically centered in the enlarged touch target instead of sitting near its top, so they line up with neighboring components.
+- **Radio** / **Checkbox**: The `small` and `large` sizes now use their own minimum height, so the icon and label are no longer slightly offset toward the top.
+
 ## [0.0.79] - 2026-11-03
 
 ### Changed
