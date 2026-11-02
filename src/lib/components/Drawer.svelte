@@ -237,6 +237,11 @@
 		color: var(--svelte-ui-drawer-title-color);
 	}
 
+	/* 画面の高さいっぱいのドロワーでは、中身もその高さに広げてフッターを下端に置く */
+	:global(.drawer-wrapper > .modal-contents) {
+		height: 100%;
+	}
+
 	:global(.drawer-wrapper:-internal-dialog-in-top-layer) {
 		max-height: none;
 		max-width: none;
