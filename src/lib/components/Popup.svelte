@@ -344,11 +344,8 @@
 			popupRef.style.setProperty('left', '0px', 'important');
 			popupRef.style.setProperty('top', '0px', 'important');
 			popupRef.style.setProperty('position', 'fixed', 'important');
-			popupRef.style.setProperty(
-				'transform',
-				`translate(${coords.x}px, ${coords.y}px)`,
-				'important'
-			);
+			// 開閉アニメーションが transform を使うため、位置は独立した translate プロパティで指定する
+			popupRef.style.setProperty('translate', `${coords.x}px ${coords.y}px`, 'important');
 		}
 	};
 
