@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.77] - 2026-11-02
+
+### Fixed
+
+- **Popup** and components built on it: On mobile, the popup no longer sticks to the top-left corner while opening and then jumps into place. The opening and closing scale animation now also plays in browsers where it was previously skipped.
+
 ## [0.0.76] - 2026-10-28
 
 ### Added
