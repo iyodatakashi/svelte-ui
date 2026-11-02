@@ -262,6 +262,7 @@ npm run package      # ライブラリビルド → dist/
 npm run storybook    # Storybook (port 6006)
 npm run test:unit    # Vitest ユニットテスト
 npm run check        # svelte-check + TypeScript検査
+npm run release      # npm 公開 → タグ付け → main を develop に早送り → push（ver コミット直後に実行）
 ```
 
 ## 重要ファイル

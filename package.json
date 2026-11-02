@@ -68,7 +68,7 @@
 		"build-storybook": "storybook build",
 		"verify-package": "node scripts/verify-package.js",
 		"prepublishOnly": "npm run package && npm run verify-package",
-		"publish": "npm publish"
+		"release": "bash scripts/release.sh"
 	},
 	"devDependencies": {
 		"@chromatic-com/storybook": "^4.1.1",
