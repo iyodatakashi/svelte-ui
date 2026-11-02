@@ -310,17 +310,6 @@
 		outline: none;
 	}
 
-	/* Modal内の要素のフォーカス枠線をコントロール */
-	.modal *:focus {
-		outline: none;
-	}
-
-	/* キーボードナビゲーション時のみフォーカス枠線を表示 */
-	.modal *:focus-visible {
-		outline: var(--svelte-ui-focus-outline-outer);
-		outline-offset: var(--svelte-ui-focus-outline-offset-outer);
-	}
-
 	.modal-contents {
 		width: 100%;
 		display: flex;
