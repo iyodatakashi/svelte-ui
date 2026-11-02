@@ -519,6 +519,7 @@
 	 * ========================================================================= */
 
 	.checkbox--small {
+		min-height: var(--svelte-ui-checkbox-min-height-sm);
 		font-size: inherit;
 	}
 
@@ -539,6 +540,7 @@
 	}
 
 	.checkbox--large {
+		min-height: var(--svelte-ui-checkbox-min-height-lg);
 		font-size: inherit;
 	}
 
@@ -568,12 +570,40 @@
 			min-height: var(--svelte-ui-touch-target);
 		}
 
+		.checkbox__icon {
+			margin-block: calc((var(--svelte-ui-touch-target) - var(--svelte-ui-checkbox-size)) / 2);
+		}
+
+		.checkbox__label {
+			margin-block: calc((var(--svelte-ui-touch-target) - 1cap) / 2);
+		}
+
 		.checkbox--small {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
+		.checkbox--small .checkbox__icon {
+			margin-block: calc(
+				(var(--svelte-ui-touch-target-sm) - var(--svelte-ui-checkbox-size-sm)) / 2
+			);
+		}
+
+		.checkbox--small .checkbox__label {
+			margin-block: calc((var(--svelte-ui-touch-target-sm) - 1cap) / 2);
+		}
+
 		.checkbox--large {
 			min-height: var(--svelte-ui-touch-target-lg);
+		}
+
+		.checkbox--large .checkbox__icon {
+			margin-block: calc(
+				(var(--svelte-ui-touch-target-lg) - var(--svelte-ui-checkbox-size-lg)) / 2
+			);
+		}
+
+		.checkbox--large .checkbox__label {
+			margin-block: calc((var(--svelte-ui-touch-target-lg) - 1cap) / 2);
 		}
 	}
 

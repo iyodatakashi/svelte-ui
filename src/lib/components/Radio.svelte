@@ -539,6 +539,7 @@
 
 	/* Size variants */
 	.radio--small {
+		min-height: var(--svelte-ui-radio-min-height-sm);
 		font-size: inherit;
 	}
 
@@ -568,6 +569,7 @@
 	}
 
 	.radio--large {
+		min-height: var(--svelte-ui-radio-min-height-lg);
 		font-size: inherit;
 	}
 
@@ -606,12 +608,36 @@
 			min-height: var(--svelte-ui-touch-target);
 		}
 
+		.radio__icon {
+			margin-block: calc((var(--svelte-ui-touch-target) - var(--svelte-ui-radio-size)) / 2);
+		}
+
+		.radio__label {
+			margin-block: calc((var(--svelte-ui-touch-target) - 1cap) / 2);
+		}
+
 		.radio--small {
 			min-height: var(--svelte-ui-touch-target-sm);
 		}
 
+		.radio--small .radio__icon {
+			margin-block: calc((var(--svelte-ui-touch-target-sm) - var(--svelte-ui-radio-size-sm)) / 2);
+		}
+
+		.radio--small .radio__label {
+			margin-block: calc((var(--svelte-ui-touch-target-sm) - 1cap) / 2);
+		}
+
 		.radio--large {
 			min-height: var(--svelte-ui-touch-target-lg);
+		}
+
+		.radio--large .radio__icon {
+			margin-block: calc((var(--svelte-ui-touch-target-lg) - var(--svelte-ui-radio-size-lg)) / 2);
+		}
+
+		.radio--large .radio__label {
+			margin-block: calc((var(--svelte-ui-touch-target-lg) - 1cap) / 2);
 		}
 	}
 
