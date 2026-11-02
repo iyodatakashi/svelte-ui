@@ -5,6 +5,16 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.79] - 2026-11-03
+
+### Changed
+
+- **Modal** / **Dialog** / **Drawer** / **ConfirmDialog**: Elements inside the dialog are no longer given the dialog's own focus outline. Library components now show the same focus ring inside a dialog as outside it, and plain elements without their own focus style get the browser's default focus ring.
+
+### Fixed
+
+- **Modal** / **Dialog** / **Drawer** / **ConfirmDialog**: A dialog opened from inside another dialog (for example, a Dialog inside a Drawer) no longer shows an outline around the whole dialog.
+
 ## [0.0.78] - 2026-11-02
 
 ### Fixed
