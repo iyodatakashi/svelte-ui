@@ -985,6 +985,12 @@
 		line-height: var(--svelte-ui-input-height);
 		text-align: inherit;
 
+		/* 自動入力時はブラウザが color を !important で黒にするため、文字色は text-fill-color で戻す */
+		&:-webkit-autofill {
+			-webkit-text-fill-color: var(--svelte-ui-text-color);
+			caret-color: var(--svelte-ui-text-color);
+		}
+
 		&[type='number'] {
 			&::-webkit-outer-spin-button,
 			&::-webkit-inner-spin-button {
