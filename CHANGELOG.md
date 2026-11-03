@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.81] - 2026-11-03
+
+### Fixed
+
+- **Input** / **Textarea**: Text filled in by the browser's autofill no longer turns black and unreadable in dark mode. Autofilled fields now use `--svelte-ui-text-color` for the text and caret.
+
 ## [0.0.80] - 2026-11-03
 
 ### Fixed
