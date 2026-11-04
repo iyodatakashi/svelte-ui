@@ -19,7 +19,18 @@ export const announceToScreenReader = (
 	const announcement = document.createElement('div');
 	announcement.setAttribute('aria-live', priority);
 	announcement.setAttribute('aria-atomic', 'true');
-	announcement.className = 'sr-only';
+	// body 直下に置くので、ページ全体のスタイル（core.scss の .sr-only）に頼らず自分で隠す
+	Object.assign(announcement.style, {
+		position: 'absolute',
+		width: '1px',
+		height: '1px',
+		padding: '0',
+		margin: '-1px',
+		overflow: 'hidden',
+		clip: 'rect(0, 0, 0, 0)',
+		whiteSpace: 'nowrap',
+		border: '0'
+	});
 	announcement.textContent = message;
 	document.body.appendChild(announcement);
 
