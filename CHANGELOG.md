@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.83] - 2026-11-04
+
+### Fixed
+
+- **Input**: Pressing Enter in an Input inside a `<form>` now submits the form, as with a native input. Outside a form, Enter still confirms the input by removing focus.
+
 ## [0.0.82] - 2026-11-04
 
 ### Added
