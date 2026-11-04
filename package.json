@@ -103,8 +103,10 @@
 		"eslint-plugin-storybook": "^9.1.5",
 		"eslint-plugin-svelte": "^3.0.0",
 		"globals": "^16.0.0",
+		"playwright": "^1.64.1",
 		"prettier": "^3.4.2",
 		"prettier-plugin-svelte": "^3.3.3",
+		"sass": "^1.89.2",
 		"storybook": "^9.1.5",
 		"svelte": "^5.0.0",
 		"svelte-check": "^4.0.0",
@@ -116,10 +118,15 @@
 	},
 	"dependencies": {
 		"dayjs": "^1.11.13",
-		"dompurify": "^3.2.6",
-		"sass": "^1.89.2"
+		"dompurify": "^3.2.6"
 	},
 	"peerDependencies": {
+		"sass": "^1.89.2",
 		"svelte": "^5.0.0"
+	},
+	"peerDependenciesMeta": {
+		"sass": {
+			"optional": true
+		}
 	}
 }
