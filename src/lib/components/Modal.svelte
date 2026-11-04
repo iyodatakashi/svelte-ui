@@ -290,9 +290,14 @@
 </dialog>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.modal {
 		padding: 0;
 		border-width: 0;
+		color: inherit;
 		background-color: var(--svelte-ui-surface-elevated-color);
 		box-shadow:
 			0 11px 15px -7px var(--svelte-ui-shadow-color-strong),

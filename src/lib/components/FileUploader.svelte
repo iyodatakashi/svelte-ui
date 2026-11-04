@@ -378,7 +378,12 @@
 	/>
 </button>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
 	.file-uploader {
 		display: flex;
 		flex-direction: column;

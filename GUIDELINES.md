@@ -20,9 +20,11 @@ src/lib/
 │   └── segmentedControlItem.ts
 ├── utils/               # style.ts, snackbar, popup, accessibility等
 ├── assets/styles/
-│   ├── variables.scss   # 全CSS変数定義（テーマシステム）
-│   ├── core.scss        # グローバルリセット・基底スタイル
-│   └── import.scss      # エントリーポイント
+│   ├── variables.scss   # 全CSS変数定義（テーマシステム）。styles/tokens として単独でも配る
+│   ├── core.scss        # アプリ全体の素地（ページ全体に効く規則）。部品はこれに頼らない
+│   ├── component-base.scss  # 部品の <style> に取り込む mixin（box-sizing・button のリセット）
+│   ├── icons.scss       # Material Symbols の読み込み（styles/icons）
+│   └── import.scss      # 全部入りの入口（styles）
 ├── i18n/                # 多言語対応
 ├── config.ts            # グローバル設定 (ロケール等)
 └── index.ts             # バレルエクスポート
@@ -95,6 +97,19 @@ src/lib/
 - カスタムインラインスタイルは生の `style` ではなくプロジェクト標準の `customStyle?: string` で受け取る（Modal は歴史的経緯で `customStyles` / `customClass`、一部 Skeleton 系は `className` を使用。後方互換のため統一されていないが、新規コンポーネントは `customStyle` に揃える）
 
 ## CSSシステム
+
+### 部品の基礎の規則
+
+部品は `styles/tokens`（CSS 変数だけ）を読み込んだページでも同じ見た目で描かれる必要がある。ページ全体の規則（`core.scss`）に頼らず、前提にする規則は部品の `<style>` に持たせる。
+
+```svelte
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset; /* <button> を描く部品だけ */
+</style>
+```
 
 ### 変数の3階層
 
@@ -252,7 +267,7 @@ export type { ButtonProps } from './components/Button.svelte';
 - `reducedMotion` prop で個別にモーション制御可能（グローバルの `prefers-reduced-motion` も参照）
 - キーボードナビゲーション: Enter/Space/Escape キーハンドリング
 - フォーカス管理: `focus-visible` スタイル、Popup/Modal でのフォーカストラップ
-- `.sr-only` クラス (`core.scss` 定義) でスクリーンリーダー専用テキスト
+- スクリーンリーダー専用テキストは、使う部品の `<style>` に `.sr-only` を定義する（`core.scss` の `.sr-only` はアプリ向けで、部品は頼らない）
 
 ## ビルドコマンド
 
@@ -270,7 +285,7 @@ npm run release      # npm 公開 → タグ付け → main を develop に早�
 | ファイル | 役割 |
 |---|---|
 | `src/lib/assets/styles/variables.scss` | 全CSS変数定義（テーマのカスタマイズ起点） |
-| `src/lib/assets/styles/core.scss` | グローバルリセット・`.sr-only`等 |
+| `src/lib/assets/styles/core.scss` | アプリ全体の素地（`styles` からだけ読まれる） |
 | `src/lib/types/propOptions.ts` | ButtonVariant, PopupPosition等の共有型 |
 | `src/lib/types/callbackHandlers.ts` | イベントハンドラ型 |
 | `src/lib/index.ts` | バレルエクスポート（追加時はここも更新） |

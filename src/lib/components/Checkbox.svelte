@@ -376,7 +376,11 @@
 	{/if}
 </label>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	/* =========================================================================
 	 * Base Styles
 	 * ========================================================================= */

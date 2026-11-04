@@ -115,6 +115,10 @@
 </div>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.tab {
 		min-height: var(--svelte-ui-tab-min-height);
 		width: 100%;

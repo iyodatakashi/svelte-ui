@@ -35,6 +35,14 @@
 			"types": "./dist/assets/styles/import.css.d.ts",
 			"default": "./dist/assets/styles/import.css"
 		},
+		"./styles/tokens": {
+			"types": "./dist/assets/styles/import.css.d.ts",
+			"default": "./dist/assets/styles/tokens.css"
+		},
+		"./styles/icons": {
+			"types": "./dist/assets/styles/import.css.d.ts",
+			"default": "./dist/assets/styles/icons.css"
+		},
 		"./styles/*": "./dist/assets/styles/*"
 	},
 	"files": [
@@ -54,7 +62,7 @@
 	"scripts": {
 		"dev": "vite dev",
 		"build": "vite build",
-		"package": "svelte-package && sass src/lib/assets/styles/import.scss dist/assets/styles/import.css --no-source-map",
+		"package": "svelte-package && sass src/lib/assets/styles/import.scss:dist/assets/styles/import.css src/lib/assets/styles/variables.scss:dist/assets/styles/tokens.css src/lib/assets/styles/icons.scss:dist/assets/styles/icons.css --no-source-map",
 		"preview": "vite preview",
 		"prepare": "svelte-kit sync || echo ''",
 		"check": "svelte-kit sync && svelte-check --tsconfig ./tsconfig.json",

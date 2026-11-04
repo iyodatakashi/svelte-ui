@@ -351,6 +351,10 @@
 />
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.button-block {
 		width: fit-content;
 	}

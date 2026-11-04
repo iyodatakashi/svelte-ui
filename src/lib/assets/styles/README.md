@@ -1,144 +1,56 @@
 # Svelte UI Library Styles
 
-この svelte-ui ライブラリは、ライブラリユーザーのスタイルとの競合を避けるために、スタイルを **必須スタイル** と **オプションスタイル** に分離しています。
+## 入口
 
-## 🎯 変更点
+| 入口                            | 中身                             | 使う場面                           |
+| ------------------------------- | -------------------------------- | ---------------------------------- |
+| `@14ch/svelte-ui/styles`        | icons + tokens + core            | アプリ（推奨）                     |
+| `@14ch/svelte-ui/styles/tokens` | CSS 変数だけ（`variables.scss`） | 他のアプリへ組み込まれるパッケージ |
+| `@14ch/svelte-ui/styles/icons`  | Material Symbols の読み込みだけ  | アイコンを描く部品を使うとき       |
 
-- **v0.0.1** から、ライブラリのindex.tsでは必須スタイルのみを自動読み込み
-- リセットCSSやフォントなどは **オプション** として分離
-- ユーザーが必要に応じて選択的に読み込み可能
+部品は `styles/tokens` だけを読み込んだページでも、`styles` を全部読み込んだときと同じ見た目で描かれる。部品が前提にする規則（box-sizing・button のリセットなど）は、各部品の `<style>` が持つ。
 
-## 📁 ファイル構成
+## ファイル構成
 
 ```
 dist/assets/styles/
-├── core.scss              # 🔴 必須 - コンポーネント動作に必要
-├── variables.scss          # 🔴 必須 - CSS変数
-
-├── import.scss            # 🔴 必須 - 上記2つをまとめて読み込み
+├── import.css / import.scss   # styles の入口（下の 3 つをまとめたもの）
+├── tokens.css                 # styles/tokens の入口（variables.scss を変換したもの）
+├── icons.css / icons.scss     # styles/icons の入口
+├── variables.scss             # CSS 変数（:where(:root) と明暗・ハイコントラストの切り替えだけ）
+├── core.scss                  # アプリ全体の素地（ページ全体の要素に効く規則）
+├── component-base.scss        # 部品の <style> に取り込む mixin（box-sizing・button のリセット）
 └── optional/
-    ├── reset.scss         # 🔵 オプション - リセットCSS
-    └── fonts.scss         # 🔵 オプション - フォント読み込み
+    ├── reset.scss             # リセット CSS
+    └── fonts.scss             # Roboto・Noto Sans JP・YakuHanJP の読み込み
 ```
 
-## 🔴 必須スタイル（自動読み込み）
+## 各ファイルの決まり
 
-これらのスタイルは、ライブラリをインポートすると自動的に読み込まれます：
+- **variables.scss**: 変数の定義だけを書く。`@import` も、要素や `*` へのセレクタも書かない（`styles/tokens` として単独で配るため）
+- **core.scss**: ページ全体に効く規則を置く。部品はこのファイルに頼らない。部品が前提にする規則を足すときは、その部品の `<style>` に書く（複数の部品で同じなら `component-base.scss` の mixin にする）
+- **icons.scss**: 外部フォントの読み込みだけを書く
 
-```typescript
-// ライブラリをインポートするだけで必須スタイルが読み込まれる
-import { Button } from 'svelte-ui';
-```
-
-### 含まれる内容
-
-- **Box-sizing**: `box-sizing: border-box` の設定（全コンポーネント）
-- **Button reset**: button要素のブラウザデフォルトスタイルをリセット（Button, IconButton, Fab等）
-- **Dialog reset**: dialog要素の基本スタイル（Dialog, Drawer等）
-- **Form elements**: input autofill、label等の調整（Input, Textarea, Checkbox, Radio等）
-- **Accessibility**: `.sr-only` クラス（PopupMenu等で使用）
-- **CSS variables**: 全コンポーネントで使用される変数
-- **Material Icons**: アイコンフォントの設定
-
-## 🔵 オプションスタイル（選択読み込み）
-
-必要に応じて、以下のスタイルを選択的に読み込むことができます：
-
-### 1. リセットCSS
+## オプション
 
 ```scss
-// Eric Meyer's CSS Reset + 基本的なレイアウト設定
-@import 'svelte-ui/dist/assets/styles/optional/reset.scss';
+@use '@14ch/svelte-ui/styles/optional/reset.scss';
+@use '@14ch/svelte-ui/styles/optional/fonts.scss';
 ```
 
-### 2. フォント
+`.scss` を直接読み込むには、利用側のビルドに `sass` が必要（svelte-ui の任意の peerDependency）。
 
-```scss
-// Google Fonts (Roboto, Noto Sans JP) + YakuHanJP
-@import 'svelte-ui/dist/assets/styles/optional/fonts.scss';
-```
+## カスタマイズ
 
-## 🚀 使用例
+変数はすべて `:where()`（詳細度 0）で定義しているので、同じ要素に対する指定なら、利用側の指定が読み込み順に関係なく勝つ。ダークの値は `data-theme="dark"` を付けた要素に定義されるため、ダークの値を変えるときは `[data-theme='dark']` で上書きする。
 
-### 最小構成（必須スタイルのみ）
-
-```typescript
-// main.ts または app.ts
-import { Button, Input, Dialog } from 'svelte-ui';
-
-// 必須スタイルは自動的に読み込まれる
-// 自分のリセットCSSやフォントを使用可能
-```
-
-### 標準構成（オプションスタイルも使用）
-
-```scss
-// app.scss
-// 必須スタイルは自動読み込みされているので、オプションのみ追加
-@import 'svelte-ui/dist/assets/styles/optional/reset.scss';
-@import 'svelte-ui/dist/assets/styles/optional/fonts.scss';
-
-// 自分のスタイル
-body {
-	background-color: #f0f0f0;
-}
-```
-
-### 部分的な使用
-
-```scss
-// app.scss
-// 自分のリセットCSSを使用し、フォントだけライブラリのものを使用
-@import 'svelte-ui/dist/assets/styles/optional/fonts.scss';
-```
-
-## 🔄 移行ガイド
-
-### 旧バージョンからの移行
-
-以前のバージョンではリセットCSSが自動的に読み込まれていました。同じ動作を維持したい場合：
-
-```scss
-// app.scss
-@import 'svelte-ui/dist/assets/styles/optional/reset.scss';
-@import 'svelte-ui/dist/assets/styles/optional/fonts.scss';
-```
-
-### 競合を避けたい場合
-
-```scss
-// 必須スタイルは自動読み込みされるので、何もしなくてOK
-// 自分のリセットCSSやフォントを使用してください
-```
-
-## 🎨 カスタマイズ
-
-CSS変数を上書きすることで、簡単にテーマをカスタマイズできます：
-
-```scss
-// カスタムテーマ
+```css
 :root {
 	--svelte-ui-primary-color: #ff6b6b;
 	--svelte-ui-button-border-radius: 8px;
 }
+
+[data-theme='dark'] {
+	--svelte-ui-primary-color: #ff9b9b;
+}
 ```
-
-## 🔧 トラブルシューティング
-
-### スタイルが適用されない場合
-
-1. **Box-sizing**: 必須スタイルに含まれているため、基本的な要素サイズは正常に表示されます
-2. **Button要素**: 基本的なリセットは必須スタイルに含まれています
-3. **アイコン**: Material Icons は必須スタイルに含まれています
-
-### 競合が発生した場合
-
-1. **リセットCSS**: optional/reset.scss を読み込まずに、自分のリセットCSSを使用
-2. **フォント**: optional/fonts.scss を読み込まずに、自分のフォントを指定
-3. **CSS変数**: 必要に応じて上書きしてください
-
-## 📚 詳細情報
-
-- [コンポーネント一覧](../../components/)
-- [CSS変数一覧](./variables.scss)
-- [TypeScript型定義](../../types/)

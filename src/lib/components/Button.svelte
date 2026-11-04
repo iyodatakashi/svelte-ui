@@ -436,7 +436,12 @@
 	{/if}
 </button>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
 	.button {
 		display: inline-flex;
 		vertical-align: top;

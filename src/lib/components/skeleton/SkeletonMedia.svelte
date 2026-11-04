@@ -70,7 +70,11 @@
 	<SkeletonText width={textWidthStyle} {lines} {fontSize} {animated} />
 </div>
 
-<style>
+<style lang="scss">
+	@use '../../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.skeleton-media {
 		display: grid;
 		grid-template-columns: auto 1fr;

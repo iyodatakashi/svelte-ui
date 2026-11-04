@@ -196,7 +196,12 @@
 	</ul>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
 	.pagination {
 		display: flex;
 		align-items: center;

@@ -506,6 +506,10 @@
 </div>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.segmented-control {
 		display: flex;
 		position: relative;

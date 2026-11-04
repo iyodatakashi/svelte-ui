@@ -120,7 +120,11 @@
 	</div>
 {/if}
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.snackbar {
 		/* popover の UA デフォルトスタイルを打ち消す（inset/margin/border/padding/背景/overflow）。
 		   inset は left より先に打ち消す（あとに置くと left の中央寄せを上書きしてしまう） */

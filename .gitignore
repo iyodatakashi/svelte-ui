@@ -30,3 +30,6 @@ storybook-static
 CLAUDE.md
 .claude/
 .kiro/
+
+# Vitest browser screenshots
+__screenshots__/

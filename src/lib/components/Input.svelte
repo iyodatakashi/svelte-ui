@@ -929,7 +929,11 @@
 	{/if}
 </div>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	/* =============================================
  * 基本構造・レイアウト
  * ============================================= */
@@ -985,8 +989,10 @@
 		line-height: var(--svelte-ui-input-height);
 		text-align: inherit;
 
-		/* 自動入力時はブラウザが color を !important で黒にするため、文字色は text-fill-color で戻す */
+		/* 自動入力時はブラウザが背景色と文字色を !important で変えるため、
+		   背景は transition で変化を止め、文字色は text-fill-color で戻す */
 		&:-webkit-autofill {
+			transition: background-color 5000s ease-in-out 0s;
 			-webkit-text-fill-color: var(--svelte-ui-text-color);
 			caret-color: var(--svelte-ui-text-color);
 		}

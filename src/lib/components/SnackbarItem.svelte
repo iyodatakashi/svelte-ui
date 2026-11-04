@@ -222,7 +222,11 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	/* アニメーション定義 */
 	@keyframes slideInFromBottom {
 		from {

@@ -38,6 +38,10 @@
 </div>
 
 <style lang="scss">
+	@use '../../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.skeleton-heading {
 		display: block;
 		width: 100%;

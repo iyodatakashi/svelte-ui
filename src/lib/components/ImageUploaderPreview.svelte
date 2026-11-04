@@ -138,7 +138,11 @@
 	</div>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.image-uploader-preview {
 		position: relative;
 	}

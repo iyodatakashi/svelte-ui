@@ -51,6 +51,10 @@
 </div>
 
 <style lang="scss">
+	@use '../../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.skeleton-text {
 		display: block;
 		width: 100%;

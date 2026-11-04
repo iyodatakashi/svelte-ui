@@ -576,6 +576,10 @@
 </div>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	/* UA の popover 既定（inset: 0; margin: auto; padding）のままだと画面の中央に寄るため打ち消す。
 	   位置は setPosition が left / top / translate で決める */
 	.popup {

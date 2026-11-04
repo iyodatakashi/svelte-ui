@@ -1,55 +1,44 @@
 /* src/lib/assets/styles/core.scss */
-/* 
- * Core styles required for component functionality
- * These styles are automatically included with the library
+/*
+ * アプリ全体の素地。@14ch/svelte-ui/styles からだけ読み込まれ、ページ全体の要素に効く。
+ * 部品はこのファイルが無くても同じ見た目で描かれる（前提にする規則は各部品の <style> が持つ）。
  */
 
-/*===================================================================
- * Box-sizing - Required for proper component sizing
- *===================================================================*/
-*,
-*::before,
-*::after {
-	box-sizing: border-box;
-}
+@use './component-base' as base;
 
 /*===================================================================
- * Button reset - Required for consistent button styling
+ * Box-sizing
  *===================================================================*/
-button {
-	background: transparent;
-	border: none;
-	/* UA 既定の color: buttontext は継承より強く、ダークテーマでも黒のままになる */
-	color: inherit;
-	font-size: inherit;
-	font-weight: inherit;
-	cursor: pointer;
-}
+@include base.box-sizing;
 
 /*===================================================================
- * Dialog element - Required for dialog components
+ * Button reset
+ *===================================================================*/
+@include base.button-reset;
+
+/*===================================================================
+ * Dialog element
  *===================================================================*/
 dialog {
 	color: inherit;
 }
 
 /*===================================================================
- * Form elements - Required for proper form functionality
+ * Form elements
  *===================================================================*/
 /* Prevent autofill background color changes */
 input:-webkit-autofill {
 	transition: background-color 5000s ease-in-out 0s !important;
 }
 
-/* Label normalization - Used in Input, Textarea, Checkbox, Radio */
 label {
 	font-weight: normal;
 }
 
 /*===================================================================
- * Accessibility - Required for screen readers
+ * Accessibility
  *===================================================================*/
-/* Screen reader only class for accessibility - Used in PopupMenu */
+/* Screen reader only class */
 .sr-only {
 	position: absolute;
 	width: 1px;

@@ -103,7 +103,11 @@
 	{/each}
 </ul>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.radio-group {
 		display: flex;
 		flex-direction: var(--internal-radio-group-flex-direction);

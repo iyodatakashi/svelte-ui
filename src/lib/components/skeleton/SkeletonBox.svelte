@@ -64,6 +64,10 @@
 ></div>
 
 <style lang="scss">
+	@use '../../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.skeleton-box {
 		display: block;
 		background-color: var(--svelte-ui-skeleton-color);

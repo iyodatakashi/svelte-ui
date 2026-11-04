@@ -210,6 +210,10 @@
 </Modal>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.dialog {
 		display: flex;
 		flex-direction: column;

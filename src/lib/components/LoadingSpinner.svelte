@@ -62,7 +62,11 @@
 	</svg>
 </div>
 
-<style>
+<style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.loading-spinner {
 		display: flex;
 		justify-content: center;

@@ -430,6 +430,23 @@
 {/if}
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
+	.sr-only {
+		position: absolute;
+		width: 1px;
+		height: 1px;
+		padding: 0;
+		margin: -1px;
+		overflow: hidden;
+		clip: rect(0, 0, 0, 0);
+		white-space: nowrap;
+		border: 0;
+	}
+
 	.step-nav {
 		--internal-step-nav-marker-size: var(--svelte-ui-step-nav-marker-size);
 		--internal-step-nav-font-size: var(--svelte-ui-step-nav-font-size);

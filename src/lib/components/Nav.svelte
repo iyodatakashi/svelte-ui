@@ -362,6 +362,10 @@
 {/if}
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
 	.nav {
 		display: flex;
 		box-sizing: border-box;

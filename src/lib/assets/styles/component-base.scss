@@ -1,0 +1,25 @@
+// src/lib/assets/styles/component-base.scss
+// 部品の <style> に取り込む基礎の規則。
+// 部品はページ全体のスタイル（core.scss）を読み込まなくても同じ見た目で描かれる必要があるため、
+// 前提にする規則を各部品のスコープ内に持たせる。
+// コメントは部品ごとの出力に複製されないよう // で書く。
+
+@mixin box-sizing {
+	*,
+	*::before,
+	*::after {
+		box-sizing: border-box;
+	}
+}
+
+@mixin button-reset {
+	button {
+		background: transparent;
+		border: none;
+		// UA 既定の color: buttontext は継承より強く、ダークテーマでも黒のままになる
+		color: inherit;
+		font-size: inherit;
+		font-weight: inherit;
+		cursor: pointer;
+	}
+}

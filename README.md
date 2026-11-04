@@ -28,24 +28,34 @@ yarn add @14ch/svelte-ui
 
 ### 1. Import Styles
 
-**Important**: You must import the CSS styles for the components to work properly.
+Components read their colors and sizes from `--svelte-ui-*` CSS variables, so the design tokens must be loaded.
 
-Add this to your main app file (e.g., `app.html`, `+layout.svelte`, or `main.js`):
+For an app, import everything (recommended):
 
 ```javascript
-// Import all necessary styles (recommended)
+// Icon fonts + design tokens + app-wide base rules
 import '@14ch/svelte-ui/styles';
 ```
 
-Or import individual style files:
+For a package that embeds svelte-ui components into other apps, import only what the components need, so nothing leaks into the host page:
 
 ```javascript
-// Core styles (required)
-import '@14ch/svelte-ui/styles/variables.scss';
-import '@14ch/svelte-ui/styles/core.scss';
+// Design tokens only: CSS variables on :where(:root) and the dark/high-contrast switches.
+// No external requests, no rules on elements.
+import '@14ch/svelte-ui/styles/tokens';
 
-// Optional styles
-import '@14ch/svelte-ui/styles/optional/fonts.scss'; // Material Symbols font
+// Material Symbols fonts (loaded from Google Fonts).
+// Needed only when components render an icon: Icon, IconButton, Fab, the `icon` props,
+// and built-in icons such as clear buttons, popup arrows, pickers and PopupMenu check marks.
+import '@14ch/svelte-ui/styles/icons';
+```
+
+Components render the same with `styles/tokens` alone as with the full `styles`. The full import additionally applies these base rules to the whole page: `box-sizing: border-box` on every element, a reset for `button`, `color: inherit` for `dialog`, `font-weight: normal` for `label`, the autofill background fix for `input`, and the `.sr-only` class.
+
+Optional extras (Sass sources; your build needs `sass`):
+
+```javascript
+import '@14ch/svelte-ui/styles/optional/fonts.scss'; // Roboto, Noto Sans JP, YakuHanJP
 import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 ```
 

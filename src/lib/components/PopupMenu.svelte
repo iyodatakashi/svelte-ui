@@ -337,6 +337,11 @@
 </Popup>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
 	.popup-menu {
 		background-color: var(--svelte-ui-surface-elevated-color);
 		border-radius: 4px;

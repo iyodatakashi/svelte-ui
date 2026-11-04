@@ -728,6 +728,11 @@
 </Popup>
 
 <style lang="scss">
+	@use '../assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
 	.datepicker {
 		position: relative;
 		display: inline-block;
