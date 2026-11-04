@@ -14,10 +14,10 @@
  * 2. ライトテーマ（:where(:root)内）
  *    - テキスト色、ボーダー色、背景色等の基本テーマ色
  * 
- * 3. ダークテーマ（[data-theme='dark']）
+ * 3. ダークテーマ（:where([data-theme='dark'])）
  *    - ライトテーマで定義された色変数を上書き
  * 
- * 4. コンポーネント変数（:where(:root), [data-theme='dark']）
+ * 4. コンポーネント変数（:where(:root, [data-theme='dark'])）
  *    - サイズ・パディング等の固定値
  *    - ライト・ダーク両テーマで共有される色変数
  *    - 各コンポーネントの色変数（Button, Input, Checkbox, Radio, Switch等）
@@ -200,7 +200,7 @@
  * ダークテーマ用の色変数
  * ==================================== */
 
-[data-theme='dark'] {
+:where([data-theme='dark']) {
 	/* 基本テキスト色の定義 */
 	--svelte-ui-text-color: var(--white-800-transparent);
 	--svelte-ui-text-weak-color: var(--white-500-transparent);
@@ -254,8 +254,7 @@
 	--svelte-ui-shadow-color-weak: rgba(0, 0, 0, 0.4);
 }
 
-:where(:root),
-[data-theme='dark'] {
+:where(:root, [data-theme='dark']) {
 	/* ====================================
    * 共通の変数（サイズ、トランジション、ボーダー半径など）
    * ==================================== */
@@ -883,8 +882,7 @@
  * ==================================== */
 
 @media (prefers-contrast: more) {
-	:where(:root),
-	[data-theme='dark'] {
+	:where(:root, [data-theme='dark']) {
 		/* ===== 基本色の上書き ===== */
 		--svelte-ui-text-color: CanvasText;
 		--svelte-ui-text-weak-color: CanvasText;
