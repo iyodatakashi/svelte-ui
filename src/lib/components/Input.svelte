@@ -343,7 +343,8 @@
 	// キーボードイベント
 	const handleKeydown = (event: KeyboardEvent) => {
 		// Enterキーで入力確定（blur）する（IME変換中は除く）
-		if (event.key === 'Enter' && !disabled && !readonly && !isComposing) {
+		// form 内ではブラウザ既定の暗黙の送信に任せる（blur すると送信されない）
+		if (event.key === 'Enter' && !disabled && !readonly && !isComposing && !ref?.form) {
 			ref?.blur();
 		}
 		onkeydown?.(event);

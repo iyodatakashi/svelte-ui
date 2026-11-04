@@ -3,6 +3,8 @@ import { render } from 'vitest-browser-svelte';
 import Input from '../lib/components/Input.svelte';
 import '../lib/assets/styles/variables.scss';
 import { collectCssVarNames } from './helpers/cssVarCollector';
+import { userEvent } from '@vitest/browser/context';
+import InputInForm from './helpers/InputInForm.svelte';
 
 test('renders Input and updates value on typing', async () => {
 	const screen = render(Input, { placeholder: 'Type here', value: '' });
@@ -188,6 +190,29 @@ test('onkeydown receives keyboard events including Enter', async () => {
 	// Wait for event to propagate
 	await new Promise(resolve => setTimeout(resolve, 10));
 	expect(onkeydown).toHaveBeenCalled();
+});
+
+test('form の外では Enter で焦点が外れて onchange が呼ばれる', async () => {
+	const onchange = vi.fn();
+	const screen = render(Input, { value: '', onchange });
+	const input = screen.getByRole('textbox').element() as HTMLInputElement;
+
+	input.focus();
+	await userEvent.keyboard('abc{Enter}');
+
+	expect(document.activeElement).not.toBe(input);
+	expect(onchange).toHaveBeenCalledWith('abc');
+});
+
+test('form の中では Enter で form が 1 回送信される', async () => {
+	const onsubmit = vi.fn();
+	const screen = render(InputInForm, { onsubmit });
+	const input = screen.getByRole('textbox').element() as HTMLInputElement;
+
+	input.focus();
+	await userEvent.keyboard('abc{Enter}');
+
+	expect(onsubmit).toHaveBeenCalledTimes(1);
 });
 
 // input/change events
