@@ -5,6 +5,25 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.82] - 2026-11-04
+
+### Added
+
+- New `@14ch/svelte-ui/styles/tokens` entry with only the design tokens (CSS variables and the dark / high-contrast switches). It has no external requests and no rules on elements, so packages that embed svelte-ui components can load it without affecting the host page. Components render the same with it as with the full `@14ch/svelte-ui/styles`.
+- New `@14ch/svelte-ui/styles/icons` entry with only the Material Symbols fonts. Load it when components render icons (`Icon`, `IconButton`, `Fab`, `icon` props, and built-in icons such as clear buttons, popup arrows, pickers and PopupMenu check marks).
+
+### Changed
+
+- Components no longer rely on the page-wide rules in `@14ch/svelte-ui/styles` (`box-sizing`, the `button` reset, `dialog` text color, the autofill background, `.sr-only`); each component carries the rules it needs. `@14ch/svelte-ui/styles` still loads everything, so existing apps look the same.
+- Dark theme tokens are now defined with zero specificity (`:where([data-theme='dark'])`), like the light ones. Your own overrides now win regardless of stylesheet order. To change a dark value, override it with `[data-theme='dark']`.
+- The package now declares `sideEffects` (only CSS files), so bundlers can drop unused components and dependencies. For example, an app that only uses `Dialog` no longer bundles `dayjs`, `dompurify` or other components.
+- `sass` is no longer installed as a runtime dependency. It is now an optional peer dependency, needed only if you import the `.scss` files directly.
+
+### Fixed
+
+- **Popup** and components built on it: The popup no longer appears near the center of the screen instead of below its anchor on pages without a CSS reset.
+- Screen reader announcements (for example, when a Dialog opens) are no longer visible on the page when only `styles/tokens` is loaded.
+
 ## [0.0.81] - 2026-11-03
 
 ### Fixed
