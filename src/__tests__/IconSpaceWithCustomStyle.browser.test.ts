@@ -13,6 +13,7 @@ import Select from '../lib/components/Select.svelte';
 import MultiSelect from '../lib/components/MultiSelect.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
 import core from '../lib/assets/styles/core.scss?inline';
+import { textBox } from './helpers/textBox';
 
 const themeStyle = document.createElement('style');
 themeStyle.textContent = `${variables}\n${core}`;
@@ -111,11 +112,7 @@ test('Textarea: clearable の余白が customStyle で消えない', () => {
 	const textRightSpace = (container: Element) => {
 		const root = container.querySelector('.textarea') as HTMLElement;
 		const display = container.querySelector('.textarea__display-text') as HTMLElement;
-		return (
-			root.getBoundingClientRect().right -
-			display.getBoundingClientRect().right +
-			parseFloat(getComputedStyle(display).paddingRight)
-		);
+		return root.getBoundingClientRect().right - textBox(display).right;
 	};
 
 	expect(textRightSpace(base)).toBeGreaterThan(textRightSpace(plain));

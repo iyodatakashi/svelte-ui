@@ -74,9 +74,11 @@ onchange = () => {}, // パラメータなしで型推論を可能にする
 - **`padding` は箱に 1 箇所だけ持たせる。** 複数の層に分散させると、`customStyle` の `padding` がどちらに効くのかが決まらず、`background-color` を指定したときにボーダーが覆われる等の破綻が起きる。
 - Input / Textarea のように「表示用テキスト層・入力層・リンク層」を重ねる構造では、
   - 箱（ルート）: `padding` / `background-color` / ボーダー（inset `box-shadow`） / `border-radius`
-  - 絶対配置でルートの padding box を覆う層（`__wrapper` / `__link-text`）: `padding: inherit`
-  - 通常フローの層と入力要素本体: `padding: 0`、背景は `transparent`
-  - フォーカスリングは入力要素ではなく箱に描く（入力要素はルートの content box しか占めないため）
+  - 絶対配置でルートの padding box を覆う層（Input の `__wrapper`、Textarea の `textarea`、`__link-text`）: `padding: inherit`
+  - 通常フローの層（`__display-text` など、箱の大きさを決める層）: `padding: 0`、背景は `transparent`
+  - **スクロールする入力要素は、padding box を覆う層そのものにする**（Textarea の `textarea`）。content box に置くと、スクロールバーが余白の内側に出る
+  - フォーカスリングは箱全体を囲む要素に描く（Input は `__wrapper`、Textarea は padding box を覆う `textarea` 自身）
+  - どの層も、文字が並ぶ領域（位置・幅・折り返し）を一致させる。余白を足すときは、すべての層に同じ方法で足す（Textarea のクリアボタンの列は、各層の右の透明な `border`。padding は箱から受け取るため足し合わせられない）
 - アイコン・クリアボタン用の余白は `customStyle` より後ろに `padding-left` / `padding-right` として箱に追加し、`customStyle` の `padding` で消えないようにする。不変条件は `src/__tests__/IconSpaceWithCustomStyle.browser.test.ts` と `src/__tests__/CustomStyleBackground.browser.test.ts` で検証する。
 
 ### コメント方針

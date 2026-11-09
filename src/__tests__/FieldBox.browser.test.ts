@@ -91,18 +91,18 @@ test('Input: フォーカスリングは入力要素ではなく箱に描かれ�
 	expect(parseFloat(boxStyle.outlineWidth)).toBeGreaterThan(0);
 });
 
-test('Textarea: フォーカスリングは入力要素ではなく箱に描かれる', async () => {
+test('Textarea: フォーカスリングは箱全体を囲む', async () => {
 	const { container } = render(Textarea, { value: 'x' });
+	const root = container.querySelector('.textarea') as HTMLElement;
 	const field = container.querySelector('textarea') as HTMLTextAreaElement;
 	field.focus();
 	await tick();
 
-	expect(getComputedStyle(field).outlineStyle).toBe('none');
-
-	const box = container.querySelector('.textarea__wrapper') as HTMLElement;
-	const boxStyle = getComputedStyle(box);
-	expect(boxStyle.outlineStyle).toBe('solid');
-	expect(parseFloat(boxStyle.outlineWidth)).toBeGreaterThan(0);
+	// textarea は箱の padding box を覆う層なので、textarea に描いた枠が箱全体を囲む
+	const fieldStyle = getComputedStyle(field);
+	expect(fieldStyle.outlineStyle).toBe('solid');
+	expect(parseFloat(fieldStyle.outlineWidth)).toBeGreaterThan(0);
+	expect(field.getBoundingClientRect().toJSON()).toEqual(root.getBoundingClientRect().toJSON());
 });
 
 test('Input: focusStyle="none" ではフォーカスリングを描かない', async () => {

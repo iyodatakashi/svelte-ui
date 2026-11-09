@@ -14,6 +14,7 @@ import Select from '../lib/components/Select.svelte';
 import MultiSelect from '../lib/components/MultiSelect.svelte';
 import variables from '../lib/assets/styles/variables.scss?inline';
 import core from '../lib/assets/styles/core.scss?inline';
+import { textBox } from './helpers/textBox';
 
 const themeStyle = document.createElement('style');
 themeStyle.textContent = `${variables}\n${core}`;
@@ -264,18 +265,13 @@ for (const inline of [false, true]) {
 			const links = container.querySelector('.textarea__link-text') as HTMLElement;
 			const input = container.querySelector('textarea') as HTMLTextAreaElement;
 			const buttonRight = button.getBoundingClientRect().right;
-			const contentRight = display.getBoundingClientRect().right;
+			const textRight = textBox(display).right;
 
 			expect(getComputedStyle(root).paddingRight).toBe(`${rightPadding}px`);
 			expect(root.getBoundingClientRect().right - buttonRight).toBeCloseTo(rightPadding, 1);
-			expect(contentRight - parseFloat(getComputedStyle(display).paddingRight)).toBeLessThanOrEqual(
-				button.getBoundingClientRect().left
-			);
-			expect(getComputedStyle(input).paddingRight).toBe(getComputedStyle(display).paddingRight);
-			expect(links.getBoundingClientRect().right - rightPadding).toBeCloseTo(
-				contentRight - parseFloat(getComputedStyle(display).paddingRight),
-				1
-			);
+			expect(textRight).toBeLessThanOrEqual(button.getBoundingClientRect().left);
+			expect(textBox(input).right).toBeCloseTo(textRight, 1);
+			expect(textBox(links).right).toBeCloseTo(textRight, 1);
 		});
 	}
 }

@@ -244,31 +244,21 @@
 	let displayTextRef: HTMLDivElement | null = $state(null);
 	let linkTextRef: HTMLDivElement | null = $state(null);
 	let isFocused: boolean = $state(false);
-	let resizeObserver: ResizeObserver | null = null;
 
 	// =========================================================================
 	// $effect
 	// =========================================================================
-	// autoResize=false のとき、コンポーネント全体のサイズに display-text / link-text を合わせる
+	// resizable でユーザーが textarea をドラッグしてサイズを変えたら、箱をその大きさに合わせる
+	// （autoResize=true では高さが中身で決まるため対象外）
 	$effect(() => {
-		if (!containerRef || !displayTextRef || !textareaRef) {
-			cleanupSizeSync();
-			return;
-		}
+		if (!textareaRef || autoResize || !resizable) return;
 
-		// autoResize=true のときは、サイズ同期を行わず従来の挙動を維持
-		if (autoResize) {
-			cleanupSizeSync();
-			return;
-		}
-
-		// 初期同期
-		syncSizeFromTextarea();
-		// resizable=true のときにのみ ResizeObserver をセットアップ
-		setupResizeObserver();
+		const observer = new ResizeObserver(syncSizeFromTextarea);
+		observer.observe(textareaRef);
 
 		return () => {
-			cleanupSizeSync();
+			observer.disconnect();
+			containerRef?.style.removeProperty('height');
 		};
 	});
 
@@ -432,84 +422,12 @@
 		}
 	};
 
-	// resizable=true のときに textarea のサイズ変更を監視
-	const setupResizeObserver = () => {
-		if (!textareaRef) return;
-
-		// resizable でなければ監視は不要
-		if (!resizable) {
-			if (resizeObserver) {
-				resizeObserver.disconnect();
-				resizeObserver = null;
-			}
-			return;
-		}
-
-		// 既存のオブザーバがあれば一旦解除
-		if (resizeObserver) {
-			resizeObserver.disconnect();
-			resizeObserver = null;
-		}
-
-		resizeObserver = new ResizeObserver(() => {
-			// ユーザーのリサイズ後は textarea の幅でコンテナ幅を上書きする
-			syncSizeFromTextarea({ forceWidth: true });
-		});
-		resizeObserver.observe(textareaRef);
-	};
-
-	// --------------------------------
-	// display-text / link-text と textarea のサイズ同期
-	// --------------------------------
-	// サイズ同期
-	const syncSizeFromTextarea = ({ forceWidth = false }: { forceWidth?: boolean } = {}) => {
-		if (!containerRef || !displayTextRef || !textareaRef) return;
-		const rect = textareaRef.getBoundingClientRect();
-		const height = rect.height;
-		const width = rect.width;
-		if (!height || !width) return;
-
-		// 箱（ルート）は padding を持つため、textarea の実寸に padding 分を足す
-		const rootStyle = getComputedStyle(containerRef);
-		const paddingY = parseFloat(rootStyle.paddingTop) + parseFloat(rootStyle.paddingBottom);
-		const paddingX = parseFloat(rootStyle.paddingLeft) + parseFloat(rootStyle.paddingRight);
-
-		// コンポーネント全体の高さは textarea に合わせる
-		containerRef.style.height = `${height + paddingY}px`;
-
-		// 幅は、初期状態では width プロップを優先し、
-		// ユーザーがリサイズ（ResizeObserver 経由）したあとは textarea の幅で上書きする
-		if (forceWidth || !widthStyle) {
-			containerRef.style.width = `${width + paddingX}px`;
-		}
-
-		// display-text / link-text はコンテナにフィットさせる
-		displayTextRef.style.height = '100%';
-		displayTextRef.style.width = '100%';
-		if (linkTextRef) {
-			linkTextRef.style.height = '100%';
-			linkTextRef.style.width = '100%';
-		}
-	};
-
-	// サイズ同期を解除
-	const cleanupSizeSync = () => {
-		if (resizeObserver) {
-			resizeObserver.disconnect();
-			resizeObserver = null;
-		}
-		if (containerRef) {
-			containerRef.style.removeProperty('height');
-			// width は width プロップで制御されるため、ここでは削除しない
-		}
-		if (displayTextRef) {
-			displayTextRef.style.removeProperty('height');
-			displayTextRef.style.removeProperty('width');
-		}
-		if (linkTextRef) {
-			linkTextRef.style.removeProperty('height');
-			linkTextRef.style.removeProperty('width');
-		}
+	// textarea は箱いっぱいに広がるので、ドラッグで付いたインラインの大きさをそのまま箱に移す
+	const syncSizeFromTextarea = () => {
+		if (!containerRef || !textareaRef) return;
+		const { width, height } = textareaRef.style;
+		if (height) containerRef.style.height = height;
+		if (width) containerRef.style.width = width;
 	};
 
 	// =========================================================================
@@ -554,7 +472,7 @@
 	);
 	const maxHeightStyle = $derived(getStyleFromNumber(maxHeight));
 	const widthStyle = $derived(getStyleFromNumber(width));
-	// 箱（ルート）は border-box、内側のテキスト層は padding を持たないので縦 padding を差し引く
+	// 箱（ルート）は border-box、display-text は箱の content box に置くので縦 padding を差し引く
 	const innerMinHeightStyle = $derived(
 		`calc(${minHeightStyle} - var(--internal-textarea-vertical-padding))`
 	);
@@ -602,62 +520,54 @@
 	>
 		{@html displayValue}
 	</div>
-	<div class="textarea__wrapper">
-		<textarea
-			{id}
-			{name}
-			bind:value
-			bind:this={textareaRef}
-			{rows}
-			{placeholder}
-			{disabled}
-			{readonly}
-			{required}
-			{maxlength}
-			aria-label={ariaLabel}
-			{tabindex}
-			{autocomplete}
-			{wrap}
-			{spellcheck}
-			{autocapitalize}
-			class:resizable
-			style:min-height={innerMinHeightStyle}
-			onchange={handleChange}
-			oninput={handleInput}
-			onfocus={handleFocus}
-			onblur={handleBlur}
-			onkeydown={handleKeydown}
-			onkeyup={handleKeyup}
-			onclick={handleClick}
-			onmousedown={handleMouseDown}
-			onmouseup={handleMouseUp}
-			onmouseenter={handleMouseEnter}
-			onmouseleave={handleMouseLeave}
-			onmouseover={handleMouseOver}
-			onmouseout={handleMouseOut}
-			oncontextmenu={handleContextMenu}
-			onauxclick={handleAuxClick}
-			ontouchstart={handleTouchStart}
-			ontouchend={handleTouchEnd}
-			ontouchmove={handleTouchMove}
-			ontouchcancel={handleTouchCancel}
-			onpointerdown={handlePointerDown}
-			onpointerup={handlePointerUp}
-			onpointerenter={handlePointerEnter}
-			onpointerleave={handlePointerLeave}
-			onpointermove={handlePointerMove}
-			onpointercancel={handlePointerCancel}
-			onscroll={handleScroll}
-			{...restProps}
-		></textarea>
-	</div>
+	<textarea
+		{id}
+		{name}
+		bind:value
+		bind:this={textareaRef}
+		{rows}
+		{placeholder}
+		{disabled}
+		{readonly}
+		{required}
+		{maxlength}
+		aria-label={ariaLabel}
+		{tabindex}
+		{autocomplete}
+		{wrap}
+		{spellcheck}
+		{autocapitalize}
+		class:resizable
+		onchange={handleChange}
+		oninput={handleInput}
+		onfocus={handleFocus}
+		onblur={handleBlur}
+		onkeydown={handleKeydown}
+		onkeyup={handleKeyup}
+		onclick={handleClick}
+		onmousedown={handleMouseDown}
+		onmouseup={handleMouseUp}
+		onmouseenter={handleMouseEnter}
+		onmouseleave={handleMouseLeave}
+		onmouseover={handleMouseOver}
+		onmouseout={handleMouseOut}
+		oncontextmenu={handleContextMenu}
+		onauxclick={handleAuxClick}
+		ontouchstart={handleTouchStart}
+		ontouchend={handleTouchEnd}
+		ontouchmove={handleTouchMove}
+		ontouchcancel={handleTouchCancel}
+		onpointerdown={handlePointerDown}
+		onpointerup={handlePointerUp}
+		onpointerenter={handlePointerEnter}
+		onpointerleave={handlePointerLeave}
+		onpointermove={handlePointerMove}
+		onpointercancel={handlePointerCancel}
+		onscroll={handleScroll}
+		{...restProps}
+	></textarea>
 	{#if linkify}
-		<div
-			bind:this={linkTextRef}
-			class="textarea__link-text"
-			style:min-height={innerMinHeightStyle}
-			style:max-height={innerMaxHeightStyle}
-		>
+		<div bind:this={linkTextRef} class="textarea__link-text">
 			{@html linkHtmlValue}
 		</div>
 	{/if}
@@ -707,34 +617,27 @@
 		}
 	}
 
-	.textarea__wrapper {
+	/* 文字の層を 3 つ重ねる。どの層も、文字が並ぶ領域（位置・幅・折り返し）を一致させる。
+	   - display-text: 通常フロー。箱の content box に置き、箱の高さを決める
+	   - textarea / link-text: 箱の padding box を覆い、余白は padding: inherit で箱から受け取る。
+	     スクロールする要素が余白ごと箱を覆うので、スクロールバーは箱の端に出る */
+	textarea,
+	.textarea__link-text {
 		position: absolute;
 		top: 0;
 		left: 0;
 		width: 100%;
 		height: 100%;
 		padding: inherit;
-		border: none;
 		border-radius: inherit;
-		background-color: transparent;
-		font-size: inherit;
-		font-weight: inherit;
-		color: inherit;
-		line-height: inherit;
-		text-align: inherit;
 	}
 
 	/* =============================================
 	 * 基本コンポーネント
 	 * ============================================= */
 	textarea {
-		width: 100%;
-		height: auto;
-		min-height: var(--svelte-ui-textarea-line-height);
-		padding: 0;
 		background-color: transparent;
 		border: none;
-		border-radius: inherit;
 		font-family: inherit;
 		font-size: inherit;
 		font-weight: inherit;
@@ -761,9 +664,6 @@
 	.textarea__display-text,
 	.textarea__link-text {
 		display: block;
-		width: 100%;
-		min-height: var(--svelte-ui-textarea-line-height);
-		padding: 0;
 		background: transparent;
 		border: none;
 		font-size: inherit;
@@ -776,7 +676,8 @@
 		transition: none;
 		overflow-y: auto;
 		overflow-x: hidden;
-		max-height: 100%;
+		/* スクロールバーは見せないが、textarea と同じ幅を確保して折り返し位置を揃える */
+		scrollbar-color: transparent transparent;
 		/* textarea の UA デフォルト(overflow-wrap: break-word)に合わせ、長い連続文字列の折り返し位置を一致させる */
 		overflow-wrap: break-word;
 
@@ -789,30 +690,18 @@
 		}
 	}
 
-	/* display-text: textarea の white-space: pre-wrap に合わせて空白・改行を同じルールで扱う */
+	/* textarea の white-space: pre-wrap に合わせて空白・改行を同じルールで扱う */
 	.textarea__display-text {
+		width: 100%;
+		min-height: var(--svelte-ui-textarea-line-height);
+		max-height: 100%;
+		padding: 0;
 		white-space: pre-wrap;
-		scrollbar-color: transparent transparent;
-	}
-
-	/* link-text: 絶対配置オーバーレイ。pre-wrap で textarea と空白・改行を同じルールで扱う */
-	.textarea__link-text {
-		white-space: pre-wrap;
-		scrollbar-width: none;
-
-		&::-webkit-scrollbar {
-			display: none;
-		}
 	}
 
 	/* クリック可能なリンク用オーバーレイ */
 	.textarea__link-text {
-		position: absolute;
-		top: 0;
-		left: 0;
-		width: 100%;
-		height: 100%;
-		padding: inherit;
+		white-space: pre-wrap;
 		pointer-events: none;
 		z-index: 1;
 	}
@@ -822,14 +711,13 @@
 		padding-right: 4px;
 	}
 
-	/* ルートの実際の padding は継承させ、追加のボタン領域だけ内側に確保する */
+	/* 残りのボタンの列は、どの文字の層にも右の透明な border として確保する。
+	   textarea / link-text の padding は箱から受け取るため、そこに足し合わせることができない。
+	   border はスクロール領域の外になるので、スクロールバーはボタンの列の左に出る */
 	.textarea--clearable .textarea__display-text,
-	.textarea--clearable textarea {
-		padding-right: calc(var(--svelte-ui-textarea-icon-space) - 4px);
-	}
-
+	.textarea--clearable textarea,
 	.textarea--clearable .textarea__link-text {
-		width: calc(100% - var(--svelte-ui-textarea-icon-space) + 4px);
+		border-right: calc(var(--svelte-ui-textarea-icon-space) - 4px) solid transparent;
 	}
 
 	.textarea--clearable .textarea__clear-button {
@@ -852,9 +740,20 @@
 		width: 100%;
 	}
 
+	/* autoResize=false では中身で伸ばさない。display-text は rows / minHeight の高さ（min-height）に留め、
+	   箱に高さがあるとき（fullHeight・resizable でのドラッグ）はその高さまで広げる */
+	.textarea:not(.textarea--auto-resize) {
+		display: flex;
+		flex-direction: column;
+
+		.textarea__display-text {
+			height: 0;
+			flex-grow: 1;
+		}
+	}
+
 	.textarea--auto-resize {
 		textarea {
-			height: 100%;
 			/* maxHeight 未指定時は高さが常に中身と一致するため、丸め由来の 1px オーバーフローで
 			   スクロールバーが出ないよう hidden にする。maxHeight 指定時のみ auto でスクロールさせる */
 			overflow-y: hidden;
@@ -881,12 +780,13 @@
 		outline: none;
 	}
 
-	.textarea--focus-outline.textarea--focused .textarea__wrapper {
+	/* textarea は箱の padding box を覆うので、箱全体を囲む枠・背景を textarea に描ける */
+	.textarea--focus-outline.textarea--focused textarea {
 		outline: var(--svelte-ui-focus-outline-inner);
 		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
 	}
 
-	.textarea--focus-background.textarea--focused .textarea__wrapper {
+	.textarea--focus-background.textarea--focused textarea {
 		background: var(--svelte-ui-hover-overlay);
 	}
 
@@ -972,9 +872,7 @@
 		box-shadow: none;
 		border-radius: 0;
 
-		.textarea__display-text,
-		.textarea__link-text,
-		textarea {
+		.textarea__display-text {
 			min-height: auto;
 		}
 
