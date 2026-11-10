@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.84] - 2026-11-10
+
+### Fixed
+
+- **Textarea**: When the content overflows (with `maxHeight`, or with `autoResize={false}`), the scrollbar now appears at the edge of the field instead of inside its padding, where it could overlap the text.
+
 ## [0.0.83] - 2026-11-04
 
 ### Fixed
