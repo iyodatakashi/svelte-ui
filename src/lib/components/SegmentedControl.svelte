@@ -3,7 +3,8 @@
 <script lang="ts">
 	import Icon from './Icon.svelte';
 	import type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from '$lib/types/icon';
-	import type { SegmentedControlItem } from '$lib/types/segmentedControlItem';
+	import type { SegmentedControlOption } from '$lib/types/segmentedControlOption';
+	import type { OptionValue } from '$lib/types/options';
 	import type {
 		FocusHandler,
 		KeyboardHandler,
@@ -47,10 +48,10 @@
 		| 'onpointercancel'
 	> & {
 		// 基本プロパティ
-		/** `{ label, value, icon?, disabled? }[]` */
-		items: SegmentedControlItem[];
+		/** `{ label, value, icon?, disabled?, ariaLabel? }[]` */
+		options: SegmentedControlOption[];
 		/** Currently selected value. Supports `bind:value`. */
-		value: string;
+		value: OptionValue;
 
 		// HTML属性系
 		id?: string;
@@ -81,7 +82,7 @@
 		reducedMotion?: boolean;
 
 		// 入力イベント
-		onchange?: BivariantValueHandler<string>;
+		onchange?: BivariantValueHandler<OptionValue>;
 
 		// フォーカスイベント
 		onfocus?: FocusHandler;
@@ -119,8 +120,8 @@
 
 	let {
 		// 基本プロパティ
-		items = [],
-		value = $bindable(''),
+		options = [],
+		value = $bindable(),
 
 		// HTML属性系
 		id,
@@ -190,13 +191,13 @@
 	// =========================================================================
 	// Methods
 	// =========================================================================
-	const handleChange = (item: SegmentedControlItem, event: Event) => {
-		if (disabled || item.disabled) return;
+	const handleChange = (option: SegmentedControlOption, event: Event) => {
+		if (disabled || option.disabled) return;
 
 		const target = event.target as HTMLInputElement;
 		if (target.checked) {
-			value = item.value;
-			onchange(item.value);
+			value = option.value;
+			onchange(option.value);
 		}
 	};
 
@@ -209,7 +210,7 @@
 	};
 
 	const handleKeydown = (event: KeyboardEvent) => {
-		if (disabled || items.length === 0) {
+		if (disabled || options.length === 0) {
 			onkeydown(event);
 			return;
 		}
@@ -233,15 +234,15 @@
 				if (event.key === 'ArrowUp' || event.key === 'ArrowLeft') {
 					// 前の有効なアイテムを探す
 					for (let i = currentIndex - 1; i >= 0; i--) {
-						if (!items[i]?.disabled && !radioInputs[i].disabled) {
+						if (!options[i]?.disabled && !radioInputs[i].disabled) {
 							nextIndex = i;
 							break;
 						}
 					}
 					// 見つからなければ最後の有効なアイテムへ
 					if (nextIndex === undefined) {
-						for (let i = items.length - 1; i > currentIndex; i--) {
-							if (!items[i]?.disabled && !radioInputs[i].disabled) {
+						for (let i = options.length - 1; i > currentIndex; i--) {
+							if (!options[i]?.disabled && !radioInputs[i].disabled) {
 								nextIndex = i;
 								break;
 							}
@@ -249,8 +250,8 @@
 					}
 				} else {
 					// 次の有効なアイテムを探す
-					for (let i = currentIndex + 1; i < items.length; i++) {
-						if (!items[i]?.disabled && !radioInputs[i].disabled) {
+					for (let i = currentIndex + 1; i < options.length; i++) {
+						if (!options[i]?.disabled && !radioInputs[i].disabled) {
 							nextIndex = i;
 							break;
 						}
@@ -258,7 +259,7 @@
 					// 見つからなければ最初の有効なアイテムへ
 					if (nextIndex === undefined) {
 						for (let i = 0; i < currentIndex; i++) {
-							if (!items[i]?.disabled && !radioInputs[i].disabled) {
+							if (!options[i]?.disabled && !radioInputs[i].disabled) {
 								nextIndex = i;
 								break;
 							}
@@ -279,8 +280,8 @@
 			const radioInputs = document.querySelectorAll(
 				`input[type="radio"][name="${name}"]`
 			) as NodeListOf<HTMLInputElement>;
-			for (let i = 0; i < items.length; i++) {
-				if (!items[i]?.disabled && !radioInputs[i].disabled) {
+			for (let i = 0; i < options.length; i++) {
+				if (!options[i]?.disabled && !radioInputs[i].disabled) {
 					radioInputs[i].focus();
 					radioInputs[i].click();
 					break;
@@ -291,8 +292,8 @@
 			const radioInputs = document.querySelectorAll(
 				`input[type="radio"][name="${name}"]`
 			) as NodeListOf<HTMLInputElement>;
-			for (let i = items.length - 1; i >= 0; i--) {
-				if (!items[i]?.disabled && !radioInputs[i].disabled) {
+			for (let i = options.length - 1; i >= 0; i--) {
+				if (!options[i]?.disabled && !radioInputs[i].disabled) {
 					radioInputs[i].focus();
 					radioInputs[i].click();
 					break;
@@ -436,20 +437,20 @@
 	data-testid="segmented-control"
 	{...restProps}
 >
-	{#each items as item, index}
-		{@const isSelected = value === item.value}
-		{@const isDisabled = disabled || item.disabled}
+	{#each options as option, index}
+		{@const isSelected = value === option.value}
+		{@const isDisabled = disabled || option.disabled}
 		{@const inputId = `${name}-${index}`}
 		<div class="segmented-control__item">
 			<input
 				type="radio"
 				id={inputId}
 				{name}
-				value={item.value}
+				value={option.value}
 				checked={isSelected}
 				disabled={isDisabled}
 				class="segmented-control__input"
-				onchange={(e) => handleChange(item, e)}
+				onchange={(e) => handleChange(option, e)}
 				onfocus={handleFocus}
 				onblur={handleBlur}
 				onkeydown={handleKeydown}
@@ -474,17 +475,17 @@
 				onpointermove={handlePointerMove}
 				onpointercancel={handlePointerCancel}
 				data-testid="segmented-control-input"
-				data-value={item.value}
+				data-value={option.value}
 			/>
 			<label
 				for={inputId}
 				class="segmented-control__label"
 				class:segmented-control__label--selected={isSelected}
 				class:segmented-control__label--first={index === 0}
-				class:segmented-control__label--last={index === items.length - 1}
-				aria-label={item.ariaLabel || item.label || undefined}
+				class:segmented-control__label--last={index === options.length - 1}
+				aria-label={option.ariaLabel || option.label || undefined}
 			>
-				{#if item.icon}
+				{#if option.icon}
 					<span class="segmented-control__icon">
 						<Icon
 							filled={iconFilled || isSelected}
@@ -493,12 +494,12 @@
 							opticalSize={resolvedIconSize}
 							variant={iconVariant}
 						>
-							{item.icon}
+							{option.icon}
 						</Icon>
 					</span>
 				{/if}
-				{#if item.label}
-					<span class="segmented-control__label-text">{item.label}</span>
+				{#if option.label}
+					<span class="segmented-control__label-text">{option.label}</span>
 				{/if}
 			</label>
 		</div>

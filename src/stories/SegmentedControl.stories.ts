@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import SegmentedControl from '../lib/components/SegmentedControl.svelte';
-import type { SegmentedControlItem } from '../lib/types/segmentedControlItem';
 
 const meta = {
 	title: 'UI/SegmentedControl',
@@ -20,9 +19,9 @@ const meta = {
 		props: args
 	}),
 	argTypes: {
-		items: {
+		options: {
 			control: 'object',
-			description: 'Array of items for the segmented control'
+			description: 'Array of options for the segmented control'
 		},
 		value: {
 			control: 'text',
@@ -104,7 +103,7 @@ type Story = StoryObj<typeof meta>;
 // Basic text only
 export const Basic: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'リスト', value: 'list' },
 			{ label: 'グリッド', value: 'grid' },
 			{ label: '詳細', value: 'detail' }
@@ -117,7 +116,7 @@ export const Basic: Story = {
 // With icons
 export const WithIcons: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'リスト', value: 'list', icon: 'view_list' },
 			{ label: 'グリッド', value: 'grid', icon: 'grid_view' },
 			{ label: '詳細', value: 'detail', icon: 'view_agenda' }
@@ -130,7 +129,7 @@ export const WithIcons: Story = {
 // Icons only (no labels)
 export const IconsOnly: Story = {
 	args: {
-		items: [
+		options: [
 			{ value: 'list', icon: 'view_list', ariaLabel: 'リスト表示' },
 			{ value: 'grid', icon: 'grid_view', ariaLabel: 'グリッド表示' },
 			{ value: 'detail', icon: 'view_agenda', ariaLabel: '詳細表示' }
@@ -143,7 +142,7 @@ export const IconsOnly: Story = {
 // Size variants
 export const Small: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: '日', value: 'day' },
 			{ label: '週', value: 'week' },
 			{ label: '月', value: 'month' }
@@ -156,7 +155,7 @@ export const Small: Story = {
 
 export const Large: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: '日', value: 'day' },
 			{ label: '週', value: 'week' },
 			{ label: '月', value: 'month' }
@@ -170,7 +169,7 @@ export const Large: Story = {
 // Full width
 export const FullWidth: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'すべて', value: 'all' },
 			{ label: 'アクティブ', value: 'active' },
 			{ label: '完了', value: 'completed' }
@@ -184,7 +183,7 @@ export const FullWidth: Story = {
 // Rounded
 export const Rounded: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: '日', value: 'day' },
 			{ label: '週', value: 'week' },
 			{ label: '月', value: 'month' }
@@ -198,7 +197,7 @@ export const Rounded: Story = {
 // Custom color
 export const CustomColor: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'リスト', value: 'list' },
 			{ label: 'グリッド', value: 'grid' },
 			{ label: '詳細', value: 'detail' }
@@ -212,7 +211,7 @@ export const CustomColor: Story = {
 // Disabled
 export const Disabled: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'リスト', value: 'list' },
 			{ label: 'グリッド', value: 'grid' },
 			{ label: '詳細', value: 'detail' }
@@ -223,10 +222,10 @@ export const Disabled: Story = {
 	}
 };
 
-// With disabled items
+// With disabled options
 export const WithDisabledItems: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'リスト', value: 'list' },
 			{ label: 'グリッド', value: 'grid', disabled: true },
 			{ label: '詳細', value: 'detail' }
@@ -236,10 +235,10 @@ export const WithDisabledItems: Story = {
 	}
 };
 
-// Many items
+// Many options
 export const ManyItems: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'オプション1', value: 'opt1' },
 			{ label: 'オプション2', value: 'opt2' },
 			{ label: 'オプション3', value: 'opt3' },
@@ -252,10 +251,10 @@ export const ManyItems: Story = {
 	}
 };
 
-// Two items
+// Two options
 export const TwoItems: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'オン', value: 'on' },
 			{ label: 'オフ', value: 'off' }
 		],
@@ -267,7 +266,7 @@ export const TwoItems: Story = {
 // Accessibility example
 export const AccessibilityExample: Story = {
 	args: {
-		items: [
+		options: [
 			{ label: 'リスト', value: 'list', icon: 'view_list' },
 			{ label: 'グリッド', value: 'grid', icon: 'grid_view' },
 			{ label: '詳細', value: 'detail', icon: 'view_agenda' }

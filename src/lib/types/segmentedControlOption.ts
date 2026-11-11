@@ -1,15 +1,12 @@
-export type SegmentedControlItem =
-	| {
-			label: string; // テキストラベルがある場合
-			value: string;
+import type { Option } from './options';
+
+export type SegmentedControlOption =
+	| (Option & {
 			icon?: string;
-			disabled?: boolean;
 			ariaLabel?: string;
-	  }
-	| {
+	  })
+	| (Omit<Option, 'label'> & {
 			label?: never; // アイコンのみの場合はlabelを省略
-			value: string;
 			icon: string; // 必須（アイコンのみの場合）
-			disabled?: boolean;
 			ariaLabel: string; // 必須（アイコンのみの場合）
-	  };
+	  });
