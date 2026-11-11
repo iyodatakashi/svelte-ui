@@ -40,9 +40,9 @@
 		// スタイル/レイアウト
 		/** Visual style for the selected item. */
 		selectedVariant?: NavItemSelectedVariant;
-		/** Custom CSS color for item labels (underline variant). */
+		/** Custom CSS color for item labels. */
 		textColor?: string;
-		/** Custom CSS color for the selected item label (underline variant). */
+		/** Custom CSS color for the selected item label. */
 		selectedTextColor?: string;
 		/** Custom CSS color for the selected underline bar (underline variant). */
 		selectedBarColor?: string;

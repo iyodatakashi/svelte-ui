@@ -37,9 +37,9 @@
 		/** Show chevron icon on parent items. @default true */
 		chevron?: boolean;
 		selectedVariant?: NavItemSelectedVariant;
-		/** Custom CSS color for the item label (underline variant). */
+		/** Custom CSS color for the item label. */
 		textColor?: string;
-		/** Custom CSS color for the selected item label (underline variant). */
+		/** Custom CSS color for the selected item label. */
 		selectedTextColor?: string;
 		/** Custom CSS color for the selected underline bar (underline variant). */
 		selectedBarColor?: string;
@@ -190,8 +190,8 @@
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
-		style:--internal-nav-item-underline-text-color={textColor}
-		style:--internal-nav-item-underline-selected-text-color={selectedTextColor}
+		style:--internal-nav-item-text-color={textColor}
+		style:--internal-nav-item-selected-text-color={selectedTextColor}
 		style:--internal-nav-item-underline-bar-color={selectedBarColor}
 		style={customStyle}
 		aria-disabled="true"
@@ -222,8 +222,8 @@
 	<div
 		class="nav-item__group nav-item__group--{variant}"
 		class:nav-item__group--open={childrenVariant === 'expanded' || isChildrenVisible}
-		style:--internal-nav-item-underline-text-color={textColor}
-		style:--internal-nav-item-underline-selected-text-color={selectedTextColor}
+		style:--internal-nav-item-text-color={textColor}
+		style:--internal-nav-item-selected-text-color={selectedTextColor}
 		style:--internal-nav-item-underline-bar-color={selectedBarColor}
 	>
 		<a
@@ -333,8 +333,8 @@
 		class:nav-item--style-filled={isSelected && resolvedSelectedStyle === 'filled'}
 		class:nav-item--style-tonal={isSelected && resolvedSelectedStyle === 'tonal'}
 		class:nav-item--style-underline={resolvedSelectedStyle === 'underline'}
-		style:--internal-nav-item-underline-text-color={textColor}
-		style:--internal-nav-item-underline-selected-text-color={selectedTextColor}
+		style:--internal-nav-item-text-color={textColor}
+		style:--internal-nav-item-selected-text-color={selectedTextColor}
 		style:--internal-nav-item-underline-bar-color={selectedBarColor}
 		style={customStyle}
 		aria-current={isSelected ? 'page' : undefined}
@@ -373,7 +373,7 @@
 		align-items: center;
 		gap: var(--svelte-ui-nav-item-icon-gap);
 		position: relative;
-		color: var(--svelte-ui-nav-item-text-color);
+		color: var(--internal-nav-item-text-color, var(--svelte-ui-nav-item-text-color));
 		white-space: nowrap;
 		text-decoration: none;
 		cursor: pointer;
@@ -464,10 +464,7 @@
 		padding: var(--svelte-ui-nav-item-padding-y) var(--svelte-ui-nav-item-padding-x);
 		justify-content: center;
 		border-radius: 0;
-		color: var(
-			--internal-nav-item-underline-text-color,
-			var(--svelte-ui-nav-item-underline-text-color)
-		);
+		color: var(--internal-nav-item-text-color, var(--svelte-ui-nav-item-underline-text-color));
 	}
 
 	.nav-item--horizontal::after {
@@ -485,7 +482,7 @@
 
 		.nav-item--horizontal.nav-item--style-underline:hover {
 			color: var(
-				--internal-nav-item-underline-selected-text-color,
+				--internal-nav-item-selected-text-color,
 				var(--svelte-ui-nav-item-underline-selected-text-color)
 			);
 		}
@@ -501,25 +498,34 @@
 
 	// color: テキスト・アイコンを primary-color に
 	.nav-item--style-color {
-		color: var(--svelte-ui-nav-item-selected-text-color);
+		color: var(
+			--internal-nav-item-selected-text-color,
+			var(--svelte-ui-nav-item-selected-text-color)
+		);
 	}
 
 	// filled: 背景を primary-color に
 	.nav-item--style-filled {
 		background-color: var(--svelte-ui-primary-color);
-		color: var(--svelte-ui-nav-item-filled-text-color);
+		color: var(
+			--internal-nav-item-selected-text-color,
+			var(--svelte-ui-nav-item-filled-text-color)
+		);
 	}
 
 	// tonal: 背景を primary-color の薄いティントに
 	.nav-item--style-tonal {
 		background-color: var(--svelte-ui-nav-item-tonal-bg-color);
-		color: var(--svelte-ui-nav-item-selected-text-color);
+		color: var(
+			--internal-nav-item-selected-text-color,
+			var(--svelte-ui-nav-item-selected-text-color)
+		);
 	}
 
 	// underline: 選択時のテキストカラー変更
 	.nav-item--horizontal.nav-item--style-underline.nav-item--selected {
 		color: var(
-			--internal-nav-item-underline-selected-text-color,
+			--internal-nav-item-selected-text-color,
 			var(--svelte-ui-nav-item-underline-selected-text-color)
 		);
 	}
