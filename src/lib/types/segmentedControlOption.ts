@@ -11,5 +11,5 @@ export type SegmentedControlOption =
 			ariaLabel: string; // 必須（アイコンのみの場合）
 	  });
 
-/** @deprecated Use `SegmentedControlOption` instead. */
+/** @deprecated Use `SegmentedControlOption` instead. Remove in 0.0.100. */
 export type SegmentedControlItem = SegmentedControlOption;

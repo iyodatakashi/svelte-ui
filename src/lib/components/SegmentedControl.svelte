@@ -50,7 +50,7 @@
 		// 基本プロパティ
 		/** `{ label, value, icon?, disabled?, ariaLabel? }[]` */
 		options?: SegmentedControlOption[];
-		/** @deprecated Use `options` instead. */
+		/** @deprecated Use `options` instead. Remove in 0.0.100. */
 		items?: SegmentedControlOption[];
 		/** Currently selected value. Supports `bind:value`. */
 		value: OptionValue;
