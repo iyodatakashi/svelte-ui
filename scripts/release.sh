@@ -19,6 +19,18 @@ if [ "$(git log -1 --format=%s)" != "ver$version" ]; then
 	exit 1
 fi
 
+overdue=$({ grep -rnoE "Remove in [0-9]+\.[0-9]+\.[0-9]+" src/lib || true; } | while IFS= read -r line; do
+	target=${line##* }
+	if [ "$(printf '%s\n%s\n' "$target" "$version" | sort -V | head -1)" = "$target" ]; then
+		echo "$line"
+	fi
+done)
+if [ -n "$overdue" ]; then
+	echo "削除予定のバージョンに達した非推奨の API があります" >&2
+	echo "$overdue" >&2
+	exit 1
+fi
+
 if ! git merge-base --is-ancestor main develop; then
 	echo "main を develop に早送りできません" >&2
 	exit 1
