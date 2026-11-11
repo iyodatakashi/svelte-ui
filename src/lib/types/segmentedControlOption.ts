@@ -10,3 +10,6 @@ export type SegmentedControlOption =
 			icon: string; // 必須（アイコンのみの場合）
 			ariaLabel: string; // 必須（アイコンのみの場合）
 	  });
+
+/** @deprecated Use `SegmentedControlOption` instead. */
+export type SegmentedControlItem = SegmentedControlOption;

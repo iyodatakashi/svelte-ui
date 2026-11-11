@@ -49,7 +49,9 @@
 	> & {
 		// 基本プロパティ
 		/** `{ label, value, icon?, disabled?, ariaLabel? }[]` */
-		options: SegmentedControlOption[];
+		options?: SegmentedControlOption[];
+		/** @deprecated Use `options` instead. */
+		items?: SegmentedControlOption[];
 		/** Currently selected value. Supports `bind:value`. */
 		value: OptionValue;
 
@@ -120,7 +122,8 @@
 
 	let {
 		// 基本プロパティ
-		options = [],
+		options: optionsProp,
+		items: itemsAlias,
 		value = $bindable(),
 
 		// HTML属性系
@@ -187,6 +190,8 @@
 		// その他
 		...restProps
 	}: SegmentedControlProps = $props();
+
+	const options = $derived<SegmentedControlOption[]>(optionsProp ?? itemsAlias ?? []);
 
 	// =========================================================================
 	// Methods

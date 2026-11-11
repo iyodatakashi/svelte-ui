@@ -112,7 +112,7 @@ export type {
 // Types
 export type { MenuItem } from './types/menuItem';
 export type { StepItem } from './types/stepItem';
-export type { SegmentedControlOption } from './types/segmentedControlOption';
+export type { SegmentedControlOption, SegmentedControlItem } from './types/segmentedControlOption';
 export type { Option, OptionValue } from './types/options';
 export type { IconVariant, IconWeight, IconGrade, IconOpticalSize } from './types/icon';
 export type {
