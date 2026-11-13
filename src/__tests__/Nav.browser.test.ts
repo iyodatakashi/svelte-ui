@@ -41,3 +41,57 @@ test('items（エイリアス）でも指定でき、両方指定時は navItems
 	expect(both.container.textContent).toContain('正式');
 	expect(both.container.textContent).not.toContain('Home');
 });
+
+const colorCases = [
+	...(['vertical', 'horizontal', 'mobile'] as const).flatMap((variant) =>
+		(['color', 'tonal', 'filled'] as const).map((selectedVariant) => ({ variant, selectedVariant }))
+	),
+	{ variant: 'horizontal', selectedVariant: 'underline' } as const
+];
+
+test.each(colorCases)(
+	'textColor と selectedTextColor が $variant / $selectedVariant で効く',
+	async ({ variant, selectedVariant }) => {
+		const screen = render(ComponentWrapper, {
+			component: Nav,
+			navItems: createNavItems(),
+			variant,
+			selectedVariant,
+			currentPath: '/about',
+			textColor: 'rgb(1, 2, 3)',
+			selectedTextColor: 'rgb(4, 5, 6)',
+			ariaLabel: 'Main navigation'
+		});
+		const items = screen.container.querySelectorAll('.nav-item');
+		const selected = screen.container.querySelector('.nav-item--selected');
+		const unselected = Array.from(items).find((item) => item !== selected);
+		expect(selected).not.toBeNull();
+		expect(getComputedStyle(unselected!).color).toBe('rgb(1, 2, 3)');
+		expect(getComputedStyle(selected!).color).toBe('rgb(4, 5, 6)');
+	}
+);
+
+test('textColor と selectedTextColor が子アイテムにも効く', async () => {
+	const screen = render(ComponentWrapper, {
+		component: Nav,
+		navItems: [
+			{
+				label: 'Parent',
+				href: '/parent',
+				children: [
+					{ label: 'A', href: '/parent/a' },
+					{ label: 'B', href: '/parent/b' }
+				]
+			}
+		],
+		variant: 'vertical',
+		childrenVariant: 'expanded',
+		currentPath: '/parent/a',
+		textColor: 'rgb(1, 2, 3)',
+		selectedTextColor: 'rgb(4, 5, 6)',
+		ariaLabel: 'Main navigation'
+	});
+	const [childA, childB] = screen.container.querySelectorAll('.nav-item__children .nav-item');
+	expect(getComputedStyle(childA).color).toBe('rgb(4, 5, 6)');
+	expect(getComputedStyle(childB).color).toBe('rgb(1, 2, 3)');
+});
