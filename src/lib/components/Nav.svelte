@@ -12,14 +12,24 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	export type NavProps = {
+	export type NavProps = (
+		| {
+				/** Layout variant. @default 'horizontal' */
+				variant?: 'horizontal';
+				/** Visual style for the selected item. */
+				selectedVariant?: NavItemSelectedVariant;
+		  }
+		| {
+				variant: Exclude<NavVariant, 'horizontal'>;
+				/** Visual style for the selected item. `underline` is only available with `horizontal`. */
+				selectedVariant?: Exclude<NavItemSelectedVariant, 'underline'>;
+		  }
+	) & {
 		// 基本プロパティ
 		/** `{ label, href, icon?, children?, disabled? }[]` */
 		navItems?: MenuItem[];
 		/** `navItems` のエイリアス。両方指定された場合は `navItems` が優先。 */
 		items?: MenuItem[];
-		/** Layout variant. @default 'horizontal' */
-		variant?: NavVariant;
 		/** Prepended to each item's href for active-state matching. */
 		pathPrefix?: string;
 		/** Custom function to determine if an item is active. */
@@ -38,8 +48,6 @@
 		iconVariant?: IconVariant;
 
 		// スタイル/レイアウト
-		/** Visual style for the selected item. */
-		selectedVariant?: NavItemSelectedVariant;
 		/** Custom CSS color for item labels. */
 		textColor?: string;
 		/** Custom CSS color for the selected item label. */
