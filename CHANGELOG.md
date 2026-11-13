@@ -5,6 +5,22 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.85] - 2026-11-13
+
+### Changed
+
+- **SegmentedControl**: The options are now passed as `options`, the same as `RadioGroup`, so you can switch between the two without rewriting the data. The option type is now `SegmentedControlOption`, built on `Option`. `value` and `onchange` now use `OptionValue`, so values can also be numbers or booleans.
+- **SegmentedControl**: `value` now defaults to `undefined` instead of `''`.
+- **Nav**: `selectedVariant="underline"` is now only accepted with `variant="horizontal"` (the default). With `vertical` or `mobile` it showed no selected state, so it is now a type error.
+
+### Deprecated
+
+- **SegmentedControl**: `items` and the `SegmentedControlItem` type still work, but will be removed in 0.0.100. Use `options` and `SegmentedControlOption` instead.
+
+### Fixed
+
+- **Nav**: `textColor` and `selectedTextColor` now apply to every `variant` and `selectedVariant`. Before, they only took effect with `variant="horizontal"` and `selectedVariant="underline"`.
+
 ## [0.0.84] - 2026-11-10
 
 ### Fixed
