@@ -46,6 +46,18 @@ const meta = {
 			options: ['color', 'filled', 'tonal', 'underline'],
 			description: 'Visual style for the selected item'
 		},
+		textColor: {
+			control: 'color',
+			description: 'Custom text color for items'
+		},
+		selectedTextColor: {
+			control: 'color',
+			description: 'Custom text color for the selected item'
+		},
+		selectedBarColor: {
+			control: 'color',
+			description: 'Custom color for the selected underline bar (underline variant)'
+		},
 		chevron: {
 			control: 'boolean',
 			description: 'Show chevron icon on parent items. @default true'
@@ -202,6 +214,26 @@ export const VerticalWithDisabled: Story = {
 		ariaLabel: 'Vertical navigation'
 	},
 	parameters: { layout: 'padded' }
+};
+
+export const CustomColors: Story = {
+	args: {
+		variant: 'vertical',
+		navItems: baseItems,
+		currentPath: '/dashboard',
+		textColor: '#546e7a',
+		selectedTextColor: '#d81b60',
+		ariaLabel: 'Vertical navigation'
+	},
+	parameters: {
+		layout: 'padded',
+		docs: {
+			description: {
+				story:
+					'`textColor` and `selectedTextColor` set the item colors. They apply to every `variant` and `selectedVariant`.'
+			}
+		}
+	}
 };
 
 // =========================================================================
