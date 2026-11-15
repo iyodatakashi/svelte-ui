@@ -63,6 +63,8 @@
 		size?: ButtonSize;
 		/** Custom CSS color value. Overrides the theme color. */
 		color?: string;
+		/** Custom CSS color for the label and icons. Takes precedence over `color` for the text. */
+		textColor?: string;
 		fullWidth?: boolean;
 		/** Content alignment. Useful with `fullWidth`. @default 'center' */
 		align?: 'left' | 'center' | 'right';
@@ -141,6 +143,7 @@
 		variant = 'ghost',
 		size = 'medium',
 		color,
+		textColor,
 		fullWidth = false,
 		align = 'center',
 		minWidth = 0,
@@ -211,10 +214,10 @@
 	});
 
 	const textColors = $derived({
-		filled: 'var(--svelte-ui-button-text-filled)',
-		outlined: color ?? 'var(--svelte-ui-button-text-outlined)',
-		ghost: color ?? 'var(--svelte-ui-button-text-ghost)',
-		glass: color ?? 'var(--svelte-ui-button-text-glass)'
+		filled: textColor ?? 'var(--svelte-ui-button-text-filled)',
+		outlined: textColor ?? color ?? 'var(--svelte-ui-button-text-outlined)',
+		ghost: textColor ?? color ?? 'var(--svelte-ui-button-text-ghost)',
+		glass: textColor ?? color ?? 'var(--svelte-ui-button-text-glass)'
 	});
 
 	// =========================================================================

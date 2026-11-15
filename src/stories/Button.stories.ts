@@ -103,6 +103,10 @@ const meta = {
 			control: 'color',
 			description: 'Button color'
 		},
+		textColor: {
+			control: 'color',
+			description: 'Label and icon color'
+		},
 		customStyle: {
 			control: 'text',
 			description: 'Custom CSS styles'
@@ -348,6 +352,14 @@ export const CustomColor: Story = {
 	args: {
 		color: '#e91e63',
 		children: createChildrenSnippet('Custom Color')
+	}
+};
+
+export const CustomTextColor: Story = {
+	args: {
+		variant: 'filled',
+		textColor: '#ffeb3b',
+		children: createChildrenSnippet('Custom Text Color')
 	}
 };
 

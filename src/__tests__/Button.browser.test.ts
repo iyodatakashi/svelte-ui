@@ -146,7 +146,7 @@ test('Button click event works correctly', async () => {
 	// Use element().click() instead of button.click() to ensure event is fired
 	(button.element() as HTMLButtonElement).click();
 	// Wait for event to propagate
-	await new Promise(resolve => setTimeout(resolve, 50));
+	await new Promise((resolve) => setTimeout(resolve, 50));
 	expect(clicked).toBe(true);
 });
 
@@ -334,3 +334,21 @@ test('Button multiple properties change reactively', async () => {
 		.element(button)
 		.toHaveAttribute('style', expect.stringContaining('min-width: 200px'));
 });
+
+test.each(['filled', 'outlined', 'ghost', 'glass'] as const)(
+	'textColor が %s の文字色を変え、filled の背景は変えない',
+	async (variant) => {
+		const screen = render(ComponentWrapper, {
+			component: Button,
+			children: 'Text',
+			variant,
+			color: 'rgb(1, 2, 3)',
+			textColor: 'rgb(4, 5, 6)'
+		});
+		const button = screen.getByRole('button').element();
+		expect(getComputedStyle(button).color).toBe('rgb(4, 5, 6)');
+		if (variant === 'filled') {
+			expect(getComputedStyle(button).backgroundColor).toBe('rgb(1, 2, 3)');
+		}
+	}
+);
