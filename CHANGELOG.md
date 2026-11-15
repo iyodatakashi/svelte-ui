@@ -5,6 +5,12 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.86] - 2026-11-15
+
+### Added
+
+- **Button**: New `textColor` prop to change only the label and icon color, in every `variant`. With `filled`, the background stays the theme color (or `color`) while the text uses `textColor`. With the other variants, `textColor` takes precedence over `color` for the text.
+
 ## [0.0.85] - 2026-11-13
 
 ### Changed
