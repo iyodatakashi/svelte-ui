@@ -622,11 +622,6 @@
 		}
 
 		.select__dropdown-icon {
-			/* 複数行になりうるので、箱の中央ではなく最初の行にそろえる */
-			bottom: auto;
-			box-sizing: content-box;
-			height: 1lh;
-			padding-bottom: 0;
 			right: 0;
 		}
 	}
