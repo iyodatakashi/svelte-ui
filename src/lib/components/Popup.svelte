@@ -215,7 +215,7 @@
 
 	const getBestPosition = (
 		anchorRect: DOMRect,
-		popupRect: DOMRect,
+		popupSize: { width: number; height: number },
 		viewport: { width: number; height: number },
 		margin: number
 	): typeof position => {
@@ -224,8 +224,8 @@
 		const spaceLeft = anchorRect.left;
 		const spaceRight = viewport.width - anchorRect.right;
 
-		const needHeight = popupRect.height + margin;
-		const needWidth = popupRect.width + margin;
+		const needHeight = popupSize.height + margin;
+		const needWidth = popupSize.width + margin;
 
 		const candidates = [
 			{ position: 'bottom-center' as const, score: spaceBelow >= needHeight ? spaceBelow : 0 },
@@ -244,7 +244,7 @@
 	const calculatePosition = (
 		pos: typeof position,
 		anchorRect: DOMRect,
-		popupRect: DOMRect,
+		popupSize: { width: number; height: number },
 		viewport: { width: number; height: number },
 		margin: number
 	): { x: number; y: number } => {
@@ -254,20 +254,20 @@
 		switch (pos) {
 			case 'top':
 			case 'top-center':
-				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
-				y = anchorRect.top - popupRect.height - margin;
+				x = anchorRect.left + (anchorRect.width - popupSize.width) / 2;
+				y = anchorRect.top - popupSize.height - margin;
 				break;
 			case 'top-left':
 				x = anchorRect.left;
-				y = anchorRect.top - popupRect.height - margin;
+				y = anchorRect.top - popupSize.height - margin;
 				break;
 			case 'top-right':
-				x = anchorRect.right - popupRect.width;
-				y = anchorRect.top - popupRect.height - margin;
+				x = anchorRect.right - popupSize.width;
+				y = anchorRect.top - popupSize.height - margin;
 				break;
 			case 'bottom':
 			case 'bottom-center':
-				x = anchorRect.left + (anchorRect.width - popupRect.width) / 2;
+				x = anchorRect.left + (anchorRect.width - popupSize.width) / 2;
 				y = anchorRect.bottom + margin;
 				break;
 			case 'bottom-left':
@@ -275,26 +275,26 @@
 				y = anchorRect.bottom + margin;
 				break;
 			case 'bottom-right':
-				x = anchorRect.right - popupRect.width;
+				x = anchorRect.right - popupSize.width;
 				y = anchorRect.bottom + margin;
 				break;
 			case 'left':
 			case 'left-center':
-				x = anchorRect.left - popupRect.width - margin;
-				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
+				x = anchorRect.left - popupSize.width - margin;
+				y = anchorRect.top + (anchorRect.height - popupSize.height) / 2;
 				break;
 			case 'left-top':
-				x = anchorRect.left - popupRect.width - margin;
+				x = anchorRect.left - popupSize.width - margin;
 				y = anchorRect.top;
 				break;
 			case 'left-bottom':
-				x = anchorRect.left - popupRect.width - margin;
-				y = anchorRect.bottom - popupRect.height;
+				x = anchorRect.left - popupSize.width - margin;
+				y = anchorRect.bottom - popupSize.height;
 				break;
 			case 'right':
 			case 'right-center':
 				x = anchorRect.right + margin;
-				y = anchorRect.top + (anchorRect.height - popupRect.height) / 2;
+				y = anchorRect.top + (anchorRect.height - popupSize.height) / 2;
 				break;
 			case 'right-top':
 				x = anchorRect.right + margin;
@@ -302,15 +302,15 @@
 				break;
 			case 'right-bottom':
 				x = anchorRect.right + margin;
-				y = anchorRect.bottom - popupRect.height;
+				y = anchorRect.bottom - popupSize.height;
 				break;
 		}
 
-		x = Math.max(margin, Math.min(x, viewport.width - popupRect.width - margin));
+		x = Math.max(margin, Math.min(x, viewport.width - popupSize.width - margin));
 
 		if (!enableAutoReposition) {
 			y = Math.max(margin, y);
-			if (y + popupRect.height + margin > viewport.height) {
+			if (y + popupSize.height + margin > viewport.height) {
 				const availableHeight = viewport.height - y - margin;
 				if (popupRef) {
 					popupRef.style.maxHeight = `${availableHeight}px`;
@@ -318,7 +318,7 @@
 				}
 			}
 		} else {
-			y = Math.max(margin, Math.min(y, viewport.height - popupRect.height - margin));
+			y = Math.max(margin, Math.min(y, viewport.height - popupSize.height - margin));
 		}
 
 		return { x, y };
@@ -327,7 +327,8 @@
 	const setPosition = (): void => {
 		if (anchorElement && popupRef) {
 			const anchorRect = anchorElement.getBoundingClientRect();
-			const popupRect = popupRef.getBoundingClientRect();
+			// 開くアニメーションの scale を含まない大きさで測る
+			const popupSize = { width: popupRef.offsetWidth, height: popupRef.offsetHeight };
 			const viewport = {
 				width: window.innerWidth,
 				height: window.innerHeight
@@ -336,10 +337,10 @@
 			let actualPosition = position;
 
 			if (position === 'auto') {
-				actualPosition = getBestPosition(anchorRect, popupRect, viewport, margin);
+				actualPosition = getBestPosition(anchorRect, popupSize, viewport, margin);
 			}
 
-			const coords = calculatePosition(actualPosition, anchorRect, popupRect, viewport, margin);
+			const coords = calculatePosition(actualPosition, anchorRect, popupSize, viewport, margin);
 
 			popupRef.style.setProperty('left', '0px', 'important');
 			popupRef.style.setProperty('top', '0px', 'important');
