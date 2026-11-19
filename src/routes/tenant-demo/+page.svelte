@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
 
@@ -213,14 +213,14 @@
 		<h2>🌐 Current Path Info</h2>
 		<div class="path-info">
 			<div class="path-item">
-				<strong>Full URL:</strong> <code>{$page.url.pathname}</code>
+				<strong>Full URL:</strong> <code>{page.url.pathname}</code>
 			</div>
 			<div class="path-item">
 				<strong>Path Prefix:</strong> <code>/tenant-demo</code>
 			</div>
 			<div class="path-item">
 				<strong>Normalized Path:</strong>
-				<code>{$page.url.pathname.replace('/tenant-demo', '') || '/'}</code>
+				<code>{page.url.pathname.replace('/tenant-demo', '') || '/'}</code>
 			</div>
 		</div>
 	</div>

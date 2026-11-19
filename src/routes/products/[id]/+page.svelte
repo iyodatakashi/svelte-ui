@@ -1,9 +1,9 @@
 <script>
 	import Tab from '$lib/components/Tab.svelte';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 
 	// パスパラメーターを取得
-	const productId = $page.params.id;
+	const productId = page.params.id;
 
 	const tabItems = [
 		{

@@ -1,7 +1,7 @@
 <script lang="ts">
 	import Tab from '$lib/components/Tab.svelte';
 	import type { MenuItem } from '$lib/types/menuItem';
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 	import { browser } from '$app/environment';
 	import { beforeNavigate, goto } from '$app/navigation';
 
@@ -30,7 +30,7 @@
 	];
 
 	// 現在のパスを安全に取得
-	$: currentPath = browser ? $page.url.pathname : '';
+	const currentPath = $derived(browser ? page.url.pathname : '');
 
 	// テナントプレフィックス
 	const tenantPrefix = '/tenant-demo';
@@ -41,7 +41,7 @@
 		if (!to?.url?.pathname) return;
 
 		const targetPath = to.url.pathname;
-		const currentPathname = $page.url.pathname;
+		const currentPathname = page.url.pathname;
 
 		// 現在のパスがテナント内にある場合のみ処理
 		if (currentPathname.startsWith(tenantPrefix)) {

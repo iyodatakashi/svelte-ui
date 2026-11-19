@@ -1,5 +1,5 @@
 <script lang="ts">
-	import { page } from '$app/stores';
+	import { page } from '$app/state';
 </script>
 
 <svelte:head>
@@ -16,7 +16,7 @@
 				<strong>Expected:</strong> Users tab should be selected
 			</div>
 			<div class="result-item">
-				<strong>Current URL:</strong> <code>{$page.url.pathname}</code>
+				<strong>Current URL:</strong> <code>{page.url.pathname}</code>
 			</div>
 			<div class="result-item">
 				<strong>Tab href:</strong> <code>/users</code>
