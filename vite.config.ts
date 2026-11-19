@@ -1,17 +1,23 @@
 import { sveltekit } from '@sveltejs/kit/vite';
-import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { defineConfig } from 'vite';
 import path from 'path';
-import { mockAppModules } from './vite-plugin-mock-app';
+import adapter from '@sveltejs/adapter-static';
+import { playwright } from '@vitest/browser-playwright';
+import { mockAppModules } from './vite-plugin-mock-app.js';
 
 export default defineConfig({
-	plugins: process.env.VITEST ? [mockAppModules(), svelte()] : [sveltekit()],
+	plugins: process.env.VITEST ? [mockAppModules(), svelte({ preprocess: vitePreprocess() })] : [sveltekit({
+				alias: { $lib: 'src/lib' },
+				adapter: adapter({ fallback: 'index.html' }),
+				preprocess: vitePreprocess()
+			})],
 	resolve: process.env.VITEST
 		? {
 				alias: {
-					'$app/navigation': path.resolve(__dirname, './src/__tests__/mocks/$app/navigation.ts'),
-					'$app/stores': path.resolve(__dirname, './src/__tests__/mocks/$app/stores.ts'),
-					'$app/environment': path.resolve(__dirname, './src/__tests__/mocks/$app/environment.ts')
+					'$app/navigation': path.resolve(import.meta.dirname, './src/__tests__/mocks/$app/navigation.ts'),
+					'$app/state': path.resolve(import.meta.dirname, './src/__tests__/mocks/$app/state.ts'),
+					'$app/environment': path.resolve(import.meta.dirname, './src/__tests__/mocks/$app/environment.ts')
 				}
 			}
 		: undefined,
@@ -20,10 +26,9 @@ export default defineConfig({
 			{
 				test: {
 					name: 'client',
-					environment: 'browser',
 					browser: {
 						enabled: true,
-						provider: 'playwright',
+						provider: playwright(),
 						instances: [{ browser: 'chromium' }]
 					},
 					include: ['src/**/*.browser.{test,spec}.{js,ts}', 'src/**/*.svelte.{test,spec}.{js,ts}'],

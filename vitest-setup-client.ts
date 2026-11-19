@@ -1,5 +1,4 @@
-/// <reference types="@vitest/browser/matchers" />
-/// <reference types="@vitest/browser/providers/playwright" />
+/// <reference types="vitest/browser" />
 
 // Register vitest-browser-svelte to inject render/cleanup on the page context
 import 'vitest-browser-svelte';

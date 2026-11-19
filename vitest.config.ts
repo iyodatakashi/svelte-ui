@@ -1,7 +1,8 @@
 import { defineConfig, defineProject } from 'vitest/config';
-import { svelte } from '@sveltejs/vite-plugin-svelte';
+import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { resolve } from 'node:path';
 import { mockAppModules } from './vite-plugin-mock-app';
+import { playwright } from '@vitest/browser-playwright';
 import { storybookTest } from '@storybook/addon-vitest/vitest-plugin';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
@@ -11,12 +12,12 @@ const dirname =
 const storybookConfigDir = path.join(dirname, '.storybook');
 
 export default defineConfig({
-	plugins: [mockAppModules(), svelte()],
+	plugins: [mockAppModules(), svelte({ preprocess: vitePreprocess() })],
 	resolve: {
 		alias: {
 			$lib: resolve(process.cwd(), 'src/lib'),
 			'$app/navigation': resolve(process.cwd(), 'src/__tests__/mocks/$app/navigation.ts'),
-			'$app/stores': resolve(process.cwd(), 'src/__tests__/mocks/$app/stores.ts'),
+			'$app/state': resolve(process.cwd(), 'src/__tests__/mocks/$app/state.ts'),
 			'$app/environment': resolve(process.cwd(), 'src/__tests__/mocks/$app/environment.ts')
 		}
 	},
@@ -37,10 +38,9 @@ export default defineConfig({
 				extends: true,
 				test: {
 					name: 'client',
-					environment: 'browser',
 					browser: {
 						enabled: true,
-						provider: 'playwright',
+						provider: playwright(),
 						instances: [{ browser: 'chromium' }]
 					},
 					include: ['src/**/*.browser.{test,spec}.{js,ts}', 'src/**/*.svelte.{test,spec}.{js,ts}'],
@@ -80,7 +80,7 @@ export default defineConfig({
 					// ブラウザモードで実行
 					browser: {
 						enabled: true,
-						provider: 'playwright',
+						provider: playwright(),
 						headless: true,
 						instances: [{ browser: 'chromium' }]
 					},
