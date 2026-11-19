@@ -9,10 +9,10 @@ const options: Option[] = [
 	{ label: '上級', value: 'advanced' }
 ];
 
-test('options を配列順に描画し、最上位に data-testid を付与する', () => {
-	const screen = render(RadioGroup, { options, value: 'intermediate' });
+test('options を配列順に描画し、最上位に data-testid を付与する', async () => {
+	const screen = await render(RadioGroup, { options, value: 'intermediate' });
 
-	expect(screen.container.querySelector('[data-testid="radio-group"]')).not.toBeNull();
+	expect(screen.container.querySelector<HTMLElement>('[data-testid="radio-group"]')).not.toBeNull();
 
 	const labels = Array.from(screen.container.querySelectorAll('.radio__label')).map((el) =>
 		el.textContent?.trim()
@@ -20,8 +20,8 @@ test('options を配列順に描画し、最上位に data-testid を付与す�
 	expect(labels).toEqual(['初級', '中級', '上級']);
 });
 
-test('value に一致する radio だけが選択される', () => {
-	const screen = render(RadioGroup, { options, value: 'intermediate' });
+test('value に一致する radio だけが選択される', async () => {
+	const screen = await render(RadioGroup, { options, value: 'intermediate' });
 
 	const radios = Array.from(
 		screen.container.querySelectorAll<HTMLInputElement>('input[type="radio"]')
@@ -29,8 +29,8 @@ test('value に一致する radio だけが選択される', () => {
 	expect(radios.map((radio) => radio.checked)).toEqual([false, true, false]);
 });
 
-test('value が undefined でもクラッシュせず未選択で描画される', () => {
-	const screen = render(RadioGroup, { options, value: undefined });
+test('value が undefined でもクラッシュせず未選択で描画される', async () => {
+	const screen = await render(RadioGroup, { options, value: undefined });
 
 	const radios = Array.from(
 		screen.container.querySelectorAll<HTMLInputElement>('input[type="radio"]')
@@ -39,8 +39,8 @@ test('value が undefined でもクラッシュせず未選択で描画される
 	expect(radios.some((radio) => radio.checked)).toBe(false);
 });
 
-test('value が null でもクラッシュせず未選択で描画される', () => {
-	const screen = render(RadioGroup, { options, value: null });
+test('value が null でもクラッシュせず未選択で描画される', async () => {
+	const screen = await render(RadioGroup, { options, value: null });
 
 	const radios = Array.from(
 		screen.container.querySelectorAll<HTMLInputElement>('input[type="radio"]')
@@ -50,7 +50,7 @@ test('value が null でもクラッシュせず未選択で描画される', ()
 
 test('radio をクリックすると value が更新され onchange が呼ばれる', async () => {
 	let changed: unknown;
-	const screen = render(RadioGroup, {
+	const screen = await render(RadioGroup, {
 		options,
 		value: undefined,
 		onchange: (value: unknown) => {

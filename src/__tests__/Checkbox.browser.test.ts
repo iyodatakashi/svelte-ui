@@ -6,7 +6,7 @@ import variables from '../lib/assets/styles/variables.scss?inline';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Checkbox with label content', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Check me'
 	});
@@ -14,17 +14,17 @@ test('renders Checkbox with label content', async () => {
 	await expect.element(checkbox).toBeVisible();
 
 	// Check that label contains the text
-	const label = screen.container.querySelector('.checkbox__label');
+	const label = screen.container.querySelector<HTMLElement>('.checkbox__label');
 	expect(label).toHaveTextContent('Check me');
 });
 
 test('Checkbox can be checked and unchecked', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Toggle me',
 		id: 'checkbox-toggle'
 	});
-	const checkbox = screen.container.querySelector('#checkbox-toggle') as HTMLInputElement;
+	const checkbox = screen.container.querySelector<HTMLElement>('#checkbox-toggle') as HTMLInputElement;
 
 	// Initially unchecked
 	expect(checkbox.checked).toBe(false);
@@ -39,13 +39,13 @@ test('Checkbox can be checked and unchecked', async () => {
 });
 
 test('disabled Checkbox is not interactable', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Disabled',
 		disabled: true,
 		id: 'checkbox-disabled'
 	});
-	const checkbox = screen.container.querySelector('#checkbox-disabled') as HTMLInputElement;
+	const checkbox = screen.container.querySelector<HTMLElement>('#checkbox-disabled') as HTMLInputElement;
 	expect(checkbox).toHaveAttribute('disabled');
 
 	// Try to click and verify it doesn't change state
@@ -56,50 +56,50 @@ test('disabled Checkbox is not interactable', async () => {
 
 test('Checkbox sizes render correctly', async () => {
 	// Test small size
-	const screenSmall = render(ComponentWrapper, {
+	const screenSmall = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Small',
 		size: 'small',
 		id: 'checkbox-small'
 	});
-	const containerSmall = screenSmall.container.querySelector('[data-testid="checkbox"]');
+	const containerSmall = screenSmall.container.querySelector<HTMLElement>('[data-testid="checkbox"]');
 	expect(containerSmall).toHaveClass('checkbox--small');
 
 	// Test medium size
-	const screenMedium = render(ComponentWrapper, {
+	const screenMedium = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Medium',
 		size: 'medium',
 		id: 'checkbox-medium'
 	});
-	const containerMedium = screenMedium.container.querySelector('[data-testid="checkbox"]');
+	const containerMedium = screenMedium.container.querySelector<HTMLElement>('[data-testid="checkbox"]');
 	expect(containerMedium).toHaveClass('checkbox--medium');
 
 	// Test large size
-	const screenLarge = render(ComponentWrapper, {
+	const screenLarge = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Large',
 		size: 'large',
 		id: 'checkbox-large'
 	});
-	const containerLarge = screenLarge.container.querySelector('[data-testid="checkbox"]');
+	const containerLarge = screenLarge.container.querySelector<HTMLElement>('[data-testid="checkbox"]');
 	expect(containerLarge).toHaveClass('checkbox--large');
 });
 
 test('Checkbox indeterminate state works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Indeterminate',
 		indeterminate: true,
 		id: 'checkbox-indeterminate'
 	});
-	const checkbox = screen.container.querySelector('#checkbox-indeterminate') as HTMLInputElement;
+	const checkbox = screen.container.querySelector<HTMLElement>('#checkbox-indeterminate') as HTMLInputElement;
 	expect(checkbox.indeterminate).toBe(true);
 });
 
 test('Checkbox change event works correctly', async () => {
 	let changeCalled = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Change me',
 		onchange: () => {
@@ -108,12 +108,12 @@ test('Checkbox change event works correctly', async () => {
 		id: 'checkbox-change'
 	});
 	// Click the label instead of the checkbox input
-	const label = screen.container.querySelector('.checkbox__label') as HTMLElement;
+	const label = screen.container.querySelector<HTMLElement>('.checkbox__label') as HTMLElement;
 	if (label) {
 		label.click();
 	} else {
 		// Fallback: click the checkbox directly
-		const checkbox = screen.container.querySelector('#checkbox-change') as HTMLInputElement;
+		const checkbox = screen.container.querySelector<HTMLElement>('#checkbox-change') as HTMLInputElement;
 		checkbox.click();
 	}
 	expect(changeCalled).toBe(true);
@@ -123,7 +123,7 @@ test('Checkbox focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Focusable',
 		onfocus: () => {
@@ -142,7 +142,7 @@ test('Checkbox focus and blur events work correctly', async () => {
 });
 
 test('Checkbox required attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Required',
 		required: true
@@ -152,7 +152,7 @@ test('Checkbox required attribute works correctly', async () => {
 });
 
 test('Checkbox name attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Named',
 		name: 'test-checkbox'
@@ -162,7 +162,7 @@ test('Checkbox name attribute works correctly', async () => {
 });
 
 test('indeterminate が undefined でもクラッシュせず false 扱いになる', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox,
 		children: 'Undefined',
 		value: false,
@@ -174,10 +174,10 @@ test('indeterminate が undefined でもクラッシュせず false 扱いにな
 });
 
 test('should not reference undefined CSS variables', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Checkbox
 	});
-	const wrapper = screen.container.querySelector('[data-testid="checkbox"]') as HTMLElement;
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="checkbox"]') as HTMLElement;
 
 	// List of CSS variables to check for Checkbox (only variables that actually exist in variables.scss)
 	const cssVariables = [

@@ -35,13 +35,13 @@ test.each([
 	['autoResize=false', { autoResize: false, rows: 3 }],
 	['autoResize=false + clearable', { autoResize: false, rows: 3, clearable: true }]
 ])('%s: textarea が箱を覆い、文字の領域が他の層と一致する', async (_label, props) => {
-	const screen = render(Textarea, { value, width: 240, linkify: true, ...props });
+	const screen = await render(Textarea, { value, width: 240, linkify: true, ...props });
 	await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const root = screen.container.querySelector('[data-testid="textarea"]') as HTMLElement;
-	const textarea = screen.container.querySelector('textarea') as HTMLTextAreaElement;
-	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
-	const linkText = screen.container.querySelector('.textarea__link-text') as HTMLElement;
+	const root = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]') as HTMLElement;
+	const textarea = screen.container.querySelector<HTMLElement>('textarea') as HTMLTextAreaElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
+	const linkText = screen.container.querySelector<HTMLElement>('.textarea__link-text') as HTMLElement;
 
 	expect(textarea.scrollHeight).toBeGreaterThan(textarea.clientHeight);
 
@@ -61,9 +61,9 @@ test.each([
 });
 
 test('resizable でドラッグして textarea の大きさが変わると、箱がその大きさに合わせる', async () => {
-	const screen = render(Textarea, { value: 'x', autoResize: false, resizable: true });
-	const root = screen.container.querySelector('[data-testid="textarea"]') as HTMLElement;
-	const textarea = screen.container.querySelector('textarea') as HTMLTextAreaElement;
+	const screen = await render(Textarea, { value: 'x', autoResize: false, resizable: true });
+	const root = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]') as HTMLElement;
+	const textarea = screen.container.querySelector<HTMLElement>('textarea') as HTMLTextAreaElement;
 
 	// ドラッグでのリサイズは、ブラウザが textarea にインラインの width / height を付ける
 	textarea.style.width = '300px';
@@ -79,14 +79,14 @@ test('resizable でドラッグして textarea の大きさが変わると、箱
 for (const autoResize of [true, false]) {
 	for (const customStyle of ['', 'padding: 24px 12px 8px', 'padding: 8px 40px 8px 12px']) {
 		test(`クリアボタンは textarea に覆われず押せる（autoResize=${autoResize}, customStyle="${customStyle}"）`, async () => {
-			const screen = render(Textarea, {
+			const screen = await render(Textarea, {
 				value,
 				width: 240,
 				clearable: true,
 				autoResize,
 				customStyle
 			});
-			const button = screen.container.querySelector(
+			const button = screen.container.querySelector<HTMLElement>(
 				'.textarea__clear-button button'
 			) as HTMLButtonElement;
 			const rect = button.getBoundingClientRect();
@@ -98,13 +98,13 @@ for (const autoResize of [true, false]) {
 
 test.each([true, false])(
 	'customStyle で余白を変えても、文字の領域は rows の高さを保つ（autoResize=%s）',
-	(autoResize) => {
-		const contentHeightOf = (customStyle: string) => {
-			const { container } = render(Textarea, { value: 'x', rows: 2, autoResize, customStyle });
+	async (autoResize) => {
+		const contentHeightOf = async (customStyle: string) => {
+			const { container } = await render(Textarea, { value: 'x', rows: 2, autoResize, customStyle });
 			return (
-				container.querySelector('.textarea__display-text') as HTMLElement
+				container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement
 			).getBoundingClientRect().height;
 		};
-		expect(contentHeightOf('padding: 20px 12px')).toBe(contentHeightOf(''));
+		expect(await contentHeightOf('padding: 20px 12px')).toBe(await contentHeightOf(''));
 	}
 );

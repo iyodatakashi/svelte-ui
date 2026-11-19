@@ -5,7 +5,7 @@
  */
 import { test, expect, afterEach } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { page } from '@vitest/browser/context';
+import { page } from 'vitest/browser';
 import TokensOnlyScene from './helpers/TokensOnlyScene.svelte';
 import { announceToScreenReader } from '../lib/utils/accessibility';
 import full from '../lib/assets/styles/import.scss?inline';
@@ -95,7 +95,7 @@ for (const theme of THEMES) {
 			document.documentElement.setAttribute('data-theme', theme);
 			styleEl.textContent = full;
 
-			const { container } = render(TokensOnlyScene, { scene });
+			const { container } = await render(TokensOnlyScene, { scene });
 			await settle();
 
 			const anchor = container.firstElementChild;
@@ -130,11 +130,11 @@ test('読み上げ用のお知らせは tokens だけでも画面に出ない', 
 
 test('Popup はリセット CSS が無くてもアンカーの下に出る', async () => {
 	styleEl.textContent = tokens;
-	const { container } = render(TokensOnlyScene, { scene: 'popup' });
+	const { container } = await render(TokensOnlyScene, { scene: 'popup' });
 	await settle();
 
 	const anchor = container.firstElementChild!.getBoundingClientRect();
-	const popup = container.querySelector('[data-testid="popup"]')!.getBoundingClientRect();
+	const popup = container.querySelector<HTMLElement>('[data-testid="popup"]')!.getBoundingClientRect();
 	expect(popup.top).toBeGreaterThanOrEqual(anchor.bottom);
 	expect(popup.top - anchor.bottom).toBeLessThan(20);
 });

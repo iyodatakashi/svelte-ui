@@ -10,7 +10,7 @@ beforeEach(() => {
 });
 
 test('renders Snackbar with basic props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'bottom',
 		maxVisible: 5,
@@ -19,12 +19,12 @@ test('renders Snackbar with basic props', async () => {
 	});
 
 	// Snackbarコンポーネント自体は表示されるが、アイテムがない場合は空
-	const snackbar = screen.container.querySelector('[data-testid="snackbar"]');
+	const snackbar = screen.container.querySelector<HTMLElement>('[data-testid="snackbar"]');
 	expect(snackbar).toBeNull(); // アイテムがない場合は表示されない
 });
 
 test('renders Snackbar with top position', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'top',
 		maxVisible: 3,
@@ -42,13 +42,13 @@ test('renders Snackbar with top position', async () => {
 	// 少し待ってから確認
 	await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const snackbar = screen.container.querySelector('[data-testid="snackbar"]');
+	const snackbar = screen.container.querySelector<HTMLElement>('[data-testid="snackbar"]');
 	await expect.element(snackbar).toBeVisible();
 	await expect.element(snackbar).toHaveClass('snackbar--top');
 });
 
 test('renders Snackbar with bottom position', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'bottom',
 		maxVisible: 3,
@@ -66,13 +66,13 @@ test('renders Snackbar with bottom position', async () => {
 	// 少し待ってから確認
 	await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const snackbar = screen.container.querySelector('.snackbar--bottom');
+	const snackbar = screen.container.querySelector<HTMLElement>('.snackbar--bottom');
 	await expect.element(snackbar).toBeVisible();
 	await expect.element(snackbar).toHaveClass('snackbar--bottom');
 });
 
 test('renders multiple snackbar items', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'bottom',
 		maxVisible: 5,
@@ -105,7 +105,7 @@ test('renders multiple snackbar items', async () => {
 });
 
 test('respects maxVisible limit', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'bottom',
 		maxVisible: 2,
@@ -141,7 +141,7 @@ test('respects maxVisible limit', async () => {
 });
 
 test('renders snackbar items with different types', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'bottom',
 		maxVisible: 5,
@@ -169,7 +169,7 @@ test('renders snackbar items with different types', async () => {
 });
 
 test('renders snackbar items with custom duration', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Snackbar,
 		position: 'bottom',
 		maxVisible: 5,
@@ -188,7 +188,7 @@ test('renders snackbar items with custom duration', async () => {
 	// 少し待ってから確認
 	await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const snackbarItem = screen.container.querySelector('[data-testid="snackbar-item"]');
+	const snackbarItem = screen.container.querySelector<HTMLElement>('[data-testid="snackbar-item"]');
 	expect(snackbarItem).toBeInTheDocument();
 });
 

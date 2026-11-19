@@ -3,11 +3,11 @@ import { render } from 'vitest-browser-svelte';
 import Input from '../lib/components/Input.svelte';
 import '../lib/assets/styles/variables.scss';
 import { collectCssVarNames } from './helpers/cssVarCollector';
-import { userEvent } from '@vitest/browser/context';
+import { userEvent } from 'vitest/browser';
 import InputInForm from './helpers/InputInForm.svelte';
 
 test('renders Input and updates value on typing', async () => {
-	const screen = render(Input, { placeholder: 'Type here', value: '' });
+	const screen = await render(Input, { placeholder: 'Type here', value: '' });
 	const textbox = screen.getByRole('textbox');
 
 	await expect.element(textbox).toBeVisible();
@@ -18,7 +18,7 @@ test('renders Input and updates value on typing', async () => {
 });
 
 test('disabled Input is not interactable', async () => {
-	const screen = render(Input, { disabled: true, value: '' });
+	const screen = await render(Input, { disabled: true, value: '' });
 	const textbox = screen.getByRole('textbox');
 
 	await expect.element(textbox).toBeDisabled();
@@ -28,7 +28,7 @@ test('disabled Input is not interactable', async () => {
 });
 
 test('readonly Input is focusable but not editable', async () => {
-	const screen = render(Input, { readonly: true, value: 'Initial' });
+	const screen = await render(Input, { readonly: true, value: 'Initial' });
 	const textbox = screen.getByRole('textbox');
 
 	await expect.element(textbox).toHaveAttribute('readonly');
@@ -39,17 +39,17 @@ test('readonly Input is focusable but not editable', async () => {
 
 // Required attribute
 test('required Input is marked as required', async () => {
-	const screen = render(Input, { required: true, value: '' });
+	const screen = await render(Input, { required: true, value: '' });
 	const textbox = screen.getByRole('textbox');
 	await expect.element(textbox).toBeRequired();
 });
 
 // enableNumberStepper: resolve buttons by DOM position (locale-agnostic; i18n has en/ja/zh-cn/fr/de/es etc.)
 function getStepperButtons(container: HTMLElement) {
-	const wrapper = container.querySelector('[data-testid="input"]') as HTMLElement | null;
+	const wrapper = container.querySelector<HTMLElement>('[data-testid="input"]') as HTMLElement | null;
 	return {
-		decrement: wrapper?.querySelector('.input__icon-left button') as HTMLButtonElement | null,
-		increment: wrapper?.querySelector('.input__icon-right button') as HTMLButtonElement | null
+		decrement: wrapper?.querySelector<HTMLElement>('.input__icon-left button') as HTMLButtonElement | null,
+		increment: wrapper?.querySelector<HTMLElement>('.input__icon-right button') as HTMLButtonElement | null
 	};
 }
 
@@ -60,7 +60,7 @@ function fireStepperButton(button: HTMLButtonElement) {
 }
 
 test('number input with enableNumberStepper shows Increment and Decrement buttons', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		type: 'number',
 		enableNumberStepper: true,
 		value: 10,
@@ -79,7 +79,7 @@ test('number input with enableNumberStepper shows Increment and Decrement button
 
 // Stepper increment increases value
 test('enableNumberStepper: clicking Increment button increases value', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		type: 'number',
 		enableNumberStepper: true,
 		value: 5,
@@ -101,7 +101,7 @@ test('enableNumberStepper: clicking Increment button increases value', async () 
 
 // Stepper decrement decreases value
 test('enableNumberStepper: clicking Decrement button decreases value', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		type: 'number',
 		enableNumberStepper: true,
 		value: 10,
@@ -123,7 +123,7 @@ test('enableNumberStepper: clicking Decrement button decreases value', async () 
 
 // Without enableNumberStepper, number input has no stepper buttons
 test('number input without enableNumberStepper has no Increment/Decrement buttons', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		type: 'number',
 		enableNumberStepper: false,
 		value: 0
@@ -136,7 +136,7 @@ test('number input without enableNumberStepper has no Increment/Decrement button
 
 // type=text with enableNumberStepper does not show stepper (input remains textbox)
 test('type text with enableNumberStepper does not show stepper buttons', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		type: 'text',
 		enableNumberStepper: true,
 		value: ''
@@ -150,7 +150,7 @@ test('type text with enableNumberStepper does not show stepper buttons', async (
 
 // Maxlength enforcement
 test('maxlength limits typed characters', async () => {
-	const screen = render(Input, { maxlength: 3, value: '' });
+	const screen = await render(Input, { maxlength: 3, value: '' });
 	const textbox = screen.getByRole('textbox');
 	await textbox.fill('Hello');
 	await expect.element(textbox).toHaveValue('Hel');
@@ -158,12 +158,12 @@ test('maxlength limits typed characters', async () => {
 
 // Clearable behavior
 test('clearable resets value when clear button is clicked', async () => {
-	const screen = render(Input, { clearable: true, value: 'ABC' });
+	const screen = await render(Input, { clearable: true, value: 'ABC' });
 	const textbox = screen.getByRole('textbox');
 	await expect.element(textbox).toHaveValue('ABC');
 
 	// Find clear button inside the input wrapper
-	const clearButton = screen.container.querySelector(
+	const clearButton = screen.container.querySelector<HTMLElement>(
 		'.input__clear-button button'
 	) as HTMLButtonElement | null;
 	if (!clearButton) throw new Error('Clear button not found');
@@ -175,7 +175,7 @@ test('clearable resets value when clear button is clicked', async () => {
 // Enter key handling can be done via onkeydown
 test('onkeydown receives keyboard events including Enter', async () => {
 	const onkeydown = vi.fn();
-	const screen = render(Input, { value: 'TestValue', onkeydown });
+	const screen = await render(Input, { value: 'TestValue', onkeydown });
 	const textbox = screen.getByRole('textbox');
 
 	// Focus first to make it visible
@@ -194,7 +194,7 @@ test('onkeydown receives keyboard events including Enter', async () => {
 
 test('form の外では Enter で焦点が外れて onchange が呼ばれる', async () => {
 	const onchange = vi.fn();
-	const screen = render(Input, { value: '', onchange });
+	const screen = await render(Input, { value: '', onchange });
 	const input = screen.getByRole('textbox').element() as HTMLInputElement;
 
 	input.focus();
@@ -206,7 +206,7 @@ test('form の外では Enter で焦点が外れて onchange が呼ばれる', a
 
 test('form の中では Enter で form が 1 回送信される', async () => {
 	const onsubmit = vi.fn();
-	const screen = render(InputInForm, { onsubmit });
+	const screen = await render(InputInForm, { onsubmit });
 	const input = screen.getByRole('textbox').element() as HTMLInputElement;
 
 	input.focus();
@@ -219,7 +219,7 @@ test('form の中では Enter で form が 1 回送信される', async () => {
 test('oninput and onchange receive latest value', async () => {
 	const oninput = vi.fn();
 	const onchange = vi.fn();
-	const screen = render(Input, { value: '', oninput, onchange });
+	const screen = await render(Input, { value: '', oninput, onchange });
 	const textbox = screen.getByRole('textbox');
 
 	await textbox.fill('A');
@@ -234,7 +234,7 @@ test('oninput and onchange receive latest value', async () => {
 test('left and right icon click handlers are called', async () => {
 	const onLeftIconClick = vi.fn();
 	const onRightIconClick = vi.fn();
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		leftIcon: 'search',
 		rightIcon: 'close',
 		leftIconAriaLabel: 'Left',
@@ -260,7 +260,7 @@ test('left and right icon click handlers are called', async () => {
 
 // Focus class toggles on wrapper
 test('focus toggles input--focused class on wrapper', async () => {
-	const screen = render(Input, { value: '' });
+	const screen = await render(Input, { value: '' });
 	const textbox = screen.getByRole('textbox');
 	const wrapper = screen.getByTestId('input');
 
@@ -273,7 +273,7 @@ test('focus toggles input--focused class on wrapper', async () => {
 
 // Focus style variants apply correct class and focus state
 test('focusStyle outline applies correct classes on focus', async () => {
-	const screen = render(Input, { value: '', focusStyle: 'outline' });
+	const screen = await render(Input, { value: '', focusStyle: 'outline' });
 	const textbox = screen.getByRole('textbox');
 	const wrapper = screen.getByTestId('input');
 	await expect.element(wrapper).toHaveClass(/input--focus-outline/);
@@ -288,7 +288,7 @@ test('focusStyle outline applies correct classes on focus', async () => {
 });
 
 test('focusStyle background applies correct classes on focus', async () => {
-	const screen = render(Input, { value: '', focusStyle: 'background' });
+	const screen = await render(Input, { value: '', focusStyle: 'background' });
 	const textbox = screen.getByRole('textbox');
 	const wrapper = screen.getByTestId('input');
 	await expect.element(wrapper).toHaveClass(/input--focus-background/);
@@ -303,7 +303,7 @@ test('focusStyle background applies correct classes on focus', async () => {
 });
 
 test('focusStyle none applies correct classes on focus', async () => {
-	const screen = render(Input, { value: '', focusStyle: 'none' });
+	const screen = await render(Input, { value: '', focusStyle: 'none' });
 	const textbox = screen.getByRole('textbox');
 	const wrapper = screen.getByTestId('input');
 	await expect.element(wrapper).toHaveClass(/input--focus-none/);
@@ -319,7 +319,7 @@ test('focusStyle none applies correct classes on focus', async () => {
 
 // Inline auto-resize should expand width as content grows
 test('inline auto-resize expands width with content length', async () => {
-	const screen = render(Input, { inline: true, value: 'A' });
+	const screen = await render(Input, { inline: true, value: 'A' });
 	const wrapper = screen.getByTestId('input');
 	const width1 = (wrapper.element() as HTMLElement).getBoundingClientRect().width;
 
@@ -333,7 +333,7 @@ test('inline auto-resize expands width with content length', async () => {
 // Walk styles and ensure every var(--svelte-ui-*) resolves to a non-empty computed value
 
 test('Input CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(Input, { value: '', placeholder: 'Check CSS vars' });
+	const screen = await render(Input, { value: '', placeholder: 'Check CSS vars' });
 	const wrapper = screen.getByTestId('input');
 	const usedVars = new Set<string>();
 
@@ -382,7 +382,7 @@ test('Input CSS variables used are defined (computed) in the page', async () => 
 // =========================================================================
 
 test('Input width property changes reactively', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		width: 200,
 		value: ''
 	});
@@ -400,7 +400,7 @@ test('Input width property changes reactively', async () => {
 });
 
 test('Input maxWidth property changes reactively', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		maxWidth: 200,
 		value: ''
 	});
@@ -418,7 +418,7 @@ test('Input maxWidth property changes reactively', async () => {
 });
 
 test('Input minWidth property changes reactively', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		minWidth: 200,
 		value: ''
 	});
@@ -436,7 +436,7 @@ test('Input minWidth property changes reactively', async () => {
 });
 
 test('Input multiple properties change reactively', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		width: 200,
 		maxWidth: 300,
 		minWidth: 100,
@@ -466,7 +466,7 @@ test('Input multiple properties change reactively', async () => {
 // =========================================================================
 
 test('normal mode (non-inline, non-linkify): unfocused shows display-text, focused hides it', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		value: 'Test value',
 		inline: false,
 		linkify: false
@@ -474,7 +474,7 @@ test('normal mode (non-inline, non-linkify): unfocused shows display-text, focus
 
 	const wrapper = screen.getByTestId('input');
 	const input = screen.getByRole('textbox');
-	const displayText = screen.container.querySelector('.input__display-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.input__display-text') as HTMLElement;
 
 	// 初期状態（非フォーカス）では display-text が表示されている
 	await expect.element(wrapper).not.toHaveClass(/input--inline/);
@@ -491,7 +491,7 @@ test('normal mode (non-inline, non-linkify): unfocused shows display-text, focus
 });
 
 test('inline mode (non-linkify): unfocused shows display-text, focused hides it', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		value: 'Test value',
 		inline: true,
 		linkify: false
@@ -499,7 +499,7 @@ test('inline mode (non-linkify): unfocused shows display-text, focused hides it'
 
 	const wrapper = screen.getByTestId('input');
 	const input = screen.getByRole('textbox');
-	const displayText = screen.container.querySelector('.input__display-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.input__display-text') as HTMLElement;
 
 	// 初期状態（非フォーカス）では display-text が表示されている
 	await expect.element(wrapper).toHaveClass(/input--inline/);
@@ -520,15 +520,15 @@ test('inline mode (non-linkify): unfocused shows display-text, focused hides it'
 // =========================================================================
 
 test('linkify (non-inline): unfocused shows link overlay, focused hides it', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		value: 'http://example.com',
 		linkify: true
 	});
 
 	const wrapper = screen.getByTestId('input');
 	const input = screen.getByRole('textbox');
-	const linkOverlay = screen.container.querySelector('.input__link-text') as HTMLElement;
-	const displayText = screen.container.querySelector('.input__display-text') as HTMLElement;
+	const linkOverlay = screen.container.querySelector<HTMLElement>('.input__link-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.input__display-text') as HTMLElement;
 
 	// 初期状態（非フォーカス）ではリンク用オーバーレイが表示されている
 	await expect.element(wrapper).not.toHaveClass(/input--inline/);
@@ -549,7 +549,7 @@ test('linkify (non-inline): unfocused shows link overlay, focused hides it', asy
 });
 
 test('linkify + inline: unfocused shows link overlay, focused hides overlay and shows input', async () => {
-	const screen = render(Input, {
+	const screen = await render(Input, {
 		value: 'http://example.com',
 		linkify: true,
 		inline: true
@@ -557,8 +557,8 @@ test('linkify + inline: unfocused shows link overlay, focused hides overlay and 
 
 	const wrapper = screen.getByTestId('input');
 	const input = screen.getByRole('textbox');
-	const linkOverlay = screen.container.querySelector('.input__link-text') as HTMLElement;
-	const displayText = screen.container.querySelector('.input__display-text') as HTMLElement;
+	const linkOverlay = screen.container.querySelector<HTMLElement>('.input__link-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.input__display-text') as HTMLElement;
 
 	// inline + linkify では display-text は常に非表示、link-text が表示
 	await expect.element(wrapper).toHaveClass(/input--inline/);

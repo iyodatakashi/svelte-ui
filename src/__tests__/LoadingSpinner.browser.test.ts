@@ -4,7 +4,7 @@ import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import LoadingSpinner from '../lib/components/LoadingSpinner.svelte';
 
 test('renders LoadingSpinner with default props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: LoadingSpinner
 	});
 	const spinner = screen.getByTestId('loading-spinner');
@@ -12,7 +12,7 @@ test('renders LoadingSpinner with default props', async () => {
 });
 
 test('renders LoadingSpinner with custom size', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: LoadingSpinner,
 		size: 48
 	});
@@ -21,7 +21,7 @@ test('renders LoadingSpinner with custom size', async () => {
 });
 
 test('renders LoadingSpinner with custom color', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: LoadingSpinner,
 		color: 'red'
 	});
@@ -34,7 +34,7 @@ test('renders LoadingSpinner with custom color', async () => {
 // =========================================================================
 
 test('LoadingSpinner size property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: LoadingSpinner,
 		size: 24
 	});
@@ -56,7 +56,7 @@ test('LoadingSpinner size property changes reactively', async () => {
 });
 
 test('LoadingSpinner color property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: LoadingSpinner,
 		color: 'red'
 	});

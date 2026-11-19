@@ -31,7 +31,7 @@ const scan = (name: string): Scan => {
 				result.checked++;
 				let found: Element | null = null;
 				try {
-					found = document.querySelector(`#${CSS.escape(id)}`);
+					found = document.querySelector<HTMLElement>(`#${CSS.escape(id)}`);
 				} catch {
 					found = null;
 				}
@@ -47,7 +47,7 @@ const scan = (name: string): Scan => {
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const mount = async (name: string, props: any) => {
 	const mod = await import(/* @vite-ignore */ `../lib/components/${name}.svelte`);
-	return render(mod.default, props);
+	return await render(mod.default, props);
 };
 
 const opts = [
@@ -107,8 +107,8 @@ test.each(STATIC)('%s の aria 参照が解決する', async (name, props) => {
 
 test.each(OVERLAY)('%s の aria 参照が解決する（開いた状態）', async (name, props) => {
 	const { container } = await mount(name, props);
-	(container.querySelector('dialog.modal') as HTMLDialogElement | null)?.showModal();
-	const popover = container.querySelector('[popover]') as HTMLElement | null;
+	(container.querySelector<HTMLElement>('dialog.modal') as HTMLDialogElement | null)?.showModal();
+	const popover = container.querySelector<HTMLElement>('[popover]') as HTMLElement | null;
 	if (popover) popover.showPopover();
 
 	expect(scan(name).dangling).toEqual([]);
@@ -118,7 +118,7 @@ test.each(TRIGGERED)(
 	'%s の aria 参照が解決する（開いた状態）',
 	async (name, props, triggerSelector) => {
 		const { container } = await mount(name, props);
-		const trigger = container.querySelector(triggerSelector) as HTMLElement;
+		const trigger = container.querySelector<HTMLElement>(triggerSelector) as HTMLElement;
 		trigger.click();
 		await tick();
 		await new Promise((resolve) => setTimeout(resolve, 50));

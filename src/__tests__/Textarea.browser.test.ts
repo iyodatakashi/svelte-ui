@@ -5,7 +5,7 @@ import variables from '../lib/assets/styles/variables.scss?inline';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Textarea and updates value on typing', async () => {
-	const screen = render(Textarea, { placeholder: 'Type here', value: '' });
+	const screen = await render(Textarea, { placeholder: 'Type here', value: '' });
 	const textarea = screen.getByRole('textbox');
 	
 	// Focus first to make textarea visible (non-focused textarea has transparent color)
@@ -16,7 +16,7 @@ test('renders Textarea and updates value on typing', async () => {
 	// Wait for focus state to be applied and class to be added
 	await new Promise(resolve => setTimeout(resolve, 100));
 	// Check that the focused class is applied
-	const wrapper = screen.container.querySelector('[data-testid="textarea"]');
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]');
 	expect(wrapper).toHaveClass('textarea--focused');
 	// Check that textarea is in the document and has focus
 	await expect.element(textarea).toHaveFocus();
@@ -27,7 +27,7 @@ test('renders Textarea and updates value on typing', async () => {
 });
 
 test('disabled Textarea is not interactable', async () => {
-	const screen = render(Textarea, { value: 'Initial', disabled: true });
+	const screen = await render(Textarea, { value: 'Initial', disabled: true });
 	const textarea = screen.getByRole('textbox');
 	await expect.element(textarea).toHaveAttribute('disabled');
 	await expect.element(textarea).toHaveValue('Initial');
@@ -38,7 +38,7 @@ test('disabled Textarea is not interactable', async () => {
 });
 
 test('readonly Textarea does not change value on typing', async () => {
-	const screen = render(Textarea, { value: 'Initial', readonly: true });
+	const screen = await render(Textarea, { value: 'Initial', readonly: true });
 	const textarea = screen.getByRole('textbox');
 	await expect.element(textarea).toHaveAttribute('readonly');
 	await expect.element(textarea).toHaveValue('Initial');
@@ -50,13 +50,13 @@ test('readonly Textarea does not change value on typing', async () => {
 });
 
 test('required attribute is applied correctly', async () => {
-	const screen = render(Textarea, { value: '', required: true });
+	const screen = await render(Textarea, { value: '', required: true });
 	const textarea = screen.getByRole('textbox');
 	await expect.element(textarea).toHaveAttribute('required');
 });
 
 test('maxlength attribute limits input length', async () => {
-	const screen = render(Textarea, { value: '', maxlength: 10 });
+	const screen = await render(Textarea, { value: '', maxlength: 10 });
 	const textarea = screen.getByRole('textbox');
 	await expect.element(textarea).toHaveAttribute('maxlength', '10');
 
@@ -65,7 +65,7 @@ test('maxlength attribute limits input length', async () => {
 	// Wait for focus state to be applied and class to be added
 	await new Promise(resolve => setTimeout(resolve, 100));
 	// Check that the focused class is applied
-	const wrapper = screen.container.querySelector('[data-testid="textarea"]');
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]');
 	expect(wrapper).toHaveClass('textarea--focused');
 	// Check that textarea has focus instead of checking visibility
 	await expect.element(textarea).toHaveFocus();
@@ -87,12 +87,12 @@ test('maxlength attribute limits input length', async () => {
 });
 
 test('clearable Textarea shows clear button and clears value', async () => {
-	const screen = render(Textarea, { value: 'Test text', clearable: true });
+	const screen = await render(Textarea, { value: 'Test text', clearable: true });
 	const textarea = screen.getByRole('textbox');
 	await expect.element(textarea).toHaveValue('Test text');
 
 	// Clear button should be present
-	const clearButton = screen.container.querySelector('.textarea__clear-button button');
+	const clearButton = screen.container.querySelector<HTMLElement>('.textarea__clear-button button');
 	expect(clearButton).toBeTruthy();
 
 	// Click clear button
@@ -104,16 +104,16 @@ test('clearable Textarea shows clear button and clears value', async () => {
 // textarea はキャレット用に1行分高くなる。この差でスクロールバーが出るのを防ぐため、
 // display-text の末尾にダミー空白(&nbsp;)を足して高さを揃えている。この処理を削除すると失敗する。
 test('display-text reserves last line height when value ends with a newline', async () => {
-	const screen = render(Textarea, { value: 'Hello\n' });
-	const displayText = screen.container.querySelector('.textarea__display-text');
+	const screen = await render(Textarea, { value: 'Hello\n' });
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text');
 	expect(displayText).toBeTruthy();
 	// 末尾改行の後にダミー空白(non-breaking space)が入っていること
 	expect(displayText?.textContent?.endsWith('\u00a0')).toBe(true);
 });
 
 test('display-text has no trailing dummy space when value does not end with a newline', async () => {
-	const screen = render(Textarea, { value: 'Hello' });
-	const displayText = screen.container.querySelector('.textarea__display-text');
+	const screen = await render(Textarea, { value: 'Hello' });
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text');
 	expect(displayText).toBeTruthy();
 	expect(displayText?.textContent).toBe('Hello');
 });
@@ -122,18 +122,18 @@ test('display-text has no trailing dummy space when value does not end with a ne
 // 長い連続文字列(URL等)が行末に来たとき折り返し位置が textarea と1文字ぶんズレる。この処理を削除すると失敗する。
 test('display-text wraps long unbreakable tokens the same as the textarea', async () => {
 	const value = 'aaaaaaaaaabbbbbbbbbbccccccccccddddddddddeeeeeeeeeeffffffffffgggggggggg';
-	const screen = render(Textarea, { value, width: 200, maxHeight: 400 });
+	const screen = await render(Textarea, { value, width: 200, maxHeight: 400 });
 	await new Promise((resolve) => setTimeout(resolve, 100));
 
-	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
-	const textarea = screen.container.querySelector('textarea') as HTMLTextAreaElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
+	const textarea = screen.container.querySelector<HTMLElement>('textarea') as HTMLTextAreaElement;
 
 	// 折り返し(=行数=scrollHeight)が textarea と一致すること
 	expect(displayText.scrollHeight).toBe(textarea.scrollHeight);
 });
 
 test('form submission works correctly', async () => {
-	const screen = render(Textarea, { name: 'message', value: 'Test message' });
+	const screen = await render(Textarea, { name: 'message', value: 'Test message' });
 	const textarea = screen.getByRole('textbox');
 	await expect.element(textarea).toHaveAttribute('name', 'message');
 	await expect.element(textarea).toHaveValue('Test message');
@@ -143,7 +143,7 @@ test('oninput and onchange events are called', async () => {
 	let inputCalled = false;
 	let changeCalled = false;
 
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		value: '',
 		oninput: () => {
 			inputCalled = true;
@@ -160,7 +160,7 @@ test('oninput and onchange events are called', async () => {
 	// Wait for focus state to be applied and class to be added
 	await new Promise(resolve => setTimeout(resolve, 100));
 	// Check that the focused class is applied
-	const wrapper = screen.container.querySelector('[data-testid="textarea"]');
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]');
 	expect(wrapper).toHaveClass('textarea--focused');
 	// Check that textarea has focus instead of checking visibility
 	await expect.element(textarea).toHaveFocus();
@@ -178,7 +178,7 @@ test('focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		value: '',
 		onfocus: () => {
 			focusCalled = true;
@@ -199,40 +199,40 @@ test('focus and blur events work correctly', async () => {
 
 test('focusStyle variants work correctly', async () => {
 	// Test outline focus style
-	const screenOutline = render(Textarea, {
+	const screenOutline = await render(Textarea, {
 		value: '',
 		focusStyle: 'outline',
 		id: 'textarea-outline'
 	});
-	const textareaOutline = screenOutline.container.querySelector(
+	const textareaOutline = screenOutline.container.querySelector<HTMLElement>(
 		'#textarea-outline'
 	) as HTMLTextAreaElement;
 	textareaOutline.focus();
 	await expect.element(textareaOutline).toHaveFocus();
 
 	// Test background focus style
-	const screenBackground = render(Textarea, {
+	const screenBackground = await render(Textarea, {
 		value: '',
 		focusStyle: 'background',
 		id: 'textarea-background'
 	});
-	const textareaBackground = screenBackground.container.querySelector(
+	const textareaBackground = screenBackground.container.querySelector<HTMLElement>(
 		'#textarea-background'
 	) as HTMLTextAreaElement;
 	textareaBackground.focus();
 	await expect.element(textareaBackground).toHaveFocus();
 
 	// Test none focus style
-	const screenNone = render(Textarea, { value: '', focusStyle: 'none', id: 'textarea-none' });
-	const textareaNone = screenNone.container.querySelector('#textarea-none') as HTMLTextAreaElement;
+	const screenNone = await render(Textarea, { value: '', focusStyle: 'none', id: 'textarea-none' });
+	const textareaNone = screenNone.container.querySelector<HTMLElement>('#textarea-none') as HTMLTextAreaElement;
 	textareaNone.focus();
 	await expect.element(textareaNone).toHaveFocus();
 });
 
 test('inline mode shows display text when not focused', async () => {
-	const screen = render(Textarea, { value: 'Inline text', inline: true });
+	const screen = await render(Textarea, { value: 'Inline text', inline: true });
 	const textarea = screen.getByRole('textbox');
-	const displayText = screen.container.querySelector('.textarea__display-text');
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text');
 
 	// In inline mode, display text should be visible when not focused
 	await expect.element(displayText).toBeVisible();
@@ -243,9 +243,9 @@ test('inline mode shows display text when not focused', async () => {
 });
 
 test('autoResize functionality works', async () => {
-	const screen = render(Textarea, { value: '', autoResize: true, rows: 3 });
+	const screen = await render(Textarea, { value: '', autoResize: true, rows: 3 });
 	const textarea = screen.getByRole('textbox');
-	const displayText = screen.container.querySelector('.textarea__display-text');
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text');
 
 	// With autoResize, display text should be present (even when not focused)
 	// Note: display-text may have opacity: 0 when focused, but should be in DOM
@@ -256,7 +256,7 @@ test('autoResize functionality works', async () => {
 	// Wait for focus state to be applied
 	await new Promise(resolve => setTimeout(resolve, 100));
 	// Check that the focused class is applied
-	const wrapper = screen.container.querySelector('[data-testid="textarea"]');
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]');
 	expect(wrapper).toHaveClass('textarea--focused');
 
 	// Use direct DOM manipulation to set value
@@ -266,7 +266,7 @@ test('autoResize functionality works', async () => {
 });
 
 test('resizable attribute controls resize behavior', async () => {
-	const screen = render(Textarea, { value: '', resizable: true });
+	const screen = await render(Textarea, { value: '', resizable: true });
 	const textarea = screen.getByRole('textbox');
 
 	// Should have resizable class when resizable is true
@@ -274,8 +274,8 @@ test('resizable attribute controls resize behavior', async () => {
 });
 
 test('should not reference undefined CSS variables', async () => {
-	const screen = render(Textarea, { value: 'test' });
-	const wrapper = screen.container.querySelector('[data-testid="textarea"]') as HTMLElement;
+	const screen = await render(Textarea, { value: 'test' });
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="textarea"]') as HTMLElement;
 	const textareaElement = screen.getByRole('textbox').element() as HTMLTextAreaElement;
 
 	// List of CSS variables to check for Textarea
@@ -323,7 +323,7 @@ test('should not reference undefined CSS variables', async () => {
 // =========================================================================
 
 test('Textarea width property changes reactively', async () => {
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		width: 200
 	});
 
@@ -340,7 +340,7 @@ test('Textarea width property changes reactively', async () => {
 });
 
 test('Textarea maxHeight property changes reactively', async () => {
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		maxHeight: 200
 	});
 
@@ -364,7 +364,7 @@ test('Textarea maxHeight property changes reactively', async () => {
 // =========================================================================
 
 test('Textarea normal mode (non-inline, non-linkify): unfocused shows display-text, focused hides it', async () => {
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		value: 'Test value',
 		inline: false,
 		linkify: false
@@ -372,7 +372,7 @@ test('Textarea normal mode (non-inline, non-linkify): unfocused shows display-te
 
 	const wrapper = screen.getByTestId('textarea');
 	const textarea = screen.getByRole('textbox');
-	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
 
 	// 初期状態（非フォーカス）では display-text が表示されている
 	await expect.element(wrapper).not.toHaveClass(/textarea--inline/);
@@ -389,7 +389,7 @@ test('Textarea normal mode (non-inline, non-linkify): unfocused shows display-te
 });
 
 test('Textarea inline mode (non-linkify): unfocused shows display-text, focused hides it', async () => {
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		value: 'Test value',
 		inline: true,
 		linkify: false
@@ -397,7 +397,7 @@ test('Textarea inline mode (non-linkify): unfocused shows display-text, focused 
 
 	const wrapper = screen.getByTestId('textarea');
 	const textarea = screen.getByRole('textbox');
-	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
 
 	// 初期状態（非フォーカス）では display-text が表示されている
 	await expect.element(wrapper).toHaveClass(/textarea--inline/);
@@ -418,15 +418,15 @@ test('Textarea inline mode (non-linkify): unfocused shows display-text, focused 
 // =========================================================================
 
 test('Textarea linkify (non-inline): unfocused shows link overlay, focused hides it', async () => {
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		value: 'http://example.com',
 		linkify: true
 	});
 
 	const wrapper = screen.getByTestId('textarea');
 	const textarea = screen.getByRole('textbox');
-	const linkOverlay = screen.container.querySelector('.textarea__link-text') as HTMLElement;
-	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
+	const linkOverlay = screen.container.querySelector<HTMLElement>('.textarea__link-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
 
 	// 初期状態（非フォーカス）ではリンク用オーバーレイが表示されている
 	await expect.element(wrapper).not.toHaveClass(/textarea--inline/);
@@ -447,7 +447,7 @@ test('Textarea linkify (non-inline): unfocused shows link overlay, focused hides
 });
 
 test('Textarea linkify + inline: unfocused shows link overlay, focused hides overlay and shows textarea', async () => {
-	const screen = render(Textarea, {
+	const screen = await render(Textarea, {
 		value: 'http://example.com',
 		linkify: true,
 		inline: true
@@ -455,8 +455,8 @@ test('Textarea linkify + inline: unfocused shows link overlay, focused hides ove
 
 	const wrapper = screen.getByTestId('textarea');
 	const textarea = screen.getByRole('textbox');
-	const linkOverlay = screen.container.querySelector('.textarea__link-text') as HTMLElement;
-	const displayText = screen.container.querySelector('.textarea__display-text') as HTMLElement;
+	const linkOverlay = screen.container.querySelector<HTMLElement>('.textarea__link-text') as HTMLElement;
+	const displayText = screen.container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
 
 	// inline + linkify では display-text は常に非表示、link-text が表示
 	await expect.element(wrapper).toHaveClass(/textarea--inline/);

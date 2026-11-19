@@ -81,10 +81,10 @@ const ELEVATED: [string, unknown, Record<string, unknown>, string][] = [
 
 test.each(ELEVATED)(
 	'%s の影がテーマ変数から描かれ、ダークで濃くなる',
-	(_name, comp, props, selector) => {
+	async (_name, comp, props, selector) => {
 		// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		const { container } = render(comp as any, props as any);
-		const el = container.querySelector(selector) as HTMLElement;
+		const { container } = await render(comp as any, props as any);
+		const el = container.querySelector<HTMLElement>(selector) as HTMLElement;
 		// popover は開いていないと :popover-open のスタイルが当たらない
 		if (el.hasAttribute('popover')) el.showPopover();
 		freezeTransition(el);

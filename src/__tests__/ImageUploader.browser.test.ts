@@ -9,7 +9,7 @@ test('ImageUploader - レンダリング', async () => {
 		id: 'imageuploader-test'
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="image-uploader"]');
 	expect(uploader).toBeInTheDocument();
 });
 
@@ -21,7 +21,7 @@ test('ImageUploader - カスタムサイズ', async () => {
 		height: '150px'
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]') as HTMLElement;
+	const uploader = container.querySelector<HTMLElement>('[data-testid="image-uploader"]') as HTMLElement;
 	// CSS変数はgetComputedStyleで確認
 	const computedStyle = getComputedStyle(uploader);
 	expect(computedStyle.getPropertyValue('--internal-image-uploader-button-width').trim()).toBe('200px');
@@ -35,7 +35,7 @@ test('ImageUploader - 角丸', async () => {
 		rounded: true
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="image-uploader"]');
 	expect(uploader).toHaveClass('image-uploader--rounded');
 });
 
@@ -46,7 +46,7 @@ test('ImageUploader - 複数ファイル対応', async () => {
 		multiple: true
 	});
 
-	const input = container.querySelector('input[type="file"]');
+	const input = container.querySelector<HTMLElement>('input[type="file"]');
 	expect(input).toHaveAttribute('multiple');
 });
 
@@ -57,7 +57,7 @@ test('ImageUploader - ファイル形式制限', async () => {
 		accept: '.png,.jpg'
 	});
 
-	const input = container.querySelector('input[type="file"]');
+	const input = container.querySelector<HTMLElement>('input[type="file"]');
 	expect(input).toHaveAttribute('accept', '.png,.jpg');
 });
 
@@ -69,7 +69,7 @@ test('ImageUploader - カスタムアイコン', async () => {
 		iconSize: 48
 	});
 
-	const icon = container.querySelector('.material-symbols-outlined');
+	const icon = container.querySelector<HTMLElement>('.material-symbols-outlined');
 	expect(icon).toBeInTheDocument();
 });
 
@@ -80,8 +80,8 @@ test('ImageUploader - プレースホルダー', async () => {
 		placeholder: '画像をアップロード'
 	});
 
-	const placeholder = container.querySelector('.image-uploader__description');
-	expect(placeholder).toHaveTextContent('画像をアップロード');
+	const placeholder = container.querySelector<HTMLElement>('.image-uploader__description');
+	expect(placeholder).toMatchTextContent('画像をアップロード');
 });
 
 test('ImageUploader - フォーカス', async () => {
@@ -90,7 +90,7 @@ test('ImageUploader - フォーカス', async () => {
 		id: 'imageuploader-focus-test'
 	});
 
-	const input = container.querySelector('input[type="file"]') as HTMLInputElement;
+	const input = container.querySelector<HTMLElement>('input[type="file"]') as HTMLInputElement;
 	expect(input).toBeInTheDocument();
 
 	// ファイル入力はフォーカスできない場合があるため、存在確認のみ
@@ -104,7 +104,7 @@ test('ImageUploader - ファイルサイズ制限', async () => {
 		maxFileSize: 1024 * 1024 // 1MB
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="image-uploader"]');
 	expect(uploader).toBeInTheDocument();
 });
 
@@ -115,7 +115,7 @@ test('ImageUploader - アダプティブサイズ', async () => {
 		previewAdaptive: true
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="image-uploader"]');
 	expect(uploader).toHaveClass('image-uploader--adaptive');
 });
 
@@ -125,7 +125,7 @@ test('ImageUploader - CSS変数', async () => {
 		id: 'imageuploader-css-test'
 	});
 
-	const uploader = container.querySelector('[data-testid="image-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="image-uploader"]');
 	expect(uploader).toBeInTheDocument();
 
 	// CSS変数の存在確認

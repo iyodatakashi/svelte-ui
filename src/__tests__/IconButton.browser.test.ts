@@ -5,7 +5,7 @@ import IconButton from '../lib/components/IconButton.svelte';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders IconButton with default props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Test Icon'
 	});
@@ -16,7 +16,7 @@ test('renders IconButton with default props', async () => {
 
 test('IconButton can be clicked and triggers onclick event', async () => {
 	let clickCalled = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Click Icon',
 		id: 'icon-button-click',
@@ -24,7 +24,7 @@ test('IconButton can be clicked and triggers onclick event', async () => {
 			clickCalled = true;
 		}
 	});
-	const iconButton = screen.container.querySelector('#icon-button-click') as HTMLButtonElement;
+	const iconButton = screen.container.querySelector<HTMLElement>('#icon-button-click') as HTMLButtonElement;
 
 	// Click the button
 	iconButton.click();
@@ -32,13 +32,13 @@ test('IconButton can be clicked and triggers onclick event', async () => {
 });
 
 test('disabled IconButton is not interactable', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		disabled: true,
 		children: 'Disabled Icon',
 		id: 'icon-button-disabled'
 	});
-	const button = screen.container.querySelector('#icon-button-disabled') as HTMLButtonElement;
+	const button = screen.container.querySelector<HTMLElement>('#icon-button-disabled') as HTMLButtonElement;
 
 	expect(button).toHaveAttribute('disabled');
 
@@ -48,7 +48,7 @@ test('disabled IconButton is not interactable', async () => {
 
 	// Disabled button should not trigger click events
 	let clickCalled = false;
-	const screen2 = render(ComponentWrapper, {
+	const screen2 = await render(ComponentWrapper, {
 		component: IconButton,
 		disabled: true,
 		onclick: () => {
@@ -57,7 +57,7 @@ test('disabled IconButton is not interactable', async () => {
 		children: 'Disabled Icon 2',
 		id: 'icon-button-disabled-2'
 	});
-	const button2 = screen2.container.querySelector('#icon-button-disabled-2') as HTMLButtonElement;
+	const button2 = screen2.container.querySelector<HTMLElement>('#icon-button-disabled-2') as HTMLButtonElement;
 	// Try to interact with disabled button
 	// Disabled buttons should not respond to user interactions
 	button2.focus();
@@ -69,33 +69,33 @@ test('disabled IconButton is not interactable', async () => {
 
 test('IconButton variants render correctly', async () => {
 	// Test ghost variant (default)
-	const screenGhost = render(ComponentWrapper, {
+	const screenGhost = await render(ComponentWrapper, {
 		component: IconButton,
 		variant: 'ghost',
 		children: 'Ghost Icon',
 		id: 'icon-button-ghost'
 	});
-	const iconButtonGhost = screenGhost.container.querySelector('#icon-button-ghost');
+	const iconButtonGhost = screenGhost.container.querySelector<HTMLElement>('#icon-button-ghost');
 	expect(iconButtonGhost).toBeInTheDocument();
 
 	// Test filled variant
-	const screenFilled = render(ComponentWrapper, {
+	const screenFilled = await render(ComponentWrapper, {
 		component: IconButton,
 		variant: 'filled',
 		children: 'Filled Icon',
 		id: 'icon-button-filled'
 	});
-	const iconButtonFilled = screenFilled.container.querySelector('#icon-button-filled');
+	const iconButtonFilled = screenFilled.container.querySelector<HTMLElement>('#icon-button-filled');
 	expect(iconButtonFilled).toBeInTheDocument();
 
 	// Test outlined variant
-	const screenOutlined = render(ComponentWrapper, {
+	const screenOutlined = await render(ComponentWrapper, {
 		component: IconButton,
 		variant: 'outlined',
 		children: 'Outlined Icon',
 		id: 'icon-button-outlined'
 	});
-	const iconButtonOutlined = screenOutlined.container.querySelector('#icon-button-outlined');
+	const iconButtonOutlined = screenOutlined.container.querySelector<HTMLElement>('#icon-button-outlined');
 	expect(iconButtonOutlined).toBeInTheDocument();
 });
 
@@ -103,7 +103,7 @@ test('IconButton focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Focus Test Icon',
 		id: 'icon-button-focus-blur',
@@ -114,7 +114,7 @@ test('IconButton focus and blur events work correctly', async () => {
 			blurCalled = true;
 		}
 	});
-	const button = screen.container.querySelector('#icon-button-focus-blur') as HTMLButtonElement;
+	const button = screen.container.querySelector<HTMLElement>('#icon-button-focus-blur') as HTMLButtonElement;
 	button.focus();
 	expect(focusCalled).toBe(true);
 
@@ -123,7 +123,7 @@ test('IconButton focus and blur events work correctly', async () => {
 });
 
 test('IconButton with badge renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Badge Icon',
 		hasBadge: true,
@@ -132,13 +132,13 @@ test('IconButton with badge renders correctly', async () => {
 	});
 
 	// Check if badge element exists
-	const badge = screen.container.querySelector('.icon-button__badge');
+	const badge = screen.container.querySelector<HTMLElement>('.icon-button__badge');
 	expect(badge).toBeInTheDocument();
 	expect(badge).toHaveTextContent('5');
 });
 
 test('IconButton with loading state renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Loading Icon',
 		loading: true,
@@ -146,34 +146,34 @@ test('IconButton with loading state renders correctly', async () => {
 	});
 
 	// Check if loading spinner exists
-	const spinner = screen.container.querySelector('.loading-spinner');
+	const spinner = screen.container.querySelector<HTMLElement>('.loading-spinner');
 	expect(spinner).toBeInTheDocument();
 });
 
 test('IconButton with pressed state renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Pressed Icon',
 		pressed: true,
 		id: 'icon-button-pressed'
 	});
-	const button = screen.container.querySelector('#icon-button-pressed') as HTMLButtonElement;
+	const button = screen.container.querySelector<HTMLElement>('#icon-button-pressed') as HTMLButtonElement;
 	expect(button).toHaveAttribute('aria-pressed', 'true');
 });
 
 test('IconButton with rounded prop renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'Rounded Icon',
 		rounded: true,
 		id: 'icon-button-rounded'
 	});
-	const button = screen.container.querySelector('#icon-button-rounded') as HTMLButtonElement;
+	const button = screen.container.querySelector<HTMLElement>('#icon-button-rounded') as HTMLButtonElement;
 	expect(button).toHaveClass('icon-button__button--rounded');
 });
 
 test('IconButton CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'CSS Test Icon'
 	});
@@ -216,7 +216,7 @@ test('IconButton CSS variables used are defined (computed) in the page', async (
 // =========================================================================
 
 test('IconButton color property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'home',
 		ariaLabel: 'Home',
@@ -238,7 +238,7 @@ test('IconButton color property changes reactively', async () => {
 });
 
 test('IconButton size property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: IconButton,
 		children: 'home',
 		ariaLabel: 'Home',

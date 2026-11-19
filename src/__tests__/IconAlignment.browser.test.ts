@@ -30,50 +30,50 @@ const centerY = (el: Element | null) => {
 
 /** 装飾ラッパーではなく、中に描かれるアイコン本体の位置を見る */
 const decorationCenterY = (container: Element, selector: string) => {
-	const wrapper = container.querySelector(selector) as HTMLElement;
+	const wrapper = container.querySelector<HTMLElement>(selector) as HTMLElement;
 	return centerY(wrapper.firstElementChild ?? wrapper);
 };
 
-const expectAligned = (container: Element, textSelector: string, decorationSelector: string) => {
+const expectAligned = async (container: Element, textSelector: string, decorationSelector: string) => {
 	expect(decorationCenterY(container, decorationSelector)).toBe(
-		centerY(container.querySelector(textSelector))
+		centerY(container.querySelector<HTMLElement>(textSelector))
 	);
 };
 
-test('Input: rightIcon が padding 指定時もテキストに揃う', () => {
-	expectAligned(
-		render(Input, { value: 'x', rightIcon: 'search', customStyle: ASYMMETRIC_PADDING }).container,
+test('Input: rightIcon が padding 指定時もテキストに揃う', async () => {
+	await expectAligned(
+		(await render(Input, { value: 'x', rightIcon: 'search', customStyle: ASYMMETRIC_PADDING })).container,
 		'.input__display-text',
 		'.input__icon-right'
 	);
 });
 
-test('Input: leftIcon が padding 指定時もテキストに揃う', () => {
-	expectAligned(
-		render(Input, { value: 'x', leftIcon: 'search', customStyle: ASYMMETRIC_PADDING }).container,
+test('Input: leftIcon が padding 指定時もテキストに揃う', async () => {
+	await expectAligned(
+		(await render(Input, { value: 'x', leftIcon: 'search', customStyle: ASYMMETRIC_PADDING })).container,
 		'.input__display-text',
 		'.input__icon-left'
 	);
 });
 
-test('Input: クリアボタンが padding 指定時もテキストに揃う', () => {
-	expectAligned(
-		render(Input, { value: 'x', clearable: true, customStyle: ASYMMETRIC_PADDING }).container,
+test('Input: クリアボタンが padding 指定時もテキストに揃う', async () => {
+	await expectAligned(
+		(await render(Input, { value: 'x', clearable: true, customStyle: ASYMMETRIC_PADDING })).container,
 		'.input__display-text',
 		'.input__clear-button'
 	);
 });
 
 for (const customStyle of ['', ASYMMETRIC_PADDING]) {
-	test(`ColorPicker: スウォッチがテキストに揃う (${customStyle || 'default'})`, () => {
-		const { container } = render(ColorPicker, { value: '#ff0000', customStyle });
-		const field = container.querySelector('.input') as HTMLElement;
-		const swatch = container.querySelector('.color-picker__trigger') as HTMLElement;
-		const nativeInput = swatch.querySelector('input[type="color"]');
+	test(`ColorPicker: スウォッチがテキストに揃う (${customStyle || 'default'})`, async () => {
+		const { container } = await render(ColorPicker, { value: '#ff0000', customStyle });
+		const field = container.querySelector<HTMLElement>('.input') as HTMLElement;
+		const swatch = container.querySelector<HTMLElement>('.color-picker__trigger') as HTMLElement;
+		const nativeInput = swatch.querySelector<HTMLElement>('input[type="color"]');
 		const fieldRect = field.getBoundingClientRect();
 		const swatchRect = swatch.getBoundingClientRect();
 		expect(field.contains(swatch)).toBe(true);
-		expect(centerY(swatch)).toBeCloseTo(centerY(field.querySelector('.input__display-text')), 1);
+		expect(centerY(swatch)).toBeCloseTo(centerY(field.querySelector<HTMLElement>('.input__display-text')), 1);
 		expect(swatchRect.left - fieldRect.left).toBeCloseTo(4, 1);
 		expect(
 			document.elementFromPoint(
@@ -84,68 +84,68 @@ for (const customStyle of ['', ASYMMETRIC_PADDING]) {
 	});
 }
 
-test('Combobox: ドロップダウンアイコンが padding 指定時もテキストに揃う', () => {
-	expectAligned(
-		render(Combobox, { value: 'x', options: ['a'], customStyle: ASYMMETRIC_PADDING }).container,
+test('Combobox: ドロップダウンアイコンが padding 指定時もテキストに揃う', async () => {
+	await expectAligned(
+		(await render(Combobox, { value: 'x', options: ['a'], customStyle: ASYMMETRIC_PADDING })).container,
 		'.input__display-text',
 		'.input__icon-right'
 	);
 });
 
-test('Select: ドロップダウンアイコンが padding 指定時もテキストに揃う', () => {
-	expectAligned(
-		render(Select, {
+test('Select: ドロップダウンアイコンが padding 指定時もテキストに揃う', async () => {
+	await expectAligned(
+		(await render(Select, {
 			value: 'a',
 			options: [{ value: 'a', label: 'A' }],
 			customStyle: ASYMMETRIC_PADDING
-		}).container,
+		})).container,
 		'.select__display-text',
 		'.select__dropdown-icon'
 	);
 });
 
-test('Select: inline でも padding 指定時にテキストに揃う', () => {
-	expectAligned(
-		render(Select, {
+test('Select: inline でも padding 指定時にテキストに揃う', async () => {
+	await expectAligned(
+		(await render(Select, {
 			value: 'a',
 			options: [{ value: 'a', label: 'A' }],
 			inline: true,
 			customStyle: ASYMMETRIC_PADDING
-		}).container,
+		})).container,
 		'.select__display-text',
 		'.select__dropdown-icon'
 	);
 });
 
-test('MultiSelect: ドロップダウンアイコンが padding 指定時もテキストに揃う', () => {
-	expectAligned(
-		render(MultiSelect, {
+test('MultiSelect: ドロップダウンアイコンが padding 指定時もテキストに揃う', async () => {
+	await expectAligned(
+		(await render(MultiSelect, {
 			value: ['a'],
 			options: [{ value: 'a', label: 'A' }],
 			customStyle: ASYMMETRIC_PADDING
-		}).container,
+		})).container,
 		'.multi-select__display-text',
 		'.multi-select__dropdown-icon'
 	);
 });
 
-test('MultiSelect: inline でも padding 指定時にテキストに揃う', () => {
-	expectAligned(
-		render(MultiSelect, {
+test('MultiSelect: inline でも padding 指定時にテキストに揃う', async () => {
+	await expectAligned(
+		(await render(MultiSelect, {
 			value: ['a'],
 			options: [{ value: 'a', label: 'A' }],
 			inline: true,
 			customStyle: ASYMMETRIC_PADDING
-		}).container,
+		})).container,
 		'.multi-select__display-text',
 		'.multi-select__dropdown-icon'
 	);
 });
 
 for (const inline of [false, true]) {
-	test(`Textarea: explicitly specifying the same padding does not move the button (inline=${inline})`, () => {
-		const baseline = render(Textarea, { value: 'first\nsecond', clearable: true, inline });
-		const explicit = render(Textarea, {
+	test(`Textarea: explicitly specifying the same padding does not move the button (inline=${inline})`, async () => {
+		const baseline = await render(Textarea, { value: 'first\nsecond', clearable: true, inline });
+		const explicit = await render(Textarea, {
 			value: 'first\nsecond',
 			clearable: true,
 			inline,
@@ -154,8 +154,8 @@ for (const inline of [false, true]) {
 				: 'padding: var(--svelte-ui-textarea-padding); padding-right: 4px'
 		});
 		const geometry = (container: HTMLElement) => {
-			const root = container.querySelector('.textarea') as HTMLElement;
-			const button = container.querySelector('.textarea__clear-button button') as HTMLElement;
+			const root = container.querySelector<HTMLElement>('.textarea') as HTMLElement;
+			const button = container.querySelector<HTMLElement>('.textarea__clear-button button') as HTMLElement;
 			const rootRect = root.getBoundingClientRect();
 			const buttonRect = button.getBoundingClientRect();
 			return {
@@ -176,15 +176,15 @@ for (const inline of [false, true]) {
 
 for (const inline of [false, true]) {
 	for (const customStyle of ['', 'width: 260px', 'padding-left: 28px']) {
-		test(`Textarea: default clear button position is preserved (inline=${inline}, style=${customStyle})`, () => {
-			const { container } = render(Textarea, {
+		test(`Textarea: default clear button position is preserved (inline=${inline}, style=${customStyle})`, async () => {
+			const { container } = await render(Textarea, {
 				value: 'first\nsecond',
 				clearable: true,
 				inline,
 				customStyle
 			});
-			const root = container.querySelector('.textarea') as HTMLElement;
-			const button = container.querySelector('.textarea__clear-button button') as HTMLElement;
+			const root = container.querySelector<HTMLElement>('.textarea') as HTMLElement;
+			const button = container.querySelector<HTMLElement>('.textarea__clear-button button') as HTMLElement;
 			const rootRect = root.getBoundingClientRect();
 			const buttonRect = button.getBoundingClientRect();
 
@@ -200,20 +200,20 @@ for (const inline of [false, true]) {
 		['padding-top: 24px; line-height: 28px', 24, 4],
 		['padding-right: 48px', inline ? -2 : 2, 48]
 	] as const) {
-		test(`Textarea: only changed padding axis moves button (inline=${inline}, ${customStyle})`, () => {
-			const { container } = render(Textarea, {
+		test(`Textarea: only changed padding axis moves button (inline=${inline}, ${customStyle})`, async () => {
+			const { container } = await render(Textarea, {
 				value: 'first\nsecond',
 				clearable: true,
 				inline,
 				customStyle
 			});
-			const root = container.querySelector('.textarea') as HTMLElement;
-			const button = container.querySelector('.textarea__clear-button button') as HTMLElement;
+			const root = container.querySelector<HTMLElement>('.textarea') as HTMLElement;
+			const button = container.querySelector<HTMLElement>('.textarea__clear-button button') as HTMLElement;
 			const rootRect = root.getBoundingClientRect();
 			const buttonRect = button.getBoundingClientRect();
 
 			if (customStyle.startsWith('padding-top')) {
-				const firstLine = container.querySelector('.textarea__display-text') as HTMLElement;
+				const firstLine = container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
 				expect(centerY(button)).toBeCloseTo(
 					firstLine.getBoundingClientRect().top +
 						0.5 * parseFloat(getComputedStyle(firstLine).lineHeight),
@@ -229,15 +229,15 @@ for (const inline of [false, true]) {
 
 for (const inline of [false, true]) {
 	for (const padding of ['4px 12px', '24px 12px 8px']) {
-		test(`Textarea: clear button follows first line (inline=${inline}, padding=${padding})`, () => {
-			const { container } = render(Textarea, {
+		test(`Textarea: clear button follows first line (inline=${inline}, padding=${padding})`, async () => {
+			const { container } = await render(Textarea, {
 				value: 'first\nsecond\nthird',
 				clearable: true,
 				inline,
 				customStyle: `padding: ${padding}; line-height: 28px`
 			});
-			const text = container.querySelector('.textarea__display-text') as HTMLElement;
-			const button = container.querySelector('.textarea__clear-button button') as HTMLElement;
+			const text = container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
+			const button = container.querySelector<HTMLElement>('.textarea__clear-button button') as HTMLElement;
 			const firstLineCenter = text.getBoundingClientRect().top + 14;
 			expect(centerY(button)).toBeCloseTo(firstLineCenter, 0);
 		});
@@ -251,19 +251,19 @@ for (const inline of [false, true]) {
 		['padding: 24px 12px 8px; padding-right: 48px', 48],
 		['padding: 24px 0 8px 12px', 0]
 	] as const) {
-		test(`Textarea: right padding remains effective (inline=${inline}, ${customStyle})`, () => {
-			const { container } = render(Textarea, {
+		test(`Textarea: right padding remains effective (inline=${inline}, ${customStyle})`, async () => {
+			const { container } = await render(Textarea, {
 				value: 'first\nsecond',
 				clearable: true,
 				linkify: true,
 				inline,
 				customStyle
 			});
-			const root = container.querySelector('.textarea') as HTMLElement;
-			const button = container.querySelector('.textarea__clear-button button') as HTMLElement;
-			const display = container.querySelector('.textarea__display-text') as HTMLElement;
-			const links = container.querySelector('.textarea__link-text') as HTMLElement;
-			const input = container.querySelector('textarea') as HTMLTextAreaElement;
+			const root = container.querySelector<HTMLElement>('.textarea') as HTMLElement;
+			const button = container.querySelector<HTMLElement>('.textarea__clear-button button') as HTMLElement;
+			const display = container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
+			const links = container.querySelector<HTMLElement>('.textarea__link-text') as HTMLElement;
+			const input = container.querySelector<HTMLElement>('textarea') as HTMLTextAreaElement;
 			const buttonRight = button.getBoundingClientRect().right;
 			const textRight = textBox(display).right;
 

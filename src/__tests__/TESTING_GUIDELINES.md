@@ -59,8 +59,8 @@ const select1 = screen.getByRole('combobox'); // どちらのselectか不明
 const select2 = screen.getByRole('combobox'); // 同じ要素を取得してしまう可能性
 
 // ✅ 正しい: 各コンポーネントにidを指定
-const screen1 = render(Component, { id: 'component-1' });
-const screen2 = render(Component, { id: 'component-2' });
+const screen1 = await render(Component, { id: 'component-1' });
+const screen2 = await render(Component, { id: 'component-2' });
 const element1 = screen1.container.querySelector('#component-1');
 const element2 = screen2.container.querySelector('#component-2');
 ```
@@ -69,12 +69,12 @@ const element2 = screen2.container.querySelector('#component-2');
 
 ```typescript
 // 複数のSelectコンポーネントでイベントテスト
-const screen1 = render(Select, {
+const screen1 = await render(Select, {
   options: [...],
   id: 'select-disabled-1',
   disabled: true
 });
-const screen2 = render(Select, {
+const screen2 = await render(Select, {
   options: [...],
   id: 'select-disabled-2',
   disabled: true
@@ -129,7 +129,7 @@ function collectCssVarNames(element: Element): string[] {
 
 // 2. テストで動的収集と期待値リストを組み合わせて使用
 test('[Component] CSS variables used are defined (computed) in the page', async () => {
-	const screen = render([Component], {
+	const screen = await render([Component], {
 		/* props */
 	});
 	const wrapper = screen.getByTestId('[component]');

@@ -4,7 +4,7 @@ import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import ConfirmDialog from '../lib/components/ConfirmDialog.svelte';
 
 test('renders ConfirmDialog with default props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true
 	});
@@ -14,25 +14,25 @@ test('renders ConfirmDialog with default props', async () => {
 
 test('ConfirmDialog can be opened and closed', async () => {
 	// Test closed state
-	const screenClosed = render(ComponentWrapper, {
+	const screenClosed = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: false
 	});
-	const modalClosed = screenClosed.container.querySelector('[data-testid="modal"]');
+	const modalClosed = screenClosed.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(modalClosed).toHaveClass('fade-out');
 
 	// Test open state
-	const screenOpen = render(ComponentWrapper, {
+	const screenOpen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true
 	});
-	const modalOpen = screenOpen.container.querySelector('[data-testid="modal"]');
+	const modalOpen = screenOpen.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(modalOpen).toHaveClass('fade-in');
 });
 
 test('ConfirmDialog confirm button works correctly', async () => {
 	let submitCalled = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		onSubmit: () => {
@@ -41,7 +41,7 @@ test('ConfirmDialog confirm button works correctly', async () => {
 		id: 'confirm-dialog-test'
 	});
 
-	const confirmButton = screen.container.querySelector(
+	const confirmButton = screen.container.querySelector<HTMLElement>(
 		'button[data-testid="button"]:last-child'
 	) as HTMLButtonElement | null;
 	expect(confirmButton).toBeInTheDocument();
@@ -52,7 +52,7 @@ test('ConfirmDialog confirm button works correctly', async () => {
 
 test('ConfirmDialog cancel button works correctly', async () => {
 	let cancelCalled = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		onCancel: () => {
@@ -61,7 +61,7 @@ test('ConfirmDialog cancel button works correctly', async () => {
 		id: 'cancel-dialog-test'
 	});
 
-	const cancelButton = screen.container.querySelector(
+	const cancelButton = screen.container.querySelector<HTMLElement>(
 		'button[data-testid="button"]:first-child'
 	) as HTMLButtonElement | null;
 	expect(cancelButton).toBeInTheDocument();
@@ -71,9 +71,9 @@ test('ConfirmDialog cancel button works correctly', async () => {
 });
 
 test('ConfirmDialog treats Escape as cancel', async () => {
-	const { userEvent } = await import('@vitest/browser/context');
+	const { userEvent } = await import('vitest/browser');
 	let cancelCount = 0;
-	render(ComponentWrapper, {
+	await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		onCancel: () => {
@@ -89,7 +89,7 @@ test('ConfirmDialog treats Escape as cancel', async () => {
 
 test('ConfirmDialog does not double-call onCancel when the cancel button is used', async () => {
 	let cancelCount = 0;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		onCancel: () => {
@@ -98,7 +98,7 @@ test('ConfirmDialog does not double-call onCancel when the cancel button is used
 		id: 'cancel-once-dialog-test'
 	});
 
-	const cancelButton = screen.container.querySelector(
+	const cancelButton = screen.container.querySelector<HTMLElement>(
 		'button[data-testid="button"]:first-child'
 	) as HTMLButtonElement | null;
 
@@ -110,28 +110,28 @@ test('ConfirmDialog does not double-call onCancel when the cancel button is used
 
 test('ConfirmDialog danger prop renders correctly', async () => {
 	// Test default (non-danger)
-	const screenDefault = render(ComponentWrapper, {
+	const screenDefault = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		danger: false,
 		id: 'confirm-dialog-default'
 	});
-	const modalDefault = screenDefault.container.querySelector('[data-testid="modal"]');
+	const modalDefault = screenDefault.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(modalDefault).toBeInTheDocument();
 
 	// Test danger variant
-	const screenDanger = render(ComponentWrapper, {
+	const screenDanger = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		danger: true,
 		id: 'confirm-dialog-danger'
 	});
-	const modalDanger = screenDanger.container.querySelector('[data-testid="modal"]');
+	const modalDanger = screenDanger.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(modalDanger).toBeInTheDocument();
 });
 
 test('ConfirmDialog with custom text renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		title: 'Custom Title',
@@ -148,7 +148,7 @@ test('ConfirmDialog with custom text renders correctly', async () => {
 });
 
 test('ConfirmDialog with custom width renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		width: 600,
@@ -159,7 +159,7 @@ test('ConfirmDialog with custom width renders correctly', async () => {
 });
 
 test('ConfirmDialog with HTML description renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		description: '<strong>Bold text</strong> and <em>italic text</em>',
@@ -170,7 +170,7 @@ test('ConfirmDialog with HTML description renders correctly', async () => {
 });
 
 test('ConfirmDialog with closeIfClickOutside=false renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		closeIfClickOutside: false,
@@ -181,7 +181,7 @@ test('ConfirmDialog with closeIfClickOutside=false renders correctly', async () 
 });
 
 test('ConfirmDialog with closeIfClickOutside=true renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true,
 		closeIfClickOutside: true,
@@ -194,7 +194,7 @@ test('ConfirmDialog with closeIfClickOutside=true renders correctly', async () =
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('ConfirmDialog CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: ConfirmDialog,
 		isOpen: true
 	});

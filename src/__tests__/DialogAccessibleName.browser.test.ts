@@ -5,7 +5,7 @@
  */
 import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { page } from '@vitest/browser/context';
+import { page } from 'vitest/browser';
 import { createRawSnippet } from 'svelte';
 import Dialog from '../lib/components/Dialog.svelte';
 import Drawer from '../lib/components/Drawer.svelte';
@@ -15,9 +15,9 @@ const customHeader = createRawSnippet(() => ({ render: () => '<h2>独自ヘッ�
 type Opened = { dialog: HTMLDialogElement; container: Element };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const open = (comp: any, props: any): Opened => {
-	const { container } = render(comp, props);
-	const dialog = container.querySelector('dialog.modal') as HTMLDialogElement;
+const open = async (comp: any, props: any): Promise<Opened> => {
+	const { container } = await render(comp, props);
+	const dialog = container.querySelector<HTMLElement>('dialog.modal') as HTMLDialogElement;
 	dialog.showModal();
 	return { dialog, container };
 };
@@ -28,7 +28,7 @@ const expectReferencesResolve = ({ dialog, container }: Opened) => {
 		const id = dialog.getAttribute(attr);
 		if (id === null) continue;
 		expect(
-			container.querySelector(`#${CSS.escape(id)}`),
+			container.querySelector<HTMLElement>(`#${CSS.escape(id)}`),
 			`${attr} の参照先がない: ${id}`
 		).not.toBeNull();
 	}
@@ -41,29 +41,29 @@ const expectNamed = async (opened: Opened, name: string) => {
 };
 
 test('Dialog: title だけで名前が付く', async () => {
-	await expectNamed(open(Dialog, { title: 'タイトル' }), 'タイトル');
+	await expectNamed(await open(Dialog, { title: 'タイトル' }), 'タイトル');
 });
 
 test('Dialog: id を渡しても名前が付く', async () => {
-	await expectNamed(open(Dialog, { title: 'タイトル', id: 'foo' }), 'タイトル');
+	await expectNamed(await open(Dialog, { title: 'タイトル', id: 'foo' }), 'タイトル');
 });
 
 test('Dialog: ariaLabel は title より優先される', async () => {
-	await expectNamed(open(Dialog, { title: 'タイトル', ariaLabel: 'ラベル' }), 'ラベル');
+	await expectNamed(await open(Dialog, { title: 'タイトル', ariaLabel: 'ラベル' }), 'ラベル');
 });
 
 test('Dialog: header を差し替えても title が名前になる', async () => {
-	await expectNamed(open(Dialog, { title: 'タイトル', header: customHeader }), 'タイトル');
+	await expectNamed(await open(Dialog, { title: 'タイトル', header: customHeader }), 'タイトル');
 });
 
 test('Dialog: description の参照先も実在する', async () => {
-	const opened = open(Dialog, { title: 'タイトル', description: '説明' });
+	const opened = await open(Dialog, { title: 'タイトル', description: '説明' });
 	expect(opened.dialog.getAttribute('aria-describedby')).not.toBeNull();
 	await expectNamed(opened, 'タイトル');
 });
 
-test('Dialog: 名前は aria-label と aria-labelledby のどちらか一方だけで与える', () => {
-	const { dialog } = open(Dialog, { title: 'タイトル' });
+test('Dialog: 名前は aria-label と aria-labelledby のどちらか一方だけで与える', async () => {
+	const { dialog } = await open(Dialog, { title: 'タイトル' });
 
 	expect(
 		dialog.hasAttribute('aria-label') && dialog.hasAttribute('aria-labelledby'),
@@ -73,9 +73,9 @@ test('Dialog: 名前は aria-label と aria-labelledby のどちらか一方だ�
 });
 
 test('Drawer: title だけで名前が付く', async () => {
-	await expectNamed(open(Drawer, { title: 'ドロワー' }), 'ドロワー');
+	await expectNamed(await open(Drawer, { title: 'ドロワー' }), 'ドロワー');
 });
 
 test('Drawer: title も ariaLabel も無ければ既定の名前が付く', async () => {
-	await expectNamed(open(Drawer, {}), 'Drawer');
+	await expectNamed(await open(Drawer, {}), 'Drawer');
 });

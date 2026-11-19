@@ -24,7 +24,7 @@ const createAnchorElement = (): HTMLElement => {
 
 test('renders PopupMenu with basic props', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -33,13 +33,13 @@ test('renders PopupMenu with basic props', async () => {
 	});
 
 	// PopupMenuコンポーネントがレンダリングされることを確認
-	const popupMenu = screen.container.querySelector('#popup-menu-basic');
+	const popupMenu = screen.container.querySelector<HTMLElement>('#popup-menu-basic');
 	await expect.element(popupMenu).toBeVisible();
 });
 
 test('shows menu items when open', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -51,13 +51,13 @@ test('shows menu items when open', async () => {
 	expect(menuItems).toHaveLength(3); // separatorを除く
 
 	// 最初のアイテムのテキストを確認
-	const firstItem = screen.container.querySelector('#popup-menu-items .popup-menu__text');
+	const firstItem = screen.container.querySelector<HTMLElement>('#popup-menu-items .popup-menu__text');
 	await expect.element(firstItem).toHaveTextContent('Edit');
 });
 
 test('shows separator between menu items', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -65,7 +65,7 @@ test('shows separator between menu items', async () => {
 		id: 'popup-menu-separator'
 	});
 
-	const separator = screen.container.querySelector('#popup-menu-separator .popup-menu__separator');
+	const separator = screen.container.querySelector<HTMLElement>('#popup-menu-separator .popup-menu__separator');
 	await expect.element(separator).toHaveAttribute('role', 'separator');
 });
 
@@ -82,7 +82,7 @@ test('handles menu item click', async () => {
 		}
 	];
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems,
@@ -90,7 +90,7 @@ test('handles menu item click', async () => {
 		id: 'popup-menu-click'
 	});
 
-	const menuButton = screen.container.querySelector(
+	const menuButton = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-click .popup-menu__button'
 	) as HTMLElement;
 	await menuButton.click();
@@ -100,7 +100,7 @@ test('handles menu item click', async () => {
 
 test('handles keyboard navigation with arrow keys', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -108,7 +108,7 @@ test('handles keyboard navigation with arrow keys', async () => {
 		id: 'popup-menu-keyboard'
 	});
 
-	const menuContainer = screen.container.querySelector(
+	const menuContainer = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-keyboard .popup-menu'
 	) as HTMLElement;
 	if (menuContainer) {
@@ -126,7 +126,7 @@ test('handles keyboard navigation with arrow keys', async () => {
 
 test('handles Escape key to close menu', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -134,7 +134,7 @@ test('handles Escape key to close menu', async () => {
 		id: 'popup-menu-escape'
 	});
 
-	const menuContainer = screen.container.querySelector(
+	const menuContainer = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-escape .popup-menu'
 	) as HTMLElement;
 	if (menuContainer) {
@@ -162,7 +162,7 @@ test('handles Enter key to execute menu item', async () => {
 		}
 	];
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems,
@@ -170,7 +170,7 @@ test('handles Enter key to execute menu item', async () => {
 		id: 'popup-menu-enter'
 	});
 
-	const menuContainer = screen.container.querySelector(
+	const menuContainer = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-enter .popup-menu'
 	) as HTMLElement;
 	if (menuContainer) {
@@ -193,7 +193,7 @@ test('handles Enter key to execute menu item', async () => {
 
 test('shows icons when provided', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -202,13 +202,13 @@ test('shows icons when provided', async () => {
 	});
 
 	// アイコンが存在することを確認（Iconコンポーネントがレンダリングされることを確認）
-	const popupMenu = screen.container.querySelector('#popup-menu-icons');
+	const popupMenu = screen.container.querySelector<HTMLElement>('#popup-menu-icons');
 	await expect.element(popupMenu).toBeVisible();
 });
 
 test('renders checked items as menuitemradio with aligned mark column', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: [
@@ -224,14 +224,14 @@ test('renders checked items as menuitemradio with aligned mark column', async ()
 	expect(buttons[0].getAttribute('role')).toBe('menuitemradio');
 	expect(buttons[0].getAttribute('aria-checked')).toBe('true');
 	expect(buttons[0].hasAttribute('aria-describedby')).toBe(false);
-	expect(buttons[0].querySelector('.popup-menu__check')?.textContent?.trim()).toBe('check');
+	expect(buttons[0].querySelector<HTMLElement>('.popup-menu__check')?.textContent?.trim()).toBe('check');
 
 	expect(buttons[1].getAttribute('role')).toBe('menuitemradio');
 	expect(buttons[1].getAttribute('aria-checked')).toBe('false');
-	expect(buttons[1].querySelector('.popup-menu__check')?.textContent?.trim()).toBe('');
+	expect(buttons[1].querySelector<HTMLElement>('.popup-menu__check')?.textContent?.trim()).toBe('');
 
-	const checkedText = buttons[0].querySelector('.popup-menu__text')!.getBoundingClientRect();
-	const uncheckedText = buttons[1].querySelector('.popup-menu__text')!.getBoundingClientRect();
+	const checkedText = buttons[0].querySelector<HTMLElement>('.popup-menu__text')!.getBoundingClientRect();
+	const uncheckedText = buttons[1].querySelector<HTMLElement>('.popup-menu__text')!.getBoundingClientRect();
 	expect(uncheckedText.left).toBe(checkedText.left);
 
 	expect(buttons[2].getAttribute('role')).toBe('menuitem');
@@ -241,7 +241,7 @@ test('renders checked items as menuitemradio with aligned mark column', async ()
 test('disabled items are announced as disabled and do not execute', async () => {
 	let executed = false;
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: [
@@ -259,7 +259,7 @@ test('disabled items are announced as disabled and do not execute', async () => 
 	expect(items[1].getAttribute('aria-disabled')).toBe('true');
 	expect(items[1].hasAttribute('href')).toBe(false);
 
-	const menu = screen.container.querySelector('#popup-menu-disabled') as HTMLElement;
+	const menu = screen.container.querySelector<HTMLElement>('#popup-menu-disabled') as HTMLElement;
 	await expect.poll(() => document.activeElement).toBe(menu);
 	items[0].click();
 	const press = (key: string) =>
@@ -274,7 +274,7 @@ test('disabled items are announced as disabled and do not execute', async () => 
 
 test('applies correct CSS variables', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -295,7 +295,7 @@ test('applies correct CSS variables', async () => {
 
 test('handles mouse enter on menu items', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -303,7 +303,7 @@ test('handles mouse enter on menu items', async () => {
 		id: 'popup-menu-mouse'
 	});
 
-	const menuButton = screen.container.querySelector(
+	const menuButton = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-mouse .popup-menu__button'
 	) as HTMLElement;
 
@@ -320,7 +320,7 @@ test('handles mouse enter on menu items', async () => {
 
 test('handles focus on menu items', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -342,14 +342,14 @@ test('handles focus on menu items', async () => {
 		// フォーカスが設定されることを確認（menuContainerRefにtabindex="-1"があるため、フォーカスが移る可能性がある）
 		await new Promise(resolve => setTimeout(resolve, 100));
 		// ボタンにフォーカスがあるか、またはメニューコンテナにフォーカスがあるかを確認
-		const menuContainer = screen.container.querySelector('#popup-menu-focus') as HTMLElement;
+		const menuContainer = screen.container.querySelector<HTMLElement>('#popup-menu-focus') as HTMLElement;
 		expect(document.activeElement === firstButton || document.activeElement === menuContainer).toBe(true);
 	}
 });
 
 test('handles Home and End keys for navigation', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -357,7 +357,7 @@ test('handles Home and End keys for navigation', async () => {
 		id: 'popup-menu-home-end'
 	});
 
-	const menuContainer = screen.container.querySelector(
+	const menuContainer = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-home-end .popup-menu'
 	) as HTMLElement;
 	if (menuContainer) {
@@ -380,7 +380,7 @@ test('handles Home and End keys for navigation', async () => {
 
 test('handles Tab key to close menu', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),
@@ -388,7 +388,7 @@ test('handles Tab key to close menu', async () => {
 		id: 'popup-menu-tab'
 	});
 
-	const menuContainer = screen.container.querySelector(
+	const menuContainer = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-tab .popup-menu'
 	) as HTMLElement;
 	if (menuContainer) {
@@ -416,7 +416,7 @@ test('handles Space key to execute menu item', async () => {
 		}
 	];
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems,
@@ -424,7 +424,7 @@ test('handles Space key to execute menu item', async () => {
 		id: 'popup-menu-space'
 	});
 
-	const menuContainer = screen.container.querySelector(
+	const menuContainer = screen.container.querySelector<HTMLElement>(
 		'#popup-menu-space .popup-menu'
 	) as HTMLElement;
 	if (menuContainer) {
@@ -447,7 +447,7 @@ test('handles Space key to execute menu item', async () => {
 
 test('handles empty menu items array', async () => {
 	const anchor = createAnchorElement();
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: [],
@@ -459,7 +459,7 @@ test('handles empty menu items array', async () => {
 	expect(menuButtons).toHaveLength(0);
 
 	// PopupMenuコンポーネント自体は存在することを確認
-	const popupMenu = screen.container.querySelector('#popup-menu-empty');
+	const popupMenu = screen.container.querySelector<HTMLElement>('#popup-menu-empty');
 	await expect.element(popupMenu).toBeVisible();
 });
 

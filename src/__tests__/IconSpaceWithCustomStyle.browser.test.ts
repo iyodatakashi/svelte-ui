@@ -21,144 +21,144 @@ document.head.appendChild(themeStyle);
 
 const CUSTOM_STYLE = 'padding: 8px 12px';
 
-const sidePadding = (container: Element, fieldSelector: string, side: 'Left' | 'Right') => {
-	const field = container.querySelector(fieldSelector) as HTMLElement;
+const sidePadding = async (container: Element, fieldSelector: string, side: 'Left' | 'Right') => {
+	const field = container.querySelector<HTMLElement>(fieldSelector) as HTMLElement;
 	return parseFloat(getComputedStyle(field)[`padding${side}`]);
 };
 
 /** 装飾側の余白が customStyle の指定で変わらず、素の余白より広いままであることを確認する */
-const expectIconSpaceKept = (
+const expectIconSpaceKept = async (
 	withoutCustom: Element,
 	withCustom: Element,
 	plain: Element,
 	fieldSelector: string,
 	side: 'Left' | 'Right'
 ) => {
-	const expected = sidePadding(withoutCustom, fieldSelector, side);
-	const plainPadding = sidePadding(plain, fieldSelector, side);
+	const expected = await sidePadding(withoutCustom, fieldSelector, side);
+	const plainPadding = await sidePadding(plain, fieldSelector, side);
 
 	expect(expected).toBeGreaterThan(plainPadding);
-	expect(sidePadding(withCustom, fieldSelector, side)).toBe(expected);
+	expect(await sidePadding(withCustom, fieldSelector, side)).toBe(expected);
 };
 
-test('Input: rightIcon の余白が customStyle で消えない', () => {
+test('Input: rightIcon の余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(Input, { value: 'x', rightIcon: 'search' }).container,
-		render(Input, { value: 'x', rightIcon: 'search', customStyle: CUSTOM_STYLE }).container,
-		render(Input, { value: 'x' }).container,
+		(await render(Input, { value: 'x', rightIcon: 'search' })).container,
+		(await render(Input, { value: 'x', rightIcon: 'search', customStyle: CUSTOM_STYLE })).container,
+		(await render(Input, { value: 'x' })).container,
 		'.input',
 		'Right'
 	);
 });
 
-test('Input: leftIcon の余白が customStyle で消えない', () => {
+test('Input: leftIcon の余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(Input, { value: 'x', leftIcon: 'search' }).container,
-		render(Input, { value: 'x', leftIcon: 'search', customStyle: CUSTOM_STYLE }).container,
-		render(Input, { value: 'x' }).container,
+		(await render(Input, { value: 'x', leftIcon: 'search' })).container,
+		(await render(Input, { value: 'x', leftIcon: 'search', customStyle: CUSTOM_STYLE })).container,
+		(await render(Input, { value: 'x' })).container,
 		'.input',
 		'Left'
 	);
 });
 
-test('Input: clearable の余白が customStyle で消えない', () => {
+test('Input: clearable の余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(Input, { value: 'x', clearable: true }).container,
-		render(Input, { value: 'x', clearable: true, customStyle: CUSTOM_STYLE }).container,
-		render(Input, { value: 'x' }).container,
+		(await render(Input, { value: 'x', clearable: true })).container,
+		(await render(Input, { value: 'x', clearable: true, customStyle: CUSTOM_STYLE })).container,
+		(await render(Input, { value: 'x' })).container,
 		'.input',
 		'Right'
 	);
 });
 
-test('Input: rightIcon と clearable 併用時の余白が customStyle で消えない', () => {
+test('Input: rightIcon と clearable 併用時の余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(Input, { value: 'x', rightIcon: 'search', clearable: true }).container,
-		render(Input, {
+		(await render(Input, { value: 'x', rightIcon: 'search', clearable: true })).container,
+		(await render(Input, {
 			value: 'x',
 			rightIcon: 'search',
 			clearable: true,
 			customStyle: CUSTOM_STYLE
-		}).container,
-		render(Input, { value: 'x' }).container,
+		})).container,
+		(await render(Input, { value: 'x' })).container,
 		'.input',
 		'Right'
 	);
 });
 
-test('Input: inline でも rightIcon の余白が customStyle で消えない', () => {
+test('Input: inline でも rightIcon の余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(Input, { value: 'x', rightIcon: 'search', inline: true }).container,
-		render(Input, {
+		(await render(Input, { value: 'x', rightIcon: 'search', inline: true })).container,
+		(await render(Input, {
 			value: 'x',
 			rightIcon: 'search',
 			inline: true,
 			customStyle: CUSTOM_STYLE
-		}).container,
-		render(Input, { value: 'x', inline: true }).container,
+		})).container,
+		(await render(Input, { value: 'x', inline: true })).container,
 		'.input',
 		'Right'
 	);
 });
 
-test('Textarea: clearable の余白が customStyle で消えない', () => {
-	const plain = render(Textarea, { value: 'x' }).container;
-	const base = render(Textarea, { value: 'x', clearable: true }).container;
-	const custom = render(Textarea, {
+test('Textarea: clearable の余白が customStyle で消えない', async () => {
+	const plain = (await render(Textarea, { value: 'x' })).container;
+	const base = (await render(Textarea, { value: 'x', clearable: true })).container;
+	const custom = (await render(Textarea, {
 		value: 'x',
 		clearable: true,
 		customStyle: CUSTOM_STYLE
-	}).container;
+	})).container;
 	const textRightSpace = (container: Element) => {
-		const root = container.querySelector('.textarea') as HTMLElement;
-		const display = container.querySelector('.textarea__display-text') as HTMLElement;
+		const root = container.querySelector<HTMLElement>('.textarea') as HTMLElement;
+		const display = container.querySelector<HTMLElement>('.textarea__display-text') as HTMLElement;
 		return root.getBoundingClientRect().right - textBox(display).right;
 	};
 
 	expect(textRightSpace(base)).toBeGreaterThan(textRightSpace(plain));
 	expect(textRightSpace(custom)).toBeGreaterThan(textRightSpace(base));
-	expect(sidePadding(custom, '.textarea', 'Right')).toBe(12);
+	expect(await sidePadding(custom, '.textarea', 'Right')).toBe(12);
 });
 
-test('Combobox: ドロップダウンアイコンの余白が customStyle で消えない', () => {
+test('Combobox: ドロップダウンアイコンの余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(Combobox, { value: '', options: ['a'] }).container,
-		render(Combobox, { value: '', options: ['a'], customStyle: CUSTOM_STYLE }).container,
-		render(Input, { value: 'x' }).container,
+		(await render(Combobox, { value: '', options: ['a'] })).container,
+		(await render(Combobox, { value: '', options: ['a'], customStyle: CUSTOM_STYLE })).container,
+		(await render(Input, { value: 'x' })).container,
 		'.input',
 		'Right'
 	);
 });
 
-test('ColorPicker: スウォッチの余白が customStyle で消えない', () => {
+test('ColorPicker: スウォッチの余白が customStyle で消えない', async () => {
 	expectIconSpaceKept(
-		render(ColorPicker, { value: '#ff0000' }).container,
-		render(ColorPicker, { value: '#ff0000', customStyle: CUSTOM_STYLE }).container,
-		render(Input, { value: 'x' }).container,
+		(await render(ColorPicker, { value: '#ff0000' })).container,
+		(await render(ColorPicker, { value: '#ff0000', customStyle: CUSTOM_STYLE })).container,
+		(await render(Input, { value: 'x' })).container,
 		'.input',
 		'Left'
 	);
 });
 
-test('Select: ドロップダウンアイコンの余白が customStyle で消えない', () => {
-	const withoutCustom = render(Select, { value: 'a', options: [{ value: 'a', label: 'A' }] });
-	const withCustom = render(Select, {
+test('Select: ドロップダウンアイコンの余白が customStyle で消えない', async () => {
+	const withoutCustom = await render(Select, { value: 'a', options: [{ value: 'a', label: 'A' }] });
+	const withCustom = await render(Select, {
 		value: 'a',
 		options: [{ value: 'a', label: 'A' }],
 		customStyle: CUSTOM_STYLE
 	});
 
-	const expected = sidePadding(withoutCustom.container, '.select__trigger', 'Right');
+	const expected = await sidePadding(withoutCustom.container, '.select__trigger', 'Right');
 	expect(expected).toBeGreaterThan(0);
-	expect(sidePadding(withCustom.container, '.select__trigger', 'Right')).toBe(expected);
+	expect(await sidePadding(withCustom.container, '.select__trigger', 'Right')).toBe(expected);
 });
 
-test('MultiSelect: ドロップダウンアイコンの余白が customStyle で消えない', () => {
+test('MultiSelect: ドロップダウンアイコンの余白が customStyle で消えない', async () => {
 	const options = [{ value: 'a', label: 'A' }];
-	const withoutCustom = render(MultiSelect, { value: ['a'], options });
-	const withCustom = render(MultiSelect, { value: ['a'], options, customStyle: CUSTOM_STYLE });
+	const withoutCustom = await render(MultiSelect, { value: ['a'], options });
+	const withCustom = await render(MultiSelect, { value: ['a'], options, customStyle: CUSTOM_STYLE });
 
-	const expected = sidePadding(withoutCustom.container, '.multi-select__trigger', 'Right');
+	const expected = await sidePadding(withoutCustom.container, '.multi-select__trigger', 'Right');
 	expect(expected).toBeGreaterThan(0);
-	expect(sidePadding(withCustom.container, '.multi-select__trigger', 'Right')).toBe(expected);
+	expect(await sidePadding(withCustom.container, '.multi-select__trigger', 'Right')).toBe(expected);
 });

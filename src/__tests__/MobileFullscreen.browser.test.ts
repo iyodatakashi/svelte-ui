@@ -51,13 +51,13 @@ const CASES: [string, unknown, Record<string, unknown>, string | null][] = [
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
 const openPopup = async (comp: any, props: any, triggerSelector: string | null) => {
-	const { container } = render(comp, props);
+	const { container } = await render(comp, props);
 	if (triggerSelector) {
-		(container.querySelector(triggerSelector) as HTMLElement).click();
+		(container.querySelector<HTMLElement>(triggerSelector) as HTMLElement).click();
 		await tick();
 	}
 	await new Promise((resolve) => setTimeout(resolve, 50));
-	return container.querySelector('[data-testid="popup"]') as HTMLElement;
+	return container.querySelector<HTMLElement>('[data-testid="popup"]') as HTMLElement;
 };
 
 test.each(CASES)('%s は既定ではボトムシートにしない', async (_name, comp, props, trigger) => {
@@ -111,20 +111,20 @@ const navItemWithChildren = {
 };
 
 const clickAndGetPopup = async (container: Element) => {
-	(container.querySelector('a,button') as HTMLElement).click();
+	(container.querySelector<HTMLElement>('a,button') as HTMLElement).click();
 	await tick();
 	await new Promise((resolve) => setTimeout(resolve, 60));
-	return document.querySelector('[data-testid="popup"]') as HTMLElement;
+	return document.querySelector<HTMLElement>('[data-testid="popup"]') as HTMLElement;
 };
 
 const openNavItemSubmenu = async (props: Record<string, unknown>) =>
 	clickAndGetPopup(
-		render(NavItem, {
+		(await render(NavItem, {
 			item: navItemWithChildren,
 			childrenVariant: 'popup',
 			...props
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} as any).container
+		} as any)).container
 	);
 
 test('NavItem は既定ではボトムシートにしない', async () => {
@@ -140,12 +140,12 @@ test('NavItem は mobileFullscreen=true で有効にできる', async () => {
 /** Nav 経由でも NavItem の popup サブメニューを制御できること */
 const openNavSubmenu = async (props: Record<string, unknown>) =>
 	clickAndGetPopup(
-		render(Nav, {
+		(await render(Nav, {
 			items: [navItemWithChildren],
 			childrenVariant: 'popup',
 			...props
 			// eslint-disable-next-line @typescript-eslint/no-explicit-any
-		} as any).container
+		} as any)).container
 	);
 
 test('Nav は既定ではボトムシートにしない', async () => {

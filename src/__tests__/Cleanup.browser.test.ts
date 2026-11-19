@@ -7,7 +7,7 @@
 
 import { test, expect, beforeAll, beforeEach, afterEach } from 'vitest';
 import { render } from 'vitest-browser-svelte';
-import { userEvent } from '@vitest/browser/context';
+import { userEvent } from 'vitest/browser';
 import { popupManager } from '../lib/utils/popupManager';
 import { snackbar } from '../lib/utils/snackbar.svelte';
 import Snackbar from '../lib/components/Snackbar.svelte';
@@ -51,7 +51,7 @@ const disableAnimations = () => {
 	return () => style.remove();
 };
 
-const isMenuOpen = () => document.querySelector('#cleanup-menu-popup')!.matches(':popover-open');
+const isMenuOpen = () => document.querySelector<HTMLElement>('#cleanup-menu-popup')!.matches(':popover-open');
 
 beforeAll(() => {
 	track(document, 'document');
@@ -68,7 +68,7 @@ afterEach(() => {
 });
 
 test('Popup: unmounting right after mount leaves no global listener', async () => {
-	const { unmount } = render(CleanupPopupMenu);
+	const { unmount } = await render(CleanupPopupMenu);
 	unmount();
 
 	await settle();
@@ -78,7 +78,7 @@ test('Popup: unmounting right after mount leaves no global listener', async () =
 test('Popup: unmounting right after open() leaves no listener and no popupManager entry', async () => {
 	const registeredBefore = popupManager.getOpenCount();
 
-	const { unmount } = render(CleanupPopupMenu);
+	const { unmount } = await render(CleanupPopupMenu);
 	document.querySelector<HTMLButtonElement>('#cleanup-anchor')!.click();
 	unmount();
 
@@ -88,8 +88,8 @@ test('Popup: unmounting right after open() leaves no listener and no popupManage
 });
 
 test('Popup: unmounting while open leaves no global listener', async () => {
-	const { unmount } = render(CleanupPopupMenu);
-	await userEvent.click(document.querySelector('#cleanup-anchor')!);
+	const { unmount } = await render(CleanupPopupMenu);
+	await userEvent.click(document.querySelector<HTMLElement>('#cleanup-anchor')!);
 	await expect.poll(isMenuOpen).toBe(true);
 	unmount();
 
@@ -100,8 +100,8 @@ test('Popup: unmounting while open leaves no global listener', async () => {
 test('Popup: close() hides the popover even when animations are disabled', async () => {
 	const restoreAnimations = disableAnimations();
 
-	const { unmount } = render(CleanupPopupMenu);
-	await userEvent.click(document.querySelector('#cleanup-anchor')!);
+	const { unmount } = await render(CleanupPopupMenu);
+	await userEvent.click(document.querySelector<HTMLElement>('#cleanup-anchor')!);
 	await expect.poll(isMenuOpen).toBe(true);
 
 	await userEvent.keyboard('{Escape}');
@@ -116,10 +116,10 @@ test('Popup: close() hides the popover even when animations are disabled', async
 test('Modal: close() closes the dialog and reports the reason when animations are disabled', async () => {
 	const restoreAnimations = disableAnimations();
 
-	const screen = render(DialogCallbacks);
+	const screen = await render(DialogCallbacks);
 	screen.component.open();
 	await settle();
-	const dialog = document.querySelector('dialog') as HTMLDialogElement;
+	const dialog = document.querySelector<HTMLElement>('dialog') as HTMLDialogElement;
 	expect(dialog.open).toBe(true);
 
 	screen.component.close();
@@ -132,7 +132,7 @@ test('Modal: close() closes the dialog and reports the reason when animations ar
 test('Snackbar: auto-dismiss removes the item when animations are disabled', async () => {
 	const restoreAnimations = disableAnimations();
 
-	render(Snackbar, { duration: 50 });
+	await render(Snackbar, { duration: 50 });
 	snackbar.info('hello');
 
 	await expect.poll(() => snackbar.items.length).toBe(0);
@@ -142,7 +142,7 @@ test('Snackbar: auto-dismiss removes the item when animations are disabled', asy
 });
 
 test('DatepickerCalendar: unmounting while open removes the document keydown listener', async () => {
-	const screen = render(CleanupCalendar);
+	const screen = await render(CleanupCalendar);
 	screen.component.openCalendar();
 	screen.unmount();
 

@@ -16,13 +16,13 @@ const options: (Option | 'separator')[] = [
 	{ value: 'archived', label: 'Archived' }
 ];
 
-type Screen = ReturnType<typeof render>;
+type Screen = Awaited<ReturnType<typeof render>>;
 
 const getTrigger = (screen: Screen) =>
-	screen.container.querySelector('.multi-select__trigger') as HTMLButtonElement;
+	screen.container.querySelector<HTMLElement>('.multi-select__trigger') as HTMLButtonElement;
 
 const getPopup = (screen: Screen) =>
-	screen.container.querySelector('[data-testid="popup"]') as HTMLElement;
+	screen.container.querySelector<HTMLElement>('[data-testid="popup"]') as HTMLElement;
 
 const getThemeMinWidth = () =>
 	parseFloat(
@@ -38,15 +38,15 @@ const openPopup = async (screen: Screen) => {
 	});
 };
 
-test('options を配列順に描画し、separator を区切りとして挟む', () => {
-	const screen = render(MultiSelect, { value: [], options });
+test('options を配列順に描画し、separator を区切りとして挟む', async () => {
+	const screen = await render(MultiSelect, { value: [], options });
 
 	const labels = Array.from(screen.container.querySelectorAll('.checkbox__label')).map((el) =>
 		el.textContent?.trim()
 	);
 	expect(labels).toEqual(['All items', 'Active', 'Archived']);
 
-	const separator = screen.container.querySelector('.multi-select__separator');
+	const separator = screen.container.querySelector<HTMLElement>('.multi-select__separator');
 	expect(separator).toHaveAttribute('role', 'separator');
 
 	const items = Array.from(
@@ -55,25 +55,25 @@ test('options を配列順に描画し、separator を区切りとして挟む',
 	expect(items[1]).toBe(separator);
 });
 
-test('separator はトリガーの表示ラベルに含まれない', () => {
-	const screen = render(MultiSelect, { value: ['all', 'archived'], options });
+test('separator はトリガーの表示ラベルに含まれない', async () => {
+	const screen = await render(MultiSelect, { value: ['all', 'archived'], options });
 
-	expect(screen.container.querySelector('.multi-select__display-text')?.textContent?.trim()).toBe(
+	expect(screen.container.querySelector<HTMLElement>('.multi-select__display-text')?.textContent?.trim()).toBe(
 		'All items,Archived'
 	);
 });
 
 test('リストの最小幅はトリガー幅とテーマの下限の大きい方になる', async () => {
-	const screen = render(MultiSelect, { value: [], options, placeholder: 'Filter' });
+	const screen = await render(MultiSelect, { value: [], options, placeholder: 'Filter' });
 	await openPopup(screen);
 
-	const listbox = screen.container.querySelector('.multi-select__options') as HTMLElement;
+	const listbox = screen.container.querySelector<HTMLElement>('.multi-select__options') as HTMLElement;
 	const expected = Math.max(getTrigger(screen).offsetWidth, getThemeMinWidth());
 	expect(parseFloat(getComputedStyle(listbox).minWidth)).toBeCloseTo(expected, 0);
 });
 
-test('customStyle で padding を指定してもアイコンの領域が消えない', () => {
-	const screen = render(MultiSelect, {
+test('customStyle で padding を指定してもアイコンの領域が消えない', async () => {
+	const screen = await render(MultiSelect, {
 		value: ['all'],
 		options,
 		customStyle: 'padding: 8px 12px'
@@ -81,10 +81,10 @@ test('customStyle で padding を指定してもアイコンの領域が消え�
 
 	const trigger = getTrigger(screen).getBoundingClientRect();
 	const icon = (
-		screen.container.querySelector('.multi-select__dropdown-icon') as HTMLElement
+		screen.container.querySelector<HTMLElement>('.multi-select__dropdown-icon') as HTMLElement
 	).getBoundingClientRect();
 	const label = (
-		screen.container.querySelector('.multi-select__display-text') as HTMLElement
+		screen.container.querySelector<HTMLElement>('.multi-select__display-text') as HTMLElement
 	).getBoundingClientRect();
 
 	expect(icon.width).toBeGreaterThan(0);
@@ -95,7 +95,7 @@ test('customStyle で padding を指定してもアイコンの領域が消え�
 
 test('separator を挟んでも選択の切り替えが動作する', async () => {
 	let changed: OptionValue[] | undefined;
-	const screen = render(MultiSelect, {
+	const screen = await render(MultiSelect, {
 		value: [],
 		options,
 		onchange: (value: OptionValue[]) => {

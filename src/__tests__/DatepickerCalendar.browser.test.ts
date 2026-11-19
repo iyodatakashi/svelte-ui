@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-svelte';
 import DatepickerCalendar from '../lib/components/DatepickerCalendar.svelte';
 
 test('renders DatepickerCalendar with default props', async () => {
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined
 	});
 	const calendar = screen.getByTestId('datepicker-calendar');
@@ -13,7 +13,7 @@ test('renders DatepickerCalendar with default props', async () => {
 
 test('DatepickerCalendar can select dates', async () => {
 	let currentValue: Date | undefined = undefined;
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: currentValue,
 		onchange: (value: Date | { start: Date; end: Date } | undefined) => {
 			currentValue = value as Date;
@@ -23,7 +23,7 @@ test('DatepickerCalendar can select dates', async () => {
 	const calendar = screen.getByTestId('datepicker-calendar');
 
 	// Find a date button and click it
-	const dateButton = screen.container.querySelector('.datepicker-calendar__date-item');
+	const dateButton = screen.container.querySelector<HTMLElement>('.datepicker-calendar__date-item');
 	expect(dateButton).toBeInTheDocument();
 
 	await dateButton?.click();
@@ -33,15 +33,15 @@ test('DatepickerCalendar can select dates', async () => {
 });
 
 test('DatepickerCalendar navigation works correctly', async () => {
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined,
 		id: 'calendar-navigation'
 	});
 	const calendar = screen.getByTestId('datepicker-calendar');
 
 	// Find navigation buttons
-	const prevButton = screen.container.querySelector('.prev-button-block button');
-	const nextButton = screen.container.querySelector(
+	const prevButton = screen.container.querySelector<HTMLElement>('.prev-button-block button');
+	const nextButton = screen.container.querySelector<HTMLElement>(
 		'.datepicker-calendar__header__next-button-block button'
 	);
 
@@ -57,7 +57,7 @@ test('DatepickerCalendar navigation works correctly', async () => {
 });
 
 test('DatepickerCalendar with single mode renders correctly', async () => {
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined,
 		mode: 'single',
 		id: 'calendar-single'
@@ -67,7 +67,7 @@ test('DatepickerCalendar with single mode renders correctly', async () => {
 });
 
 test('DatepickerCalendar with range mode renders correctly', async () => {
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined,
 		mode: 'range',
 		id: 'calendar-range'
@@ -77,7 +77,7 @@ test('DatepickerCalendar with range mode renders correctly', async () => {
 });
 
 test('DatepickerCalendar with locale renders correctly', async () => {
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined,
 		locale: 'ja',
 		id: 'calendar-locale'
@@ -88,7 +88,7 @@ test('DatepickerCalendar with locale renders correctly', async () => {
 
 test('DatepickerCalendar with minDate renders correctly', async () => {
 	const minDate = new Date('2024-01-01');
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined,
 		minDate,
 		id: 'calendar-min-date'
@@ -99,7 +99,7 @@ test('DatepickerCalendar with minDate renders correctly', async () => {
 
 test('DatepickerCalendar with maxDate renders correctly', async () => {
 	const maxDate = new Date('2024-12-31');
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined,
 		maxDate,
 		id: 'calendar-max-date'
@@ -110,7 +110,7 @@ test('DatepickerCalendar with maxDate renders correctly', async () => {
 
 test('DatepickerCalendar with selected value renders correctly', async () => {
 	const selectedDate = new Date('2024-06-15');
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: selectedDate,
 		id: 'calendar-selected'
 	});
@@ -123,7 +123,7 @@ test('DatepickerCalendar with range value renders correctly', async () => {
 		start: new Date('2024-06-01'),
 		end: new Date('2024-06-15')
 	};
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: rangeValue,
 		mode: 'range',
 		id: 'calendar-range-value'
@@ -135,7 +135,7 @@ test('DatepickerCalendar with range value renders correctly', async () => {
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('DatepickerCalendar CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(DatepickerCalendar, {
+	const screen = await render(DatepickerCalendar, {
 		value: undefined
 	});
 	const wrapper = screen.getByTestId('datepicker-calendar');

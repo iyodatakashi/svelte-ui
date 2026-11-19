@@ -25,11 +25,11 @@ const items: StepItem[] = [
 
 const markerBackground = (container: Element, status: string) =>
 	getComputedStyle(
-		container.querySelector(`.step-nav__step--${status} .step-nav__marker`) as HTMLElement
+		container.querySelector<HTMLElement>(`.step-nav__step--${status} .step-nav__marker`) as HTMLElement
 	).backgroundColor;
 
-test('upcoming / in-progress / error のマーカーは塗らない', () => {
-	const { container } = render(StepNav, { items, value: 'address', progress: 1 });
+test('upcoming / in-progress / error のマーカーは塗らない', async () => {
+	const { container } = await render(StepNav, { items, value: 'address', progress: 1 });
 
 	// テーマのサーフェス色が透明ではないことを確認してから、マーカーが塗られていないことを見る
 	const surface = getComputedStyle(document.documentElement).getPropertyValue(
@@ -42,8 +42,8 @@ test('upcoming / in-progress / error のマーカーは塗らない', () => {
 	expect(markerBackground(container, 'error')).toBe(TRANSPARENT);
 });
 
-test('done のマーカーは強調色で塗る', () => {
-	const { container } = render(StepNav, {
+test('done のマーカーは強調色で塗る', async () => {
+	const { container } = await render(StepNav, {
 		items,
 		value: 'address',
 		progress: 1,
@@ -53,9 +53,9 @@ test('done のマーカーは強調色で塗る', () => {
 	expect(markerBackground(container, 'done')).toBe('rgb(255, 0, 0)');
 });
 
-test('表示中リングは隙間に背景が透けるよう outline で描く', () => {
-	const { container } = render(StepNav, { items, value: 'address', progress: 1 });
-	const marker = container.querySelector(
+test('表示中リングは隙間に背景が透けるよう outline で描く', async () => {
+	const { container } = await render(StepNav, { items, value: 'address', progress: 1 });
+	const marker = container.querySelector<HTMLElement>(
 		'.step-nav__step--viewing .step-nav__marker'
 	) as HTMLElement;
 	const style = getComputedStyle(marker);

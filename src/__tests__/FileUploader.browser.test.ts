@@ -9,7 +9,7 @@ test('FileUploader - レンダリング', async () => {
 		id: 'file-uploader-test'
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]');
 	expect(uploader).toBeInTheDocument();
 });
 
@@ -21,7 +21,7 @@ test('FileUploader - カスタムサイズ', async () => {
 		height: 200
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]') as HTMLElement;
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]') as HTMLElement;
 	// CSS変数はgetComputedStyleで確認
 	const computedStyle = getComputedStyle(uploader);
 	expect(computedStyle.getPropertyValue('--internal-file-uploader-width').trim()).toBe('300px');
@@ -35,7 +35,7 @@ test('FileUploader - 角丸', async () => {
 		rounded: true
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]');
 	expect(uploader).toHaveClass('rounded');
 });
 
@@ -46,7 +46,7 @@ test('FileUploader - 複数ファイル対応', async () => {
 		multiple: true
 	});
 
-	const input = container.querySelector('input[type="file"]');
+	const input = container.querySelector<HTMLElement>('input[type="file"]');
 	expect(input).toHaveAttribute('multiple');
 });
 
@@ -57,7 +57,7 @@ test('FileUploader - ファイル形式制限', async () => {
 		accept: '.pdf,.doc,.docx'
 	});
 
-	const input = container.querySelector('input[type="file"]');
+	const input = container.querySelector<HTMLElement>('input[type="file"]');
 	expect(input).toHaveAttribute('accept', '.pdf,.doc,.docx');
 });
 
@@ -69,7 +69,7 @@ test('FileUploader - カスタムアイコン', async () => {
 		iconSize: 48
 	});
 
-	const icon = container.querySelector('.material-symbols-outlined');
+	const icon = container.querySelector<HTMLElement>('.material-symbols-outlined');
 	expect(icon).toBeInTheDocument();
 });
 
@@ -80,7 +80,7 @@ test('FileUploader - プレースホルダー', async () => {
 		placeholder: 'カスタムプレースホルダー'
 	});
 
-	const description = container.querySelector('.file-uploader__description');
+	const description = container.querySelector<HTMLElement>('.file-uploader__description');
 	expect(description).toBeInTheDocument();
 });
 
@@ -90,7 +90,7 @@ test('FileUploader - フォーカス', async () => {
 		id: 'file-uploader-focus-test'
 	});
 
-	const button = container.querySelector('[data-testid="file-uploader"]') as HTMLButtonElement;
+	const button = container.querySelector<HTMLElement>('[data-testid="file-uploader"]') as HTMLButtonElement;
 	expect(button).toBeInTheDocument();
 
 	button.focus();
@@ -104,7 +104,7 @@ test('FileUploader - ファイルサイズ制限', async () => {
 		maxFileSize: 1024 * 1024 // 1MB
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]');
 	expect(uploader).toBeInTheDocument();
 });
 
@@ -114,7 +114,7 @@ test('FileUploader - ドラッグ&ドロップ', async () => {
 		id: 'file-uploader-drag-test'
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]');
 	expect(uploader).toBeInTheDocument();
 
 	// ドラッグ&ドロップ機能の存在確認
@@ -127,11 +127,11 @@ test('FileUploader - エラーメッセージ', async () => {
 		id: 'file-uploader-error-test'
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]');
 	expect(uploader).toBeInTheDocument();
 
 	// エラーメッセージは初期状態では表示されない
-	const errorMessage = container.querySelector('.file-uploader__error-message');
+	const errorMessage = container.querySelector<HTMLElement>('.file-uploader__error-message');
 	expect(errorMessage).not.toBeInTheDocument();
 });
 
@@ -141,7 +141,7 @@ test('FileUploader - CSS変数', async () => {
 		id: 'file-uploader-css-test'
 	});
 
-	const uploader = container.querySelector('[data-testid="file-uploader"]');
+	const uploader = container.querySelector<HTMLElement>('[data-testid="file-uploader"]');
 	expect(uploader).toBeInTheDocument();
 
 	// CSS変数の存在確認
@@ -154,7 +154,7 @@ test('FileUploader - CSS変数', async () => {
 // =========================================================================
 
 test('FileUploader width property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: FileUploader,
 		width: 200
 	});

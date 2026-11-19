@@ -5,7 +5,7 @@ import Switch from '../lib/components/Switch.svelte';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Switch with default props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'Test Switch'
 	});
@@ -16,7 +16,7 @@ test('renders Switch with default props', async () => {
 
 test('Switch can be toggled and value changes', async () => {
 	let currentValue = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		value: currentValue,
 		onchange: (value: boolean) => {
@@ -25,7 +25,7 @@ test('Switch can be toggled and value changes', async () => {
 		children: 'Toggle Switch',
 		id: 'switch-toggle'
 	});
-	const switchInput = screen.container.querySelector('#switch-toggle') as HTMLInputElement;
+	const switchInput = screen.container.querySelector<HTMLElement>('#switch-toggle') as HTMLInputElement;
 
 	// Initial state should be unchecked
 	expect(switchInput.checked).toBe(false);
@@ -36,14 +36,14 @@ test('Switch can be toggled and value changes', async () => {
 });
 
 test('disabled Switch is not interactable', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		disabled: true,
 		children: 'Disabled Switch',
 		id: 'switch-disabled'
 	});
 	const switchElement = screen.getByTestId('switch');
-	const switchInput = screen.container.querySelector('#switch-disabled') as HTMLInputElement;
+	const switchInput = screen.container.querySelector<HTMLElement>('#switch-disabled') as HTMLInputElement;
 
 	expect(switchElement).toHaveClass('switch--disabled');
 	expect(switchInput).toHaveAttribute('disabled');
@@ -54,7 +54,7 @@ test('disabled Switch is not interactable', async () => {
 
 	// Disabled switch should not trigger change events
 	let changeCalled = false;
-	const screen2 = render(ComponentWrapper, {
+	const screen2 = await render(ComponentWrapper, {
 		component: Switch,
 		disabled: true,
 		onchange: () => {
@@ -63,7 +63,7 @@ test('disabled Switch is not interactable', async () => {
 		children: 'Disabled Switch 2',
 		id: 'switch-disabled-2'
 	});
-	const switchInput2 = screen2.container.querySelector('#switch-disabled-2') as HTMLInputElement;
+	const switchInput2 = screen2.container.querySelector<HTMLElement>('#switch-disabled-2') as HTMLInputElement;
 	// Try to interact with disabled switch
 	// Disabled switches should not respond to user interactions
 	switchInput2.focus();
@@ -75,42 +75,42 @@ test('disabled Switch is not interactable', async () => {
 
 test('Switch variants render correctly', async () => {
 	// Test default variant (no special class)
-	const screenDefault = render(ComponentWrapper, {
+	const screenDefault = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'Default Switch',
 		id: 'switch-default'
 	});
-	const switchDefault = screenDefault.container.querySelector('#switch-default');
+	const switchDefault = screenDefault.container.querySelector<HTMLElement>('#switch-default');
 	expect(switchDefault).toBeInTheDocument();
 
 	// Test small size
-	const screenSmall = render(ComponentWrapper, {
+	const screenSmall = await render(ComponentWrapper, {
 		component: Switch,
 		size: 'small',
 		children: 'Small Switch',
 		id: 'switch-small'
 	});
-	const switchSmall = screenSmall.container.querySelector('#switch-small');
+	const switchSmall = screenSmall.container.querySelector<HTMLElement>('#switch-small');
 	expect(switchSmall).toBeInTheDocument();
 
 	// Test medium size
-	const screenMedium = render(ComponentWrapper, {
+	const screenMedium = await render(ComponentWrapper, {
 		component: Switch,
 		size: 'medium',
 		children: 'Medium Switch',
 		id: 'switch-medium'
 	});
-	const switchMedium = screenMedium.container.querySelector('#switch-medium');
+	const switchMedium = screenMedium.container.querySelector<HTMLElement>('#switch-medium');
 	expect(switchMedium).toBeInTheDocument();
 
 	// Test large size
-	const screenLarge = render(ComponentWrapper, {
+	const screenLarge = await render(ComponentWrapper, {
 		component: Switch,
 		size: 'large',
 		children: 'Large Switch',
 		id: 'switch-large'
 	});
-	const switchLarge = screenLarge.container.querySelector('#switch-large');
+	const switchLarge = screenLarge.container.querySelector<HTMLElement>('#switch-large');
 	expect(switchLarge).toBeInTheDocument();
 });
 
@@ -118,7 +118,7 @@ test('Switch focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'Focus Test Switch',
 		id: 'switch-focus-blur',
@@ -129,7 +129,7 @@ test('Switch focus and blur events work correctly', async () => {
 			blurCalled = true;
 		}
 	});
-	const switchInput = screen.container.querySelector('#switch-focus-blur') as HTMLInputElement;
+	const switchInput = screen.container.querySelector<HTMLElement>('#switch-focus-blur') as HTMLInputElement;
 	switchInput.focus();
 	expect(focusCalled).toBe(true);
 
@@ -138,18 +138,18 @@ test('Switch focus and blur events work correctly', async () => {
 });
 
 test('Switch required attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'Required Switch',
 		required: true,
 		id: 'switch-required'
 	});
-	const switchInput = screen.container.querySelector('#switch-required');
+	const switchInput = screen.container.querySelector<HTMLElement>('#switch-required');
 	expect(switchInput).toHaveAttribute('required');
 });
 
 test('Switch with reduced motion renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'Reduced Motion Switch',
 		reducedMotion: true,
@@ -160,18 +160,18 @@ test('Switch with reduced motion renders correctly', async () => {
 });
 
 test('Switch with checked state renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'Checked Switch',
 		value: true,
 		id: 'switch-checked'
 	});
-	const switchInput = screen.container.querySelector('#switch-checked') as HTMLInputElement;
+	const switchInput = screen.container.querySelector<HTMLElement>('#switch-checked') as HTMLInputElement;
 	expect(switchInput.checked).toBe(true);
 });
 
 test('Switch CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Switch,
 		children: 'CSS Test Switch'
 	});

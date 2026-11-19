@@ -35,19 +35,19 @@ const tallHeader = createRawSnippet(() => ({
 const height = (el: Element) => el.getBoundingClientRect().height;
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const openRegion = (comp: any, props: any, selector: string) => {
-	const { container } = render(comp, props);
-	(container.querySelector('dialog.modal') as HTMLDialogElement).showModal();
-	return container.querySelector(selector) as HTMLElement;
+const openRegion = async (comp: any, props: any, selector: string) => {
+	const { container } = await render(comp, props);
+	(container.querySelector<HTMLElement>('dialog.modal') as HTMLDialogElement).showModal();
+	return container.querySelector<HTMLElement>(selector) as HTMLElement;
 };
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-const openHeader = (comp: any, props: any, block: string, vars: Record<string, string> = {}) => {
-	const { container } = render(comp, props);
-	(container.querySelector('dialog.modal') as HTMLDialogElement).showModal();
-	const root = container.querySelector(`.${block}`) as HTMLElement;
+const openHeader = async (comp: any, props: any, block: string, vars: Record<string, string> = {}) => {
+	const { container } = await render(comp, props);
+	(container.querySelector<HTMLElement>('dialog.modal') as HTMLDialogElement).showModal();
+	const root = container.querySelector<HTMLElement>(`.${block}`) as HTMLElement;
 	for (const [name, value] of Object.entries(vars)) root.style.setProperty(name, value);
-	return container.querySelector(`.${block}__header`) as HTMLElement;
+	return container.querySelector<HTMLElement>(`.${block}__header`) as HTMLElement;
 };
 
 /** ヘッダーが中身を収めきれていること（潰れていないこと） */
@@ -61,19 +61,19 @@ const expectFitsContent = (header: HTMLElement) => {
 	expect(height(header)).toBeGreaterThanOrEqual(needed - 0.5);
 };
 
-test('非 scrollable: 本文が長くてもヘッダーが潰れない', () => {
-	expectFitsContent(openHeader(Dialog, { title: 'タイトル', children: longBody }, 'dialog'));
+test('非 scrollable: 本文が長くてもヘッダーが潰れない', async () => {
+	expectFitsContent(await openHeader(Dialog, { title: 'タイトル', children: longBody }, 'dialog'));
 });
 
-test('非 scrollable: 背の高い独自ヘッダーは中身に合わせて伸びる', () => {
-	const header = openHeader(Dialog, { header: tallHeader, children: longBody }, 'dialog');
+test('非 scrollable: 背の高い独自ヘッダーは中身に合わせて伸びる', async () => {
+	const header = await openHeader(Dialog, { header: tallHeader, children: longBody }, 'dialog');
 
 	expectFitsContent(header);
 	expect(height(header)).toBeGreaterThan(100);
 });
 
-test('scrollable: ヘッダーの高さはテーマ変数で決まる', () => {
-	const header = openHeader(
+test('scrollable: ヘッダーの高さはテーマ変数で決まる', async () => {
+	const header = await openHeader(
 		Dialog,
 		{ title: 'タイトル', children: longBody, footer, scrollable: true },
 		'dialog'
@@ -82,8 +82,8 @@ test('scrollable: ヘッダーの高さはテーマ変数で決まる', () => {
 	expect(height(header)).toBe(parseFloat(getComputedStyle(header).minHeight));
 });
 
-test('scrollable: テーマ変数を変えるとヘッダーの高さが追従する', () => {
-	const header = openHeader(
+test('scrollable: テーマ変数を変えるとヘッダーの高さが追従する', async () => {
+	const header = await openHeader(
 		Dialog,
 		{ title: 'タイトル', children: longBody, footer, scrollable: true },
 		'dialog',
@@ -93,8 +93,8 @@ test('scrollable: テーマ変数を変えるとヘッダーの高さが追従�
 	expect(height(header)).toBe(64);
 });
 
-test('scrollable: 中身が変数の高さを超えたら潰さずに伸ばす', () => {
-	const header = openHeader(
+test('scrollable: 中身が変数の高さを超えたら潰さずに伸ばす', async () => {
+	const header = await openHeader(
 		Dialog,
 		{ header: tallHeader, children: longBody, footer, scrollable: true },
 		'dialog'
@@ -103,8 +103,8 @@ test('scrollable: 中身が変数の高さを超えたら潰さずに伸ばす',
 	expectFitsContent(header);
 });
 
-test('Drawer scrollable: ヘッダーの高さがテーマ変数に追従する', () => {
-	const header = openHeader(
+test('Drawer scrollable: ヘッダーの高さがテーマ変数に追従する', async () => {
+	const header = await openHeader(
 		Drawer,
 		{ title: 'タイトル', children: longBody, footer, scrollable: true },
 		'drawer',
@@ -114,8 +114,8 @@ test('Drawer scrollable: ヘッダーの高さがテーマ変数に追従する'
 	expect(height(header)).toBe(64);
 });
 
-test('Drawer 非 scrollable: 本文が長くてもヘッダーが潰れない', () => {
-	expectFitsContent(openHeader(Drawer, { title: 'タイトル', children: longBody }, 'drawer'));
+test('Drawer 非 scrollable: 本文が長くてもヘッダーが潰れない', async () => {
+	expectFitsContent(await openHeader(Drawer, { title: 'タイトル', children: longBody }, 'drawer'));
 });
 
 /**
@@ -127,9 +127,9 @@ const expectNotClipped = (el: HTMLElement) => {
 	expect(el.scrollHeight - el.clientHeight).toBeLessThanOrEqual(1);
 };
 
-test('フッターは本文が長くても潰れない', () => {
+test('フッターは本文が長くても潰れない', async () => {
 	expectNotClipped(
-		openRegion(
+		await openRegion(
 			Dialog,
 			{ title: 'タイトル', children: longBody, footer: tallFooter, scrollable: true },
 			'.dialog__footer'
@@ -137,9 +137,9 @@ test('フッターは本文が長くても潰れない', () => {
 	);
 });
 
-test('description は本文が長くても潰れない', () => {
+test('description は本文が長くても潰れない', async () => {
 	expectNotClipped(
-		openRegion(
+		await openRegion(
 			Dialog,
 			{ title: 'タイトル', description: 'せ'.repeat(400), children: longBody, scrollable: true },
 			'.dialog__description'
@@ -147,9 +147,9 @@ test('description は本文が長くても潰れない', () => {
 	);
 });
 
-test('Drawer のフッターも本文が長くても潰れない', () => {
+test('Drawer のフッターも本文が長くても潰れない', async () => {
 	expectNotClipped(
-		openRegion(
+		await openRegion(
 			Drawer,
 			{ title: 'タイトル', children: longBody, footer: tallFooter, scrollable: true },
 			'.drawer__footer'
@@ -158,8 +158,8 @@ test('Drawer のフッターも本文が長くても潰れない', () => {
 });
 
 for (const scrollable of [false, true]) {
-	test(`Dialog: padding is independent for each mode (scrollable=${scrollable})`, () => {
-		const header = openHeader(Dialog, { title: 'Title', scrollable }, 'dialog', {
+	test(`Dialog: padding is independent for each mode (scrollable=${scrollable})`, async () => {
+		const header = await openHeader(Dialog, { title: 'Title', scrollable }, 'dialog', {
 			'--svelte-ui-dialog-non-scrollable-header-padding': '11px 13px 17px 19px',
 			'--svelte-ui-dialog-scrollable-header-padding': '3px 5px 7px 9px'
 		});

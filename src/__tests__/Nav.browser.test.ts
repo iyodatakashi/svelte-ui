@@ -11,12 +11,12 @@ const createNavItems = (): MenuItem[] => [
 ];
 
 test('navItems（正式名）でアイテムを指定できる', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Nav,
 		navItems: createNavItems(),
 		ariaLabel: 'Main navigation'
 	});
-	const nav = screen.container.querySelector('[data-testid="nav"]');
+	const nav = screen.container.querySelector<HTMLElement>('[data-testid="nav"]');
 	await expect.element(nav).toBeVisible();
 	expect(screen.container.textContent).toContain('Home');
 	expect(screen.container.textContent).toContain('Contact');
@@ -24,7 +24,7 @@ test('navItems（正式名）でアイテムを指定できる', async () => {
 
 test('items（エイリアス）でも指定でき、両方指定時は navItems が優先される', async () => {
 	// エイリアス単体
-	const aliasOnly = render(ComponentWrapper, {
+	const aliasOnly = await render(ComponentWrapper, {
 		component: Nav,
 		items: createNavItems(),
 		ariaLabel: 'Main navigation'
@@ -32,7 +32,7 @@ test('items（エイリアス）でも指定でき、両方指定時は navItems
 	expect(aliasOnly.container.textContent).toContain('Home');
 
 	// 両方指定 → navItems が優先
-	const both = render(ComponentWrapper, {
+	const both = await render(ComponentWrapper, {
 		component: Nav,
 		navItems: [{ label: '正式', href: '/formal' }],
 		items: createNavItems(),
@@ -52,7 +52,7 @@ const colorCases = [
 test.each(colorCases)(
 	'textColor と selectedTextColor が $variant / $selectedVariant で効く',
 	async ({ variant, selectedVariant }) => {
-		const screen = render(ComponentWrapper, {
+		const screen = await render(ComponentWrapper, {
 			component: Nav,
 			navItems: createNavItems(),
 			variant,
@@ -63,7 +63,7 @@ test.each(colorCases)(
 			ariaLabel: 'Main navigation'
 		});
 		const items = screen.container.querySelectorAll('.nav-item');
-		const selected = screen.container.querySelector('.nav-item--selected');
+		const selected = screen.container.querySelector<HTMLElement>('.nav-item--selected');
 		const unselected = Array.from(items).find((item) => item !== selected);
 		expect(selected).not.toBeNull();
 		expect(getComputedStyle(unselected!).color).toBe('rgb(1, 2, 3)');
@@ -72,7 +72,7 @@ test.each(colorCases)(
 );
 
 test('textColor と selectedTextColor が子アイテムにも効く', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Nav,
 		navItems: [
 			{

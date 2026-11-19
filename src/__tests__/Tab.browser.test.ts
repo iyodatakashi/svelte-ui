@@ -13,27 +13,27 @@ const createTabItems = (): MenuItem[] => [
 ];
 
 test('renders Tab with basic props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems(),
 		ariaLabel: 'Main navigation'
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]');
+	const tab = screen.container.querySelector<HTMLElement>('[data-testid="tab"]');
 	await expect.element(tab).toBeVisible();
 
 	// Tab は <nav> でレンダリングされる（role="tablist" は使用しない）
-	const nav = screen.container.querySelector('[data-testid="nav"]');
+	const nav = screen.container.querySelector<HTMLElement>('[data-testid="nav"]');
 	await expect.element(nav).toHaveAttribute('aria-label', 'Main navigation');
 });
 
 test('items（エイリアス）でも tabItems と同様に指定できる', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		items: createTabItems(),
 		ariaLabel: 'Main navigation'
 	});
-	const tab = screen.container.querySelector('[data-testid="tab"]');
+	const tab = screen.container.querySelector<HTMLElement>('[data-testid="tab"]');
 	await expect.element(tab).toBeVisible();
 	// エイリアスで渡したアイテムが描画される
 	expect(screen.container.textContent).toContain('Home');
@@ -41,19 +41,19 @@ test('items（エイリアス）でも tabItems と同様に指定できる', as
 });
 
 test('renders Tab with custom aria-labelledby', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems(),
 		ariaLabelledby: 'tab-heading'
 	});
 
-	const nav = screen.container.querySelector('[data-testid="nav"]');
+	const nav = screen.container.querySelector<HTMLElement>('[data-testid="nav"]');
 	await expect.element(nav).toHaveAttribute('aria-labelledby', 'tab-heading');
 	await expect.element(nav).not.toHaveAttribute('aria-label');
 });
 
 test('renders all tab items', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -61,10 +61,10 @@ test('renders all tab items', async () => {
 	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
 	expect(navItems).toHaveLength(4);
 
-	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/"]');
-	const aboutTab = screen.container.querySelector('[data-testid="nav-item"][href="/about"]');
-	const contactTab = screen.container.querySelector('[data-testid="nav-item"][href="/contact"]');
-	const servicesTab = screen.container.querySelector('[data-testid="nav-item"][href="/services"]');
+	const homeTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/"]');
+	const aboutTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/about"]');
+	const contactTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/contact"]');
+	const servicesTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/services"]');
 
 	expect(homeTab).toBeInTheDocument();
 	expect(aboutTab).toBeInTheDocument();
@@ -73,7 +73,7 @@ test('renders all tab items', async () => {
 });
 
 test('renders tab items with correct ARIA attributes', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -87,7 +87,7 @@ test('renders tab items with correct ARIA attributes', async () => {
 });
 
 test('renders tab items with icons', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -95,31 +95,31 @@ test('renders tab items with icons', async () => {
 	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
 
 	navItems.forEach((navItem) => {
-		const icon = navItem.querySelector('.nav-item__icon');
+		const icon = navItem.querySelector<HTMLElement>('.nav-item__icon');
 		expect(icon).toBeInTheDocument();
 	});
 });
 
 test('renders tab items with text content', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
 
-	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/"]');
-	expect(homeTab).toHaveTextContent('Home');
+	const homeTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/"]');
+	expect(homeTab).toMatchTextContent('Home');
 
-	const aboutTab = screen.container.querySelector('[data-testid="nav-item"][href="/about"]');
-	expect(aboutTab).toHaveTextContent('About');
+	const aboutTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/about"]');
+	expect(aboutTab).toMatchTextContent('About');
 });
 
 test('handles empty tab items array', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: []
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]');
+	const tab = screen.container.querySelector<HTMLElement>('[data-testid="tab"]');
 	expect(tab).toBeInTheDocument();
 
 	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
@@ -129,7 +129,7 @@ test('handles empty tab items array', async () => {
 test('handles single tab item', async () => {
 	const singleTabItem: MenuItem[] = [{ label: 'Home', href: '/', icon: 'home' }];
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: singleTabItem
 	});
@@ -137,8 +137,8 @@ test('handles single tab item', async () => {
 	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
 	expect(navItems).toHaveLength(1);
 
-	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/"]');
-	expect(homeTab).toHaveTextContent('Home');
+	const homeTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/"]');
+	expect(homeTab).toMatchTextContent('Home');
 });
 
 test('handles tab items without icons', async () => {
@@ -147,7 +147,7 @@ test('handles tab items without icons', async () => {
 		{ label: 'About', href: '/about' }
 	];
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: tabItemsWithoutIcons
 	});
@@ -156,28 +156,28 @@ test('handles tab items without icons', async () => {
 	expect(navItems).toHaveLength(2);
 
 	navItems.forEach((navItem) => {
-		const icon = navItem.querySelector('.nav-item__icon');
+		const icon = navItem.querySelector<HTMLElement>('.nav-item__icon');
 		expect(icon).toBeNull();
 	});
 });
 
 test('handles tab items with custom path prefix', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems(),
 		pathPrefix: '/app'
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]');
+	const tab = screen.container.querySelector<HTMLElement>('[data-testid="tab"]');
 	await expect.element(tab).toBeVisible();
 
 	// pathPrefixが設定されている場合、hrefはpathPrefixが付与される
-	const homeTab = screen.container.querySelector('[data-testid="nav-item"][href="/app/"]');
+	const homeTab = screen.container.querySelector<HTMLElement>('[data-testid="nav-item"][href="/app/"]');
 	expect(homeTab).toBeInTheDocument();
 });
 
 test('handles keyboard navigation', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -201,7 +201,7 @@ test('handles keyboard navigation', async () => {
 });
 
 test('handles ArrowLeft key navigation', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -225,7 +225,7 @@ test('handles ArrowLeft key navigation', async () => {
 });
 
 test('handles Home key navigation', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -249,7 +249,7 @@ test('handles Home key navigation', async () => {
 });
 
 test('handles End key navigation', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -273,7 +273,7 @@ test('handles End key navigation', async () => {
 });
 
 test('handles non-navigation keys', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
@@ -295,12 +295,12 @@ test('handles non-navigation keys', async () => {
 });
 
 test('applies correct CSS classes', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]');
+	const tab = screen.container.querySelector<HTMLElement>('[data-testid="tab"]');
 	await expect.element(tab).toHaveClass('tab');
 
 	const navItems = screen.container.querySelectorAll('[data-testid="nav-item"]');
@@ -310,12 +310,12 @@ test('applies correct CSS classes', async () => {
 });
 
 test('renders tab items with correct structure', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Tab,
 		tabItems: createTabItems()
 	});
 
-	const tab = screen.container.querySelector('[data-testid="tab"]');
+	const tab = screen.container.querySelector<HTMLElement>('[data-testid="tab"]');
 	const navItems = tab?.querySelectorAll('[data-testid="nav-item"]');
 
 	expect(navItems).toHaveLength(4);

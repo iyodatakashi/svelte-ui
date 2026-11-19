@@ -7,7 +7,7 @@ import StackedDialogs from './helpers/StackedDialogs.svelte';
 import DialogCallbacks from './helpers/DialogCallbacks.svelte';
 
 test('renders Dialog with default props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true
 	});
@@ -17,104 +17,104 @@ test('renders Dialog with default props', async () => {
 
 test('Dialog can be opened and closed', async () => {
 	// Test closed state
-	const screenClosed = render(ComponentWrapper, {
+	const screenClosed = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: false
 	});
-	const modalClosed = screenClosed.container.querySelector('[data-testid="modal"]');
+	const modalClosed = screenClosed.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(modalClosed).toHaveClass('fade-out');
 
 	// Test open state
-	const screenOpen = render(ComponentWrapper, {
+	const screenOpen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true
 	});
-	const modalOpen = screenOpen.container.querySelector('[data-testid="modal"]');
+	const modalOpen = screenOpen.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(modalOpen).toHaveClass('fade-in');
 });
 
 test('Dialog with title renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		title: 'Test Dialog Title',
 		id: 'dialog-title-test'
 	});
-	const modal = screen.container.querySelector('#dialog-title-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-title-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 test('Dialog with description renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		title: 'Test Dialog',
 		description: 'This is a test description',
 		id: 'dialog-description-test'
 	});
-	const modal = screen.container.querySelector('#dialog-description-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-description-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 test('Dialog with custom width renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		width: 600,
 		id: 'dialog-width-test'
 	});
-	const modal = screen.container.querySelector('#dialog-width-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-width-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 test('Dialog with no padding renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		noPadding: true,
 		id: 'dialog-no-padding-test'
 	});
-	const modal = screen.container.querySelector('#dialog-no-padding-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-no-padding-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 test('Dialog with scrollable content renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		scrollable: true,
 		id: 'dialog-scrollable-test'
 	});
-	const modal = screen.container.querySelector('#dialog-scrollable-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-scrollable-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 test('Dialog with closeIfClickOutside disabled renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		closeIfClickOutside: false,
 		id: 'dialog-no-close-test'
 	});
-	const modal = screen.container.querySelector('#dialog-no-close-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-no-close-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 test('Dialog with restoreFocus enabled renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		restoreFocus: true,
 		id: 'dialog-restore-focus-test'
 	});
-	const modal = screen.container.querySelector('#dialog-restore-focus-test-modal');
+	const modal = screen.container.querySelector<HTMLElement>('#dialog-restore-focus-test-modal');
 	expect(modal).toBeInTheDocument();
 });
 
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('Dialog CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true
 	});
@@ -157,13 +157,13 @@ test('Dialog CSS variables used are defined (computed) in the page', async () =>
 // =========================================================================
 
 test('Dialog width property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		width: 400,
 		isOpen: true
 	});
 
-	const modal = screen.container.querySelector('[data-testid="modal"]');
+	const modal = screen.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 400px'));
 
 	// プロパティを更新
@@ -181,7 +181,7 @@ test('Dialog width property changes reactively', async () => {
 // =========================================================================
 
 test('Dialog calls onOpen once when opened', async () => {
-	const screen = render(DialogCallbacks);
+	const screen = await render(DialogCallbacks);
 
 	screen.component.open();
 
@@ -189,7 +189,7 @@ test('Dialog calls onOpen once when opened', async () => {
 });
 
 test('Dialog calls onClose with "explicit" when closed via ref', async () => {
-	const screen = render(DialogCallbacks);
+	const screen = await render(DialogCallbacks);
 
 	screen.component.open();
 	screen.component.close();
@@ -198,8 +198,8 @@ test('Dialog calls onClose with "explicit" when closed via ref', async () => {
 });
 
 test('Dialog calls onClose with "escape" when closed by the Escape key', async () => {
-	const { userEvent } = await import('@vitest/browser/context');
-	const screen = render(DialogCallbacks);
+	const { userEvent } = await import('vitest/browser');
+	const screen = await render(DialogCallbacks);
 
 	screen.component.open();
 	await userEvent.keyboard('{Escape}');
@@ -208,14 +208,14 @@ test('Dialog calls onClose with "escape" when closed by the Escape key', async (
 });
 
 test('Dialog with closeIfEscape disabled stays open on Escape', async () => {
-	const { userEvent } = await import('@vitest/browser/context');
-	const screen = render(ComponentWrapper, {
+	const { userEvent } = await import('vitest/browser');
+	const screen = await render(ComponentWrapper, {
 		component: Dialog,
 		isOpen: true,
 		closeIfEscape: false,
 		id: 'dialog-no-escape-test'
 	});
-	const dialog = screen.container.querySelector('#dialog-no-escape-test-modal') as HTMLDialogElement;
+	const dialog = screen.container.querySelector<HTMLElement>('#dialog-no-escape-test-modal') as HTMLDialogElement;
 	await expect.poll(() => dialog.open).toBe(true);
 
 	await userEvent.keyboard('{Escape}');
@@ -226,19 +226,19 @@ test('Dialog with closeIfEscape disabled stays open on Escape', async () => {
 });
 
 test('Dialog calls onClose with "outside" when the backdrop is clicked', async () => {
-	const screen = render(DialogCallbacks);
+	const screen = await render(DialogCallbacks);
 
 	screen.component.open();
 	// 外側クリックのリスナーは isOpen を見る $effect で張られるため、反映を待つ
 	await tick();
-	const dialog = screen.container.querySelector('#callbacks-modal') as HTMLDialogElement;
+	const dialog = screen.container.querySelector<HTMLElement>('#callbacks-modal') as HTMLDialogElement;
 	dialog.dispatchEvent(new MouseEvent('click', { bubbles: true }));
 
 	await expect.poll(() => screen.component.getCloseReasons()).toEqual(['outside']);
 });
 
 test('Dialog does not call onClose while it has never been opened', async () => {
-	const screen = render(DialogCallbacks);
+	const screen = await render(DialogCallbacks);
 
 	await new Promise((resolve) => setTimeout(resolve, 50));
 
@@ -246,13 +246,13 @@ test('Dialog does not call onClose while it has never been opened', async () => 
 });
 
 test('Escape closes only the topmost of two stacked Dialogs', async () => {
-	const { userEvent } = await import('@vitest/browser/context');
-	const screen = render(StackedDialogs);
+	const { userEvent } = await import('vitest/browser');
+	const screen = await render(StackedDialogs);
 
 	screen.component.openBoth();
 
-	const outer = screen.container.querySelector('#outer-modal') as HTMLDialogElement;
-	const inner = screen.container.querySelector('#inner-modal') as HTMLDialogElement;
+	const outer = screen.container.querySelector<HTMLElement>('#outer-modal') as HTMLDialogElement;
+	const inner = screen.container.querySelector<HTMLElement>('#inner-modal') as HTMLDialogElement;
 	expect(outer.open).toBe(true);
 	expect(inner.open).toBe(true);
 

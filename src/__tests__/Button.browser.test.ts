@@ -6,7 +6,7 @@ import variables from '../lib/assets/styles/variables.scss?inline';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Button with text content', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Click me'
 	});
@@ -16,18 +16,18 @@ test('renders Button with text content', async () => {
 });
 
 test('disabled Button is not interactable', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Disabled',
 		disabled: true,
 		id: 'disabled-button-1'
 	});
-	const button = screen.container.querySelector('#disabled-button-1');
+	const button = screen.container.querySelector<HTMLElement>('#disabled-button-1');
 	await expect.element(button).toHaveAttribute('disabled');
 
 	// Try to click and verify it doesn't trigger
 	let clicked = false;
-	const screen2 = render(ComponentWrapper, {
+	const screen2 = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Disabled',
 		disabled: true,
@@ -36,13 +36,13 @@ test('disabled Button is not interactable', async () => {
 			clicked = true;
 		}
 	});
-	const button2 = screen2.container.querySelector('#disabled-button-2') as HTMLElement;
+	const button2 = screen2.container.querySelector<HTMLElement>('#disabled-button-2') as HTMLElement;
 	button2.click();
 	expect(clicked).toBe(false);
 });
 
 test('loading Button shows spinner and is disabled', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Loading',
 		loading: true
@@ -51,92 +51,92 @@ test('loading Button shows spinner and is disabled', async () => {
 	await expect.element(button).toHaveAttribute('disabled');
 
 	// Check for loading spinner
-	const spinner = screen.container.querySelector('.loading-spinner');
+	const spinner = screen.container.querySelector<HTMLElement>('.loading-spinner');
 	expect(spinner).toBeTruthy();
 });
 
 test('Button variants render correctly', async () => {
 	// Test ghost variant
-	const screenGhost = render(ComponentWrapper, {
+	const screenGhost = await render(ComponentWrapper, {
 		component: Button,
 		variant: 'ghost',
 		id: 'button-ghost'
 	});
-	const buttonGhost = screenGhost.container.querySelector('#button-ghost');
+	const buttonGhost = screenGhost.container.querySelector<HTMLElement>('#button-ghost');
 	expect(buttonGhost).toHaveClass('button--ghost');
 
 	// Test filled variant
-	const screenFilled = render(ComponentWrapper, {
+	const screenFilled = await render(ComponentWrapper, {
 		component: Button,
 		variant: 'filled',
 		id: 'button-filled'
 	});
-	const buttonFilled = screenFilled.container.querySelector('#button-filled');
+	const buttonFilled = screenFilled.container.querySelector<HTMLElement>('#button-filled');
 	expect(buttonFilled).toHaveClass('button--filled');
 
 	// Test outlined variant
-	const screenOutlined = render(ComponentWrapper, {
+	const screenOutlined = await render(ComponentWrapper, {
 		component: Button,
 		variant: 'outlined',
 		id: 'button-outlined'
 	});
-	const buttonOutlined = screenOutlined.container.querySelector('#button-outlined');
+	const buttonOutlined = screenOutlined.container.querySelector<HTMLElement>('#button-outlined');
 	expect(buttonOutlined).toHaveClass('button--outlined');
 
 	// Test glass variant
-	const screenGlass = render(ComponentWrapper, {
+	const screenGlass = await render(ComponentWrapper, {
 		component: Button,
 		variant: 'glass',
 		id: 'button-glass'
 	});
-	const buttonGlass = screenGlass.container.querySelector('#button-glass');
+	const buttonGlass = screenGlass.container.querySelector<HTMLElement>('#button-glass');
 	expect(buttonGlass).toHaveClass('button--glass');
 });
 
 test('Button sizes render correctly', async () => {
 	// Test small size
-	const screenSmall = render(ComponentWrapper, {
+	const screenSmall = await render(ComponentWrapper, {
 		component: Button,
 		size: 'small',
 		id: 'button-small'
 	});
-	const buttonSmall = screenSmall.container.querySelector('#button-small');
+	const buttonSmall = screenSmall.container.querySelector<HTMLElement>('#button-small');
 	expect(buttonSmall).toHaveClass('button--small');
 
 	// Test medium size
-	const screenMedium = render(ComponentWrapper, {
+	const screenMedium = await render(ComponentWrapper, {
 		component: Button,
 		size: 'medium',
 		id: 'button-medium'
 	});
-	const buttonMedium = screenMedium.container.querySelector('#button-medium');
+	const buttonMedium = screenMedium.container.querySelector<HTMLElement>('#button-medium');
 	expect(buttonMedium).toHaveClass('button--medium');
 
 	// Test large size
-	const screenLarge = render(ComponentWrapper, {
+	const screenLarge = await render(ComponentWrapper, {
 		component: Button,
 		size: 'large',
 		id: 'button-large'
 	});
-	const buttonLarge = screenLarge.container.querySelector('#button-large');
+	const buttonLarge = screenLarge.container.querySelector<HTMLElement>('#button-large');
 	expect(buttonLarge).toHaveClass('button--large');
 });
 
 test('Button with icon renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		icon: 'home'
 	});
 	const button = screen.getByRole('button');
 
 	// Check for icon container
-	const iconContainer = screen.container.querySelector('.button__icon');
+	const iconContainer = screen.container.querySelector<HTMLElement>('.button__icon');
 	expect(iconContainer).toBeTruthy();
 });
 
 test('Button click event works correctly', async () => {
 	let clicked = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		onclick: () => {
 			clicked = true;
@@ -154,7 +154,7 @@ test('Button focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		onfocus: () => {
 			focusCalled = true;
@@ -172,7 +172,7 @@ test('Button focus and blur events work correctly', async () => {
 });
 
 test('Button with fullWidth renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		fullWidth: true
 	});
@@ -181,7 +181,7 @@ test('Button with fullWidth renders correctly', async () => {
 });
 
 test('Button with rounded renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		rounded: true
 	});
@@ -190,7 +190,7 @@ test('Button with rounded renders correctly', async () => {
 });
 
 test('Button type attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		type: 'submit'
 	});
@@ -199,7 +199,7 @@ test('Button type attribute works correctly', async () => {
 });
 
 test('Button with popup attribute renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		popup: true
 	});
@@ -208,7 +208,7 @@ test('Button with popup attribute renders correctly', async () => {
 });
 
 test('Button ARIA attributes work correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		ariaLabel: 'Custom label',
 		ariaDescribedby: 'description',
@@ -221,11 +221,11 @@ test('Button ARIA attributes work correctly', async () => {
 });
 
 test('Button CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'CSS Test Button'
 	});
-	const wrapper = screen.container.querySelector('[data-testid="button"]') as HTMLElement;
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="button"]') as HTMLElement;
 	const usedVars = new Set<string>();
 
 	// Collect from inline styles and computed styles (including CSS classes)
@@ -264,7 +264,7 @@ test('Button CSS variables used are defined (computed) in the page', async () =>
 // =========================================================================
 
 test('Button color property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Test',
 		color: 'red'
@@ -284,7 +284,7 @@ test('Button color property changes reactively', async () => {
 });
 
 test('Button minWidth property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Test',
 		minWidth: 100
@@ -308,7 +308,7 @@ test('Button minWidth property changes reactively', async () => {
 });
 
 test('Button multiple properties change reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Button,
 		children: 'Test',
 		color: 'red',
@@ -338,7 +338,7 @@ test('Button multiple properties change reactively', async () => {
 test.each(['filled', 'outlined', 'ghost', 'glass'] as const)(
 	'textColor が %s の文字色を変え、filled の背景は変えない',
 	async (variant) => {
-		const screen = render(ComponentWrapper, {
+		const screen = await render(ComponentWrapper, {
 			component: Button,
 			children: 'Text',
 			variant,

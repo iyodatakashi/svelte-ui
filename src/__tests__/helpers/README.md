@@ -90,7 +90,7 @@ import { render } from 'vitest-browser-svelte';
 import MyComponentWrapper from './helpers/MyComponentWrapper.svelte';
 
 test('renders MyComponent with content', async () => {
-	const screen = render(MyComponentWrapper, {
+	const screen = await render(MyComponentWrapper, {
 		content: 'Test Content',
 		variant: 'primary'
 	});

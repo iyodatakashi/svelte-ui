@@ -51,10 +51,10 @@ const INHERITING: [string, unknown, Record<string, unknown>, string][] = [
 	['FileUploader', FileUploader, {}, 'button.file-uploader']
 ];
 
-test.each(INHERITING)('%s のボタンがテーマの文字色に追従する', (_name, comp, props, selector) => {
+test.each(INHERITING)('%s のボタンがテーマの文字色に追従する', async (_name, comp, props, selector) => {
 	// eslint-disable-next-line @typescript-eslint/no-explicit-any
-	const { container } = render(comp as any, props as any);
-	const el = container.querySelector(selector) as HTMLElement;
+	const { container } = await render(comp as any, props as any);
+	const el = container.querySelector<HTMLElement>(selector) as HTMLElement;
 
 	const light = withTheme('light', () => getComputedStyle(el).color);
 	const dark = withTheme('dark', () => getComputedStyle(el).color);

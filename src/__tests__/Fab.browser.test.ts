@@ -4,7 +4,7 @@ import ComponentWrapper from './helpers/ComponentWrapper.svelte';
 import Fab from '../lib/components/Fab.svelte';
 
 test('renders Fab with default props', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Test Fab'
 	});
@@ -15,7 +15,7 @@ test('renders Fab with default props', async () => {
 
 test('Fab can be clicked', async () => {
 	let clickCalled = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Click Fab',
 		onclick: () => {
@@ -33,7 +33,7 @@ test('Fab can be clicked', async () => {
 });
 
 test('disabled Fab is not interactable', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Disabled Fab',
 		disabled: true,
@@ -51,7 +51,7 @@ test('disabled Fab is not interactable', async () => {
 
 	// Disabled fab should not trigger click events
 	let clickCalled = false;
-	const screen2 = render(ComponentWrapper, {
+	const screen2 = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Disabled Fab 2',
 		disabled: true,
@@ -60,72 +60,72 @@ test('disabled Fab is not interactable', async () => {
 		},
 		id: 'fab-disabled-2'
 	});
-	const fab2 = screen2.container.querySelector('#fab-disabled-2') as HTMLButtonElement;
+	const fab2 = screen2.container.querySelector<HTMLElement>('#fab-disabled-2') as HTMLButtonElement;
 	await fab2.click();
 	expect(clickCalled).toBe(false);
 });
 
 test('Fab variants render correctly', async () => {
 	// Test filled variant (default)
-	const screenFilled = render(ComponentWrapper, {
+	const screenFilled = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Filled Fab',
 		variant: 'filled',
 		id: 'fab-filled'
 	});
-	const fabFilled = screenFilled.container.querySelector('#fab-filled');
+	const fabFilled = screenFilled.container.querySelector<HTMLElement>('#fab-filled');
 	expect(fabFilled).toHaveClass('fab--filled');
 
 	// Test outlined variant
-	const screenOutlined = render(ComponentWrapper, {
+	const screenOutlined = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Outlined Fab',
 		variant: 'outlined',
 		id: 'fab-outlined'
 	});
-	const fabOutlined = screenOutlined.container.querySelector('#fab-outlined');
+	const fabOutlined = screenOutlined.container.querySelector<HTMLElement>('#fab-outlined');
 	expect(fabOutlined).toHaveClass('fab--outlined');
 
 	// Test glass variant
-	const screenGlass = render(ComponentWrapper, {
+	const screenGlass = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Glass Fab',
 		variant: 'glass',
 		id: 'fab-glass'
 	});
-	const fabGlass = screenGlass.container.querySelector('#fab-glass');
+	const fabGlass = screenGlass.container.querySelector<HTMLElement>('#fab-glass');
 	expect(fabGlass).toHaveClass('fab--glass');
 });
 
 test('Fab positions render correctly', async () => {
 	// Test right position (default)
-	const screenRight = render(ComponentWrapper, {
+	const screenRight = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Right Fab',
 		position: 'right',
 		id: 'fab-right'
 	});
-	const fabRight = screenRight.container.querySelector('#fab-right');
+	const fabRight = screenRight.container.querySelector<HTMLElement>('#fab-right');
 	expect(fabRight).toHaveClass('fab--right');
 
 	// Test left position
-	const screenLeft = render(ComponentWrapper, {
+	const screenLeft = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Left Fab',
 		position: 'left',
 		id: 'fab-left'
 	});
-	const fabLeft = screenLeft.container.querySelector('#fab-left');
+	const fabLeft = screenLeft.container.querySelector<HTMLElement>('#fab-left');
 	expect(fabLeft).toHaveClass('fab--left');
 
 	// Test center position
-	const screenCenter = render(ComponentWrapper, {
+	const screenCenter = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Center Fab',
 		position: 'center',
 		id: 'fab-center'
 	});
-	const fabCenter = screenCenter.container.querySelector('#fab-center');
+	const fabCenter = screenCenter.container.querySelector<HTMLElement>('#fab-center');
 	expect(fabCenter).toHaveClass('fab--center');
 });
 
@@ -133,7 +133,7 @@ test('Fab focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Focus Test Fab',
 		id: 'fab-focus-blur',
@@ -158,7 +158,7 @@ test('Fab focus and blur events work correctly', async () => {
 });
 
 test('Fab with loading state renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Loading Fab',
 		loading: true,
@@ -170,7 +170,7 @@ test('Fab with loading state renders correctly', async () => {
 });
 
 test('Fab with shadow renders correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'Shadow Fab',
 		shadow: true,
@@ -181,7 +181,7 @@ test('Fab with shadow renders correctly', async () => {
 });
 
 test('Fab without label renders correctly', async () => {
-	const screen = render(Fab, {
+	const screen = await render(Fab, {
 		icon: 'add',
 		id: 'fab-no-label'
 	});
@@ -192,7 +192,7 @@ test('Fab without label renders correctly', async () => {
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('Fab CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'CSS Test Fab'
 	});
@@ -235,7 +235,7 @@ test('Fab CSS variables used are defined (computed) in the page', async () => {
 // =========================================================================
 
 test('Fab color property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Fab,
 		children: 'add',
 		ariaLabel: 'Add',

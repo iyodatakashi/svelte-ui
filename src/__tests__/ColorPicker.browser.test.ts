@@ -3,7 +3,7 @@ import { render } from 'vitest-browser-svelte';
 import ColorPicker from '../lib/components/ColorPicker.svelte';
 
 test('renders ColorPicker with default props', async () => {
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: ''
 	});
 	const colorPicker = screen.getByTestId('color-picker');
@@ -13,14 +13,14 @@ test('renders ColorPicker with default props', async () => {
 
 test('ColorPicker can be changed and value updates', async () => {
 	let currentValue = '';
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: currentValue,
 		onchange: (value: string) => {
 			currentValue = value;
 		},
 		id: 'colorpicker-change'
 	});
-	const colorInput = screen.container.querySelector(
+	const colorInput = screen.container.querySelector<HTMLElement>(
 		'#colorpicker-change-input'
 	) as HTMLInputElement;
 
@@ -37,13 +37,13 @@ test('ColorPicker can be changed and value updates', async () => {
 });
 
 test('disabled ColorPicker is not interactable', async () => {
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		disabled: true,
 		value: '#ff0000',
 		id: 'colorpicker-disabled'
 	});
 	const colorPicker = screen.getByTestId('color-picker');
-	const colorInput = screen.container.querySelector(
+	const colorInput = screen.container.querySelector<HTMLElement>(
 		'#colorpicker-disabled-input'
 	) as HTMLInputElement;
 
@@ -56,7 +56,7 @@ test('disabled ColorPicker is not interactable', async () => {
 
 	// Disabled color picker should not trigger change events
 	let changeCalled = false;
-	const screen2 = render(ColorPicker, {
+	const screen2 = await render(ColorPicker, {
 		disabled: true,
 		onchange: () => {
 			changeCalled = true;
@@ -64,7 +64,7 @@ test('disabled ColorPicker is not interactable', async () => {
 		value: '#ff0000',
 		id: 'colorpicker-disabled-2'
 	});
-	const colorInput2 = screen2.container.querySelector(
+	const colorInput2 = screen2.container.querySelector<HTMLElement>(
 		'#colorpicker-disabled-2-input'
 	) as HTMLInputElement;
 	// Try to interact with disabled color picker
@@ -78,31 +78,31 @@ test('disabled ColorPicker is not interactable', async () => {
 
 test('ColorPicker variants render correctly', async () => {
 	// Test default variant (no special class)
-	const screenDefault = render(ColorPicker, {
+	const screenDefault = await render(ColorPicker, {
 		value: '#ff0000',
 		id: 'colorpicker-default'
 	});
-	const colorPickerDefault = screenDefault.container.querySelector('#colorpicker-default-input');
+	const colorPickerDefault = screenDefault.container.querySelector<HTMLElement>('#colorpicker-default-input');
 	expect(colorPickerDefault).toBeInTheDocument();
 
 	// Test with fullWidth
-	const screenFullWidth = render(ColorPicker, {
+	const screenFullWidth = await render(ColorPicker, {
 		value: '#ff0000',
 		fullWidth: true,
 		id: 'colorpicker-fullwidth'
 	});
-	const colorPickerFullWidth = screenFullWidth.container.querySelector(
+	const colorPickerFullWidth = screenFullWidth.container.querySelector<HTMLElement>(
 		'#colorpicker-fullwidth-input'
 	);
 	expect(colorPickerFullWidth).toBeInTheDocument();
 
 	// Test with rounded
-	const screenRounded = render(ColorPicker, {
+	const screenRounded = await render(ColorPicker, {
 		value: '#ff0000',
 		rounded: true,
 		id: 'colorpicker-rounded'
 	});
-	const colorPickerRounded = screenRounded.container.querySelector('#colorpicker-rounded-input');
+	const colorPickerRounded = screenRounded.container.querySelector<HTMLElement>('#colorpicker-rounded-input');
 	expect(colorPickerRounded).toBeInTheDocument();
 });
 
@@ -110,7 +110,7 @@ test('ColorPicker focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: '#ff0000',
 		id: 'colorpicker-focus-blur',
 		onfocus: () => {
@@ -120,7 +120,7 @@ test('ColorPicker focus and blur events work correctly', async () => {
 			blurCalled = true;
 		}
 	});
-	const colorInput = screen.container.querySelector(
+	const colorInput = screen.container.querySelector<HTMLElement>(
 		'#colorpicker-focus-blur-input'
 	) as HTMLInputElement;
 	colorInput.focus();
@@ -131,24 +131,24 @@ test('ColorPicker focus and blur events work correctly', async () => {
 });
 
 test('ColorPicker with clearable renders correctly', async () => {
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: '#ff0000',
 		clearable: true,
 		id: 'colorpicker-clearable'
 	});
 
 	// Check if clear button exists (it might be in the Input component)
-	const clearButton = screen.container.querySelector('.input__clear-button');
+	const clearButton = screen.container.querySelector<HTMLElement>('.input__clear-button');
 	expect(clearButton).toBeInTheDocument();
 });
 
 test('ColorPicker with readonly renders correctly', async () => {
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: '#ff0000',
 		readonly: true,
 		id: 'colorpicker-readonly'
 	});
-	const colorInput = screen.container.querySelector(
+	const colorInput = screen.container.querySelector<HTMLElement>(
 		'#colorpicker-readonly-input'
 	) as HTMLInputElement;
 	expect(colorInput).toHaveAttribute('readonly');
@@ -156,14 +156,14 @@ test('ColorPicker with readonly renders correctly', async () => {
 
 test('ColorPicker input event works correctly', async () => {
 	let inputValue = '';
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: '#ff0000',
 		oninput: (value: string) => {
 			inputValue = value;
 		},
 		id: 'colorpicker-input'
 	});
-	const colorInput = screen.container.querySelector('#colorpicker-input-input') as HTMLInputElement;
+	const colorInput = screen.container.querySelector<HTMLElement>('#colorpicker-input-input') as HTMLInputElement;
 
 	// Simulate user input by typing
 	colorInput.value = '#00ff00';
@@ -176,11 +176,11 @@ test('ColorPicker input event works correctly', async () => {
 });
 
 test('value が undefined でもクラッシュせず空の入力として描画される', async () => {
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: undefined,
 		id: 'colorpicker-undefined'
 	});
-	const textInput = screen.container.querySelector(
+	const textInput = screen.container.querySelector<HTMLElement>(
 		'#colorpicker-undefined-input'
 	) as HTMLInputElement;
 	expect(textInput).not.toBeNull();
@@ -190,7 +190,7 @@ test('value が undefined でもクラッシュせず空の入力として描画
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('ColorPicker CSS variables used are defined (computed) in the page', async () => {
-	const screen = render(ColorPicker, {
+	const screen = await render(ColorPicker, {
 		value: '#ff0000'
 	});
 	const wrapper = screen.getByTestId('color-picker');

@@ -17,13 +17,13 @@ const options: (Option | 'separator')[] = [
 	{ value: 'option3', label: 'Option 3', disabled: true }
 ];
 
-type Screen = ReturnType<typeof render>;
+type Screen = Awaited<ReturnType<typeof render>>;
 
 const getTrigger = (screen: Screen) =>
-	screen.container.querySelector('.select__trigger') as HTMLButtonElement;
+	screen.container.querySelector<HTMLElement>('.select__trigger') as HTMLButtonElement;
 
 const getPopup = (screen: Screen) =>
-	screen.container.querySelector('[data-testid="popup"]') as HTMLElement;
+	screen.container.querySelector<HTMLElement>('[data-testid="popup"]') as HTMLElement;
 
 const getOptionEls = (screen: Screen) =>
 	Array.from(screen.container.querySelectorAll<HTMLElement>('.select__option'));
@@ -48,9 +48,9 @@ const openPopup = async (screen: Screen) => {
 };
 
 test('トリガーを combobox として描画し、最上位に data-testid を付与する', async () => {
-	const screen = render(Select, { value: undefined, options });
+	const screen = await render(Select, { value: undefined, options });
 
-	expect(screen.container.querySelector('[data-testid="select"]')).not.toBeNull();
+	expect(screen.container.querySelector<HTMLElement>('[data-testid="select"]')).not.toBeNull();
 
 	const trigger = getTrigger(screen);
 	await expect.element(trigger).toBeVisible();
@@ -58,29 +58,29 @@ test('トリガーを combobox として描画し、最上位に data-testid を
 	expect(trigger).toHaveAttribute('aria-expanded', 'false');
 });
 
-test('未選択なら placeholder、選択済みならラベルをトリガーに表示する', () => {
-	const unselected = render(Select, {
+test('未選択なら placeholder、選択済みならラベルをトリガーに表示する', async () => {
+	const unselected = await render(Select, {
 		value: undefined,
 		options,
 		placeholder: 'Choose an option'
 	});
-	expect(unselected.container.querySelector('.select__placeholder')?.textContent?.trim()).toBe(
+	expect(unselected.container.querySelector<HTMLElement>('.select__placeholder')?.textContent?.trim()).toBe(
 		'Choose an option'
 	);
 
-	const selected = render(Select, { value: 'option2', options, placeholder: 'Choose an option' });
-	expect(selected.container.querySelector('.select__display-text')?.textContent?.trim()).toBe(
+	const selected = await render(Select, { value: 'option2', options, placeholder: 'Choose an option' });
+	expect(selected.container.querySelector<HTMLElement>('.select__display-text')?.textContent?.trim()).toBe(
 		'Option 2'
 	);
-	expect(selected.container.querySelector('.select__placeholder')).toBeNull();
+	expect(selected.container.querySelector<HTMLElement>('.select__placeholder')).toBeNull();
 });
 
-test('options を配列順に描画し、separator を区切りとして挟む', () => {
-	const screen = render(Select, { value: undefined, options });
+test('options を配列順に描画し、separator を区切りとして挟む', async () => {
+	const screen = await render(Select, { value: undefined, options });
 
 	expect(getOptionLabels(screen)).toEqual(['Option 1', 'Option 2', 'Option 3']);
 
-	const separator = screen.container.querySelector('.select__separator');
+	const separator = screen.container.querySelector<HTMLElement>('.select__separator');
 	expect(separator).toHaveAttribute('role', 'separator');
 	// separator は Option 2 と Option 3 の間に入る
 	const items = Array.from(
@@ -89,8 +89,8 @@ test('options を配列順に描画し、separator を区切りとして挟む',
 	expect(items[2]).toBe(separator);
 });
 
-test('value に一致する選択肢だけが aria-selected になる', () => {
-	const screen = render(Select, { value: 'option2', options });
+test('value に一致する選択肢だけが aria-selected になる', async () => {
+	const screen = await render(Select, { value: 'option2', options });
 
 	expect(getOptionEls(screen).map((el) => el.getAttribute('aria-selected'))).toEqual([
 		'false',
@@ -100,10 +100,10 @@ test('value に一致する選択肢だけが aria-selected になる', () => {
 });
 
 test('選択中の選択肢だけにチェックアイコンを表示する', async () => {
-	const screen = render(Select, { value: 'option2', options });
+	const screen = await render(Select, { value: 'option2', options });
 
 	const checks = getOptionEls(screen).map((el) =>
-		el.querySelector('.select__option-check [data-testid="icon"]')?.textContent?.trim()
+		el.querySelector<HTMLElement>('.select__option-check [data-testid="icon"]')?.textContent?.trim()
 	);
 	expect(checks).toEqual([undefined, 'check', undefined]);
 
@@ -112,26 +112,26 @@ test('選択中の選択肢だけにチェックアイコンを表示する', as
 	getOptionEls(screen)[0].click();
 	await vi.waitFor(() => {
 		const moved = getOptionEls(screen).map((el) =>
-			el.querySelector('.select__option-check [data-testid="icon"]')?.textContent?.trim()
+			el.querySelector<HTMLElement>('.select__option-check [data-testid="icon"]')?.textContent?.trim()
 		);
 		expect(moved).toEqual(['check', undefined, undefined]);
 	});
 });
 
 test('トリガーのクリックでポップアップが開き aria-expanded が true になる', async () => {
-	const screen = render(Select, { value: undefined, options });
+	const screen = await render(Select, { value: undefined, options });
 
 	await openPopup(screen);
 
 	expect(getTrigger(screen)).toHaveAttribute('aria-expanded', 'true');
-	const listbox = screen.container.querySelector('.select__options') as HTMLElement;
+	const listbox = screen.container.querySelector<HTMLElement>('.select__options') as HTMLElement;
 	expect(listbox).toHaveAttribute('role', 'listbox');
 	await expect.element(listbox).toBeVisible();
 });
 
 test('選択肢のクリックで値が変わり onchange が呼ばれ、ポップアップが閉じる', async () => {
 	let changed: unknown;
-	const screen = render(Select, {
+	const screen = await render(Select, {
 		value: undefined,
 		options,
 		onchange: (value: unknown) => {
@@ -144,7 +144,7 @@ test('選択肢のクリックで値が変わり onchange が呼ばれ、ポッ�
 
 	expect(changed).toBe('option2');
 	await vi.waitFor(() => {
-		expect(screen.container.querySelector('.select__display-text')?.textContent?.trim()).toBe(
+		expect(screen.container.querySelector<HTMLElement>('.select__display-text')?.textContent?.trim()).toBe(
 			'Option 2'
 		);
 	});
@@ -155,7 +155,7 @@ test('選択肢のクリックで値が変わり onchange が呼ばれ、ポッ�
 
 test('disabled な選択肢はクリックしても選択されない', async () => {
 	let changed: unknown;
-	const screen = render(Select, {
+	const screen = await render(Select, {
 		value: undefined,
 		options,
 		onchange: (value: unknown) => {
@@ -167,12 +167,12 @@ test('disabled な選択肢はクリックしても選択されない', async ()
 	getOptionEls(screen)[2].click();
 
 	expect(changed).toBeUndefined();
-	expect(screen.container.querySelector('.select__display-text')).toBeNull();
+	expect(screen.container.querySelector<HTMLElement>('.select__display-text')).toBeNull();
 });
 
 test('ArrowDown と Enter のキーボード操作で選択できる', async () => {
 	let changed: unknown;
-	const screen = render(Select, {
+	const screen = await render(Select, {
 		value: undefined,
 		options,
 		onchange: (value: unknown) => {
@@ -181,7 +181,7 @@ test('ArrowDown と Enter のキーボード操作で選択できる', async () 
 	});
 
 	await openPopup(screen);
-	const listbox = screen.container.querySelector('.select__options') as HTMLElement;
+	const listbox = screen.container.querySelector<HTMLElement>('.select__options') as HTMLElement;
 
 	// 開いた直後は先頭がハイライトされるため、ArrowDown で 2 番目へ移動する
 	await vi.waitFor(() => {
@@ -194,7 +194,7 @@ test('ArrowDown と Enter のキーボード操作で選択できる', async () 
 });
 
 test('入力した文字で始まる選択肢へ移動する（type-ahead）', async () => {
-	const screen = render(Select, {
+	const screen = await render(Select, {
 		value: undefined,
 		options: [
 			{ value: 'apple', label: 'Apple' },
@@ -205,32 +205,32 @@ test('入力した文字で始まる選択肢へ移動する（type-ahead）', a
 	});
 
 	await openPopup(screen);
-	const listbox = screen.container.querySelector('.select__options') as HTMLElement;
+	const listbox = screen.container.querySelector<HTMLElement>('.select__options') as HTMLElement;
 	listbox.dispatchEvent(new KeyboardEvent('keydown', { key: 'c', bubbles: true }));
 
 	await vi.waitFor(() => {
 		const activeId = listbox.getAttribute('aria-activedescendant');
 		expect(
-			screen.container.querySelector(`#${activeId} .select__option-label`)?.textContent?.trim()
+			screen.container.querySelector<HTMLElement>(`#${activeId} .select__option-label`)?.textContent?.trim()
 		).toBe('Cherry');
 	});
 });
 
 test('リストの最小幅はトリガー幅とテーマの下限の大きい方になる', async () => {
-	const screen = render(Select, { value: undefined, options, placeholder: 'Choose an option' });
+	const screen = await render(Select, { value: undefined, options, placeholder: 'Choose an option' });
 	await openPopup(screen);
 
-	const listbox = screen.container.querySelector('.select__options') as HTMLElement;
+	const listbox = screen.container.querySelector<HTMLElement>('.select__options') as HTMLElement;
 	const expected = Math.max(getTrigger(screen).offsetWidth, getThemeMinWidth());
 	expect(parseFloat(getComputedStyle(listbox).minWidth)).toBeCloseTo(expected, 0);
 });
 
 test('disabled な Select はトリガーが無効でポップアップも開かない', async () => {
-	const screen = render(Select, { value: undefined, options, disabled: true });
+	const screen = await render(Select, { value: undefined, options, disabled: true });
 
 	const trigger = getTrigger(screen);
 	expect(trigger).toHaveAttribute('disabled');
-	expect(screen.container.querySelector('[data-testid="select"]')).toHaveClass('select--disabled');
+	expect(screen.container.querySelector<HTMLElement>('[data-testid="select"]')).toHaveClass('select--disabled');
 
 	trigger.click();
 	await new Promise((resolve) => setTimeout(resolve, 50));
@@ -238,9 +238,9 @@ test('disabled な Select はトリガーが無効でポップアップも開か
 });
 
 test('name を指定すると hidden input でフォーム送信できる', async () => {
-	const screen = render(Select, { value: 'option2', options, name: 'test-select' });
+	const screen = await render(Select, { value: 'option2', options, name: 'test-select' });
 
-	const hidden = screen.container.querySelector('input[type="hidden"]') as HTMLInputElement;
+	const hidden = screen.container.querySelector<HTMLElement>('input[type="hidden"]') as HTMLInputElement;
 	expect(hidden).toHaveAttribute('name', 'test-select');
 	expect(hidden.value).toBe('option2');
 
@@ -251,8 +251,8 @@ test('name を指定すると hidden input でフォーム送信できる', asyn
 	});
 });
 
-test('required / tabindex / ariaLabel がトリガーに反映される', () => {
-	const screen = render(Select, {
+test('required / tabindex / ariaLabel がトリガーに反映される', async () => {
+	const screen = await render(Select, {
 		value: undefined,
 		options,
 		required: true,
@@ -266,15 +266,15 @@ test('required / tabindex / ariaLabel がトリガーに反映される', () => 
 	expect(trigger).toHaveAttribute('aria-label', 'Pick one');
 });
 
-test('customStyle で padding を指定してもアイコンの領域が消えない', () => {
-	const screen = render(Select, { value: 'option2', options, customStyle: 'padding: 8px 12px' });
+test('customStyle で padding を指定してもアイコンの領域が消えない', async () => {
+	const screen = await render(Select, { value: 'option2', options, customStyle: 'padding: 8px 12px' });
 
 	const trigger = getTrigger(screen).getBoundingClientRect();
 	const icon = (
-		screen.container.querySelector('.select__dropdown-icon') as HTMLElement
+		screen.container.querySelector<HTMLElement>('.select__dropdown-icon') as HTMLElement
 	).getBoundingClientRect();
 	const label = (
-		screen.container.querySelector('.select__display-text') as HTMLElement
+		screen.container.querySelector<HTMLElement>('.select__display-text') as HTMLElement
 	).getBoundingClientRect();
 
 	expect(icon.width).toBeGreaterThan(0);
@@ -283,8 +283,8 @@ test('customStyle で padding を指定してもアイコンの領域が消え�
 	expect(label.right).toBeLessThanOrEqual(icon.left + 0.5);
 });
 
-test('レイアウト系のクラスが適用される', () => {
-	const screen = render(Select, {
+test('レイアウト系のクラスが適用される', async () => {
+	const screen = await render(Select, {
 		value: undefined,
 		options,
 		inline: true,
@@ -292,16 +292,16 @@ test('レイアウト系のクラスが適用される', () => {
 		rounded: true
 	});
 
-	const container = screen.container.querySelector('[data-testid="select"]');
+	const container = screen.container.querySelector<HTMLElement>('[data-testid="select"]');
 	expect(container).toHaveClass('select--inline');
 	expect(container).toHaveClass('select--full-width');
 	expect(container).toHaveClass('select--rounded');
 });
 
-test('フォーカス / ブラーイベントが発火する', () => {
+test('フォーカス / ブラーイベントが発火する', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
-	const screen = render(Select, {
+	const screen = await render(Select, {
 		value: undefined,
 		options,
 		onfocus: () => {
@@ -321,10 +321,10 @@ test('フォーカス / ブラーイベントが発火する', () => {
 });
 
 test('Select が参照する CSS 変数はすべて定義されている', async () => {
-	const screen = render(Select, { value: 'option1', options });
+	const screen = await render(Select, { value: 'option1', options });
 	await openPopup(screen);
 
-	const wrapper = screen.container.querySelector('[data-testid="select"]') as HTMLElement;
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="select"]') as HTMLElement;
 	const usedVars = new Set<string>(collectCssVarNames(wrapper));
 
 	const root = document.documentElement;

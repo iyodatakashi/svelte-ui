@@ -11,7 +11,7 @@ test('Drawer - レンダリング', async () => {
 		description: 'Test description'
 	});
 
-	const drawer = container.querySelector('[data-testid="modal"]');
+	const drawer = container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(drawer).toBeInTheDocument();
 	expect(drawer).toHaveClass('fade-out'); // 初期状態は閉じている
 });
@@ -24,7 +24,7 @@ test('Drawer - 開閉', async () => {
 		isOpen: true
 	});
 
-	const openDrawer = container.querySelector('[data-testid="modal"]');
+	const openDrawer = container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(openDrawer).toHaveClass('fade-in');
 
 	// 閉じた状態のテスト
@@ -35,7 +35,7 @@ test('Drawer - 開閉', async () => {
 		isOpen: false
 	});
 
-	const closeDrawer = container2.querySelector('[data-testid="modal"]');
+	const closeDrawer = container2.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(closeDrawer).toHaveClass('fade-out');
 });
 
@@ -48,8 +48,8 @@ test('Drawer - タイトルと説明', async () => {
 		isOpen: true
 	});
 
-	const title = container.querySelector('#drawer-content-test-drawer-title');
-	const description = container.querySelector('#drawer-content-test-drawer-description');
+	const title = container.querySelector<HTMLElement>('#drawer-content-test-drawer-title');
+	const description = container.querySelector<HTMLElement>('#drawer-content-test-drawer-description');
 
 	expect(title).toBeInTheDocument();
 	expect(title).toHaveTextContent('Content Test');
@@ -66,7 +66,7 @@ test('Drawer - カスタム幅', async () => {
 		isOpen: true
 	});
 
-	const drawer = container.querySelector('[data-testid="modal"]');
+	const drawer = container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(drawer).toHaveStyle('width: 400px');
 });
 
@@ -80,8 +80,8 @@ test('Drawer - 位置指定', async () => {
 		isOpen: true
 	});
 
-	const modal = container.querySelector('[data-testid="modal"]');
-	const leftDrawer = modal?.querySelector('.drawer');
+	const modal = container.querySelector<HTMLElement>('[data-testid="modal"]');
+	const leftDrawer = modal?.querySelector<HTMLElement>('.drawer');
 	expect(leftDrawer).toHaveClass('drawer--left');
 
 	// 右側
@@ -93,8 +93,8 @@ test('Drawer - 位置指定', async () => {
 		isOpen: true
 	});
 
-	const modal2 = container2.querySelector('[data-testid="modal"]');
-	const rightDrawer = modal2?.querySelector('.drawer');
+	const modal2 = container2.querySelector<HTMLElement>('[data-testid="modal"]');
+	const rightDrawer = modal2?.querySelector<HTMLElement>('.drawer');
 	expect(rightDrawer).toHaveClass('drawer--right');
 });
 
@@ -107,7 +107,7 @@ test('Drawer - パディングなし', async () => {
 		isOpen: true
 	});
 
-	const body = container.querySelector('.drawer__body');
+	const body = container.querySelector<HTMLElement>('.drawer__body');
 	expect(body).toHaveStyle('padding: 0');
 });
 
@@ -120,8 +120,8 @@ test('Drawer - スクロール可能', async () => {
 		isOpen: true
 	});
 
-	const modal = container.querySelector('[data-testid="modal"]');
-	const drawer = modal?.querySelector('.drawer');
+	const modal = container.querySelector<HTMLElement>('[data-testid="modal"]');
+	const drawer = modal?.querySelector<HTMLElement>('.drawer');
 	expect(drawer).toHaveClass('drawer--scrollable');
 });
 
@@ -134,7 +134,7 @@ test('Drawer - カスタムスタイル', async () => {
 		isOpen: true
 	});
 
-	const body = container.querySelector('.drawer__body');
+	const body = container.querySelector<HTMLElement>('.drawer__body');
 	expect(body).toHaveStyle('background-color: red');
 });
 
@@ -146,7 +146,7 @@ test('Drawer - フォーカス復元', async () => {
 		restoreFocus: true
 	});
 
-	const drawer = container.querySelector('[data-testid="modal"]');
+	const drawer = container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(drawer).toBeInTheDocument();
 });
 
@@ -158,7 +158,7 @@ test('Drawer - 外側クリックで閉じる', async () => {
 		closeIfClickOutside: true
 	});
 
-	const drawer = container.querySelector('[data-testid="modal"]');
+	const drawer = container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(drawer).toBeInTheDocument();
 });
 
@@ -170,7 +170,7 @@ test('Drawer - CSS変数', async () => {
 		isOpen: true
 	});
 
-	const drawer = container.querySelector('[data-testid="modal"]');
+	const drawer = container.querySelector<HTMLElement>('[data-testid="modal"]');
 	expect(drawer).toBeInTheDocument();
 
 	// DrawerコンポーネントはModalを内包しているため、実際のCSS変数を確認
@@ -183,13 +183,13 @@ test('Drawer - CSS変数', async () => {
 // =========================================================================
 
 test('Drawer width property changes reactively', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Drawer,
 		width: 200,
 		isOpen: true
 	});
 
-	const modal = screen.container.querySelector('[data-testid="modal"]');
+	const modal = screen.container.querySelector<HTMLElement>('[data-testid="modal"]');
 	await expect.element(modal).toHaveAttribute('style', expect.stringContaining('width: 200px'));
 
 	// プロパティを更新

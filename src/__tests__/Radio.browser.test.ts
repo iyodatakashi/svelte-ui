@@ -6,7 +6,7 @@ import variables from '../lib/assets/styles/variables.scss?inline';
 import { collectCssVarNames } from './helpers/cssVarCollector';
 
 test('renders Radio with label content', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Option 1',
 		value: 'option1'
@@ -15,19 +15,19 @@ test('renders Radio with label content', async () => {
 	await expect.element(radio).toBeVisible();
 
 	// Check that label contains the text
-	const label = screen.container.querySelector('.radio__label');
+	const label = screen.container.querySelector<HTMLElement>('.radio__label');
 	expect(label).toHaveTextContent('Option 1');
 });
 
 test('Radio can be selected and deselected', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Select me',
 		value: 'test',
 		name: 'test-group',
 		id: 'radio-select'
 	});
-	const radio = screen.container.querySelector('#radio-select') as HTMLInputElement;
+	const radio = screen.container.querySelector<HTMLElement>('#radio-select') as HTMLInputElement;
 
 	// Initially unchecked
 	expect(radio.checked).toBe(false);
@@ -38,14 +38,14 @@ test('Radio can be selected and deselected', async () => {
 });
 
 test('disabled Radio is not interactable', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Disabled',
 		value: 'disabled',
 		disabled: true,
 		id: 'radio-disabled'
 	});
-	const radio = screen.container.querySelector('#radio-disabled') as HTMLInputElement;
+	const radio = screen.container.querySelector<HTMLElement>('#radio-disabled') as HTMLInputElement;
 	expect(radio).toHaveAttribute('disabled');
 
 	// Try to click and verify it doesn't change state
@@ -56,42 +56,42 @@ test('disabled Radio is not interactable', async () => {
 
 test('Radio sizes render correctly', async () => {
 	// Test small size
-	const screenSmall = render(ComponentWrapper, {
+	const screenSmall = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Small',
 		value: 'small',
 		size: 'small',
 		id: 'radio-small'
 	});
-	const containerSmall = screenSmall.container.querySelector('[data-testid="radio"]');
+	const containerSmall = screenSmall.container.querySelector<HTMLElement>('[data-testid="radio"]');
 	expect(containerSmall).toHaveClass('radio--small');
 
 	// Test medium size
-	const screenMedium = render(ComponentWrapper, {
+	const screenMedium = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Medium',
 		value: 'medium',
 		size: 'medium',
 		id: 'radio-medium'
 	});
-	const containerMedium = screenMedium.container.querySelector('[data-testid="radio"]');
+	const containerMedium = screenMedium.container.querySelector<HTMLElement>('[data-testid="radio"]');
 	expect(containerMedium).toHaveClass('radio--medium');
 
 	// Test large size
-	const screenLarge = render(ComponentWrapper, {
+	const screenLarge = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Large',
 		value: 'large',
 		size: 'large',
 		id: 'radio-large'
 	});
-	const containerLarge = screenLarge.container.querySelector('[data-testid="radio"]');
+	const containerLarge = screenLarge.container.querySelector<HTMLElement>('[data-testid="radio"]');
 	expect(containerLarge).toHaveClass('radio--large');
 });
 
 test('Radio change event works correctly', async () => {
 	let changeCalled = false;
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Change me',
 		value: 'change',
@@ -100,12 +100,12 @@ test('Radio change event works correctly', async () => {
 		}
 	});
 	// Click the label instead of the radio input
-	const label = screen.container.querySelector('.radio__label') as HTMLElement;
+	const label = screen.container.querySelector<HTMLElement>('.radio__label') as HTMLElement;
 	if (label) {
 		label.click();
 	} else {
 		// Fallback: click the radio directly
-		const radio = screen.container.querySelector('#radio-change') as HTMLElement;
+		const radio = screen.container.querySelector<HTMLElement>('#radio-change') as HTMLElement;
 		radio?.click();
 	}
 	expect(changeCalled).toBe(true);
@@ -115,7 +115,7 @@ test('Radio focus and blur events work correctly', async () => {
 	let focusCalled = false;
 	let blurCalled = false;
 
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Focusable',
 		value: 'focus',
@@ -135,7 +135,7 @@ test('Radio focus and blur events work correctly', async () => {
 });
 
 test('Radio required attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Required',
 		value: 'required',
@@ -146,7 +146,7 @@ test('Radio required attribute works correctly', async () => {
 });
 
 test('Radio name attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Named',
 		value: 'named',
@@ -157,7 +157,7 @@ test('Radio name attribute works correctly', async () => {
 });
 
 test('Radio value attribute works correctly', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Valued',
 		value: 'test-value'
@@ -167,7 +167,7 @@ test('Radio value attribute works correctly', async () => {
 });
 
 test('currentValue が undefined でもクラッシュせず未選択になる', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		children: 'Undefined',
 		value: 'test-value',
@@ -179,11 +179,11 @@ test('currentValue が undefined でもクラッシュせず未選択になる',
 });
 
 test('should not reference undefined CSS variables', async () => {
-	const screen = render(ComponentWrapper, {
+	const screen = await render(ComponentWrapper, {
 		component: Radio,
 		value: 'test'
 	});
-	const wrapper = screen.container.querySelector('[data-testid="radio"]') as HTMLElement;
+	const wrapper = screen.container.querySelector<HTMLElement>('[data-testid="radio"]') as HTMLElement;
 
 	// List of CSS variables actually used in Radio.svelte
 	const cssVariables = [
