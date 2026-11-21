@@ -305,6 +305,25 @@ Pre-built three-dot menu button. No need to manage anchor element manually.
 
 ---
 
+### Tooltip
+
+Wrap the element it describes and pass the text. It appears 0.4 seconds after hover and at once on keyboard focus, and hides on leave, blur, press or Escape. The text becomes the element's description via `aria-describedby`.
+
+```svelte
+<Tooltip text="Bold (⌘B)">
+  <IconButton ariaLabel="Bold" onclick={toggleBold}>format_bold</IconButton>
+</Tooltip>
+
+<!-- On a vertical toolbar on the left edge, show it to the right -->
+<Tooltip text="Bold (⌘B)" position="right">…</Tooltip>
+```
+
+Props: `text`, `position` (`'top' | 'bottom' | 'left' | 'right'`, default `'bottom'`, flips when there is no room), `margin` (px, default 4), `delay` (ms, default 400), `id`, `customStyle`.
+
+Wrap a single element; the tooltip attaches to the first element inside. Theme variables: `--svelte-ui-tooltip-bg`, `--svelte-ui-tooltip-text-color`, `--svelte-ui-tooltip-font-size`, `--svelte-ui-tooltip-line-height`, `--svelte-ui-tooltip-padding`, `--svelte-ui-tooltip-border-radius`, `--svelte-ui-tooltip-max-width`.
+
+---
+
 ### Datepicker
 
 ```svelte

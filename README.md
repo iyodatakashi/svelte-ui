@@ -117,6 +117,7 @@ import '@14ch/svelte-ui/styles/optional/reset.scss'; // CSS reset
 
 - `Popup` - Popover content
 - `PopupMenu` / `PopupMenuButton` - Context menus
+- `Tooltip` - Short description shown on hover and keyboard focus
 
 ### Notifications & Feedback
 

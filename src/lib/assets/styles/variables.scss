@@ -707,6 +707,15 @@
 	--svelte-ui-popup-mobile-border-radius: 12px;
 	--svelte-ui-popup-focus-color: var(--svelte-ui-primary-color);
 
+	/* Tooltip */
+	--svelte-ui-tooltip-bg: var(--svelte-ui-surface-inverse-color);
+	--svelte-ui-tooltip-text-color: var(--svelte-ui-text-inverse-color);
+	--svelte-ui-tooltip-font-size: var(--svelte-ui-font-size-xs);
+	--svelte-ui-tooltip-line-height: 1.4;
+	--svelte-ui-tooltip-padding: 4px 8px;
+	--svelte-ui-tooltip-border-radius: var(--svelte-ui-border-radius);
+	--svelte-ui-tooltip-max-width: 280px;
+
 	/* PopupMenu */
 	--svelte-ui-popupmenu-focus-color: var(--svelte-ui-primary-color);
 	--svelte-ui-popupmenu-text-color: var(--svelte-ui-text-color);
@@ -999,6 +1008,10 @@
 		--svelte-ui-iconbutton-text-text: ButtonText;
 		--svelte-ui-iconbutton-border-outlined: ButtonText;
 		--svelte-ui-iconbutton-hover-overlay: Highlight;
+
+		/* ===== ツールチップの上書き ===== */
+		--svelte-ui-tooltip-bg: CanvasText;
+		--svelte-ui-tooltip-text-color: Canvas;
 
 		/* ===== スケルトンの上書き ===== */
 		--svelte-ui-skeleton-color: CanvasText;

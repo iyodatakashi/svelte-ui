@@ -42,6 +42,7 @@ export { default as Nav } from './components/Nav.svelte';
 export { default as NavItem } from './components/NavItem.svelte';
 export { default as Tab } from './components/Tab.svelte';
 export { default as Textarea } from './components/Textarea.svelte';
+export { default as Tooltip } from './components/Tooltip.svelte';
 
 // Component Props Types
 export type { ButtonProps } from './components/Button.svelte';
@@ -88,10 +89,12 @@ export type { NavProps } from './components/Nav.svelte';
 export type { NavItemProps, NavItemSelectedVariant } from './components/NavItem.svelte';
 export type { TabProps } from './components/Tab.svelte';
 export type { TextareaProps } from './components/Textarea.svelte';
+export type { TooltipProps } from './components/Tooltip.svelte';
 
 // Prop Optionss
 export type {
 	PopupPosition,
+	TooltipPosition,
 	SnackbarPosition,
 	FabPosition,
 	ButtonVariant,

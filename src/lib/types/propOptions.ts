@@ -27,6 +27,12 @@ export type PopupPosition =
 	| 'auto';
 
 /**
+ * Tooltip position type
+ * Used by Tooltip component
+ */
+export type TooltipPosition = 'top' | 'bottom' | 'left' | 'right';
+
+/**
  * Snackbar position type (top/bottom)
  * Used by Snackbar, SnackbarItem components
  */
