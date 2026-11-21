@@ -5,6 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.89] - 2026-11-21
+
+### Added
+
+- **Tooltip**: New component that shows a short label next to an element. Wrap the element and pass `text` (for example `<Tooltip text="Bold (⌘B)"><IconButton … /></Tooltip>`). It appears 0.4 seconds after the pointer rests on the element (`delay`), and at once when the element gets keyboard focus. It hides when the pointer leaves, focus moves away, the element is pressed, or Escape is pressed. The text is set as the element's `aria-describedby`, keeping any description it already has. `position` chooses the side (`top`, `bottom` (default), `left`, `right`) and flips to the opposite side when there is no room; `margin` sets the gap. The tooltip is shown in the top layer, so scrolling containers and `overflow: hidden` do not cut it off. Colors and sizes follow the new `--svelte-ui-tooltip-*` theme variables, which use the inverse surface and text colors by default.
+- New `TooltipPosition` type.
+
 ## [0.0.88] - 2026-11-20
 
 ### Fixed
