@@ -1,9 +1,9 @@
 <script lang="ts">
-	import Popup from '../lib/components/Popup.svelte';
-	import Button from '../lib/components/Button.svelte';
+	import Popup from '#lib/sharedComponents/Popup.svelte';
+	import Button from '#lib/sharedComponents/Button.svelte';
 	import type { Snippet } from 'svelte';
-	import type PopupComponent from '../lib/components/Popup.svelte';
-	import type { PopupPosition } from '$lib/types/propOptions';
+	import type PopupComponent from '#lib/sharedComponents/Popup.svelte';
+	import type { PopupPosition } from '#lib/models/popup/popup.types';
 
 	type PopupExampleProps = {
 		position?: PopupPosition;

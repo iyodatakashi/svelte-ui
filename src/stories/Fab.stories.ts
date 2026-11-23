@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import Fab from '../lib/components/Fab.svelte';
+import Fab from '#lib/sharedComponents/Fab.svelte';
 
 const meta = {
 	title: 'UI/Fab',

@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import Checkbox from '../lib/components/Checkbox.svelte';
+import Checkbox from '#lib/sharedComponents/Checkbox.svelte';
 
 const meta = {
 	title: 'Forms/Checkbox',

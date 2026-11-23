@@ -1,6 +1,6 @@
 <script lang="ts">
-	import ConfirmDialog from '../lib/components/ConfirmDialog.svelte';
-	import Button from '../lib/components/Button.svelte';
+	import ConfirmDialog from '#lib/sharedComponents/ConfirmDialog.svelte';
+	import Button from '#lib/sharedComponents/Button.svelte';
 
 	type ConfirmDialogExampleProps = {
 		title?: string;
@@ -35,9 +35,7 @@
 	};
 </script>
 
-<Button variant="filled" onclick={openDialog}>
-	Open Confirm Dialog
-</Button>
+<Button variant="filled" onclick={openDialog}>Open Confirm Dialog</Button>
 
 <ConfirmDialog
 	bind:isOpen
@@ -52,4 +50,3 @@
 	{onSubmit}
 	{onCancel}
 />
-

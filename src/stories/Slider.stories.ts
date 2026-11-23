@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import Slider from '../lib/components/Slider.svelte';
+import Slider from '#lib/sharedComponents/Slider.svelte';
 
 const meta = {
 	title: 'Forms/Slider',
@@ -33,8 +33,7 @@ const meta = {
 		},
 		width: {
 			control: { type: 'text' },
-			description:
-				'Slider width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
+			description: 'Slider width (number in px or CSS length string, e.g. "200", "50%", "24rem")'
 		},
 		fullWidth: {
 			control: { type: 'boolean' },
@@ -46,13 +45,11 @@ const meta = {
 		},
 		thumbWidth: {
 			control: { type: 'text' },
-			description:
-				'Thumb width (number in px or CSS length string, e.g. "16", "20px")'
+			description: 'Thumb width (number in px or CSS length string, e.g. "16", "20px")'
 		},
 		thumbHeight: {
 			control: { type: 'text' },
-			description:
-				'Thumb height (number in px or CSS length string, e.g. "16", "20px")'
+			description: 'Thumb height (number in px or CSS length string, e.g. "16", "20px")'
 		},
 		disabled: {
 			control: { type: 'boolean' },
@@ -153,4 +150,3 @@ export const Disabled: Story = {
 		disabled: true
 	}
 };
-

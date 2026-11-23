@@ -1,5 +1,6 @@
 <script lang="ts">
-	import Nav, { type NavProps } from '../lib/components/Nav.svelte';
+	import Nav from '#lib/sharedComponents/Nav.svelte';
+	import type { NavProps } from '#lib/models/nav/nav.types';
 
 	let { navItems = [], currentPath: currentPathProp, ...restProps }: NavProps = $props();
 

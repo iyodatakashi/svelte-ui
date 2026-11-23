@@ -1,6 +1,6 @@
 import DOMPurify from 'dompurify';
 
-export const convertToHtml = (value: string | number ): string => {
+export const convertToHtml = (value: string | number): string => {
 	if (typeof value === 'string') {
 		const escapedValue = escapeHtml(value);
 		let html = escapedValue
@@ -43,7 +43,7 @@ export const escapeHtml = (value: string): string => {
 	return escapedValue;
 };
 
-export const convertToHtmlWithLink = (value: string | number ): string => {
+export const convertToHtmlWithLink = (value: string | number): string => {
 	if (typeof value === 'string') {
 		const html = convertToHtml(value) as string;
 		const htmlWithLink = convertToLink(html);

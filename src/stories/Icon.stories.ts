@@ -1,8 +1,8 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import type { IconVariant } from '$lib/types/icon';
-import Icon from '../lib/components/Icon.svelte';
+import type { IconVariant } from '#lib/models/icon/icon.types';
+import Icon from '#lib/sharedComponents/Icon.svelte';
 
 const meta = {
 	title: 'UI/Icon',

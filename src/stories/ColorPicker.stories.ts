@@ -1,5 +1,5 @@
 // s../lib/components/atoms/ColorPicker.stories.ts
-import ColorPicker from '../lib/components/ColorPicker.svelte';
+import ColorPicker from '#lib/sharedComponents/ColorPicker.svelte';
 
 const meta = {
 	title: 'Forms/ColorPicker',

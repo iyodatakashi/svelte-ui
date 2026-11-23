@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import Tab from '../lib/components/Tab.svelte';
+import Tab from '#lib/sharedComponents/Tab.svelte';
 import TabExample from './TabExample.svelte';
 
 const meta = {

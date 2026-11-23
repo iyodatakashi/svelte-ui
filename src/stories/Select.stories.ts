@@ -1,4 +1,4 @@
-import Select from '../lib/components/Select.svelte';
+import Select from '#lib/sharedComponents/Select.svelte';
 
 const meta = {
 	title: 'Forms/Select',

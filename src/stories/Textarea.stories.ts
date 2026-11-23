@@ -1,5 +1,5 @@
 // src/lib/stories/atoms/Textarea.stories.ts
-import Textarea from '../lib/components/Textarea.svelte';
+import Textarea from '#lib/sharedComponents/Textarea.svelte';
 
 const meta = {
 	title: 'Forms/Textarea',

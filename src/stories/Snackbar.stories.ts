@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import Snackbar, { type SnackbarProps } from '../lib/components/Snackbar.svelte';
+import Snackbar from '#lib/sharedComponents/Snackbar.svelte';
+import type { SnackbarProps } from '#lib/models/snackbar/snackbar.types';
 import SnackbarExample from './SnackbarExample.svelte';
 
 /** Snackbar props + additional display options passed to snackbarManager (outside component props) */
@@ -66,4 +67,3 @@ export const Default: Story = {
 		iconVariant: 'outlined'
 	}
 };
-

@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import RadioGroup from '../lib/components/RadioGroup.svelte';
-import type { Option, OptionValue } from '../lib/types/options';
+import RadioGroup from '#lib/sharedComponents/RadioGroup.svelte';
+import type { Option, OptionValue } from '#lib/models/option/option.types';
 
 const meta = {
 	title: 'Forms/RadioGroup',
@@ -140,4 +140,3 @@ export const WithCustomGap: Story = {
 		value: 'option1'
 	}
 };
-

@@ -1,6 +1,6 @@
 // s../lib/components/atoms/Combobox.stories.ts
 import type { Meta, StoryObj } from '@storybook/svelte';
-import Combobox from '../lib/components/Combobox.svelte';
+import Combobox from '#lib/sharedComponents/Combobox.svelte';
 
 const meta = {
 	title: 'Forms/Combobox',

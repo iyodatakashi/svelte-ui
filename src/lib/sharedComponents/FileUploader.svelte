@@ -1,0 +1,422 @@
+<!-- FileUploader.svelte -->
+
+<script lang="ts">
+	import Icon from './Icon.svelte';
+	import IconButton from './IconButton.svelte';
+	import { announceToScreenReader } from '#lib/utils/accessibility';
+	import { getStyleFromNumber } from '#lib/utils/style';
+	import { t } from '#lib/models/i18n/i18n';
+	import type { FileUploaderProps } from '#lib/models/uploader/uploader.types';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
+	let {
+		// 基本プロパティ
+		value = $bindable(),
+		multiple = false,
+		maxFileSize = 5 * 1024 * 1024,
+		placeholder = t('fileUploader.placeholder'),
+
+		// HTML属性系
+		id = `file-uploader-${Math.random().toString(36).substring(2, 15)}`,
+		accept = '',
+
+		// スタイル/レイアウト
+		width = undefined,
+		height = undefined,
+		rounded = false,
+
+		// アイコン系
+		icon = 'upload',
+		iconSize = 32,
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = iconSize,
+		iconVariant = 'outlined',
+		removeFileAriaLabel = t('fileUploader.removeFile'),
+
+		// 入力イベント
+		onchange = () => {}, // No params for type inference
+
+		// フォーカスイベント
+		onfocus = () => {}, // No params for type inference
+		onblur = () => {}, // No params for type inference
+
+		// キーボードイベント
+		onkeydown = () => {}, // No params for type inference
+		onkeyup = () => {}, // No params for type inference
+
+		// マウスイベント
+		onmouseenter = () => {}, // No params for type inference
+		onmouseleave = () => {}, // No params for type inference
+
+		// タッチイベント
+		ontouchstart = () => {}, // No params for type inference
+		ontouchend = () => {}, // No params for type inference
+
+		// ポインターイベント
+		onpointerenter = () => {}, // No params for type inference
+		onpointerleave = () => {} // No params for type inference
+	}: FileUploaderProps = $props();
+
+	let dropAreaRef: HTMLButtonElement;
+	let fileInputRef: HTMLInputElement;
+	let isHover: boolean = $state(false);
+	let errorMessage: string = $state('');
+
+	// =========================================================================
+	// Effects
+	// =========================================================================
+	$effect(() => {
+		if (value && value.length > 0) {
+			const fileCount = value.length;
+			const fileNames = Array.from(value)
+				.map((file) => file.name)
+				.join(', ');
+			announceToScreenReader(`${fileCount} file${fileCount > 1 ? 's' : ''} selected: ${fileNames}`);
+		}
+	});
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const handleClick = () => {
+		fileInputRef?.click();
+	};
+
+	const handleFocus = (event: FocusEvent) => {
+		onfocus?.(event);
+	};
+
+	const handleBlur = (event: FocusEvent) => {
+		onblur?.(event);
+	};
+
+	const handleKeyDown = (event: KeyboardEvent) => {
+		onkeydown?.(event);
+		if (event.key === 'Enter' || event.key === ' ') {
+			event.preventDefault();
+			handleClick();
+		}
+	};
+
+	const handleKeyUp = (event: KeyboardEvent) => {
+		onkeyup?.(event);
+	};
+
+	const handleMouseEnter = (event: MouseEvent) => {
+		onmouseenter?.(event);
+	};
+
+	const handleMouseLeave = (event: MouseEvent) => {
+		onmouseleave?.(event);
+	};
+
+	const handleTouchStart = (event: TouchEvent) => {
+		ontouchstart?.(event);
+	};
+
+	const handleTouchEnd = (event: TouchEvent) => {
+		ontouchend?.(event);
+	};
+
+	const handlePointerEnter = (event: PointerEvent) => {
+		onpointerenter?.(event);
+	};
+
+	const handlePointerLeave = (event: PointerEvent) => {
+		onpointerleave?.(event);
+	};
+
+	const removeFile = (index: number) => {
+		if (!value) return;
+
+		const dt = new DataTransfer();
+		for (let i = 0; i < value.length; i++) {
+			if (i !== index) {
+				dt.items.add(value[i]);
+			}
+		}
+		value = dt.files.length > 0 ? dt.files : null;
+	};
+
+	const validateFile = (file: File): boolean => {
+		if (file.size > maxFileSize) {
+			errorMessage = t('fileUploader.maxFileSizeError', {
+				maxSize: (maxFileSize / 1024 / 1024).toFixed(1)
+			});
+			return false;
+		}
+
+		errorMessage = '';
+		return true;
+	};
+
+	const handleFileChange = (fileList: FileList | null) => {
+		if (!fileList) return;
+
+		const validFiles: File[] = [];
+		for (let i = 0; i < fileList.length; i++) {
+			const file = fileList[i];
+			if (validateFile(file)) {
+				validFiles.push(file);
+			}
+			// 無効なファイルは単純にスキップ
+		}
+
+		// 有効なファイルがある場合のみ更新
+		if (validFiles.length > 0) {
+			const dataTransfer = new DataTransfer();
+
+			// multipleの場合は既存のファイルを保持して追加
+			if (multiple && value) {
+				for (let i = 0; i < value.length; i++) {
+					dataTransfer.items.add(value[i]);
+				}
+			}
+
+			// 新しく選択されたファイルのみを追加
+			validFiles.forEach((file) => dataTransfer.items.add(file));
+			value = dataTransfer.files;
+			onchange(value);
+		}
+
+		// input要素をリセット
+		if (fileInputRef) {
+			fileInputRef.value = '';
+		}
+	};
+
+	export const reset = () => {
+		if (fileInputRef) {
+			fileInputRef.value = '';
+			value = null;
+			errorMessage = '';
+		}
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const widthStyle = $derived(getStyleFromNumber(width) || '100%');
+	const heightStyle = $derived(getStyleFromNumber(height));
+</script>
+
+<button
+	bind:this={dropAreaRef}
+	class="file-uploader"
+	class:file-uploader--hover={isHover}
+	class:rounded
+	style:--internal-file-uploader-width={widthStyle}
+	style:--internal-file-uploader-height={heightStyle}
+	data-testid="file-uploader"
+	onclick={handleClick}
+	onfocus={handleFocus}
+	onblur={handleBlur}
+	onkeydown={handleKeyDown}
+	onkeyup={handleKeyUp}
+	onmouseenter={handleMouseEnter}
+	onmouseleave={handleMouseLeave}
+	ontouchstart={handleTouchStart}
+	ontouchend={handleTouchEnd}
+	onpointerenter={handlePointerEnter}
+	onpointerleave={handlePointerLeave}
+	ondragover={(event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		isHover = true;
+	}}
+	ondragleave={(event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		isHover = false;
+	}}
+	ondrop={(event) => {
+		event.stopPropagation();
+		event.preventDefault();
+		isHover = false;
+		const fileList = event.dataTransfer?.files;
+		if (fileList) {
+			handleFileChange(fileList);
+		}
+	}}
+	aria-label={t('fileUploader.uploadFile')}
+	aria-describedby={`${id}-description`}
+>
+	{#if value && value.length > 0}
+		<div
+			id={`${id}-description`}
+			class="file-uploader__description file-uploader__description--with-file"
+		>
+			<Icon
+				size={iconSize}
+				filled={iconFilled}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}>{icon}</Icon
+			>
+		</div>
+		<ul class="file-uploader__file-list">
+			{#each value as file, index}
+				<li class="file-uploader__file-list-item">
+					{file.name}
+					<IconButton
+						size={24}
+						iconFilled={true}
+						iconWeight={300}
+						color="var(--svelte-ui-text-color)"
+						onclick={(e) => {
+							e.stopPropagation();
+							removeFile(index);
+						}}
+						ariaLabel={removeFileAriaLabel}
+						tabindex={-1}
+					>
+						cancel
+					</IconButton>
+				</li>
+			{/each}
+		</ul>
+	{:else}
+		<div id={`${id}-description`} class="file-uploader__description">
+			<Icon
+				size={iconSize}
+				filled={iconFilled}
+				weight={iconWeight}
+				grade={iconGrade}
+				opticalSize={iconOpticalSize}
+				variant={iconVariant}>{icon}</Icon
+			>
+			{@html placeholder}
+		</div>
+	{/if}
+
+	{#if errorMessage}
+		<div class="file-uploader__error-message" role="alert" aria-live="polite">
+			{errorMessage}
+		</div>
+	{/if}
+
+	<input
+		bind:this={fileInputRef}
+		{accept}
+		{multiple}
+		class="file-uploader__input"
+		{id}
+		type="file"
+		onchange={(event) => {
+			const target = event.target as HTMLInputElement;
+			if (target.files && target.files.length > 0) {
+				handleFileChange(target.files);
+			}
+		}}
+	/>
+</button>
+
+<style lang="scss">
+	@use '#lib/assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
+	.file-uploader {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		align-items: center;
+		gap: 16px;
+		position: relative;
+		width: var(--internal-file-uploader-width);
+		height: var(--internal-file-uploader-height, var(--svelte-ui-file-uploader-height));
+		min-height: 100px;
+		padding: 16px;
+		background-color: var(--svelte-ui-file-uploader-bg);
+		border-radius: var(--svelte-ui-border-radius);
+	}
+
+	.file-uploader::before {
+		content: '';
+		display: block;
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		background-color: transparent;
+		border: var(--svelte-ui-file-uploader-border-style) var(--svelte-ui-file-uploader-border-width)
+			var(--svelte-ui-file-uploader-border-color);
+		border-radius: var(--svelte-ui-border-radius);
+		transition-property: background-color border-color;
+		transition-duration: var(--svelte-ui-transition-duration);
+	}
+
+	.file-uploader.rounded,
+	.file-uploader.rounded::before {
+		border-radius: var(--svelte-ui-border-radius-rounded);
+	}
+
+	@media (hover: hover) {
+		.file-uploader:hover::before,
+		.file-uploader--hover::before {
+			background-color: var(--svelte-ui-file-uploader-hover-bg);
+			border-color: var(--svelte-ui-file-uploader-hover-border-color);
+		}
+	}
+
+	.file-uploader:focus-visible {
+		outline: var(--svelte-ui-focus-outline-inner);
+		outline-offset: var(--svelte-ui-focus-outline-offset-inner);
+	}
+
+	.file-uploader__description {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 16px;
+		color: var(--svelte-ui-text-subtle-color);
+	}
+
+	.file-uploader__input {
+		display: none;
+	}
+
+	@media (hover: hover) {
+		.file-uploader:hover .file-uploader__description,
+		.file-uploader--hover .file-uploader__description {
+			color: var(--svelte-ui-file-uploader-hover-color);
+		}
+	}
+
+	.file-uploader__error-message {
+		margin-top: 8px;
+		padding: 8px 12px;
+		background-color: var(--svelte-ui-error-container-color);
+		color: var(--svelte-ui-error-color);
+		border-radius: var(--svelte-ui-border-radius);
+		font-size: var(--svelte-ui-font-size-sm);
+	}
+
+	.file-uploader__file-list {
+		display: flex;
+		justify-content: center;
+		flex-wrap: wrap;
+		gap: 8px;
+		list-style: none;
+		padding: 0;
+		margin: 0;
+		width: 100%;
+	}
+
+	.file-uploader__file-list-item {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		padding: 4px 4px 4px 12px;
+		background-color: var(--svelte-ui-file-uploader-item-bg);
+		border-radius: var(--svelte-ui-border-radius-rounded);
+	}
+</style>

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import ConfirmDialog from '../lib/components/ConfirmDialog.svelte';
+import ConfirmDialog from '#lib/sharedComponents/ConfirmDialog.svelte';
 import ConfirmDialogExample from './ConfirmDialogExample.svelte';
 
 const meta = {

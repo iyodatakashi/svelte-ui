@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import PopupMenu from '../lib/components/PopupMenu.svelte';
+import PopupMenu from '#lib/sharedComponents/PopupMenu.svelte';
 
 const meta = {
 	title: 'UI/PopupMenu',

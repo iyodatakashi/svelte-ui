@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import type { IconWeight } from '../lib/types/icon';
-import Datepicker from '../lib/components/Datepicker.svelte';
+import type { IconWeight } from '#lib/models/icon/icon.types';
+import Datepicker from '#lib/sharedComponents/Datepicker.svelte';
 
 const meta = {
 	title: 'Forms/Datepicker',

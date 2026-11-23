@@ -1,5 +1,5 @@
 // s../lib/components/atoms/Input.stories.ts
-import Input from '../lib/components/Input.svelte';
+import Input from '#lib/sharedComponents/Input.svelte';
 
 const meta = {
 	title: 'Forms/Input',

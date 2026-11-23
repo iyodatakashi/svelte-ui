@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import SegmentedControl from '../lib/components/SegmentedControl.svelte';
+import SegmentedControl from '#lib/sharedComponents/SegmentedControl.svelte';
 
 const meta = {
 	title: 'UI/SegmentedControl',

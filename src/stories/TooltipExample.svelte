@@ -1,7 +1,7 @@
 <script lang="ts">
-	import Tooltip from '../lib/components/Tooltip.svelte';
-	import IconButton from '../lib/components/IconButton.svelte';
-	import type { TooltipPosition } from '$lib/types/propOptions';
+	import Tooltip from '#lib/sharedComponents/Tooltip.svelte';
+	import IconButton from '#lib/sharedComponents/IconButton.svelte';
+	import type { TooltipPosition } from '#lib/models/tooltip/tooltip.types';
 
 	type TooltipExampleProps = {
 		text?: string;

@@ -1,0 +1,119 @@
+<!-- LoadingSpinner.svelte -->
+
+<script lang="ts">
+	import type { LoadingSpinnerProps } from '#lib/models/loadingSpinner/loadingSpinner.types';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
+	let {
+		// スタイル/レイアウト
+		size = 32,
+		color,
+		strokeWidth = 3,
+
+		// 状態/動作
+		speed = 1,
+
+		// ARIA/アクセシビリティ
+		reducedMotion = false
+	}: LoadingSpinnerProps = $props();
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const radius = $derived((size - strokeWidth) / 2);
+	const circumference = $derived(2 * Math.PI * radius);
+	const halfCircumference = $derived((circumference * 3) / 4);
+	const negativeHalfCircumference = $derived(-halfCircumference);
+	const growDuration = $derived(1.6 / speed);
+	const rotateDuration = $derived(0.8 / speed);
+</script>
+
+<div
+	class="loading-spinner"
+	class:loading-spinner--no-motion={reducedMotion}
+	style:--internal-loading-spinner-grow-duration="{growDuration}s"
+	style:--internal-loading-spinner-rotate-duration="{rotateDuration}s"
+	style:--internal-loading-spinner-size="{size}px"
+	style:--internal-loading-spinner-color={color}
+	style:--internal-loading-spinner-circumference={circumference}
+	style:--internal-loading-spinner-half-circumference={halfCircumference}
+	style:--internal-loading-spinner-negative-half-circumference={negativeHalfCircumference}
+	data-testid="loading-spinner"
+>
+	<svg viewBox="0 0 {size} {size}" width={size} height={size}>
+		<circle cx={size / 2} cy={size / 2} r={radius} style:stroke-width={strokeWidth} />
+	</svg>
+</div>
+
+<style lang="scss">
+	@use '#lib/assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+
+	.loading-spinner {
+		display: flex;
+		justify-content: center;
+		align-items: center;
+		width: 100%;
+		height: 100px;
+		line-height: 1px;
+	}
+
+	.loading-spinner svg {
+		width: var(--internal-loading-spinner-size, var(--svelte-ui-loading-spinner-size));
+		height: var(--internal-loading-spinner-size, var(--svelte-ui-loading-spinner-size));
+		transform: rotate(-90deg);
+		animation: rotate var(--internal-loading-spinner-rotate-duration, 0.8s) linear infinite;
+	}
+
+	.loading-spinner circle {
+		fill: none;
+		stroke: var(--internal-loading-spinner-color, var(--svelte-ui-loading-spinner-color));
+		stroke-linecap: butt;
+		animation: complex-grow var(--internal-loading-spinner-grow-duration, 1.6s) linear infinite;
+		transform-origin: center;
+	}
+
+	@keyframes rotate {
+		0% {
+			transform: rotate(-90deg);
+		}
+		100% {
+			transform: rotate(270deg);
+		}
+	}
+
+	@keyframes complex-grow {
+		/* 負の値も別のCSS変数として定義 */
+		0% {
+			stroke-dasharray: 0 var(--internal-loading-spinner-circumference);
+			stroke-dashoffset: var(--internal-loading-spinner-negative-half-circumference);
+		}
+		50% {
+			stroke-dasharray: var(--internal-loading-spinner-half-circumference)
+				var(--internal-loading-spinner-circumference);
+			stroke-dashoffset: 0;
+		}
+		100% {
+			stroke-dasharray: 0 var(--internal-loading-spinner-circumference);
+			stroke-dashoffset: var(--internal-loading-spinner-negative-half-circumference);
+		}
+	}
+
+	/* Reduced motion */
+	.loading-spinner--no-motion svg,
+	.loading-spinner--no-motion circle {
+		animation-duration: 0.01s;
+	}
+
+	/* Prefers reduced motion */
+	@media (prefers-reduced-motion: reduce) {
+		.loading-spinner svg,
+		.loading-spinner circle {
+			animation-duration: 0.01s;
+		}
+	}
+</style>

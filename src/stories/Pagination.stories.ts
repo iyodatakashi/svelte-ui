@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import Pagination from '../lib/components/Pagination.svelte';
+import Pagination from '#lib/sharedComponents/Pagination.svelte';
 
 const meta = {
 	title: 'Navigation/Pagination',
@@ -8,8 +8,7 @@ const meta = {
 		layout: 'padded',
 		docs: {
 			description: {
-				component:
-					'A pagination component for splitting large datasets across multiple pages.'
+				component: 'A pagination component for splitting large datasets across multiple pages.'
 			}
 		}
 	},

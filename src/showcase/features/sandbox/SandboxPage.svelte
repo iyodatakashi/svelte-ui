@@ -1,0 +1,250 @@
+<script lang="ts">
+	import Input from '#lib/sharedComponents/Input.svelte';
+	import Textarea from '#lib/sharedComponents/Textarea.svelte';
+	import Radio from '#lib/sharedComponents/Radio.svelte';
+	import Checkbox from '#lib/sharedComponents/Checkbox.svelte';
+	import Switch from '#lib/sharedComponents/Switch.svelte';
+	import Button from '#lib/sharedComponents/Button.svelte';
+	import Select from '#lib/sharedComponents/Select.svelte';
+	import Combobox from '#lib/sharedComponents/Combobox.svelte';
+	import ColorPicker from '#lib/sharedComponents/ColorPicker.svelte';
+	import ConfirmDialog from '#lib/sharedComponents/ConfirmDialog.svelte';
+	import Datepicker from '#lib/sharedComponents/Datepicker.svelte';
+	import Dialog from '#lib/sharedComponents/Dialog.svelte';
+	import Drawer from '#lib/sharedComponents/Drawer.svelte';
+	import Skeleton from '#lib/sharedComponents/skeleton/Skeleton.svelte';
+	import type { SvelteComponent } from 'svelte';
+	import Fab from '#lib/sharedComponents/Fab.svelte';
+	import FileUploader from '#lib/sharedComponents/FileUploader.svelte';
+	import ImageUploader from '#lib/sharedComponents/ImageUploader.svelte';
+	import Slider from '#lib/sharedComponents/Slider.svelte';
+	import CheckboxGroup from '#lib/sharedComponents/CheckboxGroup.svelte';
+	import RadioGroup from '#lib/sharedComponents/RadioGroup.svelte';
+
+	let value: string = $state('');
+	let value2: string = $state('');
+	let comboboxValue: string = $state('');
+	let checked: boolean = $state(false);
+	let color: string = $state('');
+	let sliderValue: number = $state(150);
+	let dialogRef: SvelteComponent | undefined = $state();
+	let confirmDialogRef: SvelteComponent | undefined = $state();
+	let drawerRef: SvelteComponent | undefined = $state();
+	let date: Date = $state(new Date());
+	let range: { start: Date; end: Date } = $state({
+		start: new Date(),
+		end: new Date('2025-11-28')
+	});
+	let fileList: FileList | undefined = $state();
+	let multiSelectValues: string[] = $state([]);
+
+	const options = [
+		{ value: 'hoge', label: 'ほげほげ' },
+		{ value: 'fuga', label: 'ふがほほがえあが' },
+		{ value: 'hoge1', label: 'ほげ' },
+		{ value: 'fuga1', label: 'ふが' },
+		{ value: 'hoge2', label: 'ほげ' },
+		{ value: 'fuga2', label: 'ふが' },
+		{ value: 'hoge3', label: 'ほげ' },
+		{ value: 'fuga3', label: 'ふが' }
+	];
+
+	const comboboxOptions = ['ほげ', 'ふが'];
+
+	const handleChange = (newValue?: unknown) => {
+		console.log(newValue);
+	};
+
+	const handleInputChange = (value: string) => {
+		console.log('Input changed:', value);
+	};
+
+	const handleInputKeydown = () => {};
+
+	const handleChangeFileList = (newValue: FileList) => {
+		console.log(newValue);
+	};
+
+	const handleComboboxChange = (value: string) => {
+		console.log(value);
+	};
+
+	const open = () => {
+		drawerRef?.open();
+	};
+
+	const handleConfirm = () => {
+		console.log('Confirm');
+	};
+</script>
+
+<svelte:head>
+	<title>Sandbox</title>
+</svelte:head>
+
+<div class="container" data-theme="light">
+	<Fab icon="add" variant="glass" shadow position="center" onclick={open}>ほげ</Fab>
+	<div class="container-inner">
+		<Slider width={300} min={100} max={300} bind:value={sliderValue}></Slider>
+		<Button onclick={open}>オープン</Button>
+		<label for="input1">インプット1</label>
+		<Input
+			id="input1"
+			placeholder="input"
+			type="number"
+			unit="人月"
+			step={10}
+			enablePasswordVisibilityToggle
+			bind:value
+			minWidth={300}
+			width="50%"
+			onkeydown={(e) => {
+				if (e.key === 'Enter') handleInputKeydown();
+			}}
+			onchange={handleInputChange}
+		/><br />
+		テキストエリア
+		<Textarea
+			id="textarea1"
+			bind:value={value2}
+			placeholder="test"
+			clearable
+			rows={10}
+			onsubmit={handleChange}
+		/>
+		<Select bind:value {options} />
+		<Combobox
+			bind:value={comboboxValue}
+			options={comboboxOptions}
+			onchange={handleComboboxChange}
+		/>
+		<ColorPicker bind:value={color} rounded clearable />
+
+		<ConfirmDialog
+			bind:this={confirmDialogRef}
+			title="いいの？"
+			submitLabel="はい"
+			cancelLabel="いやん"
+			onSubmit={handleConfirm}
+		/>
+		<Dialog bind:this={dialogRef} title="タイトル" scrollable
+			>ほげ
+			{#snippet footer()}
+				<Button color="var(--svelte-ui-text-color)">キャンセル</Button>
+				<Button variant="filled" minWidth={120}>OK</Button>
+			{/snippet}
+		</Dialog>
+		<Drawer bind:this={drawerRef} position="left" title="ちあて" scrollable={false}>ほげ</Drawer>
+
+		<Datepicker
+			bind:value={range}
+			locale="ja"
+			onchange={handleChange}
+			mode="range"
+			hasIcon
+			minDate={new Date('2025-10-01')}
+			maxDate={new Date('2025-12-30')}
+			iconFilled
+		/>
+
+		<FileUploader bind:value={fileList} multiple onchange={handleChangeFileList} />
+
+		<div class="textarea">
+			<label for="textarea2">textarea</label>
+			<Textarea id="textarea2" bind:value={value2} maxHeight={120} onsubmit={handleChange} />
+			<label for="radio1">radio1</label>
+			<Radio
+				id="radio1"
+				name="hoge"
+				value="hoge"
+				size="large"
+				bind:currentValue={value}
+				onsubmit={handleChange}>hoge</Radio
+			>
+			<label for="radio2">radio2</label>
+			<Radio
+				id="radio2"
+				name="hoge"
+				value="fuga"
+				size="small"
+				bind:currentValue={value}
+				onsubmit={handleChange}>fuga</Radio
+			>
+
+			<label for="checkbox">checkbox</label>
+			<Checkbox id="checkbox" bind:value={checked}>チェックボックス</Checkbox>
+
+			Radioグループ
+			<RadioGroup
+				bind:value
+				{options}
+				direction="horizontal"
+				gap="0 32px"
+				minOptionWidth="120px"
+				wrap
+				onchange={() => {
+					console.log($state.snapshot(value));
+				}}
+			/>
+
+			Checkboxグループ
+			<CheckboxGroup
+				bind:value={multiSelectValues}
+				{options}
+				direction="horizontal"
+				gap="8px 32px"
+				minOptionWidth="120px"
+				wrap
+				onchange={() => {
+					console.log($state.snapshot(multiSelectValues));
+				}}
+			/>
+
+			<label for="switch">switch</label>
+			<Switch id="switch" bind:value={checked}>すいっち</Switch>
+
+			<div class="button">
+				<Button variant="filled" icon="add" rounded>完了</Button>
+			</div>
+		</div>
+
+		<br />
+		<Skeleton
+			patterns={[
+				{ type: 'box' },
+				{ type: 'avatar', showName: true },
+				{
+					type: 'article-list',
+					lines: 3,
+					thumbnailConfig: { width: 300, aspectRatio: '16/9' },
+					layout: 'vertical',
+					repeatDirection: 'horizontal',
+					width: '300px'
+				}
+			]}
+		/>
+	</div>
+</div>
+
+<style>
+	.container {
+		width: 100%;
+	}
+
+	.container-inner {
+		padding: 32px;
+		background: var(--svelte-ui-surface-color);
+		color: var(--svelte-ui-text-color);
+	}
+
+	.textarea {
+		padding: 16px;
+		border: solid 1px var(--svelte-ui-border-color);
+		position: relative;
+	}
+
+	.button {
+		position: relative;
+		top: 0px;
+	}
+</style>

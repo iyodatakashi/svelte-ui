@@ -153,4 +153,3 @@ When adding or updating stories:
 3. Keep the total number of stories per component **reasonable (roughly 8–15)**, focusing on clarity rather than exhaustive enumeration.
 
 These guidelines should be applied consistently to `Button`, `Checkbox`, `Combobox`, and other components as we refactor their stories.
-

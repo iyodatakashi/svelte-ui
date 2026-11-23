@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Drawer, { type DrawerProps } from '../lib/components/Drawer.svelte';
-	import Button from '../lib/components/Button.svelte';
+	import Drawer from '#lib/sharedComponents/Drawer.svelte';
+	import type { DrawerProps } from '#lib/models/overlay/overlay.types';
+	import Button from '#lib/sharedComponents/Button.svelte';
 	import type { Snippet } from 'svelte';
 
 	type DrawerExampleProps = Pick<
@@ -45,9 +46,7 @@
 	};
 </script>
 
-<Button variant="filled" onclick={openDrawer}>
-	Open Drawer
-</Button>
+<Button variant="filled" onclick={openDrawer}>Open Drawer</Button>
 
 <Drawer
 	bind:isOpen
@@ -66,4 +65,3 @@
 	{bodyStyle}
 	{noPadding}
 />
-

@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import Nav from '../lib/components/Nav.svelte';
+import Nav from '#lib/sharedComponents/Nav.svelte';
 import NavExample from './NavExample.svelte';
 
 const meta = {

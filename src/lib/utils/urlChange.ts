@@ -17,7 +17,7 @@ const patchHistory = () => {
 	};
 };
 
-export const subscribeUrlChange = (handler: () => void): () => void => {
+export const subscribeUrlChange = (handler: () => void): (() => void) => {
 	if (typeof window === 'undefined') {
 		return () => {};
 	}
@@ -32,4 +32,3 @@ export const subscribeUrlChange = (handler: () => void): () => void => {
 		window.removeEventListener(URL_CHANGE_EVENT, handler);
 	};
 };
-

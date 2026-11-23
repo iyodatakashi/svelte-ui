@@ -79,7 +79,7 @@ onchange = () => {}, // パラメータなしで型推論を可能にする
   - **スクロールする入力要素は、padding box を覆う層そのものにする**（Textarea の `textarea`）。content box に置くと、スクロールバーが余白の内側に出る
   - フォーカスリングは箱全体を囲む要素に描く（Input は `__wrapper`、Textarea は padding box を覆う `textarea` 自身）
   - どの層も、文字が並ぶ領域（位置・幅・折り返し）を一致させる。余白を足すときは、すべての層に同じ方法で足す（Textarea のクリアボタンの列は、各層の右の透明な `border`。padding は箱から受け取るため足し合わせられない）
-- アイコン・クリアボタン用の余白は `customStyle` より後ろに `padding-left` / `padding-right` として箱に追加し、`customStyle` の `padding` で消えないようにする。不変条件は `src/__tests__/IconSpaceWithCustomStyle.browser.test.ts` と `src/__tests__/CustomStyleBackground.browser.test.ts` で検証する。
+- アイコン・クリアボタン用の余白は `customStyle` より後ろに `padding-left` / `padding-right` として箱に追加し、`customStyle` の `padding` で消えないようにする。不変条件は `src/tests/sharedComponents/IconSpaceWithCustomStyle.browser.test.ts` と `src/__tests__/CustomStyleBackground.browser.test.ts` で検証する。
 
 ### コメント方針
 

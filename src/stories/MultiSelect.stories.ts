@@ -1,4 +1,4 @@
-import MultiSelect from '../lib/components/MultiSelect.svelte';
+import MultiSelect from '#lib/sharedComponents/MultiSelect.svelte';
 
 const meta = {
 	title: 'Forms/MultiSelect',

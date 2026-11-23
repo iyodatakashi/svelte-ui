@@ -1,0 +1,430 @@
+<!-- PopupMenu.svelte -->
+
+<script lang="ts">
+	import Popup from './Popup.svelte';
+	import Icon from './Icon.svelte';
+	import { announceToScreenReader } from '#lib/utils/accessibility';
+	import type { MenuItem } from '#lib/models/menu/menu.types';
+
+	import type { SvelteComponent } from 'svelte';
+	import { tick } from 'svelte';
+	import type { PopupMenuProps } from '#lib/models/popup/popup.types';
+
+	// =========================================================================
+	// Props, States & Constants
+	// =========================================================================
+
+	let {
+		// DOM参照
+		anchorElement,
+
+		// 基本プロパティ
+		menuItems,
+
+		// HTML属性
+		id,
+
+		// スタイル/レイアウト
+		position = 'bottom',
+
+		// 状態/動作
+		isOpen = $bindable(false),
+		mobileFullscreen = false,
+
+		// アイコン関連
+		iconFilled = false,
+		iconWeight = 300,
+		iconGrade = 0,
+		iconOpticalSize = 24,
+		iconVariant = 'outlined',
+
+		// ARIA/アクセシビリティ
+		ariaLabel = 'Menu'
+	}: PopupMenuProps = $props();
+
+	let popupRef: SvelteComponent | undefined = $state();
+	let menuContainerRef: HTMLDivElement | undefined = $state();
+	let menuItemRefs: HTMLElement[] = $state([]);
+	let activeIndex: number = $state(-1);
+	let menuId: string = $state(`menu-${Math.random().toString(36).substring(2, 15)}`);
+
+	// =========================================================================
+	// Methods
+	// =========================================================================
+	const getMenuItemId = (index: number): string => `${menuId}-item-${index}`;
+
+	const isCheckable = (item: MenuItem): boolean => item.checked !== undefined;
+
+	const hasIcon = (item: MenuItem): boolean => !isCheckable(item) && !!item.icon;
+
+	const executeMenuItem = (item: MenuItem, event?: MouseEvent) => {
+		event?.stopPropagation();
+		if (item.disabled) {
+			event?.preventDefault();
+			return;
+		}
+		if (!item.href) {
+			event?.preventDefault();
+		}
+		if (item.callback) {
+			item.callback();
+		}
+		close();
+	};
+
+	const handleKeyDown = async (event: KeyboardEvent) => {
+		switch (event.key) {
+			case 'ArrowDown':
+			case 'ArrowUp':
+			case 'Home':
+			case 'End':
+			case 'Enter':
+			case ' ':
+			case 'Escape':
+				event.preventDefault();
+				event.stopPropagation(); // PopupのhandleKeyDownに伝播させない
+				break;
+			case 'Tab':
+				event.stopPropagation(); // PopupのhandleKeyDownに伝播させない
+				break;
+		}
+
+		switch (event.key) {
+			case 'ArrowDown':
+				moveToNextItem();
+				break;
+			case 'ArrowUp':
+				moveToPreviousItem();
+				break;
+			case 'Home':
+				moveToFirstItem();
+				break;
+			case 'End':
+				moveToLastItem();
+				break;
+			case 'Enter':
+			case ' ':
+				if (activeIndex >= 0 && activeIndex < actionableItems.length) {
+					executeMenuItem(actionableItems[activeIndex].item);
+				}
+				break;
+			case 'Escape':
+				close();
+				break;
+			case 'Tab':
+				close();
+				break;
+		}
+	};
+
+	const moveToNextItem = () => {
+		if (actionableItems.length === 0) return;
+		activeIndex = activeIndex < actionableItems.length - 1 ? activeIndex + 1 : 0;
+		focusActiveItem();
+	};
+
+	const moveToPreviousItem = () => {
+		if (actionableItems.length === 0) return;
+		activeIndex = activeIndex > 0 ? activeIndex - 1 : actionableItems.length - 1;
+		focusActiveItem();
+	};
+
+	const moveToFirstItem = () => {
+		if (actionableItems.length === 0) return;
+		activeIndex = 0;
+		focusActiveItem();
+	};
+
+	const moveToLastItem = () => {
+		if (actionableItems.length === 0) return;
+		activeIndex = actionableItems.length - 1;
+		focusActiveItem();
+	};
+
+	const focusActiveItem = async () => {
+		await tick();
+		if (activeIndex >= 0 && activeIndex < menuItemRefs.length) {
+			menuItemRefs[activeIndex]?.focus();
+		}
+	};
+
+	const handleMouseEnter = (index: number) => {
+		if (actionableItems[index].item.disabled) return;
+		activeIndex = index;
+	};
+
+	const handleFocus = (index: number) => {
+		activeIndex = index;
+	};
+
+	const handlePopupOpen = () => {
+		activeIndex = -1; // 初期状態ではハイライトなし
+		tick().then(() => {
+			menuContainerRef?.focus();
+		});
+
+		announceToScreenReader(`${ariaLabel} opened with ${actionableItems.length} items`);
+	};
+
+	const handlePopupClose = (reason: 'escape' | 'outside' | 'explicit') => {
+		activeIndex = -1;
+
+		if (anchorElement && reason !== 'outside') {
+			anchorElement.focus();
+		}
+	};
+
+	/** Opens the menu. */
+	export const open = () => {
+		popupRef?.open();
+	};
+
+	/** Closes the menu. */
+	export const close = () => {
+		popupRef?.close();
+	};
+
+	/** Toggles between open and closed. */
+	export const toggle = () => {
+		popupRef?.toggle();
+	};
+
+	const cancelParentEvent = (event: Event) => {
+		event.stopPropagation();
+		if (event.cancelable) {
+			event.preventDefault();
+		}
+	};
+
+	// =========================================================================
+	// $derived
+	// =========================================================================
+	const actionableItems: { item: MenuItem; originalIndex: number }[] = $derived(
+		menuItems
+			.map((item, index) => ({ item, originalIndex: index }))
+			.filter(
+				(entry): entry is { item: MenuItem; originalIndex: number } => entry.item !== 'separator'
+			)
+	);
+</script>
+
+{#snippet itemContent(item: MenuItem, actionableIndex: number)}
+	{#if isCheckable(item)}
+		<span class="popup-menu__check" aria-hidden="true">
+			{#if item.checked}
+				<Icon
+					filled={iconFilled}
+					weight={iconWeight}
+					grade={iconGrade}
+					opticalSize={iconOpticalSize}
+					variant={iconVariant}
+				>
+					check
+				</Icon>
+			{/if}
+		</span>
+	{:else if item.icon}
+		<Icon
+			id="{getMenuItemId(actionableIndex)}-icon"
+			aria-hidden="true"
+			filled={iconFilled}
+			weight={iconWeight}
+			grade={iconGrade}
+			opticalSize={iconOpticalSize}
+			variant={iconVariant}
+		>
+			{item.icon}
+		</Icon>
+	{/if}
+	<span class="popup-menu__text">{item.label}</span>
+{/snippet}
+
+<Popup
+	bind:this={popupRef}
+	bind:isOpen
+	{anchorElement}
+	{position}
+	onOpen={handlePopupOpen}
+	onClose={handlePopupClose}
+	role="menu"
+	{mobileFullscreen}
+	id={id ? `${id}-popup` : undefined}
+>
+	<div
+		class="popup-menu"
+		bind:this={menuContainerRef}
+		role="menu"
+		aria-label={ariaLabel}
+		aria-activedescendant={activeIndex >= 0 ? getMenuItemId(activeIndex) : undefined}
+		tabindex="-1"
+		{id}
+		data-testid="popup-menu"
+		onclick={cancelParentEvent}
+		onkeydown={handleKeyDown}
+	>
+		<ul class="popup-menu__list" role="none">
+			{#each menuItems as item, index (item === 'separator' ? `separator-${index}` : item)}
+				<li class="popup-menu__item" role="none">
+					{#if item === 'separator'}
+						<div class="popup-menu__separator" role="separator" aria-orientation="horizontal"></div>
+					{:else}
+						{@const actionableIndex = actionableItems.findIndex((ai) => ai.originalIndex === index)}
+						{@const isActive = actionableIndex === activeIndex}
+						{#if item.href}
+							<a
+								bind:this={menuItemRefs[actionableIndex]}
+								id={getMenuItemId(actionableIndex)}
+								class="popup-menu__button"
+								class:popup-menu__button--active={isActive}
+								class:popup-menu__button--disabled={item.disabled}
+								role={isCheckable(item) ? 'menuitemradio' : 'menuitem'}
+								tabindex="-1"
+								aria-checked={item.checked}
+								aria-disabled={item.disabled}
+								aria-describedby={hasIcon(item)
+									? `${getMenuItemId(actionableIndex)}-icon`
+									: undefined}
+								href={item.disabled ? undefined : item.href}
+								target={item.target}
+								onclick={(e) => executeMenuItem(item, e)}
+								onmouseenter={() => handleMouseEnter(actionableIndex)}
+								onfocus={() => handleFocus(actionableIndex)}
+							>
+								{@render itemContent(item, actionableIndex)}
+							</a>
+						{:else}
+							<button
+								bind:this={menuItemRefs[actionableIndex]}
+								id={getMenuItemId(actionableIndex)}
+								class="popup-menu__button"
+								class:popup-menu__button--active={isActive}
+								class:popup-menu__button--disabled={item.disabled}
+								role={isCheckable(item) ? 'menuitemradio' : 'menuitem'}
+								tabindex="-1"
+								aria-checked={item.checked}
+								aria-disabled={item.disabled}
+								aria-describedby={hasIcon(item)
+									? `${getMenuItemId(actionableIndex)}-icon`
+									: undefined}
+								onclick={(e) => executeMenuItem(item, e)}
+								onmouseenter={() => handleMouseEnter(actionableIndex)}
+								onfocus={() => handleFocus(actionableIndex)}
+							>
+								{@render itemContent(item, actionableIndex)}
+							</button>
+						{/if}
+					{/if}
+				</li>
+			{/each}
+		</ul>
+	</div>
+</Popup>
+
+<style lang="scss">
+	@use '#lib/assets/styles/component-base' as base;
+
+	@include base.box-sizing;
+	@include base.button-reset;
+
+	.popup-menu {
+		background-color: var(--svelte-ui-surface-elevated-color);
+		border-radius: 4px;
+		box-shadow: 0 4px 12px var(--svelte-ui-shadow-color);
+		outline: none;
+		min-width: 160px;
+	}
+
+	.popup-menu__list {
+		padding: 8px 0;
+		margin: 0;
+		list-style: none;
+	}
+
+	.popup-menu__item {
+		margin: 0;
+	}
+
+	.popup-menu__button {
+		display: flex;
+		align-items: center;
+		gap: 8px;
+		width: 100%;
+		padding: 8px 16px;
+		background: transparent;
+		border: none;
+		font-size: var(--svelte-ui-font-size);
+		color: var(--svelte-ui-popupmenu-text-color);
+		text-align: left;
+		white-space: nowrap;
+		cursor: pointer;
+		transition: background-color 0.2s ease;
+		border-radius: 0;
+	}
+
+	@media (hover: hover) {
+		.popup-menu__button:hover:not(.popup-menu__button--disabled),
+		.popup-menu__button--active {
+			background-color: var(--svelte-ui-hover-overlay);
+			outline: none;
+		}
+	}
+
+	.popup-menu__button--active {
+		background-color: var(--svelte-ui-hover-overlay);
+		outline: none;
+	}
+
+	.popup-menu__button:focus-visible {
+		background-color: var(--svelte-ui-hover-overlay);
+		outline: 2px solid var(--svelte-ui-popupmenu-focus-color);
+		outline-offset: -2px;
+	}
+
+	.popup-menu__check {
+		display: flex;
+		flex-shrink: 0;
+		width: 24px;
+		height: 24px;
+	}
+
+	.popup-menu__button--disabled {
+		opacity: var(--svelte-ui-popupmenu-disabled-opacity);
+		cursor: default;
+	}
+
+	.popup-menu__text {
+		flex: 1;
+	}
+
+	.popup-menu__separator {
+		height: 0;
+		margin: 8px 0;
+		border-bottom: solid 1px var(--svelte-ui-border-color);
+	}
+
+	/* Reduced motion support */
+	@media (prefers-reduced-motion: reduce) {
+		.popup-menu__button {
+			transition: none;
+		}
+	}
+
+	/* Mobile touch target optimization */
+	@media (max-width: 768px) {
+		.popup-menu__button {
+			min-height: var(--svelte-ui-touch-target);
+			padding: 12px 16px;
+		}
+	}
+
+	/* Enhanced mobile menu spacing (layoutはPopup側に任せる) */
+	:global(.popup--fullscreen) .popup-menu__list {
+		padding: 16px 0;
+	}
+
+	:global(.popup--fullscreen) .popup-menu__button {
+		padding: 16px 24px;
+		font-size: var(--svelte-ui-font-size);
+		min-height: var(--svelte-ui-touch-target-lg);
+	}
+</style>

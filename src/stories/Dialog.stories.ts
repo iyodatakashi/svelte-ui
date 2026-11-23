@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import Dialog from '../lib/components/Dialog.svelte';
+import Dialog from '#lib/sharedComponents/Dialog.svelte';
 import DialogExample from './DialogExample.svelte';
 
 const meta = {

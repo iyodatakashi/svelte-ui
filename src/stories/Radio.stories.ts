@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
 import type { Snippet } from 'svelte';
-import Radio from '../lib/components/Radio.svelte';
+import Radio from '#lib/sharedComponents/Radio.svelte';
 
 const meta = {
 	title: 'Forms/Radio',
@@ -218,4 +218,3 @@ export const Disabled: Story = {
 		children: createChildrenSnippet('Disabled')
 	}
 };
-

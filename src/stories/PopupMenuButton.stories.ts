@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
-import PopupMenuButton from '../lib/components/PopupMenuButton.svelte';
+import PopupMenuButton from '#lib/sharedComponents/PopupMenuButton.svelte';
 
 const meta = {
 	title: 'UI/PopupMenuButton',

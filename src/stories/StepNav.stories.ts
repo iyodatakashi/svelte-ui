@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import StepNav from '../lib/components/StepNav.svelte';
-import type { StepItem } from '../lib/types/stepItem';
+import StepNav from '#lib/sharedComponents/StepNav.svelte';
+import type { StepItem } from '#lib/models/stepNav/stepNav.types';
 
 const inPageItems: StepItem[] = [
 	{ label: 'アカウント', value: 'account', description: 'メールとパスワード' },

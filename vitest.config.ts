@@ -15,10 +15,9 @@ export default defineConfig({
 	plugins: [mockAppModules(), svelte({ preprocess: vitePreprocess() })],
 	resolve: {
 		alias: {
-			$lib: resolve(process.cwd(), 'src/lib'),
-			'$app/navigation': resolve(process.cwd(), 'src/__tests__/mocks/$app/navigation.ts'),
-			'$app/state': resolve(process.cwd(), 'src/__tests__/mocks/$app/state.ts'),
-			'$app/environment': resolve(process.cwd(), 'src/__tests__/mocks/$app/environment.ts')
+			'$app/navigation': resolve(process.cwd(), 'src/tests/mocks/$app/navigation.ts'),
+			'$app/state': resolve(process.cwd(), 'src/tests/mocks/$app/state.ts'),
+			'$app/environment': resolve(process.cwd(), 'src/tests/mocks/$app/environment.ts')
 		}
 	},
 	test: {

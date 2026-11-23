@@ -7,17 +7,26 @@ import { playwright } from '@vitest/browser-playwright';
 import { mockAppModules } from './vite-plugin-mock-app.js';
 
 export default defineConfig({
-	plugins: process.env.VITEST ? [mockAppModules(), svelte({ preprocess: vitePreprocess() })] : [sveltekit({
-				alias: { $lib: 'src/lib' },
-				adapter: adapter({ fallback: 'index.html' }),
-				preprocess: vitePreprocess()
-			})],
+	plugins: process.env.VITEST
+		? [mockAppModules(), svelte({ preprocess: vitePreprocess() })]
+		: [
+				sveltekit({
+					adapter: adapter({ fallback: 'index.html' }),
+					preprocess: vitePreprocess()
+				})
+			],
 	resolve: process.env.VITEST
 		? {
 				alias: {
-					'$app/navigation': path.resolve(import.meta.dirname, './src/__tests__/mocks/$app/navigation.ts'),
-					'$app/state': path.resolve(import.meta.dirname, './src/__tests__/mocks/$app/state.ts'),
-					'$app/environment': path.resolve(import.meta.dirname, './src/__tests__/mocks/$app/environment.ts')
+					'$app/navigation': path.resolve(
+						import.meta.dirname,
+						'./src/tests/mocks/$app/navigation.ts'
+					),
+					'$app/state': path.resolve(import.meta.dirname, './src/tests/mocks/$app/state.ts'),
+					'$app/environment': path.resolve(
+						import.meta.dirname,
+						'./src/tests/mocks/$app/environment.ts'
+					)
 				}
 			}
 		: undefined,

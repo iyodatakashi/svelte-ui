@@ -1,6 +1,6 @@
 <script lang="ts">
-	import Tab from '../lib/components/Tab.svelte';
-	import type { MenuItem } from '../lib/types/menuItem';
+	import Tab from '#lib/sharedComponents/Tab.svelte';
+	import type { MenuItem } from '#lib/models/menu/menu.types';
 
 	type TabExampleProps = {
 		tabItems: MenuItem[];
@@ -50,7 +50,7 @@
 		{tabItems}
 		{pathPrefix}
 		{customPathMatcher}
-		currentPath={currentPath}
+		{currentPath}
 		{textColor}
 		{selectedTextColor}
 		{selectedBarColor}

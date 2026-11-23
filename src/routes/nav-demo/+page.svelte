@@ -1,7 +1,5 @@
-<svelte:head>
-	<title>Nav Demo - Home</title>
-</svelte:head>
+<script lang="ts">
+	import NavDemoHomePage from '#showcase/features/navDemo/navDemoHome/NavDemoHomePage.svelte';
+</script>
 
-<h1>Nav 階層メニュー デモ</h1>
-<p>上のツールバーで <strong>variant</strong> と <strong>childrenVariant</strong> を切り替えて動作を確認できます。</p>
-<p>現在のページ: <code>/nav-demo</code></p>
+<NavDemoHomePage />

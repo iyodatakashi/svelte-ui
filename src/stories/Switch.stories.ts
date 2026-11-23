@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
-import Switch from '../lib/components/Switch.svelte';
+import Switch from '#lib/sharedComponents/Switch.svelte';
 
 const meta = {
 	title: 'Forms/Switch',

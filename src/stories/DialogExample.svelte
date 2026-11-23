@@ -1,6 +1,7 @@
 <script lang="ts">
-	import Dialog, { type DialogProps } from '../lib/components/Dialog.svelte';
-	import Button from '../lib/components/Button.svelte';
+	import Dialog from '#lib/sharedComponents/Dialog.svelte';
+	import type { DialogProps } from '#lib/models/overlay/overlay.types';
+	import Button from '#lib/sharedComponents/Button.svelte';
 	import type { Snippet } from 'svelte';
 
 	type DialogExampleProps = Pick<
@@ -41,9 +42,7 @@
 	};
 </script>
 
-<Button variant="filled" onclick={openDialog}>
-	Open Dialog
-</Button>
+<Button variant="filled" onclick={openDialog}>Open Dialog</Button>
 
 <Dialog
 	bind:isOpen
@@ -60,4 +59,3 @@
 	{bodyStyle}
 	{noPadding}
 />
-

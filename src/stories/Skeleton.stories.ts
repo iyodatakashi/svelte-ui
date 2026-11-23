@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/svelte';
-import Skeleton from '../lib/components/skeleton/Skeleton.svelte';
+import Skeleton from '#lib/sharedComponents/skeleton/Skeleton.svelte';
 
 const meta = {
 	title: 'UI/Skeleton',
@@ -17,7 +17,8 @@ const meta = {
 	argTypes: {
 		patterns: {
 			control: 'object',
-			description: 'Array of skeleton pattern configs (e.g. { type: "box" }, { type: "text", lines: 3 })'
+			description:
+				'Array of skeleton pattern configs (e.g. { type: "box" }, { type: "text", lines: 3 })'
 		},
 		repeat: {
 			control: 'number',

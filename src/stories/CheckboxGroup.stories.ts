@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import CheckboxGroup from '../lib/components/CheckboxGroup.svelte';
-import type { Option, OptionValue } from '../lib/types/options';
+import CheckboxGroup from '#lib/sharedComponents/CheckboxGroup.svelte';
+import type { Option, OptionValue } from '#lib/models/option/option.types';
 
 const meta = {
 	title: 'Forms/CheckboxGroup',
@@ -136,4 +136,3 @@ export const WithCustomGap: Story = {
 		gap: '32px'
 	}
 };
-

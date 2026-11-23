@@ -1,0 +1,128 @@
+import { test, expect, vi } from 'vitest';
+import { render } from 'vitest-browser-svelte';
+import MultiSelect from '#lib/sharedComponents/MultiSelect.svelte';
+import type { Option, OptionValue } from '#lib/models/option/option.types';
+import variables from '#lib/assets/styles/variables.scss?inline';
+
+// トリガーの寸法や区切り線の色はテーマ変数に依存するため、テーマを読み込んでおく
+const themeStyle = document.createElement('style');
+themeStyle.textContent = variables;
+document.head.appendChild(themeStyle);
+
+const options: (Option | 'separator')[] = [
+	{ value: 'all', label: 'All items' },
+	'separator',
+	{ value: 'active', label: 'Active' },
+	{ value: 'archived', label: 'Archived' }
+];
+
+type Screen = Awaited<ReturnType<typeof render>>;
+
+const getTrigger = (screen: Screen) =>
+	screen.container.querySelector<HTMLElement>('.multi-select__trigger') as HTMLButtonElement;
+
+const getPopup = (screen: Screen) =>
+	screen.container.querySelector<HTMLElement>('[data-testid="popup"]') as HTMLElement;
+
+const getThemeMinWidth = () =>
+	parseFloat(
+		getComputedStyle(document.documentElement).getPropertyValue(
+			'--svelte-ui-select-options-min-width'
+		)
+	);
+
+const openPopup = async (screen: Screen) => {
+	getTrigger(screen).click();
+	await vi.waitFor(() => {
+		expect(getPopup(screen).matches(':popover-open')).toBe(true);
+	});
+};
+
+test('options を配列順に描画し、separator を区切りとして挟む', async () => {
+	const screen = await render(MultiSelect, { value: [], options });
+
+	const labels = Array.from(screen.container.querySelectorAll('.checkbox__label')).map((el) =>
+		el.textContent?.trim()
+	);
+	expect(labels).toEqual(['All items', 'Active', 'Archived']);
+
+	const separator = screen.container.querySelector<HTMLElement>('.multi-select__separator');
+	expect(separator).toHaveAttribute('role', 'separator');
+
+	const items = Array.from(
+		screen.container.querySelectorAll('.multi-select__item, .multi-select__separator')
+	);
+	expect(items[1]).toBe(separator);
+});
+
+test('separator はトリガーの表示ラベルに含まれない', async () => {
+	const screen = await render(MultiSelect, { value: ['all', 'archived'], options });
+
+	expect(
+		screen.container.querySelector<HTMLElement>('.multi-select__display-text')?.textContent?.trim()
+	).toBe('All items,Archived');
+});
+
+test('リストの最小幅はトリガー幅とテーマの下限の大きい方になる', async () => {
+	const screen = await render(MultiSelect, { value: [], options, placeholder: 'Filter' });
+	await openPopup(screen);
+
+	const listbox = screen.container.querySelector<HTMLElement>(
+		'.multi-select__options'
+	) as HTMLElement;
+	const expected = Math.max(getTrigger(screen).offsetWidth, getThemeMinWidth());
+	expect(parseFloat(getComputedStyle(listbox).minWidth)).toBeCloseTo(expected, 0);
+});
+
+test('customStyle で padding を指定してもアイコンの領域が消えない', async () => {
+	const screen = await render(MultiSelect, {
+		value: ['all'],
+		options,
+		customStyle: 'padding: 8px 12px'
+	});
+
+	const trigger = getTrigger(screen).getBoundingClientRect();
+	const icon = (
+		screen.container.querySelector<HTMLElement>('.multi-select__dropdown-icon') as HTMLElement
+	).getBoundingClientRect();
+	const label = (
+		screen.container.querySelector<HTMLElement>('.multi-select__display-text') as HTMLElement
+	).getBoundingClientRect();
+
+	expect(icon.width).toBeGreaterThan(0);
+	// アイコンはトリガーからはみ出さず、ラベルと重ならない
+	expect(icon.right).toBeLessThanOrEqual(trigger.right + 0.5);
+	expect(label.right).toBeLessThanOrEqual(icon.left + 0.5);
+});
+
+test('separator を挟んでも選択の切り替えが動作する', async () => {
+	let changed: OptionValue[] | undefined;
+	const screen = await render(MultiSelect, {
+		value: [],
+		options,
+		onchange: (value: OptionValue[]) => {
+			changed = value;
+		}
+	});
+
+	await openPopup(screen);
+	const checkboxes = Array.from(
+		screen.container.querySelectorAll<HTMLInputElement>('input[type="checkbox"]')
+	);
+	expect(checkboxes).toHaveLength(3);
+
+	checkboxes[2].click();
+	await vi.waitFor(() => {
+		expect(changed).toEqual(['archived']);
+	});
+
+	checkboxes[1].click();
+	await vi.waitFor(() => {
+		expect(changed).toEqual(['archived', 'active']);
+	});
+
+	checkboxes[2].click();
+	await vi.waitFor(() => {
+		expect(changed).toEqual(['active']);
+	});
+});

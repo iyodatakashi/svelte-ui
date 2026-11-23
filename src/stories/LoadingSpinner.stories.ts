@@ -1,5 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
-import LoadingSpinner from '../lib/components/LoadingSpinner.svelte';
+import LoadingSpinner from '#lib/sharedComponents/LoadingSpinner.svelte';
 
 const meta = {
 	title: 'UI/LoadingSpinner',

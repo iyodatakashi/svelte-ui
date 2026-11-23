@@ -1,8 +1,9 @@
 <script lang="ts">
 	import { onMount } from 'svelte';
-	import Snackbar, { type SnackbarProps } from '../lib/components/Snackbar.svelte';
-	import Button from '../lib/components/Button.svelte';
-	import { snackbarManager } from '../lib/utils/snackbar.svelte';
+	import Snackbar from '#lib/sharedComponents/Snackbar.svelte';
+	import type { SnackbarProps } from '#lib/models/snackbar/snackbar.types';
+	import Button from '#lib/sharedComponents/Button.svelte';
+	import { snackbarManager } from '#lib/stores/snackbar.svelte';
 
 	type SnackbarExampleProps = SnackbarProps & {
 		closable?: boolean;

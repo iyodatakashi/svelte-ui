@@ -16,7 +16,7 @@ export function mockAppModules(): Plugin {
 			// Intercept $app module imports
 			if (id.startsWith('$app/')) {
 				const moduleName = id.replace('$app/', '');
-				const mockPath = path.resolve(__dirname, `./src/__tests__/mocks/$app/${moduleName}.ts`);
+				const mockPath = path.resolve(__dirname, `./src/tests/mocks/$app/${moduleName}.ts`);
 				// Return the resolved path - Vite will use this to resolve the module
 				return mockPath;
 			}
