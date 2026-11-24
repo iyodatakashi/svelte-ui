@@ -44,11 +44,11 @@ describe('StepNav i18n namespace', () => {
 	const locales: Locale[] = ['en', 'ja', 'fr', 'de', 'es', 'zh-cn'];
 
 	it('全ロケールに同一キー構成の stepNav 名前空間が存在する', () => {
-		const referenceKeys = Object.keys((TRANSLATIONS.en as Record<string, any>).stepNav).sort();
+		const referenceKeys = Object.keys(TRANSLATIONS.en.stepNav).sort();
 		expect(referenceKeys.length).toBeGreaterThan(0);
 
 		for (const locale of locales) {
-			const ns = (TRANSLATIONS[locale] as Record<string, any>).stepNav;
+			const ns = TRANSLATIONS[locale].stepNav;
 			expect(ns, `${locale} に stepNav がない`).toBeDefined();
 			expect(Object.keys(ns).sort(), `${locale} のキー構成が一致しない`).toEqual(referenceKeys);
 		}
@@ -66,7 +66,7 @@ describe('StepNav i18n namespace', () => {
 		for (const locale of locales) {
 			setLocale(locale);
 			for (const key of statusKeys) {
-				const text = t(`stepNav.${key}` as any);
+				const text = t(`stepNav.${key}`);
 				expect(text, `${locale}.stepNav.${key}`).toBeTruthy();
 				expect(text).not.toBe(`stepNav.${key}`);
 			}

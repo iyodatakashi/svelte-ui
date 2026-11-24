@@ -78,33 +78,6 @@ describe('PopupMenu Component', () => {
 		});
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['isOpen', 'mobileFullscreen', 'iconFilled'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['iconWeight', 'iconGrade', 'iconOpticalSize'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['position', 'mobileBehavior', 'iconVariant', 'ariaLabel'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
 	it('should support menu items', () => {
 		// MenuItem型のテスト
 		expect(true).toBe(true); // 型チェック用

@@ -2,7 +2,6 @@ import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from '#tests/helpers/ComponentWrapper.svelte';
 import Button from '#lib/sharedComponents/Button.svelte';
-import variables from '#lib/assets/styles/variables.scss?inline';
 import { collectCssVarNames } from '#tests/helpers/cssVarCollector';
 
 test('renders Button with text content', async () => {
@@ -127,8 +126,6 @@ test('Button with icon renders correctly', async () => {
 		component: Button,
 		icon: 'home'
 	});
-	const button = screen.getByRole('button');
-
 	// Check for icon container
 	const iconContainer = screen.container.querySelector<HTMLElement>('.button__icon');
 	expect(iconContainer).toBeTruthy();

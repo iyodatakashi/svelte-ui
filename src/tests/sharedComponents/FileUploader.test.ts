@@ -72,50 +72,6 @@ describe('FileUploader Component', () => {
 		});
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['multiple', 'rounded', 'iconFilled'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = [
-			'maxFileSize',
-			'width',
-			'height',
-			'iconSize',
-			'iconWeight',
-			'iconGrade',
-			'iconOpticalSize'
-		];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['placeholder', 'accept', 'icon', 'iconVariant', 'removeFileAriaLabel'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = ['width', 'height'];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support files', () => {
 		// files型のテスト（FileList）
 		expect(true).toBe(true); // 型チェック用

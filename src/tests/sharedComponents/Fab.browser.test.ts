@@ -147,14 +147,10 @@ test('Fab focus and blur events work correctly', async () => {
 	const fab = screen.getByTestId('fab');
 	const fabElement = fab.element() as HTMLButtonElement;
 	fabElement.focus();
-	// Note: Focus events might not be called immediately in Svelte 5
-	// We'll verify the focus state instead
-	expect(document.activeElement).toBe(fabElement);
+	expect(focusCalled).toBe(true);
 
 	fabElement.blur();
-	// Note: Blur events might not be called immediately in Svelte 5
-	// We'll verify the blur state instead
-	expect(document.activeElement).not.toBe(fabElement);
+	expect(blurCalled).toBe(true);
 });
 
 test('Fab with loading state renders correctly', async () => {

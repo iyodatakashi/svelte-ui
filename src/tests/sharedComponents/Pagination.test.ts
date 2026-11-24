@@ -34,24 +34,6 @@ describe('Pagination Component', () => {
 		expect(typeof (() => {})).toBe('function'); // onchange
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['showCount', 'showRange', 'showTotal'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['total', 'limit', 'currentPageNum', 'visiblePages'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
 	it('should support total', () => {
 		// total型のテスト
 		expect(typeof 1000).toBe('number');
@@ -98,12 +80,6 @@ describe('Pagination Component', () => {
 		// showTotal型のテスト
 		expect(typeof true).toBe('boolean');
 		expect(typeof false).toBe('boolean');
-	});
-
-	it('should support onchange handler', () => {
-		// onchangeハンドラーのテスト
-		expect(typeof (() => {})).toBe('function');
-		expect(typeof ((pageNum: number) => {})).toBe('function');
 	});
 
 	it('should support pagination calculation', () => {
@@ -213,16 +189,6 @@ describe('Pagination Component', () => {
 		visiblePageCounts.forEach((count) => {
 			expect(typeof count).toBe('number');
 			expect(count).toBeGreaterThan(0);
-		});
-	});
-
-	it('should support display options', () => {
-		// 表示オプションのテスト
-		const displayOptions = ['showCount', 'showRange', 'showTotal'];
-
-		displayOptions.forEach((option) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
 		});
 	});
 

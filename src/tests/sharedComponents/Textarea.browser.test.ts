@@ -2,7 +2,6 @@ import { test, expect } from 'vitest';
 import { render } from 'vitest-browser-svelte';
 import Textarea from '#lib/sharedComponents/Textarea.svelte';
 import variables from '#lib/assets/styles/variables.scss?inline';
-import { collectCssVarNames } from '#tests/helpers/cssVarCollector';
 
 test('renders Textarea and updates value on typing', async () => {
 	const screen = await render(Textarea, { placeholder: 'Type here', value: '' });
@@ -143,15 +142,11 @@ test('form submission works correctly', async () => {
 
 test('oninput and onchange events are called', async () => {
 	let inputCalled = false;
-	let changeCalled = false;
 
 	const screen = await render(Textarea, {
 		value: '',
 		oninput: () => {
 			inputCalled = true;
-		},
-		onchange: () => {
-			changeCalled = true;
 		}
 	});
 
@@ -282,8 +277,6 @@ test('should not reference undefined CSS variables', async () => {
 	const wrapper = screen.container.querySelector<HTMLElement>(
 		'[data-testid="textarea"]'
 	) as HTMLElement;
-	const textareaElement = screen.getByRole('textbox').element() as HTMLTextAreaElement;
-
 	// List of CSS variables to check for Textarea
 	const cssVariables = [
 		'--svelte-ui-textarea-bg',

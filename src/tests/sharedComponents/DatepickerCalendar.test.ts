@@ -41,24 +41,6 @@ describe('DatepickerCalendar Component', () => {
 		});
 	});
 
-	it('should handle string props correctly', () => {
-		const stringProps = ['locale', 'mode', 'id'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = ['value', 'minDate', 'maxDate', 'id'];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support date value', () => {
 		// value型のテスト（Date、{start: Date, end: Date}、undefined）
 		expect(typeof new Date()).toBe('object');

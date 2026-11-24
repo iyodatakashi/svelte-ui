@@ -24,42 +24,6 @@ describe('LoadingSpinner Component', () => {
 		expect(expectedDefaults.color).toBeUndefined();
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['reducedMotion'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['size', 'strokeWidth', 'speed'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['color'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = ['color'];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support size', () => {
 		// size型のテスト
 		expect(typeof 16).toBe('number');

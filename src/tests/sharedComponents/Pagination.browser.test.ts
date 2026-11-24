@@ -3,7 +3,6 @@ import { render } from 'vitest-browser-svelte';
 import ComponentWrapper from '#tests/helpers/ComponentWrapper.svelte';
 import Pagination from '#lib/sharedComponents/Pagination.svelte';
 import variables from '#lib/assets/styles/variables.scss?inline';
-import { collectCssVarNames } from '#tests/helpers/cssVarCollector';
 
 test('renders Pagination with basic props', async () => {
 	const screen = await render(ComponentWrapper, {

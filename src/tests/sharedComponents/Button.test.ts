@@ -1,5 +1,4 @@
 import { describe, it, expect } from 'vitest';
-import type { ComponentType } from 'svelte';
 
 // Buttonコンポーネントの型定義をテスト
 describe('Button Component', () => {
@@ -74,77 +73,6 @@ describe('Button Component', () => {
 		validIconVariants.forEach((iconVariant) => {
 			expect(typeof iconVariant).toBe('string');
 			expect(iconVariant.length).toBeGreaterThan(0);
-		});
-	});
-
-	it('should handle boolean props correctly', () => {
-		const booleanProps = [
-			'fullWidth',
-			'rounded',
-			'popup',
-			'iconFilled',
-			'disabled',
-			'loading',
-			'reducedMotion'
-		];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['minWidth', 'iconWeight', 'iconGrade'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['type', 'variant', 'size', 'icon', 'iconVariant'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = [
-			'tabindex',
-			'color',
-			'iconOpticalSize',
-			'ariaLabel',
-			'ariaDescribedby',
-			'ariaExpanded'
-		];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
-	it('should have correct event handler types', () => {
-		const eventHandlers = [
-			'onclick',
-			'onmousedown',
-			'onmouseup',
-			'onmouseenter',
-			'onmouseleave',
-			'onfocus',
-			'onblur',
-			'onkeydown',
-			'onkeyup',
-			'ontouchstart',
-			'ontouchend'
-		];
-
-		eventHandlers.forEach((handler) => {
-			expect(typeof (() => {})).toBe('function');
 		});
 	});
 

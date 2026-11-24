@@ -30,49 +30,6 @@ describe('TabItem Component', () => {
 		expect(typeof expectedDefaults.isSelected).toBe('boolean');
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['iconFilled', 'isSelected'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['iconWeight', 'iconGrade', 'iconOpticalSize'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['iconVariant'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = [
-			'iconFilled',
-			'iconWeight',
-			'iconGrade',
-			'iconOpticalSize',
-			'iconVariant',
-			'isSelected'
-		];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support tab item', () => {
 		// tabItem型のテスト
 		const tabItem = { label: 'Home', href: '/' };

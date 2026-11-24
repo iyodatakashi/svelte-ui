@@ -35,33 +35,6 @@ describe('ConfirmDialog Component', () => {
 		expect(typeof false).toBe('boolean');
 	});
 
-	it('should handle string props correctly', () => {
-		const stringProps = ['title', 'description', 'submitLabel', 'cancelLabel'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['width'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['isOpen', 'closeIfClickOutside'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
 	it('should support title', () => {
 		// title型のテスト
 		expect(typeof 'Confirm Action').toBe('string');

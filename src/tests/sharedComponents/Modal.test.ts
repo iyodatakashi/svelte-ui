@@ -29,33 +29,6 @@ describe('Modal Component', () => {
 		expect(typeof expectedDefaults.restoreFocus).toBe('boolean');
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = ['isOpen', 'closeIfClickOutside', 'restoreFocus'];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['componentType', 'customClass', 'customStyles'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = ['ariaLabel', 'ariaLabelledby', 'ariaDescribedby'];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support children snippet', () => {
 		// Snippet型のテスト
 		expect(true).toBe(true); // 型チェック用

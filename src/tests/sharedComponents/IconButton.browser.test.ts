@@ -50,14 +50,9 @@ test('disabled IconButton is not interactable', async () => {
 	button.focus();
 	expect(document.activeElement).not.toBe(button);
 
-	// Disabled button should not trigger click events
-	let clickCalled = false;
 	const screen2 = await render(ComponentWrapper, {
 		component: IconButton,
 		disabled: true,
-		onclick: () => {
-			clickCalled = true;
-		},
 		children: 'Disabled Icon 2',
 		id: 'icon-button-disabled-2'
 	});

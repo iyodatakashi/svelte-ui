@@ -284,7 +284,7 @@ test('disabled items are announced as disabled and do not execute', async () => 
 
 test('applies correct CSS variables', async () => {
 	const anchor = createAnchorElement();
-	const screen = await render(ComponentWrapper, {
+	await render(ComponentWrapper, {
 		component: PopupMenu,
 		anchorElement: anchor,
 		menuItems: createMenuItems(),

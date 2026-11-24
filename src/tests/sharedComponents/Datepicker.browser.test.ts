@@ -16,7 +16,6 @@ test('Datepicker can be opened and closed', async () => {
 		value: undefined,
 		id: 'datepicker-open'
 	});
-	const datepicker = screen.getByTestId('datepicker');
 	const input = screen.container.querySelector<HTMLElement>('#datepicker-open') as HTMLInputElement;
 
 	// Initially no calendar should be visible
@@ -102,14 +101,10 @@ test('Datepicker focus and blur events work correctly', async () => {
 	) as HTMLInputElement;
 	const inputElement = input as HTMLInputElement;
 	inputElement.focus();
-	// Note: Focus events might not be called immediately in Svelte 5
-	// We'll verify the focus state instead
-	expect(document.activeElement).toBe(inputElement);
+	expect(focusCalled).toBe(true);
 
 	inputElement.blur();
-	// Note: Blur events might not be called immediately in Svelte 5
-	// We'll verify the blur state instead
-	expect(document.activeElement).not.toBe(inputElement);
+	expect(blurCalled).toBe(true);
 });
 
 test('Datepicker with placeholder renders correctly', async () => {

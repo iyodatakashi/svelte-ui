@@ -133,17 +133,13 @@ test('Combobox focus and blur events work correctly', async () => {
 		}
 	});
 	const input = screen.container.querySelector<HTMLElement>(
-		'#combobox-focus-blur'
+		'#combobox-focus-blur-input'
 	) as HTMLInputElement;
 	input.focus();
-	// Note: Focus events might not be called immediately in Svelte 5
-	// We'll verify the input exists and can be focused
-	expect(input).toBeInTheDocument();
+	expect(focusCalled).toBe(true);
 
 	input.blur();
-	// Note: Blur events might not be called immediately in Svelte 5
-	// We'll verify the input exists
-	expect(input).toBeInTheDocument();
+	expect(blurCalled).toBe(true);
 });
 
 test('Combobox with readonly renders correctly', async () => {

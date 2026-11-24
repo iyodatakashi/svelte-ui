@@ -27,24 +27,6 @@ describe('Snackbar Component', () => {
 		expect(true).toBe(true);
 	});
 
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['maxVisible', 'duration'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = ['position', 'variant'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
 	it('should handle optional props correctly', () => {
 		// すべてのプロパティがオプショナル
 		expect(undefined).toBeUndefined();

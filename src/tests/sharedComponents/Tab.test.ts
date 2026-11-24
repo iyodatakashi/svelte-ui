@@ -34,24 +34,6 @@ describe('Tab Component', () => {
 		expect(true).toBe(true);
 	});
 
-	it('should handle string props correctly', () => {
-		const stringProps = ['pathPrefix', 'ariaLabel', 'ariaLabelledby'];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = ['pathPrefix', 'customPathMatcher', 'ariaLabelledby'];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support tab items', () => {
 		// tabItems型のテスト
 		expect(Array.isArray([])).toBe(true);
@@ -63,12 +45,6 @@ describe('Tab Component', () => {
 		expect(typeof '').toBe('string');
 		expect(typeof '/admin').toBe('string');
 		expect(typeof '/dashboard').toBe('string');
-	});
-
-	it('should support custom path matcher', () => {
-		// customPathMatcher型のテスト
-		expect(typeof ((currentPath: string, itemHref: string, item: any) => true)).toBe('function');
-		expect(undefined).toBeUndefined();
 	});
 
 	it('should support aria label', () => {

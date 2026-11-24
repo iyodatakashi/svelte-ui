@@ -10,7 +10,7 @@
 	}: {
 		component: Component;
 		children?: string;
-		[key: string]: any;
+		[key: string]: unknown;
 	} = $props();
 </script>
 

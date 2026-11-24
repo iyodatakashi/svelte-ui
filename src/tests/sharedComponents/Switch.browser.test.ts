@@ -56,14 +56,9 @@ test('disabled Switch is not interactable', async () => {
 	switchInput.focus();
 	expect(document.activeElement).not.toBe(switchInput);
 
-	// Disabled switch should not trigger change events
-	let changeCalled = false;
 	const screen2 = await render(ComponentWrapper, {
 		component: Switch,
 		disabled: true,
-		onchange: () => {
-			changeCalled = true;
-		},
 		children: 'Disabled Switch 2',
 		id: 'switch-disabled-2'
 	});

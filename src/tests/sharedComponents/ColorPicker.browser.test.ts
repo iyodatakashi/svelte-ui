@@ -54,13 +54,8 @@ test('disabled ColorPicker is not interactable', async () => {
 	colorInput.focus();
 	expect(document.activeElement).not.toBe(colorInput);
 
-	// Disabled color picker should not trigger change events
-	let changeCalled = false;
 	const screen2 = await render(ColorPicker, {
 		disabled: true,
-		onchange: () => {
-			changeCalled = true;
-		},
 		value: '#ff0000',
 		id: 'colorpicker-disabled-2'
 	});
@@ -159,12 +154,8 @@ test('ColorPicker with readonly renders correctly', async () => {
 });
 
 test('ColorPicker input event works correctly', async () => {
-	let inputValue = '';
 	const screen = await render(ColorPicker, {
 		value: '#ff0000',
-		oninput: (value: string) => {
-			inputValue = value;
-		},
 		id: 'colorpicker-input'
 	});
 	const colorInput = screen.container.querySelector<HTMLElement>(

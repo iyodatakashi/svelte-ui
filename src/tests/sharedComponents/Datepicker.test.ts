@@ -88,68 +88,6 @@ describe('Datepicker Component', () => {
 		});
 	});
 
-	it('should handle boolean props correctly', () => {
-		const booleanProps = [
-			'fullWidth',
-			'rounded',
-			'hasIcon',
-			'iconFilled',
-			'disabled',
-			'readonly',
-			'required'
-		];
-
-		booleanProps.forEach((prop) => {
-			expect(typeof true).toBe('boolean');
-			expect(typeof false).toBe('boolean');
-		});
-	});
-
-	it('should handle numeric props correctly', () => {
-		const numericProps = ['iconWeight', 'iconGrade', 'iconOpticalSize'];
-
-		numericProps.forEach((prop) => {
-			expect(typeof 0).toBe('number');
-			expect(typeof 100).toBe('number');
-		});
-	});
-
-	it('should handle string props correctly', () => {
-		const stringProps = [
-			'format',
-			'locale',
-			'rangeSeparator',
-			'variant',
-			'focusStyle',
-			'iconVariant',
-			'placeholder',
-			'ariaLabel',
-			'ariaDescribedby'
-		];
-
-		stringProps.forEach((prop) => {
-			expect(typeof 'test').toBe('string');
-			expect(typeof '').toBe('string');
-		});
-	});
-
-	it('should handle optional props correctly', () => {
-		const optionalProps = [
-			'value',
-			'format',
-			'placeholder',
-			'ariaLabel',
-			'ariaDescribedby',
-			'ariaInvalid',
-			'ariaRequired'
-		];
-
-		optionalProps.forEach((prop) => {
-			expect(undefined).toBeUndefined();
-			expect(null).toBeNull();
-		});
-	});
-
 	it('should support date value', () => {
 		// value型のテスト（Date、string、null、undefined）
 		expect(typeof new Date()).toBe('object');
