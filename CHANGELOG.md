@@ -5,6 +5,20 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
+## [0.0.90] - 2026-11-24
+
+### Removed
+
+- **IconButton**: Removed the `icon` prop. It was accepted but never rendered. Pass the icon name as children instead (`<IconButton>home</IconButton>`).
+- **ColorPicker**: Removed the `iconVariant` prop. It had no visible effect.
+
+### Fixed
+
+- **Input**: The clear button now uses `clearButtonAriaLabel` as its accessible name. Previously it always used the built-in label.
+- **Textarea**: `iconWeight`, `iconGrade` and `iconOpticalSize` now apply to the clear button. Previously they were ignored. By default the clear button looks the same as before.
+- **Datepicker**: When you move to another month, the date cells no longer fade their highlight from the previous month's state. The new month appears with its highlights in place at once.
+- **FileUploader / ImageUploader**: With `multiple`, removing one file no longer re-renders the remaining previews, so their images are not reloaded.
+
 ## [0.0.89] - 2026-11-21
 
 ### Added
