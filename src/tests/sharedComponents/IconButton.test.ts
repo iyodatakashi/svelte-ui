@@ -16,7 +16,6 @@ describe('IconButton Component', () => {
 			fontSize: 24, // size * 0.75
 			color: undefined,
 			rounded: true,
-			icon: '',
 			iconFilled: false,
 			iconWeight: 300,
 			iconGrade: 0,
@@ -43,7 +42,6 @@ describe('IconButton Component', () => {
 		expect(typeof expectedDefaults.size).toBe('number');
 		expect(typeof expectedDefaults.fontSize).toBe('number');
 		expect(typeof expectedDefaults.rounded).toBe('boolean');
-		expect(typeof expectedDefaults.icon).toBe('string');
 		expect(typeof expectedDefaults.iconFilled).toBe('boolean');
 		expect(typeof expectedDefaults.iconWeight).toBe('number');
 		expect(typeof expectedDefaults.iconGrade).toBe('number');

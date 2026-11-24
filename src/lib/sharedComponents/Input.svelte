@@ -664,7 +664,7 @@
 	{#if clearable && !disabled && !readonly}
 		<div class="input__clear-button">
 			<IconButton
-				ariaLabel={t('input.clear')}
+				ariaLabel={clearButtonAriaLabel}
 				color="var(--svelte-ui-input-icon-color)"
 				onclick={(event) => {
 					event.stopPropagation();

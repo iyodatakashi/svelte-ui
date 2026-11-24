@@ -127,10 +127,6 @@ const meta = {
 			control: false,
 			description: 'Icon content (Material Symbols name)'
 		},
-		icon: {
-			control: 'text',
-			description: 'Material Symbols icon name (alternative to children)'
-		},
 		fontSize: {
 			control: 'text',
 			description: 'CSS font-size for the icon (e.g. "1.25rem")'

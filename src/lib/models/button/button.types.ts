@@ -302,8 +302,6 @@ export type IconButtonProps = Omit<
 	rounded?: boolean;
 
 	// アイコン関連
-	/** Additional Material Symbols icon rendered alongside children. */
-	icon?: string;
 	iconFilled?: boolean;
 	iconWeight?: IconWeight;
 	iconGrade?: IconGrade;

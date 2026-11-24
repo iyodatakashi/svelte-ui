@@ -32,7 +32,6 @@
 		readonly = false,
 		clearable = false,
 		clearButtonAriaLabel = t('input.clear'),
-		iconVariant = 'outlined',
 
 		// 入力イベント
 		onchange = () => {}, // No params for type inference

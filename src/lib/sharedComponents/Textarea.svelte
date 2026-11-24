@@ -43,7 +43,7 @@
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,
-		iconOpticalSize = 24,
+		iconOpticalSize,
 		iconVariant = 'outlined',
 
 		// 状態/動作
@@ -443,6 +443,9 @@
 				}}
 				tabindex={-1}
 				{iconFilled}
+				{iconWeight}
+				{iconGrade}
+				{iconOpticalSize}
 				{iconVariant}
 				fontSize={18}>cancel</IconButton
 			>

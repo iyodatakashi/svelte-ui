@@ -27,7 +27,6 @@
 		rounded = true,
 
 		// アイコン関連
-		icon = '',
 		iconFilled = false,
 		iconWeight = 300,
 		iconGrade = 0,

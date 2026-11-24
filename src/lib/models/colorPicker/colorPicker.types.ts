@@ -6,7 +6,6 @@ import type {
 	PointerHandler,
 	TouchHandler
 } from '#lib/models/eventHandler/eventHandler.types';
-import type { IconVariant } from '#lib/models/icon/icon.types';
 import type { HTMLInputAttributes } from 'svelte/elements';
 
 export type ColorPickerProps = Omit<
@@ -72,7 +71,6 @@ export type ColorPickerProps = Omit<
 	/** Shows a clear button when a value is selected. @default false */
 	clearable?: boolean;
 	clearButtonAriaLabel?: string;
-	iconVariant?: IconVariant;
 
 	// 入力イベント
 	onchange?: BivariantValueHandler<string>;
