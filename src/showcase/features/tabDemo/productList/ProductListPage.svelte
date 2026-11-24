@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import Tab from '#lib/sharedComponents/Tab.svelte';
 	import Fab from '#lib/sharedComponents/Fab.svelte';
 
@@ -45,19 +46,19 @@
 
 		<div class="products-grid">
 			<div class="product-card">
-				<a href="/products/laptop">
+				<a href={resolve('/products/[id]', { id: 'laptop' })}>
 					<h3>💻 Laptop</h3>
 					<p>High-performance laptop</p>
 				</a>
 			</div>
 			<div class="product-card">
-				<a href="/products/phone">
+				<a href={resolve('/products/[id]', { id: 'phone' })}>
 					<h3>📱 Phone</h3>
 					<p>Latest smartphone</p>
 				</a>
 			</div>
 			<div class="product-card">
-				<a href="/products/tablet">
+				<a href={resolve('/products/[id]', { id: 'tablet' })}>
 					<h3>📱 Tablet</h3>
 					<p>Versatile tablet</p>
 				</a>

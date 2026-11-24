@@ -478,12 +478,6 @@
 		return date.startOf('day').isSame(dayjs().startOf('day'));
 	};
 
-	const isFocused = (date: dayjs.Dayjs) => {
-		const dateKey = date.startOf('day').format('YYYY-MM-DD');
-		const result = focusedDateKey === dateKey;
-		return result;
-	};
-
 	const getDateId = (date: dayjs.Dayjs) => {
 		return `calendar-date-${date.format('YYYY-MM-DD')}`;
 	};
@@ -595,7 +589,7 @@
 
 	{#if viewMode === 'month'}
 		<div class="datepicker-calendar__month-selection">
-			{#each monthNames as monthName, index}
+			{#each monthNames as monthName, index (index)}
 				<button
 					type="button"
 					class="datepicker-calendar__month-button"
@@ -621,14 +615,14 @@
 	{:else}
 		<div class="datepicker-calendar__date-selection" role="grid" aria-labelledby={monthLabelId}>
 			<div class="datepicker-calendar__day-list" role="row">
-				{#each DAY_ARRAY as day}
+				{#each DAY_ARRAY as day, index (index)}
 					<div class="datepicker-calendar__day-item" role="columnheader">
 						{day}
 					</div>
 				{/each}
 			</div>
 			<div class="datepicker-calendar__date-list">
-				{#each dates as date}
+				{#each dates as date (date.valueOf())}
 					<div
 						class="datepicker-calendar__date-item"
 						class:datepicker-calendar__date-item--selected={mode === 'single' && isSelected(date)}

@@ -2,7 +2,6 @@
 	import Drawer from '#lib/sharedComponents/Drawer.svelte';
 	import type { DrawerProps } from '#lib/models/overlay/overlay.types';
 	import Button from '#lib/sharedComponents/Button.svelte';
-	import type { Snippet } from 'svelte';
 
 	type DrawerExampleProps = Pick<
 		DrawerProps,

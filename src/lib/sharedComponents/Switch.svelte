@@ -64,7 +64,7 @@
 		onpointercancel = () => {}, // No params for type inference
 
 		// 入力イベント
-		onchange = (value: boolean) => {},
+		onchange = () => {},
 
 		// その他
 		...restProps

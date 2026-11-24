@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import Button from '#lib/sharedComponents/Button.svelte';
 	import Input from '#lib/sharedComponents/Input.svelte';
 	import Checkbox from '#lib/sharedComponents/Checkbox.svelte';
@@ -266,7 +267,7 @@
 
 // Method 2: Using customPathMatcher
 <Tab tabItems={items} customPathMatcher={(currentPath, itemHref, item) => {
-  const pathWithoutTenant = currentPath.replace(/^\/[^/]+/, '');
+  const pathWithoutTenant = currentPath.replace(/^\\/[^/]+/, '');
   return pathWithoutTenant.startsWith(itemHref);
 }} />`}</code
 					></pre>
@@ -290,7 +291,7 @@
 			<div class="test-links">
 				<h3>Component Tests:</h3>
 				<div class="demo-links">
-					<a href="/tenant-demo" class="demo-link">
+					<a href={resolve('/tenant-demo')} class="demo-link">
 						<div class="demo-icon">🏢</div>
 						<div class="demo-info">
 							<h4>Multi-Tenant Demo</h4>

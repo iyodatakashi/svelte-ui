@@ -1,4 +1,5 @@
 <script>
+	import { resolve } from '$app/paths';
 	import Tab from '#lib/sharedComponents/Tab.svelte';
 	import { page } from '$app/state';
 
@@ -69,7 +70,7 @@
 
 	<main>
 		<nav class="breadcrumb">
-			<a href="/products">Products</a>
+			<a href={resolve('/products')}>Products</a>
 			<span>→</span>
 			<span>{productId}</span>
 		</nav>
@@ -110,10 +111,10 @@
 
 			<div class="navigation-links">
 				<h3>Test other products:</h3>
-				<a href="/products/laptop">💻 Laptop</a>
-				<a href="/products/phone">📱 Phone</a>
-				<a href="/products/tablet">📱 Tablet</a>
-				<a href="/products/unknown">❓ Unknown Product</a>
+				<a href={resolve('/products/[id]', { id: 'laptop' })}>💻 Laptop</a>
+				<a href={resolve('/products/[id]', { id: 'phone' })}>📱 Phone</a>
+				<a href={resolve('/products/[id]', { id: 'tablet' })}>📱 Tablet</a>
+				<a href={resolve('/products/[id]', { id: 'unknown' })}>❓ Unknown Product</a>
 			</div>
 		</div>
 	</main>

@@ -1,5 +1,4 @@
 <script lang="ts">
-	import { onMount } from 'svelte';
 	import Snackbar from '#lib/sharedComponents/Snackbar.svelte';
 	import type { SnackbarProps } from '#lib/models/snackbar/snackbar.types';
 	import Button from '#lib/sharedComponents/Button.svelte';
@@ -24,12 +23,6 @@
 		textColor = '',
 		iconVariant = 'outlined'
 	}: SnackbarExampleProps = $props();
-
-	onMount(() => {
-		if (typeof window !== 'undefined') {
-			(window as any).snackbar = snackbarManager;
-		}
-	});
 
 	const showOptions = () => ({
 		closable,

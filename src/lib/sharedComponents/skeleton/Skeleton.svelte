@@ -44,9 +44,9 @@
 			.map((pattern) => {
 				// 型ガードでプリセットパターンかどうかを判定
 				if (isPresetPattern(pattern)) {
-					const presetPatternsArray = PRESET_PATTERNS[pattern.type] || [];
+					const { type, ...patternWithoutType } = pattern;
+					const presetPatternsArray = PRESET_PATTERNS[type] || [];
 					// プリセットパターンを展開して、元のパターンの設定で上書き
-					const { type: _, ...patternWithoutType } = pattern;
 					const typedPatternWithoutType = patternWithoutType as Omit<SkeletonPresetConfig, 'type'>;
 					return presetPatternsArray.map((presetPattern) => {
 						// プリセットパターン内の各パターンに対して、ユーザー指定のプロパティを適用
@@ -104,9 +104,9 @@
 
 <div class={containerClasses} style={customStyle} data-testid="skeleton">
 	<div class="skeleton__items" style="gap: {repeatGapStyle};">
-		{#each Array(repeat) as _, index}
+		{#each { length: repeat }}
 			<div class="skeleton__item" style="gap: {patternGapStyle};">
-				{#each mergedPatterns as patternConfig}
+				{#each mergedPatterns as patternConfig, index (index)}
 					{@const patternRepeat = patternConfig.repeat || 1}
 					{@const patternRepeatDirection = patternConfig.repeatDirection || 'vertical'}
 					{@const patternRepeatGap =
@@ -117,12 +117,12 @@
 						class:skeleton__pattern--horizontal={patternRepeatDirection === 'horizontal'}
 						style="gap: {patternRepeatGap};"
 					>
-						{#each Array(patternRepeat) as _}
+						{#each { length: patternRepeat }}
 							{#if patternConfig.type === 'box'}
-								{@const { type: _, width, height, radius, customStyle } = patternConfig}
+								{@const { width, height, radius, customStyle } = patternConfig}
 								<SkeletonBox {width} {height} {radius} {customStyle} {animated} />
 							{:else if patternConfig.type === 'heading'}
-								{@const { type: _, width, fontSize, customStyle } = patternConfig}
+								{@const { width, fontSize, customStyle } = patternConfig}
 								<SkeletonHeading {width} {fontSize} {customStyle} {animated} />
 							{:else if patternConfig.type === 'text'}
 								{@const { width, lines, fontSize, customStyle } = patternConfig}

@@ -1,6 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import { createRawSnippet } from 'svelte';
-import type { Snippet } from 'svelte';
 import Drawer from '#lib/sharedComponents/Drawer.svelte';
 import DrawerExample from './DrawerExample.svelte';
 

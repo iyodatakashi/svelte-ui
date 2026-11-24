@@ -45,7 +45,7 @@ function main() {
 
 	try {
 		execSync('npm pack', { cwd: root, stdio: 'pipe' });
-	} catch (err) {
+	} catch {
 		console.error('Error: npm pack failed.');
 		process.exit(1);
 	}

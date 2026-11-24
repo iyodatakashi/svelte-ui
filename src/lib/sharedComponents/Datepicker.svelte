@@ -105,11 +105,9 @@
 	// =========================================================================
 	// Props, States & Constants
 	// =========================================================================
-	let inputRef: any = $state();
 	let containerElement: HTMLDivElement | undefined = $state();
 	let popupRef: SvelteComponent | undefined = $state();
 	let datapickerCalendarRef: SvelteComponent | undefined = $state();
-	let openedViaKeyboard: boolean = $state(false);
 	let displayValue = $state('');
 
 	const localeConfig = {
@@ -226,7 +224,6 @@
 			if (isOpen) {
 				close();
 			} else {
-				openedViaKeyboard = false;
 				open();
 			}
 		}
@@ -271,7 +268,6 @@
 				// enableTextInput=false で、まだポップアップが開いていない場合のみ
 				// Enter/Space でポップアップを開く
 				event?.preventDefault?.();
-				openedViaKeyboard = true;
 				open();
 				break;
 			case 'ArrowDown':
@@ -280,7 +276,6 @@
 					return;
 				}
 				event.preventDefault();
-				openedViaKeyboard = true;
 				open();
 				break;
 			case 'Escape':
@@ -403,7 +398,6 @@
 
 	const handlePopupClose = () => {
 		datapickerCalendarRef?.handlePopupClose();
-		openedViaKeyboard = false;
 	};
 
 	const handleFocus = (event: FocusEvent) => {
@@ -535,7 +529,6 @@
 	data-testid="datepicker"
 >
 	<Input
-		bind:this={inputRef}
 		value={displayValue}
 		{inline}
 		{focusStyle}

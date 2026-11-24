@@ -249,7 +249,7 @@
 				style={customChildrenContainerStyle}
 				transition:slide={{ duration: 200 }}
 			>
-				{#each item.children! as child}
+				{#each item.children! as child, index (index)}
 					<NavItem
 						item={child}
 						{variant}

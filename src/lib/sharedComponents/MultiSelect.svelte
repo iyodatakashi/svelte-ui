@@ -38,7 +38,7 @@
 		onchange = () => {}
 	}: MultiSelectProps = $props();
 
-	let popupRef = $state<any>();
+	let popupRef = $state<ReturnType<typeof Popup>>();
 	let triggerEl = $state<HTMLButtonElement>();
 	let isPopupOpen = $state(false);
 	let triggerWidth = $state(0);
@@ -57,10 +57,10 @@
 	const fallbackId = `multi-select-${Math.random().toString(36).substring(2, 15)}`;
 	const listboxId = $derived(`${id ?? fallbackId}-listbox`);
 
-	const selectedLabels = $derived(
-		options
-			.filter((option): option is Option => option !== 'separator' && value.includes(option.value))
-			.map((option) => option.label)
+	const selectedOptions = $derived(
+		options.filter(
+			(option): option is Option => option !== 'separator' && value.includes(option.value)
+		)
 	);
 
 	// =========================================================================
@@ -140,11 +140,11 @@
 		onkeydown={handleTriggerKeydown}
 	>
 		<span class="multi-select__inner">
-			{#if selectedLabels.length > 0}
+			{#if selectedOptions.length > 0}
 				<span class="multi-select__display-text">
-					{#each selectedLabels as label, i}
+					{#each selectedOptions as option, i (option.value)}
 						<span
-							>{label}{#if i < selectedLabels.length - 1},{/if}</span
+							>{option.label}{#if i < selectedOptions.length - 1},{/if}</span
 						>
 					{/each}
 				</span>

@@ -93,6 +93,7 @@
 	id={id ? `${id}-dialog` : undefined}
 >
 	<div class="confirm-dialog-message">
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- convertToHtml でエスケープしたうえで改行を <br /> にした文字列を描く -->
 		{@html convertToHtml(description)}
 	</div>
 

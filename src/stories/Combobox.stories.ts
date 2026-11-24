@@ -1,5 +1,5 @@
 // s../lib/components/atoms/Combobox.stories.ts
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Combobox from '#lib/sharedComponents/Combobox.svelte';
 
 const meta = {

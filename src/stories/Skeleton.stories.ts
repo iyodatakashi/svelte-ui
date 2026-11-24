@@ -1,4 +1,4 @@
-import type { Meta, StoryObj } from '@storybook/svelte';
+import type { Meta, StoryObj } from '@storybook/sveltekit';
 import Skeleton from '#lib/sharedComponents/skeleton/Skeleton.svelte';
 
 const meta = {

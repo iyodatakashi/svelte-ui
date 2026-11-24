@@ -7,12 +7,12 @@
 	let anchorElement4: HTMLElement;
 	let anchorElement5: HTMLElement;
 	let anchorElement6: HTMLElement;
-	let popupRef1: any;
-	let popupRef2: any;
-	let popupRef3: any;
-	let popupRef4: any;
-	let popupRef5: any;
-	let popupRef6: any;
+	let popupRef1: ReturnType<typeof Popup>;
+	let popupRef2: ReturnType<typeof Popup>;
+	let popupRef3: ReturnType<typeof Popup>;
+	let popupRef4: ReturnType<typeof Popup>;
+	let popupRef5: ReturnType<typeof Popup>;
+	let popupRef6: ReturnType<typeof Popup>;
 
 	const generateContent = (count: number) => {
 		return Array.from({ length: count }, (_, i) => `コンテンツ ${i + 1}`);
@@ -67,7 +67,7 @@
 	<!-- 大量のコンテンツでページスクロールを発生させる -->
 	<div class="page-content">
 		<h3>ページコンテンツ（スクロール用）</h3>
-		{#each pageContent as content}
+		{#each pageContent as content (content)}
 			<div class="content-item">{content}</div>
 		{/each}
 	</div>
@@ -103,7 +103,7 @@
 				</div>
 			</Popup>
 
-			{#each scrollableContent as content}
+			{#each scrollableContent as content (content)}
 				<div class="scrollable-item">{content}</div>
 			{/each}
 		</div>
@@ -139,7 +139,7 @@
 
 		<div class="scrollable-container">
 			<h4>関係ない要素のスクロールボックス</h4>
-			{#each scrollableContent as content}
+			{#each scrollableContent as content (content)}
 				<div class="scrollable-item">{content}</div>
 			{/each}
 		</div>
@@ -171,7 +171,7 @@
 
 				<div class="popup-scroll-area">
 					<h4>スクロール可能な長いコンテンツ</h4>
-					{#each Array.from({ length: 20 }, (_, i) => `Popup内コンテンツ ${i + 1}`) as content}
+					{#each Array.from({ length: 20 }, (_, i) => `Popup内コンテンツ ${i + 1}`) as content (content)}
 						<div class="popup-content-item">{content}</div>
 					{/each}
 				</div>
@@ -179,7 +179,7 @@
 				<div class="popup-scroll-list">
 					<h4>スクロール可能なリスト</h4>
 					<div class="scrollable-list">
-						{#each Array.from({ length: 15 }, (_, i) => `リスト項目 ${i + 1}`) as item}
+						{#each Array.from({ length: 15 }, (_, i) => `リスト項目 ${i + 1}`) as item (item)}
 							<div class="list-item">{item}</div>
 						{/each}
 					</div>
@@ -239,14 +239,14 @@
 		<div class="dual-scroll-container">
 			<div class="scrollable-container small">
 				<h4>左スクロールボックス（関係ない要素）</h4>
-				{#each scrollableContent.slice(0, 15) as content}
+				{#each scrollableContent.slice(0, 15) as content (content)}
 					<div class="scrollable-item">{content}</div>
 				{/each}
 			</div>
 
 			<div class="scrollable-container small">
 				<h4>右スクロールボックス（関係ない要素）</h4>
-				{#each scrollableContent.slice(15) as content}
+				{#each scrollableContent.slice(15) as content (content)}
 					<div class="scrollable-item">{content}</div>
 				{/each}
 			</div>
@@ -283,14 +283,14 @@
 					</div>
 				</Popup>
 
-				{#each scrollableContent.slice(0, 15) as content}
+				{#each scrollableContent.slice(0, 15) as content (content)}
 					<div class="scrollable-item">{content}</div>
 				{/each}
 			</div>
 
 			<div class="scrollable-container small">
 				<h4>右スクロールボックス（関係ない要素）</h4>
-				{#each scrollableContent.slice(15) as content}
+				{#each scrollableContent.slice(15) as content (content)}
 					<div class="scrollable-item">{content}</div>
 				{/each}
 			</div>
@@ -300,7 +300,7 @@
 	<!-- 追加のページコンテンツ -->
 	<div class="page-content">
 		<h3>追加のページコンテンツ</h3>
-		{#each pageContent.slice(0, 20) as content}
+		{#each pageContent.slice(0, 20) as content (content)}
 			<div class="content-item">{content}</div>
 		{/each}
 	</div>

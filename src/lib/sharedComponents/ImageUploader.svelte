@@ -5,7 +5,6 @@
 	import { t } from '#lib/models/i18n/i18n';
 	import { announceToScreenReader } from '#lib/utils/accessibility';
 	import { getStyleFromNumber } from '#lib/utils/style';
-	import { onDestroy } from 'svelte';
 	import ImageUploaderPreview from './ImageUploaderPreview.svelte';
 	import type { ImageUploaderProps } from '#lib/models/uploader/uploader.types';
 
@@ -71,15 +70,6 @@
 	let fileInputRef: HTMLInputElement;
 	let isHover: boolean = $state(false);
 	let errorMessage: string = $state('');
-	let urlCache = new Map<File, string>();
-
-	// =========================================================================
-	// Lifecycle
-	// =========================================================================
-
-	onDestroy(() => {
-		cleanupObjectUrls();
-	});
 
 	// =========================================================================
 	// Effects
@@ -212,14 +202,6 @@
 	const removeFile = (index: number) => {
 		if (!value) return;
 
-		// 削除されるファイルのURLをクリーンアップ
-		const fileToRemove = value[index];
-		if (fileToRemove && urlCache.has(fileToRemove)) {
-			const url = urlCache.get(fileToRemove)!;
-			URL.revokeObjectURL(url);
-			urlCache.delete(fileToRemove);
-		}
-
 		const dt = new DataTransfer();
 		for (let i = 0; i < value.length; i++) {
 			if (i !== index) {
@@ -235,20 +217,11 @@
 		}
 	};
 
-	const cleanupObjectUrls = () => {
-		// キャッシュされたすべてのURLを解放
-		for (const url of urlCache.values()) {
-			URL.revokeObjectURL(url);
-		}
-		urlCache.clear();
-	};
-
 	export const reset = () => {
 		if (fileInputRef) {
 			fileInputRef.value = '';
 			value = null;
 			errorMessage = '';
-			cleanupObjectUrls();
 		}
 	};
 
@@ -284,7 +257,7 @@
 >
 	{#if multiple}
 		{#if value}
-			{#each value as file, index}
+			{#each value as file, index (file)}
 				{@render preview(file, index)}
 			{/each}
 		{/if}
@@ -339,6 +312,7 @@
 					opticalSize={iconOpticalSize}
 					variant={iconVariant}>{icon}</Icon
 				>
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -- placeholder は改行などに HTML を書ける仕様。利用者のコードが渡す文字列で、入力値ではない -->
 				{@html placeholder}
 			</div>
 		{/if}

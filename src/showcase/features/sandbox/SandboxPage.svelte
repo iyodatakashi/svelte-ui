@@ -16,7 +16,6 @@
 	import type { SvelteComponent } from 'svelte';
 	import Fab from '#lib/sharedComponents/Fab.svelte';
 	import FileUploader from '#lib/sharedComponents/FileUploader.svelte';
-	import ImageUploader from '#lib/sharedComponents/ImageUploader.svelte';
 	import Slider from '#lib/sharedComponents/Slider.svelte';
 	import CheckboxGroup from '#lib/sharedComponents/CheckboxGroup.svelte';
 	import RadioGroup from '#lib/sharedComponents/RadioGroup.svelte';
@@ -30,7 +29,6 @@
 	let dialogRef: SvelteComponent | undefined = $state();
 	let confirmDialogRef: SvelteComponent | undefined = $state();
 	let drawerRef: SvelteComponent | undefined = $state();
-	let date: Date = $state(new Date());
 	let range: { start: Date; end: Date } = $state({
 		start: new Date(),
 		end: new Date('2025-11-28')

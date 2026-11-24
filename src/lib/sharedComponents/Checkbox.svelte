@@ -198,7 +198,7 @@
 	};
 
 	// 変更イベント
-	const handleChange = (event: Event) => {
+	const handleChange = () => {
 		onchange(value);
 	};
 

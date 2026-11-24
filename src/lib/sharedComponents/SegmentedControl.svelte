@@ -331,7 +331,7 @@
 	data-testid="segmented-control"
 	{...restProps}
 >
-	{#each options as option, index}
+	{#each options as option, index (option.value)}
 		{@const isSelected = value === option.value}
 		{@const isDisabled = disabled || option.disabled}
 		{@const inputId = `${name}-${index}`}

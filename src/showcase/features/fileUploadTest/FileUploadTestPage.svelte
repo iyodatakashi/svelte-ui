@@ -36,7 +36,7 @@
 			<div class="file-display">
 				<h3>選択されたファイル:</h3>
 				<ul>
-					{#each files as file}
+					{#each files as file (file)}
 						<li>{file.name} ({formatFileSize(file.size)})</li>
 					{/each}
 				</ul>
@@ -51,7 +51,7 @@
 			<div class="file-display">
 				<h3>選択された画像:</h3>
 				<ul>
-					{#each imageFiles as file}
+					{#each imageFiles as file (file)}
 						<li>{file.name} ({formatFileSize(file.size)})</li>
 					{/each}
 				</ul>
@@ -66,7 +66,7 @@
 			<div class="file-display">
 				<h3>選択されたファイル:</h3>
 				<ul>
-					{#each singleFile as file}
+					{#each singleFile as file (file)}
 						<li>{file.name} ({formatFileSize(file.size)})</li>
 					{/each}
 				</ul>

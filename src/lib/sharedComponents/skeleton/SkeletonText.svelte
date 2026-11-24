@@ -32,7 +32,7 @@
 	class="skeleton-text"
 	style="font-size: {fontSizeStyle}; {customStyle}"
 >
-	{#each Array(lines) as _, index}
+	{#each { length: lines }}
 		<div class="skeleton-text__line" style="width: {widthStyle}">
 			<SkeletonBox
 				width="100%"

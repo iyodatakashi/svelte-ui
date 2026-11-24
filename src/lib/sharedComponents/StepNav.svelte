@@ -69,13 +69,11 @@
 	let resolvedCurrentPath = $state('');
 
 	$effect(() => {
-		resolvedCurrentPath = getCurrentPath(currentPath);
-	});
-
-	$effect(() => {
-		return subscribeUrlChange(() => {
+		const syncCurrentPath = () => {
 			resolvedCurrentPath = getCurrentPath(currentPath);
-		});
+		};
+		syncCurrentPath();
+		return subscribeUrlChange(syncCurrentPath);
 	});
 
 	// =========================================================================

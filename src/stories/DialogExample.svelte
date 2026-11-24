@@ -2,7 +2,6 @@
 	import Dialog from '#lib/sharedComponents/Dialog.svelte';
 	import type { DialogProps } from '#lib/models/overlay/overlay.types';
 	import Button from '#lib/sharedComponents/Button.svelte';
-	import type { Snippet } from 'svelte';
 
 	type DialogExampleProps = Pick<
 		DialogProps,

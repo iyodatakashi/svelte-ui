@@ -594,6 +594,7 @@
 			class="input__display-text-content"
 			class:input__display-text-content--placeholder={!hasDisplayValue}
 		>
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -- convertToHtml でエスケープしたうえで空白と改行を保つための HTML にした文字列を描く -->
 			{@html displayValue}
 			{#if type === 'number' && unit !== '' && hasDisplayValue}
 				<span class="input__unit-text">
@@ -656,6 +657,7 @@
 	{#if isLinkifyActive}
 		<div class="input__link-text">
 			<div class="input__link-text-content">
+				<!-- eslint-disable-next-line svelte/no-at-html-tags -- convertToHtmlWithLink でエスケープしたうえで URL をリンクにした文字列を描く -->
 				{@html linkHtmlValue}
 			</div>
 		</div>

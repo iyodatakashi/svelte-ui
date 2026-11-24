@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 	import { goto } from '$app/navigation';
 	import { onMount } from 'svelte';
@@ -6,7 +7,7 @@
 	// Auto-redirect to dashboard after 3 seconds
 	onMount(() => {
 		const timer = setTimeout(() => {
-			goto('/tenant-demo/dashboard');
+			goto(resolve('/tenant-demo/dashboard'));
 		}, 3000);
 
 		return () => clearTimeout(timer);
@@ -71,36 +72,36 @@
 		<h2>🔄 Auto-Redirect</h2>
 		<p>You will be automatically redirected to the dashboard in 3 seconds...</p>
 		<div class="redirect-actions">
-			<a href="/tenant-demo/dashboard" class="btn-primary">Go to Dashboard Now</a>
-			<a href="/" class="btn-secondary">Back to Home</a>
+			<a href={resolve('/tenant-demo/dashboard')} class="btn-primary">Go to Dashboard Now</a>
+			<a href={resolve('/')} class="btn-secondary">Back to Home</a>
 		</div>
 	</div>
 
 	<div class="quick-links">
 		<h2>🔗 Quick Links</h2>
 		<div class="links-grid">
-			<a href="/tenant-demo/dashboard" class="quick-link">
+			<a href={resolve('/tenant-demo/dashboard')} class="quick-link">
 				<div class="link-icon">📊</div>
 				<div class="link-content">
 					<h3>Dashboard</h3>
 					<p>View analytics and metrics</p>
 				</div>
 			</a>
-			<a href="/tenant-demo/articles" class="quick-link">
+			<a href={resolve('/tenant-demo/articles')} class="quick-link">
 				<div class="link-icon">📝</div>
 				<div class="link-content">
 					<h3>Articles</h3>
 					<p>Manage your content</p>
 				</div>
 			</a>
-			<a href="/tenant-demo/users" class="quick-link">
+			<a href={resolve('/tenant-demo/users')} class="quick-link">
 				<div class="link-icon">👥</div>
 				<div class="link-content">
 					<h3>Users</h3>
 					<p>Manage tenant users</p>
 				</div>
 			</a>
-			<a href="/tenant-demo/settings" class="quick-link">
+			<a href={resolve('/tenant-demo/settings')} class="quick-link">
 				<div class="link-icon">⚙️</div>
 				<div class="link-content">
 					<h3>Settings</h3>
@@ -153,21 +154,25 @@
 		<div class="test-links">
 			<h3>✅ These links will be redirected:</h3>
 			<div class="redirect-links">
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- 存在しない経路へわざと張ったリンク。layout の beforeNavigate が /tenant-demo 付きへ書き換えることを見せる見本 -->
 				<a href="/dashboard" class="test-link redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/dashboard</span>
 					<span class="link-result">→ /tenant-demo/dashboard</span>
 				</a>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- 存在しない経路へわざと張ったリンク。layout の beforeNavigate が /tenant-demo 付きへ書き換えることを見せる見本 -->
 				<a href="/articles" class="test-link redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/articles</span>
 					<span class="link-result">→ /tenant-demo/articles</span>
 				</a>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- 存在しない経路へわざと張ったリンク。layout の beforeNavigate が /tenant-demo 付きへ書き換えることを見せる見本 -->
 				<a href="/users" class="test-link redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/users</span>
 					<span class="link-result">→ /tenant-demo/users</span>
 				</a>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- 存在しない経路へわざと張ったリンク。layout の beforeNavigate が /tenant-demo 付きへ書き換えることを見せる見本 -->
 				<a href="/settings" class="test-link redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/settings</span>
@@ -177,22 +182,24 @@
 
 			<h3>❌ These links will NOT be redirected:</h3>
 			<div class="no-redirect-links">
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- 存在しない経路へわざと張ったリンク。layout の beforeNavigate が除外の経路を書き換えないことを見せる見本 -->
 				<a href="/api/test" class="test-link no-redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/api/test</span>
 					<span class="link-result">(excluded path)</span>
 				</a>
+				<!-- eslint-disable-next-line svelte/no-navigation-without-resolve -- 存在しない経路へわざと張ったリンク。layout の beforeNavigate が除外の経路を書き換えないことを見せる見本 -->
 				<a href="/auth/login" class="test-link no-redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/auth/login</span>
 					<span class="link-result">(excluded path)</span>
 				</a>
-				<a href="/tenant-demo/dashboard" class="test-link no-redirect-link">
+				<a href={resolve('/tenant-demo/dashboard')} class="test-link no-redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/tenant-demo/dashboard</span>
 					<span class="link-result">(already prefixed)</span>
 				</a>
-				<a href="/" class="test-link no-redirect-link">
+				<a href={resolve('/')} class="test-link no-redirect-link">
 					<span class="link-arrow">→</span>
 					<span class="link-text">/</span>
 					<span class="link-result">(home page)</span>

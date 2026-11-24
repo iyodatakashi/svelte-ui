@@ -261,7 +261,7 @@
 			>
 		</div>
 		<ul class="file-uploader__file-list">
-			{#each value as file, index}
+			{#each value as file, index (file)}
 				<li class="file-uploader__file-list-item">
 					{file.name}
 					<IconButton
@@ -291,6 +291,7 @@
 				opticalSize={iconOpticalSize}
 				variant={iconVariant}>{icon}</Icon
 			>
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -- placeholder は改行などに HTML を書ける仕様（既定値も <br /> を含む）。利用者のコードが渡す文字列で、入力値ではない -->
 			{@html placeholder}
 		</div>
 	{/if}

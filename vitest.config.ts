@@ -1,4 +1,4 @@
-import { defineConfig, defineProject } from 'vitest/config';
+import { defineConfig } from 'vitest/config';
 import { svelte, vitePreprocess } from '@sveltejs/vite-plugin-svelte';
 import { resolve } from 'node:path';
 import { mockAppModules } from './vite-plugin-mock-app';
@@ -32,7 +32,7 @@ export default defineConfig({
 		},
 		projects: [
 			// 既存のクライアント側テスト (vite.config.ts から移動)
-			defineProject({
+			{
 				// ルート設定（plugins / resolve など）を継承する
 				extends: true,
 				test: {
@@ -46,9 +46,9 @@ export default defineConfig({
 					exclude: ['src/lib/server/**', 'src/routes/**'],
 					setupFiles: ['./vitest-setup-client.ts']
 				}
-			} as any),
+			},
 			// 既存のサーバー側テスト (vite.config.ts から移動)
-			defineProject({
+			{
 				// ルート設定（plugins / resolve など）を継承する
 				extends: true,
 				test: {
@@ -57,13 +57,9 @@ export default defineConfig({
 					include: ['src/**/*.{test,spec}.{js,ts}'],
 					exclude: ['src/**/*.svelte.{test,spec}.{js,ts}', 'src/**/*.browser.{test,spec}.{js,ts}']
 				}
-			} as any),
+			},
 			// Storybook コンポーネントテスト用プロジェクト
-			// NOTE:
-			// Vitest 3.2 の型定義には `extends` プロパティが含まれていませんが、
-			// Storybook 公式ドキュメントに従いランタイムでは `extends: true` を使う必要があるため、
-			// 下のオブジェクト全体を `any` としてキャストして型エラーを抑制しています。
-			defineProject({
+			{
 				extends: true,
 				plugins: [
 					storybookTest({
@@ -86,7 +82,7 @@ export default defineConfig({
 					// Storybook 側の preview 設定をテストに反映
 					setupFiles: ['./.storybook/vitest.setup.ts']
 				}
-			} as any)
+			}
 		]
 	}
 });

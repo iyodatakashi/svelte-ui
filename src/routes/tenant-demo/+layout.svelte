@@ -31,6 +31,7 @@
 					// テナントパス付きのURLにリダイレクト
 					const redirectPath = `${tenantPrefix}${targetPath}`;
 					console.log(`🔄 Redirecting from ${targetPath} to ${redirectPath}`);
+					// eslint-disable-next-line svelte/no-navigation-without-resolve -- 遷移先のパスへ実行時に /tenant-demo を足した文字列で、resolve() の型が受け付ける経路として書けない
 					goto(redirectPath);
 				}
 			}

@@ -378,6 +378,7 @@
 		style:min-height={innerMinHeightStyle}
 		style:max-height={innerMaxHeightStyle}
 	>
+		<!-- eslint-disable-next-line svelte/no-at-html-tags -- escapeHtml でエスケープし、末尾の改行の高さを保つ &nbsp; を足した文字列を描く -->
 		{@html displayValue}
 	</div>
 	<textarea
@@ -428,6 +429,7 @@
 	></textarea>
 	{#if linkify}
 		<div bind:this={linkTextRef} class="textarea__link-text">
+			<!-- eslint-disable-next-line svelte/no-at-html-tags -- escapeHtml でエスケープしたうえで URL をリンクにした文字列を描く -->
 			{@html linkHtmlValue}
 		</div>
 	{/if}

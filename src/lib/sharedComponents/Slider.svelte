@@ -202,18 +202,15 @@
 	};
 
 	// 入力イベント
-	const handleChange = (event?: Event): void => {
+	const handleChange = (): void => {
 		if (disabled) return;
 		onchange?.(value);
 	};
 
-	const handleInput = (event?: Event): void => {
+	const handleInput = (): void => {
 		if (disabled) return;
 		oninput?.(value);
 	};
-
-	// パーセンテージ計算（将来の表示用に保持）
-	const percentage = $derived(((value - min) / (max - min)) * 100);
 
 	// スタイル計算
 	const sliderWidthStyle = $derived(width ? getStyleFromNumber(width) : undefined);

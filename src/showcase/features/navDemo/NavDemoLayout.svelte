@@ -49,7 +49,7 @@
 <div class="demo-page">
 	<div class="demo-toolbar">
 		<span class="demo-toolbar__label">variant:</span>
-		{#each variantOptions as v}
+		{#each variantOptions as v (v)}
 			<button
 				class="demo-toolbar__btn"
 				class:demo-toolbar__btn--active={variant === v}
@@ -58,7 +58,7 @@
 		{/each}
 		<span class="demo-toolbar__sep">|</span>
 		<span class="demo-toolbar__label">childrenVariant:</span>
-		{#each modesByVariant[variant] as m}
+		{#each modesByVariant[variant] as m (m)}
 			<button
 				class="demo-toolbar__btn"
 				class:demo-toolbar__btn--active={childrenVariant === m}

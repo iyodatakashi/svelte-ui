@@ -83,10 +83,9 @@
 	}: ComboboxProps = $props();
 
 	let inputValue = $state(value != null ? String(value) : '');
-	let inputRef = $state<any>();
 	let listElement = $state<HTMLDivElement>();
 	let comboboxElement = $state<HTMLDivElement>();
-	let popupRef = $state<any>();
+	let popupRef = $state<ReturnType<typeof Popup>>();
 	let isPopupOpen = $state(false);
 	let highlightedIndex = $state(-1);
 	let isFocused = $state(false);
@@ -361,7 +360,6 @@
 >
 	<!-- Inputコンポーネントを使用 -->
 	<Input
-		bind:this={inputRef}
 		bind:value={inputValue}
 		{name}
 		id={inputId}
@@ -429,7 +427,7 @@
 			aria-label={t('combobox.optionsList')}
 			aria-labelledby={inputId}
 		>
-			{#each filteredOptions as option, index}
+			{#each filteredOptions as option, index (option)}
 				<div role="presentation">
 					<button
 						type="button"

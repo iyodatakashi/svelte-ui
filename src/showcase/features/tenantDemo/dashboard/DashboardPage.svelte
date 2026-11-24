@@ -1,4 +1,5 @@
 <script lang="ts">
+	import { resolve } from '$app/paths';
 	import { page } from '$app/state';
 </script>
 
@@ -57,10 +58,10 @@
 		<h2>Test Navigation</h2>
 		<p>Click on these links to test the pathPrefix functionality:</p>
 		<div class="test-links">
-			<a href="/tenant-demo/dashboard" class="test-link current">Dashboard (current)</a>
-			<a href="/tenant-demo/articles" class="test-link">Articles</a>
-			<a href="/tenant-demo/users" class="test-link">Users</a>
-			<a href="/tenant-demo/settings" class="test-link">Settings</a>
+			<a href={resolve('/tenant-demo/dashboard')} class="test-link current">Dashboard (current)</a>
+			<a href={resolve('/tenant-demo/articles')} class="test-link">Articles</a>
+			<a href={resolve('/tenant-demo/users')} class="test-link">Users</a>
+			<a href={resolve('/tenant-demo/settings')} class="test-link">Settings</a>
 		</div>
 	</div>
 </div>

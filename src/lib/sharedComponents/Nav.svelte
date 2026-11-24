@@ -67,13 +67,11 @@
 	// Effects
 	// =========================================================================
 	$effect(() => {
-		resolvedCurrentPath = getCurrentPath(currentPath);
-	});
-
-	$effect(() => {
-		return subscribeUrlChange(() => {
+		const syncCurrentPath = () => {
 			resolvedCurrentPath = getCurrentPath(currentPath);
-		});
+		};
+		syncCurrentPath();
+		return subscribeUrlChange(syncCurrentPath);
 	});
 
 	// accordion / bar モード: アクティブな親を自動展開
@@ -239,7 +237,7 @@
 	bind:this={navEl}
 >
 	<div style="display: contents" role="presentation" onkeydown={handleKeyDown}>
-		{#each navItems as item, index}
+		{#each navItems as item, index (index)}
 			<NavItem
 				{item}
 				{variant}
@@ -280,7 +278,7 @@
 		onkeydown={handleSubBarKeyDown}
 		bind:this={subBarEl}
 	>
-		{#each expandedParent.children as child}
+		{#each expandedParent.children as child, index (index)}
 			<NavItem
 				item={child}
 				variant="horizontal"

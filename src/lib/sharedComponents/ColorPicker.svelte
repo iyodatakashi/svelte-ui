@@ -89,10 +89,10 @@
 	// =========================================================================
 
 	$effect(() => {
-		value;
+		const currentValue = value;
 		untrack(() => {
 			/* value を localValue に反映 */
-			localValue = getNormalizedValue(value);
+			localValue = getNormalizedValue(currentValue);
 
 			/* value が更新されたらonchangeを実行 */
 			handleValueChange();
@@ -100,13 +100,11 @@
 	});
 
 	$effect(() => {
-		localValue;
+		/* localValue がクリアされた時に value もクリア */
+		if (localValue !== '') return;
 		untrack(() => {
-			/* localValue がクリアされた時に value もクリア */
-			if (localValue === '') {
-				value = '';
-				prevValue = '';
-			}
+			value = '';
+			prevValue = '';
 		});
 	});
 

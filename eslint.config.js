@@ -38,5 +38,12 @@ export default ts.config(
 			}
 		}
 	},
+	{
+		// ライブラリの部品は、利用者が渡した URL をそのまま使う。base path の解決は利用者の側で行う
+		files: ['src/lib/**'],
+		rules: {
+			'svelte/no-navigation-without-resolve': 'off'
+		}
+	},
 	storybook.configs['flat/recommended']
 );

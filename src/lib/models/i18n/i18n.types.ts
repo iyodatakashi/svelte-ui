@@ -17,3 +17,7 @@ type NestedKeyOf<T> = T extends object
 	: never;
 
 export type TranslationKey = NestedKeyOf<typeof TRANSLATIONS.en>;
+
+export type TranslationParams = Record<string, string | number>;
+
+export type TranslationTree = { readonly [key: string]: string | TranslationTree };

@@ -1,11 +1,5 @@
 import type { Meta, StoryObj } from '@storybook/sveltekit';
 import FileUploader from '#lib/sharedComponents/FileUploader.svelte';
-import type {
-	IconVariant,
-	IconWeight,
-	IconGrade,
-	IconOpticalSize
-} from '#lib/models/icon/icon.types';
 
 const meta = {
 	title: 'Forms/FileUploader',

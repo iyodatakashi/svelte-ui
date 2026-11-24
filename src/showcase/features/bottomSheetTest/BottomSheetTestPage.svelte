@@ -49,7 +49,7 @@
 		</div>
 		<Popup bind:this={popupRef} anchorElement={anchorEl} mobileFullscreen>
 			<div class="sheet">
-				{#each Array.from({ length: 6 }) as _, i}
+				{#each { length: 6 }, i (i)}
 					<p>シートの中身 {i + 1}</p>
 				{/each}
 				<Button onclick={() => popupRef?.close()}>閉じる</Button>
@@ -73,7 +73,7 @@
 	</section>
 
 	<p>下にスクロールしてから開くと、背面のスクロール位置の挙動も確認できます。</p>
-	{#each Array.from({ length: 40 }) as _, i}
+	{#each { length: 40 }, i (i)}
 		<p class="filler">ページの内容 {i + 1}</p>
 	{/each}
 

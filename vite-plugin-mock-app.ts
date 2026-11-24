@@ -12,7 +12,7 @@ export function mockAppModules(): Plugin {
 	return {
 		name: 'mock-app-modules',
 		enforce: 'pre', // Run before other plugins
-		resolveId(id, importer) {
+		resolveId(id) {
 			// Intercept $app module imports
 			if (id.startsWith('$app/')) {
 				const moduleName = id.replace('$app/', '');

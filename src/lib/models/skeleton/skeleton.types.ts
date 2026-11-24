@@ -103,14 +103,15 @@ export type SkeletonPresetConfig = SkeletonPatternCommonConfig & {
 export const isPresetPattern = (
 	pattern: SkeletonPatternConfig
 ): pattern is SkeletonPresetConfig => {
-	return [
+	const presetTypes: readonly string[] = [
 		'article-detail',
 		'article-list',
 		'product-list',
 		'video-list',
 		'user-list',
 		'button-group'
-	].includes(pattern.type as any);
+	];
+	return presetTypes.includes(pattern.type);
 };
 
 export const isMediaPattern = (pattern: SkeletonPatternConfig): pattern is SkeletonMediaConfig => {
